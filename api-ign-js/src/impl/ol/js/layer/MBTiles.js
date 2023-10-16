@@ -143,8 +143,8 @@ class MBTiles extends Layer {
 
 
     /**
-    * CrossOrigin. Indica si se usa crossOrigin.
-    */
+     * CrossOrigin. Indica si se usa crossOrigin.
+     */
     this.crossOrigin = options.crossOrigin || null;
   }
 
@@ -203,6 +203,14 @@ class MBTiles extends Layer {
   }
 
   /**
+   * Devuelve la extensión de la capa.
+   * @returns {Array} Devuelve la extensión de la capa.
+   */
+  getMaxExtent() {
+    return this.maxExtent_ || this.getExtentFromProvider();
+  }
+
+  /**
    * Este método devuelve el nivel máximo de zoom.
    *
    * @function
@@ -236,6 +244,7 @@ class MBTiles extends Layer {
           }
           const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_);
           this.getExtentFromProvider().then((reprojectedExtent) => {
+            this.maxExtent_ = reprojectedExtent || extent;
             this.ol3Layer = this.createLayer({
               tileProvider,
               resolutions,
@@ -243,6 +252,8 @@ class MBTiles extends Layer {
               sourceExtent: extent,
               projection,
             });
+            this.ol3Layer.setMaxZoom(this.maxZoom);
+            this.ol3Layer.setMinZoom(this.minZoom);
             this.map.getMapImpl().addLayer(this.ol3Layer);
           });
         });
@@ -255,6 +266,8 @@ class MBTiles extends Layer {
         sourceExtent: extent,
         projection,
       });
+      this.ol3Layer.setMaxZoom(this.maxZoom);
+      this.ol3Layer.setMinZoom(this.minZoom);
       this.map.getMapImpl().addLayer(this.ol3Layer);
     }
   }

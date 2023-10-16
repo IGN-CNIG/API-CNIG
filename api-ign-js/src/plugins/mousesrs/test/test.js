@@ -15,6 +15,7 @@ const mp = new MouseSRS({
   utmDecimalDigits: 2,
   label: 'EPSG:4326',
   helpUrl: 'https://www.ign.es/',
+  epsgFormat: false,
 });
 
 map.addPlugin(mp);

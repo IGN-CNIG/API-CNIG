@@ -183,12 +183,6 @@ class Map extends MObject {
      */
     this.currentZoom = null;
 
-    // gets the renderer
-    // let renderer = ol.renderer.Type.CANVAS;
-    // if (!isNullOrEmpty(this.options_.renderer)) {
-    //   renderer = this.options_.renderer;
-    // }
-
     /**
      * Implementación del mapa.
      * @private
@@ -202,7 +196,6 @@ class Map extends MObject {
     });
 
     this.registerEvents_();
-
 
     // this.map_.getView().setConstrainResolution(false);
     this.facadeMap_.on(EventType.COMPLETED, () => {

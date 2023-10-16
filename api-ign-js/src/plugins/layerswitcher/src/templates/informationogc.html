@@ -1,0 +1,45 @@
+<div>
+    <div class="m-layerswitcher-info-cap">
+        <p tabindex="0"><span>{{translations.title}}:</span>&nbsp; {{title}}</p>
+
+        <p class="m-layerswitcher-otherTitles" tabindex="0"><span>{{translations.abstract}}:</span></p>
+        <div>
+            {{abstract}}
+        </div>
+        {{#if metadata}}
+            <p><a tabindex="0" class="m-layerswitcher-provider-link" target="_blank" href="{{metadata}}">{{translations.see_more_layer}}</a></p>
+        {{/if}}
+        {{#gt attributes.length 0 }}
+            <div id="m-layerswitcher-tfoot">
+                <p tabindex="0"><span>{{translations.attributes}}:</span>&nbsp;</p>
+                <div class="m-layerswitcher-pagecontrolscontainer">
+                    <div class="m-layerswitcher-fixedwidthbutton">
+                        <span tabindex="0" class="g-cartografia-flecha-izquierda m-layerswitcher-hidden" id="m-layerswitcher-previous"></span>
+                    </div>
+                    <span tabindex="0" id="m-layerswitcher-pageinfo">Página {{pages.actual}} de {{pages.total}}</span>
+                    <div class="m-layerswitcher-fixedwidthbutton">
+                        <span tabindex="0" class="g-cartografia-flecha-derecha m-layerswitcher-hidden" id="m-layerswitcher-next"></span>
+                    </div>
+                </div>
+            </div>
+            <table id="m-layerswitcher-table" class="m-layerswitcher-tablepagination">
+                <thead>
+                    <tr>
+                        {{#each headerAtt}}
+                            <td tabindex="0">{{this}}</td>
+                        {{/each}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each attributes}}
+                        <tr>
+                            {{#each this.properties}}
+                                <td tabindex="0"> {{{this}}}</td>
+                            {{/each}}
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{/gt}}
+    </div>
+</div>

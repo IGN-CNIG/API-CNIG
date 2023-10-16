@@ -100,13 +100,13 @@ class XYZ extends Layer {
      * XYZ minZoom.
      * Zoom mínimo aplicable a la capa.
      */
-    this.minZoom = userParameters.minZoom || Number.NEGATIVE_INFINITY;
+    this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
 
     /**
      * XYZ maxZoom.
      * Zoom máximo aplicable a la capa.
      */
-    this.maxZoom = userParameters.maxZoom || Number.POSITIVE_INFINITY;
+    this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
      * XYZ tileGridMaxZoom.
@@ -122,7 +122,7 @@ class XYZ extends Layer {
 
     /**
      * CrossOrigin. Indica si se usa crossOrigin.
-    */
+     */
     this.crossOrigin = options.crossOrigin || null;
   }
 

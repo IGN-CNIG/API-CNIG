@@ -60,12 +60,17 @@ class BackgroundLayers extends ControlBase {
         id: layer.id,
         title: layer.title,
         layers: layer.layers.map((subLayer) => {
-          if (/WMTS.*/.test(subLayer)) {
-            return new WMTS(subLayer);
-          } else if (/TMS.*/.test(subLayer)) {
-            return new TMS(subLayer);
+          let l = subLayer;
+          if (typeof subLayer === 'string') {
+            if (/WMTS.*/.test(subLayer)) {
+              l = new WMTS(subLayer);
+            } else if (/TMS.*/.test(subLayer)) {
+              l = new TMS(subLayer);
+            } else {
+              l = new WMS(subLayer);
+            }
           }
-          return new WMS(subLayer);
+          return l;
         }),
       };
     });
@@ -171,9 +176,9 @@ class BackgroundLayers extends ControlBase {
     const buttons = document.querySelectorAll('.m-plugin-baselayer .m-panel-controls #div-contenedor button');
     buttons.forEach((e) => {
       // eslint-disable-next-line no-unused-expressions
-      (e.classList.contains('m-background-unique-btn'))
-        ? e.style.display = (change) ? 'block' : 'none'
-        : e.style.display = (change) ? 'none' : 'block';
+      (e.classList.contains('m-background-unique-btn')) ?
+      // eslint-disable-next-line space-infix-ops
+        e.style.display = (change) ? 'block' : 'none': e.style.display = (change) ? 'none' : 'block';
     });
   }
 

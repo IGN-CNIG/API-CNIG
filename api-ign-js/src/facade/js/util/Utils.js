@@ -1434,6 +1434,28 @@ export const draggabillyPlugin = (panel, handleEl) => {
 };
 
 /**
+ * Esta función proporciona movimiento a un dialog.
+ *
+ * @function
+ * @param {string} element Selector del elemento a mover
+ * @param {string} handleEl Selemento del elemento iniciador del movimiento
+ * @api
+ */
+export const draggabillyElement = (elem, handleEl) => {
+  setTimeout(() => {
+    const element = document.querySelector(elem);
+    if (element !== null) {
+      const draggable = new Draggabilly(element, {
+        containment: 'body',
+        handle: handleEl,
+      });
+
+      draggable.enable();
+    }
+  }, 50);
+};
+
+/**
  * Esta función devuelve las coordenadas de un elemento HTML
  * que se encuentra en el mapa (ol-overlay-container).
  *

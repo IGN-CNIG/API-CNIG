@@ -373,10 +373,12 @@ class WMS extends LayerBase {
   calculateMaxExtentWithCapabilities(capabilities) {
     // -- Prevent to calculate maxExtent if it is already calculated
     if (isNullOrEmpty(this.userMaxExtent) && this.userMaxExtent) return this.userMaxExtent;
+
     if (isNullOrEmpty(this.options.wmcMaxExtent) && this.options.wmcMaxExtent) {
       this.maxExtent_ = this.options.wmcMaxExtent;
       return this.maxExtent_;
     }
+
     if (isNullOrEmpty(this.map_.userMaxExtent) && this.map_.userMaxExtent) {
       this.maxExtent_ = this.map_.userMaxExtent;
       return this.maxExtent_;
@@ -385,11 +387,13 @@ class WMS extends LayerBase {
     // -- Use capabilities
     const capabilitiesMaxExtent = this.getImpl()
       .getExtentFromCapabilities(capabilities);
-    if (isNullOrEmpty(capabilitiesMaxExtent)) {
-      const projMaxExtent = this.map_.getProjection().getExtent();
-      this.maxExtent_ = projMaxExtent;
+
+    if (capabilitiesMaxExtent.length !== 0) {
+      this.maxExtent_ = capabilitiesMaxExtent;
       return this.maxExtent_;
     }
+    const projMaxExtent = this.map_.getProjection().getExtent();
+    this.maxExtent_ = projMaxExtent;
     return capabilitiesMaxExtent;
   }
 

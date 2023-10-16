@@ -29,6 +29,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **srs**. Código EPSG del SRS sobre el que se mostrarán las coordenadas del ratón. Por defecto: EPSG:4326
 - **label**. Nombre del SRS sobre el que se mostrarán las coordenadas del ratón. Por defecto: WGS84
 - **precision**. Precisión de las coordenadas. Por defecto: 4
+- **epsgFormat**. Indica si el EPSG aparezca formateado, por ejemplo si el valor del label es "EPSG:4326" el formato será "WGS 84 EPSG:4326 - LONGITUD, LATITUD ". Por defecto, false.
 - **geoDecimalDigits**. Cifras decimales para proyecciones geográficas.
 - **utmDecimalDigits**. Cifras decimales para proyecciones UTM.
 - **activeZ**. Activar visualización valor z. Por defecto: false
@@ -37,7 +38,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 # API-REST
 
 ```javascript
-URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*activeZ*helpUrl
+URL_API?mousesrs=tooltip*srs*label*precision*epsgFormat*geoDecimalDigits*utmDecimalDigits*activeZ*helpUrl
 ```
 
 <table>
@@ -66,6 +67,11 @@ URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*a
     <td>Precisión de las coordenadas</td>
     <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
+    <tr>
+    <td>epsgFormat</td>
+    <td>Formatear EPSG</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
   <tr>
     <td>geoDecimalDigits</td>
     <td>Cifras decimales para proyecciones geográficas</td>
@@ -92,7 +98,7 @@ URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*a
 ### Ejemplo de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*4
+https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*4*true
 ```
 
 ### Ejemplo de uso API-REST en base64
@@ -126,6 +132,7 @@ const mp = new M.plugin.MouseSRS({
   srs: 'EPSG:4326',
   label: 'WGS84',
   precision: 4,
+  epsgFormat: true,
 });
 ```
 

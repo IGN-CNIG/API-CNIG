@@ -21,6 +21,7 @@ import OLLayerTile from 'ol/layer/Tile';
 import { isArray } from 'M/util/Utils';
 import { optionsFromCapabilities } from 'patches';
 import LayerBase from './Layer';
+import getLayerExtent from '../util/wmtscapabilities';
 /**
  * @classdesc
  * WMTS (Web Map Tile Service) es un estándar OGC para servir información geográfica
@@ -106,8 +107,10 @@ class WMTS extends LayerBase {
 
     /**
      * CrossOrigin. Indica si se usa crossOrigin.
-    */
+     */
     this.crossOrigin = options.crossOrigin || null;
+
+    this.maxExtent = options.maxExtent || null;
   }
 
   /**
@@ -136,6 +139,7 @@ class WMTS extends LayerBase {
 
       this.capabilitiesOptionsPromise
         .then((capabilities) => {
+          this.getWGS84BoundingBoxCapabilities_(capabilities);
           // filter current layer capabilities
           const capabilitiesOptions = this.getFilterCapabilities_(capabilities);
           // adds layer from capabilities
@@ -144,6 +148,30 @@ class WMTS extends LayerBase {
     } else {
       this.addLayerNotCapabilities_();
     }
+  }
+
+  /**
+   * Este devuelve el WGS84BoundingBox de las capabilities.
+   * @param {Object} capabilities Capabilities de la capa.
+   * @returns  {Object} WGS84BoundingBox de las capabilities.
+   */
+  getWGS84BoundingBoxCapabilities_(capabilities) {
+    const contents = capabilities.Contents;
+    const defaultExtent = this.map.getMaxExtent();
+
+    if (!isNull(contents)) {
+      this.maxExtent = getLayerExtent(contents, this.name, this.map.getProjection().code, defaultExtent);
+    }
+    return this.maxExtent;
+  }
+
+
+  /**
+   * Devuelve la extensión máxima de la capa.
+   * @returns {Array} Extensión máxima.
+   */
+  getMaxExtent() {
+    return this.maxExtent;
   }
 
   /**
@@ -445,7 +473,13 @@ class WMTS extends LayerBase {
         const getCapabilitiesUrl = getWMTSGetCapabilitiesUrl(this.url);
         const parser = new OLFormatWMTSCapabilities();
         getRemote(getCapabilitiesUrl).then((response) => {
-          const getCapabilitiesDocument = response.xml;
+          let getCapabilitiesDocument = response.xml;
+          const elementTag = getCapabilitiesDocument.getElementsByTagName('ows:Style');
+          if (elementTag.length > 0) {
+            const xmlToString = new XMLSerializer().serializeToString(getCapabilitiesDocument);
+            const text = xmlToString.replaceAll('ows:Style', 'Style');
+            getCapabilitiesDocument = new DOMParser().parseFromString(text, 'text/xml');
+          }
           const parsedCapabilities = parser.read(getCapabilitiesDocument);
           try {
             parsedCapabilities.Contents.Layer.forEach((l) => {

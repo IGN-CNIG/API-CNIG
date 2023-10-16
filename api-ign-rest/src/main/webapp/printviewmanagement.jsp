@@ -78,6 +78,13 @@
             <option value="true" selected="selected">true</option>
             <option value="false">false</option>
         </select>
+        <label for="selectUseProxy">Parámetro useProxy</label>
+        <select name="useProxy" id="selectUseProxy">
+            <option value=""></option>
+            <option value="true" selected="selected">true</option>
+            <option value="false">false</option>
+        </select>
+        
         
         <label for="inputOrder">Parámetro order</label>
         <input type="text" name="orderValue" id="inputOrder" list="orderValueSug">
@@ -146,7 +153,7 @@
 
         let mp;
         let position, collapsed, collapsible, tooltip, isDraggable, predefinedZoom,
-        	zoomExtent, order,
+        	zoomExtent, order, useProxy,
         	serverUrl = DEFAULT_serverUrl,
         	printStatusUrl = DEFAULT_printStatusUrl,
         	georefImageEpsg = JSON.parse(DEFAULT_georefImageEpsg),
@@ -160,6 +167,7 @@
         	isDraggable,
         	predefinedZoom,
 			zoomExtent,
+            useProxy,
 			order,
 			serverUrl,
 			printStatusUrl,
@@ -175,6 +183,7 @@
         const selectIsdraggable = document.getElementById("selectIsdraggable");
         const selectPredefinedZoom = document.getElementById("selectPredefinedZoom");
         const selectZoomExtent = document.getElementById("selectZoomExtent");
+        const selectUseProxy = document.getElementById("selectUseProxy");
         const inputOrder = document.getElementById("inputOrder");
         const inputServerUrl = document.getElementById("inputServerUrl");
         const inputPrintStatusUrl = document.getElementById("inputPrintStatusUrl");
@@ -195,6 +204,7 @@
         selectIsdraggable.addEventListener('change',cambiarTest);
         selectPredefinedZoom.addEventListener('change',cambiarTest);
         selectZoomExtent.addEventListener('change',cambiarTest);
+        selectUseProxy.addEventListener('change',cambiarTest);
         inputOrder.addEventListener('change', cambiarTest);
         inputServerUrl.addEventListener('change', cambiarTest);
         inputPrintStatusUrl.addEventListener('change', cambiarTest);
@@ -214,7 +224,9 @@
             let predefinedZoomValor = selectPredefinedZoom.options[selectPredefinedZoom.selectedIndex].value;
             predefinedzoom = predefinedZoomValor != "" ? objeto.predefinedZoom = (predefinedZoomValor == "true" || predefinedZoomValor == true) : "true";
             let zoomExtentValor = selectZoomExtent.options[selectZoomExtent.selectedIndex].value;
+            let useProxyValor = selectUseProxy.options[selectUseProxy.selectedIndex].value;
             zoomextent = zoomExtentValor != "" ? objeto.zoomExtent = (zoomExtentValor == "true" || zoomExtentValor == true) : "true";
+            useProxy = useProxyValor != "" ? objeto.useProxy = (useProxyValor == "true" || useProxyValor == true) : "true";
             objeto.order = inputOrder.value != "" ? inputOrder.value : "";
             objeto.serverUrl = inputServerUrl.value != "" ? inputServerUrl.value : "";
             objeto.printStatusUrl = inputPrintStatusUrl.value != "" ? inputPrintStatusUrl.value : "";

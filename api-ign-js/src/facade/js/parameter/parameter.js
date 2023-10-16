@@ -409,7 +409,7 @@ export const zoom = (zoomParam) => {
 
   // string
   if (isString(zoomParameter)) {
-    zoomVar = Number.parseInt(zoomParameter, 10);
+    zoomVar = Number.parseFloat(zoomParameter);
   } else if (typeof zoomParameter === 'number') {
     // number
     zoomVar = zoomParameter;
@@ -634,6 +634,25 @@ export const getVisibilityKML = (parameter) => {
   return visibility;
 };
 
+/**
+ * Analiza el parámetro para obtener la leyenda.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string} parameter Parámetro para obtener la leyenda.
+ * @returns {string} Leyenda de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getLegendKML = (parameter) => {
+  let legend;
+  if (isObject(parameter)) {
+    legend = parameter.legend;
+  }
+  return legend;
+};
+
 
 /**
  * Analiza el parámetro para obtener la URL del servicio.
@@ -715,6 +734,9 @@ export const kml = (userParamer) => {
 
     // get the visibility option
     layerObj.visibility = getVisibilityKML(userParam);
+
+    // get the legend option
+    layerObj.legend = getLegendKML(userParam);
 
     return layerObj;
   });
@@ -2446,7 +2468,9 @@ export const getExtraParameter = (parameter, defaultValue, position, nameVariabl
       extraParam = params[position + 3].trim();
       // eslint-disable-next-line no-restricted-globals
       if (isNaN(extraParam)) {
-        extraParam = extraParam.toLowerCase() !== 'false';
+        if (extraParam.toLowerCase() === 'true' || extraParam.toLowerCase() === 'false') {
+          extraParam = extraParam.toLowerCase() !== 'false';
+        }
       } else {
         extraParam = Number(extraParam);
       }
@@ -2496,9 +2520,6 @@ export const xyz = (userParamer) => {
     // gets the name
     layerObj.name = getNameXYZ(userParam);
 
-    // gets the legend
-    layerObj.legend = layerObj.name;
-
     // gets the URL
     layerObj.url = getURLXYZSource(userParam);
 
@@ -2510,6 +2531,9 @@ export const xyz = (userParamer) => {
 
     // get displayInLayerSwitcher
     layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 2, 'displayInLayerSwitcher');
+
+    // gets the legend
+    layerObj.legend = getExtraParameter(userParam, layerObj.name, 3, 'legend') || layerObj.name;
 
     layerObj.isBase = (layerObj.transparent === undefined) ?
       userParam.isBase : !layerObj.transparent;
@@ -2602,9 +2626,6 @@ export const tms = (userParamer) => {
     // gets the name
     layerObj.name = getNameTMS(userParam);
 
-    // gets the legend
-    layerObj.legend = layerObj.name;
-
     // gets the URL
     layerObj.url = getURLXYZSource(userParam);
 
@@ -2619,6 +2640,9 @@ export const tms = (userParamer) => {
 
     // get displayInLayerSwitcher
     layerObj.displayInLayerSwitcher = getExtraParameter(userParam, 'true', 3, 'displayInLayerSwitcher');
+
+    // gets the legend
+    layerObj.legend = getExtraParameter(userParam, layerObj.name, 4, 'legend');
 
     layerObj.isBase = (layerObj.transparent === undefined) ?
       userParam.isBase : !layerObj.transparent;

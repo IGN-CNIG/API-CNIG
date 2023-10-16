@@ -1,7 +1,7 @@
 /**
  * @module M/impl/format/KML
  */
-import { decodeHtml } from 'M/util/Utils';
+import { decodeHtml, isNullOrEmpty } from 'M/util/Utils';
 import OLFormatKML from 'ol/format/KML';
 import Icon from 'ol/style/Icon';
 import OLStyleIcon from 'ol/style/Icon';
@@ -36,7 +36,7 @@ class KML extends OLFormatKML {
    * @api
    */
   constructor(optOptions = {}) {
-    super({ showPointNames: optOptions.label });
+    super({ showPointNames: optOptions.label, extractStyles: optOptions.extractStyles });
 
     /**
      * "Popup".
@@ -65,17 +65,20 @@ class KML extends OLFormatKML {
   readCustomFeatures(textResponse, options) {
     const features = this.readFeatures(textResponse, options);
     const featuresModified = features.map((feature) => {
-      let styles = feature.getStyle()(feature);
-      if (!Array.isArray(styles)) {
-        styles = [styles];
-      }
-      styles.forEach((style) => {
-        if (style.getImage() instanceof OLStyleIcon) {
-          const image = style.getImage();
-          image.getImage().removeAttribute('crossorigin');
-          style.setImage(image);
+      const hasStyle = feature.getStyle();
+      if (!isNullOrEmpty(hasStyle)) {
+        let styles = hasStyle(feature);
+        if (!Array.isArray(styles)) {
+          styles = [styles];
         }
-      });
+        styles.forEach((style) => {
+          if (style.getImage() instanceof OLStyleIcon) {
+            const image = style.getImage();
+            image.getImage().removeAttribute('crossorigin');
+            style.setImage(image);
+          }
+        });
+      }
       feature.set('name', decodeHtml(feature.get('name')));
       return feature;
     });

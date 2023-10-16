@@ -116,9 +116,9 @@
         function cambiarTest() {
             let objeto = {};
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
-            (inputUrl_es.value != "") ? objeto.url_es = inputUrl_es.value : "https://componentes.cnig.es/ayudaIberpix/es.html";
-            (inputUrl_en.value != "") ? objeto.url_en = inputUrl_en.value : "https://componentes.cnig.es/ayudaIberpix/en.html";
-            (inputTooltip.value != "") ? objeto.tooltip = inputTooltip.value : "Más información";
+            (inputUrl_es.value != "") ? objeto.url_es = inputUrl_es.value: "https://www.ign.es/iberpix/ayuda/es.html";
+            (inputUrl_en.value != "") ? objeto.url_en = inputUrl_en.value: "https://www.ign.es/iberpix/ayuda/en.html";
+            (inputTooltip.value != "") ? objeto.tooltip = inputTooltip.value: "Más información";
             collapsed = selectCollapsed.options[selectCollapsed.selectedIndex].value;
             collapsed != '' ? objeto.collapsed = (collapsed === "true") : '';
             collapsible = selectCollapsible.options[selectCollapsible.selectedIndex].value;
@@ -137,7 +137,7 @@
             position: "TR",
         });
         map.addPlugin(mp2);
-        
+
         const botonEliminar = document.getElementById("botonEliminar");
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
@@ -148,10 +148,13 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-CTLHMMB5YT"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-CTLHMMB5YT');
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-CTLHMMB5YT');
 </script>
 
 </html>

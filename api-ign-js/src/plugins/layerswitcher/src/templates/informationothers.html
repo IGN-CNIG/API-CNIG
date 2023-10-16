@@ -1,0 +1,62 @@
+<div>
+    <div class="m-layerswitcher-info-cap">
+        <p tabindex="0"><span>{{translations.title}}:</span>&nbsp; {{title}}</p>
+        <p tabindex="0"><span>{{translations.name}}:</span>&nbsp; {{name}}</p>
+        {{#if numberFeatures}}
+            <p tabindex="0"><span>{{translations.n_obj_geo}}:</span>&nbsp; {{numberFeatures}}</p>
+        {{/if}}
+        {{#if extension}}
+            <p tabindex="0"><span>{{translations.extension}}:</span>&nbsp; [{{extension}}]</p>
+        {{/if}}
+        {{#if others.id}}
+            <p tabindex="0"><span>ID:</span>&nbsp; {{others.id}}</p>
+        {{/if}}
+        {{#if others.attribution}}
+            <p tabindex="0"><span>{{translations.attribution}}:</span>&nbsp; {{others.attribution}}</p>
+        {{/if}}
+        {{#if others.description}}
+            <p tabindex="0"><span>{{translations.description}}:</span>&nbsp; {{others.description}}</p>
+        {{/if}}
+        {{#if others.minzoom}}
+            <p tabindex="0"><span>{{translations.minzoom}}:</span>&nbsp; {{others.minzoom}}</p>
+        {{/if}}
+        {{#if others.maxzoom}}
+            <p tabindex="0"><span>{{translations.maxzoom}}:</span>&nbsp; {{others.maxzoom}}</p>
+        {{/if}}
+        {{#if others.center}}
+            <p tabindex="0"><span>{{translations.center}}:</span>&nbsp; [{{others.center}}]</p>
+        {{/if}}
+        {{#gt attributes.length 0 }}
+            <div id="m-layerswitcher-tfoot">
+                <p tabindex="0"><span>{{translations.attributes}}:</span>&nbsp;</p>
+                <div class="m-layerswitcher-pagecontrolscontainer">
+                    <div class="m-layerswitcher-fixedwidthbutton">
+                        <span tabindex="0" class="g-cartografia-flecha-izquierda m-layerswitcher-hidden" id="m-layerswitcher-previous"></span>
+                    </div>
+                    <span id="m-layerswitcher-pageinfo">Página {{pages.actual}} de {{pages.total}}</span>
+                    <div class="m-layerswitcher-fixedwidthbutton">
+                        <span tabindex="0" class="g-cartografia-flecha-derecha m-layerswitcher-hidden" id="m-layerswitcher-next"></span>
+                    </div>
+                </div>
+            </div>
+            <table id="m-layerswitcher-table" class="m-layerswitcher-tablepagination">
+                <thead>
+                    <tr>
+                        {{#each headerAtt}}
+                            <td tabindex="0">{{this}}</td>
+                        {{/each}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each attributes}}
+                        <tr>
+                            {{#each this.properties}}
+                                <td tabindex="0"> {{{this}}}</td>
+                            {{/each}}
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{/gt}}
+    </div>
+</div>

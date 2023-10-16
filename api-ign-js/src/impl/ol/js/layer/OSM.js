@@ -167,6 +167,10 @@ class OSM extends Layer {
     if (this.resolutions_ !== null) {
       this.setResolutions(this.resolutions_);
     }
+
+    this.ol3Layer.setMaxZoom(this.maxZoom);
+    this.ol3Layer.setMinZoom(this.minZoom);
+
     // activates animation for base layers or animated parameters
     const animated = ((this.transparent === false) || (this.options.animated === true));
     this.ol3Layer.set('animated', animated);
