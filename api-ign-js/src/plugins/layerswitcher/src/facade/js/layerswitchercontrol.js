@@ -427,7 +427,21 @@ export default class LayerswitcherControl extends M.Control {
             layerType === 'MBTiles' || layerType === 'OSM' || layerType === 'XYZ' || layerType === 'TMS' ||
             layerType === 'GeoJSON' || layerType === 'KML' || layerType === 'OGCAPIFeatures' || layerType === 'Vector') {
             const extent = layer.getMaxExtent();
-            this.map_.setBbox(extent);
+            if (extent === null) {
+              layer.calculateMaxExtent()
+                .then((ext) => {
+                  if (ext.length > 0) {
+                    this.map_.setBbox(ext);
+                  } else {
+                    this.map_.setBbox(this.map_.getExtent());
+                  }
+                })
+                .catch((err) => {
+                  console.error(err);
+                });
+            } else {
+              this.map_.setBbox(extent);
+            }
           } else if (layerType === 'MVT') {
             const extent = layer.getFeaturesExtent();
             this.map_.setBbox(extent);
