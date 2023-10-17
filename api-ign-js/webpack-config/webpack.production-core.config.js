@@ -10,9 +10,9 @@ const pjson = require(PJSON_PATH);
 
 module.exports = {
   mode: 'production',
-  node: {
-    fs: 'empty',
-  },
+  // node: {
+  //   fs: 'empty',
+  // },
   entry: {
     [`${pjson.name}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
@@ -32,6 +32,11 @@ module.exports = {
       patches: path.resolve(__dirname, '../src/impl/ol/js/patches.js'),
     },
     extensions: ['.wasm', '.mjs', '.js', '.json', '.css', '.hbs', '.html', '.jpg'],
+    fallback: {
+      fs: false,
+      path: false,
+      crypto: false,
+    },
   },
   module: {
     rules: [{
@@ -67,7 +72,10 @@ module.exports = {
       {
         test: /\.(woff|woff2|eot|ttf|svg|jpg)$/,
         exclude: /node_modules/,
-        loader: 'url-loader?name=fonts/[name].[ext]',
+        loader: 'url-loader',
+        options: {
+          name: 'fonts/[name].[ext]',
+        },
       }
     ],
   },

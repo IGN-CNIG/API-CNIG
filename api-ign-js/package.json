@@ -45,7 +45,7 @@
     "uglifycss": "0.0.29",
     "url-loader": "^1.0.1",
     "walk": "^2.3.14",
-    "webpack": "^4.12.0",
+    "webpack": "5.88.2",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.14",
     "yargs": "^12.0.1"
@@ -59,7 +59,7 @@
     "handlebars": "^4.4.5",
     "jsdoc": "^3.6.3",
     "jsts": "^2.0.2",
-    "ol": "7.2.2",
+    "ol": "8.1",
     "ol-mapbox-style": "^6.3.2",
     "pako": "^1.0.11",
     "proj4": "^2.4.4",
