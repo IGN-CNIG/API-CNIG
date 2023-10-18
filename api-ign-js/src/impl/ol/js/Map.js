@@ -227,6 +227,7 @@ class Map extends MObject {
   getLayers(filters) {
     const kmlLayers = this.getKML(filters);
     const wmsLayers = this.getWMS(filters);
+    const cogLayers = this.getCOG(filters);
     const wfsLayers = this.getWFS(filters);
     const ogcapifLayers = this.getOGCAPIFeatures(filters);
     const wmtsLayers = this.getWMTS(filters);
@@ -238,6 +239,7 @@ class Map extends MObject {
     const unknowLayers = this.getUnknowLayers_(filters);
 
     return kmlLayers.concat(wmsLayers)
+      .concat(cogLayers)
       .concat(wfsLayers)
       .concat(ogcapifLayers)
       .concat(wmtsLayers)
@@ -294,6 +296,8 @@ class Map extends MObject {
         this.facadeMap_.addKML(layer);
       } else if (layer.type === LayerType.WFS) {
         this.facadeMap_.addWFS(layer);
+      } else if (layer.type === LayerType.COG) {
+        this.facadeMap_.addCOG(layer);
       } else if (layer.type === LayerType.OGCAPIFeatures) {
         this.facadeMap_.addOGCAPIFeatures(layer);
       } else if (layer.type === LayerType.MVT) {
@@ -808,6 +812,137 @@ class Map extends MObject {
       this.layers_ = this.layers_.filter(layer => !layer.equals(wfsLayer));
       wfsLayer.getImpl().destroy();
       wfsLayer.fire(EventType.REMOVED_FROM_MAP, [wfsLayer]);
+    });
+
+    return this;
+  }
+
+  /**
+   * Este método obtiene las capas COG añadidas al mapa.
+   *
+   * @function
+   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.COG>} Capas COG del mapa.
+   * @public
+   * @api
+   */
+  getCOG(filtersParam) {
+    let foundLayers = [];
+    let filters = filtersParam;
+
+    // get all cogLayers
+    const cogLayers = this.layers_.filter((layer) => {
+      return (layer.type === LayerType.COG);
+    });
+
+    // parse to Array
+    if (isNullOrEmpty(filters)) {
+      filters = [];
+    }
+    if (!isArray(filters)) {
+      filters = [filters];
+    }
+
+    if (filters.length === 0) {
+      foundLayers = cogLayers;
+    } else {
+      filters.forEach((filterLayer) => {
+        const filteredCOGLayers = cogLayers.filter((cogLayer) => {
+          let layerMatched = true;
+          // checks if the layer is not in selected layers
+          if (!foundLayers.includes(cogLayer)) {
+            // type
+            if (!isNullOrEmpty(filterLayer.type)) {
+              layerMatched = (layerMatched && (filterLayer.type === cogLayer.type));
+            }
+            // URL
+            if (!isNullOrEmpty(filterLayer.url)) {
+              layerMatched = (layerMatched && (filterLayer.url === cogLayer.url));
+            }
+            // name
+            if (!isNullOrEmpty(filterLayer.name)) {
+              layerMatched = (layerMatched && (filterLayer.name === cogLayer.name));
+            }
+            // namespace
+            if (!isNullOrEmpty(filterLayer.namespace)) {
+              layerMatched = (layerMatched && (filterLayer.namespace === cogLayer.namespace));
+            }
+            // legend
+            if (!isNullOrEmpty(filterLayer.legend)) {
+              layerMatched = (layerMatched && (filterLayer.legend === cogLayer.legend));
+            }
+            // cql
+            if (!isNullOrEmpty(filterLayer.cql)) {
+              layerMatched = (layerMatched && (filterLayer.cql === cogLayer.cql));
+            }
+            // geometry
+            if (!isNullOrEmpty(filterLayer.geometry)) {
+              layerMatched = (layerMatched && (filterLayer.geometry === cogLayer.geometry));
+            }
+            // ids
+            if (!isNullOrEmpty(filterLayer.ids)) {
+              layerMatched = (layerMatched && (filterLayer.ids === cogLayer.ids));
+            }
+            // version
+            if (!isNullOrEmpty(filterLayer.version)) {
+              layerMatched = (layerMatched && (filterLayer.version === cogLayer.version));
+            }
+          } else {
+            layerMatched = false;
+          }
+          return layerMatched;
+        });
+        foundLayers = foundLayers.concat(filteredCOGLayers);
+      });
+    }
+    return foundLayers;
+  }
+
+  /**
+   * Este método añade las capas WFS especificadas por el usuario al mapa.
+   *
+   * @function
+   * @param {Array<M.layer.WFS>} layers Capas WFS a añadir.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
+   */
+  addCOG(layers) {
+    // checks if exists a base layer
+    const baseLayers = this.getBaseLayers();
+    const existsBaseLayer = (baseLayers.length > 0);
+
+    layers.forEach((layer) => {
+      // checks if layer is COG and was added to the map
+      if (layer.type === LayerType.COG) {
+        if (!includes(this.layers_, layer)) {
+          layer.getImpl().addTo(this.facadeMap_);
+          this.layers_.push(layer);
+          if (!existsBaseLayer) {
+            this.updateResolutionsFromBaseLayer();
+          }
+        }
+      }
+    });
+
+    return this;
+  }
+
+  /**
+   * Este método elimina las capas COG del mapa especificadas por el usuario.
+   *
+   * @function
+   * @param {Array<M.layer.COG>} layers Capas COG a eliminar.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
+   */
+  removeCOG(layers) {
+    const cogMapLayers = this.getCOG(layers);
+    cogMapLayers.forEach((cogLayer) => {
+      this.layers_ = this.layers_.filter(layer => !layer.equals(cogLayer));
+      cogLayer.getImpl().destroy();
+      cogLayer.fire(EventType.REMOVED_FROM_MAP, [cogLayer]);
     });
 
     return this;
@@ -2775,6 +2910,7 @@ Map.Z_INDEX[LayerType.WFS] = 40;
 Map.Z_INDEX[LayerType.MVT] = 40;
 Map.Z_INDEX[LayerType.Vector] = 40;
 Map.Z_INDEX[LayerType.GeoJSON] = 40;
+Map.Z_INDEX[LayerType.COG] = 40;
 Map.Z_INDEX[LayerType.MBTiles] = 40;
 Map.Z_INDEX[LayerType.MBTilesVector] = 40;
 Map.Z_INDEX[LayerType.XYZ] = 40;

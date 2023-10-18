@@ -25,6 +25,15 @@ export const KML = 'KML';
 export const WMS = 'WMS';
 
 /**
+ * Tipo COG (). Definido por una url,
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const COG = 'COG';
+
+/**
  * Tipo WFS (Web Feature Service). Estándar OGC para la
  * transferencia de información geográfica, donde los elementos o
  * características geográficas se transmiten en su totalidad al cliente.
@@ -150,6 +159,7 @@ export const MBTilesVector = 'MBTilesVector';
 const layertypes = {
   KML,
   WMS,
+  COG,
   WFS,
   WMTS,
   OSM,
@@ -198,6 +208,7 @@ export const know = (type) => {
   const knowTypes = [
     KML,
     WMS,
+    COG,
     WFS,
     WMTS,
     MVT,

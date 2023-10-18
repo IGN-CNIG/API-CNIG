@@ -49,6 +49,7 @@ import OGCAPIFeatures from './layer/OGCAPIFeatures';
 import Panel from './ui/Panel';
 import * as Position from './ui/position';
 import GeoJSON from './layer/GeoJSON';
+import COG from './layer/COG';
 import StylePoint from './style/Point';
 import MBTiles from './layer/MBTiles';
 import MBTilesVector from './layer/MBTilesVector';
@@ -449,6 +450,9 @@ class Map extends Base {
                 break;
               case 'GeoJSON':
                 layer = new GeoJSON(parameterVariable, { style: parameterVariable.style });
+                break;
+              case 'COG':
+                layer = new COG(layerParam);
                 break;
               case 'KML':
                 layer = new KML(layerParam);
@@ -952,6 +956,83 @@ class Map extends Base {
         });
         // removes the layers
         this.getImpl().removeWFS(wfsLayers);
+      }
+    }
+    return this;
+  }
+
+  /**
+   * Este método agrega las capas COG al mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.COG>} layersParam Colección u objeto de capa.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @api
+   */
+  addCOG(layersParamVar) {
+    let layersParam = layersParamVar;
+    if (!isNullOrEmpty(layersParam)) {
+      // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.addCOG)) {
+        Exception(getValue('exception').addcog_method);
+      }
+
+      // parses parameters to Array
+      if (!isArray(layersParam)) {
+        layersParam = [layersParam];
+      }
+
+      // gets the parameters as COG objects to add
+      const cogLayers = [];
+      layersParam.forEach((layerParam) => {
+        let cogLayer;
+        if (isObject(layerParam) && (layerParam instanceof COG)) {
+          cogLayer = layerParam;
+        } else if (!(layerParam instanceof Layer)) {
+          try {
+            cogLayer = new COG(layerParam, layerParam.options);
+          } catch (err) {
+            Dialog.error(err.toString());
+            throw err;
+          }
+        }
+        // this.featuresHandler_.addLayer(cogLayer);
+        cogLayers.push(cogLayer);
+      });
+
+      // adds the layers
+      this.getImpl().addCOG(cogLayers);
+      this.fire(EventType.ADDED_LAYER, [cogLayers]);
+      this.fire(EventType.ADDED_COG, [cogLayers]);
+    }
+    return this;
+  }
+
+  /**
+   * Este método elimina las capas COG del mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.COG>} layersParam Matriz de capas de nombres que
+   * desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @api
+   */
+  removeCOG(layersParam) {
+    if (!isNullOrEmpty(layersParam)) {
+      // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.removeCOG)) {
+        Exception(getValue('exception').removecog_method);
+      }
+
+      // gets the layers
+      const cogLayers = this.getCOG(layersParam);
+      if (cogLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [cogLayers]);
+        cogLayers.forEach((layer) => {
+          this.featuresHandler_.removeLayer(layer);
+        });
+        // removes the layers
+        this.getImpl().removeCOG(cogLayers);
       }
     }
     return this;
