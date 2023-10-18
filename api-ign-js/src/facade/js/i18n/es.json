@@ -165,6 +165,8 @@
     "mbtiles_method": "La implementación usada no puede crear capas MBTiles",
     "no_source": "Fuente no especificada.",
     "addmbtiles_method": "La implementación usada no posee el método addMBTilesVector.",
-    "removembtiles_method": "La implementación usada no posee el método removeMBTilesVector."
+    "removembtiles_method": "La implementación usada no posee el método removeMBTilesVector.",
+    "browser_audio": "Su navegador no soporta el elemento de audio",
+    "browser_video": "Su navegador no soporta el elemento de video"
   }
 }
