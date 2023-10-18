@@ -8,21 +8,14 @@ import {
   getResolutionFromScale,
   addParameters,
   concatUrlPaths,
-  getCOGGetCapabilitiesUrl,
 } from 'M/util/Utils';
 import FacadeLayerBase from 'M/layer/Layer';
 import * as LayerType from 'M/layer/Type';
-import FacadeCOG from 'M/layer/COG';
-import { get as getRemote } from 'M/util/Remote';
 import * as EventType from 'M/event/eventtype';
 import TileLayer from 'ol/layer/WebGLTile';
 import GeoTIFF from 'ol/source/GeoTIFF';
-import { get as getProj } from 'ol/proj';
-import GetCapabilities from '../util/WMSCapabilities';
-import ImplUtils from '../util/Utils';
 import ImplMap from '../Map';
 import LayerBase from './Layer';
-import FormatCOG from '../format/COG';
 
 /**
  * @classdesc
@@ -101,19 +94,9 @@ class COG extends LayerBase {
     this.displayInLayerSwitcher_ = true;
 
     /**
-     * COG getCapabilitiesPromise. Metadatos, promesa.
-     */
-    this.getCapabilitiesPromise = null;
-
-    /**
      * COG extentPromise. Extensión de la capa, promesa.
      */
     this.extentPromise = null;
-
-    /**
-     * COG extent. Extensión de la capa que se obtuvo del servicio getCapabilities.
-     */
-    this.extent = null;
 
     /**
      * COG resolutions_. Resoluciones de la capa.
@@ -173,11 +156,6 @@ class COG extends LayerBase {
      * COG maxZoom. Zoom máximo aplicable a la capa.
      */
     this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
-
-    /**
-     * COG useCapabilities. Indica si se usa el getCapabilities.
-     */
-    this.useCapabilities = options.useCapabilities !== false;
 
     /**
      * COG ratio. Tamaño de las solicitudes de las imágenes.
@@ -435,69 +413,6 @@ class COG extends LayerBase {
   }
 
   /**
-   * Este método agrega todas las capas definidas en el servidor.
-   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
-   * @public
-   * @function
-   * @api stable
-   */
-  addAllLayers_() {
-    this.getCapabilities().then((getCapabilities) => {
-      getCapabilities.getLayers().forEach((layer) => {
-        const COGLayer = new FacadeCOG({
-          url: this.url,
-          name: layer.name,
-          version: layer.version,
-        }, this.vendorOptions_);
-        this.layers.push(COGLayer);
-      });
-
-      // if no base layers was specified then it stablishes
-      // the first layer as base
-      // if (this.map.getBaseLayers().length === 0) {
-      //    this.layers[0].transparent = false;
-      // }
-
-      this.map.addCOG(this.layers);
-
-      // updates the z-index of the layers
-      let baseLayersIdx = this.layers.length;
-      this.layers.forEach((layer) => {
-        layer.setZIndex(ImplMap.Z_INDEX[LayerType.COG] + baseLayersIdx);
-        baseLayersIdx += 1;
-      });
-    });
-  }
-
-  /**
-   * Este método obtiene la extensión.
-   *
-   * @public
-   * @function
-   * @returns {Array<Number>} Extensión, asincrono.
-   * @api stable
-   */
-  getExtent() {
-    const olProjection = getProj(this.map.getProjection().code);
-
-    // creates the promise
-    this.extentPromise = new Promise((success, fail) => {
-      if (!isNullOrEmpty(this.extent_)) {
-        this.extent_ = ImplUtils.transformExtent(this.extent_, this.extentProj_, olProjection);
-        this.extentProj_ = olProjection;
-        success(this.extent_);
-      } else {
-        this.getCapabilities().then((getCapabilities) => {
-          this.extent_ = getCapabilities.getLayerExtent(this.name);
-          this.extentProj_ = olProjection;
-          success(this.extent_);
-        });
-      }
-    });
-    return this.extentPromise;
-  }
-
-  /**
    * Este método obtiene la resolución mínima.
    *
    * @public
@@ -581,44 +496,6 @@ class COG extends LayerBase {
    */
   getLayers() {
     return this.layers;
-  }
-
-  /**
-   * Devuelve los metadatos, asincrono.
-   *
-   * @public
-   * @function
-   * @returns {capabilities} Metadatos.
-   * @api stable
-   */
-  getCapabilities() {
-    const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
-      return cap.url === this.url;
-    });
-
-    if (capabilitiesInfo.capabilities) {
-      this.getCapabilitiesPromise = capabilitiesInfo.capabilities;
-    } else if (isNullOrEmpty(this.getCapabilitiesPromise)) {
-      const layerUrl = this.url;
-      const layerVersion = this.version;
-      const projection = this.map.getProjection();
-      this.getCapabilitiesPromise = new Promise((success, fail) => {
-        // gest the capabilities URL
-        const COGGetCapabilitiesUrl = getCOGGetCapabilitiesUrl(layerUrl, layerVersion);
-        // gets the getCapabilities response
-        getRemote(COGGetCapabilitiesUrl).then((response) => {
-          const getCapabilitiesDocument = response.xml;
-          const getCapabilitiesParser = new FormatCOG();
-          const getCapabilities = getCapabilitiesParser.customRead(getCapabilitiesDocument);
-
-          const getCapabilitiesUtils = new GetCapabilities(getCapabilities, layerUrl, projection);
-          success(getCapabilitiesUtils);
-        });
-      });
-      capabilitiesInfo.capabilities = this.getCapabilitiesPromise;
-    }
-
-    return this.getCapabilitiesPromise;
   }
 
   /**

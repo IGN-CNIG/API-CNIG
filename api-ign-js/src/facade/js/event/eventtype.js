@@ -42,6 +42,14 @@ export const ADDED_KML = 'added:kml';
 export const ADDED_WMS = 'added:wms';
 
 /**
+ * Evento que se produce al añadir COG.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const ADDED_COG = 'added:cog';
+
+/**
  * Evento que se produce al añadir WFS.
  * @public
  * @type {string}

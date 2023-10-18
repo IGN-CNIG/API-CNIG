@@ -3,7 +3,6 @@ import LayerModule from 'ol/layer/Layer';
 import OLFormatGML3 from 'ol/format/GML3';
 // import OLInteractionPointer from 'ol/interaction/Pointer';
 import { writeStringTextNode } from 'ol/format/xsd';
-import { find, findIndex, includes } from 'ol/array';
 import { get as getProjection } from 'ol/proj';
 import { createFromCapabilitiesMatrixSet } from 'ol/tilegrid/WMTS';
 // import WMTSRequestEncoding from 'ol/source/WMTSRequestEncoding';
@@ -116,7 +115,7 @@ OLFormatGML3.prototype.getCoords_ = (point, optSRSName) => {
  */
 export const optionsFromCapabilities = (wmtsCap, config) => {
   const layers = wmtsCap['Contents']['Layer'];
-  const l = find(layers, function(elt, index, array) {
+  const l = layers.find(function(elt) {
     return elt['Identifier'] == config['layer'];
   });
   if (l === null) {
@@ -126,9 +125,9 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
   let idx;
   if (l['TileMatrixSetLink'].length > 1) {
     if ('projection' in config) {
-      idx = findIndex(l['TileMatrixSetLink'],
+      idx = l['TileMatrixSetLink'].findIndex(
         function(elt, index, array) {
-          const tileMatrixSet = find(tileMatrixSets, function(el) {
+          const tileMatrixSet = tileMatrixSets.find(function(el) {
             return el['Identifier'] == elt['TileMatrixSet'];
           });
           const supportedCRS = tileMatrixSet['SupportedCRS'];
@@ -142,7 +141,7 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
           }
         });
     } else {
-      idx = findIndex(l['TileMatrixSetLink'],
+      idx = l['TileMatrixSetLink'].findIndex(
         function(elt, index, array) {
           return elt['TileMatrixSet'] == config['matrixSet'];
         });
@@ -162,7 +161,7 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
   if ('format' in config) {
     format = config['format'];
   }
-  idx = findIndex(l['Style'], function(elt, index, array) {
+  idx = l['Style'].findIndex(function(elt) {
     if ('style' in config) {
       return elt['Title'] == config['style'];
     } else {
@@ -187,7 +186,7 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
   }
 
   const matrixSets = wmtsCap['Contents']['TileMatrixSet'];
-  const matrixSetObj = find(matrixSets, function(elt, index, array) {
+  const matrixSetObj = matrixSets.find(function(elt) {
     return elt['Identifier'] == matrixSet;
   });
 
@@ -241,7 +240,7 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
 
     for (let i = 0, ii = gets.length; i < ii; ++i) {
       if (gets[i]['Constraint']) {
-        const constraint = find(gets[i]['Constraint'], function(element) {
+        const constraint = gets[i]['Constraint'].find(function(element) {
           return element['name'] == 'GetEncoding';
         });
         const encodings = constraint['AllowedValues']['Value'];
@@ -251,7 +250,7 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
           requestEncoding = encodings[0];
         }
         if (requestEncoding === 'KVP') {
-          if (includes(encodings, 'KVP')) {
+          if (encodings.includes('KVP')) {
             urls.push( /** @type {string} */ (gets[i]['href']));
           }
         } else {
