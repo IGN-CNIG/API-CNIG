@@ -106,7 +106,7 @@ class Tab {
 
   /**
    * Esta función detecta en un texto enlaces.
-   * @returns {Array <String>} Matriz de enlaces.
+   * @returns {Array<String>} Matriz de enlaces.
    * @function
    * @api
    */
