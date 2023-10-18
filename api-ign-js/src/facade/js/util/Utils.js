@@ -1523,7 +1523,7 @@ export const copyImageClipBoard = (map, canva) => {
 
 /**
  * Esta función detecta en un texto los enlaces.
- * @returns {Array <String>} Matriz de enlaces.
+ * @returns {Array<String>} Matriz de enlaces.
  * @function
  * @api
  */
