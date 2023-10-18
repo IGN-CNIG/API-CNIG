@@ -739,8 +739,8 @@ export default class IncicartoControl extends M.Control {
     const plugin = (this.getPlugins()) ? `&${this.getPlugins()}` : '';
 
     // File 
-    // URL del visor - centro, zoom, srs, capas por url.
-    // URL de la API - centro, zoom, srs, capas por url.
+    // URL del visor - centro, zoom, srs, todas las capas.
+    // URL de la API - centro, zoom, srs, todas las capas.
     if (url.startsWith('file:///')) {
       const index = url.lastIndexOf('/');
       url = `file://${url.substring(index)}`;
@@ -756,12 +756,11 @@ export default class IncicartoControl extends M.Control {
       api_url+= `?${center}${zoom}${srs}${layers}${controls}${plugin}`;
     } else {
       // Visor
-      // URL del visor - centro, zoom, srs, capas por url.
-      // URL de la API - centro, zoom, srs, capas por url.
+      // URL del visor - centro, zoom, srs, todas las capas.
+      // URL de la API - centro, zoom, srs, todas las capas.
       url = url.split('?')[0];
-      const layers_url = (M.config.MAP_VIEWER_LAYERS.toString() !== '') ? `&layers=${M.config.MAP_VIEWER_LAYERS.toString()}` : '';
-      url+= `?${center}${zoom}${srs}${layers_url}`;
-      api_url+= `?${center}${zoom}${srs}${layers_url}`;
+      url+= `?${center}${zoom}${srs}${layers}`;
+      api_url+= `?${center}${zoom}${srs}${layers}`;
     }
 
     if (url.indexOf('.jsp') > -1) {
