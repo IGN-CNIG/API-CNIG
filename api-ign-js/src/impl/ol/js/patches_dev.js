@@ -6,7 +6,7 @@ import { writeStringTextNode } from 'ol/format/xsd';
 import { find, findIndex, includes } from 'ol/array';
 import { get as getProjection } from 'ol/proj';
 import { createFromCapabilitiesMatrixSet } from 'ol/tilegrid/WMTS';
-import WMTSRequestEncoding from 'ol/source/WMTSRequestEncoding';
+// import WMTSRequestEncoding from 'ol/source/WMTSRequestEncoding';
 
 // import { POINTERUP, POINTERDOWN, POINTERDRAG } from 'ol/MapBrowserEventType';
 // import { getValues } from 'ol/obj';
@@ -250,21 +250,21 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
           // requestEncoding not provided, use the first encoding from the list
           requestEncoding = encodings[0];
         }
-        if (requestEncoding === WMTSRequestEncoding.KVP) {
-          if (includes(encodings, WMTSRequestEncoding.KVP)) {
+        if (requestEncoding === 'KVP') {
+          if (includes(encodings, 'KVP')) {
             urls.push( /** @type {string} */ (gets[i]['href']));
           }
         } else {
           break;
         }
       } else if (gets[i]['href']) {
-        requestEncoding = WMTSRequestEncoding.KVP;
+        requestEncoding = 'KVP';
         urls.push( /** @type {string} */ (gets[i]['href']));
       }
     }
   }
   if (urls.length === 0) {
-    requestEncoding = WMTSRequestEncoding.REST;
+    requestEncoding = 'REST';
     l['ResourceURL'].forEach(function(element) {
       if (element['resourceType'] === 'tile') {
         format = element['format'];
