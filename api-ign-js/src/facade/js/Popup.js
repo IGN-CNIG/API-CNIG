@@ -5,8 +5,7 @@ import PopupImpl from 'impl/Popup';
 
 import 'assets/css/popup';
 import popupTemplate from 'templates/popup';
-import { getValue } from 'M/i18n/language';
-import { isNullOrEmpty, isUndefined, returnPositionHtmlElement } from './util/Utils';
+import { isNullOrEmpty, isUndefined, returnPositionHtmlElement, transfomContent } from './util/Utils';
 import Base from './Base';
 import { compileSync as compileTemplate } from './util/Template';
 import * as EventType from './event/eventtype';
@@ -45,9 +44,8 @@ class Tab {
     this.content = options.content;
 
     if (options.intelligence === true ||
-      (!isUndefined(options.intelligence) && (options.intelligence.activate === true)) ||
-      (!isUndefined(options.intelligence) && (isUndefined(options.intelligence.activate)))) {
-      this.transfomContent(options.intelligence.sizes);
+      (!isUndefined(options.intelligence) && (options.intelligence.activate === true))) {
+      this.content = transfomContent(this.content, options.intelligence.sizes);
     }
 
     /**
@@ -56,64 +54,6 @@ class Tab {
      * @type {Array<object>}
      */
     this.listeners = options.listeners || [];
-  }
-
-  /**
-   * Esta función transforma el contenido del Tab transformando los enlaces a etiquetas HTML.
-   * @param {Object} pSizes Objeto con los tamaños definidos para cada tipo de contenido.
-   * @function
-   * @api
-   */
-  transfomContent(pSizes = {}) {
-    const urls = this.findUrls();
-    urls.forEach((url) => {
-      const lastCharacter = url.slice(-1);
-      const validCharacters = /^[a-zA-Z0-9]+$/;
-      let aux = '';
-      // eslint-disable-next-line no-param-reassign
-      url = url.trim();
-      if (!validCharacters.test(lastCharacter)) {
-        aux = lastCharacter;
-        // eslint-disable-next-line no-param-reassign
-        url = url.slice(0, -1);
-      }
-
-      const sizes = {
-        images: pSizes.images || ['120px', '75px'],
-        videos: pSizes.videos || ['500px', '300px'],
-        documents: pSizes.documents || ['500px', '300px'],
-        audios: pSizes.audios || ['250px', '40px'],
-      };
-
-      const regexImg = /\.(jpg||jpeg|png|gif|svg)$/i;
-      const regexDocument = /\.(pdf||txt|json|geojson)$/i;
-      const regexVideo = /\.(mp4|mov|3gp)$/i;
-      const regexAudio = /\.(mp3|ogg|ogv|wav)$/i;
-      if (regexImg.test(url)) {
-        this.content = this.content.replace(`${url}${aux}`, `</br><img src='${url}' style='max-width: ${sizes.images[0]}; max-height: ${sizes.images[1]};'/></br>${aux}`);
-      } else if (regexDocument.test(url)) {
-        this.content = this.content.replace(`${url}${aux}`, `</br><iframe src='${url}' width='${sizes.documents[0]}' height='${sizes.documents[1]}'></iframe></br>${aux}`);
-      } else if (regexVideo.test(url)) {
-        this.content = this.content.replace(`${url}${aux}`, `</br><video style='max-width: ${sizes.videos[0]}; max-height: ${sizes.videos[1]}' controls><source src='${url}'>
-        <p>${getValue('exception').browser_video}</p></video></br>${aux}`);
-      } else if (regexAudio.test(url)) {
-        this.content = this.content.replace(`${url}${aux}`, `</br><audio style='max-width: ${sizes.audios[0]}; max-height: ${sizes.audios[1]}'controls><source src='${url}'>${getValue('exception').browser_audio}</audio></br>${aux}`);
-      } else {
-        this.content = this.content.replace(`${url}${aux}`, `<a href=${url}>${url}</a>${aux}`);
-      }
-    });
-  }
-
-  /**
-   * Esta función detecta en un texto enlaces.
-   * @returns {Array<String>} Matriz de enlaces.
-   * @function
-   * @api
-   */
-  findUrls() {
-    const regexURL = /(^|\s)(https?:\/\/[^\s<>"']+)/g;
-    const urls = this.content.match(regexURL);
-    return urls || [];
   }
 }
 

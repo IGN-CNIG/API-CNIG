@@ -4,6 +4,7 @@
  * @example import utils from 'M/utils';
  */
 import { get as remoteGet } from 'M/util/Remote';
+import { getValue } from 'M/i18n/language';
 import chroma from 'chroma-js';
 import Draggabilly from 'draggabilly';
 import * as dynamicImage from 'assets/img/dynamic_legend';
@@ -1518,6 +1519,68 @@ export const copyImageClipBoard = (map, canva) => {
       throw e;
     }
   }
+};
+
+/**
+ * Esta función detecta en un texto los enlaces.
+ * @returns {Array <String>} Matriz de enlaces.
+ * @function
+ * @api
+ */
+export const findUrls = (content) => {
+  const regexURL = /(^|\s)(https?:\/\/[^\s<>"']+)/g;
+  const urls = content.match(regexURL);
+  return urls || [];
+};
+
+/**
+ * Esta función transforma los enlaces a etiquetas HTML.
+ * @param {String} text Texto para realizar la transformación.
+ * @param {Object} pSizes Objeto con los tamaños definidos para cada tipo de contenido.
+ * @function
+ * @returns {String} Resultado de la transformación
+ * @api
+ */
+export const transfomContent = (text, pSizes = {}) => {
+  let content = text;
+  const urls = findUrls(content);
+  urls.forEach((url) => {
+    const lastCharacter = url.slice(-1);
+    const validCharacters = /^[a-zA-Z0-9]+$/;
+    let aux = '';
+    // eslint-disable-next-line no-param-reassign
+    url = url.trim();
+    if (!validCharacters.test(lastCharacter)) {
+      aux = lastCharacter;
+      // eslint-disable-next-line no-param-reassign
+      url = url.slice(0, -1);
+    }
+
+    const sizes = {
+      images: pSizes.images || ['120px', '75px'],
+      videos: pSizes.videos || ['500px', '300px'],
+      documents: pSizes.documents || ['500px', '300px'],
+      audios: pSizes.audios || ['250px', '40px'],
+    };
+
+    const regexImg = /\.(jpg||jpeg|png|gif|svg)$/i;
+    const regexDocument = /\.(pdf||txt|json|geojson)$/i;
+    const regexVideo = /\.(mp4|mov|3gp)$/i;
+    const regexAudio = /\.(mp3|ogg|ogv|wav)$/i;
+    if (regexImg.test(url)) {
+      content = content.replace(`${url}${aux}`, `</br><img src='${url}' style='max-width: ${sizes.images[0]}; max-height: ${sizes.images[1]};'/></br>${aux}`);
+    } else if (regexDocument.test(url)) {
+      content = content.replace(`${url}${aux}`, `</br><iframe src='${url}' width='${sizes.documents[0]}' height='${sizes.documents[1]}'></iframe></br>${aux}`);
+    } else if (regexVideo.test(url)) {
+      content = content.replace(`${url}${aux}`, `</br><video style='max-width: ${sizes.videos[0]}; max-height: ${sizes.videos[1]}' controls><source src='${url}'>
+        <p>${getValue('exception').browser_video}</p></video></br>${aux}`);
+    } else if (regexAudio.test(url)) {
+      content = content.replace(`${url}${aux}`, `</br><audio style='max-width: ${sizes.audios[0]}; max-height: ${sizes.audios[1]}'controls><source src='${url}'>${getValue('exception').browser_audio}</audio></br>${aux}`);
+    } else {
+      content = content.replace(`${url}${aux}`, `<a href=${url}>${url}</a>${aux}`);
+    }
+  });
+  return content;
 };
 
 /**

@@ -21,6 +21,7 @@ const featureTabOpts = {
       audios: ['200px', '20px'],
     }
   },
+  // intelligence: false,
   // IMAGES
   'content': 'http://localhost:8080/test/development/ficheros/imagenes/png.png'
   // 'content': 'Texto http://localhost:8080/test/development/ficheros/imagenes/png.png texto'
@@ -55,37 +56,38 @@ const featureTabOpts = {
   // 'content': 'Aquí tines un enlace https://www.google.es un audio http://localhost:8080/test/development/ficheros/audios/wav.wav un video http://localhost:8080/test/development/ficheros/videos/mp4.mp4 una imagen http://localhost:8080/test/development/ficheros/imagenes/png.png y un documento http://localhost:8080/test/development/ficheros/documentos/pdf.pdf'
 };
 
-const featureTabOpts2 = {
-  'icon': 'g-cartografia-pin',
-  'title': 'Título',
-  intelligence: {
-    activate: true,
-    sizes: {
-      images: ['20px', '20px'],
-      documents: ['50px', '50px'],
-      videos: ['100px', '100px'],
-      audios: ['200px', '20px'],
-    }
-  },
-  'content': 'Texto http://localhost:8080/test/development/ficheros/videos/mp4.mp4 texto'
-};
+// const featureTabOpts2 = {
+//   'icon': 'g-cartografia-pin',
+//   'title': 'Título',
+//   intelligence: {
+//     activate: true,
+//     sizes: {
+//       images: ['20px', '20px'],
+//       documents: ['50px', '50px'],
+//       videos: ['100px', '100px'],
+//       audios: ['200px', '20px'],
+//     }
+//   },
+//   'content': 'Texto http://localhost:8080/test/development/ficheros/videos/mp4.mp4 texto'
+// };
 
-const featureTabOpts3 = {
-  'icon': 'g-cartografia-pin',
-  'title': 'Título',
-  intelligence: {
-    activate: false,
-    sizes: {
-      images: ['20px', '20px'],
-      documents: ['50px', '50px'],
-      videos: ['100px', '100px'],
-      audios: ['200px', '20px'],
-    }
-  },
-  'content': 'http://localhost:8080/test/development/ficheros/audios/wav.wav'
-};
+// const featureTabOpts3 = {
+//   'icon': 'g-cartografia-pin',
+//   'title': 'Título',
+//   intelligence: {
+//     activate: false,
+//     sizes: {
+//       images: ['20px', '20px'],
+//       documents: ['50px', '50px'],
+//       videos: ['100px', '100px'],
+//       audios: ['200px', '20px'],
+//     }
+//   },
+//   'content': 'http://localhost:8080/test/development/ficheros/audios/wav.wav'
+// };
+
 const popup = new Popup();
 popup.addTab(featureTabOpts);
-popup.addTab(featureTabOpts2);
-popup.addTab(featureTabOpts3);
+// popup.addTab(featureTabOpts2);
+// popup.addTab(featureTabOpts3);
 mapjs.addPopup(popup, [-391232.32792904036, 4915993.4141376745]);
