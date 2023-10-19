@@ -12,9 +12,17 @@ window.mapjs = mapjs;
 
 // IMAGES
 
-info('Texto http://localhost:8080/test/development/ficheros/imagenes/png.png* Texto <img width="30px" height="30px" src="http://localhost:8080/test/development/ficheros/imagenes/gif.gif"/>', 'Título', 1, {
-  intelligence: true
-});
+// info('Texto http://localhost:8080/test/development/ficheros/imagenes/png.png* Texto <img width="30px" height="30px" src="http://localhost:8080/test/development/ficheros/imagenes/gif.gif"/>', 'Título', 1, {
+//   intelligence: {
+//     activate: true,
+//     sizes: {
+//       images: ['20px', '20px'],
+//       documents: ['50px', '50px'],
+//       videos: ['80px', '80px'],
+//       audios: ['200px', '20px'],
+//     }
+//   }
+// });
 
 // error('Texto http://localhost:8080/test/development/ficheros/imagenes/png.png* Texto <img width="30px" height="30px" src="http://localhost:8080/test/development/ficheros/imagenes/gif.gif"/>', 'Título', 1, {
 //   intelligence: true
