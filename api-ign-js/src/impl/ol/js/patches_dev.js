@@ -26,7 +26,7 @@ import { createFromCapabilitiesMatrixSet } from 'ol/tilegrid/WMTS';
  *
  * @api
  */
-LayerModule.visibleAtResolution = (layerState, resolution) => {
+LayerModule.inView = (layerState, resolution) => {
   return layerState.visible && resolution >= layerState.minResolution &&
     resolution <= layerState.maxResolution;
 };
