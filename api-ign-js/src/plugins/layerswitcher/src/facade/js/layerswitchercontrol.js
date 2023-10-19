@@ -427,7 +427,7 @@ export default class LayerswitcherControl extends M.Control {
             layerType === 'MBTiles' || layerType === 'OSM' || layerType === 'XYZ' || layerType === 'TMS' ||
             layerType === 'GeoJSON' || layerType === 'KML' || layerType === 'OGCAPIFeatures' || layerType === 'Vector') {
             const extent = layer.getMaxExtent();
-            if (extent === null) {
+            if (extent === null && layer.calculateMaxExtent) {
               layer.calculateMaxExtent()
                 .then((ext) => {
                   if (ext.length > 0) {
@@ -439,6 +439,8 @@ export default class LayerswitcherControl extends M.Control {
                 .catch((err) => {
                   console.error(err);
                 });
+            } else if (extent === null) {
+              this.map_.setBbox(this.map_.getExtent());
             } else {
               this.map_.setBbox(extent);
             }
