@@ -207,7 +207,11 @@ class MBTiles extends Layer {
    * @returns {Array} Devuelve la extensión de la capa.
    */
   getMaxExtent() {
-    return this.maxExtent_ || this.getExtentFromProvider();
+    const extent = this.maxExtent_ || this.getExtentFromProvider();
+    if (!extent) {
+      this.maxExtent_ = this.map.getExtent();
+    }
+    return this.maxExtent_;
   }
 
   /**

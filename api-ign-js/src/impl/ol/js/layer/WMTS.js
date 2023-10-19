@@ -171,6 +171,9 @@ class WMTS extends LayerBase {
    * @returns {Array} Extensión máxima.
    */
   getMaxExtent() {
+    if (!this.maxExtent) {
+      this.maxExtent = this.map.getMaxExtent();
+    }
     return this.maxExtent;
   }
 
