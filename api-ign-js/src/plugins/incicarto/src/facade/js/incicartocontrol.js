@@ -320,6 +320,7 @@ export default class IncicartoControl extends M.Control {
           let maxZIndex = Math.max(...(layers.map((l) => {
             return l.getZIndex();
           })));
+
           from.querySelectorAll('li.m-incicarto-layer').forEach((elem) => {
             const name = elem.getAttribute('name');
             const url = elem.getAttribute('url');
@@ -335,6 +336,15 @@ export default class IncicartoControl extends M.Control {
         },
       });
     }
+  }
+
+  getMaxZIndex() {
+    const filterLayers = this.map_.getLayers().filter((layer) => layer.name !== '__draw__' || layer.getZIndex() < 1000);
+
+    const maxZIndex = Math.max(...(filterLayers.map((l) => {
+      return l.getZIndex();
+    })));
+    return maxZIndex
   }
 
   /**
@@ -1208,6 +1218,7 @@ export default class IncicartoControl extends M.Control {
     const layerName = `incidencia_${new Date().getTime()}`;
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.geometry = geom;
+    layer.setZIndex(this.getMaxZIndex() + 1);
     this.map.addLayers(layer);
     setTimeout(() => {
       document.querySelector(`li[name="${layerName}"] span.m-incicarto-layer-add`).click();
