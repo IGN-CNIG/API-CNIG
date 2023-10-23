@@ -1953,6 +1953,11 @@ export const getUseCapabilitiesWMS = (parameter) => {
   if (!isNullOrEmpty(useCapabilities)) {
     useCapabilities = /^1|(true)$/i.test(useCapabilities);
   }
+
+  if (!useCapabilities) {
+    useCapabilities = true;
+  }
+
   return useCapabilities;
 };
 
@@ -2369,6 +2374,11 @@ export const getUseCapabilitiesWMTS = (parameter) => {
   if (!isNullOrEmpty(useCapabilities)) {
     useCapabilities = /^1|(true)$/i.test(useCapabilities);
   }
+
+  if (!useCapabilities) {
+    useCapabilities = true;
+  }
+
   return useCapabilities;
 };
 
