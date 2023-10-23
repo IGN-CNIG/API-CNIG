@@ -157,9 +157,6 @@
         map.addLayers(capaOGCAPIFeatures);
         map.addLayers(capaWMS);
 
-        let mp, position, collapsed, collapsible, tooltip, tools;
-        crearPlugin(position, collapsed, collapsible, tooltip, tools);
-
         const selectPosition = document.getElementById("selectPosition");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
@@ -217,6 +214,9 @@
             mp = new M.plugin.Layerswitcher(propiedades);
             map.addPlugin(mp);
         }
+
+        crearPlugin();
+        cambiarTest();
     </script>
 </body>
 
