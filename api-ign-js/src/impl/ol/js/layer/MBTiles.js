@@ -248,11 +248,11 @@ class MBTiles extends Layer {
           }
           const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_);
           this.getExtentFromProvider().then((reprojectedExtent) => {
-            this.maxExtent_ = reprojectedExtent || extent;
+            this.maxExtent_ = this.maxExtent_ || reprojectedExtent || extent;
             this.ol3Layer = this.createLayer({
               tileProvider,
               resolutions,
-              extent: reprojectedExtent || extent,
+              extent: this.maxExtent_,
               sourceExtent: extent,
               projection,
             });
@@ -266,7 +266,7 @@ class MBTiles extends Layer {
       const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 28);
       this.ol3Layer = this.createLayer({
         resolutions,
-        extent,
+        extent: this.maxExtent_ || extent,
         sourceExtent: extent,
         projection,
       });
