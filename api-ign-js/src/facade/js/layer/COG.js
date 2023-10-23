@@ -20,11 +20,9 @@ import { getValue } from '../i18n/language';
  * @property {Boolean} tiled Verdadero si queremos dividir la capa en mosaicos,
  * falso en caso contrario.
  * @property {Boolean} transparent 'Falso' si es una capa base, 'verdadero' en caso contrario.
- * @property {Object} capabilitiesMetadata Capacidades de metadatos COG.
  * @property {Number} minZoom Limitar el zoom mínimo.
  * @property {Number} maxZoom Limitar el zoom máximo.
  * @property {Object} options Capa de opciones COG.
- * @property {Boolean} useCapabilities Define si se utilizará el capabilities para generar la capa.
  *
  * @api
  * @extends {M.Layer}
@@ -45,7 +43,6 @@ class COG extends LayerBase {
    *   y aparecería como no visible.
    * - version: Versión COG.
    * - type: Tipo de la capa.
-   * - useCapabilities: Define si se utilizará el capabilities para generar la capa.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - visibility: Indica la visibilidad de la capa.
@@ -97,7 +94,6 @@ class COG extends LayerBase {
       visibility: parameters.visibility,
       queryable: parameters.queryable,
       displayInLayerSwitcher: parameters.displayInLayerSwitcher,
-      useCapabilities: parameters.useCapabilities,
     };
     const impl = new COGImpl(optionsVar, vendorOptions);
     // calls the super constructor
@@ -127,13 +123,6 @@ class COG extends LayerBase {
     this.transparent = parameters.transparent;
 
     /**
-     * COG capabilitiesMetadata: Capacidades de metadatos COG.
-     */
-    if (!isNullOrEmpty(vendorOptions.capabilitiesMetadata)) {
-      this.capabilitiesMetadata = vendorOptions.capabilitiesMetadata;
-    }
-
-    /**
      * COG minZoom: Limitar el zoom mínimo.
      */
     this.minZoom = parameters.minZoom;
@@ -147,18 +136,6 @@ class COG extends LayerBase {
      * COG options: Opciones COG.
      */
     this.options = optionsVar;
-
-    /**
-     * Obtener metadatos en forma de promesa.
-     */
-    this.getCapabilitiesPromise_ = null;
-
-    /**
-     * Define se se utilizará el capabilities para generar la capa.
-     * Si es falso no se generará el OLTileGrid, por lo que
-     * podrías experimentar problemas de alineación y visualización incorrecta.
-     */
-    this.useCapabilities = userParameters.useCapabilities !== false;
 
     this._updateNoCache();
   }
@@ -253,7 +230,7 @@ class COG extends LayerBase {
    *
    * @function
    * @getter
-   * @return {M.layer.WMTS.options} Devuelve las opciones de la
+   * @return {M.layer.COG.options} Devuelve las opciones de la
    * implementación.
    * @api
    */
@@ -271,111 +248,6 @@ class COG extends LayerBase {
    */
   set options(newOptions) {
     this.getImpl().options = newOptions;
-  }
-
-  /**
-   * Este método calcula la extensión máxima de esta capa.
-   *
-   * @function
-   * @param {Function} callbackFn
-   * @returns {M.COG.maxExtent} Devuelve la extensión máxima.
-   * @api
-   */
-  getMaxExtent(callbackFn) {
-    let maxExtent;
-    if (isNullOrEmpty(this.userMaxExtent)) {
-      if (isNullOrEmpty(this.options.wmcMaxExtent)) {
-        if (isNullOrEmpty(this.map_.userMaxExtent)) {
-          // maxExtent provided by the service
-          this.getCapabilities().then((capabilities) => {
-            const capabilitiesMaxExtent = this.getImpl()
-              .getExtentFromCapabilities(capabilities);
-            if (isNullOrEmpty(capabilitiesMaxExtent)) {
-              const projMaxExtent = this.map_.getProjection().getExtent();
-              this.maxExtent_ = projMaxExtent;
-            } else {
-              this.maxExtent_ = capabilitiesMaxExtent;
-            }
-            // this allows get the async extent by the capabilites
-            if (isFunction(callbackFn)) {
-              callbackFn(this.maxExtent_);
-            }
-          });
-        } else {
-          this.maxExtent_ = this.map_.userMaxExtent;
-        }
-      } else {
-        this.maxExtent_ = this.options.wmcMaxExtent;
-      }
-      maxExtent = this.maxExtent_;
-    } else {
-      maxExtent = this.userMaxExtent;
-    }
-    if (!isNullOrEmpty(maxExtent) && isFunction(callbackFn)) {
-      callbackFn(maxExtent);
-    }
-    return maxExtent;
-  }
-
-  /**
-   * Este método calcula la extensión máxima de esta capa.
-   *
-   * Versión asíncrona de getMaxExtent.
-   * @function
-   * @returns {M.COG.maxExtent} Devuelve el maxExtent.
-   * @api
-   */
-  calculateMaxExtent() {
-    return new Promise(resolve => this.getMaxExtent(resolve));
-  }
-
-  /**
-   * Este método calcula la extensión máxima de esta capa.
-   *
-   * Versión asíncrona de getMaxExtent.
-   * @function
-   * @returns {M.COG.maxExtent} Devuelve el maxExtent.
-   * @api
-   */
-  calculateMaxExtentWithCapabilities(capabilities) {
-    // -- Prevent to calculate maxExtent if it is already calculated
-    if (isNullOrEmpty(this.userMaxExtent) && this.userMaxExtent) return this.userMaxExtent;
-    if (isNullOrEmpty(this.options.wmcMaxExtent) && this.options.wmcMaxExtent) {
-      this.maxExtent_ = this.options.wmcMaxExtent;
-      return this.maxExtent_;
-    }
-    if (isNullOrEmpty(this.map_.userMaxExtent) && this.map_.userMaxExtent) {
-      this.maxExtent_ = this.map_.userMaxExtent;
-      return this.maxExtent_;
-    }
-
-    // -- Use capabilities
-    const capabilitiesMaxExtent = this.getImpl()
-      .getExtentFromCapabilities(capabilities);
-    if (isNullOrEmpty(capabilitiesMaxExtent)) {
-      const projMaxExtent = this.map_.getProjection().getExtent();
-      this.maxExtent_ = projMaxExtent;
-      return this.maxExtent_;
-    }
-    return capabilitiesMaxExtent;
-  }
-
-
-  /**
-   * Este método recupera una Promesa que será
-   * resuelto cuando se recupera la solicitud GetCapabilities
-   * por el servicio y analizado. Las capacidades se almacenan en caché
-   * para evitar solicitudes múltiples.
-   *
-   * @function
-   * @returns {M.COG.capabilities} Devuelve el capabilities.
-   * @api
-   */
-  getCapabilities() {
-    if (isNullOrEmpty(this.getCapabilitiesPromise_)) {
-      this.getCapabilitiesPromise_ = this.getImpl().getCapabilities();
-    }
-    return this.getCapabilitiesPromise_;
   }
 
   /**

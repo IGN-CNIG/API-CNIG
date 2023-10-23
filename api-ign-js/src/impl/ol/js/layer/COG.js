@@ -300,60 +300,6 @@ class COG extends LayerBase {
     this.ol3Layer.setMinZoom(this.minZoom);
   }
 
-  // Devuelve un capabilities formateado en el caso
-  // de que sea un array
-  formatCapabilities_(capabilites, selff) {
-    let capabilitiesLayer = capabilites;
-    for (let i = 0, ilen = capabilitiesLayer.length; i < ilen; i += 1) {
-      if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name !== undefined && capabilitiesLayer[i].Name === selff.facadeLayer_.name) {
-        capabilitiesLayer = capabilitiesLayer[i];
-
-        try {
-          this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
-          // this.legendUrl_ = capabilitiesLayer.Style.find(s => s.Name === this.styles).LegendURL[0].OnlineResource;
-          /* eslint-disable no-empty */
-        } catch (err) {}
-      } else if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Layer !== undefined) {
-        if (capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0] !== undefined) {
-          capabilitiesLayer = capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0];
-          try {
-            this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
-            // this.legendUrl_ = capabilitiesLayer.Style.find(s => s.Name === this.styles).LegendURL[0].OnlineResource;
-            /* eslint-disable no-empty */
-          } catch (err) {}
-        }
-      }
-    }
-
-    return capabilitiesLayer;
-  }
-
-  /**
-   * Este método agrega metadatos.
-   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
-   *
-   * @public
-   * @function
-   * @param {Object} capabilitiesLayer Metadatos de la capa.
-   * @api stable
-   */
-  addCapabilitiesMetadata(capabilitiesLayer) {
-    const abstract = !isNullOrEmpty(capabilitiesLayer.Abstract) ? capabilitiesLayer.Abstract : '';
-    const attribution = !isNullOrEmpty(capabilitiesLayer.Attribution) ? capabilitiesLayer.Attribution : '';
-    const metadataURL = !isNullOrEmpty(capabilitiesLayer.MetadataURL) ? capabilitiesLayer.MetadataURL : '';
-    const style = !isNullOrEmpty(capabilitiesLayer.Style) ? capabilitiesLayer.Style : '';
-
-    const capabilitiesMetadata = {
-      abstract,
-      attribution,
-      metadataURL,
-      style,
-    };
-    if (this.facadeLayer_.capabilitiesMetadata === undefined) {
-      this.facadeLayer_.capabilitiesMetadata = capabilitiesMetadata;
-    }
-  }
-
   /**
    * Este método crea la fuente ol para esta instancia.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -536,20 +482,6 @@ class COG extends LayerBase {
     if (!isNullOrEmpty(ol3Layer)) {
       ol3Layer.getSource().changed();
     }
-  }
-
-  /**
-   * Devuelve la extensión de los metadatos.
-   *
-   * @public
-   * @function
-   * @param {capabilities} capabilities Metadatos COG.
-   * @returns {Array<Number>} COG Extensión.
-   * @api stable
-   */
-  getExtentFromCapabilities(capabilities) {
-    const name = this.facadeLayer_.name;
-    return capabilities.getLayerExtent(name);
   }
 
   /**
