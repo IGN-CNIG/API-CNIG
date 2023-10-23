@@ -16,6 +16,9 @@
     "Draggabilly": true,
     "XMLSerializer": true
   },
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
   "rules": {
     "no-underscore-dangle": ["error", { "allowAfterThis": true }],
     "import/extensions": ["error", "never"],
@@ -28,9 +31,17 @@
     }],
     "class-methods-use-this": "off",
     "no-case-declarations": "off",
+    "no-multiple-empty-lines": "off",
+    "arrow-parens": "off",
+    "function-paren-newline": "off",
+    "default-param-last": "off",
+    "lines-between-class-members": "off",
     "import/no-mutable-exports": "off",
+    "import/no-useless-path-segments": "off",
     "no-template-curly-in-string": "off",
+    "operator-linebreak": "off",
     "import/no-duplicates": "off",
-    "import/no-named-default": "off"
+    "import/no-named-default": "off",
+    "no-bitwise": "off"
   }
 }

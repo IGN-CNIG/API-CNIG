@@ -3,6 +3,8 @@ const fse = require('fs-extra');
 const webpack = require('webpack');
 const AllowMutateEsmExports = require('./AllowMutateEsmExportsPlugin');
 const argv = require('yargs').argv;
+const ESLintPlugin = require('eslint-webpack-plugin');
+
 
 const testName = argv.name;
 const coremin = argv['core-min'];
@@ -73,11 +75,6 @@ module.exports = {
         },
       },
       {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        exclude: [/node_modules/, /lib/, /test/, /dist/],
-      },
-      {
         test: [/\.hbs$/, /\.html$/],
         loader: 'html-loader',
         exclude: /node_modules/,
@@ -87,7 +84,7 @@ module.exports = {
         use: [{
             loader: 'style-loader'
           },{
-            loader: 'css-loader'
+            loader: 'css-loader',
           },
         ],
         exclude: [/node_modules/],
@@ -105,17 +102,25 @@ module.exports = {
   plugins: [
     new AllowMutateEsmExports(),
     new webpack.HotModuleReplacementPlugin(),
+    new ESLintPlugin({
+      // extensions: [`js`, `jsx`],
+      files: 'src/**/*.js',
+      exclude: ['src/**/*', '**/node_modules/**', '/lib/', '/test/', '/dist/'],
+    }),
   ],
   devServer: {
     // https: true,
     hot: true,
     // host: '0.0.0.0',
-    open: true,
+    // open: true,
     // port: 6123,
-    openPage: `test/development/${testName}.html`,
-    watchOptions: {
-      poll: 1000,
+    open: `test/development/${testName}.html`,
+    static: {
+      directory: path.join(__dirname, '/../'),
     },
+  },
+  watchOptions: {
+    poll: 1000,
   },
   devtool: 'eval-source-map',
 };

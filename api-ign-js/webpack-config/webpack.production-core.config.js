@@ -1,8 +1,9 @@
 const path = require('path');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopywebpackPlugin = require('copy-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const PJSON_PATH = path.resolve(__dirname, '..', 'package.json');
 const pjson = require(PJSON_PATH);
@@ -50,11 +51,6 @@ module.exports = {
         },
       },
       {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/,
-      },
-      {
         test: [/\.hbs$/, /\.html$/],
         loader: 'html-loader',
         exclude: /node_modules/,
@@ -80,11 +76,13 @@ module.exports = {
     ],
   },
   optimization: {
-    noEmitOnErrors: true,
+    emitOnErrors: false,
     minimizer: [
       new OptimizeCssAssetsPlugin(),
       new TerserPlugin({
-        sourceMap: true,
+        terserOptions: {
+          sourceMap: true,
+        },
       }),
     ],
   },
@@ -92,22 +90,43 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'assets/css/[name].css',
     }),
-    new CopywebpackPlugin([{
-      from: 'src/configuration.js',
-      to: 'filter/configuration.js',
-    }]),
-    new CopywebpackPlugin([{
-      from: 'src/facade/assets/img',
-      to: 'assets/img',
-    }]),
-    new CopywebpackPlugin([{
-      from: 'src/facade/assets/svg',
-      to: 'assets/svg',
-    }]),
-    new CopywebpackPlugin([{
-      from: 'node_modules/sql.js/dist/sql-wasm.wasm',
-      to: 'wasm/',
-    }]),
+    new ESLintPlugin({
+      extensions: [`js`, `jsx`],
+      // files: 'src/**/*',
+      exclude: ['src/**/*', '**/node_modules/**', '/lib/', '/test/', '/dist/'],
+    }),
+    new CopywebpackPlugin({
+      patterns: [
+        {
+          from: 'src/configuration.js',
+          to: 'filter/configuration.js',
+        }
+      ],
+    }),
+    new CopywebpackPlugin({
+      patterns: [
+        {
+          from: 'src/facade/assets/img',
+          to: 'assets/img',
+        }
+      ],
+    }),
+    new CopywebpackPlugin({
+      patterns: [
+        {
+          from: 'src/facade/assets/svg',
+          to: 'assets/svg',
+        }
+      ],
+    }),
+    new CopywebpackPlugin({
+      patterns: [
+        {
+          from: 'node_modules/sql.js/dist/sql-wasm.wasm',
+          to: 'wasm/',
+        }
+      ],
+    }),
   ],
   devtool: 'source-map',
 };
