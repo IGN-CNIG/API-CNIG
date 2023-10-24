@@ -22,7 +22,6 @@ import customQueryFiltersTemplate from '../../templates/customqueryfilters';
 const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
 const CODSI_CATALOG = 'https://www.idee.es/csw-inspire-idee/srv/spa/q?_content_type=json&bucket=s101&facet.q=type%2Fservice&fast=index&from=*1&resultType=details&sortBy=title&sortOrder=asc&to=*2';
 const CODSI_PAGESIZE = 9;
-const DEFAULT_CODSI_RESULTS = 1;
 
 // IDs HTML
 // - CODSI
@@ -142,6 +141,8 @@ export default class LayerswitcherControl extends M.Control {
 
     // Estado inicial del proxy
     this.statusProxy = options.statusProxy;
+
+    this.select_codsi = 1; // Seleccionado por defecto
 
     // order
     this.order = options.order;
@@ -2548,20 +2549,20 @@ export default class LayerswitcherControl extends M.Control {
       this.codsiButton.addEventListener('click', e => this.showCODSI(e));
       this.codsiButton.addEventListener('keydown', e => (e.keyCode === 13) && this.showCODSI(e));
       this.codsiFilterButton.addEventListener('click', (e) => {
-        this.loadCODSIResults(DEFAULT_CODSI_RESULTS);
+        this.loadCODSIResults(this.select_codsi);
       });
 
-      this.codsiFilterButton.addEventListener('keydown', e => (e.keyCode === 13) && this.loadCODSIResults(DEFAULT_CODSI_RESULTS));
+      this.codsiFilterButton.addEventListener('keydown', e => (e.keyCode === 13) && this.loadCODSIResults(this.select_codsi));
 
       this.codsiSearchInput.addEventListener('keypress', (e) => {
         if (e.keyCode === 13) {
-          this.loadCODSIResults(DEFAULT_CODSI_RESULTS);
+          this.loadCODSIResults(this.select_codsi);
         }
       });
 
       this.codsiCleanButton.addEventListener('click', (e) => {
         this.codsiSearchInput.value = '';
-        this.loadCODSIResults(DEFAULT_CODSI_RESULTS);
+        this.loadCODSIResults(this.select_codsi);
       });
     }
   }
@@ -2728,6 +2729,14 @@ export default class LayerswitcherControl extends M.Control {
       } else if (b.id !== 'nextCODSI' && b.id !== 'backCODSI') {
         buttons[i].style.display = 'none';
       }
+
+      // add disable element
+      if (i === this.select_codsi) {
+        buttons[i].setAttribute('disabled', 'disabled');
+      } else {
+        // remove disable element
+        buttons[i].removeAttribute('disabled');
+      }
     });
 
     if (showButton.indexOf(1) > -1) {
@@ -2758,6 +2767,7 @@ export default class LayerswitcherControl extends M.Control {
       document.querySelector('#m-layerswitcher-addservices-codsi-pagination').innerHTML = buttons;
       document.querySelectorAll('#m-layerswitcher-addservices-codsi-pagination button').forEach((elem, index) => {
         elem.addEventListener('click', () => {
+          this.select_codsi = index + 1;
           this.loadCODSIResults(index + 1);
         });
       });
@@ -2772,7 +2782,7 @@ export default class LayerswitcherControl extends M.Control {
     if (document.querySelector('#m-layerswitcher-ogcCContainer') !== null) {
       document.querySelector('#m-layerswitcher-ogcCContainer').style.display = 'none';
     }
-    this.loadCODSIResults(DEFAULT_CODSI_RESULTS);
+    this.loadCODSIResults(this.select_codsi);
   }
 
 
