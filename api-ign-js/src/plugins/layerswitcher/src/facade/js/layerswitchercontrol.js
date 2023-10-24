@@ -49,6 +49,8 @@ const BT_CLOSE_MODAL = 'div.m-dialog.info div.m-button > button';
 
 const SPINER_FATHER = '.m-layerswitcher-search-panel';
 
+const SHOW_BUTTON = [1, 2, 3]; // Añadir más numeros para mostrar más botones
+
 export default class LayerswitcherControl extends M.Control {
   constructor(options = {}) {
     if (M.utils.isUndefined(LayerswitcherImplControl)) {
@@ -2682,6 +2684,64 @@ export default class LayerswitcherControl extends M.Control {
     return tr;
   }
 
+  paginationCODSI() {
+    const container = document.querySelector('#m-layerswitcher-addservices-codsi-pagination');
+    // create button element
+    const buttonNext = document.createElement('button');
+    buttonNext.setAttribute('type', 'button');
+    buttonNext.classList.add('m-layerswitcher-addservices-pagination-btn');
+    buttonNext.id = 'nextCODSI';
+    buttonNext.innerHTML = '...';
+
+    buttonNext.addEventListener('click', (e) => {
+      SHOW_BUTTON.forEach((b, i) => {
+        SHOW_BUTTON[i] = b + SHOW_BUTTON.length;
+      });
+      this.showButtonPaginationCODSI(container, SHOW_BUTTON);
+    });
+
+    const buttonBack = document.createElement('button');
+    buttonBack.setAttribute('type', 'button');
+    buttonBack.id = 'backCODSI';
+    buttonBack.classList.add('m-layerswitcher-addservices-pagination-btn');
+    buttonBack.innerHTML = '...';
+
+    buttonBack.addEventListener('click', (e) => {
+      SHOW_BUTTON.forEach((b, i) => {
+        SHOW_BUTTON[i] = b - SHOW_BUTTON.length;
+      });
+      this.showButtonPaginationCODSI(container, SHOW_BUTTON);
+    });
+
+    // Add buttons delante y detrar container
+    container.insertBefore(buttonBack, container.firstChild);
+    container.appendChild(buttonNext);
+
+    this.showButtonPaginationCODSI(container, SHOW_BUTTON);
+  }
+
+  showButtonPaginationCODSI(container, showButton) {
+    const buttons = container.querySelectorAll('button');
+    buttons.forEach((b, i) => {
+      if (showButton.indexOf(i) > -1) {
+        buttons[i].style.display = 'inline-block';
+      } else if (b.id !== 'nextCODSI' && b.id !== 'backCODSI') {
+        buttons[i].style.display = 'none';
+      }
+    });
+
+    if (showButton.indexOf(1) > -1) {
+      document.querySelector('#backCODSI').style.display = 'none';
+    } else {
+      document.querySelector('#backCODSI').style.display = 'inline-block';
+    }
+    if (showButton.indexOf(buttons.length - 1) > -1) {
+      document.querySelector('#nextCODSI').style.display = 'none';
+    } else {
+      document.querySelector('#nextCODSI').style.display = 'inline-block';
+    }
+  }
+
   renderCODSIPagination(pageNumber, total) {
     document.querySelector('#m-layerswitcher-addservices-codsi-pagination').innerHTML = '';
     if (total > 0) {
@@ -2702,6 +2762,7 @@ export default class LayerswitcherControl extends M.Control {
         });
       });
     }
+    this.paginationCODSI();
   }
 
   showCODSI() {
