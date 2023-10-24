@@ -339,7 +339,7 @@ export default class IncicartoControl extends M.Control {
   }
 
   getMaxZIndex() {
-    const filterLayers = this.map_.getLayers().filter((layer) => layer.getZIndex() < 1000);
+    const filterLayers = this.map_.getLayers().filter((layer) => layer.name !== '__draw__');
 
     const maxZIndex = Math.max(...(filterLayers.map((l) => {
       return l.getZIndex();
