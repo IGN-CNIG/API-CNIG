@@ -146,6 +146,9 @@ export default class LayerswitcherControl extends M.Control {
 
     // order
     this.order = options.order;
+
+    // Attribution
+    this.useAttributions_ = options.useAttributions;
   }
 
   // Esta función crea la vista
@@ -1871,10 +1874,35 @@ export default class LayerswitcherControl extends M.Control {
       }
 
       layers.reverse();
-      this.map_.addLayers(layers);
+      const useAttributions = (this.useAttributions_) ? this.addAttributions(layers) : layers;
+      this.map_.addLayers(useAttributions);
       const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
       buttonClose.click();
     }
+  }
+
+  // AddAttributions
+  addAttributions(layers) {
+    return layers.map((l) => {
+      const layer = l;
+      const attributions = layer.capabilitiesMetadata.attribution;
+
+      if (attributions !== undefined) {
+        const {
+          Title, OnlineResource, ProviderName, ProviderSite,
+        } = attributions;
+
+        layer.attribution =
+        {
+          name: Title || ProviderName,
+          url: OnlineResource || ProviderSite,
+          nameLayer: layer.name,
+          id: window.crypto.randomUUID(),
+        };
+        return layer;
+      }
+      return layer;
+    });
   }
 
   // Quita selección a capa
@@ -2375,6 +2403,16 @@ export default class LayerswitcherControl extends M.Control {
     properties.name = selectValue;
     properties.legend = selectValueText;
     properties.limit = limitValue;
+
+    if (this.useAttributions_) {
+      properties.attribution = {
+        url: 'https://www.idee.es/',
+        id: window.crypto.randomUUID(),
+        name: properties.legend,
+        nameLayer: properties.name,
+      };
+    }
+
     if (checked) {
       properties.bbox = bboxString;
     }

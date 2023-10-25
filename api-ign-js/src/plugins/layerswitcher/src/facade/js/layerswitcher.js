@@ -238,6 +238,9 @@ export default class Layerswitcher extends M.Plugin {
 
     // Indicates order to the plugin
     this.order = options.order >= -1 ? options.order : null;
+
+    // Añadir attributions
+    this.useAttributions = options.useAttributions || false;
   }
 
   // Devuelve el idioma del plugin
@@ -266,6 +269,7 @@ export default class Layerswitcher extends M.Plugin {
         order: this.order,
         useProxy: this.useProxy,
         statusProxy: this.statusProxy,
+        useAttributions: this.useAttributions,
       });
     // creamos panel
     this.panel_ = new M.ui.Panel('Layerswitcher', {
