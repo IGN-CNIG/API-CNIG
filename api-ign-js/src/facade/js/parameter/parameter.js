@@ -738,8 +738,6 @@ export const kml = (userParamer) => {
     // get the legend option
     layerObj.legend = getLegendKML(userParam);
 
-    layerObj.attribution = userParam.attribution;
-
     return layerObj;
   });
 
@@ -1198,9 +1196,6 @@ export const wfs = (userParameters) => {
 
     // format specified by the user when create object WFS
     layerObj.outputFormat = userParameters.outputFormat;
-
-    // Attribution
-    layerObj.attribution = userParameters.attribution;
 
     return layerObj;
   });
@@ -2004,7 +1999,6 @@ export const wms = (userParameters) => {
     const queryable = getQueryableWMS(userParam);
     const visibility = getVisibilityWMS(userParam);
     const useCapabilities = getUseCapabilitiesWMS(userParam);
-    const attribution = userParam.attribution;
 
     return {
       type,
@@ -2018,7 +2012,6 @@ export const wms = (userParameters) => {
       displayInLayerSwitcher,
       queryable,
       visibility,
-      attribution,
       options,
       useCapabilities,
       isBase: (transparent !== undefined) ? !transparent : userParam.isBase,
@@ -2556,9 +2549,6 @@ export const xyz = (userParamer) => {
     layerObj.isBase = (layerObj.transparent === undefined) ?
       userParam.isBase : !layerObj.transparent;
 
-    // Attribution
-    layerObj.attribution = userParam.attribution;
-
     return layerObj;
   });
 
@@ -2668,9 +2658,6 @@ export const tms = (userParamer) => {
     layerObj.isBase = (layerObj.transparent === undefined) ?
       userParam.isBase : !layerObj.transparent;
 
-    // Attribution
-    layerObj.attribution = userParam.attribution;
-
     return layerObj;
   });
 
@@ -2746,8 +2733,6 @@ export const wmts = (userParameters) => {
 
     layerObj.isBase = (layerObj.transparent === undefined) ?
       userParam.isBase : !layerObj.transparent;
-
-    layerObj.attribution = userParam.attribution;
 
     return layerObj;
   });
@@ -3149,8 +3134,6 @@ export const mbtiles = (userParameters) => {
     layerObj.isBase = (layerObj.transparent === undefined) ?
       userParam.isBase : !layerObj.transparent;
 
-    layerObj.attribution = userParam.attribution;
-
     return layerObj;
   });
 
@@ -3489,8 +3472,6 @@ export const mbtilesvector = (userParameters) => {
     layerObj.style = getStyleMBTilesVector(userParam);
 
     layerObj.extract = getExtractMBTilesVector(userParam);
-
-    layerObj.attribution = userParam.attribution;
 
     return layerObj;
   });
@@ -3862,7 +3843,6 @@ export const ogcapifeatures = (userParameters) => {
     const style = getStyleOGC(userParam);
     const conditional = getConditionalOGC(userParam);
     const extract = getExtractOGC(userParam);
-    const attribution = userParam.attribution;
 
     return {
       type,
@@ -3875,7 +3855,6 @@ export const ogcapifeatures = (userParameters) => {
       offset,
       id,
       style,
-      attribution,
       conditional,
       extract,
     };
@@ -3954,6 +3933,9 @@ export const layer = (userParameters, forcedType) => {
         layerObj.infoEventType = userParam.infoEventType;
       } else {
         layerObj.infoEventType = 'click';
+      }
+      if (!isNullOrEmpty(userParam.attribution)) {
+        layerObj.attribution = userParam.attribution;
       }
     }
 
