@@ -1,5 +1,5 @@
 /**
- * @module M/impl/control/Scale
+ * @module M/impl/control/Attributions
  */
 import DoubleClickZoom from 'ol/interaction/DoubleClickZoom';
 import Control from './Control';
