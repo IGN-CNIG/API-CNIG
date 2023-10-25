@@ -61,11 +61,11 @@ module.exports = {
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
         exclude: /node_modules/,
-        loader: 'url-loader',
-        options: {
-          name: 'fonts/[name].[ext]',
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name].[ext]',
         },
-      }
+      },
     ],
   },
   optimization: {
