@@ -14,7 +14,6 @@ import { isNullOrEmpty } from '../util/Utils';
 import Feature from '../feature/Feature';
 import GeoJSON from '../layer/GeoJSON';
 import KML from '../layer/KML';
-// import * as EventType from '../event/eventtype';
 
 const MODES = {
   mapAttributions: 1, // Map attributions from vector layer
@@ -24,11 +23,26 @@ const MODES = {
 
 /**
  * @classdesc
- * Agregar atributiones.
- * [TO-DO]
+ * Panel de atribuciones API-CING.
  *
- * @api
+ * @property {Number} mode_ Modo de funcionamiento del control.
+ * @property {String} url_ URL del fichero de atribuciones.
+ * @property {String} type_ Tipo de fichero de atribuciones.
+ * @property {String} layerName_ Nombre de la capa de atribuciones.
+ * @property {Layer} layer_ Capa de atribuciones.
+ * @property {Number} scale_ Escala de visualización de la capa de atribuciones.
+ * @property {String} attributionParam_ Nombre del parámetro de atribución.
+ * @property {String} urlParam_ Nombre del parámetro de URL.
+ * @property {String} defaultAttribution_ Atribución por defecto.
+ * @property {String} defaultUrl_ URL por defecto.
+ * @property {String} tooltip_ Texto del tooltip.
+ * @property {String} position Posición del control.
+ * @property {Boolean} closePanel Indica si se cierra el panel.
+ * @property {Boolean} options Indica si se muestran las opciones.
+ * @property {String} urlAttribute Nombre del atributo de la URL.
+ * @property {Number} order Orden de la capa.
  * @extends {M.Control}
+ * @api
  */
 class Attributions extends ControlBase {
   /**
@@ -123,8 +137,10 @@ class Attributions extends ControlBase {
   }
 
   /**
+   * Este método inicia el modo de funcionamiento del control.
    * @public
    * @function
+   * @api
    */
   initMode() {
     if (this.mode_ === MODES.mapAttributions) {
@@ -137,6 +153,15 @@ class Attributions extends ControlBase {
     }
   }
 
+  /**
+   * Este método añade una nueva capa de atribuciones.
+   * @public
+   * @function
+   * @param {String} layerName Nombre de la capa de atribuciones.
+   * @param {String} url URL del fichero de atribuciones.
+   * @param {String} type Tipo de fichero de atribuciones.
+   * @api
+   */
   createVectorLayer(layerName, url, type) {
     let layer = this.layer_;
     if (!(layer instanceof GeoJSON)) {
@@ -164,11 +189,12 @@ class Attributions extends ControlBase {
 
 
   /**
-     * This method shows the layer attributions
-     *
-     * @function
-     * @public
-     */
+    * Este método muestra las atribuciones de la capa.
+    *
+    * @function
+    * @public
+    * @api
+    */
   changeAttributions() {
     this.clearContent();
     const layers = this.collectionsAttributions_;
@@ -211,6 +237,14 @@ class Attributions extends ControlBase {
     });
   }
 
+  /**
+   * Este método añade el contenido de las atribuciones.
+   * @public
+   * @function
+   * @param {Array} layer Capas.
+   * @param {Number} zoom Zoom.
+   * @api
+   */
   defaultAttribution(layer, zoom) {
     const isHybrid = this.map_.getLayers().filter((l) => {
       return l.type === 'WMTS' && !l.displayInLayerSwitcher && l.name === 'OI.OrthoimageCoverage';
@@ -231,16 +265,24 @@ class Attributions extends ControlBase {
     return false;
   }
 
+  /**
+   * Este método devuelve si la capa tiene atribuciones por defecto.
+   * @public
+   * @function
+   * @param {Object} layer Capa.
+   * @api
+   */
   checkDefaultAttribution(layer) {
     return ['OI.OrthoimageCoverage', 'EL.GridCoverageDSM', 'IGNBaseTodo', 'LC.LandCoverSurfaces'].includes(layer.name);
   }
 
   /**
-     * This method adds the text content to the view attribution
-     *
-     * @function
-     * @public
-     */
+    * Este método añade el contenido de texto a la vista de atribuciones.
+    *
+    * @function
+    * @public
+    * @param {Array} attributions Atribuciones.
+    */
   addContent(attributions) {
     const html = this.html_;
     const id = attributions[0].nameLayer || '';
@@ -274,16 +316,23 @@ class Attributions extends ControlBase {
     html.append(div);
   }
 
+  /**
+   * Este método añade el contenido de texto a la vista de atribuciones.
+   * @public
+   * @function
+   * @param {String} html HTML.
+   * @api
+   */
   addHTMLContent(html) {
     this.html_.innerHTML += `<div>${html}</div>`;
   }
 
   /**
-     * This method adds the text content to the view attribution
-     *
-     * @function
-     * @public
-     */
+    * Este método elimina el contenido de texto de la vista de atribuciones.
+    *
+    * @function
+    * @public
+    */
   clearContent() {
     if (!isNullOrEmpty(this.html_)) {
       const html = this.html_;
@@ -292,17 +341,24 @@ class Attributions extends ControlBase {
   }
 
   /**
-     * This method toggle de visibility of the view attribution
-     */
+    * Este método cambia la visibilidad de la vista de atribuciones.
+    * @function
+    * @public
+    * @param {Boolean} visibility Visibilidad.
+    * @api
+    */
   setVisible(visibility) {
     const html = this.html_;
     html.style.display = visibility === false ? 'none' : '';
   }
 
   /**
-     * @function
-     * @public
-     */
+   * Este método devuelve la atribución de objetos que intersectan con el bbox.
+    * @function
+    * @public
+    * @param {Array} featuresAttributions Atribuciones.
+    * @api
+    */
   getMapAttributions(featuresAttributions) {
     this.updateBBoxFeature();
     const interFilter = INTERSECT(this.bboxFeature_);
@@ -316,6 +372,13 @@ class Attributions extends ControlBase {
       array.map(e => e.attribution).indexOf(element.attribution) === index);
   }
 
+  /**
+   * Este método devuelve la vista de atribuciones.
+   * @function
+   * @public
+   * @param {Array} attribuccionParams Atribuciones.
+   * @api
+   */
   addAttributions(attribuccionParams) {
     if (typeof attribuccionParams === 'string') {
       this.addHTMLContent(attribuccionParams);
@@ -328,6 +391,7 @@ class Attributions extends ControlBase {
   }
 
   /**
+   * Este método elimina el panel.
    * @function
    * @public
    */
@@ -336,17 +400,10 @@ class Attributions extends ControlBase {
   }
 
   /**
-     * @function
-     * @public
-     */
-  changeContentAttribution(content) {
-    // this.control_.changeContent(content);
-  }
-
-  /**
-     * @function
-     * @public
-     */
+   * Este método actualiza el bbox con sus features.
+    * @function
+    * @public
+    */
   updateBBoxFeature() {
     const { x, y } = this.map_.getBbox();
     this.bboxFeature_ = new Feature('bbox_feature', {
@@ -368,9 +425,11 @@ class Attributions extends ControlBase {
   }
 
   /**
-     * @function
-     * @public
-     */
+   * Este método cierra el panel si la pantalla es pequeña.
+    * @function
+    * @public
+    * @param {Event} e Evento.
+    */
   setCollapsiblePanel(e) {
     if (this.getPanel() && this.getPanel().getTemplatePanel()) {
       if (e.target.innerWidth < 769) {
@@ -387,6 +446,9 @@ class Attributions extends ControlBase {
    * Optione las attribuciones de las capas cargadas
    * @function
    * @public
+   * @param {Array} layers Capas.
+   * @returns {Array} Atribuciones.
+   * @api
    */
   getAttributionsFromMap(layers) {
     const layersFormat = layers.map(layer => layer.getAttributions());
@@ -401,13 +463,6 @@ class Attributions extends ControlBase {
   onMoveEnd(callback) {
     this.impl_.registerEvent('moveend', this.map, e => callback(e));
   }
-
-  // [ ] Cuando añaden capas
-  // [ ] Cuando se elminan capas
-  onAddLayer(callback) {
-    this.impl_.registerEvent('add', this.map, e => callback(e));
-  }
-
 
   /**
    * Esta función comprueba si un objeto es igual
@@ -424,17 +479,34 @@ class Attributions extends ControlBase {
     return equals;
   }
 
+  /**
+   * Esta método devuelve las atribuciones.
+   * @public
+   * @function
+   * @returns {Array} Atribuciones.
+   * @api
+   */
   getAttributions() {
     return this.collectionsAttributions_;
   }
 
+  /**
+   * Esta método cambia las atribuciones.
+   * @public
+   * @function
+   * @api
+   * @param {Array} attr Atribuciones.
+   */
   setAttributions(attr) {
     this.collectionsAttributions_ = attr;
     this.changeAttributions();
   }
 
   /**
-   * Esta función destruye el control.
+   * Esta método destruye el control.
+   * @public
+   * @function
+   * @api
    */
   destroy() {
     this.getImpl().destroy();
