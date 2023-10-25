@@ -11,6 +11,10 @@
     "scale": "Escala",
     "level": "Nivel de zoom"
   },
+  "attributions": {
+    "attribution": "atribución",
+    "tooltip": "Reconocimientos"
+  },
   "getfeatureinfo": {
     "info": "Información",
     "title": "Consultar capa",
