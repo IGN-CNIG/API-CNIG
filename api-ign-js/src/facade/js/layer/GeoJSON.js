@@ -115,6 +115,11 @@ class GeoJSON extends LayerVector {
       this.extract = parameters.extract || false;
 
       /**
+       * GeoJSON attribution: Atribución de la capa.
+       */
+      this.attribution = parameters.attribution;
+
+      /**
        * GeoJSON crs: Sistema de Referencia de Coordenadas.
        * @public
        * @type {Object}

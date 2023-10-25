@@ -85,6 +85,11 @@ class MVT extends Vector {
      * por defecto falso.
      */
     this.extract = parameters.extract;
+
+    /**
+     * Attribution: Optional Atribución de la capa.
+     */
+    this.attribution = parameters.attribution;
   }
 
 

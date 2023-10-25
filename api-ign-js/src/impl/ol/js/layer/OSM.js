@@ -141,7 +141,7 @@ class OSM extends Layer {
           this.hasAttributtion = true;
         }
       }, this);
-    if (!this.hasAttributtion) {
+    if (!this.hasAttributtion && !this.facadeLayer_.attribution) {
       this.map.getMapImpl().addControl(new OLControlAttribution({
         className: 'ol-attribution ol-unselectable ol-control ol-collapsed m-attribution',
         collapsible: true,

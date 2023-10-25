@@ -129,6 +129,11 @@ class TMS extends LayerBase {
     this.tileGridMaxZoom = parameters.tileGridMaxZoom;
 
     /**
+     * TMS Attribution. Atribución de la capa.
+     */
+    this.attribution = parameters.attribution;
+
+    /**
      * TMS options. Opciones de capa.
      */
     this.options = options;

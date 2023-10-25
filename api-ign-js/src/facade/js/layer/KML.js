@@ -99,6 +99,11 @@ class KML extends LayerVector {
     this.extract = parameters.extract;
 
     /**
+     * KML attribution: Atribución de la capa.
+     */
+    this.attribution = parameters.attribution;
+
+    /**
      * KML options: Optiones que se mandan a la implementación.
      */
     this.options = options;

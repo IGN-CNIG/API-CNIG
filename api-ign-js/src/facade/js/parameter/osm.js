@@ -121,6 +121,7 @@ const osm = (userParam) => {
       transparent,
       legend,
       name,
+      attribution: param.attribution,
     };
   });
 

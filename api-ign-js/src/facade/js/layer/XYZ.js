@@ -112,6 +112,11 @@ class XYZ extends LayerBase {
      * XYZ options: Opciones de la capa.
      */
     this.options = options;
+
+    /**
+     * XYZ Attribution: Atribución de la capa.
+     */
+    this.attribution = parameters.attribution;
   }
 
   /**

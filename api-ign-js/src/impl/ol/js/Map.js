@@ -308,6 +308,8 @@ class Map extends MObject {
         this.facadeMap_.addTMS(layer);
       } else if (!LayerType.know(layer.type)) {
         this.addUnknowLayers_([layer]);
+        // add event layers
+        this.facadeMap_.fire(EventType.ADDED_LAYER, [layer]);
       }
     });
 

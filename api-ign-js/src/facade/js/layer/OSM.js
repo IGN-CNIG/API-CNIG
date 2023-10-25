@@ -117,6 +117,11 @@ class OSM extends LayerBase {
      * OSM options. Opciones OSM.
      */
     this.options = options;
+
+    /**
+       * OSM attribution: Atribución de la capa.
+       */
+    this.attribution = parameters.attribution;
   }
 
   /**

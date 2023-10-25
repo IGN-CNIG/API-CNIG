@@ -136,6 +136,11 @@ class WFS extends Vector {
     this.extract = parameters.extract || false;
 
     /**
+     * WFS Attribution: Atribución de la capa.
+     */
+    this.attribution = parameters.attribution;
+
+    /**
      * options: Opciones WFS.
      */
     this.options = options;
