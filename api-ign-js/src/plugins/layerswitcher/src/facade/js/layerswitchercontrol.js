@@ -426,7 +426,11 @@ export default class LayerswitcherControl extends M.Control {
             legend.style.display = 'none';
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
-          if (layerType === 'WMS' || layerType === 'WMTS' || layerType === 'WFS' || layerType === 'MBTilesVector' ||
+          if (layerType === 'WMS') {
+            layer.getMaxExtent((me) => {
+              this.map_.setBbox(me);
+            });
+          } else if (layerType === 'WMTS' || layerType === 'WFS' || layerType === 'MBTilesVector' ||
             layerType === 'MBTiles' || layerType === 'OSM' || layerType === 'XYZ' || layerType === 'TMS' ||
             layerType === 'GeoJSON' || layerType === 'KML' || layerType === 'OGCAPIFeatures' || layerType === 'Vector') {
             const extent = layer.getMaxExtent();
