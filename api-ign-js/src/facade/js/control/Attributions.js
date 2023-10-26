@@ -93,7 +93,7 @@ class Attributions extends ControlBase {
     this.urlAttribute = options.urlAttribute || 'Gobierno de España';
     this.options = options;
 
-    this.collectionsAttributions_ = [];
+    this.collectionsAttributions_ = options.collectionsAttributions || [];
 
     /**
      * Order: Orden que tendrá con respecto al
