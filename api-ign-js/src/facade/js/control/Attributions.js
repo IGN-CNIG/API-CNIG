@@ -143,11 +143,14 @@ class Attributions extends ControlBase {
    * @api
    */
   initMode() {
+    console.log('initMode');
     if (this.mode_ === MODES.mapAttributions) {
+      console.log('1. initMode', this.collectionsAttributions_);
       this.collectionsAttributions_.forEach((attribuccionParams) => {
-        const { name, contentAttributions, contentType } = attribuccionParams;
+        console.log('2. initMode');
+        const { id, contentAttributions, contentType } = attribuccionParams;
         if (contentAttributions) {
-          this.createVectorLayer(name, contentAttributions, contentType);
+          this.createVectorLayer(id, contentAttributions, contentType);
         }
       });
     }
@@ -157,16 +160,16 @@ class Attributions extends ControlBase {
    * Este método añade una nueva capa de atribuciones.
    * @public
    * @function
-   * @param {String} layerName Nombre de la capa de atribuciones.
+   * @param {String} id Nombre de la capa de atribuciones.
    * @param {String} url URL del fichero de atribuciones.
    * @param {String} type Tipo de fichero de atribuciones.
    * @api
    */
-  createVectorLayer(layerName, url, type) {
+  createVectorLayer(id, url, type) {
     let layer = this.layer_;
     if (!(layer instanceof GeoJSON)) {
       const optionsLayer = {
-        name: `${layerName}_attributions`,
+        name: `${id}_attributions`,
         url,
       };
 
@@ -198,6 +201,7 @@ class Attributions extends ControlBase {
   changeAttributions() {
     this.clearContent();
     const layers = this.collectionsAttributions_;
+    console.log('changeAttributions', layers);
 
     layers.forEach((layer) => {
       let featureAttributions = false;
@@ -222,8 +226,9 @@ class Attributions extends ControlBase {
       // Features Attributions
       if (this.map_.getScale() <= this.scale_) {
         this.setVisible(true);
-        if (this.map_.getLayers().some(l => l.name.includes(`${layer.name}_attributions`))) {
-          const features = this.map_.getLayers().filter(l => l.name.includes(`${layer.name}_attributions`))[0].getFeatures();
+        const vectorAttribution = this.map_.getLayers().filter(l => l.name.includes(`${layer.id}_attributions`));
+        if (vectorAttribution.length > 0) {
+          const features = vectorAttribution[0].getFeatures();
           featureAttributions = this.getMapAttributions(features);
         }
       }
@@ -385,9 +390,13 @@ class Attributions extends ControlBase {
     } else {
       this.collectionsAttributions_.push(attribuccionParams);
 
-      const { name, contentType, contentAttributions } = attribuccionParams;
-      this.createVectorLayer(name, contentAttributions, contentType);
+      const { id, contentType, contentAttributions } = attribuccionParams;
+      this.createVectorLayer(id, contentAttributions, contentType);
     }
+
+    setTimeout(() => {
+      this.changeAttributions();
+    }, 500);
   }
 
   /**
