@@ -143,11 +143,8 @@ class Attributions extends ControlBase {
    * @api
    */
   initMode() {
-    console.log('initMode');
     if (this.mode_ === MODES.mapAttributions) {
-      console.log('1. initMode', this.collectionsAttributions_);
       this.collectionsAttributions_.forEach((attribuccionParams) => {
-        console.log('2. initMode');
         const { id, contentAttributions, contentType } = attribuccionParams;
         if (contentAttributions) {
           this.createVectorLayer(id, contentAttributions, contentType);
@@ -201,7 +198,6 @@ class Attributions extends ControlBase {
   changeAttributions() {
     this.clearContent();
     const layers = this.collectionsAttributions_;
-    console.log('changeAttributions', layers);
 
     layers.forEach((layer) => {
       let featureAttributions = false;
