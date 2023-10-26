@@ -51,7 +51,6 @@ class COG extends LayerBase {
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - visibility: Indica la visibilidad de la capa.
-   * - numZoomLevels: Número de niveles de zoom.
    * - styles: Estilos de la capa.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>

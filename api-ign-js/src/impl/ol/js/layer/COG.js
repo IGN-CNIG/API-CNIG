@@ -36,26 +36,19 @@ class COG extends LayerBase {
    * @constructor
    * @implements {M.impl.Layer}
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
-   * - visibility: Indica la visibilidad de la capa.
-   * - singleTile: Indica si la tesela es única o no.
-   * - numZoomLevels: Número de niveles de zoom.
-   * - animated: Define si la capa está animada,
-   * el valor predeterminado es falso.
-   * - format: Formato de la capa, por defecto image/png.
-   * - styles: Estilos de la capa.
-   * - sldBody: Parámetros "ol.source.ImageCOG"
-   * - minZoom: Zoom mínimo aplicable a la capa.
-   * - maxZoom: Zoom máximo aplicable a la capa.
-   * - queryable: Indica si la capa es consultable.
-   * - minScale: Escala mínima.
-   * - maxScale: Escala máxima.
-   * - minResolution: Resolución mínima.
-   * - maxResolution: Resolución máxima.
-   * - animated: Define si la capa está animada,
-   * el valor predeterminado es falso.
-   * - ratio: determina el tamaño de las solicitudes de las imágenes.1 significa que tienen el *
-   * tamaño de la ventana, 2 significa que tienen el doble del tamaño de la ventana,
-   * y así sucesivamente.Debe ser 1 o superior.Por defecto es 1.
+   * - url: url del servicio WFS.
+   * - projection: SRS usado por la capa.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - convertToRGB: Convierte la compresion de la imagen a RGB, puede ser 'auto', true o false,
+   *   por defecto 'auto'.
+   * - opacity: Opacidad de la capa de 0 a 1, por defecto 1.
+   * - bands: Bandas a mostrar en forma de array y como numero, si el array esta vacio muestra todas
+   *   por defecto [].
+   * - styles: Estilos de las bandas.
+   * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
+   *   En este caso la capa sería detectado por los plugins de tablas de contenidos
+   *   y aparecería como no visible.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileCOG from 'ol/source/TileCOG';
@@ -322,10 +315,6 @@ class COG extends LayerBase {
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @public
    * @function
-   * @param {Array<Number>} resolutions Resolución
-   * @param {Number} minResolution Resolución máxima.
-   * @param {Number} maxResolution Resolución mínima.
-   * @param {Array} extent Extensión.
    * @return {ol.source} Fuente de Openlayers.
    * @api
    */
@@ -349,23 +338,11 @@ class COG extends LayerBase {
           layerParams[key.toUpperCase()] = this.options.params[key];
         });
       }
-      // const zIndex = this.zIndex_;convertToRGB
       const convertToRGB = this.convertToRGB_;
       const bands = this.bands_;
-      // const tileGrid = (this.useCapabilities) ?
-      //   new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) }) :
-      //   false;
       const sources = [
         {
-          // crossOrigin: this.crossOrigin, // crossOrigin inicial
           url: this.url,
-          // params: layerParams,
-          // tileGrid,
-          // extent,
-          // minResolution,
-          // maxResolution,
-          // zIndex,
-          // ratio: this.ratio,
         },
       ];
       if (bands.length !== 0) {
