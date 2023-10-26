@@ -962,6 +962,43 @@ class Map extends Base {
   }
 
   /**
+   * Este método obtiene las capas COG agregadas al mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.WMC>} layersParam Opcional.
+   * - Matriz de capas de nombres, tipo COG.
+   * @returns {Array<COG>} Matriz de capas, tipo COG.
+   * @api
+   */
+  getCOG(layersParamVar) {
+    let layersParam = layersParamVar;
+    // checks if the implementation can manage layers
+    if (isUndefined(MapImpl.prototype.getCOG)) {
+      Exception(getValue('exception').getcog_method);
+    }
+
+    // parses parameters to Array
+    if (isNull(layersParam)) {
+      layersParam = [];
+    } else if (!isArray(layersParam)) {
+      layersParam = [layersParam];
+    }
+
+    // gets the parameters as Layer objects to filter
+    let filters = [];
+    if (layersParam.length > 0) {
+      filters = layersParam.map((layerParam) => {
+        return parameter.layer(layerParam, LayerType.COG);
+      });
+    }
+
+    // gets the layers
+    const layers = this.getImpl().getCOG(filters).sort(Map.LAYER_SORT);
+
+    return layers;
+  }
+
+  /**
    * Este método agrega las capas COG al mapa.
    *
    * @function

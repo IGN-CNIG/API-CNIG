@@ -340,6 +340,7 @@ class Map extends MObject {
     if (knowLayers.length > 0) {
       this.removeKML(knowLayers);
       this.removeWMS(knowLayers);
+      this.removeCOG(knowLayers);
       this.removeWFS(knowLayers);
       this.removeOGCAPIFeatures(knowLayers);
       this.removeWMTS(knowLayers);
