@@ -2087,40 +2087,39 @@ export const getURLCOG = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener el conjunto de matrices de la capa COG.
+ * Analiza el parámetro para obtener la proyeccion de la capa COG.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
  * @public
  * @function
- * @param {string|Mx.parameters.COG} parameter Parámetro para obtener el
- * conjunto de matrices de la capa COG.
+ * @param {string|Mx.parameters.COG} parameter Parámetro para obtener la proyeccion de la capa COG.
  * @returns {string} Conjunto de matrices.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
-export const getMatrixSetCOG = (parameter) => {
-  let matrixSet;
+export const getProjectionCOG = (parameter) => {
+  let projection;
   let params;
   if (isString(parameter)) {
     // <COG>*<URL>*<NAME>*<MATRIXSET>
     if (/^COG\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
       params = parameter.split(/\*/);
-      matrixSet = params[3].trim();
+      projection = params[3].trim();
     } else if (/^[^*]+\*[^*]+\*[^*]+/.test(parameter)) {
       // <URL>*<NAME>*<MATRIXSET>
       params = parameter.split(/\*/);
-      matrixSet = params[2].trim();
+      projection = params[2].trim();
     }
-  } else if (isObject(parameter) && !isNullOrEmpty(parameter.matrixSet)) {
-    matrixSet = parameter.matrixSet.trim();
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.projection)) {
+    projection = parameter.projection.trim();
   } else if (!isObject(parameter)) {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
-  if (isUrl(matrixSet) || /^(true|false)$/i.test(matrixSet)) {
-    matrixSet = null;
+  if (isUrl(projection) || /^(true|false)$/i.test(projection)) {
+    projection = null;
   }
-  return matrixSet;
+  return projection;
 };
 
 /**
@@ -2353,25 +2352,119 @@ export const getVisibilityCOG = (parameter) => {
   return visibility;
 };
 
-export const getUseCapabilitiesCOG = (parameter) => {
-  let useCapabilities;
+/**
+ * Analiza el parámetro para obtener la opacidad de la capa COG.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.COG} parameter Parámetro para obtener
+ * la opacidad de la capa COG.
+ * @returns {boolean} Opacidad de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getOpacityCOG = (parameter) => {
+  let opacity;
   let params;
   if (isString(parameter)) {
     if (/^COG\*[^*]+\*[^*]+\*[^*]*\*[^*]*\*(true|false)\*(image\/.*)\*(true|false)\*(true|false)\*(true|false)\*(true|false)/i.test(parameter)) {
       params = parameter.split(/\*/);
-      useCapabilities = params[10].trim();
+      opacity = params[10].trim();
     }
   } else if (isObject(parameter)) {
-    useCapabilities = normalize(parameter.useCapabilities);
+    opacity = parameter.opacity;
   } else {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
-  if (!isNullOrEmpty(useCapabilities)) {
-    useCapabilities = /^1|(true)$/i.test(useCapabilities);
-  }
-  return useCapabilities;
+
+  return opacity;
 };
 
+/**
+ * Analiza el parámetro para obtener el convertToRGB de la capa COG.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.COG} parameter Parámetro para obtener
+ * el convertToRGB de la capa COG.
+ * @returns {boolean} convertToRGB de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getConvertToRGBCOG = (parameter) => {
+  let convertToRGB;
+  let params;
+  if (isString(parameter)) {
+    if (/^COG\*[^*]+\*[^*]+\*[^*]*\*[^*]*\*(true|false)\*(image\/.*)\*(true|false)\*(true|false)\*(true|false)\*(true|false)\*(true|false)/i.test(parameter)) {
+      params = parameter.split(/\*/);
+      convertToRGB = params[11].trim();
+    }
+  } else if (isObject(parameter)) {
+    convertToRGB = normalize(parameter.convertToRGB);
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return convertToRGB;
+};
+
+/**
+ * Analiza el parámetro para obtener las bandas visibles de la capa COG.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.COG} parameter Parámetro para obtener
+ * las bandas visibles de la capa COG.
+ * @returns {boolean} Bandas visibles de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getBandsCOG = (parameter) => {
+  let bands;
+  let params;
+  if (isString(parameter)) {
+    if (/^COG\*[^*]+\*[^*]+\*[^*]*\*[^*]*\*(true|false)\*(image\/.*)\*(true|false)\*(true|false)\*(true|false)\*(true|false)\*(true|false)\*(true|false)/i.test(parameter)) {
+      bands = [];
+    }
+  } else if (isObject(parameter)) {
+    bands = parameter.bands;
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return bands;
+};
+
+/**
+ * Analiza el parámetro para obtener los estilos de la capa COG.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.COG} parameter Parámetro para obtener
+ * los estilos de la capa COG.
+ * @returns {boolean} Estilos de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getStylesCOG = (parameter) => {
+  let styles;
+  let params;
+  if (isString(parameter)) {
+    if (/^COG\*[^*]+\*[^*]+\*[^*]*\*[^*]*\*(true|false)\*(image\/.*)\*(true|false)\*(true|false)\*(true|false)\*(true|false)\*(true|false)\*(true|false)/i.test(parameter)) {
+      styles = [];
+    }
+  } else if (isObject(parameter)) {
+    styles = parameter.styles;
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return styles;
+};
 
 /**
  * Analiza el parámetro para obtener el nombre de la capa WMTS.
@@ -2761,7 +2854,7 @@ export const cog = (userParameters) => {
     layerObj.url = getURLCOG(userParam);
 
     // gets the matrix set
-    layerObj.matrixSet = getMatrixSetCOG(userParam);
+    layerObj.matrixSet = getProjectionCOG(userParam);
 
     // gets the legend
     layerObj.legend = getLegendCOG(userParam);
@@ -2771,7 +2864,6 @@ export const cog = (userParameters) => {
 
     // gets transparent
     layerObj.transparent = getTransparentCOG(userParam);
-
     // get format
     layerObj.format = getFormatCOG(userParam);
 
@@ -2784,8 +2876,17 @@ export const cog = (userParameters) => {
     // get visibility
     layerObj.visibility = getVisibilityCOG(userParam);
 
-    // get visibility
-    layerObj.useCapabilities = getUseCapabilitiesCOG(userParam);
+    // get opacity
+    layerObj.opacity = getOpacityCOG(userParam);
+
+    // get convertToRGB
+    layerObj.convertToRGB = getConvertToRGBCOG(userParam);
+
+    // get bands
+    layerObj.bands = getBandsCOG(userParam);
+
+    // get styles
+    layerObj.styles = getStylesCOG(userParam);
 
     layerObj.isBase = (layerObj.transparent === undefined) ?
       userParam.isBase : !layerObj.transparent;

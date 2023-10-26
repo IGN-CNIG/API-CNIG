@@ -109,6 +109,11 @@ class COG extends LayerBase {
     this.extentProj_ = null;
 
     /**
+     * COG opacity_. Opacidad entre 0 y 1. Por defecto 1.
+     */
+    this.opacity_ = this.options.opacity || 1;
+
+    /**
      * COG visibility. Indica la visibilidad de la capa.
      */
     if (this.options.visibility === false) {
@@ -145,6 +150,16 @@ class COG extends LayerBase {
      * COG zIndex_. Índice de la capa, (+40).
      */
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.COG];
+
+    /**
+     * COG convertToRGB_. .
+     */
+    this.convertToRGB_ = !isNullOrEmpty(options.convertToRGB) ? options.convertToRGB : 'auto';
+
+    /**
+     * COG bands_. Bandas a renderizar.
+     */
+    this.bands_ = options.bands ? options.bands : [];
 
     /**
      * COG minZoom. Zoom mínimo aplicable a la capa.
@@ -281,8 +296,10 @@ class COG extends LayerBase {
     //   extent,
     // }, this.vendorOptions_, true));
     this.ol3Layer = new TileLayer({
+      opacity: this.opacity_,
       source,
       extent,
+      style: this.styles,
     });
 
     this.map.getMapImpl().addLayer(this.ol3Layer);
@@ -332,8 +349,9 @@ class COG extends LayerBase {
           layerParams[key.toUpperCase()] = this.options.params[key];
         });
       }
-      // const opacity = this.opacity_;
-      // const zIndex = this.zIndex_;
+      // const zIndex = this.zIndex_;convertToRGB
+      const convertToRGB = this.convertToRGB_;
+      const bands = this.bands_;
       // const tileGrid = (this.useCapabilities) ?
       //   new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) }) :
       //   false;
@@ -346,13 +364,18 @@ class COG extends LayerBase {
           // extent,
           // minResolution,
           // maxResolution,
-          // opacity,
           // zIndex,
           // ratio: this.ratio,
         },
       ];
+      if (bands.length !== 0) {
+        sources.forEach((src) => {
+          src.bands = bands;
+        });
+      }
       olSource = new GeoTIFF({
         sources,
+        convertToRGB,
       });
     }
     return olSource;
