@@ -377,7 +377,9 @@ class Map extends Base {
 
     const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions');
     if (attribuccion && controlAttributions) {
-      controlAttributions[0].addAttributions(attribuccion);
+      const addId = attribuccion;
+      addId.id = window.crypto.randomUUID();
+      controlAttributions[0].addAttributions(addId);
     }
   }
 
@@ -3187,8 +3189,6 @@ class Map extends Base {
           if (!attribuccion.nameLayer) {
             attribuccion.nameLayer = layer.name;
           }
-
-          attribuccion.id = window.crypto.randomUUID();
 
           this.addAttribution(attribuccion);
         }
