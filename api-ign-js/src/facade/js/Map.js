@@ -340,13 +340,14 @@ class Map extends Base {
       return;
     }
     const {
-      tooltip, position, mode, scale, collectionsAttributions,
+      tooltip, position, mode, scale, collectionsAttributions, order,
     } = options;
     const atribucionControl = new Attributions({
       map: this,
       mode,
       scale,
       collectionsAttributions,
+      order,
     });
     const panel = new Panel(Attributions.NAME, {
       collapsible: true,
@@ -354,6 +355,7 @@ class Map extends Base {
       className: 'm-attributions',
       collapsedButtonClass: 'g-cartografia-comentarios',
       tooltip: tooltip || getValue('attributions').tooltip,
+      order,
     });
     this.addPanels(panel);
     panel.addControls(atribucionControl);

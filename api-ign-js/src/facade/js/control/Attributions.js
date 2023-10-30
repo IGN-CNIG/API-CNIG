@@ -131,6 +131,8 @@ class Attributions extends ControlBase {
         this.changeAttributions();
       });
 
+      this.accessibilityTab(html);
+
       success(html);
     });
   }
@@ -514,6 +516,16 @@ class Attributions extends ControlBase {
    */
   destroy() {
     this.getImpl().destroy();
+  }
+
+  /**
+   * Esta método devuelve el panel.
+   * @public
+   * @function
+   * @api
+   */
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 }
 
