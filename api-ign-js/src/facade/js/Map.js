@@ -340,11 +340,10 @@ class Map extends Base {
       return;
     }
     const {
-      tooltip, position, mode, scale, collectionsAttributions, order,
+      tooltip, position, scale, collectionsAttributions, order,
     } = options;
     const atribucionControl = new Attributions({
       map: this,
-      mode,
       scale,
       collectionsAttributions,
       order,

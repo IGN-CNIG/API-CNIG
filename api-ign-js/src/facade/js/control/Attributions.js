@@ -5,8 +5,6 @@ import 'assets/css/controls/attributions';
 import attributionsTemplate from 'templates/attributions';
 import AttributionsImpl from 'impl/control/Attributions';
 import ControlBase from './Control';
-import { isUndefined } from '../util/Utils';
-import Exception from '../exception/exception';
 import { compileSync as compileTemplate } from '../util/Template';
 import { getValue } from '../i18n/language';
 import { INTERSECT } from '../filter/Module';
@@ -15,17 +13,10 @@ import Feature from '../feature/Feature';
 import GeoJSON from '../layer/GeoJSON';
 import KML from '../layer/KML';
 
-const MODES = {
-  mapAttributions: 1, // Map attributions from vector layer
-  layerAttributions: 2, // Attributions layer from its capabilities wms service
-  mixed: 3, // Mixed mode ( 1 + 2)
-};
-
 /**
  * @classdesc
  * Panel de atribuciones API-CING.
  *
- * @property {Number} mode_ Modo de funcionamiento del control.
  * @property {String} url_ URL del fichero de atribuciones.
  * @property {String} type_ Tipo de fichero de atribuciones.
  * @property {String} layerName_ Nombre de la capa de atribuciones.
@@ -54,31 +45,11 @@ class Attributions extends ControlBase {
    * @api
    */
   constructor(options = {}) {
-    if (isUndefined(AttributionsImpl)) {
-      Exception(getValue('exception').no_impl);
-    }
-
-    if (options.mode === MODES.mapAttributions && !isNullOrEmpty(options.url)) {
-      if (isNullOrEmpty(options.type)) {
-        // throw new Error(getValue('exception.type'));
-        console.warn(getValue('exception.type'));
-      }
-    }
-
-    if (options.mode === MODES.mapAttributions && !isNullOrEmpty(options.layerName)) {
-      if (isNullOrEmpty(options.type)) {
-        // throw new Error(getValue('exception.layerName'));
-        console.warn(getValue('exception.layerName'));
-      }
-    }
-
-
     const impl = new AttributionsImpl();
     super(impl, Attributions.NAME);
 
     this.position = options.position;
     this.closePanel = options.closePanel; // TO-DO Eliminar
-    this.mode_ = Number.parseInt(options.mode, 10) || 1; // TO-DO Probar
     this.url_ = options.url || 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml';
     this.type_ = options.type || 'kml';
     this.layerName_ = options.layerName || 'attributions';
@@ -144,14 +115,12 @@ class Attributions extends ControlBase {
    * @api
    */
   initMode() {
-    if (this.mode_ === MODES.mapAttributions) {
-      this.collectionsAttributions_.forEach((attribuccionParams) => {
-        const { id, contentAttributions, contentType } = attribuccionParams;
-        if (contentAttributions) {
-          this.createVectorLayer(id, contentAttributions, contentType);
-        }
-      });
-    }
+    this.collectionsAttributions_.forEach((attribuccionParams) => {
+      const { id, contentAttributions, contentType } = attribuccionParams;
+      if (contentAttributions) {
+        this.createVectorLayer(id, contentAttributions, contentType);
+      }
+    });
   }
 
   /**
