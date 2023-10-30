@@ -369,6 +369,16 @@ class Map extends Base {
    * @api
    */
   addAttribution(attribuccion) {
+    try {
+      if (Object.keys(attribuccion).length === 0) {
+        return;
+      }
+    } catch (error) {
+      console.error('El tipo tiene que ser object');
+      return;
+    }
+
+
     // Comprobar si existe el control
     if (!this.getControls().some(({ name }) => name === 'attributions')) {
       this.createAttribution();

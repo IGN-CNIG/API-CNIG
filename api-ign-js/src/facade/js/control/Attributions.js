@@ -118,7 +118,6 @@ class Attributions extends ControlBase {
       const html = compileTemplate(attributionsTemplate, {
         vars: {
           collapsible: window.innerWidth < 769,
-          tooltip: getValue('scale').tooltip, // [ TO-DO ] Ponerlo en traducciones y template ?¿?
           order: this.order,
         },
       });
