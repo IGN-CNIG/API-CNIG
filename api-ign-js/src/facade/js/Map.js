@@ -375,6 +375,7 @@ class Map extends Base {
         return;
       }
     } catch (error) {
+      // eslint-disable-next-line
       console.error('El tipo tiene que ser object');
       return;
     }

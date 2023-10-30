@@ -184,15 +184,27 @@ class Map extends MObject {
     this.currentZoom = null;
 
     /**
+     * Extent restringido de navegación para el mapa.
+     * @api
+     * @type {Mx.Extent}
+     */
+    this.viewExtent = options.viewExtent;
+
+    /**
      * Implementación del mapa.
      * @private
      * @type {ol.Map}
      */
+    let view = new View();
+    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
+      view = new View({ extent: this.viewExtent });
+    }
+
     this.map_ = new OLMap({
       controls: [],
       target: div.id,
       // renderer,
-      view: new View(),
+      view,
     });
 
     this.registerEvents_();
@@ -2258,7 +2270,11 @@ class Map extends MObject {
     const maxZoom = olMap.getView().getMaxZoom();
     const size = olMap.getSize();
 
-    const newView = new View({ projection });
+    let newView = new View({ projection });
+    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
+      newView = new View({ projection, extent: this.viewExtent });
+    }
+
     newView.setProperties(oldViewProperties);
     newView.setResolutions(resolutions);
     newView.setUserZoom(oldZoom);
@@ -2383,7 +2399,11 @@ class Map extends MObject {
     const maxZoom = olMap.getView().getMaxZoom();
 
     // sets the new view
-    const newView = new View({ projection: olProjection });
+    let newView = new View({ projection: olProjection });
+    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
+      newView = new View({ projection: olProjection, extent: this.viewExtent });
+    }
+
     newView.setProperties(oldViewProperties);
     if (!isNullOrEmpty(resolutions)) {
       newView.setResolutions(resolutions);
