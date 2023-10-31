@@ -1017,6 +1017,31 @@ class Map extends Base {
   }
 
   /**
+   * Este método agrega las capas de GeoJSON al mapa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Colección u objeto de capa.
+   */
+  addUnknowLayers_(layersParamVar) {
+    let layersParam = layersParamVar;
+
+    // parses parameters to Array
+    if (!isArray(layersParam)) {
+      layersParam = [layersParam];
+    }
+
+    const unknowLayers = [];
+
+    layersParam.forEach((layerParam) => {
+      if (isObject(layerParam) && layerParam.name !== '__draw__') {
+        unknowLayers.push(layerParam);
+      }
+    });
+
+    this.fire(EventType.ADDED_LAYER, [unknowLayers]);
+  }
+
+  /**
    * Este método elimina las capas WFS del mapa.
    *
    * @function

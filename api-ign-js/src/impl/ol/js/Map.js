@@ -320,8 +320,8 @@ class Map extends MObject {
         this.facadeMap_.addTMS(layer);
       } else if (!LayerType.know(layer.type)) {
         this.addUnknowLayers_([layer]);
-        // add event layers
-        this.facadeMap_.fire(EventType.ADDED_LAYER, [layer]);
+        // eslint-disable-next-line no-underscore-dangle
+        this.facadeMap_.addUnknowLayers_(layer);
       }
     });
 
