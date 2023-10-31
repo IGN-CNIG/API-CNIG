@@ -16,9 +16,6 @@ import { getValue } from '../i18n/language';
  * Permitiendo las personalización de las capas mediante estilos. Se trata de un mapa dínamico.
  *
  * @property {String} legend Nombre asociado en el árbol de contenido, si usamos uno.
- * @property {String} version Versión COG.
- * @property {Boolean} tiled Verdadero si queremos dividir la capa en mosaicos,
- * falso en caso contrario.
  * @property {Boolean} transparent 'Falso' si es una capa base, 'verdadero' en caso contrario.
  * @property {Number} minZoom Limitar el zoom mínimo.
  * @property {Number} maxZoom Limitar el zoom máximo.
@@ -96,19 +93,6 @@ class COG extends LayerBase {
     this.legend = parameters.legend;
 
     /**
-     * COG version: Versión COG.
-     */
-    this.version = parameters.version;
-
-    /**
-     * COG tiled: Verdadero si queremos dividir la capa en mosaicos, falso en caso contrario.
-     */
-    if (!isNullOrEmpty(parameters.tiled)) {
-      this.tiled = parameters.tiled;
-    }
-
-
-    /**
      * COG transparent: Falso si es una capa base, verdadero en caso contrario.
      */
     this.transparent = parameters.transparent;
@@ -127,8 +111,6 @@ class COG extends LayerBase {
      * COG options: Opciones COG.
      */
     this.options = optionsVar;
-
-    this._updateNoCache();
   }
 
   /**
@@ -185,34 +167,6 @@ class COG extends LayerBase {
       this.getImpl().legend = this.name;
     } else {
       this.getImpl().legend = newLegend;
-    }
-  }
-
-  /**
-   * Devuelve la versión del servicio, por defecto es 1.3.0.
-   *
-   * @function
-   * @getter
-   * @return {M.layer.COG.impl.version} Versión del servicio.
-   * @api
-   */
-  get version() {
-    return this.getImpl().version;
-  }
-
-  /**
-   * Sobrescribe la versión del servicio, por defecto es 1.3.0.
-   *
-   * @function
-   * @setter
-   * @param {String} newVersion Nueva versión del servicio.
-   * @api
-   */
-  set version(newVersion) {
-    if (!isNullOrEmpty(newVersion)) {
-      this.getImpl().version = newVersion;
-    } else {
-      this.getImpl().version = '1.3.0'; // default value
     }
   }
 
@@ -278,21 +232,6 @@ class COG extends LayerBase {
   }
 
   /**
-   * Actualica los parámetros de NoCahe, "M.config.tileMappins".
-   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
-   * @public
-   * @function
-   * @api
-   */
-  _updateNoCache() {
-    const tiledIdx = M.config.tileMappgins.tiledNames.indexOf(this.name);
-    if ((tiledIdx !== -1) && sameUrl(M.config.tileMappgins.tiledUrls[tiledIdx], this.url)) {
-      this._noCacheUrl = M.config.tileMappgins.urls[tiledIdx];
-      this._noCacheName = M.config.tileMappgins.names[tiledIdx];
-    }
-  }
-
-  /**
    * Este método comprueba si un objeto es igual
    * a esta capa.
    *
@@ -306,7 +245,6 @@ class COG extends LayerBase {
     if (obj instanceof COG) {
       equals = (this.url === obj.url);
       equals = equals && (this.name === obj.name);
-      equals = equals && (this.version === obj.version);
     }
 
     return equals;
