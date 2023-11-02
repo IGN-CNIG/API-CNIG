@@ -5,9 +5,12 @@
  */
 import {
   isNullOrEmpty,
+  isNull,
   getResolutionFromScale,
   addParameters,
   concatUrlPaths,
+  fillResolutions,
+  generateResolutionsFromExtent
 } from 'M/util/Utils';
 import FacadeLayerBase from 'M/layer/Layer';
 import * as LayerType from 'M/layer/Type';
@@ -45,6 +48,12 @@ class COG extends LayerBase {
    * - opacity: Opacidad de la capa de 0 a 1, por defecto 1.
    * - bands: Bandas a mostrar en forma de array y como numero, si el array esta vacio muestra todas
    *   por defecto [].
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolución mínima.
+   * - maxResolution: Resolución máxima.
    * - styles: Estilos de las bandas.
    * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
    *   En este caso la capa sería detectado por los plugins de tablas de contenidos
@@ -238,6 +247,14 @@ class COG extends LayerBase {
 
     this.addSingleLayer_(null);
 
+    // calculates the resolutions from scales
+    if (!isNull(this.options) &&
+      !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
+      const units = this.map.getProjection().units;
+      this.options.minResolution = getResolutionFromScale(this.options.minScale, units);
+      this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
+    }
+
     if (this.legendUrl_ === concatUrlPaths([M.config.THEME_URL, FacadeLayerBase.LEGEND_DEFAULT])) {
       this.legendUrl_ = addParameters(this.url, {
         SERVICE: 'COG',
@@ -282,7 +299,27 @@ class COG extends LayerBase {
   addSingleLayer_() {
     let extent;
 
-    const source = this.createOLSource_();
+    const minResolution = this.options.minResolution;
+    const maxResolution = this.options.maxResolution;
+    const zIndex = this.zIndex_;
+
+
+    let resolutions = this.map.getResolutions();
+    if (isNullOrEmpty(resolutions) && !isNullOrEmpty(this.resolutions_)) {
+      resolutions = this.resolutions_;
+    } else if (isNullOrEmpty(resolutions)) {
+      // generates the resolution
+      const zoomLevels = this.getNumZoomLevels();
+      const size = this.map.getMapImpl().getSize();
+      const units = this.map.getProjection().units;
+      if (!isNullOrEmpty(minResolution) && !isNullOrEmpty(maxResolution)) {
+        resolutions = fillResolutions(minResolution, maxResolution, zoomLevels);
+      } else {
+        resolutions = generateResolutionsFromExtent(extent, size, zoomLevels, units);
+      }
+    }
+
+    const source = this.createOLSource_(resolutions, minResolution, maxResolution, extent);
 
     // this.ol3Layer = new TileLayer(extend({
     //   source,
@@ -293,19 +330,18 @@ class COG extends LayerBase {
       source,
       extent,
       style: this.styles,
+      zIndex,
     });
 
     this.map.getMapImpl().addLayer(this.ol3Layer);
 
     this.setVisible(this.visibility);
 
-    // sets the resolutions
-    if (this.resolutions_ !== null) {
-      this.setResolutions(this.resolutions_);
+    // sets its z-index
+    if (zIndex !== null) {
+      this.setZIndex(zIndex);
     }
     // activates animation for base layers or animated parameters
-    const animated = ((this.transparent === false) || (this.options.animated === true));
-    this.ol3Layer.set('animated', animated);
     this.ol3Layer.setMaxZoom(this.maxZoom);
     this.ol3Layer.setMinZoom(this.minZoom);
   }
@@ -318,7 +354,7 @@ class COG extends LayerBase {
    * @return {ol.source} Fuente de Openlayers.
    * @api
    */
-  createOLSource_() {
+  createOLSource_(resolutions, minResolution, maxResolution, extent) {
     let olSource = this.vendorOptions_.source;
     if (isNullOrEmpty(this.vendorOptions_.source)) {
       const layerParams = {
@@ -340,6 +376,7 @@ class COG extends LayerBase {
       }
       const convertToRGB = this.convertToRGB_;
       const bands = this.bands_;
+      const zIndex = this.zIndex_;
       const sources = [
         {
           url: this.url,
@@ -353,9 +390,40 @@ class COG extends LayerBase {
       olSource = new GeoTIFF({
         sources,
         convertToRGB,
+        minResolution,
+        maxResolution,
+        zIndex,
       });
     }
     return olSource;
+  }
+
+  /**
+   * Este método obtiene la extensión.
+   *
+   * @public
+   * @function
+   * @returns {Array<Number>} Extensión, asincrono.
+   * @api stable
+   */
+  getExtent() {
+    const olProjection = getProj(this.map.getProjection().code);
+
+    // creates the promise
+    this.extentPromise = new Promise((success, fail) => {
+      if (!isNullOrEmpty(this.extent_)) {
+        this.extent_ = ImplUtils.transformExtent(this.extent_, this.extentProj_, olProjection);
+        this.extentProj_ = olProjection;
+        success(this.extent_);
+      } else {
+        this.getCapabilities().then((getCapabilities) => {
+          this.extent_ = getCapabilities.getLayerExtent(this.name);
+          this.extentProj_ = olProjection;
+          success(this.extent_);
+        });
+      }
+    });
+    return this.extentPromise;
   }
 
   /**
@@ -414,11 +482,23 @@ class COG extends LayerBase {
    */
   setMaxExtent(maxExtent) {
     // maxExtentPromise.then((maxExtent) => {
+    const minResolution = this.options.minResolution;
+    const maxResolution = this.options.maxResolution;
     this.getOL3Layer().setExtent(maxExtent);
-
+    if (this.tiled === true) {
+      let resolutions = this.map.getResolutions();
+      if (isNullOrEmpty(resolutions) && !isNullOrEmpty(this.resolutions_)) {
+        resolutions = this.resolutions_;
+      }
+      // gets the tileGrid
+      if (!isNullOrEmpty(resolutions)) {
+        const source = this.createOLSource_(resolutions, minResolution, maxResolution, maxExtent);
+        this.ol3Layer.setSource(source);
+      }
+    }
     // });
   }
-
+  
   /**
    * Este método obtiene el número de niveles de zoom
    * disponibles para la capa COG.

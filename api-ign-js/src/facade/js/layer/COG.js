@@ -35,12 +35,6 @@ class COG extends LayerBase {
    * - projection: SRS usado por la capa.
    * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
-   * - convertToRGB: Convierte la compresion de la imagen a RGB, puede ser 'auto', true o false,
-   *   por defecto 'auto'.
-   * - opacity: Opacidad de la capa de 0 a 1, por defecto 1.
-   * - bands: Bandas a mostrar en forma de array y como numero, si el array esta vacio muestra todas
-   *   por defecto [].
-   * - styles: Estilos de las bandas.
    * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
    *   En este caso la capa sería detectado por los plugins de tablas de contenidos
    *   y aparecería como no visible.
@@ -48,7 +42,18 @@ class COG extends LayerBase {
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - visibility: Indica la visibilidad de la capa.
-   * - styles: Estilos de la capa.
+   *    * - convertToRGB: Convierte la compresion de la imagen a RGB, puede ser 'auto', true o false,
+   *   por defecto 'auto'.
+   * - opacity: Opacidad de la capa de 0 a 1, por defecto 1.
+   * - bands: Bandas a mostrar en forma de array y como numero, si el array esta vacio muestra todas
+   *   por defecto [].
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolución mínima.
+   * - maxResolution: Resolución máxima.
+   * - styles: Estilos de las bandas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileCOG from 'ol/source/TileCOG';
@@ -75,10 +80,6 @@ class COG extends LayerBase {
     const parameters = parameter.layer(userParameters, LayerType.COG);
     const optionsVar = {
       ...options,
-      styles: parameters.styles,
-      convertToRGB: parameters.convertToRGB,
-      opacity: parameters.opacity,
-      bands: parameters.bands,
       visibility: parameters.visibility,
       queryable: parameters.queryable,
       displayInLayerSwitcher: parameters.displayInLayerSwitcher,

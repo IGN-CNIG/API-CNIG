@@ -22,9 +22,12 @@ const layerCOG = new COG({
   name: 'Nombre cog',
   legend: 'Leyenda cog',
   transparent: true,
-  // opacity: 0.75,
+},{
+  minZoom:5,
+  maxZoom:15,
   convertToRGB: 'auto',
   // bands: [1],
+  // opacity: 0.25,
   
   // styles: {
   //   color: [

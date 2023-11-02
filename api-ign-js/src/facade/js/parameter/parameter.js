@@ -2876,18 +2876,6 @@ export const cog = (userParameters) => {
     // get visibility
     layerObj.visibility = getVisibilityCOG(userParam);
 
-    // get opacity
-    layerObj.opacity = getOpacityCOG(userParam);
-
-    // get convertToRGB
-    layerObj.convertToRGB = getConvertToRGBCOG(userParam);
-
-    // get bands
-    layerObj.bands = getBandsCOG(userParam);
-
-    // get styles
-    layerObj.styles = getStylesCOG(userParam);
-
     layerObj.isBase = (layerObj.transparent === undefined) ?
       userParam.isBase : !layerObj.transparent;
 
