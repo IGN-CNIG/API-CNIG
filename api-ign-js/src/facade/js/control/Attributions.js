@@ -16,21 +16,9 @@ import KML from '../layer/KML';
 /**
  * @classdesc
  * Panel de atribuciones API-CING.
- *
- * @property {String} url_ URL del fichero de atribuciones.
- * @property {String} type_ Tipo de fichero de atribuciones.
- * @property {String} layerName_ Nombre de la capa de atribuciones.
- * @property {Layer} layer_ Capa de atribuciones.
  * @property {Number} scale_ Escala de visualización de la capa de atribuciones.
- * @property {String} attributionParam_ Nombre del parámetro de atribución.
- * @property {String} urlParam_ Nombre del parámetro de URL.
- * @property {String} defaultAttribution_ Atribución por defecto.
- * @property {String} defaultUrl_ URL por defecto.
  * @property {String} tooltip_ Texto del tooltip.
  * @property {String} position Posición del control.
- * @property {Boolean} closePanel Indica si se cierra el panel.
- * @property {Boolean} options Indica si se muestran las opciones.
- * @property {String} urlAttribute Nombre del atributo de la URL.
  * @property {Number} order Orden de la capa.
  * @extends {M.Control}
  * @api
@@ -41,7 +29,6 @@ class Attributions extends ControlBase {
    *
    * @constructor
    * @param {Object} options Opciones del control.
-   * [TO-DO]
    * @api
    */
   constructor(options = {}) {
