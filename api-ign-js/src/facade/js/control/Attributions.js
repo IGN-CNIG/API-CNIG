@@ -19,8 +19,9 @@ import KML from '../layer/KML';
  * @property {Number} scale_ Escala de visualización de la capa de atribuciones.
  * @property {String} tooltip_ Texto del tooltip.
  * @property {String} position Posición del control.
- * @property {Number} order Orden de la capa.
- * @extends {M.Control}
+ * @property {Number} order Accesibilidad, tabIndex.
+ * @property {String} url_ URL del fichero de atribuciones.
+ * @property {Object} collectionsAttributions Colección de atribuciones.
  * @api
  */
 class Attributions extends ControlBase {
