@@ -13,6 +13,13 @@ import LayerBase from './Layer';
 import ImplMap from '../Map';
 import Feature from '../feature/Feature';
 
+/**
+ * @classdesc
+ * La API-CNIG permite visualizar la capa de Open Street Map.
+ *
+ * @api
+ * @extends {M.impl.layer.Layer}
+ */
 class Generic extends LayerBase {
   constructor(options = {}, vendorOptions) {
     // calls the super constructor

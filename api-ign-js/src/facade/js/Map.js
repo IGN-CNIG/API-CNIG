@@ -46,6 +46,7 @@ import WMS from './layer/WMS';
 import WMTS from './layer/WMTS';
 import MVT from './layer/MVT';
 import OGCAPIFeatures from './layer/OGCAPIFeatures';
+import Generic from './layer/Generic';
 import Panel from './ui/Panel';
 import * as Position from './ui/position';
 import GeoJSON from './layer/GeoJSON';
@@ -340,7 +341,11 @@ class Map extends Base {
       return;
     }
     const {
-      tooltip, position, scale, collectionsAttributions, order,
+      tooltip,
+      position,
+      scale,
+      collectionsAttributions,
+      order,
     } = options;
     const atribucionControl = new Attributions({
       map: this,
@@ -569,6 +574,9 @@ class Map extends Base {
                 break;
               case 'OGCAPIFeatures':
                 layer = new OGCAPIFeatures(layerParam, { style: parameterVariable.style });
+                break;
+              case 'Generic':
+                layer = new Generic(layerParam);
                 break;
               default:
                 Dialog.error(getValue('dialog').invalid_type_layer);
