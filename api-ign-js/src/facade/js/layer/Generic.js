@@ -29,8 +29,6 @@ import StyleCluster from '../style/Cluster';
  * @classdesc
  * Generic permite añadir cualquier tipo de capa definida con la librería base
  *
- * @property {String} legend Nombre asociado en el árbol de contenido, si usamos uno.
- *
  * @api
  * @extends {M.Layer}
  */
@@ -47,16 +45,18 @@ class Generic extends LayerBase {
    * @param {Object} vendorOptions Capa definida en con la librería base.
    * @api
    */
-  constructor(userParameters, options, vendorOptions = {}) {
+  constructor(userParameters = {}, options = {}, vendorOptions = {}) {
     // checks if the implementation can create Generic layers
     if (isUndefined(GenericImpl)) {
       Exception(getValue('exception').generic_method);
     }
 
+    const params = isNullOrEmpty(userParameters) ? {} : userParameters;
     const opt = isNullOrEmpty(options) ? {} : options;
-    opt.maxExtent = userParameters.maxExtent;
-    opt.ids = userParameters.ids;
-    opt.cql = userParameters.cql;
+
+    opt.maxExtent = params.maxExtent;
+    opt.ids = params.ids;
+    opt.cql = params.cql;
     const impl = new GenericImpl(opt, vendorOptions);
     // calls the super constructor
     super(opt, impl);
@@ -64,9 +64,6 @@ class Generic extends LayerBase {
     if (!isNullOrEmpty(impl) && isFunction(impl.setFacadeObj)) {
       impl.setFacadeObj(this);
     }
-
-    const params = isNullOrEmpty(userParameters) ? {} : userParameters;
-
     /**
      * Generic name: Nombre de la capa.
      */
@@ -143,17 +140,17 @@ class Generic extends LayerBase {
      * predefinedStyles: Estilos predefinidos para la capa.
      */
     this.predefinedStyles =
-      isUndefined(options.predefinedStyles) ? [] : options.predefinedStyles;
-    if (isUndefined(options.style) && !isUndefined(this.constructor.DEFAULT_OPTS_STYLE)) {
+      isUndefined(opt.predefinedStyles) ? [] : opt.predefinedStyles;
+    if (isUndefined(opt.style) && !isUndefined(this.constructor.DEFAULT_OPTS_STYLE)) {
       this.predefinedStyles.unshift(new GenericStyle(this.constructor.DEFAULT_OPTS_STYLE));
-    } else if (isUndefined(options.style)) {
+    } else if (isUndefined(opt.style)) {
       this.predefinedStyles.unshift(new GenericStyle(GenericStyle.DEFAULT_OPTIONS_STYLE));
     } else {
-      this.predefinedStyles.unshift(options.style);
+      this.predefinedStyles.unshift(opt.style);
     }
 
 
-    this.setStyle(options.style);
+    this.setStyle(opt.style);
 
     impl.on(EventType.LOAD, features => this.fire(EventType.LOAD, [features]));
   }

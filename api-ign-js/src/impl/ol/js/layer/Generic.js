@@ -66,7 +66,7 @@ class Generic extends LayerBase {
 
     this.style = vendorOptions.getStyle === undefined ? null : vendorOptions.getStyle().name;
 
-    if (this.style !== 'createDefaultStyle') {
+    if (this.style !== 'createDefaultStyle' && vendorOptions.getStyle) {
       this.style = vendorOptions.getStyle();
     }
 
