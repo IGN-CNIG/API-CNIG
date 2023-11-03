@@ -169,8 +169,8 @@ export default class MouseSRSControl extends M.impl.Control {
 
     if (!find) return epsg;
 
-    const { datum, codes, proj } = find;
-    const format = `${datum} ${codes[0]} - ${proj.toUpperCase()} `;
+    const { datum, proj } = find;
+    const format = `${datum} - ${proj} `;
 
     return format;
   }
