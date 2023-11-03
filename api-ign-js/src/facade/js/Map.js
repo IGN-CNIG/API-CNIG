@@ -3251,6 +3251,10 @@ class Map extends Base {
    */
   evtRemoveAttributions_() {
     this.on(EventType.REMOVED_LAYER, (layersEvt) => {
+      if (!layersEvt) {
+        return;
+      }
+
       layersEvt.forEach(({ attribution, name }) => {
         if (name === '__draw__') {
           return;
