@@ -58,6 +58,7 @@ class TMS extends LayerBase {
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher:  Indica si la capa se muestra en el selector de capas.
    * - tileGridMaxZoom: Zoom máximo de cuadrícula de mosaico.
+   * - isBase: Indica si la capa es base o no.
    * - tileSize: Tamaño de la tesela, por defecto 256.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.

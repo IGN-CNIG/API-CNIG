@@ -2014,7 +2014,6 @@ export const wms = (userParameters) => {
       visibility,
       options,
       useCapabilities,
-      isBase: (transparent !== undefined) ? !transparent : userParam.isBase,
     };
   });
 
@@ -2546,9 +2545,6 @@ export const xyz = (userParamer) => {
     // gets the legend
     layerObj.legend = getExtraParameter(userParam, layerObj.name, 3, 'legend') || layerObj.name;
 
-    layerObj.isBase = (layerObj.transparent === undefined) ?
-      userParam.isBase : !layerObj.transparent;
-
     return layerObj;
   });
 
@@ -2655,9 +2651,6 @@ export const tms = (userParamer) => {
     // gets the legend
     layerObj.legend = getExtraParameter(userParam, layerObj.name, 4, 'legend');
 
-    layerObj.isBase = (layerObj.transparent === undefined) ?
-      userParam.isBase : !layerObj.transparent;
-
     return layerObj;
   });
 
@@ -2730,9 +2723,6 @@ export const wmts = (userParameters) => {
 
     // get visibility
     layerObj.useCapabilities = getUseCapabilitiesWMTS(userParam);
-
-    layerObj.isBase = (layerObj.transparent === undefined) ?
-      userParam.isBase : !layerObj.transparent;
 
     return layerObj;
   });
@@ -3130,9 +3120,6 @@ export const mbtiles = (userParameters) => {
     layerObj.tileLoadFunction = getTileLoadFunctionMBTiles(userParam);
 
     layerObj.tileSize = getTileSizeMBTiles(userParam);
-
-    layerObj.isBase = (layerObj.transparent === undefined) ?
-      userParam.isBase : !layerObj.transparent;
 
     return layerObj;
   });
@@ -3936,6 +3923,12 @@ export const layer = (userParameters, forcedType) => {
       }
       if (!isNullOrEmpty(userParam.attribution)) {
         layerObj.attribution = userParam.attribution;
+      }
+
+      if (!isNullOrEmpty(userParam.isBase)) {
+        layerObj.isBase = !!userParam.isBase;
+      } else if (userParam.name !== '__draw__') {
+        layerObj.isBase = !layerObj.transparent;
       }
     }
 

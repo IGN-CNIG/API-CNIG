@@ -45,6 +45,7 @@ class MBTiles extends LayerBase {
    * - tileSize: Tamaño de la tesela, por defecto 256.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - opacity: Opacidad de capa, por defecto 1.
+   * - isBase: Indica si la capa es base.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a la implementación.
    * Están proporcionados por el usuario.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
