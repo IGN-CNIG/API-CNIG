@@ -171,6 +171,7 @@
     "addmbtiles_method": "The implementation used does not have the method addMBTilesVector.",
     "removembtiles_method": "The implementation used does not have the method removeMBTilesVector.",
     "browser_audio": "Your browser does not support the audio element",
-    "browser_video": "Your browser does not support the video element"
+    "browser_video": "Your browser does not support the video element",
+    "transparent_obsolete": "The transparent parameter is deprecated. Use isBase instead."
   }
 }

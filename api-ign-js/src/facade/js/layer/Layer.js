@@ -62,6 +62,9 @@ class LayerBase extends Base {
      */
     this.transparent = parameter.transparent;
 
+    // eslint-disable-next-line no-console
+    console.warn(getValue('exception').transparent_obsolete);
+
     /**
      * Layer isBase:
      * Verdadero si es una capa base, falso en caso contrario.
