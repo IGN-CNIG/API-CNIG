@@ -12,9 +12,6 @@ import Stroke from 'ol/style/Stroke';
 import Polygon from 'M/style/Polygon';
 import { EQUAL } from 'M/filter/Filter';
 
-
-
-
 const mapa = Mmap({
   container: 'map',
   projection: 'EPSG:3857*m',
@@ -23,7 +20,6 @@ const mapa = Mmap({
   bbox: [-2453322.859841021, 4116592.5953264493, 1460252.9883600033, 4967795.342310172]
 });
 window.mapa = mapa;
-
 
 // WMS
 const layer = new Generic(null, null, new Image({

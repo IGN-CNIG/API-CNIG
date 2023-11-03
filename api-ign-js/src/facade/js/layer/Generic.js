@@ -37,7 +37,8 @@ class Generic extends LayerBase {
    * Constructor principal de la clase. Crea una capa Generic
    * con parámetros especificados por el usuario.
    * @constructor
-   * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
+   * @param {string|Mx.parameters.Generic} userParameters Parámetros para la construcción
+   * de la capa.
    * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
@@ -45,25 +46,28 @@ class Generic extends LayerBase {
    * @param {Object} vendorOptions Capa definida en con la librería base.
    * @api
    */
-  constructor(userParameters = {}, options = {}, vendorOptions = {}) {
+  constructor(userParameters, options, vendorOptions = {}) {
     // checks if the implementation can create Generic layers
     if (isUndefined(GenericImpl)) {
       Exception(getValue('exception').generic_method);
     }
 
     const params = isNullOrEmpty(userParameters) ? {} : userParameters;
-    const opt = isNullOrEmpty(options) ? {} : options;
-
-    opt.maxExtent = params.maxExtent;
-    opt.ids = params.ids;
-    opt.cql = params.cql;
-    const impl = new GenericImpl(opt, vendorOptions);
+    let opts = isNullOrEmpty(options) ? {} : options;
+    opts = {
+      ...opts,
+      maxExtent: params.maxExtent,
+      ids: params.ids,
+      cql: params.cql,
+    };
+    const impl = new GenericImpl(opts, vendorOptions);
     // calls the super constructor
-    super(opt, impl);
+    super(opts, impl);
 
     if (!isNullOrEmpty(impl) && isFunction(impl.setFacadeObj)) {
       impl.setFacadeObj(this);
     }
+
     /**
      * Generic name: Nombre de la capa.
      */
@@ -140,17 +144,16 @@ class Generic extends LayerBase {
      * predefinedStyles: Estilos predefinidos para la capa.
      */
     this.predefinedStyles =
-      isUndefined(opt.predefinedStyles) ? [] : opt.predefinedStyles;
-    if (isUndefined(opt.style) && !isUndefined(this.constructor.DEFAULT_OPTS_STYLE)) {
+      isUndefined(opts.predefinedStyles) ? [] : opts.predefinedStyles;
+    if (isUndefined(opts.style) && !isUndefined(this.constructor.DEFAULT_OPTS_STYLE)) {
       this.predefinedStyles.unshift(new GenericStyle(this.constructor.DEFAULT_OPTS_STYLE));
-    } else if (isUndefined(opt.style)) {
+    } else if (isUndefined(opts.style)) {
       this.predefinedStyles.unshift(new GenericStyle(GenericStyle.DEFAULT_OPTIONS_STYLE));
     } else {
-      this.predefinedStyles.unshift(opt.style);
+      this.predefinedStyles.unshift(opts.style);
     }
 
-
-    this.setStyle(opt.style);
+    this.setStyle(opts.style);
 
     impl.on(EventType.LOAD, features => this.fire(EventType.LOAD, [features]));
   }
@@ -183,6 +186,31 @@ class Generic extends LayerBase {
   }
 
   /**
+   * Devuelve la url del servicio.
+   *
+   * @function
+   * @getter
+   * @public
+   * @returns {String} URL del servicio.
+   * @api
+   */
+  get url() {
+    return this.getImpl().getURLService();
+  }
+
+  /**
+   * Modifica la url del servicio.
+   * @function
+   * @setter
+   * @public
+   * @param {String} newUrl Nueva URL.
+   * @api
+   */
+  set url(newUrl) {
+    this.getImpl().setURLService(newUrl);
+  }
+
+  /**
    * Devuelve la leyenda de la capa.
    * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    *
@@ -210,31 +238,6 @@ class Generic extends LayerBase {
     } else {
       this.getImpl().legend = newLegend;
     }
-  }
-
-  /**
-   * Devuelve la url del servicio.
-   *
-   * @function
-   * @getter
-   * @public
-   * @returns {String} URL del servicio.
-   * @api
-   */
-  get url() {
-    return this.getImpl().getURLService();
-  }
-
-  /**
-   * Modifica la url del servicio.
-   * @function
-   * @setter
-   * @public
-   * @param {String} newUrl Nueva URL.
-   * @api
-   */
-  set url(newUrl) {
-    this.getImpl().setURLService(newUrl);
   }
 
   /**

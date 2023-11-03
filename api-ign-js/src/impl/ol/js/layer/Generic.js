@@ -207,17 +207,51 @@ class Generic extends LayerBase {
     this.ol3Layer.getSource().on('change', this.fnAddFeatures_);
   }
 
+  /**
+   * Este método obtiene la URL del servicio.
+   *
+   * @function
+   * @returns {String} URL del servicio
+   * @api
+   */
+  getURLService() {
+    let url = '';
+    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
+      !isNullOrEmpty(this.ol3Layer.getSource())) {
+      url = this.ol3Layer.getSource().getUrl();
+    }
+    return url;
+  }
+
+  /**
+   * Este método modifica la URL del servicio.
+   *
+   * @function
+   * @param {String} URL del servicio.
+   * @api
+   */
+  setURLService(url) {
+    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
+      !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
+      this.ol3Layer.getSource().setUrl(url);
+    }
+  }
+
   addFeaturesToFacade() {
     if (this.ol3Layer.getSource().getState() === 'ready') {
-      const features = this.ol3Layer.getSource().getFeatures().map((f) => {
-        return Feature.olFeature2Facade(f);
-      });
-      this.facadeLayer_.addFeatures(features);
-      this.loaded_ = true;
-      this.deactivate();
-      this.fire(EventType.LOAD, [this.features_]);
-      if (this.style !== 'createDefaultStyle') {
-        this.ol3Layer.setStyle(this.style);
+      if (this.ol3Layer.getSource().getFeatures) {
+        const features = this.ol3Layer.getSource().getFeatures().map((f) => {
+          return Feature.olFeature2Facade(f);
+        });
+        this.facadeLayer_.addFeatures(features);
+        this.loaded_ = true;
+        this.deactivate();
+        this.fire(EventType.LOAD, [this.features_]);
+        if (this.style !== 'createDefaultStyle') {
+          this.ol3Layer.setStyle(this.style);
+        }
+      } else {
+        this.deactivate();
       }
     }
   }
@@ -318,23 +352,6 @@ class Generic extends LayerBase {
   setVersion(newVersion) {
     this.version = newVersion;
     this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
-  }
-
-  // ok
-  getURLService() {
-    let url = '';
-    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource())) {
-      url = this.ol3Layer.getSource().getUrl();
-    }
-    return url;
-  }
-
-  // ok
-  setURLService(url) {
-    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource()) &&
-      !isNullOrEmpty(url)) {
-      this.ol3Layer.getSource().setUrl(url);
-    }
   }
 
   getMaxExtent() {
