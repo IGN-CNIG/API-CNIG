@@ -8,7 +8,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/attributions",
     "image": "img/api-logo.png",
     "description": "Plugin que permite mostrar información de atribuciones sobre las capas que se visualizan en el mapa.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "backimglayer",
