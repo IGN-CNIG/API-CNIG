@@ -150,6 +150,7 @@
     "layerswitcher_method": "La implementación usada no puede crear controles LayerSwitcher",
     "location_method": "La implementación usada no puede crear controles Location",
     "wms_method": "La implementación usada no puede crear capas WMS",
+    "generic_method": "La implementación usada no puede crear capas Genéricas",
     "wmts_method": "La implementación usada no puede crear capas WMTS",
     "no_impl": "No se ha especificado ninguna implementación",
     "no_container": "No ha especificado ningún parámetro contenedor",

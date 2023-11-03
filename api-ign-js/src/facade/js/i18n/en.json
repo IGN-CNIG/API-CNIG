@@ -149,6 +149,7 @@
     "layerswitcher_method": "The used implementation can not create LayerSwitcher controls",
     "location_method": "The used implementation can not create Location controls",
     "wms_method": "The used implementation can not create WMS layers",
+    "generic_method": "The used implementation can not create Generic layers",
     "wmts_method": "The used implementation can not create WMTS layers",
     "no_impl": "No implementation specified",
     "no_container": "You have not specified any container parameters",
