@@ -59,6 +59,8 @@ class Generic extends LayerBase {
       maxExtent: params.maxExtent,
       ids: params.ids,
       cql: params.cql,
+      type: LayerType.Generic,
+      legend: params.legend || params.name,
     };
     const impl = new GenericImpl(opts, vendorOptions);
     // calls the super constructor
@@ -159,33 +161,6 @@ class Generic extends LayerBase {
   }
 
   /**
-   * Devuelve el tipo de layer, Generic.
-   *
-   * @function
-   * @getter
-   * @returns {M.LayerType.Generic} Tipo Generic.
-   * @api
-   */
-  get type() {
-    return LayerType.Generic;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.Generic)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.Generic).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
-  }
-
-  /**
    * Devuelve la url del servicio.
    *
    * @function
@@ -208,36 +183,6 @@ class Generic extends LayerBase {
    */
   set url(newUrl) {
     this.getImpl().setURLService(newUrl);
-  }
-
-  /**
-   * Devuelve la leyenda de la capa.
-   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
-   *
-   * @function
-   * @getter
-   * @return {M.layer.Generic.impl.legend} Leyenda de la capa.
-   * @api
-   */
-  get legend() {
-    return this.getImpl().legend;
-  }
-
-  /**
-   * Sobrescribe la leyenda de la capa.
-   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
-   *
-   * @function
-   * @setter
-   * @param {String} newLegend Nueva leyenda.
-   * @api
-   */
-  set legend(newLegend) {
-    if (isNullOrEmpty(newLegend)) {
-      this.getImpl().legend = this.name;
-    } else {
-      this.getImpl().legend = newLegend;
-    }
   }
 
   /**

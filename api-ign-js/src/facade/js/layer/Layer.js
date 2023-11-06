@@ -44,7 +44,7 @@ class LayerBase extends Base {
     /**
      * Layer type: Tipo de la capa.
      */
-    this.type = parameter.type;
+    this._type = parameter.type;
 
     /**
      * Layer url: URL del servicio.
@@ -109,6 +109,35 @@ class LayerBase extends Base {
      * Zoom máximo aplicable a la capa.
      */
     this.maxZoom = parameter.maxZoom || Number.POSITIVE_INFINITY;
+  }
+
+  /**
+   * Devuelve el tipo de layer.
+   *
+   * @function
+   * @getter
+   * @returns {String} Tipo.
+   * @api
+   */
+  get type() {
+    return this._type;
+  }
+
+  /**
+   * Sobrescribe el tipo de capa.
+   *
+   * @function
+   * @setter
+   * @param {String} newType Nuevo tipo.
+   * @api
+   */
+  set type(newType) {
+    if (!isUndefined(newType) &&
+      !isNullOrEmpty(newType) && (newType !== this._type)) {
+      Exception('El tipo de capa debe ser \''
+        .concat(this._type)
+        .concat('\' pero se ha especificado \'').concat(newType).concat('\''));
+    }
   }
 
   /**

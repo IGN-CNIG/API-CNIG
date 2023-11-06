@@ -147,30 +147,6 @@ class WFS extends Vector {
   }
 
   /**
-   * Devuelve el tipo de capa, WFS.
-   * @function
-   * @return {M.LayerType.WFS} Devuelve WFS.
-   * @api
-   */
-  get type() {
-    return LayerType.WFS;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) && !isNullOrEmpty(newType) &&
-      (newType !== LayerType.WFS)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.WFS).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
-  }
-
-  /**
    * Devuelve el valor de la propiedad "extract".
    * Activa la consulta haciendo clic en el objeto geográfico, por defecto falso.
    * @function

@@ -191,30 +191,6 @@ class OGCAPIFeatures extends Vector {
   }
 
   /**
-   * Devuelve el tipo de capa, OGCAPIFeatures.
-   * @function
-   * @return {M.LayerType.OGCAPIFeatures} Devuelve OGCAPIFeatures.
-   * @api
-   */
-  get type() {
-    return LayerType.OGCAPIFeatures;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) && !isNullOrEmpty(newType) &&
-      (newType !== LayerType.OGCAPIFeatures)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.OGCAPIFeatures).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
-  }
-
-  /**
    * Devuelve la leyenda de la capa.
    * @function
    * @return {M.layer.OGCAPIFeature.impl.legend} Devuelve la leyenda.

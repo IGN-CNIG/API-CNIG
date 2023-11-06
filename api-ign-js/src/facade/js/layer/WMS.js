@@ -171,33 +171,6 @@ class WMS extends LayerBase {
   }
 
   /**
-   * Devuelve el tipo de layer, WMS.
-   *
-   * @function
-   * @getter
-   * @returns {M.LayerType.WMS} Tipo WMS.
-   * @api
-   */
-  get type() {
-    return LayerType.WMS;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.WMS)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.WMS).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
-  }
-
-  /**
    * Devuelve la leyenda de la capa.
    * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    *

@@ -3,7 +3,7 @@
  */
 import XYZImpl from 'impl/layer/XYZ';
 import LayerBase from './Layer';
-import { isNullOrEmpty, isUndefined } from '../util/Utils';
+import { isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
@@ -117,33 +117,6 @@ class XYZ extends LayerBase {
      * XYZ Attribution: Atribución de la capa.
      */
     this.attribution = parameters.attribution;
-  }
-
-  /**
-   * Devuelve el tipo de capa.
-   *
-   * @function
-   * @getter
-   * @return {M.LayerType.XYZ} Devuelve XYZ.
-   * @api
-   */
-  get type() {
-    return LayerType.XYZ;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.XYZ)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.XYZ).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
   }
 
   /**

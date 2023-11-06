@@ -150,33 +150,6 @@ class MBTiles extends LayerBase {
   }
 
   /**
-   * Devuelve el tipo de capa, en este caso MBTiles.
-   *
-   * @function
-   * @getter
-   * @return {String} Tipo de capa, MBTiles.
-   * @api
-   */
-  get type() {
-    return LayerType.MBTiles;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo de capa.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.MBTiles)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.MBTiles).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
-  }
-
-  /**
    * Devuelve la extensión de la capa.
    * @returns {Array} Devuelve la extensión de la capa.
    */

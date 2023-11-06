@@ -73,8 +73,11 @@ class MVT extends Vector {
    * @api
    */
   constructor(parameters = {}, options = {}, vendorOptions = {}, implParam) {
-    const impl = implParam || new MVTTileImpl(parameters, options, vendorOptions);
-    super(parameters, options, vendorOptions, impl);
+    const opts = parameters;
+    opts.type = MVTType;
+
+    const impl = implParam || new MVTTileImpl(opts, options, vendorOptions);
+    super(opts, options, vendorOptions, impl);
 
     if (isUndefined(MVTTileImpl)) {
       Exception('La implementación usada no puede crear capas Vector');
@@ -84,40 +87,12 @@ class MVT extends Vector {
      * extract: Optional Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */
-    this.extract = parameters.extract;
+    this.extract = opts.extract;
 
     /**
      * Attribution: Optional Atribución de la capa.
      */
-    this.attribution = parameters.attribution;
-  }
-
-
-  /**
-   * Devuelve el tipo de capa, MVT.
-   *
-   * @function
-   * @getter
-   * @return {M.LayerType.MVT} Tipo MVT.
-   * @api
-   */
-  get type() {
-    return MVTType;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== MVTType)) {
-      Exception('El tipo de capa debe ser \''.concat(MVTType).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
+    this.attribution = opts.attribution;
   }
 
   /**

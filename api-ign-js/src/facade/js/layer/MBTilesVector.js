@@ -97,33 +97,6 @@ class MBTilesVector extends Vector {
   }
 
   /**
-   * Devuelve el tipo de capa, en este caso MBTilesVector.
-   *
-   * @function
-   * @getter
-   * @returns {String} Tipo de capa, MBTilesVector.
-   * @api
-   */
-  get type() {
-    return LayerType.MBTilesVector;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo de capa.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.MBTilesVector)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.MBTilesVector).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
-  }
-
-  /**
    * Este método obtiene la extensión máxima de esta capa:
    * 1. Comprueba si el usuario especificó el parámetro "maxExtent".
    * 2. Obtiene el valor del parámetro "userMaxExtent" del mapa.

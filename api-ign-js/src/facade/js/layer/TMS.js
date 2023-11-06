@@ -3,7 +3,7 @@
  */
 import TMSImpl from 'impl/layer/TMS';
 import LayerBase from './Layer';
-import { isNullOrEmpty, isUndefined } from '../util/Utils';
+import { isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
@@ -138,30 +138,6 @@ class TMS extends LayerBase {
      * TMS options. Opciones de capa.
      */
     this.options = options;
-  }
-
-  /**
-   * Devuelve el tipo de capa, TMS.
-   *
-   * @function
-   * @return {M.LayerType.TMS} Devuelve TMS.
-   * @api
-   */
-  get type() {
-    return LayerType.TMS;
-  }
-
-  /**
-   *  Sobrescribe el tipo de capa.
-   * @function
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.TMS)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.TMS).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
   }
 
   /**

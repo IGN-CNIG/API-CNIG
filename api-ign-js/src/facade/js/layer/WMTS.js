@@ -154,32 +154,6 @@ class WMTS extends LayerBase {
   }
 
   /**
-   * Devuelve el tipo de capa.
-   *
-   * @function
-   * @getter
-   * @returns {M.layer.WMTS.type} Devuelve WMTS.
-   * @api
-   */
-  get type() {
-    return LayerType.WMTS;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo de capa.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.WMTS)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.WMTS).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
-  }
-  /**
    * Devuelve el valor de la propiedad "matrixSet".
    * @function
    * @getter

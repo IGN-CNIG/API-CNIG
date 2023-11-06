@@ -67,9 +67,12 @@ class Vector extends LayerBase {
    * @api
    */
   constructor(parameters = {}, options = {}, vendorOptions = {}, implParam) {
+    const optns = parameters;
+    optns.type = LayerType.Vector;
+
     // calls the super constructor
     const impl = implParam || new VectorImpl(options, vendorOptions);
-    super(parameters, impl);
+    super(optns, impl);
 
     // checks if the implementation can create Vector
     if (isUndefined(VectorImpl)) {
@@ -93,17 +96,17 @@ class Vector extends LayerBase {
     /**
      * Vector minzoom. Zoom mínimo.
      */
-    this.minZoom = parameters.minZoom;
+    this.minZoom = optns.minZoom;
 
     /**
      * Vector maxzoom. Zoom máximo.
      */
-    this.maxZoom = parameters.maxZoom;
+    this.maxZoom = optns.maxZoom;
 
     /**
      * infoEventType. Tipo de evento para mostrar la info de una feature.
      */
-    this.infoEventType = parameters.infoEventType;
+    this.infoEventType = optns.infoEventType;
 
     /**
      * predefinedStyles: Estilos predefinidos para la capa.
@@ -122,32 +125,6 @@ class Vector extends LayerBase {
 
     impl.on(EventType.LOAD, features => this.fire(EventType.LOAD, [features]));
   }
-
-  /**
-   * Devuelve el tipo de capa, Vector.
-   *
-   * @function
-   * @return {M.LayerType.Vector} Tipo de capa Vector.
-   * @api
-   */
-  get type() {
-    return LayerType.Vector;
-  }
-
-  /**
-   * Sobrescribe el tipo de la capa.
-   *
-   * @function
-   * @param {String} newType Nuevo tipo de capa.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.Vector)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.Vector).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
-  }
-
 
   /**
    * Este método devuelve el valor de la propiedad filter, esta
