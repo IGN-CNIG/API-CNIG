@@ -50,6 +50,15 @@
            <environment>cnig-desarrollo</environment>
         </properties>
      </profile>
+     <profile>
+        <id>desarrollocog</id>
+        <activation>
+           <activeByDefault>false</activeByDefault>
+        </activation>
+        <properties>
+           <environment>desarrollocog</environment>
+        </properties>
+      </profile>
       <profile>
          <id>desarrollo</id>
          <activation>
