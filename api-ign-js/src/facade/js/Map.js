@@ -3255,7 +3255,13 @@ class Map extends Base {
         return;
       }
 
-      layersEvt.forEach(({ attribution, name }) => {
+      let layers = layersEvt;
+
+      if (!Array.isArray(layersEvt)) {
+        layers = [layersEvt];
+      }
+
+      layers.forEach(({ attribution, name }) => {
         if (name === '__draw__') {
           return;
         }
