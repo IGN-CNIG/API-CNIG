@@ -22,7 +22,7 @@
 		</developer>
 	</developers>
    <build>
-      <finalName>api-core</finalName>
+      <finalName>api-core-cog</finalName>
       <plugins>
          <plugin>
             <groupId>com.github.eirslett</groupId>

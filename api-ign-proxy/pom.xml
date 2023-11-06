@@ -38,7 +38,7 @@
       </repository>
    </repositories> -->
    <build>
-      <finalName>api-core</finalName>
+      <finalName>api-core-cog</finalName>
       <defaultGoal>install</defaultGoal>
       <plugins>
          <!-- Set a JDK compiler level -->

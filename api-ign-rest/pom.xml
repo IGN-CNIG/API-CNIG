@@ -30,7 +30,7 @@
       </developer>
    </developers>
    <build>
-      <finalName>api-core</finalName>
+      <finalName>api-core-cog</finalName>
       <resources>
          <resource>
             <directory>src/main/resources/properties</directory>
