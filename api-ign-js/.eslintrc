@@ -17,11 +17,11 @@
     "File": true,
     "Response": true
   },
-  "ignorePatterns": [
-    "node_modules/",
-    "**/node_modules/",
-    "/**/node_modules/*"
-  ],
+  // "ignorePatterns": [
+  //   "node_modules/",
+  //   "**/node_modules/",
+  //   "/**/node_modules/*"
+  // ],
   "parserOptions": {
     "ecmaVersion": 2020
   },
