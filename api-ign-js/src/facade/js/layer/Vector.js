@@ -68,7 +68,7 @@ class Vector extends LayerBase {
    */
   constructor(parameters = {}, options = {}, vendorOptions = {}, implParam) {
     const optns = parameters;
-    optns.type = LayerType.Vector;
+    optns.type = !parameters.type ? LayerType.Vector : parameters.type;
 
     // calls the super constructor
     const impl = implParam || new VectorImpl(options, vendorOptions);
