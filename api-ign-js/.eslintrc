@@ -59,6 +59,7 @@
     "operator-linebreak": "off",
     "import/no-duplicates": "off",
     "import/no-named-default": "off",
-    "no-bitwise": "off"
+    "no-bitwise": "off",
+    "max-classes-per-file": "off"
   }
 }
