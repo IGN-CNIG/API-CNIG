@@ -8,7 +8,6 @@ import {
   isUndefined,
   isArray,
   isObject,
-  generateRandom,
   isFunction,
   isString,
   modifySVG,
@@ -61,37 +60,16 @@ class Generic extends LayerBase {
       cql: params.cql,
       type: LayerType.Generic,
       legend: params.legend || params.name,
+      name: params.name,
     };
+
     const impl = new GenericImpl(opts, vendorOptions);
+
     // calls the super constructor
     super(opts, impl);
 
     if (!isNullOrEmpty(impl) && isFunction(impl.setFacadeObj)) {
       impl.setFacadeObj(this);
-    }
-
-    /**
-     * Generic name: Nombre de la capa.
-     */
-    this.name = params.name;
-
-    if (isNullOrEmpty(this.name) && !isNullOrEmpty(vendorOptions.getSource()) &&
-      !isNullOrEmpty(vendorOptions.getSource().getParams) &&
-      !isNullOrEmpty(vendorOptions.getSource().getParams().LAYERS)) {
-      this.name = vendorOptions.getSource().getParams().LAYERS;
-    } else if (isNullOrEmpty(this.name) && !isNullOrEmpty(vendorOptions.getSource()) &&
-      !isNullOrEmpty(vendorOptions.getSource().getUrl) &&
-      !isNullOrEmpty(vendorOptions.getSource().getUrl())) {
-      const url = vendorOptions.getSource().getUrl();
-      const result = url.split('&typeName=')[1].split('&')[0].split(':');
-      if (!isNullOrEmpty(result)) {
-        this.name = result[1];
-        this.namespace = result[0];
-      } else {
-        this.name = generateRandom('layer_', '_'.concat(this.type));
-      }
-    } else if (isNullOrEmpty(this.name)) {
-      this.name = generateRandom('layer_', '_'.concat(this.type));
     }
 
     if (isNullOrEmpty(this.namespace)) {
@@ -101,18 +79,6 @@ class Generic extends LayerBase {
         this.namespace = params.namespace;
       }
     }
-
-    /**
-     * Generic legend: Leyenda de la capa.
-     */
-    this.legend = params.legend || this.name;
-
-    /**
-     * Layer userMaxExtent:
-     * MaxExtent proporcionado por el usuario, la medida en que
-     * restringe la visualización a una región específica.
-     */
-    this.userMaxExtent = params.maxExtent;
 
     /**
      * Layer userMaxExtent:
@@ -200,19 +166,6 @@ class Generic extends LayerBase {
     return extent;
   }
 
-  /**
-   * Este método restablece la extensión máxima de la capa.
-   * @function
-   * @api
-   */
-  resetMaxExtent() {
-    this.userMaxExtent = null;
-    this.calculateMaxExtent().then((maxExtent) => {
-      if (isFunction(this.getImpl().setMaxExtent)) {
-        this.getImpl().setMaxExtent(maxExtent);
-      }
-    });
-  }
 
   /**
    * Este método calcula la extensión máxima de esta capa.

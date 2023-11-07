@@ -7,6 +7,7 @@ import {
   isNullOrEmpty,
   isNull,
   getResolutionFromScale,
+  generateRandom,
   isUndefined,
 } from 'M/util/Utils';
 import LayerBase from './Layer';
@@ -199,6 +200,10 @@ class Generic extends LayerBase {
       !isNull(this.options.minResolution) && !isNull(this.options.maxResolution)) {
       this.ol3Layer.setMaxResolution(this.options.maxResolution);
       this.ol3Layer.setMinResolution(this.options.minResolution);
+    }
+
+    if (!this.facadeLayer_.name) {
+      this.addFacadeName();
     }
 
     map.getMapImpl().addLayer(this.ol3Layer);
@@ -399,6 +404,27 @@ class Generic extends LayerBase {
    */
   refresh() {
     this.ol3Layer.getSource().refresh();
+  }
+
+  addFacadeName() {
+    if (isNullOrEmpty(this.facadeLayer_.name) && !isNullOrEmpty(this.ol3Layer.getSource()) &&
+    !isNullOrEmpty(this.ol3Layer.getSource().getParams) &&
+    !isNullOrEmpty(this.ol3Layer.getSource().getParams().LAYERS)) {
+      this.facadeLayer_.name = this.ol3Layer.getSource().getParams().LAYERS;
+    } else if (isNullOrEmpty(this.facadeLayer_.name) && !isNullOrEmpty(this.ol3Layer.getSource()) &&
+    !isNullOrEmpty(this.ol3Layer.getSource().getUrl) &&
+    !isNullOrEmpty(this.ol3Layer.getSource().getUrl())) {
+      const url = this.ol3Layer.getSource().getUrl();
+      const result = url.split('&typeName=')[1].split('&')[0].split(':');
+      if (!isNullOrEmpty(result)) {
+        this.facadeLayer_.name = result[1];
+        this.facadeLayer_.namespace = result[0];
+      } else {
+        this.facadeLayer_.name = generateRandom('layer_', '_'.concat(this.type));
+      }
+    } else if (isNullOrEmpty(this.facadeLayer_.name)) {
+      this.facadeLayer_.name = generateRandom('layer_', '_'.concat(this.type));
+    }
   }
 
   /**
