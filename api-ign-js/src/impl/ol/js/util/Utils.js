@@ -5,6 +5,8 @@ import Feature from 'M/feature/Feature';
 import * as WKT from 'M/geom/WKT';
 import { isNullOrEmpty, isString, generateRandom } from 'M/util/Utils';
 import { getWidth, extend } from 'ol/extent';
+import OLSourceVector from 'ol/source/Vector';
+import OLVectorTile from 'ol/source/VectorTile';
 import { get as getProj, getTransform, transformExtent } from 'ol/proj';
 import OLFeature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
@@ -636,6 +638,11 @@ class Utils {
       }
     }
     return Math.trunc(scale);
+  }
+
+  static getSourceType(ol3Layer) {
+    const source = ol3Layer.getSource();
+    return (source instanceof OLSourceVector || source instanceof OLVectorTile) ? 'vector' : 'raster';
   }
 }
 export default Utils;
