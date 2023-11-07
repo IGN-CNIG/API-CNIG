@@ -13,7 +13,7 @@ import {
   modifySVG,
 } from '../util/Utils';
 import Exception from '../exception/exception';
-import LayerBase from './Layer';
+import Vector from './Vector';
 import * as LayerType from './Type';
 import { getValue } from '../i18n/language';
 import * as dialog from '../dialog';
@@ -31,7 +31,7 @@ import StyleCluster from '../style/Cluster';
  * @api
  * @extends {M.Layer}
  */
-class Generic extends LayerBase {
+class Generic extends Vector {
   /**
    * Constructor principal de la clase. Crea una capa Generic
    * con parámetros especificados por el usuario.
@@ -66,7 +66,7 @@ class Generic extends LayerBase {
     const impl = new GenericImpl(opts, vendorOptions);
 
     // calls the super constructor
-    super(opts, impl);
+    super(params, opts, vendorOptions, impl);
 
     if (!isNullOrEmpty(impl) && isFunction(impl.setFacadeObj)) {
       impl.setFacadeObj(this);

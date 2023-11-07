@@ -10,7 +10,7 @@ import {
   generateRandom,
   isUndefined,
 } from 'M/util/Utils';
-import LayerBase from './Layer';
+import Vector from './Vector';
 import ImplMap from '../Map';
 import Feature from '../feature/Feature';
 
@@ -21,7 +21,7 @@ import Feature from '../feature/Feature';
  * @api
  * @extends {M.impl.layer.Layer}
  */
-class Generic extends LayerBase {
+class Generic extends Vector {
   constructor(options = {}, vendorOptions) {
     // calls the super constructor
     super(options, vendorOptions);
@@ -408,12 +408,12 @@ class Generic extends LayerBase {
 
   addFacadeName() {
     if (isNullOrEmpty(this.facadeLayer_.name) && !isNullOrEmpty(this.ol3Layer.getSource()) &&
-    !isNullOrEmpty(this.ol3Layer.getSource().getParams) &&
-    !isNullOrEmpty(this.ol3Layer.getSource().getParams().LAYERS)) {
+      !isNullOrEmpty(this.ol3Layer.getSource().getParams) &&
+      !isNullOrEmpty(this.ol3Layer.getSource().getParams().LAYERS)) {
       this.facadeLayer_.name = this.ol3Layer.getSource().getParams().LAYERS;
     } else if (isNullOrEmpty(this.facadeLayer_.name) && !isNullOrEmpty(this.ol3Layer.getSource()) &&
-    !isNullOrEmpty(this.ol3Layer.getSource().getUrl) &&
-    !isNullOrEmpty(this.ol3Layer.getSource().getUrl())) {
+      !isNullOrEmpty(this.ol3Layer.getSource().getUrl) &&
+      !isNullOrEmpty(this.ol3Layer.getSource().getUrl())) {
       const url = this.ol3Layer.getSource().getUrl();
       const result = url.split('&typeName=')[1].split('&')[0].split(':');
       if (!isNullOrEmpty(result)) {
