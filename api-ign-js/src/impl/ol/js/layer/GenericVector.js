@@ -1,5 +1,5 @@
 /**
- * @module M/impl/layer/Generic
+ * @module M/impl/layer/GenericVector
  */
 import * as LayerType from 'M/layer/Type';
 import * as EventType from 'M/event/eventtype';

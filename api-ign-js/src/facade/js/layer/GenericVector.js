@@ -1,5 +1,5 @@
 /**
- * @module M/layer/Generic
+ * @module M/layer/GenericVector
  */
 import GenericImpl from 'impl/layer/GenericVector';
 import {

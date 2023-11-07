@@ -1,5 +1,5 @@
 /**
- * @module M/layer/Generic
+ * @module M/layer/GenericRaster
  */
 import GenericImpl from 'impl/layer/GenericRaster';
 import {
