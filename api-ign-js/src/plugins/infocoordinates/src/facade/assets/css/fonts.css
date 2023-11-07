@@ -1,0 +1,54 @@
+@font-face {
+    font-family: 'infocoordinates';
+    src: url('../fonts/infocoordinates.eot?y9loa9');
+    src: url('../fonts/infocoordinates.eot?y9loa9#iefix') format('embedded-opentype'),
+        url('../fonts/infocoordinates.ttf?y9loa9') format('truetype'),
+        url('../fonts/infocoordinates.woff2?y9loa9') format('woff2'),
+        url('../fonts/infocoordinates.woff?y9loa9') format('woff'),
+        url('../fonts/infocoordinates.svg?y9loa9#infocoordinates') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+.m-plugin-infocoordinates [class^="icon-"]:before,
+.m-plugin-infocoordinates [class*=" icon-"]:before {
+    font-family: 'infocoordinates' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.m-plugin-infocoordinates .icon-help:before {
+    content: '\e800';
+}
+
+.m-plugin-infocoordinates .icon-target:before {
+    content: '\e801';
+}
+
+.m-plugin-infocoordinates .icon-file:before {
+    content: '\e926';
+}
+
+.m-plugin-infocoordinates .icon-bin2:before {
+    content: '\e9ad';
+}
+
+.m-plugin-infocoordinates .icon-displayON:before {
+    content: '\e9ce';
+}
+
+.m-plugin-infocoordinates .icon-displayOFF:before {
+    content: '\e9d1';
+}
+
+.m-plugin-infocoordinates .icon-copy:before {
+    content: "\e92c";
+}

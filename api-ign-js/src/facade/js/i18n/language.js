@@ -49,8 +49,21 @@ export const addTranslation = (lang, json) => {
 export const getTranslation = (lang) => {
   if (lang === 'es') {
     configuration.translations[lang].mousesrs = pluginsLanguage.mousesrs.esMousesrs;
+    configuration.translations[lang].ignsearchlocator = pluginsLanguage.ignsearchlocator.esIgnsearchlocator;
+    configuration.translations[lang].infocoordinates = pluginsLanguage.infocoordinates.esInfocoordinates;
+    configuration.translations[lang].measurebar = pluginsLanguage.measurebar.esMeasurebar;
+    configuration.translations[lang].mousesrs = pluginsLanguage.mousesrs.esMousesrs;
+    configuration.translations[lang].popup = pluginsLanguage.popup.esPopup;
+    configuration.translations[lang].printermap = pluginsLanguage.printermap.esPrintermap;
+    configuration.translations[lang].zoompanel = pluginsLanguage.zoompanel.esZoompanel;
   } else if (lang === 'en') {
+    configuration.translations[lang].ignsearchlocator = pluginsLanguage.ignsearchlocator.enIgnsearchlocator;
+    configuration.translations[lang].infocoordinates = pluginsLanguage.infocoordinates.enInfocoordinates;
+    configuration.translations[lang].measurebar = pluginsLanguage.measurebar.enMeasurebar;
     configuration.translations[lang].mousesrs = pluginsLanguage.mousesrs.enMousesrs;
+    configuration.translations[lang].popup = pluginsLanguage.popup.enPopup;
+    configuration.translations[lang].printermap = pluginsLanguage.printermap.enPrintermap;
+    configuration.translations[lang].zoompanel = pluginsLanguage.zoompanel.enZoompanel;
   }
   return configuration.translations[lang];
 };

@@ -1,0 +1,26 @@
+{
+  "exception": {
+    "impl": "The implementation used cannot create Infocoordinates controls."
+  },
+  "tooltip": "Coordinates Information",
+  "title": "Coordinates Information",
+  "point": "Point:",
+  "datum": "Datum:",
+  "latitude": "Latitude:",
+  "longitude": "Longitude:",
+  "formatCoordinates": "DMS",
+  "coordX": "Coord.X (m):",
+  "coordY": "Coord.Y (m):",
+  "altitude": "Altitude (m):",
+  "readingAltitude": "Reading...",
+  "noDatafromWCS": "No data",
+  "removePoint": "Removes point",
+  "copyLatLon": "Copy latitude/longitude",
+  "copyxy": "Copy x/y",
+  "removeAllPoints": "Remove all points",
+  "importAllPoints": "Export all points",
+  "copyAllPoints": "Copy all points",
+  "displayONAllPoints": "Show coordinates of all points",
+  "displayOFFAllPoints": "Hide coordinates of all points",
+  "clipboard": "Result copied to clipboard"
+}

@@ -23,25 +23,21 @@
       "name": "precision",
       "position": 3
     }, {
-      "type": "boolean",
-      "name": "epsgFormat",
+      "type": "number",
+      "name": "geoDecimalDigits",
       "position": 4
     }, {
       "type": "number",
-      "name": "geoDecimalDigits",
-      "position": 5
-    }, {
-      "type": "number",
       "name": "utmDecimalDigits",
-      "position": 6
+      "position": 5
     }, {
       "type": "boolean",
       "name": "activeZ",
-      "position": 7
+      "position": 6
     }, {
       "type": "simple",
       "name": "helpUrl",
-      "position": 8
+      "position": 7
     }]
   }],
   "files": {
