@@ -7,7 +7,6 @@ import {
   isNullOrEmpty,
   isNull,
   getResolutionFromScale,
-  generateRandom,
   isUndefined,
 } from 'M/util/Utils';
 import Vector from './Vector';
@@ -19,7 +18,7 @@ import Feature from '../feature/Feature';
   * La API-CNIG permite visualizar la capa de Open Street Map.
   *
   * @api
-  * @extends {M.impl.layer.Layer}
+  * @extends {M.impl.layer.Vector}
   */
 class GenericVector extends Vector {
   constructor(options = {}, vendorOptions) {
@@ -27,43 +26,16 @@ class GenericVector extends Vector {
     super(options, vendorOptions);
     this.options = options;
 
-
     /**
       * Layer map. La instancia del mapa.
       */
     this.map = null;
 
     /**
-      * Layer ol3layer. La instancia de la capa ol3.
-      */
-    this.ol3Layer = vendorOptions;
-
-    this.loaded_ = false;
-
-    /**
-      * Genetiv visibility. Indica la visibilidad de la capa.
-      */
-    if (this.options.visibility === false) {
-      this.visibility = false;
-    } else {
-      this.visibility = true;
-    }
-
-    /**
-      * Generic minZoom. Zoom mínimo aplicable a la capa.
-      */
-    this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
-
-
-    /**
-      * Generic maxZoom. Zoom máximo aplicable a la capa.
-      */
-    this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
-
-    /**
       * WMS zIndex_. Índice de la capa, (+40).
       */
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.Generic];
+
 
     this.sldBody = options.sldBody;
 
@@ -79,43 +51,11 @@ class GenericVector extends Vector {
     }
 
     /**
-      * WMS numZoomLevels. Número de niveles de zoom.
-      */
-    this.numZoomLevels = this.options.numZoomLevels || ''; // by default
-
-    /**
-      * WMS numZoomLevels. Número de niveles de zoom.
-      */
-    this.maxExtent = this.options.maxExtent || []; // by default
-
-    /**
-      * WMS numZoomLevels. Número de niveles de zoom.
-      */
-    this.opacity = this.options.opacity || 1; // by default
-
-    /**
-      * WMS version: Versión WMS.
-      */
-    this.version = this.options.version;
-
-    /**
-      * WMS format. Formato de la capa, por defecto image/png.
-      */
-    this.format = this.options.format;
-
-    /**
-      * WMS format. Formato de la capa, por defecto image/png.
-      */
-    this.ids = this.options.ids;
-
-    /**
       * WFS cql: Opcional: instrucción CQL para filtrar.
       * El método setCQL(cadena_cql) refresca la capa aplicando el
       * nuevo predicado CQL que recibe.
       */
     this.cql = this.options.cql;
-
-    this.features_ = [];
 
     this.fnAddFeatures_ = null;
   }
@@ -147,10 +87,6 @@ class GenericVector extends Vector {
       this.ol3Layer.setZIndex(this.zIndex_);
     }
 
-    if (!isNullOrEmpty(this.visibility)) {
-      this.ol3Layer.setVisible(this.visibility);
-    }
-
     if (!isNullOrEmpty(this.sldBody)) {
       this.ol3Layer.getSource().updateParams({ SLD_BODY: this.sldBody });
     }
@@ -174,7 +110,7 @@ class GenericVector extends Vector {
     if (!isUndefined(this.ol3Layer.getSource().getLegendUrl)) {
       this.legendUrl_ = this.ol3Layer.getSource().getLegendUrl();
     }
-    this.ol3Layer.setOpacity(this.opacity);
+    this.ol3Layer.setOpacity(this.opacity_);
     this.ol3Layer.setVisible(this.visibility);
 
     if (!isNullOrEmpty(this.ids)) {
@@ -202,44 +138,10 @@ class GenericVector extends Vector {
       this.ol3Layer.setMinResolution(this.options.minResolution);
     }
 
-    if (!this.facadeLayer_.name) {
-      this.addFacadeName();
-    }
-
     map.getMapImpl().addLayer(this.ol3Layer);
 
     this.fnAddFeatures_ = this.addFeaturesToFacade.bind(this);
     this.ol3Layer.getSource().on('change', this.fnAddFeatures_);
-  }
-
-  /**
-    * Este método obtiene la URL del servicio.
-    *
-    * @function
-    * @returns {String} URL del servicio
-    * @api
-    */
-  getURLService() {
-    let url = '';
-    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-       !isNullOrEmpty(this.ol3Layer.getSource())) {
-      url = this.ol3Layer.getSource().getUrl();
-    }
-    return url;
-  }
-
-  /**
-    * Este método modifica la URL del servicio.
-    *
-    * @function
-    * @param {String} URL del servicio.
-    * @api
-    */
-  setURLService(url) {
-    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-       !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
-      this.ol3Layer.getSource().setUrl(url);
-    }
   }
 
   addFeaturesToFacade() {
@@ -284,205 +186,10 @@ class GenericVector extends Vector {
     }
   }
 
-  /**
-    * Devuelve si la capa esta cargada o no.
-    *
-    * @function
-    * @returns {Boolean} Verdadero cargada, falso si no.
-    * @api stable
-    */
-  isLoaded() {
-    return this.loaded_;
-  }
-
-
-  /**
-    * Este método añade los objetos geográficos a la capa.
-    *
-    * @function
-    * @public
-    * @param {Array<M.feature>} features Objetos geográficos.
-    * @param {Boolean} update Actualiza la capa.
-    * @api stable
-    */
-  addFeatures(features, update) {
-    features.forEach((newFeature) => {
-      const feature = this.features_.find(feature2 => feature2.equals(newFeature));
-      if (isNullOrEmpty(feature)) {
-        this.features_.push(newFeature);
-      }
-    });
-    if (update) {
-      this.updateLayer_();
-    }
-    this.redraw();
-  }
-
-  /**
-    * Este método devuelve un objeto geográfico por su id.
-    *
-    * @function
-    * @public
-    * @param {string|number} id Identificador del objeto geográfico..
-    * @return {null|M.feature} Objeto Geográfico - Devuelve el objeto geográfico con
-    * ese id si se encuentra, en caso de que no se encuentre o no indique el id devuelve nulo.
-    * @api stable
-    */
-  getFeatureById(id) {
-    return this.features_.filter(feature => feature.getId() === id)[0];
-  }
-
-  /**
-    * Este método devuelve todos los objetos geográficos, se le puede pasar un filtro.
-    *
-    * @function
-    * @public
-    * @param {boolean} skipFilter Indica el filtro.
-    * @param {M.Filter} filter Filtro que se ejecuta.
-    * @return {Array<M.Feature>} Devuelve todos los objetos geográficos que coincidan.
-    * @api stable
-    */
-  getFeatures(skipFilter, filter) {
-    let features = this.features_;
-    if (!skipFilter) features = filter.execute(features);
-    return features;
-  }
-
 
   deactivate() {
     this.ol3Layer.getSource().un('change', this.fnAddFeatures_);
     this.fnAddFeatures_ = null;
-  }
-
-  setVersion(newVersion) {
-    this.version = newVersion;
-    this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
-  }
-
-  getMaxExtent() {
-    return this.ol3Layer.getExtent();
-  }
-
-  setMaxExtent(extent) {
-    return this.ol3Layer.setExtent(extent);
-  }
-
-  /**
-    * Este método indica si la capa es consultable.
-    *
-    * @function
-    * @returns {Boolean} Verdadero es consultable, falso si no.
-    * @api stable
-    * @expose
-    */
-  isQueryable() {
-    return (this.options.queryable !== false);
-  }
-
-  /**
-    * Devuelve la URL de la leyenda.
-    *
-    * @public
-    * @function
-    * @returns {String} URL de la leyenda.
-    * @api stable
-    */
-  getLegendURL() {
-    return this.legendUrl_;
-  }
-
-  setLegendURL(newLegend) {
-    if (!isNullOrEmpty(newLegend)) {
-      this.legendUrl_ = newLegend;
-    }
-  }
-
-  /**
-    * Este método actualiza la capa.
-    * @function
-    * @api stable
-    */
-  refresh() {
-    this.ol3Layer.getSource().refresh();
-  }
-
-  addFacadeName() {
-    if (isNullOrEmpty(this.facadeLayer_.name) && !isNullOrEmpty(this.ol3Layer.getSource()) &&
-       !isNullOrEmpty(this.ol3Layer.getSource().getParams) &&
-       !isNullOrEmpty(this.ol3Layer.getSource().getParams().LAYERS)) {
-      this.facadeLayer_.name = this.ol3Layer.getSource().getParams().LAYERS;
-    } else if (isNullOrEmpty(this.facadeLayer_.name) && !isNullOrEmpty(this.ol3Layer.getSource()) &&
-       !isNullOrEmpty(this.ol3Layer.getSource().getUrl) &&
-       !isNullOrEmpty(this.ol3Layer.getSource().getUrl())) {
-      const url = this.ol3Layer.getSource().getUrl();
-      let result = null;
-      const typeName = url.split('&typeName=')[1];
-
-      if (!isNullOrEmpty(typeName)) {
-        result = typeName.split('&')[0].split(':');
-      }
-
-      if (!isNullOrEmpty(result)) {
-        this.facadeLayer_.name = result[1];
-        this.facadeLayer_.namespace = result[0];
-      } else {
-        this.facadeLayer_.name = generateRandom('layer_', '_'.concat(this.type));
-      }
-    } else if (isNullOrEmpty(this.facadeLayer_.name)) {
-      this.facadeLayer_.name = generateRandom('layer_', '_'.concat(this.type));
-    }
-  }
-
-  /**
-    * Este método obtiene la resolución mínima.
-    *
-    * @public
-    * @function
-    * @return {Number} Resolución mínima.
-    * @api stable
-    */
-  getMinResolution() {
-    return this.ol3Layer.getMinResolution();
-  }
-
-  /**
-    * Este método obtiene la resolución máxima para
-    * este WMS.
-    *
-    *
-    * @public
-    * @function
-    * @return {Number} Resolución Máxima.
-    * @api stable
-    */
-  getMaxResolution() {
-    return this.ol3Layer.getMaxResolution();
-  }
-
-  /**
-    * Este método elimina todos los objetos geográficos indicado.
-    *
-    * @function
-    * @public
-    * @param {Array<M.feature>} features Objetos geográficos que se eliminarán.
-    * @api stable
-    */
-  removeFeatures(features) {
-    this.features_ = this.features_.filter(f => !(features.includes(f)));
-    this.redraw();
-  }
-
-  /**
-    * Este método establece la clase de la fachada
-    * de MBTiles.
-    *
-    * @function
-    * @param {Object} obj Objeto a establecer como fachada.
-    * @public
-    * @api
-    */
-  setFacadeObj(obj) {
-    this.facadeLayer_ = obj;
   }
 
   equals(obj) {

@@ -6,7 +6,6 @@ import {
   isNullOrEmpty,
   isNull,
   getResolutionFromScale,
-  generateRandom,
   isUndefined,
 } from 'M/util/Utils';
 import LayerBase from './Layer';
@@ -25,38 +24,10 @@ class GenericRaster extends LayerBase {
     super(options, vendorOptions);
     this.options = options;
 
-
     /**
        * Layer map. La instancia del mapa.
        */
     this.map = null;
-
-    /**
-       * Layer ol3layer. La instancia de la capa ol3.
-       */
-    this.ol3Layer = vendorOptions;
-
-    this.loaded_ = false;
-
-    /**
-       * Genetiv visibility. Indica la visibilidad de la capa.
-       */
-    if (this.options.visibility === false) {
-      this.visibility = false;
-    } else {
-      this.visibility = true;
-    }
-
-    /**
-       * Generic minZoom. Zoom mínimo aplicable a la capa.
-       */
-    this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
-
-
-    /**
-       * Generic maxZoom. Zoom máximo aplicable a la capa.
-       */
-    this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
        * WMS zIndex_. Índice de la capa, (+40).
@@ -77,41 +48,9 @@ class GenericRaster extends LayerBase {
     }
 
     /**
-       * WMS numZoomLevels. Número de niveles de zoom.
-       */
-    this.numZoomLevels = this.options.numZoomLevels || ''; // by default
-
-    /**
-       * WMS numZoomLevels. Número de niveles de zoom.
-       */
-    this.maxExtent = this.options.maxExtent || []; // by default
-
-    /**
-       * WMS numZoomLevels. Número de niveles de zoom.
-       */
-    this.opacity = this.options.opacity || 1; // by default
-
-    /**
-       * WMS version: Versión WMS.
-       */
-    this.version = this.options.version;
-
-    /**
        * WMS format. Formato de la capa, por defecto image/png.
        */
     this.format = this.options.format;
-
-    /**
-       * WMS format. Formato de la capa, por defecto image/png.
-       */
-    this.ids = this.options.ids;
-
-    /**
-       * WFS cql: Opcional: instrucción CQL para filtrar.
-       * El método setCQL(cadena_cql) refresca la capa aplicando el
-       * nuevo predicado CQL que recibe.
-       */
-    this.cql = this.options.cql;
   }
 
   /**
@@ -168,19 +107,8 @@ class GenericRaster extends LayerBase {
     if (!isUndefined(this.ol3Layer.getSource().getLegendUrl)) {
       this.legendUrl_ = this.ol3Layer.getSource().getLegendUrl();
     }
-    this.ol3Layer.setOpacity(this.opacity);
+    this.ol3Layer.setOpacity(this.opacity_);
     this.ol3Layer.setVisible(this.visibility);
-
-    if (!isNullOrEmpty(this.ids)) {
-      const featureId = this.ids.split(',').map((id) => {
-        return this.name.concat('.').concat(id);
-      });
-      this.ol3Layer.getSource().setUrl(`${this.ol3Layer.getSource().getUrl()}&featureId=${featureId}`);
-    }
-
-    if (!isNullOrEmpty(this.cql)) {
-      this.ol3Layer.getSource().setUrl(`${this.ol3Layer.getSource().getUrl()}&CQL_FILTER=${window.encodeURIComponent(this.cql)}`);
-    }
 
     // calculates the resolutions from scales
     if (!isNull(this.options) &&
@@ -196,159 +124,7 @@ class GenericRaster extends LayerBase {
       this.ol3Layer.setMinResolution(this.options.minResolution);
     }
 
-    if (!this.facadeLayer_.name) {
-      this.addFacadeName();
-    }
-
     map.getMapImpl().addLayer(this.ol3Layer);
-  }
-
-  /**
-     * Este método obtiene la URL del servicio.
-     *
-     * @function
-     * @returns {String} URL del servicio
-     * @api
-     */
-  getURLService() {
-    let url = '';
-    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-        !isNullOrEmpty(this.ol3Layer.getSource())) {
-      const source = this.ol3Layer.getSource();
-      if (!isNullOrEmpty(source.getUrl)) {
-        url = this.ol3Layer.getSource().getUrl();
-      } else if (!isNullOrEmpty(source.getUrls)) {
-        url = this.ol3Layer.getSource().getUrls();
-      }
-    }
-    return url;
-  }
-
-  /**
-     * Este método modifica la URL del servicio.
-     *
-     * @function
-     * @param {String} URL del servicio.
-     * @api
-     */
-  setURLService(url) {
-    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-        !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
-      this.ol3Layer.getSource().setUrl(url);
-    }
-  }
-
-
-  setVersion(newVersion) {
-    this.version = newVersion;
-    this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
-  }
-
-  getMaxExtent() {
-    return this.ol3Layer.getExtent();
-  }
-
-  setMaxExtent(extent) {
-    return this.ol3Layer.setExtent(extent);
-  }
-
-  /**
-     * Este método indica si la capa es consultable.
-     *
-     * @function
-     * @returns {Boolean} Verdadero es consultable, falso si no.
-     * @api stable
-     * @expose
-     */
-  isQueryable() {
-    return (this.options.queryable !== false);
-  }
-
-  /**
-     * Devuelve la URL de la leyenda.
-     *
-     * @public
-     * @function
-     * @returns {String} URL de la leyenda.
-     * @api stable
-     */
-  getLegendURL() {
-    return this.legendUrl_;
-  }
-
-  setLegendURL(newLegend) {
-    if (!isNullOrEmpty(newLegend)) {
-      this.legendUrl_ = newLegend;
-    }
-  }
-
-  /**
-     * Este método actualiza la capa.
-     * @function
-     * @api stable
-     */
-  refresh() {
-    this.ol3Layer.getSource().refresh();
-  }
-
-  addFacadeName() {
-    if (isNullOrEmpty(this.facadeLayer_.name) && !isNullOrEmpty(this.ol3Layer.getSource()) &&
-        !isNullOrEmpty(this.ol3Layer.getSource().getParams) &&
-        !isNullOrEmpty(this.ol3Layer.getSource().getParams().LAYERS)) {
-      this.facadeLayer_.name = this.ol3Layer.getSource().getParams().LAYERS;
-    } else if (isNullOrEmpty(this.facadeLayer_.name) && !isNullOrEmpty(this.ol3Layer.getSource()) &&
-        !isNullOrEmpty(this.ol3Layer.getSource().getUrl) &&
-        !isNullOrEmpty(this.ol3Layer.getSource().getUrl())) {
-      const url = this.ol3Layer.getSource().getUrl();
-      const result = url.split('&typeName=')[1].split('&')[0].split(':');
-      if (!isNullOrEmpty(result)) {
-        this.facadeLayer_.name = result[1];
-        this.facadeLayer_.namespace = result[0];
-      } else {
-        this.facadeLayer_.name = generateRandom('layer_', '_'.concat(this.type));
-      }
-    } else if (isNullOrEmpty(this.facadeLayer_.name)) {
-      this.facadeLayer_.name = generateRandom('layer_', '_'.concat(this.type));
-    }
-  }
-
-  /**
-     * Este método obtiene la resolución mínima.
-     *
-     * @public
-     * @function
-     * @return {Number} Resolución mínima.
-     * @api stable
-     */
-  getMinResolution() {
-    return this.ol3Layer.getMinResolution();
-  }
-
-  /**
-     * Este método obtiene la resolución máxima para
-     * este WMS.
-     *
-     *
-     * @public
-     * @function
-     * @return {Number} Resolución Máxima.
-     * @api stable
-     */
-  getMaxResolution() {
-    return this.ol3Layer.getMaxResolution();
-  }
-
-  /**
-     * Este método establece la clase de la fachada
-     * de MBTiles.
-     *
-     * @function
-     * @param {Object} obj Objeto a establecer como fachada.
-     * @public
-     * @api
-     */
-  setFacadeObj(obj) {
-    this.facadeLayer_ = obj;
   }
 
   equals(obj) {

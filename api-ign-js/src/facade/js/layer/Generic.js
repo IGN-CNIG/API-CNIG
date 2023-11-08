@@ -12,8 +12,11 @@ import GenericRaster from './GenericRaster';
  * @api
  */
 class Generic {
-  constructor(userParameters, options, vendorOptions = {}) {
-    this.sourceType = Utils.getSourceType(vendorOptions);
+  constructor(userParameters, options, vendorOptions) {
+    if (vendorOptions) {
+      this.sourceType = Utils.getSourceType(vendorOptions);
+    }
+
     if (this.sourceType === 'vector') {
       return new GenericVector(userParameters, options, vendorOptions);
     }

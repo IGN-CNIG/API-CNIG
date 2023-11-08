@@ -1,7 +1,7 @@
 /**
  * @module M/layer/GenericRaster
  */
-import GenericImpl from 'impl/layer/GenericRaster';
+import GenericImpl from 'impl/layer/Generic';
 import {
   isNullOrEmpty,
   isUndefined,
@@ -46,9 +46,13 @@ class GenericRaster extends LayerBase {
       type: params.type,
       legend: params.legend || params.name,
       name: params.name,
+      minZoom: params.minZoom,
+      maxZoom: params.maxZoom,
+      visibility: params.visibility,
+      opacity: params.opacity,
     };
 
-    const impl = new GenericImpl(opts, vendorOptions);
+    const impl = new GenericImpl(opts, vendorOptions, 'raster');
 
     // calls the super constructor
     super(opts, impl);
