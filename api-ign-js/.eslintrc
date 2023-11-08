@@ -20,7 +20,8 @@
   // "ignorePatterns": [
   //   "node_modules/",
   //   "**/node_modules/",
-  //   "/**/node_modules/*"
+  //   "/**/node_modules/*",
+  //   "src"
   // ],
   "parserOptions": {
     "ecmaVersion": 2020
@@ -60,6 +61,9 @@
     "import/no-duplicates": "off",
     "import/no-named-default": "off",
     "no-bitwise": "off",
-    "max-classes-per-file": "off"
+    "max-classes-per-file": "off",
+    "quote-props": "off",
+    "import/no-absolute-path": "off",
+    "import/no-cycle": "off"
   }
 }

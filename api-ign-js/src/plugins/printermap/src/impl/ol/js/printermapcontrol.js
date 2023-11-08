@@ -771,8 +771,7 @@ export default class PrinterMapControl extends M.impl.Control {
         }
       } else {
         encodedFeature = this.encodeFeature_(
-          layer, feature, style, index,
-          indexText, indexGeom, stylesNames, stylesNamesText,
+          layer, feature, style, index, indexText, indexGeom, stylesNames, stylesNamesText,
         );
 
         if (encodedFeature.geojson !== null) {

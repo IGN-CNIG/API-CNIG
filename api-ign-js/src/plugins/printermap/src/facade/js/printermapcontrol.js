@@ -962,8 +962,7 @@ export default class PrinterMapControl extends M.Control {
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
       if (this.map_.getProjection().code !== projection) {
         printData.attributes.map.bbox = this.getImpl().transformExt(
-          printData.attributes.map.bbox, this.map_.getProjection().code,
-          projection,
+          printData.attributes.map.bbox, this.map_.getProjection().code, projection,
         );
       }
 
