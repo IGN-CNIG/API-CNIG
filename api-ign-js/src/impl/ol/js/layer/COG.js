@@ -48,6 +48,7 @@ class COG extends LayerBase {
    * - opacity: Opacidad de la capa de 0 a 1, por defecto 1.
    * - bands: Bandas a mostrar en forma de array y como numero, si el array esta vacio muestra todas
    *   por defecto [].
+   * - nodata: Usado para sobreescribir el parametro nodata del dato original
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - minScale: Escala mínima.
@@ -162,6 +163,11 @@ class COG extends LayerBase {
      * COG bands_. Bandas a renderizar.
      */
     this.bands_ = options.bands ? options.bands : [];
+
+    /**
+     * COG nodata_. Bandas a renderizar.
+     */
+    this.nodata_ = options.nodata;
 
     /**
      * COG minZoom. Zoom mínimo aplicable a la capa.
@@ -376,10 +382,12 @@ class COG extends LayerBase {
       }
       const convertToRGB = this.convertToRGB_;
       const bands = this.bands_;
+      const nodata = this.nodata_;
       const zIndex = this.zIndex_;
       const sources = [
         {
           url: this.url,
+          nodata,
         },
       ];
       if (bands.length !== 0) {

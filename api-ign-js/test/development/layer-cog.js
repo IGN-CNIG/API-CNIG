@@ -26,6 +26,7 @@ const layerCOG = new COG({
   minZoom:5,
   maxZoom:15,
   convertToRGB: 'auto',
+  nodata:1000,
   // bands: [1],
   // opacity: 0.25,
   
