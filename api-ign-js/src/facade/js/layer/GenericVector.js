@@ -5,13 +5,10 @@ import GenericImpl from 'impl/layer/Generic';
 import {
   isNullOrEmpty,
   isUndefined,
-  isArray,
-  isObject,
   isFunction,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';
-import * as LayerType from './Type';
 import { getValue } from '../i18n/language';
 import * as EventType from '../event/eventtype';
 import GenericStyle from '../style/Generic';
@@ -36,28 +33,10 @@ class GenericVector extends Vector {
       Exception(getValue('exception').generic_method);
     }
 
-    const params = isNullOrEmpty(userParameters) ? {} : userParameters;
-    params.type = LayerType.Generic;
-
-    let opts = isNullOrEmpty(options) ? {} : options;
-    opts = {
-      ...opts,
-      maxExtent: params.maxExtent,
-      ids: params.ids,
-      cql: params.cql,
-      type: params.type,
-      legend: params.legend || params.name,
-      name: params.name,
-      minZoom: params.minZoom,
-      maxZoom: params.maxZoom,
-      visibility: params.visibility,
-      opacity: params.opacity,
-    };
-
-    const impl = new GenericImpl(opts, vendorOptions, 'vector');
+    const impl = new GenericImpl(options, vendorOptions, 'vector');
 
     // calls the super constructor
-    super(params, opts, vendorOptions, impl);
+    super(userParameters, options, vendorOptions, impl);
 
     if (!isNullOrEmpty(impl) && isFunction(impl.setFacadeObj)) {
       impl.setFacadeObj(this);
@@ -66,20 +45,20 @@ class GenericVector extends Vector {
     this.sourceType = impl.sourceType;
 
     // -- WFS --
-    this.ids = params.ids;
+    this.ids = userParameters.ids;
 
     /**
       * WFS cql: Opcional: instrucción CQL para filtrar.
       * El método setCQL(cadena_cql) refresca la capa aplicando el
       * nuevo predicado CQL que recibe.
       */
-    this.cql = params.cql;
+    this.cql = userParameters.cql;
 
     if (isNullOrEmpty(this.namespace)) {
-      if (isNullOrEmpty(params.namespace)) {
+      if (isNullOrEmpty(userParameters.namespace)) {
         this.namespace = undefined;
       } else {
-        this.namespace = params.namespace;
+        this.namespace = userParameters.namespace;
       }
     }
 
@@ -88,16 +67,16 @@ class GenericVector extends Vector {
       * predefinedStyles: Estilos predefinidos para la capa.
       */
     this.predefinedStyles =
-       isUndefined(opts.predefinedStyles) ? [] : opts.predefinedStyles;
-    if (isUndefined(opts.style) && !isUndefined(this.constructor.DEFAULT_OPTS_STYLE)) {
+       isUndefined(options.predefinedStyles) ? [] : options.predefinedStyles;
+    if (isUndefined(options.style) && !isUndefined(this.constructor.DEFAULT_OPTS_STYLE)) {
       this.predefinedStyles.unshift(new GenericStyle(this.constructor.DEFAULT_OPTS_STYLE));
-    } else if (isUndefined(opts.style)) {
+    } else if (isUndefined(options.style)) {
       this.predefinedStyles.unshift(new GenericStyle(GenericStyle.DEFAULT_OPTIONS_STYLE));
     } else {
-      this.predefinedStyles.unshift(opts.style);
+      this.predefinedStyles.unshift(options.style);
     }
 
-    this.setStyle(opts.style);
+    this.setStyle(options.style);
 
     impl.on(EventType.LOAD, features => this.fire(EventType.LOAD, [features]));
   }
@@ -125,53 +104,6 @@ class GenericVector extends Vector {
     */
   set url(newUrl) {
     this.getImpl().setURLService(newUrl);
-  }
-
-  /**
-    * Este método devuelve extensión máxima de esta capa.
-    *
-    * @function
-    * @returns {Array} Devuelve la extensión máxima de esta capa.
-    * @api
-    */
-  getMaxExtent(isSource = true) {
-    let extent = !isSource ? this.userMaxExtent : this.getImpl().getMaxExtent();
-    if (isUndefined(extent) || isNullOrEmpty(extent)) {
-      extent = this.map_.getProjection().getExtent();
-    }
-    return extent;
-  }
-
-
-  /**
-    * Este método calcula la extensión máxima de esta capa.
-    *
-    * @function
-    * @returns {M.layer.maxExtent} Devuelve una promesa, con la extensión máxima de esta capa.
-    * @api
-    */
-  calculateMaxExtent() {
-    return new Promise(resolve => resolve(this.getMaxExtent(false)));
-  }
-  /**
-    * Este método cambia la extensión máxima de la capa.
-    *
-    * @function
-    * @param {Array|Object} maxExtent Nuevo valor para el "MaxExtent".
-    * @api
-    * @export
-    */
-  setMaxExtent(maxExtent) {
-    let extent = maxExtent;
-    if (!isArray(maxExtent) && isObject(maxExtent)) {
-      extent = [
-        maxExtent.x.min,
-        maxExtent.y.min,
-        maxExtent.x.max,
-        maxExtent.y.max,
-      ];
-    }
-    this.getImpl().setMaxExtent(extent);
   }
 
   /**
