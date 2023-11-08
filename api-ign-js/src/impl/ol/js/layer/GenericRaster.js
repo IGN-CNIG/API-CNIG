@@ -214,7 +214,12 @@ class GenericRaster extends LayerBase {
     let url = '';
     if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
         !isNullOrEmpty(this.ol3Layer.getSource())) {
-      url = this.ol3Layer.getSource().getUrl();
+      const source = this.ol3Layer.getSource();
+      if (!isNullOrEmpty(source.getUrl)) {
+        url = this.ol3Layer.getSource().getUrl();
+      } else if (!isNullOrEmpty(source.getUrls)) {
+        url = this.ol3Layer.getSource().getUrls();
+      }
     }
     return url;
   }
