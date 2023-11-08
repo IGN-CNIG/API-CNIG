@@ -24,9 +24,9 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   constructor(
     servicesToSearch,
-    CMC_url = null,
-    DNPPP_url = null,
-    CPMRC_url = null,
+    cmcUrl = null,
+    dnpppUrl = null,
+    cpmrcUrl = null,
     catastroWMS,
     maxResults,
     noProcess,
@@ -72,7 +72,7 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {String}
      */
     // eslint-disable-next-line camelcase
-    this.ConsultaMunicipioCodigos_ = CMC_url;
+    this.ConsultaMunicipioCodigos_ = cmcUrl;
 
     /**
      * Url for "consulta de datos no protegidos para un inmueble por su polígono parcela"
@@ -80,7 +80,7 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {String}
      */
     // eslint-disable-next-line camelcase
-    this.DNPPP_url_ = DNPPP_url;
+    this.DNPPP_url_ = dnpppUrl;
 
     /**
      * Url for "consulta de coordenadas por Provincia, Municipio y Referencia Catastral"
@@ -88,7 +88,7 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @type {String}
      */
     // eslint-disable-next-line camelcase
-    this.CPMRC_url_ = CPMRC_url;
+    this.CPMRC_url_ = cpmrcUrl;
 
     /**
      * catastroWMS
@@ -567,7 +567,7 @@ export default class IGNSearchLocatorControl extends M.Control {
             }
 
             // Change zIndex value
-            this.clickedElementLayer.setZIndex(9999999999999999999);
+            this.clickedElementLayer.setZIndex(999999999999999);
             // Stops showing polygon geometry
             if (!this.resultVisibility_) {
               this.clickedElementLayer.setStyle(this.simple);
@@ -911,7 +911,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     }
 
     // Change zIndex value
-    this.clickedElementLayer.setZIndex(99999999999999999);
+    this.clickedElementLayer.setZIndex(999999999999999);
     // Stops showing polygon geometry
     if (!this.resultVisibility_) {
       this.clickedElementLayer.setStyle(this.simple);
@@ -996,7 +996,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clickedElementLayer.setStyle(this.point);
 
       // Change zIndex value
-      this.clickedElementLayer.setZIndex(9999999999999999999);
+      this.clickedElementLayer.setZIndex(999999999999999);
       // Stops showing polygon geometry
       if (!this.resultVisibility_) {
         this.clickedElementLayer.setStyle(this.simple);
@@ -2287,7 +2287,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.coordinatesLayer.setStyle(this.point);
 
       // Change zIndex value
-      this.coordinatesLayer.setZIndex(9999999999999999999);
+      this.coordinatesLayer.setZIndex(999999999999999);
 
       this.map.addLayers(this.coordinatesLayer);
     } else {
