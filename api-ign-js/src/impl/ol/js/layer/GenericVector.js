@@ -415,7 +415,13 @@ class GenericVector extends Vector {
        !isNullOrEmpty(this.ol3Layer.getSource().getUrl) &&
        !isNullOrEmpty(this.ol3Layer.getSource().getUrl())) {
       const url = this.ol3Layer.getSource().getUrl();
-      const result = url.split('&typeName=')[1].split('&')[0].split(':');
+      let result = null;
+      const typeName = url.split('&typeName=')[1];
+
+      if (!isNullOrEmpty(typeName)) {
+        result = typeName.split('&')[0].split(':');
+      }
+
       if (!isNullOrEmpty(result)) {
         this.facadeLayer_.name = result[1];
         this.facadeLayer_.namespace = result[0];
