@@ -3926,9 +3926,9 @@ export const layer = (userParameters, forcedType) => {
       }
 
       if (!isNullOrEmpty(userParam.isBase)) {
-        layerObj.isBase = !!userParam.isBase;
+        layerObj.isBase = userParam.isBase;
       } else if (userParam.name !== '__draw__') {
-        layerObj.isBase = !layerObj.transparent;
+        layerObj.isBase = layerObj.transparent === undefined ? false : !layerObj.transpare;
       }
     }
 
