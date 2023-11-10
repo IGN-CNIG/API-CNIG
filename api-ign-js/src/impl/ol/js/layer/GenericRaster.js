@@ -7,8 +7,21 @@ import {
   isNull,
   getResolutionFromScale,
   isUndefined,
+  getWMSGetCapabilitiesUrl,
+  getWMTSGetCapabilitiesUrl,
 } from 'M/util/Utils';
+import TileWMS from 'ol/source/TileWMS';
+import ImageWMS from 'ol/source/ImageWMS';
+import OLSourceWMTS from 'ol/source/WMTS';
+import OLFormatWMTSCapabilities from 'ol/format/WMTSCapabilities';
+import { get as getRemote } from 'M/util/Remote';
+
 import LayerBase from './Layer';
+import FormatWMS from '../format/WMS';
+import GetCapabilities from '../util/WMSCapabilities';
+import getLayerExtent from '../util/wmtscapabilities';
+import Utils from '../util/Utils';
+
 import ImplMap from '../Map';
 
 /**
@@ -64,6 +77,12 @@ class GenericRaster extends LayerBase {
   addTo(map) {
     this.map = map;
 
+    Utils.addFacadeName(this.facadeLayer_, this.ol3Layer, 'Raster');
+
+    if (this.facadeLayer_.legend === undefined) {
+      Utils.addFacadeLegend(this.facadeLayer_, this.ol3Layer);
+    }
+
     if (!isNullOrEmpty(this.visibility)) {
       this.ol3Layer.setVisible(this.visibility);
     }
@@ -100,8 +119,28 @@ class GenericRaster extends LayerBase {
       this.ol3Layer.getSource().updateParams({ VERSION: this.version });
     }
 
+
+    this.capabilities = this.getCapabilities(this.ol3Layer, map.getProjection());
+
     if (!isNullOrEmpty(this.maxExtent)) {
       this.ol3Layer.setExtent(this.maxExtent);
+    } else if (
+      this.ol3Layer.getSource() instanceof TileWMS ||
+      this.ol3Layer.getSource() instanceof ImageWMS) {
+      this.capabilities.then((capabilities) => {
+        this.maxExtent = capabilities.getLayerExtent('Provincias');
+        this.ol3Layer.setExtent(this.maxExtent);
+        // eslint-disable-next-line no-underscore-dangle
+        this.facadeLayer_.maxExtent_ = this.maxExtent;
+      });
+    } else if ((this.ol3Layer.getSource() instanceof OLSourceWMTS)) {
+      const capabilities = this.getCapabilitiesWMTS_(this.ol3Layer);
+      capabilities.then((c) => {
+        this.maxExtent = this.getMaxExtentCapabilitiesWMTS_(c);
+        this.ol3Layer.setExtent(this.maxExtent);
+        // eslint-disable-next-line no-underscore-dangle
+        this.facadeLayer_.maxExtent_ = this.maxExtent;
+      });
     }
 
     if (!isUndefined(this.ol3Layer.getSource().getLegendUrl)) {
@@ -125,6 +164,79 @@ class GenericRaster extends LayerBase {
     }
 
     map.getMapImpl().addLayer(this.ol3Layer);
+  }
+
+  getCapabilities(layerOl, projection) {
+    const olSource = layerOl.getSource();
+    if (olSource instanceof TileWMS || olSource instanceof ImageWMS) {
+      return this.getCapabilitiesWMS_(layerOl, projection);
+    }
+    return null;
+  }
+
+  getCapabilitiesWMS_(layerOl, projection) {
+    const olSource = layerOl.getSource();
+    const projectionCode = (olSource.getProjection()) ?
+      olSource.getProjection().getCode()
+      : projection;
+
+    const layerUrl = olSource.getUrl();
+    // serverUrl, version
+    return new Promise((success, fail) => {
+      const url = getWMSGetCapabilitiesUrl(layerUrl, '1.3.0');
+      getRemote(url).then((response) => {
+        const getCapabilitiesDocument = response.xml;
+        const getCapabilitiesParser = new FormatWMS();
+        const getCapabilities = getCapabilitiesParser.customRead(getCapabilitiesDocument);
+
+        const getCapabilitiesUtils =
+            new GetCapabilities(getCapabilities, layerUrl, projectionCode);
+        success(getCapabilitiesUtils);
+      });
+    });
+  }
+
+  getCapabilitiesWMTS_(layerOl, projection) {
+    const olSource = layerOl.getSource();
+
+    const layerUrl = olSource.getUrls()[0];
+
+    return new Promise((success, fail) => {
+      const getCapabilitiesUrl = getWMTSGetCapabilitiesUrl(layerUrl);
+      const parser = new OLFormatWMTSCapabilities();
+      getRemote(getCapabilitiesUrl).then((response) => {
+        let getCapabilitiesDocument = response.xml;
+        const elementTag = getCapabilitiesDocument.getElementsByTagName('ows:Style');
+        if (elementTag.length > 0) {
+          const xmlToString = new XMLSerializer().serializeToString(getCapabilitiesDocument);
+          const text = xmlToString.replaceAll('ows:Style', 'Style');
+          getCapabilitiesDocument = new DOMParser().parseFromString(text, 'text/xml');
+        }
+        const parsedCapabilities = parser.read(getCapabilitiesDocument);
+        try {
+          parsedCapabilities.Contents.Layer.forEach((l) => {
+            const name = l.Identifier;
+            l.Style.forEach((s) => {
+              const layerText = response.text.split('Layer>').filter(text => text.indexOf(`Identifier>${name}<`) > -1)[0];
+              /* eslint-disable no-param-reassign */
+              s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
+            });
+          });
+          /* eslint-disable no-empty */
+        } catch (err) {}
+        success.call(this, parsedCapabilities);
+      });
+    });
+  }
+
+  getMaxExtentCapabilitiesWMTS_(capabilities) {
+    const contents = capabilities.Contents;
+    const defaultExtent = this.map.getMaxExtent();
+
+    if (!isNull(contents)) {
+      return getLayerExtent(contents, this.name, this.map.getProjection().code, defaultExtent);
+    }
+    return defaultExtent;
   }
 
   equals(obj) {

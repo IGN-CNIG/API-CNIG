@@ -12,6 +12,7 @@ import {
 import Vector from './Vector';
 import ImplMap from '../Map';
 import Feature from '../feature/Feature';
+import Utils from '../util/Utils';
 
 /**
   * @classdesc
@@ -71,6 +72,13 @@ class GenericVector extends Vector {
   addTo(map) {
     this.map = map;
 
+    Utils.addFacadeName(this.facadeLayer_, this.ol3Layer, 'Vector');
+
+    if (this.facadeLayer_.legend === undefined) {
+      Utils.addFacadeLegend(this.facadeLayer_, this.ol3Layer);
+    }
+
+
     if (!isNullOrEmpty(this.visibility)) {
       this.ol3Layer.setVisible(this.visibility);
     }
@@ -104,6 +112,7 @@ class GenericVector extends Vector {
     }
 
     if (!isNullOrEmpty(this.maxExtent)) {
+      console.log('--', this.maxExtent);
       this.ol3Layer.setExtent(this.maxExtent);
     }
 

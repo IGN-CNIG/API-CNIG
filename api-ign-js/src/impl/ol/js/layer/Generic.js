@@ -1,10 +1,7 @@
 /**
  * @module M/impl/layer/Generic
  */
-import {
-  isNullOrEmpty,
-  generateRandom,
-} from 'M/util/Utils';
+import { isNullOrEmpty } from 'M/util/Utils';
 
 import GenericRaster from './GenericRaster';
 import GenericVector from './GenericVector';
@@ -38,7 +35,6 @@ class Generic {
     GenericObjet.version = opt.version;
 
     // Métodos comunes
-    GenericObjet.addFacadeName = this.addFacadeName;
     GenericObjet.setURLService = this.setURLService;
     GenericObjet.getURLService = this.getURLService;
     GenericObjet.setFacadeObj = this.setFacadeObj;
@@ -55,32 +51,6 @@ class Generic {
     return GenericObjet;
   }
 
-
-  addFacadeName() {
-    if (isNullOrEmpty(this.facadeLayer_.name) && !isNullOrEmpty(this.ol3Layer.getSource()) &&
-        !isNullOrEmpty(this.ol3Layer.getSource().getParams) &&
-        !isNullOrEmpty(this.ol3Layer.getSource().getParams().LAYERS)) {
-      this.facadeLayer_.name = this.ol3Layer.getSource().getParams().LAYERS;
-    } else if (isNullOrEmpty(this.facadeLayer_.name) && !isNullOrEmpty(this.ol3Layer.getSource()) &&
-        !isNullOrEmpty(this.ol3Layer.getSource().getUrl) &&
-        !isNullOrEmpty(this.ol3Layer.getSource().getUrl())) {
-      const url = this.ol3Layer.getSource().getUrl();
-      let result = null;
-      const typeName = url.split('&typeName=')[1];
-
-      if (!isNullOrEmpty(typeName)) {
-        result = typeName.split('&')[0].split(':');
-      }
-      if (!isNullOrEmpty(result)) {
-        this.facadeLayer_.name = result[1];
-        this.facadeLayer_.namespace = result[0];
-      } else {
-        this.facadeLayer_.name = generateRandom('layer_', '_'.concat(this.type));
-      }
-    } else if (isNullOrEmpty(this.facadeLayer_.name)) {
-      this.facadeLayer_.name = generateRandom('layer_', '_'.concat(this.type));
-    }
-  }
 
   /**
     * Este método modifica la URL del servicio.

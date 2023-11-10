@@ -69,7 +69,7 @@ class Generic {
     * @api
     */
   getMaxExtent(isSource = true) {
-    let extent = !isSource ? this.userMaxExtent : this.getImpl().getMaxExtent();
+    let extent = !isSource ? this.maxExtent_ : this.getImpl().getMaxExtent();
     if (isUndefined(extent) || isNullOrEmpty(extent)) {
       extent = this.map_.getProjection().getExtent();
     }

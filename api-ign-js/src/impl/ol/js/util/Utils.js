@@ -286,6 +286,43 @@ class Utils {
     return img;
   }
 
+  static addFacadeName(facade, olLayer, type) {
+    const facadeLayer = facade;
+    const ol3layer = olLayer;
+    if (isNullOrEmpty(facadeLayer.name) && !isNullOrEmpty(ol3layer.getSource()) &&
+        !isNullOrEmpty(ol3layer.getSource().getParams) &&
+        !isNullOrEmpty(ol3layer.getSource().getParams().LAYERS)) {
+      facadeLayer.name = ol3layer.getSource().getParams().LAYERS;
+    } else if (isNullOrEmpty(facadeLayer.name) && !isNullOrEmpty(ol3layer.getSource()) &&
+        !isNullOrEmpty(ol3layer.getSource().getUrl) &&
+        !isNullOrEmpty(ol3layer.getSource().getUrl())) {
+      const url = ol3layer.getSource().getUrl();
+      let result = null;
+      const typeName = url.split('&typeName=')[1];
+      if (!isNullOrEmpty(typeName)) {
+        result = typeName.split('&')[0].split(':');
+      }
+      if (!isNullOrEmpty(result)) {
+        facadeLayer.name = result[1];
+        facadeLayer.namespace = result[0];
+      } else {
+        facadeLayer.name = generateRandom('layer_', '_'.concat(type));
+      }
+    } else if (ol3layer.getSource().getLayer()) {
+      facadeLayer.name = ol3layer.getSource().getLayer();
+    } else if (isNullOrEmpty(facadeLayer.name)) {
+      facadeLayer.name = generateRandom('layer_', '_'.concat(type));
+    }
+  }
+
+  static addFacadeLegend(facade, olLayer) {
+    const facadeLayer = facade;
+    const ol3layer = olLayer;
+    if (ol3layer.getProperties() && ol3layer.getProperties().legend) {
+      facadeLayer.setLegend(ol3layer.getProperties().legend);
+    }
+  }
+
   /**
     * Este método obtiene la altura de una extensión.
     *
