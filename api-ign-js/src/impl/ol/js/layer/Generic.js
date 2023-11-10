@@ -33,6 +33,7 @@ class Generic {
     GenericObjet.maxExtent = opt.maxExtent || [];
     GenericObjet.ids = opt.ids;
     GenericObjet.version = opt.version;
+    GenericObjet.legend = opt.legend;
 
     // Métodos comunes
     GenericObjet.setURLService = this.setURLService;

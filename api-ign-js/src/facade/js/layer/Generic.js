@@ -34,6 +34,8 @@ class Generic {
       maxZoom: params.maxZoom,
       visibility: params.visibility,
       opacity: params.opacity,
+      isBase: params.isBase,
+      transparent: params.transparent,
     };
 
     if (vendorOptions) {

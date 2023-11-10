@@ -112,7 +112,6 @@ class GenericVector extends Vector {
     }
 
     if (!isNullOrEmpty(this.maxExtent)) {
-      console.log('--', this.maxExtent);
       this.ol3Layer.setExtent(this.maxExtent);
     }
 
