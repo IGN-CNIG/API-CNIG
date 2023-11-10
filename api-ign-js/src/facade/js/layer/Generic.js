@@ -36,6 +36,7 @@ class Generic {
       opacity: params.opacity,
       isBase: params.isBase,
       transparent: params.transparent,
+      numZoomLevels: params.numZoomLevels,
     };
 
     if (vendorOptions) {
