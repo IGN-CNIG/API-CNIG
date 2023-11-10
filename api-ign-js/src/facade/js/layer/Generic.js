@@ -37,6 +37,7 @@ class Generic {
       isBase: params.isBase,
       transparent: params.transparent,
       numZoomLevels: params.numZoomLevels,
+      version: params.version,
     };
 
     if (vendorOptions) {
