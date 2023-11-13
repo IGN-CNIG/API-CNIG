@@ -2,7 +2,7 @@
  * @module M/parameter
  * @example import parameter from 'M/parameter';
  */
-import { isNullOrEmpty, isString, isNull, isFunction, normalize, isArray, isObject, isUrl, isUndefined, decodeBase64 } from '../util/Utils';
+import { isNullOrEmpty, isString, isNull, isFunction, normalize, isArray, isObject, isUrl, isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from '../layer/Type';
 import Layer from '../layer/Layer';
@@ -3867,7 +3867,8 @@ const generic = (userParameters) => {
   const urlParams = params.split(/\*/);
   return {
     type: 'Generic',
-    vendorOptions: decodeBase64(urlParams[1]) || undefined,
+    // eslint-disable-next-line no-eval
+    vendorOptions: eval(decodeURIComponent(escape(window.atob(urlParams[1])))) || undefined,
     name: urlParams[2] || undefined,
     legend: urlParams[3] || undefined,
     transparent: urlParams[4] || undefined,
@@ -3879,7 +3880,6 @@ const generic = (userParameters) => {
     maxExtent: urlParams[10] || undefined,
     displayInLayerSwitcher: urlParams[11] || undefined,
     visibility: urlParams[12] || undefined,
-    useCapabilities: urlParams[13] || undefined,
   };
 };
 
