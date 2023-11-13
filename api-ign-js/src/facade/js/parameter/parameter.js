@@ -3857,6 +3857,13 @@ export const ogcapifeatures = (userParameters) => {
 
 const generic = (userParameters) => {
   const params = userParameters;
+
+  if (!isString(params)) {
+    return {
+      type: 'Generic',
+    };
+  }
+
   const urlParams = params.split(/\*/);
   return {
     type: 'Generic',

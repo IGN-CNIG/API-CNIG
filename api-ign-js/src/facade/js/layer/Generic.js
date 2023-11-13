@@ -21,11 +21,12 @@ class Generic {
   constructor(userParameters, options, vendorOptions) {
     let vendorOpt = vendorOptions;
     let params = userParameters;
-    params.type = LayerType.Generic;
 
     if (isNullOrEmpty(userParameters) && typeof userParameters === 'string') {
       params = parameter.layer(userParameters, LayerType.Generic);
       vendorOpt = params.vendorOptions;
+    } else {
+      params.type = LayerType.Generic;
     }
 
     let opts = isNullOrEmpty(options) ? {} : options;
