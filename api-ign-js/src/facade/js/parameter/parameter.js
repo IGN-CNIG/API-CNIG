@@ -3854,6 +3854,27 @@ export const ogcapifeatures = (userParameters) => {
   return layers;
 };
 
+
+const generic = (userParameters) => {
+  const params = userParameters;
+  const urlParams = params.split(/\*/);
+  return {
+    type: 'Generic',
+    name: urlParams[1] || undefined,
+    legend: urlParams[2] || undefined,
+    transparent: urlParams[3] || undefined,
+    minZoom: urlParams[4] || undefined,
+    maxZoom: urlParams[5] || undefined,
+    numZoomLevels: urlParams[6] || undefined,
+    version: urlParams[7] || undefined,
+    ids: urlParams[8] || undefined,
+    maxExtent: urlParams[9] || undefined,
+    displayInLayerSwitcher: urlParams[10] || undefined,
+    visibility: urlParams[11] || undefined,
+    useCapabilities: urlParams[12] || undefined,
+  };
+};
+
 /**
  * Parámetros con los tipos de capa soportados.
  * @const
@@ -3874,6 +3895,7 @@ const parameterFunction = {
   mbtiles,
   mbtilesvector,
   ogcapifeatures,
+  generic,
 };
 
 

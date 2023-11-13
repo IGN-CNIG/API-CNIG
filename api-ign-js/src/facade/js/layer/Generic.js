@@ -4,6 +4,7 @@
 import Utils from 'impl/util/Utils';
 import GenericVector from './GenericVector';
 import GenericRaster from './GenericRaster';
+import * as parameter from '../parameter/parameter';
 
 import * as LayerType from './Type';
 
@@ -18,7 +19,10 @@ import { isNullOrEmpty, isUndefined, isArray, isObject } from '../util/Utils';
  */
 class Generic {
   constructor(userParameters, options, vendorOptions) {
-    const params = isNullOrEmpty(userParameters) ? {} : userParameters;
+    const params = (isNullOrEmpty(userParameters) && typeof userParameters === 'string')
+      ? parameter.layer(userParameters, LayerType.Generic)
+      : userParameters;
+
     params.type = LayerType.Generic;
 
     let opts = isNullOrEmpty(options) ? {} : options;
