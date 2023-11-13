@@ -2,7 +2,7 @@
  * @module M/parameter
  * @example import parameter from 'M/parameter';
  */
-import { isNullOrEmpty, isString, isNull, isFunction, normalize, isArray, isObject, isUrl, isUndefined } from '../util/Utils';
+import { isNullOrEmpty, isString, isNull, isFunction, normalize, isArray, isObject, isUrl, isUndefined, decodeBase64 } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from '../layer/Type';
 import Layer from '../layer/Layer';
@@ -3860,18 +3860,19 @@ const generic = (userParameters) => {
   const urlParams = params.split(/\*/);
   return {
     type: 'Generic',
-    name: urlParams[1] || undefined,
-    legend: urlParams[2] || undefined,
-    transparent: urlParams[3] || undefined,
-    minZoom: urlParams[4] || undefined,
-    maxZoom: urlParams[5] || undefined,
-    numZoomLevels: urlParams[6] || undefined,
-    version: urlParams[7] || undefined,
-    ids: urlParams[8] || undefined,
-    maxExtent: urlParams[9] || undefined,
-    displayInLayerSwitcher: urlParams[10] || undefined,
-    visibility: urlParams[11] || undefined,
-    useCapabilities: urlParams[12] || undefined,
+    vendorOptions: decodeBase64(urlParams[1]) || undefined,
+    name: urlParams[2] || undefined,
+    legend: urlParams[3] || undefined,
+    transparent: urlParams[4] || undefined,
+    minZoom: urlParams[5] || undefined,
+    maxZoom: urlParams[6] || undefined,
+    numZoomLevels: urlParams[7] || undefined,
+    version: urlParams[8] || undefined,
+    ids: urlParams[9] || undefined,
+    maxExtent: urlParams[10] || undefined,
+    displayInLayerSwitcher: urlParams[11] || undefined,
+    visibility: urlParams[12] || undefined,
+    useCapabilities: urlParams[13] || undefined,
   };
 };
 

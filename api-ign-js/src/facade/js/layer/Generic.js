@@ -19,11 +19,14 @@ import { isNullOrEmpty, isUndefined, isArray, isObject } from '../util/Utils';
  */
 class Generic {
   constructor(userParameters, options, vendorOptions) {
-    const params = (isNullOrEmpty(userParameters) && typeof userParameters === 'string')
-      ? parameter.layer(userParameters, LayerType.Generic)
-      : userParameters;
-
+    let vendorOpt = vendorOptions;
+    let params = userParameters;
     params.type = LayerType.Generic;
+
+    if (isNullOrEmpty(userParameters) && typeof userParameters === 'string') {
+      params = parameter.layer(userParameters, LayerType.Generic);
+      vendorOpt = params.vendorOptions;
+    }
 
     let opts = isNullOrEmpty(options) ? {} : options;
     opts = {
@@ -44,18 +47,18 @@ class Generic {
       version: params.version,
     };
 
-    if (vendorOptions) {
-      this.sourceType = Utils.getSourceType(vendorOptions);
+    if (vendorOpt) {
+      this.sourceType = Utils.getSourceType(vendorOpt);
     }
 
     let ObjectGeneric = null;
 
     if (this.sourceType === 'vector') {
-      ObjectGeneric = new GenericVector(params, opts, vendorOptions);
+      ObjectGeneric = new GenericVector(params, opts, vendorOpt);
     }
 
     if (this.sourceType === 'raster') {
-      ObjectGeneric = new GenericRaster(params, opts, vendorOptions);
+      ObjectGeneric = new GenericRaster(params, opts, vendorOpt);
     }
 
     // Parametros comunes
