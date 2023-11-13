@@ -20,12 +20,12 @@ import { isNullOrEmpty, isUndefined, isArray, isObject } from '../util/Utils';
 class Generic {
   constructor(userParameters, options, vendorOptions) {
     let vendorOpt = vendorOptions;
-    let params = userParameters;
+    let params = userParameters || {};
 
-    if (isNullOrEmpty(userParameters) && typeof userParameters === 'string') {
+    if (typeof userParameters === 'string') {
       params = parameter.layer(userParameters, LayerType.Generic);
       vendorOpt = params.vendorOptions;
-    } else {
+    } else if (isNullOrEmpty(userParameters)) {
       params.type = LayerType.Generic;
     }
 
