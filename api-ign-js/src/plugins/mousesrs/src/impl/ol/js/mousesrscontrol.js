@@ -147,6 +147,14 @@ export default class MouseSRSControl extends M.impl.Control {
     }, 10);
 
     M.utils.draggabillyElement('.m-dialog .m-modal .m-content', '.m-dialog .m-modal .m-content .m-title');
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape') {
+        const btn = document.querySelector('.m-dialog .m-content .m-button > button');
+        if (btn !== null) {
+          btn.click();
+        }
+      }
+    });
   }
 
 

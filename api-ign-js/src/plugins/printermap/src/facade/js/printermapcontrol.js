@@ -565,6 +565,14 @@ export default class PrinterMapControl extends M.Control {
 
     this.queueContainer_ = this.element_.querySelector('.queue > ul.queue-container');
     M.utils.enableTouchScroll(this.queueContainer_);
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape') {
+        const elem = document.querySelector('.m-panel.m-printermap.opened');
+        if (elem !== null) {
+          elem.querySelector('button.m-panel-btn').click();
+        }
+      }
+    });
   }
 
   /**
