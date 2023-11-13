@@ -14,7 +14,14 @@ import { getValue } from '../i18n/language';
 /**
  * @classdesc
  * GenericRaster permite añadir cualquier tipo de capa raster.
- *
+ * @property {String} url - TDevuelve la URL del servicio.
+ * @param {string|Mx.parameters.Generic} userParameters Parámetros para la construcción
+ * de la capa.
+ * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+ * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
+ * la implementación de la capa.
+ * - visibility: Indica la visibilidad de la capa.
+ * @param {Object} vendorOptions Capa definida en con la librería base.
  * @api
  */
 class GenericRaster extends LayerBase {

@@ -26,7 +26,13 @@ import ImplMap from '../Map';
 
 /**
    * @classdesc
-   * La API-CNIG permite visualizar la capa de Open Street Map.
+   * Generic permite añadir cualquier tipo de capa definida con la librería base.
+   * @property {Object} options - Opciones de la capa
+   * @property {Number} zIndex_ - Índice de la capa
+   * @property {String} sldBody - Cuerpo del SLD
+   * @property {String} format - Formato de la capa
+   * @param {Object} options - Objeto de opciones
+   * @param {Object} vendorOptions - Objeto de opciones del proveedor
    *
    * @api
    * @extends {M.impl.layer.Layer}
@@ -166,6 +172,12 @@ class GenericRaster extends LayerBase {
     map.getMapImpl().addLayer(this.ol3Layer);
   }
 
+  /**
+   * Este método devuelve el capabilities de la capa.
+   * @param {M.layer.WMS} layerOl Capa de la que se quiere obtener el capabilities.
+   * @param {string} projection Proyección del mapa.
+   * @return {Promise} Promesa con el capabilities de la capa.
+   */
   getCapabilities(layerOl, projection) {
     const olSource = layerOl.getSource();
     if (olSource instanceof TileWMS || olSource instanceof ImageWMS) {
@@ -174,6 +186,14 @@ class GenericRaster extends LayerBase {
     return null;
   }
 
+  /**
+   * Este método devuelve el capabilities de la capa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @param {M.layer.WMS} layerOl Capa de la que se quiere obtener el capabilities.
+   * @param {string} projection Proyección del mapa.
+   * @return {Promise} Promesa con el capabilities de la capa.
+   * @api
+   */
   getCapabilitiesWMS_(layerOl, projection) {
     const olSource = layerOl.getSource();
     const projectionCode = (olSource.getProjection()) ?
@@ -196,7 +216,14 @@ class GenericRaster extends LayerBase {
     });
   }
 
-  getCapabilitiesWMTS_(layerOl, projection) {
+  /**
+   * Este método devuelve el capabilities de la capa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @param {M.layer.WMS} layerOl Capa de la que se quiere obtener el capabilities.
+   * @return {Promise} Promesa con el capabilities de la capa.
+   * @api
+   */
+  getCapabilitiesWMTS_(layerOl) {
     const olSource = layerOl.getSource();
 
     const layerUrl = olSource.getUrls()[0];
@@ -229,6 +256,13 @@ class GenericRaster extends LayerBase {
     });
   }
 
+  /**
+   * Este método devuelve el extent de la capa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @param {Object} capabilities Capabilities de la capa.
+   * @return {Array<number>} Extent de la capa.
+   * @api
+   */
   getMaxExtentCapabilitiesWMTS_(capabilities) {
     const contents = capabilities.Contents;
     const defaultExtent = this.map.getMaxExtent();
@@ -239,6 +273,12 @@ class GenericRaster extends LayerBase {
     return defaultExtent;
   }
 
+  /**
+   * Este método devuelve si dos capas con iguales.
+   * @param {Object} Capa con la que se quiere comparar.
+   * @return {boolean} Devuelve true si las capas son iguales.
+   * @api
+   */
   equals(obj) {
     let equals = false;
     if (obj instanceof GenericRaster) {

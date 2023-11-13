@@ -18,6 +18,9 @@ class GenericVector extends Vector {
     * Constructor principal de la clase. Crea una capa Generic
     * con parámetros especificados por el usuario.
     * @constructor
+    * @property {String} url - Devuelve la URL del servicio.
+    * @property {String} ids - Devuelve los ids de la capa.
+    * @property {String} cql - Devuelve el CQL de la capa.
     * @param {string|Mx.parameters.Generic} userParameters Parámetros para la construcción
     * de la capa.
     * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.

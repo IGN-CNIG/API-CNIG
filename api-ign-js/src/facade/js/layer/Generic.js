@@ -13,7 +13,7 @@ import { isNullOrEmpty, isUndefined, isArray, isObject } from '../util/Utils';
 /**
  * @classdesc
  * Generic permite añadir cualquier tipo de capa definida con la librería base
- *
+ * @property {String} sourceType - Tipo de capa
  * @api
  */
 class Generic {
@@ -66,12 +66,12 @@ class Generic {
   }
 
   /**
-    * Este método devuelve extensión máxima de esta capa.
-    *
-    * @function
-    * @returns {Array} Devuelve la extensión máxima de esta capa.
-    * @api
-    */
+  * Este método devuelve extensión máxima de esta capa.
+  *
+  * @function
+  * @returns {Array} Devuelve la extensión máxima de esta capa.
+  * @api
+  */
   getMaxExtent(isSource = true) {
     let extent = !isSource ? this.maxExtent_ : this.getImpl().getMaxExtent();
     if (isUndefined(extent) || isNullOrEmpty(extent)) {
@@ -81,23 +81,23 @@ class Generic {
   }
 
   /**
-    * Este método calcula la extensión máxima de esta capa.
-    *
-    * @function
-    * @returns {M.layer.maxExtent} Devuelve una promesa, con la extensión máxima de esta capa.
-    * @api
-    */
+  * Este método calcula la extensión máxima de esta capa.
+  *
+  * @function
+  * @returns {M.layer.maxExtent} Devuelve una promesa, con la extensión máxima de esta capa.
+  * @api
+  */
   calculateMaxExtent() {
     return new Promise(resolve => resolve(this.getMaxExtent(false)));
   }
   /**
-      * Este método cambia la extensión máxima de la capa.
-      *
-      * @function
-      * @param {Array|Object} maxExtent Nuevo valor para el "MaxExtent".
-      * @api
-      * @export
-      */
+  * Este método cambia la extensión máxima de la capa.
+  *
+  * @function
+  * @param {Array|Object} maxExtent Nuevo valor para el "MaxExtent".
+  * @api
+  * @export
+  */
   setMaxExtent(maxExtent) {
     let extent = maxExtent;
     if (!isArray(maxExtent) && isObject(maxExtent)) {

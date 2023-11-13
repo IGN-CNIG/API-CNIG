@@ -16,8 +16,16 @@ import Utils from '../util/Utils';
 
 /**
   * @classdesc
-  * La API-CNIG permite visualizar la capa de Open Street Map.
-  *
+  * Generic permite añadir cualquier tipo de capa definida con la librería base.
+  * @property {Object} options - Opciones de la capa
+  * @property {Number} zIndex_ - Índice de la capa
+  * @property {String} sldBody - Cuerpo del SLD
+  * @property {String} styles - Estilos de la capa
+  * @property {String} style - Estilo de la capa
+  * @property {String} cql - CQL de la capa
+  * @property {Function} fnAddFeatures_ - Función para añadir features
+  * @param {Object} options - Objeto de opciones
+  * @param {Object} vendorOptions - Objeto de opciones del proveedor
   * @api
   * @extends {M.impl.layer.Vector}
   */
@@ -93,22 +101,6 @@ class GenericVector extends Vector {
 
     if (!isNullOrEmpty(this.zIndex_)) {
       this.ol3Layer.setZIndex(this.zIndex_);
-    }
-
-    if (!isNullOrEmpty(this.sldBody)) {
-      this.ol3Layer.getSource().updateParams({ SLD_BODY: this.sldBody });
-    }
-
-    if (!isNullOrEmpty(this.styles)) {
-      this.ol3Layer.getSource().updateParams({ STYLES: this.styles });
-    }
-
-    if (!isNullOrEmpty(this.format)) {
-      this.ol3Layer.getSource().updateParams({ FORMAT: this.format });
-    }
-
-    if (!isNullOrEmpty(this.version)) {
-      this.ol3Layer.getSource().updateParams({ VERSION: this.version });
     }
 
     if (!isNullOrEmpty(this.maxExtent)) {
@@ -195,11 +187,23 @@ class GenericVector extends Vector {
   }
 
 
+  /**
+   * Este método desactiva el evento change de la capa.
+   * @function
+   * @api stable
+   */
   deactivate() {
     this.ol3Layer.getSource().un('change', this.fnAddFeatures_);
     this.fnAddFeatures_ = null;
   }
 
+  /**
+   * Este método comprueba si son iguales dos capas.
+   * @function
+   * @param {M.layer.WFS} obj - Objeto a comparar.
+   * @returns {boolean} Son iguales o no.
+   * @api stable
+   */
   equals(obj) {
     let equals = false;
     if (obj instanceof GenericVector) {
