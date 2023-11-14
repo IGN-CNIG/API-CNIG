@@ -7,7 +7,7 @@ import { getValue } from '../../../facade/js/i18n/language';
 
 export default class MouseSRSControl extends M.impl.Control {
   /* eslint-disable-next-line max-len */
-  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl, order, epsgFormat) {
+  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl, order, epsgFormat, draggableDialog) {
     super();
 
     /**
@@ -73,6 +73,8 @@ export default class MouseSRSControl extends M.impl.Control {
     this.order = order;
 
     this.epsgFormat = epsgFormat;
+
+    this.draggableDialog = draggableDialog;
   }
 
   /**
@@ -145,8 +147,9 @@ export default class MouseSRSControl extends M.impl.Control {
       button.style.width = '75px';
       button.style.backgroundColor = '#71a7d3';
     }, 10);
-
-    M.utils.draggabillyElement('.m-dialog .m-modal .m-content', '.m-dialog .m-modal .m-content .m-title');
+    if (this.draggableDialog) {
+      M.utils.draggabillyElement('.m-dialog .m-modal .m-content', '.m-dialog .m-modal .m-content .m-title');
+    }
     document.addEventListener('keydown', (evt) => {
       if (evt.key === 'Escape') {
         const btn = document.querySelector('.m-dialog .m-content .m-button > button');

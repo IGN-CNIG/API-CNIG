@@ -91,6 +91,11 @@ export default class MouseSRS extends M.Plugin {
     this.activeZ = options.activeZ || false;
 
     /**
+     * Draggable dialog
+     */
+    this.draggableDialog = options.draggableDialog === undefined ? true : options.draggableDialog;
+
+    /**
      * URL to the help for the icon
      * @private
      * @type {string}
@@ -146,6 +151,7 @@ export default class MouseSRS extends M.Plugin {
       this.helpUrl,
       this.order,
       this.epsgFormat,
+      this.draggableDialog,
     );
     this.controls_.push(this.control_);
     this.map_ = map;
