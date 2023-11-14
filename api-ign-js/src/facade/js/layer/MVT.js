@@ -7,6 +7,7 @@ import Vector from './Vector';
 import { isUndefined, isNullOrEmpty, normalize, isString } from '../util/Utils';
 import Exception from '../exception/exception';
 import { MVT as MVTType } from './Type';
+import * as parameter from '../parameter/parameter';
 
 /**
  * Posibles modos para la capa MVT.
@@ -73,8 +74,11 @@ class MVT extends Vector {
    * @api
    */
   constructor(parameters = {}, options = {}, vendorOptions = {}, implParam) {
-    const opts = parameters;
-    opts.type = MVTType;
+    let opts = parameter.layer(parameters, MVTType);
+
+    if (typeof parameters !== 'string') {
+      opts = { ...opts, ...parameters };
+    }
 
     const impl = implParam || new MVTTileImpl(opts, options, vendorOptions);
     super(opts, options, vendorOptions, impl);
