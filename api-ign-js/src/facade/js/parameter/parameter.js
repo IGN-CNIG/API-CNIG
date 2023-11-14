@@ -3874,12 +3874,8 @@ const generic = (userParameters) => {
     transparent: urlParams[4] || undefined,
     minZoom: urlParams[5] || undefined,
     maxZoom: urlParams[6] || undefined,
-    numZoomLevels: urlParams[7] || undefined,
-    version: urlParams[8] || undefined,
-    ids: urlParams[9] || undefined,
-    maxExtent: urlParams[10] || undefined,
-    displayInLayerSwitcher: urlParams[11] || undefined,
-    visibility: urlParams[12] || undefined,
+    displayInLayerSwitcher: urlParams[7] || undefined,
+    visibility: urlParams[8] || undefined,
   };
 };
 

@@ -295,7 +295,7 @@ class Utils {
       facadeLayer.name = ol3layer.getSource().getParams().LAYERS;
     } else if (isNullOrEmpty(facadeLayer.name) && !isNullOrEmpty(ol3layer.getSource()) &&
         !isNullOrEmpty(ol3layer.getSource().getUrl) &&
-        !isNullOrEmpty(ol3layer.getSource().getUrl())) {
+        !isNullOrEmpty(ol3layer.getSource().getUrl()) && typeof ol3layer.getSource().getUrl() !== 'function') {
       const url = ol3layer.getSource().getUrl();
       let result = null;
       const typeName = url.split('&typeName=')[1];
@@ -308,7 +308,7 @@ class Utils {
       } else {
         facadeLayer.name = generateRandom('layer_', '_'.concat(type));
       }
-    } else if (ol3layer.getSource().getLayer()) {
+    } else if (ol3layer.getSource().getLayer) {
       facadeLayer.name = ol3layer.getSource().getLayer();
     } else if (isNullOrEmpty(facadeLayer.name)) {
       facadeLayer.name = generateRandom('layer_', '_'.concat(type));

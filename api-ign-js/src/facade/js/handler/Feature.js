@@ -305,7 +305,7 @@ class Features extends Base {
    * @export
    */
   addLayer(layer) {
-    if (!includes(this.layers_, layer)) {
+    if (!includes(this.layers_, layer) && layer.name) {
       this.layers_.push(layer);
       this.prevSelectedFeatures_[layer.name] = [];
       this.prevHoverFeatures_[layer.name] = [];
