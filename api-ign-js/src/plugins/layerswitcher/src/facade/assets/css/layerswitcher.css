@@ -1143,7 +1143,7 @@ div.codsi-no-results {
 
 span.m-layerswitcher-codsi-result::before {
     content: '\2022';
-    margin-right: 19px;
+    margin-right: 10px;
     color: #71a7d3;
 }
 
