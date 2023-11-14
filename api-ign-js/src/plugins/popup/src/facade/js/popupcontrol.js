@@ -43,6 +43,15 @@ export default class PopupControl extends M.Control {
   createView(map) {
     // eslint-disable-next-line
     console.warn(getValue('exception.popup_obsolete'));
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape') {
+        const elem = document.querySelector('.m-panel.m-panel-popup.opened');
+        if (elem !== null) {
+          elem.querySelector('button.m-panel-btn').click();
+        }
+      }
+    });
+
     if (this.url_ !== 'template_es' && this.url_ !== 'template_en') {
       return M.remote.get(this.url_).then((response) => {
         let html = response.text;
