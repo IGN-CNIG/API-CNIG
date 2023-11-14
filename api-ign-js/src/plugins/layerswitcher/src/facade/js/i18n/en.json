@@ -31,7 +31,7 @@
   "url_service": "Include URL of the service to load",
   "query": "Consult",
   "loaded_services": "Preloaded geographic information layers",
-  "codsi_services": "INSPIRE Services Catalog (IDEE)",
+  "codsi_services": "Services Catalog",
   "clean": "Clean search",
   "availables": "List of some available layers",
   "title": "Title",
