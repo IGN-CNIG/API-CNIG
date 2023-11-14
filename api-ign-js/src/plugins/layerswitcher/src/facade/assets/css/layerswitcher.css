@@ -529,6 +529,10 @@ div.m-layerswitcher-legend>img {
     display: block;
 }
 
+.m-layerswitcher-suggestion-group.active>li {
+    color: #71a7d3;
+}
+
 .m-layerswitcher-suggestion-group {
     display: none;
     margin: 0;
@@ -1131,6 +1135,16 @@ div.codsi-no-results {
 
 #m-layerswitcher-addservices-codsi-results {
     font-size: 12px;
+}
+
+#m-layerswitcher-addservices-codsi-results > tr > td > span {
+    cursor: pointer;
+}
+
+span.m-layerswitcher-codsi-result::before {
+    content: '\2022';
+    margin-right: 19px;
+    color: #71a7d3;
 }
 
 /* MODAL */
