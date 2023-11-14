@@ -43,7 +43,6 @@ class Feature extends StyleBase {
    * @api
    */
   applyToFeature(feature) {
-    console.log('applyToFeature');
     this.feature_ = feature;
     let options = feature.getStyle().getOptions();
     if (options.point) {
