@@ -253,6 +253,9 @@ export default class MouseSRS extends M.Plugin {
     } else {
       cadena += `*${this.utmDecimalDigits}`;
     }
+
+    cadena += `*${this.draggableDialog}`;
+
     return cadena;
   }
   /**
