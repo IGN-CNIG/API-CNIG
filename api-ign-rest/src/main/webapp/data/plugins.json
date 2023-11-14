@@ -480,7 +480,7 @@
     "url_en": "printviewmanagement.jsp?language=en",
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/printviewmanagement",
     "image": "img/api-logo.png",
-    "description": "Plugin que permite utilizar diferentes herramientas de zoom. Centrar el mapa la(s) vista(s) indicada(s) por parámetro. Realizar zoom con una caja sobre el mapa. Navegar entre las vistas visitadas del mapa. Acercar o alejar a una vista del mapa.",
+    "description": "Plugin que permite utilizar diferentes herramientas de impresión.",
     "obsolete": false
   }
 ]
