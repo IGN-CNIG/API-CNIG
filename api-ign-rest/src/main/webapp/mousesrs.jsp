@@ -63,11 +63,16 @@
             <option value="false" selected="selected">false</option>
             <option value="true">true</option>
         </select>
-  		<label for="helpUrl">Parámetro helpUrl</label>
+        <label for="draggableDialog">Mover dialog</label>
+        <select name="draggableDialog" id="draggableDialog">
+            <option value="false" selected="selected">false</option>
+            <option value="true">true</option>
+        </select>
+        <label for="helpUrl">Parámetro helpUrl</label>
         <input type="text" name="helpUrl" id="inputHelpUrl" list="helpUrl">
         <datalist id="helpUrl">
             <option value="https://www.ign.es/">Ayuda</option>
-		</datalist>
+        </datalist>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar" />
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -98,7 +103,7 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let tooltip, psrs, label, precision, geoDecimalDigits, utmDecimalDigits, activeZ, helpUrl, epsgFormat;
+        let tooltip, psrs, label, precision, geoDecimalDigits, utmDecimalDigits, activeZ, helpUrl, epsgFormat, draggableDialog;
         crearPlugin({
             tooltip: "Muestra coordenadas",
             srs: "EPSG:4326",
@@ -107,8 +112,9 @@
             geoDecimalDigits: 3,
             utmDecimalDigits: 2,
             activeZ: false,
-			helpUrl: helpUrl,
-            epsgFormat: false
+            helpUrl: helpUrl,
+            epsgFormat: false,
+            draggableDialog: false
         });
 
         const inputTooltip = document.getElementById("inputTooltip");
@@ -119,7 +125,8 @@
         const inputUtmDecimalDigits = document.getElementById("inputUtmDecimalDigits");
         const selectActiveZ = document.getElementById("selectActiveZ");
         const epsgFormatElement = document.getElementById("epsgFormat");
-      	const inputHelpUrl = document.getElementById("inputHelpUrl");
+        const draggableDialogElement = document.getElementById("draggableDialog");
+        const inputHelpUrl = document.getElementById("inputHelpUrl");
 
         inputTooltip.addEventListener('change', cambiarTest);
         inputSrs.addEventListener('change', cambiarTest);
@@ -129,6 +136,7 @@
         inputUtmDecimalDigits.addEventListener('change', cambiarTest);
         selectActiveZ.addEventListener('change', cambiarTest);
         epsgFormatElement.addEventListener('change', cambiarTest);
+        draggableDialogElement.addEventListener('change', cambiarTest);
         inputHelpUrl.addEventListener('change', cambiarTest);
 
         function cambiarTest() {
@@ -142,6 +150,7 @@
             activeZ = selectActiveZ.value != "" && (selectActiveZ.value == "true" || selectActiveZ.value == true) ? objeto.activeZ = true : objeto.activeZ = false;
             epsgFormat = epsgFormatElement.value != "" && (epsgFormatElement.value == "true" || epsgFormatElement.value == true) ? objeto.epsgFormat = true : objeto.epsgFormat = false;
             helpUrl = inputHelpUrl.value != "" ? objeto.helpUrl = inputHelpUrl.value : "";
+            draggableDialog = draggableDialogElement.value != "" && (draggableDialogElement.value == "true" || draggableDialogElement.value == true) ? objeto.draggableDialogElement = true : objeto.draggableDialogElement = false;
             map.removePlugins(mp);
             crearPlugin(objeto);
         }
