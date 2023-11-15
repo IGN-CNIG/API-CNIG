@@ -39,7 +39,7 @@ class Generic {
     // Atributos comunes
     GenericObjet.ol3Layer = vendorOptions;
     GenericObjet.numZoomLevels = opt.numZoomLevels || '';
-    GenericObjet.maxExtent = opt.maxExtent || [];
+    GenericObjet.maxExtent = opt.userMaxExtent || [];
     GenericObjet.ids = opt.ids;
     GenericObjet.version = opt.version;
     GenericObjet.legend = opt.legend;

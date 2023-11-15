@@ -30,9 +30,9 @@ class Generic {
     }
 
     let opts = isNullOrEmpty(options) ? {} : options;
+    // - Valores que llegaran a las herencias
     opts = {
       ...opts,
-      maxExtent: params.maxExtent,
       ids: params.ids,
       cql: params.cql,
       type: params.type,
@@ -46,6 +46,7 @@ class Generic {
       transparent: params.transparent,
       numZoomLevels: params.numZoomLevels,
       version: params.version,
+      maxExtent: params.useMaxExtent,
     };
 
     if (vendorOpt) {
