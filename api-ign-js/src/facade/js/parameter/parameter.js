@@ -3956,6 +3956,14 @@ export const layer = (userParameters, forcedType) => {
       } else if (userParam.name !== '__draw__') {
         layerObj.isBase = layerObj.transparent === undefined ? false : !layerObj.transpare;
       }
+
+      if (!isNullOrEmpty(userParam.minZoom)) {
+        layerObj.minZoom = userParam.minZoom;
+      }
+
+      if (!isNullOrEmpty(userParam.maxZoom)) {
+        layerObj.maxZoom = userParam.maxZoom;
+      }
     }
 
     return layerObj;
