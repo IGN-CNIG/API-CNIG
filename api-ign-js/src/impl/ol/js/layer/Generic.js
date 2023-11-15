@@ -10,7 +10,6 @@ import GenericVector from './GenericVector';
  * @classdesc
  * Generic permite añadir cualquier tipo de capa definida con la librería base
  * @property {Object} ol3Layer - Tipo de capa
- * @property {Number} numZoomLevels - Número de niveles de zoom
  * @property {Array<Number>} maxExtent - Extensión máxima
  * @property {Array<String>} ids - Identificadores
  * @property {String} version - Versión
@@ -38,7 +37,6 @@ class Generic {
 
     // Atributos comunes
     GenericObjet.ol3Layer = vendorOptions;
-    GenericObjet.numZoomLevels = opt.numZoomLevels || '';
     GenericObjet.maxExtent = opt.userMaxExtent || [];
     GenericObjet.ids = opt.ids;
     GenericObjet.version = opt.version;

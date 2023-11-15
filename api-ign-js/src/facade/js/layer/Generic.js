@@ -25,7 +25,7 @@ class Generic {
     if (typeof userParameters === 'string') {
       params = parameter.layer(userParameters, LayerType.Generic);
       vendorOpt = params.vendorOptions;
-    } else if (isNullOrEmpty(userParameters)) {
+    } else if (!isNullOrEmpty(userParameters)) {
       params.type = LayerType.Generic;
     }
 
@@ -44,7 +44,6 @@ class Generic {
       opacity: params.opacity,
       isBase: params.isBase,
       transparent: params.transparent,
-      numZoomLevels: params.numZoomLevels,
       version: params.version,
       maxExtent: params.useMaxExtent,
     };
