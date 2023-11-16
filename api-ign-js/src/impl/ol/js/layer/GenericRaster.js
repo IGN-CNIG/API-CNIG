@@ -274,6 +274,23 @@ class GenericRaster extends LayerBase {
   }
 
   /**
+   * Este método destruye esta capa, limpiando el HTML
+   * y anulando el registro de todos los eventos.
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  destroy() {
+    const olMap = this.map.getMapImpl();
+    if (!isNullOrEmpty(this.ol3Layer)) {
+      olMap.removeLayer(this.ol3Layer);
+      this.ol3Layer = null;
+    }
+    this.map = null;
+  }
+
+  /**
    * Este método devuelve si dos capas con iguales.
    * @param {Object} Capa con la que se quiere comparar.
    * @return {boolean} Devuelve true si las capas son iguales.
