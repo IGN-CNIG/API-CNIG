@@ -6,6 +6,7 @@ import {
   isNullOrEmpty,
   isUndefined,
   isFunction,
+  isArray,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';
@@ -177,6 +178,22 @@ class GenericVector extends Vector {
     }
 
     return equals;
+  }
+
+  addFeatures(featuresParam, update = false) {
+    let features = featuresParam;
+    if (!isNullOrEmpty(features)) {
+      if (!isArray(features)) {
+        features = [features];
+      }
+      if (this.getImpl().isLoaded()) {
+        this.getImpl().addFeatures(features, update);
+      } else {
+        this.getImpl().on(EventType.LOAD, () => {
+          this.getImpl().addFeatures(features, update);
+        });
+      }
+    }
   }
 }
 

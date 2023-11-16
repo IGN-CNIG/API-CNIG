@@ -82,6 +82,8 @@ class GenericVector extends Vector {
 
     Utils.addFacadeName(this.facadeLayer_, this.ol3Layer, 'Vector');
 
+    this.facadeVector_ = this.facadeLayer_;
+
     if (this.facadeLayer_.legend === undefined) {
       Utils.addFacadeLegend(this.facadeLayer_, this.ol3Layer);
     }
@@ -139,7 +141,6 @@ class GenericVector extends Vector {
     }
 
     map.getMapImpl().addLayer(this.ol3Layer);
-
     this.fnAddFeatures_ = this.addFeaturesToFacade.bind(this);
     this.ol3Layer.getSource().on('change', this.fnAddFeatures_);
   }
@@ -150,8 +151,8 @@ class GenericVector extends Vector {
         const features = this.ol3Layer.getSource().getFeatures().map((f) => {
           return Feature.olFeature2Facade(f);
         });
-        this.facadeLayer_.addFeatures(features);
         this.loaded_ = true;
+        this.facadeLayer_.addFeatures(features);
         this.deactivate();
         this.fire(EventType.LOAD, [this.features_]);
         if (this.style !== 'createDefaultStyle') {
