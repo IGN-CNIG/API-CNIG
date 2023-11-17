@@ -199,6 +199,22 @@ class GenericVector extends Vector {
   }
 
   /**
+   * Este método destruye esta capa, limpiando el HTML
+   * y anulando el registro de todos los eventos.
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  destroy() {
+    const olMap = this.map.getMapImpl();
+    if (!isNullOrEmpty(this.ol3Layer)) {
+      olMap.removeLayer(this.ol3Layer);
+    }
+    this.map = null;
+  }
+
+  /**
    * Este método comprueba si son iguales dos capas.
    * @function
    * @param {M.layer.WFS} obj - Objeto a comparar.

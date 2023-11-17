@@ -285,7 +285,6 @@ class GenericRaster extends LayerBase {
     const olMap = this.map.getMapImpl();
     if (!isNullOrEmpty(this.ol3Layer)) {
       olMap.removeLayer(this.ol3Layer);
-      this.ol3Layer = null;
     }
     this.map = null;
   }
