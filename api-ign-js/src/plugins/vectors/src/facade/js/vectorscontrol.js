@@ -215,7 +215,7 @@ export default class VectorsControl extends M.Control {
         layer.name !== undefined && layer.displayInLayerSwitcher === true;
     });
 
-    const layers = [];
+    let layers = [];
     filtered.forEach((layer) => {
       if (!(layer.type.toLowerCase() === 'kml' && layer.name.toLowerCase() === 'attributions')) {
         const newLayer = layer;
@@ -243,6 +243,7 @@ export default class VectorsControl extends M.Control {
 
           newLayer.visible = layer.isVisible();
           layers.push(newLayer);
+          layers = this.reorderLayers(layers);
         }
       }
     });
@@ -1799,6 +1800,13 @@ export default class VectorsControl extends M.Control {
     this.geometry = undefined;
     this.emphasizeSelectedFeature();
     this.getImpl().removeEditInteraction();
+  }
+
+  //  Esta función ordena todas las capas por zindex
+  reorderLayers(layers) {
+    const result = layers.sort((layer1, layer2) => layer1.getZIndex() -
+        layer2.getZIndex()).reverse();
+    return result;
   }
 
   getProfile() {
