@@ -116,10 +116,6 @@ export default class Comparators extends M.Plugin {
    * @api
    */
   addTo(map) {
-    if (!this.options.transparencyParams &&
-      !this.options.lyrcompareParams && !this.options.mirrorpanelParams) {
-      M.dialog.error(getValue('exception.no_controls'));
-    }
     this.controls_.push(new ComparatorsControl(this.isDraggable, this.order, this.options, map));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelComparators', {
