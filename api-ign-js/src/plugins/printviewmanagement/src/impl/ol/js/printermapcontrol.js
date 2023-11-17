@@ -159,7 +159,10 @@ export default class PrinterMapControl extends M.impl.Control {
       if (!M.utils.isNullOrEmpty(styleFn)) {
         let featureStyle;
         try {
-          featureStyle = styleFn(feature, resolution)[0];
+          featureStyle = styleFn(feature, resolution);
+          if (Array.isArray(featureStyle)) {
+            featureStyle = featureStyle[0];
+          }
         } catch (e) {
           featureStyle = styleFn.call(feature, resolution)[0];
         }
@@ -187,7 +190,7 @@ export default class PrinterMapControl extends M.impl.Control {
             graphicHeight: imgSize[0],
             graphicWidth: imgSize[1],
             graphicOpacity: img.getOpacity(),
-            strokeWidth: stroke.getWidth(),
+            strokeWidth: stroke ? stroke.getWidth() : undefined,
             type: parseType,
           };
           const text = (featureStyle.getText && featureStyle.getText());
