@@ -221,6 +221,13 @@ export default class VectorsControl extends M.Control {
         const newLayer = layer;
         const geometry = !M.utils.isNullOrEmpty(layer.geometry) ?
           layer.geometry : layer.getGeometryType();
+
+        if (geometry === null) {
+          this.impl_.waitLayerLoadedAsync(layer).then(() => {
+            this.renderLayers();
+          });
+        }
+
         if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('point') > -1) {
           newLayer.point = true;
         } else if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('polygon') > -1) {
