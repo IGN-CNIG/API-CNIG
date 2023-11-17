@@ -84,12 +84,14 @@ export default class PrintViewManagement extends M.Plugin {
      */
     this.isDraggable = options.isDraggable ? options.isDraggable : false;
 
+    const { georefImageEpsg = true } = options;
+
     /**
      * Indicates if the control georefImageEpsg is added to the plugin
      * @private
      * @type {Boolean|Array<Object>}
      */
-    if (options.georefImageEpsg === true) {
+    if (georefImageEpsg === true) {
       this.georefImageEpsg = {
         layers: [
           {
@@ -114,12 +116,14 @@ export default class PrintViewManagement extends M.Plugin {
       this.georefImageEpsg = false;
     }
 
+    const { georefImage = true } = options;
+
     /**
      * Indicates if the control georefImage is added to the plugin
      * @private
      * @type {Boolean}
      */
-    if (options.georefImage === true) {
+    if (georefImage === true) {
       this.georefImage = {
         tooltip: 'Georeferenciar imagen',
         printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/mapexport',
@@ -131,12 +135,14 @@ export default class PrintViewManagement extends M.Plugin {
       this.georefImage = false;
     }
 
+    const { printermap = true } = options;
+
     /**
      * Indicates if the control printermap is added to the plugin
      * @private
      * @type {Boolean}
      */
-    if (options.printermap === true) {
+    if (printermap === true) {
       this.printermap = {
         printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
         headerLegend: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
