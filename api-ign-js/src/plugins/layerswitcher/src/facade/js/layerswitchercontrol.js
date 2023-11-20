@@ -370,7 +370,6 @@ export default class LayerswitcherControl extends M.Control {
     const layerURL = evt.target.getAttribute('data-layer-url') || undefined;
     const layerType = evt.target.getAttribute('data-layer-type');
     const selectLayer = evt.target.getAttribute('data-select-type');
-
     if (evt.target.id === 'm-layerswitcher-hsalllayers') {
       this.showHideAllLayers();
     } else if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles'))) &&
@@ -429,37 +428,7 @@ export default class LayerswitcherControl extends M.Control {
             legend.style.display = 'none';
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
-          if (layerType === 'WMS') {
-            layer.getMaxExtent((me) => {
-              this.map_.setBbox(me);
-            });
-          } else if (layerType === 'WMTS' || layerType === 'WFS' || layerType === 'MBTilesVector' ||
-            layerType === 'MBTiles' || layerType === 'OSM' || layerType === 'XYZ' || layerType === 'TMS' ||
-            layerType === 'GeoJSON' || layerType === 'KML' || layerType === 'OGCAPIFeatures' || layerType === 'Vector') {
-            const extent = layer.getMaxExtent();
-            if (extent === null && layer.calculateMaxExtent) {
-              layer.calculateMaxExtent()
-                .then((ext) => {
-                  if (ext.length > 0) {
-                    this.map_.setBbox(ext);
-                  } else {
-                    this.map_.setBbox(this.map_.getExtent());
-                  }
-                })
-                .catch((err) => {
-                  console.error(err);
-                });
-            } else if (extent === null) {
-              this.map_.setBbox(this.map_.getExtent());
-            } else {
-              this.map_.setBbox(extent);
-            }
-          } else if (layerType === 'MVT') {
-            const extent = layer.getFeaturesExtent();
-            this.map_.setBbox(extent);
-          } else {
-            M.dialog.info(getValue('exception.extent'), getValue('info'));
-          }
+          this.eventIconTarget_(layerType, layer);
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-info') > -1) {
           if (layer.type === 'OGCAPIFeatures') {
             const metadataURL = `${layer.url}${layer.name}?f=json`;
@@ -724,6 +693,40 @@ export default class LayerswitcherControl extends M.Control {
     evt.stopPropagation();
   }
 
+
+  eventIconTarget_(layerType, layer) {
+    const layersTypes = ['WMTS', 'WFS', 'MBTilesVector', 'MBTiles', 'OSM', 'XYZ', 'TMS', 'GeoJSON', 'KML', 'OGCAPIFeatures', 'Vector', 'Generic'];
+    if (layerType === 'WMS') {
+      layer.getMaxExtent((me) => {
+        this.map_.setBbox(me);
+      });
+    } else if (layersTypes.includes(layerType)) {
+      const extent = layer.getMaxExtent();
+      if (extent === null && layer.calculateMaxExtent) {
+        layer.calculateMaxExtent()
+          .then((ext) => {
+            if (ext.length > 0) {
+              this.map_.setBbox(ext);
+            } else {
+              this.map_.setBbox(this.map_.getExtent());
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      } else if (extent === null) {
+        this.map_.setBbox(this.map_.getExtent());
+      } else {
+        this.map_.setBbox(extent);
+      }
+    } else if (layerType === 'MVT') {
+      const extent = layer.getFeaturesExtent();
+      this.map_.setBbox(extent);
+    } else {
+      M.dialog.info(getValue('exception.extent'), getValue('info'));
+    }
+  }
+
   /**
    * This function returns the number of pages based on the number of attributes indicated
    *
@@ -868,7 +871,7 @@ export default class LayerswitcherControl extends M.Control {
       !M.utils.isNullOrEmpty(layerType)) {
       result = this.overlayLayers.filter((l) => {
         return l.name === layerName && (l.url === layerURL ||
-          l.url === undefined) && l.type === layerType;
+          l.url === undefined || l.url[0] === layerURL) && l.type === layerType;
       });
     }
 
