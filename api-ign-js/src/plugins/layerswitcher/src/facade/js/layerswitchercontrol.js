@@ -1892,11 +1892,13 @@ export default class LayerswitcherControl extends M.Control {
 
       if (attributions !== undefined) {
         const {
-          Title, OnlineResource, ProviderName, ProviderSite,
+          Title,
+          OnlineResource,
+          ProviderName,
+          ProviderSite,
         } = attributions;
 
-        layer.attribution =
-        {
+        layer.attribution = {
           name: Title || ProviderName,
           url: OnlineResource || ProviderSite,
           nameLayer: layer.name,
@@ -2635,12 +2637,14 @@ export default class LayerswitcherControl extends M.Control {
     const results = [];
     if (data.metadata !== undefined) {
       data.metadata.forEach((m) => {
-        const links = this.getLinksCODSIResults(m);
-        if (links.length > 0) {
-          results.push({
-            title: m.title || m.defaultTitle,
-            url: links[0].split('?')[0],
-          });
+        if (!m.keyword.includes('API Maps')) {
+          const links = this.getLinksCODSIResults(m);
+          if (links.length > 0) {
+            results.push({
+              title: m.title || m.defaultTitle,
+              url: links[0].split('?')[0],
+            });
+          }
         }
       });
     }
