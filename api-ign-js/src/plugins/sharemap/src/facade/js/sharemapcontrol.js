@@ -588,6 +588,8 @@ export default class ShareMapControl extends M.Control {
       param = this.getGeoJSON(layer);
     } else if (layer.type === 'Vector') {
       param = this.getVector(layer);
+    } else if (layer.type === 'Generic') {
+      param = this.getGeneric(layer);
     }
     return param;
   }
@@ -670,6 +672,71 @@ export default class ShareMapControl extends M.Control {
       legend = layer.legend;
     }
     return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${this.normalizeString(legend)}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+  }
+
+  getGeneric(layer) {
+    const source = layer.getImpl().getOL3Layer().getSource();
+    const type = source.constructor.name;
+    let vendorOptions = '';
+
+    if (layer.sourceType === 'vector') {
+      vendorOptions = `
+      new ol.layer.Vector({
+        source: new ol.source.Vector({
+          format: ${source.getFormat()},
+          url: ${source.getUrl()},
+          ${source.getParams ? `params: ${source.getParams()},` : ''}
+        }),
+      });
+      `;
+    } else {
+      let sourceRaster = '';
+      if (type === 'WMTS') {
+        sourceRaster = `
+          new ol.source.WMTS({
+          url: ${source.getUrls()[0]} ,
+          layer: ${source.getLayer()},
+          matrixSet: ${source.getMatrixSet()},
+          format: ${source.getFormat()},
+          projection: ${source.getProjection()},
+          tileGrid: ${source.getTileGrid()},
+          style: ${source.getStyle()},
+        });
+        `;
+      } else if (type === 'TileWMS') {
+        sourceRaster = `
+          new ol.source.Tile({
+            url: ${source.getUrls()[0]},
+            params: ${source.getParams()},
+          });
+        `;
+      } else if (type === 'ImageWMS') {
+        sourceRaster = `
+        new ol.source.Image({
+          url: ${source.getUrl()},
+          params: ${source.getParams()},
+        });
+      `;
+      }
+
+      vendorOptions = `
+        new ol.layer.Tile({
+          source: ${sourceRaster},
+        });
+      `;
+    }
+
+    const {
+      name = '',
+      legend = '',
+      transparent,
+      minZoom,
+      maxZoom,
+      displayInLayerSwitcher = true,
+      visibility = true,
+    } = layer;
+
+    return `Generic*${M.utils.encodeBase64(vendorOptions)}*${name}*${legend}*${transparent}*${minZoom}*${maxZoom}*${displayInLayerSwitcher}*${visibility}`;
   }
 
   /**
