@@ -200,7 +200,8 @@ class GenericRaster extends LayerBase {
       olSource.getProjection().getCode()
       : projection;
 
-    const layerUrl = olSource.getUrl();
+    const layerUrl = olSource.getUrl ? olSource.getUrl() : olSource.getUrls()[0];
+
     // serverUrl, version
     return new Promise((success, fail) => {
       const url = getWMSGetCapabilitiesUrl(layerUrl, '1.3.0');
