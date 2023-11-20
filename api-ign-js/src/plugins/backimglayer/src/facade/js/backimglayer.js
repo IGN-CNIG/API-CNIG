@@ -162,6 +162,8 @@ export default class BackImgLayer extends M.Plugin {
      *@type { Number }
      */
     this.order = options.order >= -1 ? options.order : null;
+
+    this.visible = options.visible !== undefined ? options.visible : true;
   }
 
   /**
@@ -191,6 +193,7 @@ export default class BackImgLayer extends M.Plugin {
   addTo(map) {
     this.controls_.push(new BackImgLayerControl(
       map,
+      this.visible,
       this.layerOpts,
       this.layerId,
       this.layerVisibility,
