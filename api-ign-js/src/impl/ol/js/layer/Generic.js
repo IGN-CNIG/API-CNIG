@@ -210,6 +210,14 @@ class Generic {
     this.version = newVersion;
     this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
   }
+
+  getSourceType(ol3) {
+    return ol3.getSource().contructor.name;
+  }
+
+  getLayerType(ol3) {
+    return ol3.constructor.name;
+  }
 }
 
 export default Generic;
