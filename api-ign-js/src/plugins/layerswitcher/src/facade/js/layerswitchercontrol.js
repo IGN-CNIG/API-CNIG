@@ -438,8 +438,8 @@ export default class LayerswitcherControl extends M.Control {
             M.remote.get(metadataURL).then((response) => {
               jsonResponseOgc = JSON.parse(response.text);
               const vars = {
-                title: jsonResponseOgc.description,
-                abstract: jsonResponseOgc.title,
+                title: jsonResponseOgc.title,
+                abstract: jsonResponseOgc.description,
                 hasMetadata: true,
                 metadata: htmlURL,
                 isOgc: true,
