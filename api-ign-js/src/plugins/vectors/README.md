@@ -57,7 +57,7 @@ const map = M.map({
   container: 'mapjs',
 });
 
-const mp = new Vectors();
+const mp = new M.plugin.Vectors();
 
 map.addPlugin(mp);
 ```
@@ -67,7 +67,7 @@ const map = M.map({
   container: 'mapjs',
 });
 
-const mp = new Vectors({
+const mp = new M.plugin.Vectors({
   collapsed: true,
   collapsible: true,
   position: 'TL',
