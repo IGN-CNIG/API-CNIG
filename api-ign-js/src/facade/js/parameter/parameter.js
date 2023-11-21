@@ -1414,6 +1414,9 @@ export const geojson = (userParameters) => {
     // gets the name
     layerObj.name = getLegendGeoJSON(userParam);
 
+    // get the legend
+    layerObj.legend = getLegendGeoJSON(userParam);
+
     // gets the URL
     layerObj.url = getURLGeoJSON(userParam);
 
