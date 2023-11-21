@@ -235,7 +235,7 @@ class GenericVector extends Vector {
   }
 
   getFormatType() {
-    return this.ol3Layer.getSource().getFormat().contructor.name;
+    return this.ol3Layer.getSource().getFormat().constructor.name;
   }
 
   /**

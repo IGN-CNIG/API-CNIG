@@ -23,6 +23,7 @@ import GenericVector from './GenericVector';
 class Generic {
   constructor(options = {}, vendorOptions, type) {
     const opt = options;
+    this.vendorOptions = vendorOptions;
 
     let GenericObjet = {};
 
@@ -55,6 +56,8 @@ class Generic {
     GenericObjet.setMaxExtent = this.setMaxExtent;
     GenericObjet.isQueryable = this.isQueryable;
     GenericObjet.setVersion = this.setVersion;
+    GenericObjet.getLayerType = this.getLayerType;
+    GenericObjet.getSourceType = this.getSourceType;
 
     return GenericObjet;
   }
@@ -211,12 +214,12 @@ class Generic {
     this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
   }
 
-  getSourceType(ol3) {
-    return ol3.getSource().contructor.name;
+  getSourceType() {
+    return this.ol3Layer.getSource().constructor.name;
   }
 
-  getLayerType(ol3) {
-    return ol3.constructor.name;
+  getLayerType() {
+    return this.ol3Layer.constructor.name;
   }
 }
 
