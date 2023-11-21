@@ -569,7 +569,8 @@ export default class LayerswitcherControl extends M.Control {
             if (layer instanceof M.layer.Vector) {
               const nFeatures = layer.getFeatures().length;
               vars.numberFeatures = nFeatures;
-              vars.extension = layer.getMaxExtent().toString().replaceAll(',', ', ');
+              const ext = layer.getMaxExtent();
+              vars.extension = M.utils.isNullOrEmpty(ext) ? ext : ext.toString().replaceAll(',', ', ');
               if (nFeatures > 0) {
                 const attributes = [];
                 const features = layer.getFeatures();
@@ -600,7 +601,8 @@ export default class LayerswitcherControl extends M.Control {
               let url = layer.url;
               const regex = /\{z\}\/\{x\}\/\{(-?)y\}\/?.*$/;
               url = url.replace(regex, 'metadata.json');
-              vars.extension = layer.getMaxExtent().toString().replaceAll(',', ', ');
+              const ext = layer.getMaxExtent();
+              vars.extension = M.utils.isNullOrEmpty(ext) ? ext : ext.toString().replaceAll(',', ', ');
               M.proxy(this.useProxy);
               M.remote.get(url).then((response) => {
                 if (response.code === 200) {
@@ -632,7 +634,8 @@ export default class LayerswitcherControl extends M.Control {
               });
               M.proxy(this.statusProxy);
             } else if (type === 'OSM' || type === 'MBTiles') {
-              vars.extension = layer.getMaxExtent().toString().replaceAll(',', ', ');
+              const ext = layer.getMaxExtent();
+              vars.extension = M.utils.isNullOrEmpty(ext) ? ext : ext.toString().replaceAll(',', ', ');
             }
             if (rendInfo) {
               this.renderInfo(vars, 'Others');
