@@ -250,6 +250,11 @@ class GenericVector extends Vector {
     this.map = null;
   }
 
+
+  getFormatType() {
+    return this.ol3Layer.getSource().getFormat().constructor.name;
+  }
+
   /**
    * Este método comprueba si son iguales dos capas.
    * @function
