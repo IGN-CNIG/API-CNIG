@@ -221,6 +221,10 @@ class Generic {
   getLayerType() {
     return this.ol3Layer.constructor.name;
   }
+
+  getFormatType() {
+    return this.ol3Layer.getSource().getFormat().constructor.name;
+  }
 }
 
 export default Generic;

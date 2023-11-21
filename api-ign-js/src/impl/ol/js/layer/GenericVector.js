@@ -234,10 +234,6 @@ class GenericVector extends Vector {
     }
   }
 
-  getFormatType() {
-    return this.ol3Layer.getSource().getFormat().constructor.name;
-  }
-
   /**
    * Este método destruye esta capa, limpiando el HTML
    * y anulando el registro de todos los eventos.
