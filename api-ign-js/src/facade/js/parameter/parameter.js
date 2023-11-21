@@ -3964,6 +3964,11 @@ export const layer = (userParameters, forcedType) => {
       if (!isNullOrEmpty(userParam.maxZoom)) {
         layerObj.maxZoom = userParam.maxZoom;
       }
+
+      // name
+      if (!isNullOrEmpty(userParam.name)) {
+        layerObj.name = userParam.name;
+      }
     }
 
     return layerObj;

@@ -7,6 +7,8 @@ import {
   isUndefined,
   isFunction,
   isArray,
+  normalize,
+  isString,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';
@@ -32,6 +34,7 @@ class GenericVector extends Vector {
     * @api
     */
   constructor(userParameters, options, vendorOptions = {}) {
+    const params = { ...userParameters, ...options };
     // checks if the implementation can create Generic layers
     if (isUndefined(GenericImpl)) {
       Exception(getValue('exception').generic_method);
@@ -40,7 +43,7 @@ class GenericVector extends Vector {
     const impl = new GenericImpl(options, vendorOptions, 'vector');
 
     // calls the super constructor
-    super(userParameters, options, vendorOptions, impl);
+    super(params, options, vendorOptions, impl);
 
     if (!isNullOrEmpty(impl) && isFunction(impl.setFacadeObj)) {
       impl.setFacadeObj(this);
@@ -65,6 +68,12 @@ class GenericVector extends Vector {
         this.namespace = userParameters.namespace;
       }
     }
+
+    /**
+    * extract: Opcional, activa la consulta
+    * haciendo clic en el objeto geográfico, por defecto falso.
+    */
+    this.extract = userParameters.extract || false;
 
     // -- Vector --
     /**
@@ -108,6 +117,40 @@ class GenericVector extends Vector {
     */
   set url(newUrl) {
     this.getImpl().setURLService(newUrl);
+  }
+
+  /**
+   * Devuelve el valor de la propiedad "extract". La propiedad "extract" tiene la
+   * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
+   *
+   * @function
+   * @getter
+   * @returns {M.LayerType.KML} Valor de la propiedad "extract".
+   * @api
+   */
+  get extract() {
+    return this.getImpl().extract;
+  }
+
+  /**
+   * Sobrescribe el valor de la propiedad "extract". La propiedad "extract" tiene la
+   * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
+   *
+   * @function
+   * @setter
+   * @param {Boolean} newExtract Nuevo valor para sobreescribir la propiedad "extract".
+   * @api
+   */
+  set extract(newExtract) {
+    if (!isNullOrEmpty(newExtract)) {
+      if (isString(newExtract)) {
+        this.getImpl().extract = (normalize(newExtract) === 'true');
+      } else {
+        this.getImpl().extract = newExtract;
+      }
+    } else {
+      this.getImpl().extract = false;
+    }
   }
 
   /**

@@ -27,6 +27,7 @@ class Generic {
       vendorOpt = params.vendorOptions;
     } else if (!isNullOrEmpty(userParameters)) {
       params.type = LayerType.Generic;
+      params.infoEventType = params.infoEventType || 'click';
     }
 
     let opts = isNullOrEmpty(options) ? {} : options;
@@ -37,7 +38,6 @@ class Generic {
       cql: params.cql,
       type: params.type,
       legend: params.legend || params.name,
-      name: params.name,
       minZoom: params.minZoom || 1,
       maxZoom: params.maxZoom || 28,
       visibility: params.visibility,
@@ -50,6 +50,8 @@ class Generic {
 
     if (vendorOpt) {
       this.sourceType = Utils.getSourceType(vendorOpt);
+      opts.name = Utils.addFacadeName(opts.name, vendorOpt);
+      opts.legend = opts.legend || Utils.addFacadeLegend(vendorOpt);
     }
 
     let ObjectGeneric = null;

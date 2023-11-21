@@ -286,14 +286,13 @@ class Utils {
     return img;
   }
 
-  static addFacadeName(facade, olLayer, type) {
-    const facadeLayer = facade;
+  static addFacadeName(facadeName, olLayer) {
     const ol3layer = olLayer;
-    if (isNullOrEmpty(facadeLayer.name) && !isNullOrEmpty(ol3layer.getSource()) &&
+    if (isNullOrEmpty(facadeName) && !isNullOrEmpty(ol3layer.getSource()) &&
         !isNullOrEmpty(ol3layer.getSource().getParams) &&
         !isNullOrEmpty(ol3layer.getSource().getParams().LAYERS)) {
-      facadeLayer.name = ol3layer.getSource().getParams().LAYERS;
-    } else if (isNullOrEmpty(facadeLayer.name) && !isNullOrEmpty(ol3layer.getSource()) &&
+      return ol3layer.getSource().getParams().LAYERS;
+    } else if (isNullOrEmpty(facadeName) && !isNullOrEmpty(ol3layer.getSource()) &&
         !isNullOrEmpty(ol3layer.getSource().getUrl) &&
         !isNullOrEmpty(ol3layer.getSource().getUrl()) && typeof ol3layer.getSource().getUrl() !== 'function') {
       const url = ol3layer.getSource().getUrl();
@@ -303,24 +302,24 @@ class Utils {
         result = typeName.split('&')[0].split(':');
       }
       if (!isNullOrEmpty(result)) {
-        facadeLayer.name = result[1];
-        facadeLayer.namespace = result[0];
-      } else {
-        facadeLayer.name = generateRandom('layer_', '_'.concat(type));
+        return result[1];
+        // facadeLayer.namespace = result[0];
       }
+      return generateRandom('layer_');
     } else if (ol3layer.getSource().getLayer) {
-      facadeLayer.name = ol3layer.getSource().getLayer();
-    } else if (isNullOrEmpty(facadeLayer.name)) {
-      facadeLayer.name = generateRandom('layer_', '_'.concat(type));
+      return ol3layer.getSource().getLayer();
+    } else if (isNullOrEmpty(facadeName)) {
+      return generateRandom('layer_');
     }
+    return facadeName;
   }
 
-  static addFacadeLegend(facade, olLayer) {
-    const facadeLayer = facade;
+  static addFacadeLegend(olLayer) {
     const ol3layer = olLayer;
     if (ol3layer.getProperties() && ol3layer.getProperties().legend) {
-      facadeLayer.setLegend(ol3layer.getProperties().legend);
+      return ol3layer.getProperties().legend;
     }
+    return null;
   }
 
   /**

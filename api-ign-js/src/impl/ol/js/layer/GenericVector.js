@@ -3,16 +3,18 @@
  */
 import * as LayerType from 'M/layer/Type';
 import * as EventType from 'M/event/eventtype';
+import { compileSync as compileTemplate } from 'M/util/Template';
+import Popup from 'M/Popup';
 import {
   isNullOrEmpty,
   isNull,
   getResolutionFromScale,
   isUndefined,
 } from 'M/util/Utils';
+import popupKMLTemplate from 'templates/kml_popup';
 import Vector from './Vector';
 import ImplMap from '../Map';
 import Feature from '../feature/Feature';
-import Utils from '../util/Utils';
 
 /**
   * @classdesc
@@ -80,14 +82,7 @@ class GenericVector extends Vector {
   addTo(map) {
     this.map = map;
 
-    Utils.addFacadeName(this.facadeLayer_, this.ol3Layer, 'Vector');
-
     this.facadeVector_ = this.facadeLayer_;
-
-    if (this.facadeLayer_.legend === undefined) {
-      Utils.addFacadeLegend(this.facadeLayer_, this.ol3Layer);
-    }
-
 
     if (!isNullOrEmpty(this.visibility)) {
       this.ol3Layer.setVisible(this.visibility);
@@ -196,6 +191,47 @@ class GenericVector extends Vector {
   deactivate() {
     this.ol3Layer.getSource().un('change', this.fnAddFeatures_);
     this.fnAddFeatures_ = null;
+  }
+
+  /**
+   * Este método selecciona un objeto geográfico.
+   * @public
+   * @function
+   * @param {ol.Feature} feature Objeto geográfico de Openlayers.
+   * @api stable
+   */
+  selectFeatures(features, coord, evt) {
+    // TODO: manage multiples features
+    const feature = features[0];
+    if (this.extract === true) {
+      if (!isNullOrEmpty(feature)) {
+        const featureName = feature.getAttribute('name');
+        const featureDesc = feature.getAttribute('description');
+        const featureCoord = feature.getImpl().getOLFeature().getGeometry().getFirstCoordinate();
+        const htmlAsText = compileTemplate(popupKMLTemplate, {
+          vars: {
+            name: featureName,
+            desc: featureDesc,
+          },
+          parseToHtml: false,
+        });
+        this.tabPopup_ = {
+          icon: 'g-cartografia-comentarios',
+          title: featureName,
+          content: htmlAsText,
+        };
+
+        const popup = this.map.getPopup();
+
+        if (isNullOrEmpty(popup)) {
+          this.popup_ = new Popup();
+          this.popup_.addTab(this.tabPopup_);
+          this.map.addPopup(this.popup_, featureCoord);
+        } else {
+          popup.addTab(this.tabPopup_);
+        }
+      }
+    }
   }
 
   /**

@@ -20,7 +20,6 @@ import LayerBase from './Layer';
 import FormatWMS from '../format/WMS';
 import GetCapabilities from '../util/WMSCapabilities';
 import getLayerExtent from '../util/wmtscapabilities';
-import Utils from '../util/Utils';
 
 import ImplMap from '../Map';
 
@@ -82,12 +81,6 @@ class GenericRaster extends LayerBase {
      */
   addTo(map) {
     this.map = map;
-
-    Utils.addFacadeName(this.facadeLayer_, this.ol3Layer, 'Raster');
-
-    if (this.facadeLayer_.legend === undefined) {
-      Utils.addFacadeLegend(this.facadeLayer_, this.ol3Layer);
-    }
 
     if (!isNullOrEmpty(this.visibility)) {
       this.ol3Layer.setVisible(this.visibility);
