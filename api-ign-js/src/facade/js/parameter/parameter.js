@@ -3994,6 +3994,11 @@ export const layer = (userParameters, forcedType) => {
       if (!isNullOrEmpty(userParam.name)) {
         layerObj.name = userParam.name;
       }
+
+      // legend
+      if (!isNullOrEmpty(userParam.legend)) {
+        layerObj.legend = userParam.legend;
+      }
     }
 
     return layerObj;
