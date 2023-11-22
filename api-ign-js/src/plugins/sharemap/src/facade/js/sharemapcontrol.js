@@ -588,8 +588,6 @@ export default class ShareMapControl extends M.Control {
       param = this.getGeoJSON(layer);
     } else if (layer.type === 'Vector') {
       param = this.getVector(layer);
-    } else if (layer.type === 'Generic') {
-      param = this.getGeneric(layer);
     }
     return param;
   }
@@ -674,70 +672,48 @@ export default class ShareMapControl extends M.Control {
     return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${this.normalizeString(legend)}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
   }
 
-  getGeneric(layer) {
-    const source = layer.getImpl().getOL3Layer().getSource();
-    const type = source.constructor.name;
-    let vendorOptions = '';
+  // TO-DO
+  // getGeneric(layer) {
+  //   const ol3 = layer.getImpl().getOL3Layer();
+  //   const ol3Source = ol3.getSource();
+  //   const typeSource = layer.getImpl().getSourceType();
+  //   const typeLayer = layer.getImpl().getLayerType();
+  //   const typeFormat = layer.getImpl().getFormatType ? layer.getImpl().getFormatType() : false;
 
-    if (layer.sourceType === 'vector') {
-      vendorOptions = `
-      new ol.layer.Vector({
-        source: new ol.source.Vector({
-          format: ${source.getFormat()},
-          url: ${source.getUrl()},
-          ${source.getParams ? `params: ${source.getParams()},` : ''}
-        }),
-      });
-      `;
-    } else {
-      let sourceRaster = '';
-      if (type === 'WMTS') {
-        sourceRaster = `
-          new ol.source.WMTS({
-          url: ${source.getUrls()[0]} ,
-          layer: ${source.getLayer()},
-          matrixSet: ${source.getMatrixSet()},
-          format: ${source.getFormat()},
-          projection: ${source.getProjection()},
-          tileGrid: ${source.getTileGrid()},
-          style: ${source.getStyle()},
-        });
-        `;
-      } else if (type === 'TileWMS') {
-        sourceRaster = `
-          new ol.source.Tile({
-            url: ${source.getUrls()[0]},
-            params: ${source.getParams()},
-          });
-        `;
-      } else if (type === 'ImageWMS') {
-        sourceRaster = `
-        new ol.source.Image({
-          url: ${source.getUrl()},
-          params: ${source.getParams()},
-        });
-      `;
-      }
+  //   const properties = ol3.getProperties();
+  //   delete properties.source;
 
-      vendorOptions = `
-        new ol.layer.Tile({
-          source: ${sourceRaster},
-        });
-      `;
-    }
 
-    const {
-      name = '',
-      legend = '',
-      transparent,
-      minZoom,
-      maxZoom,
-      displayInLayerSwitcher = true,
-      visibility = true,
-    } = layer;
+  //   const vendorOptions = `
+  //     new ol.layer.${typeLayer}({
+  //        source: new ol.source.${typeSource}({
+  //         ${ol3Source.getParams ? `params:${JSON.stringify(ol3Source.getParams())},` : ''}
+  //         url: ${ol3Source.getUrl ? ol3Source.getUrl() : ol3Source.getUrls()[0]},
+  //         ${ol3Source.getLayer ? `layer: ${ol3Source.getLayer()},` : ''}
+  //         ${ol3Source.getMatrixSet ? `matrixSet: ${ol3Source.getMatrixSet()},` : ''}
+  //         ${ol3Source.getFormat ? `format: ${JSON.stringify(ol3Source.getFormat())},` : ''}
+  //         ${ol3Source.getProjection ? `projection: ${ol3Source.getProjection()},` : ''}
+  //         ${ol3Source.getTileGrid ? `tileGrid: ${ol3Source.getTileGrid()},` : ''}
+  //         ${ol3Source.getStyle ? `style: ${ol3Source.getStyle()},` : ''}
+  //         ${typeFormat ? `format: new ${typeFormat}(),` : ''}
+  //        }),
+  //        properties: ${JSON.stringify(properties)},
+  //     })
+  //   `;
 
-    return `Generic*${M.utils.encodeBase64(vendorOptions)}*${name}*${legend}*${transparent}*${minZoom}*${maxZoom}*${displayInLayerSwitcher}*${visibility}`;
-  }
+  //   const {
+  //     name = '',
+  //     legend = '',
+  //     transparent,
+  //     minZoom,
+  //     maxZoom,
+  //     displayInLayerSwitcher = true,
+  //     visibility = true,
+  //   } = layer;
+
+  //   return `Generic*${M.utils.encodeBase64(vendorOptions)}*${name}*${legend}
+  // *${transparent}*${minZoom}*${maxZoom}*${displayInLayerSwitcher}*${visibility}`;
+  // }
 
   /**
    * This method gets the plugins url parameter
