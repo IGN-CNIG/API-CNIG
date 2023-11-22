@@ -488,10 +488,12 @@ export default class LayerswitcherControl extends M.Control {
               this.renderInfo(vars, 'OGCAPIFeatures');
               this.latestVars_ = vars;
               if (layer instanceof M.layer.Vector) {
-                document.querySelector('#m-layerswitcher-next').addEventListener('click', this.nextPage_.bind(this));
-                document.querySelector('#m-layerswitcher-previous').addEventListener('click', this.previousPage_.bind(this));
-                this.hasNext_();
-                this.hasPrevious_();
+                if (document.querySelector('#m-layerswitcher-next')) {
+                  document.querySelector('#m-layerswitcher-next').addEventListener('click', this.nextPage_.bind(this));
+                  document.querySelector('#m-layerswitcher-previous').addEventListener('click', this.previousPage_.bind(this));
+                  this.hasNext_();
+                  this.hasPrevious_();
+                }
               }
             });
             M.proxy(this.statusProxy);
@@ -642,10 +644,12 @@ export default class LayerswitcherControl extends M.Control {
               this.latestVars_ = vars;
             }
             if (layer instanceof M.layer.Vector) {
-              document.querySelector('#m-layerswitcher-next').addEventListener('click', this.nextPage_.bind(this));
-              document.querySelector('#m-layerswitcher-previous').addEventListener('click', this.previousPage_.bind(this));
-              this.hasNext_();
-              this.hasPrevious_();
+              if (document.querySelector('#m-layerswitcher-next')) {
+                document.querySelector('#m-layerswitcher-next').addEventListener('click', this.nextPage_.bind(this));
+                document.querySelector('#m-layerswitcher-previous').addEventListener('click', this.previousPage_.bind(this));
+                this.hasNext_();
+                this.hasPrevious_();
+              }
             }
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-style') > -1) {
