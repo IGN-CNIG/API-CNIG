@@ -1498,6 +1498,26 @@ export const getNameMVT = (parameter) => {
 };
 
 /**
+ * Esta función obtiene la leyenda de la capa MVT especificado por el usuario.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @function
+ * @public
+ * @param {string|Mx.parameters.MVT} parameter Parámetro para obtener la
+ * leyenda de la capa MVT.
+ * @returns {string} Leyenda de la capa.
+ * @throws {Exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getLegendMVT = (parameter) => {
+  let legend;
+  if (isObject(parameter) && !isNullOrEmpty(parameter.legend)) {
+    legend = parameter.legend.trim();
+  }
+  return legend;
+};
+
+/**
  * Analiza los parámetros especificados por el usuario para la capa MVT.
  *
  * @public
@@ -1527,6 +1547,8 @@ export const mvt = (userParameters) => {
     layerObj.type = LayerType.MVT;
 
     layerObj.name = getNameMVT(userParam);
+
+    layerObj.legend = getLegendMVT(userParam);
 
     layerObj.url = getURLMVT(userParam);
 
