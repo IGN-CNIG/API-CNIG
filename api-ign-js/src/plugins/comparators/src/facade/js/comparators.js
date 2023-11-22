@@ -116,6 +116,14 @@ export default class Comparators extends M.Plugin {
    * @api
    */
   addTo(map) {
+    // Prevent Generic
+    this.options.listLayers = this.options.listLayers.filter((layer) => {
+      if (typeof layer === 'string') {
+        return !layer.includes('Generic');
+      }
+      return layer.type !== 'Generic';
+    });
+
     this.controls_.push(new ComparatorsControl(this.isDraggable, this.order, this.options, map));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelComparators', {
