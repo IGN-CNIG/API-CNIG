@@ -426,7 +426,7 @@ export default class GeorefimageControl extends M.Control {
       M.proxy(this.useProxy);
       M.remote.post(printUrl, printData).then((responseParam) => {
         let response = responseParam;
-        const responseStatusURL = JSON.parse(response.text);
+        const responseStatusURL = response.text && JSON.parse(response.text);
         const ref = responseStatusURL.ref;
         const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
         this.getStatus(
