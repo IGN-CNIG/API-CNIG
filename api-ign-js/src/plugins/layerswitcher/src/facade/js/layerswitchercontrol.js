@@ -644,12 +644,16 @@ export default class LayerswitcherControl extends M.Control {
               this.latestVars_ = vars;
             }
             if (layer instanceof M.layer.Vector) {
-              if (document.querySelector('#m-layerswitcher-next')) {
-                document.querySelector('#m-layerswitcher-next').addEventListener('click', this.nextPage_.bind(this));
-                document.querySelector('#m-layerswitcher-previous').addEventListener('click', this.previousPage_.bind(this));
-                this.hasNext_();
-                this.hasPrevious_();
-              }
+              // Esperar que salga el
+              setTimeout(() => {
+                if (document.querySelector('#m-layerswitcher-next')) {
+                  this.latestVars_ = vars;
+                  document.querySelector('#m-layerswitcher-next').addEventListener('click', this.nextPage_.bind(this));
+                  document.querySelector('#m-layerswitcher-previous').addEventListener('click', this.previousPage_.bind(this));
+                  this.hasNext_();
+                  this.hasPrevious_();
+                }
+              }, 500);
             }
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-style') > -1) {
