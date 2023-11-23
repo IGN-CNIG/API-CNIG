@@ -197,7 +197,7 @@
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             inputTooltip.value !== "" ? objeto.tooltip = inputTooltip.value : objeto.tooltip = "";
-            inputTools.value !== "" ? objeto.tools = inputTools.value : objeto.tools = [];
+            inputTools.value !== "" ? objeto.tools = inputTools.value.split(', ') : objeto.tools = [];
             objeto.isDraggable = (selectDraggable.options[selectDraggable.selectedIndex].value == 'true');
             objeto.isMoveLayers = (selectMoveLayer.options[selectMoveLayer.selectedIndex].value == 'true');
             objeto.modeSelectLayers = selectModeSelectLayers.options[selectModeSelectLayers.selectedIndex].value;
