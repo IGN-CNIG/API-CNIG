@@ -62,7 +62,7 @@
         <label for="inputTooltip">Tooltip</label>
         <input type="text" name="tooltip" id="inputTooltip">
         <label for="inputTools">Herramientas</label>
-        <input type="text" name="tools" id="inputTools">
+        <input type="text" name="tools" id="inputTools" value="transparency, zoom, legend, information, style, delete">
         <label for="isDraggable">isDraggable</label>
         <select name="draggableValue" id="isDraggable">
             <option value=true>true</option>
