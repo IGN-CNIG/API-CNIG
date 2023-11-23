@@ -59,6 +59,14 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     background-color: #f4f4f4;
 }
 
+.m-layerswitcher-title-box {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    max-width: 250px;
+}
+
 /* Título */
 .m-layerswitcher-title {
     font-weight: bold !important;
@@ -145,7 +153,7 @@ ul.m-layerswitcher-ullayers {
 }
 
 .m-layerswitcher-title-layer span {
-    width: 10%;
+    width: 100%;
 }
 
 
