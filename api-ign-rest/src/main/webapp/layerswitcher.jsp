@@ -90,8 +90,8 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
-        <label for="isCodsi">isCodsi</label>
-        <select name="isCodsiValue" id="isCodsi">
+        <label for="isShowCatalog">isShowCatalog</label>
+        <select name="isShowCatalogValue" id="isShowCatalog">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
@@ -168,7 +168,7 @@
         const inputPrecharged = document.getElementById("inputPrecharged");
         const selectHttp = document.getElementById("isHttp");
         const selectHttps = document.getElementById("isHttps");
-        const selectCodsi = document.getElementById("isCodsi");
+        const selectShowCatalog = document.getElementById("isShowCatalog");
         const selectProxy = document.getElementById("selectProxy");
 
         const botonEliminar = document.getElementById("botonEliminar");
@@ -184,7 +184,7 @@
         inputPrecharged.addEventListener('change', cambiarTest);
         selectHttp.addEventListener('change', cambiarTest);
         selectHttps.addEventListener('change', cambiarTest);
-        selectCodsi.addEventListener('change', cambiarTest);
+        selectShowCatalog.addEventListener('change', cambiarTest);
         selectProxy.addEventListener('change', cambiarTest);
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
@@ -204,7 +204,7 @@
             inputPrecharged.value !== "" ? objeto.precharged = inputPrecharged.value : objeto.precharged = "";
             objeto.http = (selectHttp.options[selectHttp.selectedIndex].value == 'true');
             objeto.https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
-            objeto.codsi = (selectCodsi.options[selectCodsi.selectedIndex].value == 'true');
+            objeto.showCatalog = (selectShowCatalog.options[selectShowCatalog.selectedIndex].value == 'true');
             objeto.useProxy = (selectProxy.options[selectProxy.selectedIndex].value == 'true');
             map.removePlugins(mp);
             crearPlugin(objeto);
