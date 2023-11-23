@@ -134,7 +134,7 @@ export default class LayerswitcherControl extends M.Control {
     this.stateSelectAll = false;
 
     // active codsi
-    this.codsiActive = options.codsi;
+    this.codsiActive = options.showCatalog;
 
     // Determina si se desea usar proxy en las peticiones
     this.useProxy = options.useProxy;
