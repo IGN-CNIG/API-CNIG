@@ -49,7 +49,7 @@
       "position": 9
     }, {
       "type": "boolean",
-      "name": "codsi",
+      "name": "showCatalog",
       "position": 10
     }, {
       "type": "boolean",
