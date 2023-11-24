@@ -156,6 +156,11 @@ ul.m-layerswitcher-ullayers {
     width: 100%;
 }
 
+.m-layerswithcer-ogc-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 
 .m-layerswitcher-icons-ver,
