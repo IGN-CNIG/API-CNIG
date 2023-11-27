@@ -1154,122 +1154,117 @@ export default class LayerswitcherControl extends M.Control {
             });
 
             promise.then((response) => {
-              try {
-                if (response.text.indexOf('<TileMatrixSetLink>') >= 0 && response.text.indexOf('Operation name="GetTile"') >= 0) {
-                  const getCapabilitiesParser = new M.impl.format.WMTSCapabilities();
-                  const getCapabilities = getCapabilitiesParser.read(response.xml);
-                  this.serviceCapabilities = getCapabilities.capabilities || {};
-                  const layers = M.impl.util.wmtscapabilities.getLayers(
-                    getCapabilities.capabilities,
-                    url,
-                    this.map_.getProjection().code,
-                  );
-                  this.capabilities = this.filterResults(layers);
-                  this.showResults();
-                } else {
-                  const promise2 = new Promise((success, reject) => {
-                    const id = setTimeout(() => reject(), 15000);
-                    M.proxy(this.useProxy);
-                    M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response2) => {
-                      clearTimeout(id);
-                      success(response2);
-                    });
-                    M.proxy(this.statusProxy);
+              if (response.text && response.text.indexOf('<TileMatrixSetLink>') >= 0 && response.text.indexOf('Operation name="GetTile"') >= 0) {
+                const getCapabilitiesParser = new M.impl.format.WMTSCapabilities();
+                const getCapabilities = getCapabilitiesParser.read(response.xml);
+                this.serviceCapabilities = getCapabilities.capabilities || {};
+                const layers = M.impl.util.wmtscapabilities.getLayers(
+                  getCapabilities.capabilities,
+                  url,
+                  this.map_.getProjection().code,
+                );
+                this.capabilities = this.filterResults(layers);
+                this.showResults();
+              } else {
+                const promise2 = new Promise((success, reject) => {
+                  const id = setTimeout(() => reject(), 15000);
+                  M.proxy(this.useProxy);
+                  M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response2) => {
+                    clearTimeout(id);
+                    success(response2);
                   });
-                  const promisewfs = new Promise((success, reject) => {
-                    const id = setTimeout(() => reject(), 15000);
-                    let urlAux = url;
-                    urlAux = M.utils.addParameters(url, 'request=GetCapabilities');
-                    urlAux = M.utils.addParameters(urlAux, 'service=WFS');
+                  M.proxy(this.statusProxy);
+                });
+                const promisewfs = new Promise((success, reject) => {
+                  const id = setTimeout(() => reject(), 15000);
+                  let urlAux = url;
+                  urlAux = M.utils.addParameters(url, 'request=GetCapabilities');
+                  urlAux = M.utils.addParameters(urlAux, 'service=WFS');
 
-                    urlAux = M.utils.addParameters(urlAux, {
-                      version: '1.3.0',
-                    });
-                    M.proxy(this.useProxy);
-                    M.remote.get(urlAux).then((responsewfs) => {
-                      clearTimeout(id);
-                      success(responsewfs);
-                    });
-                    M.proxy(this.statusProxy);
+                  urlAux = M.utils.addParameters(urlAux, {
+                    version: '1.3.0',
                   });
-                  Promise.all([promise2, promisewfs]).then((response2) => {
-                    let wms = false;
-                    let wfs = false;
+                  M.proxy(this.useProxy);
+                  M.remote.get(urlAux).then((responsewfs) => {
+                    clearTimeout(id);
+                    success(responsewfs);
+                  });
+                  M.proxy(this.statusProxy);
+                });
+                Promise.all([promise2, promisewfs]).then((response2) => {
+                  let wms = false;
+                  let wfs = false;
 
-                    if (response2[0].text.indexOf('<TileMatrixSetLink>') === -1 && response2[0].text.indexOf('<GetMap>') >= 0) {
-                      wms = true;
-                    }
+                  if (response2[0].text.indexOf('<TileMatrixSetLink>') === -1 && response2[0].text.indexOf('<GetMap>') >= 0) {
+                    wms = true;
+                  }
 
-                    if (response2[1].text.indexOf('<TileMatrixSetLink>') === -1 && response2[1].text.indexOf('Operation name="GetFeature"') >= 0) {
-                      wfs = true;
-                    }
+                  if (response2[1].text.indexOf('<TileMatrixSetLink>') === -1 && response2[1].text.indexOf('Operation name="GetFeature"') >= 0) {
+                    wfs = true;
+                  }
 
-                    if (wms || wfs) {
-                      try {
-                        // WMS
-                        if (wms) {
-                          const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
-                          const getCapabilities = getCapabilitiesParser.read(response2[0].xml);
-                          this.serviceCapabilities = getCapabilities.Service || {};
-                          const getCapabilitiesUtils = new M.impl.GetCapabilities(
-                            getCapabilities,
-                            url,
-                            this.map_.getProjection().code,
-                          );
-                          this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
-                          this.capabilities.forEach((layer) => {
-                            try {
-                              this.getParents(getCapabilities, layer);
-                              /* eslint-disable no-empty */
-                            } catch (err) {}
-                          });
-                        }
-                        // WFS
-                        let wfsDatas;
-                        if (wfs) {
-                          wfsDatas = this.readWFSCapabilities(response2[1]);
-                        }
-                        this.showResults(wfsDatas);
-                      } catch (error) {
-                        M.dialog.error(getValue('exception.capabilities'));
-                        this.removeLoading();
+                  if (wms || wfs) {
+                    try {
+                      // WMS
+                      if (wms) {
+                        const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
+                        const getCapabilities = getCapabilitiesParser.read(response2[0].xml);
+                        this.serviceCapabilities = getCapabilities.Service || {};
+                        const getCapabilitiesUtils = new M.impl.GetCapabilities(
+                          getCapabilities,
+                          url,
+                          this.map_.getProjection().code,
+                        );
+                        this.capabilities = this.filterResults(getCapabilitiesUtils.getLayers());
+                        this.capabilities.forEach((layer) => {
+                          try {
+                            this.getParents(getCapabilities, layer);
+                            /* eslint-disable no-empty */
+                          } catch (err) {}
+                        });
                       }
-                    } else {
-                      this.checkIfOGCAPIFeatures(url).then((reponseIsJson) => {
-                        if (reponseIsJson === true) {
-                          this.printOGCModal(url);
-                        } else {
-                          M.proxy(this.useProxy);
-                          M.remote.get(url).then((response3) => {
-                            // GEOJSON
-                            if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
-                              this.printLayerModal(url, 'geojson');
-                            } else if (response3.text.indexOf('<kml ') >= 0) {
-                              const parser = new DOMParser();
-                              const xmlDoc = parser.parseFromString(response3.text, 'text/xml');
-                              const folders = xmlDoc.getElementsByTagName('Folder');
-                              let cont = -1;
-                              const names = Array.from(folders).map((folder) => {
-                                cont += 1;
-                                const name = folder.name || `Layer__${cont}`;
-                                return { name };
-                              });
-                              this.printLayerModal(url, 'kml', names);
-                            }
-                          });
-                          M.proxy(this.statusProxy);
-                        }
-                      });
-                      M.proxy(this.statusProxy);
+                      // WFS
+                      let wfsDatas;
+                      if (wfs) {
+                        wfsDatas = this.readWFSCapabilities(response2[1]);
+                      }
+                      this.showResults(wfsDatas);
+                    } catch (error) {
+                      M.dialog.error(getValue('exception.capabilities'));
+                      this.removeLoading();
                     }
-                  }).catch((eerror) => {
-                    M.dialog.error(getValue('exception.capabilities'));
-                    this.removeLoading();
-                  });
-                }
-              } catch (err) {
-                M.dialog.error(getValue('exception.capabilities'));
-                this.removeLoading();
+                  } else {
+                    this.checkIfOGCAPIFeatures(url).then((reponseIsJson) => {
+                      if (reponseIsJson === true) {
+                        this.printOGCModal(url);
+                      } else {
+                        M.proxy(this.useProxy);
+                        M.remote.get(url).then((response3) => {
+                          // GEOJSON
+                          if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
+                            this.printLayerModal(url, 'geojson');
+                          } else if (response3.text.indexOf('<kml ') >= 0) {
+                            const parser = new DOMParser();
+                            const xmlDoc = parser.parseFromString(response3.text, 'text/xml');
+                            const folders = xmlDoc.getElementsByTagName('Folder');
+                            let cont = -1;
+                            const names = Array.from(folders).map((folder) => {
+                              cont += 1;
+                              const name = folder.name || `Layer__${cont}`;
+                              return { name };
+                            });
+                            this.printLayerModal(url, 'kml', names);
+                          }
+                        });
+                        M.proxy(this.statusProxy);
+                      }
+                    });
+                    M.proxy(this.statusProxy);
+                  }
+                }).catch((eerror) => {
+                  M.dialog.error(getValue('exception.capabilities'));
+                  this.removeLoading();
+                });
               }
             }).catch((err) => {
               M.dialog.error(getValue('exception.capabilities'));
