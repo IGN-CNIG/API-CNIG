@@ -116,6 +116,8 @@ export default class Comparators extends M.Plugin {
    * @api
    */
   addTo(map) {
+    this.options.listLayers = this.options.listLayers || [];
+
     // Prevent Generic
     this.options.listLayers = this.options.listLayers.filter((layer) => {
       if (typeof layer === 'string') {
