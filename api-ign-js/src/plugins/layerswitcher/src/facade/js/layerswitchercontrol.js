@@ -1070,9 +1070,11 @@ export default class LayerswitcherControl extends M.Control {
 
   // Elimina cargando
   removeLoading() {
-    document.querySelector('#m-layerswitcher-loading').remove();
-    document.querySelector(SEARCH_BTN).style.display = 'inline';
-    this.loadingActive = false;
+    if (document.querySelector('#m-layerswitcher-loading') && document.querySelector(SEARCH_BTN)) {
+      document.querySelector('#m-layerswitcher-loading').remove();
+      document.querySelector(SEARCH_BTN).style.display = 'inline';
+      this.loadingActive = false;
+    }
   }
 
   // Esta función lee las capas de un servicio
