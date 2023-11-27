@@ -1210,7 +1210,7 @@ export default class LayerswitcherControl extends M.Control {
                       // WMS
                       if (wms) {
                         const getCapabilitiesParser = new M.impl.format.WMSCapabilities();
-                        const getCapabilities = getCapabilitiesParser.read(response2[0].xml);
+                        const getCapabilities = getCapabilitiesParser.read(response2[0].xml || new DOMParser().parseFromString(response2[0].text, 'text/xml'));
                         this.serviceCapabilities = getCapabilities.Service || {};
                         const getCapabilitiesUtils = new M.impl.GetCapabilities(
                           getCapabilities,
