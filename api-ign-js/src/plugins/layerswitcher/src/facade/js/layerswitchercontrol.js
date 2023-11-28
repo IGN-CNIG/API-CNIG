@@ -705,6 +705,9 @@ export default class LayerswitcherControl extends M.Control {
             button.innerHTML = getValue('close');
             button.style.width = '75px';
             button.style.backgroundColor = '#71a7d3';
+            setTimeout(() => {
+              document.querySelector('.m-layerswitcher-style-container').focus();
+            }, 500);
           }, 10);
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-delete') > -1) {
           this.map_.removeLayers(layer);
