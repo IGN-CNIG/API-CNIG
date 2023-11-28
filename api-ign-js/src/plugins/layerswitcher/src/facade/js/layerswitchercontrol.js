@@ -494,8 +494,23 @@ export default class LayerswitcherControl extends M.Control {
               this.latestVars_ = vars;
               if (layer instanceof M.layer.Vector) {
                 if (document.querySelector('#m-layerswitcher-next')) {
-                  document.querySelector('#m-layerswitcher-next').addEventListener('click', this.nextPage_.bind(this));
-                  document.querySelector('#m-layerswitcher-previous').addEventListener('click', this.previousPage_.bind(this));
+                  const next = document.querySelector('#m-layerswitcher-next');
+                  next.addEventListener('click', this.nextPage_.bind(this));
+                  next.addEventListener('keyup', (event) => {
+                    event.preventDefault();
+                    if (event.keyCode === 13) {
+                      next.click();
+                    }
+                  });
+
+                  const previous = document.querySelector('#m-layerswitcher-previous');
+                  previous.addEventListener('click', this.previousPage_.bind(this));
+                  previous.addEventListener('keyup', (event) => {
+                    event.preventDefault();
+                    if (event.keyCode === 13) {
+                      previous.click();
+                    }
+                  });
                   this.hasNext_();
                   this.hasPrevious_();
                 }
