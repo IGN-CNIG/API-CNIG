@@ -2250,8 +2250,13 @@ export default class LayerswitcherControl extends M.Control {
             results1 = getValue('results_1_plural');
             results2 = getValue('results_2_plural');
           }
-          document.querySelector('#m-layerswitcher-ogc-check-results').innerHTML = `${results1}${numberFeatures}${results2}`;
-        });
+          const result = document.querySelector('#m-layerswitcher-ogc-check-results');
+          result.style.display = 'block';
+          result.innerHTML = `${results1}${numberFeatures}${results2}`;
+        })
+          .then(() => {
+            document.querySelector('#m-layerswitcher-ogc-check-results').focus();
+          });
         M.proxy(this.statusProxy);
       }
     });

@@ -11,12 +11,12 @@
                         <div class="m-layerswitcher-ogc-less-width">
                             {{#if this.value}}
                                 {{#eq this.value "true"}}
-                                    <div><input tabindex="0" type="checkbox" id="search-form-{{this.title}}" value="true" {{#eq this.value "true"}}checked{{/eq}}>true</div>
-                                    <div><input tabindex="0" type="checkbox" id="search-form-{{this.title}}" value="false" {{#eq this.value "false"}}checked{{/eq}}>false</div>
+                                    <div><input tabindex="0" aria-label="true" type="checkbox" id="search-form-{{this.title}}" value="true" {{#eq this.value "true"}}checked{{/eq}}>true</div>
+                                    <div><input tabindex="0" aria-label="false" type="checkbox" id="search-form-{{this.title}}" value="false" {{#eq this.value "false"}}checked{{/eq}}>false</div>
                                 {{/eq}}
                             {{else}}
-                                <div><input tabindex="0" type="checkbox" id="search-form-{{this.title}}" value="true">true</div>
-                                <div><input tabindex="0" type="checkbox" id="search-form-{{this.title}}" value="false">false</div>
+                                <div><input tabindex="0" aria-label="true"  type="checkbox" id="search-form-{{this.title}}" value="true">true</div>
+                                <div><input tabindex="0" aria-label="false" type="checkbox" id="search-form-{{this.title}}" value="false">false</div>
                             {{/if}}
                         </div>
                         <br />
