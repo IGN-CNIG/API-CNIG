@@ -1933,7 +1933,7 @@ export default class LayerswitcherControl extends M.Control {
 
   // Quita selección a capa
   unSelect() {
-    const unSelect = document.querySelectorAll('.m-layerswitcher-icons-check-seleccionado');
+    const unSelect = document.querySelectorAll('#m-layerswitcher-all tbody span.m-layerswitcher-icons-check-seleccionado');
     for (let i = 0; i < unSelect.length; i += 1) {
       unSelect[i].classList.remove('m-layerswitcher-icons-check-seleccionado');
       unSelect[i].classList.add('m-layerswitcher-icons-check');
@@ -1942,7 +1942,7 @@ export default class LayerswitcherControl extends M.Control {
 
   // Pone selección a capa
   select() {
-    const select = document.querySelectorAll('.m-layerswitcher-icons-check');
+    const select = document.querySelectorAll('#m-layerswitcher-all tbody span');
     for (let i = 0; i < select.length; i += 1) {
       select[i].classList.remove('m-layerswitcher-icons-check');
       select[i].classList.add('m-layerswitcher-icons-check-seleccionado');
