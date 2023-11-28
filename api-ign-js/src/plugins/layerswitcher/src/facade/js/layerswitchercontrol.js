@@ -464,6 +464,11 @@ export default class LayerswitcherControl extends M.Control {
               };
               const nFeatures = layer.getFeatures().length;
               if (nFeatures > 0) {
+                this.pages_ = {
+                  total: 0,
+                  actual: 1,
+                  element: 0,
+                };
                 const attributes = [];
                 const features = layer.getFeatures();
                 const headerAtt = Object.keys(features[0].getAttributes());
@@ -574,6 +579,11 @@ export default class LayerswitcherControl extends M.Control {
               const ext = layer.getMaxExtent();
               vars.extension = M.utils.isNullOrEmpty(ext) ? ext : ext.toString().replaceAll(',', ', ');
               if (nFeatures > 0) {
+                this.pages_ = {
+                  total: 0,
+                  actual: 1,
+                  element: 0,
+                };
                 const attributes = [];
                 const features = layer.getFeatures();
                 const headerAtt = Object.keys(features[0].getAttributes());
