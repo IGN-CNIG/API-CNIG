@@ -58,10 +58,7 @@ module.exports = {
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
         exclude: /node_modules/,
-        type: 'asset/resource',
-        generator: {
-          filename: 'fonts/[name].[ext]',
-        },
+        type: 'asset/inline',
       },
     ],
   },
