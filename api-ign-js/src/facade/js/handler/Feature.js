@@ -191,10 +191,10 @@ class Features extends Base {
    * Este método se encarga comprobar si se mueve el ratón.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
    * @plublic
-   * @param {Object} evt Evento.
    * @function
-   * @api
+   * @param {Object} evt Evento.
    * @return {Promise} Promesa.
+   * @api
    */
   hookStopMoveEvent_(evt) {
     const mouseMoveDelay = 50;
