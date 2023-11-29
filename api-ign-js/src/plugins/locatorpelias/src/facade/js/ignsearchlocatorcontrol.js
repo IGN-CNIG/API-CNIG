@@ -827,8 +827,6 @@ export default class IGNSearchLocatorControl extends M.Control {
         // || selectedObject.includes('"type":"comunidad autonoma"'))) {
         //   this.map.removePopup();
         // }
-        // const coords = [selectedObject.lng, selectedObject.lat];
-        // this.showPopUp(selectedObject, coords, coords, null, {}, false);
       }
     } else { // if item comes from nomenclator
       this.map.removePopup();
@@ -1083,14 +1081,13 @@ export default class IGNSearchLocatorControl extends M.Control {
     if (!this.resultVisibility) {
       this.clickedElementLayer.setStyle(this.simple);
     }
-
+    console.log('a');
     // // show popup for streets
     M.config.MOVE_MAP_EXTRACT = false;
     // if (properties.type === 'callejero' || properties.type === 'portal') {
-    // const fullAddress = this.createFullAddress(properties);
-    // const coordinates = [properties.lat, properties.lng];
-    // const perfectResult = properties.state;
-    // this.showSearchPopUp(fullAddress, coordinates, perfectResult);
+    const coordinates = [properties.lng, properties.lat];
+    const perfectResult = properties.state;
+    this.showSearchPopUp(properties, coordinates, perfectResult);
     // } else if (this.popup !== undefined) {
     //   this.map.removePopup(this.popup);
     // }
@@ -1101,7 +1098,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * This function inserts a popUp with information about the searched location
    * (and whether it 's an exact result or an approximation)
    *
-   * @param {string} fullAddress - Location address(street, portal, etc.)
+   * @param {string} addressData - Location address(street, portal, etc.)
    * @param {Array} coordinates - Latitude[0] and longitude[1] coordinates
    * @param {boolean} exactResult - Indicating if the given result is a perfect match
    * @param {Object} e
@@ -1109,7 +1106,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @public
    * @api
    */
-  showSearchPopUp(fullAddress, coordinates, exactResult, e = {}) {
+  showSearchPopUp(addressData, coordinates, exactResult, e = {}) {
     const destinyProj = this.map.getProjection().code;
     const destinySource = 'EPSG:4326';
     const newCoordinates = this.getImpl()
@@ -1120,13 +1117,13 @@ export default class IGNSearchLocatorControl extends M.Control {
     } else {
       exitState = getValue('exact');
     }
-    this.showPopUp(fullAddress, newCoordinates, coordinates, exitState, e);
+    this.showPopUp(addressData, newCoordinates, coordinates, exitState, e);
   }
 
   /**
    * This function inserts a popup on the map with information about its location.
    *
-   * @param {string} fullAddress - Location address(street, portal, etc.)
+   * @param {string} addressData - Location address(street, portal, etc.)
    * @param {Array} mapCoordinates - Latitude[0] and longitude[1] coordinates on map projection
    * @param {Array} featureCoordinates - Latitude[0] and longitude[1] coordinates from feature
    * @param {string} exitState - Indicating if the given result is a perfect match
