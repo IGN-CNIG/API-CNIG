@@ -186,7 +186,7 @@ class Vector extends Layer {
         addAttribute = !includes(this.hiddenAttributes_, key);
       }
 
-      if (typeof properties[key] === 'object' && !Array.isArray(properties[key])) {
+      if ((typeof properties[key] === 'object' && properties[key]) && !Array.isArray(properties[key])) {
         const values = this.recursiveExtract_(properties[key], (parentKey) ? `${parentKey} | ${key}` : key);
         attributes.push(...values);
       } else if (addAttribute) { // No se añade si es null o undefined
