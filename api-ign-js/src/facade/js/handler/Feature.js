@@ -173,16 +173,38 @@ class Features extends Base {
             }
             this.leaveFeatures_(diffFeatures, layer, evt);
           }
-          // select new selected features
-          if (newFeatures.length > 0) {
-            if (layer.infoEventType === 'hover') {
-              this.selectFeatures(newFeatures, layer, evt);
+          this.hookStopMoveEvent_(evt).then((e) => {
+            // select new selected features
+            if (newFeatures.length > 0) {
+              if (layer.infoEventType === 'hover') {
+                this.selectFeatures(newFeatures, layer, e);
+              }
+              this.hoverFeatures_(newFeatures, layer, e);
             }
-            this.hoverFeatures_(newFeatures, layer, evt);
-          }
+          });
         }
       });
     }
+  }
+
+  /**
+   * Este método se encarga comprobar si se mueve el ratón.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @plublic
+   * @param {Object} evt Evento.
+   * @function
+   * @api
+   * @return {Promise} Promesa.
+   */
+  hookStopMoveEvent_(evt) {
+    const mouseMoveDelay = 50;
+    clearTimeout(this.mouseMoverTimer);
+
+    return new Promise((resolve) => {
+      this.mouseMoverTimer = setTimeout(() => {
+        resolve(evt);
+      }, mouseMoveDelay);
+    });
   }
 
   /**
@@ -227,6 +249,8 @@ class Features extends Base {
     if (isFunction(layerImpl.unselectFeatures)) {
       layerImpl.unselectFeatures(features, evt.coord);
     }
+
+    if (this.map_.getPopup()) { this.map_.getPopup().hide(); }
     layer.fire(EventType.UNSELECT_FEATURES, [features, evt.coord]);
   }
 
