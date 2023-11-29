@@ -1,0 +1,27 @@
+<div class="m-ignsearchlocator-popup">
+    <div class="m-ignsearchlocator-small">
+        <div>Id: {{addressData.id}}</div> 
+        <div>Capa: {{addressData.native.properties.layer}}</div> 
+        <div>{{addressData.geom}}</div> 
+    </div>
+    <b class="m-ignsearchlocator-bold"></span> {{addressData.address}}</b> 
+    <hr>
+    <div class="m-ignsearchlocator-standard">
+        <div><span>Calle: </span> {{addressData.native.properties.street}}</div> 
+        <div><span>Portal: </span> {{addressData.portalNumber}}</div> 
+        <div><span>Codigo postal: </span> {{addressData.postalCode}}</div> 
+        <div><span>Poblacion: </span> {{addressData.muni}}</div> 
+        <div><span>Municipio: </span> {{addressData.muni}}</div> 
+        <div><span>Comunidad autonoma: </span> {{addressData.comunidadAutonoma}}</div> 
+        <div><span>Pais: </span> {{addressData.native.properties.country}}</div> 
+    </div>
+    <hr>
+    <div class="m-ignsearchlocator-standard">
+        <div><span>Id: </span> {{addendum.id}}</div> 
+        <div><span>Estado: </span> {{addendum.estado}}</div> 
+        <div><span>Tipologia: </span> {{addendum.tipologia}}</div> 
+        <div><span>Localizacion: </span> {{addendum.localizacion}}</div> 
+        <div><span>Lengua: </span> {{addendum.lengua}}</div> 
+        <div><span>Inetra: </span> {{addendum.inetra}}</div> 
+    </div>
+</div>
