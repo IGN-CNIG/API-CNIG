@@ -106,7 +106,7 @@ class Vector extends LayerBase {
     /**
      * infoEventType. Tipo de evento para mostrar la info de una feature.
      */
-    this.infoEventType = optns.infoEventType;
+    this.infoEventType = optns.infoEventType || 'click';
 
     /**
      * predefinedStyles: Estilos predefinidos para la capa.
