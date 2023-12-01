@@ -109,7 +109,7 @@ class OSM extends LayerBase {
      */
     this.transparent = parameters.transparent;
 
-    this.isBase = (parameters.transparent === undefined)
+    this.isBase = (isBaseParam !== undefined)
       ? isBaseParam
       : !parameters.transparent;
 
@@ -125,17 +125,6 @@ class OSM extends LayerBase {
   }
 
   /**
-   * Devuelve el valor de la propiedad "transparent".
-   * @function
-   * @deprecated
-   * @return {M.layer.OSM.impl.transparent} Valor de "transparent".
-   * @api
-   */
-  get transparent() {
-    return this.getImpl().transparent;
-  }
-
-  /**
    * Devuelve el valor de la propiedad "isBase" de la capa.
    * @function
    * @getter
@@ -145,20 +134,6 @@ class OSM extends LayerBase {
    */
   get isBase() {
     return this.getImpl().isBase;
-  }
-
-  /**
-   * Sobrescribe el valor de la propiedad "transparent".
-   * @function
-   * @param {Boolean} newTransparent Nuevo valor de "transparent".
-   * @api
-   */
-  set transparent(newTransparent) {
-    if (!isNullOrEmpty(newTransparent)) {
-      this.getImpl().transparent = newTransparent;
-    } else {
-      this.getImpl().transparent = false;
-    }
   }
 
   /**
