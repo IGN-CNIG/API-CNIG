@@ -127,12 +127,6 @@ class WMS extends LayerBase {
       this.tiled = parameters.tiled;
     }
 
-
-    /**
-     * WMS transparent: Falso si es una capa base, verdadero en caso contrario.
-     */
-    this.transparent = parameters.transparent;
-
     /**
      * WMS capabilitiesMetadata: Capacidades de metadatos WMS.
      */

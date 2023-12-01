@@ -57,21 +57,21 @@ class LayerBase extends Base {
     this.name = parameter.name;
 
     /**
+     * Layer isBase:
+     * Verdadero si es una capa base, falso en caso contrario.
+     */
+    this.isBase = parameter.isBase || false;
+
+    /**
      * Layer transparent:
      * Falso si es una capa base, verdadero en caso contrario.
      */
-    this.transparent = parameter.transparent;
+    this.transparent = parameter.transparent || (!this.isBase);
 
     if (parameter.transparent === true || parameter.transparent === false) {
     // eslint-disable-next-line no-console
       console.warn(getValue('exception').transparent_obsolete);
     }
-
-    /**
-     * Layer isBase:
-     * Verdadero si es una capa base, falso en caso contrario.
-     */
-    this.isBase = parameter.isBase || false;
 
     /**
      * Layer maxExtent_:
@@ -218,19 +218,6 @@ class LayerBase extends Base {
   }
 
   /**
-   * Devuelve el valor de la propiedad "transparent" de la capa.
-   * @function
-   * @getter
-   * @public
-   * @deprecated
-   * @returns {M.layer.impl.transparent} Valor de la propiedad "transparent".
-   * @api
-   */
-  get transparent() {
-    return this.getImpl().transparent;
-  }
-
-  /**
    * Devuelve el valor de la propiedad "isBase" de la capa.
    * @function
    * @getter
@@ -240,27 +227,6 @@ class LayerBase extends Base {
    */
   get isBase() {
     return this.getImpl().isBase;
-  }
-
-
-  /**
-   * Sobrescribe el valor de la propiedad "transparent".
-   * @function
-   * @setter
-   * @public
-   * @param {Boolean} newTransparent  Nuevo valor para la propiedad "transparent".
-   * @api
-   */
-  set transparent(newTransparent) {
-    if (!isNullOrEmpty(newTransparent)) {
-      if (isString(newTransparent)) {
-        this.getImpl().transparent = (normalize(newTransparent) === 'true');
-      } else {
-        this.getImpl().transparent = newTransparent;
-      }
-    } else {
-      this.getImpl().transparent = true;
-    }
   }
 
   /**
