@@ -265,9 +265,11 @@ class Features extends Base {
    * @api
    */
   hoverFeatures_(features, layer, evt) {
-    this.prevHoverFeatures_[layer.name] = this.prevHoverFeatures_[layer.name].concat(features);
-    layer.fire(EventType.HOVER_FEATURES, [features, evt]);
-    this.getImpl().addCursorPointer(evt);
+    if (layer.name) {
+      this.prevHoverFeatures_[layer.name] = this.prevHoverFeatures_[layer.name].concat(features);
+      layer.fire(EventType.HOVER_FEATURES, [features, evt]);
+      this.getImpl().addCursorPointer(evt);
+    }
   }
 
   /**
