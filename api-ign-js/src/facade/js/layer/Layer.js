@@ -231,6 +231,19 @@ class LayerBase extends Base {
   }
 
   /**
+   * Devuelve el valor de la propiedad "isBase" de la capa.
+   * @function
+   * @getter
+   * @public
+   * @returns {M.layer.impl.transparent} Valor de la propiedad "isBase".
+   * @api
+   */
+  get isBase() {
+    return this.getImpl().isBase;
+  }
+
+
+  /**
    * Sobrescribe el valor de la propiedad "transparent".
    * @function
    * @setter
@@ -247,6 +260,26 @@ class LayerBase extends Base {
       }
     } else {
       this.getImpl().transparent = true;
+    }
+  }
+
+  /**
+   * Sobrescribe el valor de la propiedad "isBase".
+   * @function
+   * @setter
+   * @public
+   * @param {Boolean} newIsBase  Nuevo valor para la propiedad "isBase".
+   * @api
+   */
+  set isBase(newIsBase) {
+    if (!isNullOrEmpty(newIsBase)) {
+      if (isString(newIsBase)) {
+        this.getImpl().isBase = (normalize(newIsBase) === 'false');
+      } else {
+        this.getImpl().isBase = newIsBase;
+      }
+    } else {
+      this.getImpl().isBase = false;
     }
   }
 

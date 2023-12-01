@@ -30,7 +30,7 @@ class OSM extends LayerBase {
    * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
    * - name: Nombre de la capa en la leyenda.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - type: Tipo de la capa.
    * - url: Url genera la OSM.
    * - minZoom: Zoom mínimo aplicable a la capa.
@@ -136,6 +136,18 @@ class OSM extends LayerBase {
   }
 
   /**
+   * Devuelve el valor de la propiedad "isBase" de la capa.
+   * @function
+   * @getter
+   * @public
+   * @returns {M.layer.impl.transparent} Valor de la propiedad "isBase".
+   * @api
+   */
+  get isBase() {
+    return this.getImpl().isBase;
+  }
+
+  /**
    * Sobrescribe el valor de la propiedad "transparent".
    * @function
    * @param {Boolean} newTransparent Nuevo valor de "transparent".
@@ -146,6 +158,22 @@ class OSM extends LayerBase {
       this.getImpl().transparent = newTransparent;
     } else {
       this.getImpl().transparent = false;
+    }
+  }
+
+  /**
+   * Sobrescribe el valor de la propiedad "isBase".
+   * @function
+   * @setter
+   * @public
+   * @param {Boolean} newIsBase  Nuevo valor para la propiedad "isBase".
+   * @api
+   */
+  set isBase(newIsBase) {
+    if (!isNullOrEmpty(newIsBase)) {
+      this.getImpl().isBase = newIsBase;
+    } else {
+      this.getImpl().isBase = true;
     }
   }
 

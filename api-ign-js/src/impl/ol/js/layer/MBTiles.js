@@ -72,7 +72,7 @@ class MBTiles extends Layer {
    * - url: Url del fichero o servicio que genera el MBTiles.
    * - type: Tipo de la capa.
    * - maxZoomLevel: Zoom máximo aplicable a la capa.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que aparece en el árbol de contenidos, si lo hay.
    * - tileLoadFunction: Función de carga de la tesela proporcionada por el usuario.
