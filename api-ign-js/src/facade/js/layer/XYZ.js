@@ -40,7 +40,7 @@ class XYZ extends LayerBase {
    * - name: Identificador de la capa.
    * - projection: La proyección destino de la capa.
    * - visibility: Indica si la capa estará por defecto visible o no.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - type: Tipo de la capa.
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
    * - opacity: Opacidad de la capa.

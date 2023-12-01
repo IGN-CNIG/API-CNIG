@@ -127,6 +127,7 @@ class OSM extends LayerBase {
   /**
    * Devuelve el valor de la propiedad "transparent".
    * @function
+   * @deprecated
    * @return {M.layer.OSM.impl.transparent} Valor de "transparent".
    * @api
    */

@@ -40,7 +40,7 @@ class WMTS extends LayerBase {
    * - matrixSet: La matriz seleccionada de las definidas en el Capabilities del servicio.
    * - legend: Nombre que mostrará la capa en el árbol de contenido, si existe.
    * - format: Opcionalmente, el formato en el que solicitar la imagen.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - type: Tipo de la capa.
    * - isBase: Define si la capa es base o no.
    * - useCapabilities: Define si se utilizará el capabilities para generar la capa.

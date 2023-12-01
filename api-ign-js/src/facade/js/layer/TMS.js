@@ -51,7 +51,7 @@ class TMS extends LayerBase {
    * - url: Urlque genera la capa TMS.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica,
    * [x.min, y.min, x.max, y.max].
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.

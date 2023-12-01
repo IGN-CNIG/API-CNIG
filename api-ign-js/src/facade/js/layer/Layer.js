@@ -222,6 +222,7 @@ class LayerBase extends Base {
    * @function
    * @getter
    * @public
+   * @deprecated
    * @returns {M.layer.impl.transparent} Valor de la propiedad "transparent".
    * @api
    */
