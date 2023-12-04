@@ -103,12 +103,6 @@ class OSM extends LayerBase {
       this.legend = 'OpenStreetMap';
     }
 
-    /**
-     * OSM transparent.
-     * Falso si es una capa base, verdadero en caso contrario.
-     */
-    this.transparent = parameters.transparent;
-
     this.isBase = (isBaseParam !== undefined)
       ? isBaseParam
       : !parameters.transparent;
@@ -129,7 +123,7 @@ class OSM extends LayerBase {
    * @function
    * @getter
    * @public
-   * @returns {M.layer.impl.transparent} Valor de la propiedad "isBase".
+   * @returns {M.layer.impl.isBase} Valor de la propiedad "isBase".
    * @api
    */
   get isBase() {
