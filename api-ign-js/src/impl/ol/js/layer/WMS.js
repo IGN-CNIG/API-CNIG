@@ -483,7 +483,7 @@ class WMS extends LayerBase {
       const layerParams = {
         LAYERS: this.name,
         VERSION: this.version,
-        TRANSPARENT: this.transparent,
+        TRANSPARENT: !this.isBase,
         FORMAT: this.format,
         STYLES: this.styles,
       };
