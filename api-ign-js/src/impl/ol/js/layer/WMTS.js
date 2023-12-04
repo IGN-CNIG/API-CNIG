@@ -227,7 +227,7 @@ class WMTS extends LayerBase {
   setVisible(visibility) {
     this.visibility = visibility;
     // if this layer is base then it hides all base layers
-    if ((visibility === true) && (this.transparent !== true)) {
+    if ((visibility === true) && (this.isBase === true)) {
       // hides all base layers
       this.map.getBaseLayers()
         .filter(layer => !layer.equals(this.facadeLayer_) && layer.isVisible())

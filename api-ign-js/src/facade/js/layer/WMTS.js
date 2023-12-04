@@ -126,11 +126,6 @@ class WMTS extends LayerBase {
     this.legend = parameters.legend;
 
     /**
-     * WMTS transparent: Falso si es una capa base, verdadero en caso contrario.
-     */
-    this.transparent = parameters.transparent;
-
-    /**
      * WMTS options: Opciones de capas de WMTS.
      */
     this.options = optionsVar;
