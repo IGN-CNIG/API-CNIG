@@ -39,7 +39,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 # API-REST
 
 ```javascript
-URL_API?mousesrs=tooltip*srs*label*precision*epsgFormat*geoDecimalDigits*utmDecimalDigits*activeZ*helpUrl*draggableDialog
+URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*activeZ*helpUrl*draggableDialog*epsgFormat
 ```
 
 <table>
@@ -68,11 +68,6 @@ URL_API?mousesrs=tooltip*srs*label*precision*epsgFormat*geoDecimalDigits*utmDeci
     <td>Precisión de las coordenadas</td>
     <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
-    <tr>
-    <td>epsgFormat</td>
-    <td>Formatear EPSG</td>
-    <td>Base64 ✔️  | Separador ✔️ </td>
-  </tr>
   <tr>
     <td>geoDecimalDigits</td>
     <td>Cifras decimales para proyecciones geográficas</td>
@@ -91,6 +86,11 @@ URL_API?mousesrs=tooltip*srs*label*precision*epsgFormat*geoDecimalDigits*utmDeci
   <tr>
     <td>helpUrl</td>
     <td>URL del icono para la ayuda</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>epsgFormat</td>
+    <td>Formatear EPSG</td>
     <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
 </table>

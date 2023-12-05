@@ -7,7 +7,7 @@ import { getValue } from '../../../facade/js/i18n/language';
 
 export default class MouseSRSControl extends M.impl.Control {
   /* eslint-disable-next-line max-len */
-  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl, order, epsgFormat, draggableDialog) {
+  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl, order, draggableDialog, epsgFormat) {
     super();
 
     /**
