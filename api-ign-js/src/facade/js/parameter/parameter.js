@@ -3979,9 +3979,7 @@ export const layer = (userParameters, forcedType) => {
       if (!isNullOrEmpty(userParam.isBase)) {
         layerObj.isBase = userParam.isBase;
       } else if (userParam.name !== '__draw__') {
-        if (layerObj.transparent !== undefined) {
-          layerObj.isBase = layerObj.transparent ? false : !layerObj.transparent;
-        }
+        layerObj.isBase = (layerObj.transparent !== undefined) ? !layerObj.transparent : false;
       }
 
       if (!isNullOrEmpty(userParam.minZoom)) {

@@ -100,6 +100,7 @@ class WMS extends LayerBase {
       queryable: parameters.queryable,
       displayInLayerSwitcher: parameters.displayInLayerSwitcher,
       useCapabilities: parameters.useCapabilities,
+      isBase: parameters.isBase,
     };
     const impl = new WMSImpl(optionsVar, vendorOptions);
     // calls the super constructor

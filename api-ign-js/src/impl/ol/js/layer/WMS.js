@@ -215,6 +215,9 @@ class WMS extends LayerBase {
      * CrossOrigin. Indica si se usa crossOrigin.
      */
     this.crossOrigin = options.crossOrigin || null;
+
+    this.isBase = options.isBase || false;
+    this.transparent = !this.isBase;
   }
 
   /**
