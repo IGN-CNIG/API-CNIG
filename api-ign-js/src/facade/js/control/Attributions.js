@@ -244,7 +244,7 @@ class Attributions extends ControlBase {
   addContent(attributions) {
     const html = this.html_;
     const id = attributions[0].name || '';
-    const links = attributions.map((attrOpt, index, arr) => {
+    const links = attributions.map((attrOpt) => {
       const element = attrOpt.url ? 'a' : 'p';
       const link = document.createElement(element);
 
@@ -256,10 +256,8 @@ class Attributions extends ControlBase {
 
 
       link.setAttribute('tabindex', this.order);
-
-      link.innerHTML = attrOpt.description || '';
-      const attributeURL = this.map_.getScale() > this.scale_ ? '' : ' '.concat(this.urlAttribute);
-      link.innerHTML += arr.length - 1 === index ? attributeURL : ' ';
+      const text = attrOpt.description ? attrOpt.description : `${attrOpt.name}, ${this.urlAttribute}`;
+      link.innerHTML = text || '';
       return link;
     });
     const div = document.createElement('div');
