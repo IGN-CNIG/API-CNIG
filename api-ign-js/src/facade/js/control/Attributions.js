@@ -285,7 +285,7 @@ class Attributions extends ControlBase {
    * @api
    */
   addHTMLContent(html) {
-    this.html_.innerHTML += `<div>${html}</div>`;
+    this.html_.innerHTML += `<section class="attributionElements">${html}</section>`;
   }
 
   /**
@@ -341,10 +341,14 @@ class Attributions extends ControlBase {
    * @api
    */
   addAttributions(attribuccionParams) {
-    if (typeof attribuccionParams === 'string' || attribuccionParams.collectionsAttributions) {
-      const infoHTML = attribuccionParams.collectionsAttributions
-        ? attribuccionParams.collectionsAttributions : attribuccionParams;
-      this.addHTMLContent(infoHTML);
+    if (typeof attribuccionParams === 'string') {
+      this.addHTMLContent(attribuccionParams);
+      this.collectionsAttributions_.push(attribuccionParams);
+    } else if (attribuccionParams.collectionsAttributions) {
+      attribuccionParams.collectionsAttributions.forEach((collectionAttribution) => {
+        this.collectionsAttributions_.push(attribuccionParams);
+        this.addHTMLContent(collectionAttribution);
+      });
     } else {
       this.collectionsAttributions_.push(attribuccionParams);
 
