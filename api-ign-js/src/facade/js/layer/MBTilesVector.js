@@ -89,11 +89,6 @@ class MBTilesVector extends Vector {
      * por defecto falso.
      */
     this.extract = parameters.extract;
-
-    /**
-     * MBTilesVector attribution: Atribución de la capa.
-     */
-    this.attribution = parameters.attribution;
   }
 
   /**

@@ -39,7 +39,10 @@ class LayerBase extends Base {
     // This layer is of parameters.
     const parameter = parserParameter.layer(userParameters);
 
-    this.attribution_ = userParameters.attribution;
+    /**
+     * attribution: Atribución de la capa.
+     */
+    this.attribution = userParameters.attribution;
 
     /**
      * Layer type: Tipo de la capa.
@@ -591,7 +594,7 @@ class LayerBase extends Base {
   }
 
   getAttributions() {
-    return this.attribution_;
+    return this.attribution;
   }
 
   /**

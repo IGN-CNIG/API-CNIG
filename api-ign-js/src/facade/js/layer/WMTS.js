@@ -135,10 +135,6 @@ class WMTS extends LayerBase {
      */
     this.useCapabilities = parameters.useCapabilities !== false;
 
-    /**
-     * WMTS attribution: Atribución de la capa.
-     */
-    this.attribution = parameters.attribution;
 
     /**
      * WMTS capabilitiesMetadata: Capacidades de metadatos WMTS.

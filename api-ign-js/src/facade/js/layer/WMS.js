@@ -116,10 +116,6 @@ class WMS extends LayerBase {
      */
     this.version = parameters.version;
 
-    /**
-     * Attribution: Atribución de la capa.
-     */
-    this.attribution = parameters.attribution;
 
     /**
      * WMS tiled: Verdadero si queremos dividir la capa en mosaicos, falso en caso contrario.

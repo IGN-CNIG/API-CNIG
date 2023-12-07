@@ -84,11 +84,6 @@ class MBTiles extends LayerBase {
     super(parameters, impl);
 
     /**
-     * MBTiles attribution: Atribución de la capa.
-     */
-    this.attribution = parameters.attribution;
-
-    /**
      * MBTiles name: Nombre de la capa.
      */
     this.name = parameters.name;
