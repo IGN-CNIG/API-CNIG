@@ -157,6 +157,11 @@ class Attributions extends ControlBase {
     const layers = this.collectionsAttributions_;
 
     layers.forEach((layer) => {
+      if (typeof layer === 'string') {
+        this.addHTMLContent(layer);
+        return;
+      }
+
       let featureAttributions = false;
 
       const zoom = this.map_.getZoom();
@@ -336,18 +341,16 @@ class Attributions extends ControlBase {
    * @api
    */
   addAttributions(attribuccionParams) {
-    if (typeof attribuccionParams === 'string') {
-      this.addHTMLContent(attribuccionParams);
+    if (typeof attribuccionParams === 'string' || attribuccionParams.collectionsAttributions) {
+      const infoHTML = attribuccionParams.collectionsAttributions
+        ? attribuccionParams.collectionsAttributions : attribuccionParams;
+      this.addHTMLContent(infoHTML);
     } else {
       this.collectionsAttributions_.push(attribuccionParams);
 
       const { id, contentType, contentAttributions } = attribuccionParams;
       this.createVectorLayer(id, contentAttributions, contentType);
     }
-
-    setTimeout(() => {
-      this.changeAttributions();
-    }, 500);
   }
 
   /**
