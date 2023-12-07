@@ -37,7 +37,10 @@ class Attributions extends ControlBase {
     super(impl, Attributions.NAME);
 
     this.position = options.position;
-    this.closePanel = options.closePanel; // TO-DO Eliminar
+    this.closePanel = options.closePanel;
+    this.urlAttribute = options.urlAttribute || 'Gobierno de España';
+    this.options = options;
+
     this.url_ = options.url || 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml';
     this.type_ = options.type || 'kml';
     this.layerName_ = options.layerName || 'attributions';
@@ -45,13 +48,9 @@ class Attributions extends ControlBase {
     this.scale_ = Number.parseInt(options.scale, 10) || 10000;
     this.attributionParam_ = options.attributionParam || 'atribucion';
     this.urlParam_ = options.urlParam || 'url';
-
     this.defaultAttribution_ = options.defaultAttribution || 'Instituto Geogr&aacute;fico Nacional';
     this.defaultURL_ = options.defaultURL || 'https://www.ign.es/';
     this.tooltip_ = options.tooltip || getValue('attributions').tooltip;
-    this.urlAttribute = options.urlAttribute || 'Gobierno de España';
-    this.options = options;
-
     this.collectionsAttributions_ = options.collectionsAttributions || [];
 
     /**
@@ -244,7 +243,7 @@ class Attributions extends ControlBase {
     */
   addContent(attributions) {
     const html = this.html_;
-    const id = attributions[0].nameLayer || '';
+    const id = attributions[0].name || '';
     const links = attributions.map((attrOpt, index, arr) => {
       const element = attrOpt.url ? 'a' : 'p';
       const link = document.createElement(element);
@@ -258,7 +257,7 @@ class Attributions extends ControlBase {
 
       link.setAttribute('tabindex', this.order);
 
-      link.innerHTML = attrOpt.name || '';
+      link.innerHTML = attrOpt.description || '';
       const attributeURL = this.map_.getScale() > this.scale_ ? '' : ' '.concat(this.urlAttribute);
       link.innerHTML += arr.length - 1 === index ? attributeURL : ' ';
       return link;

@@ -410,7 +410,7 @@ class Map extends Base {
   removeAttribution(id) {
     const attributions = this.controlAttributions.getAttributions();
     let filterAttributions = attributions.filter(attribution => attribution.id !== id);
-    filterAttributions = filterAttributions.filter(attribution => attribution.nameLayer !== id);
+    filterAttributions = filterAttributions.filter(attribution => attribution.name !== id);
 
     this.controlAttributions.setAttributions(filterAttributions);
   }
@@ -3231,8 +3231,8 @@ class Map extends Base {
         if (layer.attribution && layers.name !== '__draw__') {
           const attribuccion = layer.attribution;
 
-          if (!attribuccion.nameLayer) {
-            attribuccion.nameLayer = layer.name;
+          if (!attribuccion.name) {
+            attribuccion.name = layer.name;
           }
 
           this.addAttribution(attribuccion);
