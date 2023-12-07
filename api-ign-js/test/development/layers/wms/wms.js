@@ -8,4 +8,11 @@ export const wms_001 = new WMS({
     // visibility: false,
     // isBase: true,
     // transparent: false,
+    // attribution: {
+    //     name: 'Name Prueba WMS',
+    //     description: 'Description Prueba',
+    //     url: 'https://www.ign.es',
+    //     contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+    //     contentType: 'kml',
+    //   },
 }, {})
