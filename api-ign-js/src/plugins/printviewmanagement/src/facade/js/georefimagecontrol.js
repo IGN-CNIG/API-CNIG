@@ -189,7 +189,7 @@ export default class GeorefimageControl extends M.Control {
     M.proxy(this.useProxy);
     const newUrl = `${url}?timestamp=${new Date().getTime()}`;
     M.remote.get(newUrl).then((response) => {
-      const statusJson = JSON.parse(response.text);
+      const statusJson = response.text ? JSON.parse(response.text) : 'error';
       const { status } = statusJson;
       if (status === 'finished') {
         callback();

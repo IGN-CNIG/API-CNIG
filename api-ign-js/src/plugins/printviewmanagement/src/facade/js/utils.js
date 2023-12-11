@@ -40,6 +40,15 @@ export function getQueueContainer(html) {
   return html.querySelector(ID_QUEUE_CONTAINER);
 }
 
+// Promise prevent download image
+function preventDownloadImage(queueEl) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, 15000);
+  });
+}
+
 // Insert element in Container Queue
 export function innerQueueElement(html, elementTitle) {
   const elementQueueContainer = getQueueContainer(html);
@@ -51,6 +60,12 @@ export function innerQueueElement(html, elementTitle) {
     elementQueueContainer.appendChild(queueEl);
   }
   queueEl.classList.add(LOADING_CLASS);
+  preventDownloadImage().then(() => {
+    if (queueEl.classList.contains(LOADING_CLASS)) {
+      queueEl.remove();
+      M.dialog.alert(getValue('error_download_image'));
+    }
+  });
   return queueEl;
 }
 
