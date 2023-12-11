@@ -593,7 +593,7 @@ class LayerBase extends Base {
     this.getImpl().setOpacity(opacity);
   }
 
-  getAttributions() {
+  getAttribution() {
     return this.attribution;
   }
 

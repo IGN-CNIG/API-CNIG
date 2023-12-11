@@ -190,6 +190,7 @@ class Map extends Base {
     this.evtSetAttributions_();
     this.evtRemoveAttributions_();
     this.controlAttributions = null; // Contiene el control de atribuciones
+    this._attributionsMap = [];
 
     // adds class to the container
     params.container.classList.add('m-mapea-container');
@@ -365,6 +366,10 @@ class Map extends Base {
     panel.addControls(atribucionControl);
     this.getImpl().addControls([atribucionControl]);
     this.controlAttributions = atribucionControl;
+
+    if (collectionsAttributions) {
+      this._attributionsMap = [...this._attributionsMap, ...collectionsAttributions];
+    }
   }
 
   /**
@@ -374,7 +379,7 @@ class Map extends Base {
    * @param {attribuccion} attribuccion Atribución.
    * @api
    */
-  addAttribution(attribuccion) {
+  addAttribution(attribuccion, _addMapAttribution = true) {
     try {
       if (Object.keys(attribuccion).length === 0) {
         return;
@@ -385,21 +390,25 @@ class Map extends Base {
       return;
     }
 
-
     // Comprobar si existe el control
     if (!this.getControls().some(({ name }) => name === 'attributions')) {
       this.createAttribution();
     }
 
-
-    const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions');
+    const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
+    let addAttribution = null;
 
     if (typeof attribuccion === 'string') {
-      controlAttributions[0].addAttributions(attribuccion);
+      addAttribution = attribuccion;
     } else if (attribuccion && controlAttributions) {
-      const addId = attribuccion;
-      addId.id = window.crypto.randomUUID();
-      controlAttributions[0].addAttributions(addId);
+      addAttribution = attribuccion;
+      addAttribution.id = window.crypto.randomUUID();
+    }
+
+    controlAttributions.addAttributions(addAttribution);
+
+    if (_addMapAttribution) {
+      this._attributionsMap.push(attribuccion);
     }
   }
 
@@ -416,6 +425,19 @@ class Map extends Base {
     filterAttributions = filterAttributions.filter(attribution => attribution.name !== id);
 
     this.controlAttributions.setAttributions(filterAttributions);
+  }
+
+  /**
+   * Método que devuelve las attribuciones del Mapa.
+   * @function
+   * @returns {Boolean} Verdadero devuelve todas las attribuciones.
+   * @api
+   */
+  getAttributions(allAttributions) {
+    if (allAttributions) {
+      return this.controlAttributions.getAttributions();
+    }
+    return this._attributionsMap;
   }
 
   /**
@@ -3243,7 +3265,7 @@ class Map extends Base {
             attribuccion.name = layer.name;
           }
 
-          this.addAttribution(attribuccion);
+          this.addAttribution(attribuccion, false);
         }
       });
     });
