@@ -20,7 +20,7 @@
   "previousView": "Vista anterior",
   "service_epsg": "Servicios EPSG",
   "georeferenced_img": "Imagen georreferenciada",
-  "format": "Format",
+  "format": "Formato",
   "errorProjectionCapabilities": "La proyeccion seleccionada no está disponible para esta capa base. Por favor elija otra proyección.",
   "printInfo": "Impresión generada a través de Mapea",
   "generating": "Generando imagen georreferenciada",
