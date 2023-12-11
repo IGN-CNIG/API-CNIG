@@ -351,7 +351,14 @@ class Map extends Base {
     const atribucionControl = new Attributions({
       map: this,
       scale,
-      collectionsAttributions,
+      collectionsAttributions: collectionsAttributions.map((l) => {
+        if (typeof l !== 'string') {
+          const attr = l;
+          attr.id = window.crypto.randomUUID();
+          return attr;
+        }
+        return l;
+      }),
       order,
     });
     const panel = new Panel(Attributions.NAME, {
