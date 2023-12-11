@@ -108,7 +108,6 @@ export default class PrintViewManagement extends M.Plugin {
           },
         ],
         order: 0,
-        tooltip: 'Georeferenciar imagen',
       };
     } else if (options.georefImageEpsg) {
       this.georefImageEpsg = this.getGeorefImageEpsg();
