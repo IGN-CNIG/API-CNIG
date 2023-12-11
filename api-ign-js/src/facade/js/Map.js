@@ -1936,7 +1936,12 @@ class Map extends Base {
               control = new GetFeatureInfo(true);
               break;
             case Attributions.NAME:
-              this.createAttribution();
+              if (controlParam.length === 2) {
+                this.createAttribution({ collectionsAttributions: [controlParam[1]] });
+              } else {
+                this.createAttribution();
+              }
+
               return;
             case Rotate.NAME:
               control = new Rotate();
