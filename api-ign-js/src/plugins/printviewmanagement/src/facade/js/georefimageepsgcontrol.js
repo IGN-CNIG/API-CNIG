@@ -271,6 +271,13 @@ export default class GeorefImageEpsgControl extends M.Control {
             createZipFile(files, TYPE_SAVE, titulo);
           });
 
+          // Enter event create zip
+          this.queueEl.addEventListener('keydown', (evt) => {
+            if (evt.keyCode === 13) {
+              createZipFile(files, TYPE_SAVE, titulo);
+            }
+          });
+
           // REMOVE QUEUE ELEMENT
           removeLoadQueueElement(this.queueEl);
         }
