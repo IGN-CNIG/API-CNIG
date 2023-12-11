@@ -63,7 +63,7 @@ export function innerQueueElement(html, elementTitle) {
   preventDownloadImage().then(() => {
     if (queueEl.classList.contains(LOADING_CLASS)) {
       queueEl.remove();
-      M.dialog.alert(getValue('error_download_image'));
+      M.dialog.error(getValue('exception.error_download_image'));
     }
   });
   return queueEl;
