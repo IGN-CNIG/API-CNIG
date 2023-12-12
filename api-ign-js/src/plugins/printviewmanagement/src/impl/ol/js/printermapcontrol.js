@@ -219,7 +219,7 @@ export default class PrinterMapControl extends M.impl.Control {
 
           nameFeature = `draw${index}`;
 
-          if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) ||
+          if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) &&
              !M.utils.isNullOrEmpty(text)) {
             const styleStr = JSON.stringify(styleGeom);
             const styleTextStr = JSON.stringify(styleText);

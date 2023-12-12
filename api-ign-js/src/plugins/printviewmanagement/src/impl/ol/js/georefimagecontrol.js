@@ -148,7 +148,8 @@ export default class GeorefimageControl extends M.impl.Control {
       if (!M.utils.isNullOrEmpty(styleFn)) {
         let featureStyle;
         try {
-          featureStyle = styleFn(feature, resolution)[0];
+          const resultStyle = styleFn(feature, resolution);
+          featureStyle = Array.isArray(resultStyle) ? resultStyle[0] : resultStyle;
         } catch (e) {
           featureStyle = styleFn.call(feature, resolution)[0];
         }
@@ -176,7 +177,7 @@ export default class GeorefimageControl extends M.impl.Control {
             graphicHeight: imgSize[0],
             graphicWidth: imgSize[1],
             graphicOpacity: img.getOpacity(),
-            strokeWidth: stroke.getWidth(),
+            strokeWidth: stroke ? stroke.getWidth() : undefined,
             type: parseType,
           };
           const text = (featureStyle.getText && featureStyle.getText());
@@ -205,7 +206,7 @@ export default class GeorefimageControl extends M.impl.Control {
 
           nameFeature = `draw${index}`;
 
-          if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) ||
+          if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) &&
              !M.utils.isNullOrEmpty(text)) {
             const styleStr = JSON.stringify(styleGeom);
             const styleTextStr = JSON.stringify(styleText);
