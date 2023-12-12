@@ -345,7 +345,7 @@ class Map extends Base {
       tooltip,
       position,
       scale,
-      collectionsAttributions,
+      collectionsAttributions = [],
       order,
     } = options;
     const atribucionControl = new Attributions({
