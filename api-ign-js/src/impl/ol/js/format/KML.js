@@ -74,7 +74,8 @@ class KML extends OLFormatKML {
         styles.forEach((style) => {
           if (style.getImage() instanceof OLStyleIcon) {
             const image = style.getImage();
-            image.getImage().removeAttribute('crossorigin');
+            // error de CORS Impresión
+            // image.getImage().removeAttribute('crossorigin');
             style.setImage(image);
           }
         });
