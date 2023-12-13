@@ -154,7 +154,7 @@ function fun(M_) {
    * @type {object}
    */
   M_.config('tms', {
-    base: 'TMS*IGNBaseTodo*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17',
+    base: 'TMS*IGNBaseTodo*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17***anonymous',
   });
 
   /**
@@ -197,7 +197,7 @@ function fun(M_) {
   M_.config('SQL_WASM_URL', '../../../../node_modules/sql.js/dist/');
 
 
-    /**
+  /**
    * Mueve el mapa cuando se hace clic sobre un objeto
    * geográfico, (extract = true) o no (extract = false)
    *

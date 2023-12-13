@@ -927,7 +927,7 @@ export const getCQLWFS = (parameter) => {
       cql = params[6].trim();
     }
   } else if ((isObject(parameter) &&
-    !isNullOrEmpty(parameter.cql)) || (!isNullOrEmpty(parameter.ecql))) {
+      !isNullOrEmpty(parameter.cql)) || (!isNullOrEmpty(parameter.ecql))) {
     cql = parameter.cql ? parameter.cql.trim() : parameter.ecql.trim();
   } else if (!isObject(parameter)) {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
@@ -2676,6 +2676,9 @@ export const tms = (userParamer) => {
     // gets the legend
     layerObj.legend = getExtraParameter(userParam, layerObj.name, 4, 'legend');
 
+    // gets the crossOrigin
+    layerObj.crossOrigin = getExtraParameter(userParam, undefined, 5, 'crossOrigin');
+
     return layerObj;
   });
 
@@ -3979,8 +3982,8 @@ export const layer = (userParameters, forcedType) => {
       if (!isNullOrEmpty(userParam.isBase)) {
         layerObj.isBase = userParam.isBase;
       } else if (userParam.name !== '__draw__') {
-        layerObj.isBase = (userParam.transparent !== undefined)
-          ? !userParam.transparent : false;
+        layerObj.isBase = (userParam.transparent !== undefined) ?
+          !userParam.transparent : false;
       }
 
       if (!isNullOrEmpty(userParam.minZoom)) {

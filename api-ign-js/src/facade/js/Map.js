@@ -599,7 +599,7 @@ class Map extends Base {
                 layer = new XYZ(parameterVariable);
                 break;
               case 'TMS':
-                layer = new TMS(parameterVariable);
+                layer = new TMS(parameterVariable, { crossOrigin: parameterVariable.crossOrigin });
                 break;
               case 'OSM':
                 layer = new OSM(layerParam);
