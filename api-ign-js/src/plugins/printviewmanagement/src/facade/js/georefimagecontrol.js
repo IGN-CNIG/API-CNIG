@@ -661,6 +661,11 @@ export default class GeorefimageControl extends M.Control {
         );
       }
 
+      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM))) {
+        printData.attributes.map.projection = 'EPSG:3857';
+        printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
+      }
+
       return printData;
     });
   }

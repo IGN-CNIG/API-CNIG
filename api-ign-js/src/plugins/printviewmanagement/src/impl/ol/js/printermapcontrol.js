@@ -80,9 +80,7 @@ export default class PrinterMapControl extends M.impl.Control {
   encodeLayer(layer) {
     return (new Promise((success, fail) => {
       try {
-        if (layer.type === M.layer.type.WMC) {
-          // none
-        } else if (layer.type === M.layer.type.KML) {
+        if (layer.type === M.layer.type.KML) {
           success(this.encodeKML(layer));
         } else if (layer.type === M.layer.type.WMS) {
           success(this.encodeWMS(layer));
