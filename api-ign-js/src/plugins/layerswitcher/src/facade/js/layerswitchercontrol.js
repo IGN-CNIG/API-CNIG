@@ -187,7 +187,7 @@ export default class LayerswitcherControl extends M.Control {
         });
       }
     });
-
+    const self = this;
     return new Promise((success) => {
       this.getTemplateVariables(map).then((templateVars) => {
         const html = M.template.compileSync(template, {
@@ -195,7 +195,7 @@ export default class LayerswitcherControl extends M.Control {
         });
 
         if (this.isDraggable_) {
-          M.utils.draggabillyPlugin(this.getPanel(), '#m-layerswitcher-title');
+          M.utils.draggabillyPlugin(self.getPanel(), '#m-layerswitcher-title');
         }
 
         this.template_ = html;
@@ -204,13 +204,13 @@ export default class LayerswitcherControl extends M.Control {
         // click en opacidad
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
         // click para mostrar/ocultar plugin
-        this.getPanel().getButtonPanel().addEventListener('click', this.collapsedPlugin.bind(this), false);
+        self.getPanel().getButtonPanel().addEventListener('click', this.collapsedPlugin.bind(this), false);
         // Se registra evento
-        this.getImpl().registerEvent(map);
+        self.getImpl().registerEvent(map);
 
         this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
 
-        this.accessibilityTab(this.template_);
+        self.accessibilityTab(this.template_);
 
         success(this.template_);
       });
