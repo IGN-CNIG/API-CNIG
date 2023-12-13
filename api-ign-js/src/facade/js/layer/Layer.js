@@ -69,7 +69,7 @@ class LayerBase extends Base {
      * Layer transparent:
      * Falso si es una capa base, verdadero en caso contrario.
      */
-    this.transparent = parameter.transparent || (!this.isBase);
+    this.transparent = !this.isBase;
 
     if (parameter.transparent === true || parameter.transparent === false) {
     // eslint-disable-next-line no-console
