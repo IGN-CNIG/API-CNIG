@@ -38,8 +38,6 @@ class Generic {
       cql: params.cql,
       type: params.type,
       legend: params.legend || params.name,
-      minZoom: params.minZoom || 1,
-      maxZoom: params.maxZoom || 28,
       visibility: params.visibility,
       opacity: params.opacity,
       isBase: params.isBase,
