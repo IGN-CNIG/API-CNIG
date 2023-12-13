@@ -196,9 +196,9 @@ export default class GeorefimageControl extends M.Control {
       } else if (status === 'error' || status === 'cancelled') {
         callback();
         if (statusJson.error.toLowerCase().indexOf('network is unreachable') > -1 || statusJson.error.toLowerCase().indexOf('illegalargument') > -1) {
-          M.dialog.error(getValue('exception.teselaError'), 'Error');
+          M.toast.error(getValue('exception.teselaError'), 6000);
         } else {
-          M.dialog.error(getValue('exception.printError'), 'Error');
+          M.toast.error(getValue('exception.printError'), 6000);
         }
         getQueueContainer(this.html_).lastChild.remove();
       } else {

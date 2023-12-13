@@ -81,7 +81,7 @@ export default class GeorefimageControl extends M.impl.Control {
       if (layer.type === M.layer.type.MVT) {
         success(this.encodeMVT(layer));
       } else if (layer.type === M.layer.type.MBTilesVector) {
-        M.dialog.error(getValue('exception.support'), 'Error');
+        M.toast.error(getValue('exception.support'), 6000);
       } else if (layer.type === M.layer.type.KML) {
         success(this.encodeKML(layer));
       } else if (layer.type === M.layer.type.WMS) {
@@ -717,7 +717,7 @@ export default class GeorefimageControl extends M.impl.Control {
           version: '1.3.0',
         };
       } catch (e) {
-        M.dialog.error(getValue('errorProjectionCapabilities'));
+        M.toast.error(getValue('errorProjectionCapabilities'), 6000);
         return null;
       }
     });

@@ -11,7 +11,7 @@
     "printError": "Printing has failed.",
     "encode_method": "The used implementation does not have the encodeLayer method",
     "tile": "The request for some tile has caused a printing error. <br/>Please try again.",
-    "support": "MVT and MBTilesVector layers are not supported",
+    "support": "MBTiles and MBTilesVector layers are not supported",
     "error_download_image": "The download could not be completed at this time."
   },
   "tooltip": "Map printing",
