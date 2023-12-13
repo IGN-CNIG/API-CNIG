@@ -32,24 +32,7 @@
         const map = M.map({
             container: 'mapjs',
         });
-        const mp = new M.plugin.PrintViewManagement({
-            position: 'TR',
-            collapsible: true,
-            collapsed: true,
-            predefinedZoom: [{
-                name: 'zoom 1',
-                center: [-428106.86611520057, 4334472.25393817],
-                zoom: 4,
-            },
-            {
-                name: 'zoom 2',
-                bbox: [-2392173.2372, 3033021.2824, 1966571.8637, 6806768.1648],
-            }
-            ],
-            georefImage: true,
-            printermap: true,
-            zoomPanel: true
-        });
+        const mp = new M.plugin.PrintViewManagement();
         map.addPlugin(mp);
     </script>
 </body>

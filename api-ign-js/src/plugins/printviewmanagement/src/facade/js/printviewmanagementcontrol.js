@@ -53,7 +53,7 @@ export default class PrintViewManagementControl extends M.Control {
 
 
     /**
-     * Indicates if the control PredefinedZoom is added to the plugin
+     * Indicates if the control georefImageEpsg is added to the plugin
      * @private
      * @type {Boolean|Array<Object>}
      */
