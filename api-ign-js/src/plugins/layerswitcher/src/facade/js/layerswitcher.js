@@ -254,6 +254,18 @@ export default class Layerswitcher extends M.Plugin {
   // Esta función añade el plugin al mapa
   addTo(map) {
     this.map_ = map;
+
+    // creamos panel
+    this.panel_ = new M.ui.Panel('Layerswitcher', {
+      className: 'm-plugin-layerswitcher',
+      collapsed: this.collapsed_,
+      collapsible: this.collapsible_,
+      position: M.ui.position[this.position_],
+      collapsedButtonClass: 'm-layerswitcher-icons-layers',
+      tooltip: this.tooltip_,
+      order: this.order,
+    });
+
     // creamos control
     this.control_ =
       new LayerswitcherControl({
@@ -270,17 +282,9 @@ export default class Layerswitcher extends M.Plugin {
         useProxy: this.useProxy,
         statusProxy: this.statusProxy,
         useAttributions: this.useAttributions,
+        panel: this.panel_,
       });
-    // creamos panel
-    this.panel_ = new M.ui.Panel('Layerswitcher', {
-      className: 'm-plugin-layerswitcher',
-      collapsed: this.collapsed_,
-      collapsible: this.collapsible_,
-      position: M.ui.position[this.position_],
-      collapsedButtonClass: 'm-layerswitcher-icons-layers',
-      tooltip: this.tooltip_,
-      order: this.order,
-    });
+
     this.controls_.push(this.control_);
 
     // se dispara evento cuando se añade al mapa

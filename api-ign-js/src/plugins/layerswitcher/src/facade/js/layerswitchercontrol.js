@@ -149,6 +149,8 @@ export default class LayerswitcherControl extends M.Control {
 
     // Attribution
     this.useAttributions_ = options.useAttributions;
+
+    this.panel_ = options.panel;
   }
 
   // Esta función crea la vista
@@ -2873,6 +2875,14 @@ export default class LayerswitcherControl extends M.Control {
       document.querySelector('#m-layerswitcher-ogcCContainer').style.display = 'none';
     }
     this.loadCODSIResults(this.select_codsi);
+  }
+
+  /**
+   * @function
+   * @public
+   */
+  getPanel() {
+    return this.panel_;
   }
 
 
