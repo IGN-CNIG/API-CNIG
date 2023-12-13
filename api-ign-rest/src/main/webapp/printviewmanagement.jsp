@@ -42,8 +42,8 @@
     <div>
         <label for="selectPosition">Selector de posición del plugin</label>
         <select name="position" id="selectPosition">
-            <option value="TL">Arriba Izquierda (TL)</option>
-            <option value="TR" selected="selected">Arriba Derecha (TR)</option>
+            <option value="TL" selected="selected">Arriba Izquierda (TL)</option>
+            <option value="TR">Arriba Derecha (TR)</option>
             <option value="BR">Abajo Derecha (BR)</option>
             <option value="BL">Abajo Izquierda (BL)</option>
         </select>
@@ -58,26 +58,17 @@
             <option value=false>false</option>
         </select>
         <label for="tooltipInput">Parámetro Tooltip</label>
-        <input type="text" value="Gestión de la vista" id="tooltipInput"/>
+        <input type="text" value="Impresión del mapa" id="tooltipInput"/>
         <label for="selectIsdraggable">Parámetro isDraggable</label>
         <select name="isdraggable" id="selectIsdraggable">
             <option value=""></option>
             <option value="true">true</option>
             <option value="false" selected="selected">false</option>
         </select>
+
+        <label for="defaultOpenControl">Parámetro defaultOpenControl</label>
+        <input type="number" value="0" id="defaultOpenControl" min="0" max="3" step="1">
         
-        <label for="selectPredefinedZoom">Parámetro predefinedZoom</label>
-        <select name="predefinedZoom" id="selectPredefinedZoom">
-            <option value=""></option>
-            <option value="true" selected="selected">true</option>
-            <option value="false">false</option>
-        </select>
-        <label for="selectZoomExtent">Parámetro zoomExtent</label>
-        <select name="zoomExtent" id="selectZoomExtent">
-            <option value=""></option>
-            <option value="true" selected="selected">true</option>
-            <option value="false">false</option>
-        </select>
         <label for="selectUseProxy">Parámetro useProxy</label>
         <select name="useProxy" id="selectUseProxy">
             <option value=""></option>
@@ -152,8 +143,7 @@
         map.addLayers([layerinicial, campamentos]);
 
         let mp;
-        let position, collapsed, collapsible, tooltip, isDraggable, predefinedZoom,
-        	zoomExtent, order, useProxy,
+        let position, collapsed, collapsible, tooltip, isDraggable, order, useProxy,
         	serverUrl = DEFAULT_serverUrl,
         	printStatusUrl = DEFAULT_printStatusUrl,
         	georefImageEpsg = JSON.parse(DEFAULT_georefImageEpsg),
@@ -165,8 +155,6 @@
         	collapsible,
         	tooltip,
         	isDraggable,
-        	predefinedZoom,
-			zoomExtent,
             useProxy,
 			order,
 			serverUrl,
@@ -180,9 +168,8 @@
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
         const tooltipInput = document.getElementById("tooltipInput");
+        const defaultOpenControlInput = document.getElementById("defaultOpenControl");
         const selectIsdraggable = document.getElementById("selectIsdraggable");
-        const selectPredefinedZoom = document.getElementById("selectPredefinedZoom");
-        const selectZoomExtent = document.getElementById("selectZoomExtent");
         const selectUseProxy = document.getElementById("selectUseProxy");
         const inputOrder = document.getElementById("inputOrder");
         const inputServerUrl = document.getElementById("inputServerUrl");
@@ -201,9 +188,8 @@
         selectCollapsed.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
         tooltipInput.addEventListener('change',cambiarTest);
+        defaultOpenControlInput.addEventListener('change',cambiarTest);
         selectIsdraggable.addEventListener('change',cambiarTest);
-        selectPredefinedZoom.addEventListener('change',cambiarTest);
-        selectZoomExtent.addEventListener('change',cambiarTest);
         selectUseProxy.addEventListener('change',cambiarTest);
         inputOrder.addEventListener('change', cambiarTest);
         inputServerUrl.addEventListener('change', cambiarTest);
@@ -219,13 +205,10 @@
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             objeto.tooltip = tooltipInput.value != "" ? tooltipInput.value : "";
+            objeto.defaultOpenControl = defaultOpenControlInput.value;
             let isDraggableValor = selectIsdraggable.options[selectIsdraggable.selectedIndex].value;
             isdraggable = isDraggableValor != "" ? objeto.isDraggable = (isDraggableValor == "true" || isDraggableValor == true) : "true";
-            let predefinedZoomValor = selectPredefinedZoom.options[selectPredefinedZoom.selectedIndex].value;
-            predefinedzoom = predefinedZoomValor != "" ? objeto.predefinedZoom = (predefinedZoomValor == "true" || predefinedZoomValor == true) : "true";
-            let zoomExtentValor = selectZoomExtent.options[selectZoomExtent.selectedIndex].value;
             let useProxyValor = selectUseProxy.options[selectUseProxy.selectedIndex].value;
-            zoomextent = zoomExtentValor != "" ? objeto.zoomExtent = (zoomExtentValor == "true" || zoomExtentValor == true) : "true";
             useProxy = useProxyValor != "" ? objeto.useProxy = (useProxyValor == "true" || useProxyValor == true) : "true";
             objeto.order = inputOrder.value != "" ? inputOrder.value : "";
             objeto.serverUrl = inputServerUrl.value != "" ? inputServerUrl.value : "";
