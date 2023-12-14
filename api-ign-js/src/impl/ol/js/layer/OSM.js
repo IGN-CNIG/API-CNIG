@@ -94,7 +94,7 @@ class OSM extends Layer {
     this.visibility = visibility;
     if (this.inRange() === true) {
       // if this layer is base then it hides all base layers
-      if ((visibility === true) && (this.isBase === true)) {
+      if ((visibility === true) && (this.transparent === false)) {
         // hides all base layers
         this.map.getBaseLayers().forEach((layer) => {
           if (!layer.equals(this) && layer.isVisible()) {
@@ -172,7 +172,7 @@ class OSM extends Layer {
     this.ol3Layer.setMinZoom(this.minZoom);
 
     // activates animation for base layers or animated parameters
-    const animated = ((this.isBase === true) || (this.options.animated === true));
+    const animated = ((this.transparent === false) || (this.options.animated === true));
     this.ol3Layer.set('animated', animated);
 
     // set the extent when the map changed

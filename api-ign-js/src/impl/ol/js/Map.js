@@ -270,7 +270,7 @@ class Map extends MObject {
    * @api
    */
   getBaseLayers() {
-    return this.getLayers().filter(layer => layer.isBase === true);
+    return this.getLayers().filter(layer => layer.transparent === false);
   }
 
   /**
@@ -540,6 +540,10 @@ class Map extends MObject {
               if (!isNullOrEmpty(filterLayer.isBase)) {
                 layerMatched = (layerMatched && (filterLayer.isBase === wmsLayer.isBase));
               }
+              // transparent
+              if (!isNullOrEmpty(filterLayer.transparent)) {
+                layerMatched = (layerMatched && (filterLayer.transparent === wmsLayer.transparent));
+              }
               // tiled
               if (!isNullOrEmpty(filterLayer.tiled)) {
                 layerMatched = (layerMatched && (filterLayer.tiled === wmsLayer.tiled));
@@ -589,7 +593,7 @@ class Map extends MObject {
 
           /* if the layer is a base layer then
           sets its visibility */
-          if (layer.isBase === true) {
+          if (layer.transparent === false) {
             layer.setVisible(!existsBaseLayer);
             existsBaseLayer = true;
             layer.setZIndex(Map.Z_INDEX_BASELAYER);
@@ -1044,7 +1048,7 @@ class Map extends MObject {
           this.layers_.push(layer);
           /* if the layer is a base layer then
                  sets its visibility */
-          if (layer.isBase === true) {
+          if (layer.transparent === false) {
             layer.setVisible(!existsBaseLayer);
             existsBaseLayer = true;
             if (layer.isVisible()) {
@@ -1169,7 +1173,7 @@ class Map extends MObject {
           this.layers_.push(layer);
           addedLayers.push(layer);
 
-          if (layer.isBase === true) {
+          if (layer.transparent === false) {
             layer.setVisible(!existsBaseLayer);
             existsBaseLayer = true;
             layer.setZIndex(Map.Z_INDEX_BASELAYER);
@@ -1396,7 +1400,7 @@ class Map extends MObject {
 
         /* if the layer is a base layer then
         sets its visibility */
-        if (layer.isBase === true) {
+        if (layer.transparent === false) {
           layer.setVisible(!existsBaseLayer);
           existsBaseLayer = true;
           if (layer.isVisible()) {
@@ -1436,7 +1440,7 @@ class Map extends MObject {
       if (includes(this.layers_, layer)) {
         this.layers_ = this.layers_.filter(layer2 => !layer2.equals(layer));
         layer.getImpl().destroy();
-        if (layer.isBase === true) {
+        if (layer.transparent === false) {
           // it was base layer so sets the visibility of the first one
           const baseLayers = this.facadeMap_.getBaseLayers();
           if (baseLayers.length > 0) {
@@ -1618,7 +1622,7 @@ class Map extends MObject {
     layers.forEach((layer) => {
       // checks if layer is XYZ and was added to the map
       if (layer.type === LayerType.XYZ) {
-        if (!includes(this.layers_, layer) && layer.isBase !== true) {
+        if (!includes(this.layers_, layer) && layer.transparent === true) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
           const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.XYZ];
@@ -1719,7 +1723,7 @@ class Map extends MObject {
     layers.forEach((layer) => {
       // checks if layer is TMS and was added to the map
       if (layer.type === LayerType.TMS) {
-        if (!includes(this.layers_, layer) && layer.isBase !== true) {
+        if (!includes(this.layers_, layer) && layer.transparent === true) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
           const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.TMS];

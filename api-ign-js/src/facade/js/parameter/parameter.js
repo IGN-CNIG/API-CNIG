@@ -3970,39 +3970,43 @@ export const layer = (userParameters, forcedType) => {
         layerObj = userParam;
       }
 
-      if (!isNullOrEmpty(userParam.infoEventType)) {
-        layerObj.infoEventType = userParam.infoEventType;
-      } else {
-        layerObj.infoEventType = 'click';
-      }
-      if (!isNullOrEmpty(userParam.attribution)) {
-        layerObj.attribution = userParam.attribution;
-      }
-
       if (!isNullOrEmpty(userParam.isBase)) {
-        layerObj.isBase = userParam.isBase;
-      } else if (userParam.name !== '__draw__') {
-        layerObj.isBase = (userParam.transparent !== undefined) ?
-          !userParam.transparent : false;
+        layerObj.transparent = !userParam.isBase;
       }
 
-      if (!isNullOrEmpty(userParam.minZoom)) {
-        layerObj.minZoom = userParam.minZoom;
-      }
+      // if (!isNullOrEmpty(userParam.infoEventType)) {
+      //   layerObj.infoEventType = userParam.infoEventType;
+      // } else {
+      //   layerObj.infoEventType = 'click';
+      // }
+      // if (!isNullOrEmpty(userParam.attribution)) {
+      //   layerObj.attribution = userParam.attribution;
+      // }
 
-      if (!isNullOrEmpty(userParam.maxZoom)) {
-        layerObj.maxZoom = userParam.maxZoom;
-      }
+      // if (!isNullOrEmpty(userParam.isBase)) {
+      //   layerObj.isBase = userParam.isBase;
+      // } else if (userParam.name !== '__draw__') {
+      //   layerObj.isBase = (userParam.transparent !== undefined) ?
+      //     !userParam.transparent : false;
+      // }
 
-      // name
-      if (!isNullOrEmpty(userParam.name)) {
-        layerObj.name = userParam.name;
-      }
+      // if (!isNullOrEmpty(userParam.minZoom)) {
+      //   layerObj.minZoom = userParam.minZoom;
+      // }
 
-      // legend
-      if (!isNullOrEmpty(userParam.legend)) {
-        layerObj.legend = userParam.legend;
-      }
+      // if (!isNullOrEmpty(userParam.maxZoom)) {
+      //   layerObj.maxZoom = userParam.maxZoom;
+      // }
+
+      // // name
+      // if (!isNullOrEmpty(userParam.name)) {
+      //   layerObj.name = userParam.name;
+      // }
+
+      // // legend
+      // if (!isNullOrEmpty(userParam.legend)) {
+      //   layerObj.legend = userParam.legend;
+      // }
     }
 
     return layerObj;

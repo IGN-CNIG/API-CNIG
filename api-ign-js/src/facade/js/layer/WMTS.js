@@ -19,7 +19,7 @@ import { getValue } from '../i18n/language';
  * @property {Number} minZoom Limitar el zoom mínimo.
  * @property {Number} maxZoom Limitar el zoom máximo.
  * @property {String} matrixSet La matriz seleccionada de las definidas en las Capacidades
-  * del servicio.
+ * del servicio.
  * @property {String} legend El nombre que la capa mostrará en el árbol de contenido, si existe.
  * @property {Boolean} transparent Falso si es una capa base, verdadero en caso contrario.
  * @property {Object} options Opciones de capas de WMTS.
@@ -40,7 +40,7 @@ class WMTS extends LayerBase {
    * - matrixSet: La matriz seleccionada de las definidas en el Capabilities del servicio.
    * - legend: Nombre que mostrará la capa en el árbol de contenido, si existe.
    * - format: Opcionalmente, el formato en el que solicitar la imagen.
-   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - type: Tipo de la capa.
    * - isBase: Define si la capa es base o no.
    * - useCapabilities: Define si se utilizará el capabilities para generar la capa.

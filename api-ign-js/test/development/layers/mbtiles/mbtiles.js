@@ -4,8 +4,8 @@ import MBTiles from 'M/layer/MBTiles';
 export const mbtile_01 = new MBTiles({
   name: 'mbtilesLoadFunction',
   legend: 'Capa personalizada MBTiles',
-  // isBase: true,
-  // transparent: false,
+  // isBase: false,
+  transparent: false,
   // attribution: {
   //   name: 'Name Prueba MBTiles',
   //   description: 'Description Prueba',

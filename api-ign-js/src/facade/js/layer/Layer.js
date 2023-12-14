@@ -15,7 +15,7 @@ import { getValue } from '../i18n/language';
  * @property {string} name Nombre de la capa.
  * @property {Boolean} transparent Falso si es una capa base, verdadero en caso contrario.
  * @property {Array<Number>} userMaxExtent MaxExtent proporcionado por el usuario, la medida en que
-  * restringe la visualización a una región específica.
+ * restringe la visualización a una región específica.
  * @property {string} legend Indica el nombre que queremos que aparezca en el árbol
  * de contenidos, si lo hay.
  *
@@ -60,21 +60,21 @@ class LayerBase extends Base {
     this.name = parameter.name;
 
     /**
-     * Layer isBase:
-     * Verdadero si es una capa base, falso en caso contrario.
-     */
-    this.isBase = parameter.isBase || false;
-
-    /**
      * Layer transparent:
      * Falso si es una capa base, verdadero en caso contrario.
      */
-    this.transparent = !this.isBase;
-
-    if (parameter.transparent === true || parameter.transparent === false) {
-    // eslint-disable-next-line no-console
-      console.warn(getValue('exception').transparent_obsolete);
+    this.transparent = true;
+    if (!isNullOrEmpty(parameter.transparent)) {
+      this.transparent = parameter.transparent;
+    } else if (!isNullOrEmpty(userParameters.isBase)) {
+      this.transparent = !userParameters.isBase;
     }
+
+    /**
+     * Layer isBase:
+     * Verdadero si es una capa base, falso en caso contrario.
+     */
+    this.isBase = !parameter.transparent;
 
     /**
      * Layer maxExtent_:
@@ -249,6 +249,38 @@ class LayerBase extends Base {
       }
     } else {
       this.getImpl().isBase = false;
+    }
+  }
+
+  /**
+   * Devuelve el valor de la propiedad "transparent" de la capa.
+   * @function
+   * @getter
+   * @public
+   * @returns {M.layer.impl.transparent} Valor de la propiedad "transparent".
+   * @api
+   */
+  get transparent() {
+    return this.getImpl().transparent;
+  }
+
+  /**
+   * Sobrescribe el valor de la propiedad "transparent".
+   * @function
+   * @setter
+   * @public
+   * @param {Boolean} newTransparent  Nuevo valor para la propiedad "transparent".
+   * @api
+   */
+  set transparent(newTransparent) {
+    if (!isNullOrEmpty(newTransparent)) {
+      if (isString(newTransparent)) {
+        this.getImpl().transparent = (normalize(newTransparent) === 'true');
+      } else {
+        this.getImpl().transparent = newTransparent;
+      }
+    } else {
+      this.getImpl().transparent = true;
     }
   }
 

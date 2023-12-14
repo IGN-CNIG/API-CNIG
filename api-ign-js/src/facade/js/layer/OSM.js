@@ -30,7 +30,7 @@ class OSM extends LayerBase {
    * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
    * - name: Nombre de la capa en la leyenda.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
-   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - type: Tipo de la capa.
    * - url: Url genera la OSM.
    * - minZoom: Zoom mínimo aplicable a la capa.
@@ -78,14 +78,9 @@ class OSM extends LayerBase {
 
     // This layer is of parameters.
     const parameters = parameter.layer(userParameters, LayerType.OSM);
-
-    let isBaseParam = !!userParameters.isBase;
-
     if (isNullOrEmpty(parameters.name)) {
       parameters.name = 'osm';
-      isBaseParam = true;
     }
-
 
     // Calls the super constructor.
     super(parameters, impl);
@@ -103,9 +98,11 @@ class OSM extends LayerBase {
       this.legend = 'OpenStreetMap';
     }
 
-    this.isBase = (isBaseParam !== undefined)
-      ? isBaseParam
-      : !parameters.transparent;
+    /**
+     * OSM transparent.
+     * Falso si es una capa base, verdadero en caso contrario.
+     */
+    this.transparent = parameters.transparent;
 
     /**
      * OSM options. Opciones OSM.
@@ -114,30 +111,49 @@ class OSM extends LayerBase {
   }
 
   /**
-   * Devuelve el valor de la propiedad "isBase" de la capa.
+   * Devuelve el valor de la propiedad "transparent".
    * @function
-   * @getter
-   * @public
-   * @returns {M.layer.impl.isBase} Valor de la propiedad "isBase".
+   * @return {M.layer.OSM.impl.transparent} Valor de "transparent".
    * @api
    */
-  get isBase() {
-    return this.getImpl().isBase;
+  get transparent() {
+    return this.getImpl().transparent;
   }
 
   /**
-   * Sobrescribe el valor de la propiedad "isBase".
+   * Sobrescribe el valor de la propiedad "transparent".
    * @function
-   * @setter
-   * @public
-   * @param {Boolean} newIsBase  Nuevo valor para la propiedad "isBase".
+   * @param {Boolean} newTransparent Nuevo valor de "transparent".
    * @api
    */
-  set isBase(newIsBase) {
-    if (!isNullOrEmpty(newIsBase)) {
-      this.getImpl().isBase = newIsBase;
+  set transparent(newTransparent) {
+    if (!isNullOrEmpty(newTransparent)) {
+      this.getImpl().transparent = newTransparent;
     } else {
-      this.getImpl().isBase = true;
+      this.getImpl().transparent = false;
+    }
+  }
+
+  /**
+   * Devuelve el tipo de capa, OSM.
+   * @function
+   * @return {M.LayerType.OSM} Devuelve OSM.
+   * @api
+   */
+  get type() {
+    return LayerType.OSM;
+  }
+
+  /**
+   * Sobrescribe el tipo de capa.
+   * @function
+   * @param {String} newType Nuevo tipo de capa.
+   * @api
+   */
+  set type(newType) {
+    if (!isUndefined(newType) &&
+      !isNullOrEmpty(newType) && (newType !== LayerType.OSM)) {
+      Exception('El tipo de capa debe ser \''.concat(LayerType.OSM).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
     }
   }
 

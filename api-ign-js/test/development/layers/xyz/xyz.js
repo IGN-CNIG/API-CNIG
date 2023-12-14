@@ -6,7 +6,7 @@ export const xyz_001 = new XYZ({
   projection: 'EPSG:3857',
   // visibility: true,
   // isBase: true,
-  // transparent: false,
+  // transparent: true,
   // attribution: {
   //   name: 'Name Prueba XYZ',
   //   description: 'Description Prueba',
@@ -15,3 +15,5 @@ export const xyz_001 = new XYZ({
   //   contentType: 'kml',
   // },
 });
+
+export const xyz_002 = 'XYZ*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*true';

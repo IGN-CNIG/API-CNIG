@@ -39,7 +39,7 @@ class WMS extends LayerBase {
    * - name: nombre de la capa en el servidor.
    * - url: url del servicio WFS.
    * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
-   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
    * - tiled: Verdadero si queremos dividir la capa en tiles, falso en caso contrario.
    * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
    *   En este caso la capa sería detectado por los plugins de tablas de contenidos
@@ -100,8 +100,9 @@ class WMS extends LayerBase {
       queryable: parameters.queryable,
       displayInLayerSwitcher: parameters.displayInLayerSwitcher,
       useCapabilities: parameters.useCapabilities,
-      isBase: parameters.isBase,
+      transparent: parameters.transparent,
     };
+
     const impl = new WMSImpl(optionsVar, vendorOptions);
     // calls the super constructor
     super(parameters, impl);

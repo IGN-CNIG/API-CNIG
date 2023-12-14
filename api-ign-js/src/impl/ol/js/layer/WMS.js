@@ -215,9 +215,6 @@ class WMS extends LayerBase {
      * CrossOrigin. Indica si se usa crossOrigin.
      */
     this.crossOrigin = options.crossOrigin || null;
-
-    this.isBase = options.isBase || false;
-    this.transparent = !this.isBase;
   }
 
   /**
@@ -486,7 +483,7 @@ class WMS extends LayerBase {
       const layerParams = {
         LAYERS: this.name,
         VERSION: this.version,
-        TRANSPARENT: !this.isBase,
+        TRANSPARENT: this.transparent,
         FORMAT: this.format,
         STYLES: this.styles,
       };
