@@ -189,26 +189,27 @@ export default class LayerswitcherControl extends M.Control {
     });
     const self = this;
     return new Promise((success) => {
-      this.getTemplateVariables(map).then((templateVars) => {
+      self.getTemplateVariables(map).then((templateVars) => {
         const html = M.template.compileSync(template, {
           vars: templateVars,
         });
 
-        if (this.isDraggable_) {
+        // eslint-disable-next-line no-underscore-dangle
+        if (self.isDraggable_) {
           M.utils.draggabillyPlugin(self.getPanel(), '#m-layerswitcher-title');
         }
 
         this.template_ = html;
         // click en plantilla
-        this.template_.addEventListener('click', this.clickLayer.bind(this), false);
+        this.template_.addEventListener('click', self.clickLayer.bind(self), false);
         // click en opacidad
-        this.template_.addEventListener('input', this.inputLayer.bind(this), false);
+        this.template_.addEventListener('input', self.inputLayer.bind(self), false);
         // click para mostrar/ocultar plugin
-        self.getPanel().getButtonPanel().addEventListener('click', this.collapsedPlugin.bind(this), false);
+        self.getPanel().getButtonPanel().addEventListener('click', self.collapsedPlugin.bind(self), false);
         // Se registra evento
         self.getImpl().registerEvent(map);
 
-        this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
+        this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', self.openAddServices.bind(self), false);
 
         self.accessibilityTab(this.template_);
 
