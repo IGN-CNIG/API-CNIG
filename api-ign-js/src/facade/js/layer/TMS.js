@@ -3,7 +3,7 @@
  */
 import TMSImpl from 'impl/layer/TMS';
 import LayerBase from './Layer';
-import { isUndefined } from '../util/Utils';
+import { isNullOrEmpty, isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
@@ -86,13 +86,20 @@ class TMS extends LayerBase {
     }
 
     const parameters = parameter.layer(userParameters, LayerType.TMS);
+
+    const optionsVars = { ...options };
+
+    if (!isNullOrEmpty(parameters.crossOrigin)) {
+      optionsVars.crossOrigin = parameters.crossOrigin;
+    }
+
     /**
      * Implementación.
      * @public
      * @implements {M.impl.layer.TMS}
      * @type {M.impl.layer.TMS}
      */
-    const impl = new TMSImpl(parameters, options, vendorOptions);
+    const impl = new TMSImpl(parameters, optionsVars, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
 
