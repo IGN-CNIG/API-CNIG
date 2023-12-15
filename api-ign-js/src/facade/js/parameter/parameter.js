@@ -7,7 +7,6 @@ import Exception from '../exception/exception';
 import * as LayerType from '../layer/Type';
 import Layer from '../layer/Layer';
 import { getValue } from '../i18n/language';
-import osm from './osm';
 
 /**
  * Analiza el parámetro del centro de usuario especificado en un objeto.
@@ -94,6 +93,18 @@ export const center = (centerParameterVar) => {
   }
 
   return centerParam;
+};
+
+const getParameters = (params) => {
+  const urlParams = params.split(/\*/);
+  return {
+    type: urlParams[0] || undefined,
+    name: urlParams[1] || undefined,
+    legend: urlParams[2] || undefined,
+    url: urlParams[3] || undefined,
+    visibility: urlParams[4] || undefined,
+    transparent: urlParams[5] || undefined,
+  };
 };
 
 /**
@@ -3905,6 +3916,18 @@ const generic = (userParameters) => {
     displayInLayerSwitcher: urlParams[7] || undefined,
     visibility: urlParams[8] || undefined,
   };
+};
+
+const osm = (userParameters) => {
+  const params = userParameters;
+
+  if (!isString(params)) {
+    return {
+      type: 'osm',
+    };
+  }
+
+  return getParameters(params);
 };
 
 /**
