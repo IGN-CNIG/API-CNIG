@@ -18,4 +18,4 @@ export const osm = new OSM({
 
 export const osm_002 = 'OSM';
 
-export const osm_003 = 'OSM*false*Capa*OSM';
+export const osm_003 = 'OSM*Capa*OSM';
