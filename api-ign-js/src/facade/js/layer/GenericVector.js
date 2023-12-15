@@ -35,6 +35,9 @@ class GenericVector extends Vector {
     */
   constructor(userParameters, options, vendorOptions = {}) {
     const params = { ...userParameters, ...options };
+
+    params.infoEventType = params.userParameters || 'click';
+
     // checks if the implementation can create Generic layers
     if (isUndefined(GenericImpl)) {
       Exception(getValue('exception').generic_method);

@@ -27,7 +27,6 @@ class Generic {
       vendorOpt = params.vendorOptions;
     } else if (!isNullOrEmpty(userParameters)) {
       params.type = LayerType.Generic;
-      params.infoEventType = params.infoEventType || 'click';
     }
 
     let opts = isNullOrEmpty(options) ? {} : options;
