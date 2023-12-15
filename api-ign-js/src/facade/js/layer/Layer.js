@@ -245,15 +245,12 @@ class LayerBase extends Base {
   set isBase(newIsBase) {
     if (!isNullOrEmpty(newIsBase)) {
       if (isString(newIsBase)) {
-        this.getImpl().isBase = newIsBase === 'true';
-        this.getImpl().transparent = newIsBase !== 'true';
+        this.getImpl().isBase = (normalize(newIsBase) === 'false');
       } else {
         this.getImpl().isBase = newIsBase;
-        this.getImpl().transparent = !newIsBase;
       }
     } else {
       this.getImpl().isBase = false;
-      this.getImpl().transparent = true;
     }
   }
 
