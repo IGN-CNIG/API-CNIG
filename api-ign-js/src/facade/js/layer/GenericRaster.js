@@ -20,6 +20,7 @@ import { getValue } from '../i18n/language';
  * @property {String} version Versión.
  * @property {Boolean} transparent 'Falso' si es una capa base, 'verdadero' en caso contrario.
  * @property {Object} options Capa de opciones.
+ * @property {Boolean} isbase Define si la capa es base.
  *
  * @api
  * @extends {M.Layer}

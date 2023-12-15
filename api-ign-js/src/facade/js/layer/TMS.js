@@ -36,6 +36,7 @@ import { getValue } from '../i18n/language';
  * árbol de contenidos, si lo hay.
  * @property {Array<Number>} maxExtent_ Extensión máxima.
  * @property {Boolean} displayInLayerSwitcher Indica si la capa se muestra en el selector de capas.
+ * @property {Boolean} isbase Define si la capa es base.
  * @api
  * @extends {M.layer}
  */

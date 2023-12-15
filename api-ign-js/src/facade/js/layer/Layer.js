@@ -18,6 +18,7 @@ import { getValue } from '../i18n/language';
  * restringe la visualización a una región específica.
  * @property {string} legend Indica el nombre que queremos que aparezca en el árbol
  * de contenidos, si lo hay.
+ * @property {Boolean} isbase Define si la capa es base.
  *
  * @api
  * @extends {M.Base}
@@ -29,6 +30,7 @@ class LayerBase extends Base {
    * @constructor
    * @extends {M.facade.Base}
    * @param {string|Mx.parameters.Layer} userParameters Parámetros proporcionados por el usuario.
+   * - isBase: Indica si la capa es base.
    * @param {Object} impl Implementación.
    * @api
    */

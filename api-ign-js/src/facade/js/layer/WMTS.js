@@ -25,6 +25,7 @@ import { getValue } from '../i18n/language';
  * @property {Object} options Opciones de capas de WMTS.
  * @property {Object} capabilitiesMetadata Capacidades de metadatos WMTS.
  * @property {Boolean} useCapabilities Define si se utilizará el capabilities para generar la capa.
+ * @property {Boolean} isbase Define si la capa es base.
  *
  * @api
  * @extends {M.Layer}

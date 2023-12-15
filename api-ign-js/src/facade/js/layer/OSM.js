@@ -18,7 +18,7 @@ import { getValue } from '../i18n/language';
  * el árbol de contenidos, si lo hay.
  * @property {Boolean} transparent Falso si es una capa base, verdadero en caso contrario.
  * @property {Object} options Opciones OSM.
- *
+ * @property {Boolean} isbase Define si la capa es base.
  * @api
  * @extends {M.Layer}
  */
@@ -36,6 +36,7 @@ class OSM extends LayerBase {
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - isBase: Indica si la capa es base.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán
    * a la implementación de la capa.
    * - visibility: Define si la capa es visible o no.
