@@ -13,11 +13,50 @@ import { isNullOrEmpty, isUndefined, isArray, isObject } from '../util/Utils';
 
 /**
  * @classdesc
- * Generic permite añadir cualquier tipo de capa definida con la librería base
- * @property {String} sourceType - Tipo de capa
+ * Generic permite añadir cualquier tipo de capa definida con la librería base.
+ * Sus propiedades dependerán del tipo de capa, GenericRaster o GenericVector.
  * @api
  */
 class Generic {
+  /**
+   * Constructor principal de la clase. Crea una capa WMS
+   * con parámetros especificados por el usuario.
+   * @constructor
+   * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
+   * - name: nombre de la capa.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - version: Versión WMS.
+   * - isBase: Indica si la capa es base.
+   * - ids: Opcional - identificadores por los que queremos filtrar los objetos geográficos.
+   * - cql: Opcional - Sentencia CQL para filtrar los objetos geográficos.
+   *  El método setCQL(cadena_cql) refresca la capa aplicando el nuevo predicado CQL que reciba.
+   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
+   * la implementación de la capa.
+   * - visibility: Indica la visibilidad de la capa.
+   * - format: Formato de la capa, por defecto image/png.
+   * - styles: Estilos de la capa.
+   * - sldBody: Parámetros "ol.source.ImageWMS"
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - queryable: Indica si la capa es consultable.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolución mínima.
+   * - maxResolution: Resolución máxima.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceTileWMS from 'ol/source/TileWMS';
+   * {
+   *  opacity: 0.1,
+   *  source: new OLSourceTileWMS({
+   *    attributions: 'wms',
+   *    ...
+   *  })
+   * }
+   * </code></pre>
+   * @api
+   */
   constructor(userParameters, options, vendorOptions) {
     let vendorOpt = vendorOptions;
     let params = userParameters || {};

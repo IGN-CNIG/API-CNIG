@@ -16,23 +16,47 @@ import { getValue } from '../i18n/language';
 import * as EventType from '../event/eventtype';
 import GenericStyle from '../style/Generic';
 
+/**
+ * @classdesc
+ * GenericVector permite añadir cualquier tipo de capa vector.
+ *
+ * @property {String} name Nombre de la capa, identificador.
+ * @property {Boolean} extract Activa la consulta al hacer clic sobre un objeto geográfico,
+ * por defecto falso.
+ * @property {Array} ids Identificadores por los que queremos filtrar los objetos geográficos.
+ * @property {String} cql Sentencia CQL para filtrar los objetos geográficos.
+ * @property {Object} options Opciones GenericVector.
+ *
+ * @api
+ * @extends {M.layer.Vector}
+ */
 class GenericVector extends Vector {
   /**
-    * Constructor principal de la clase. Crea una capa Generic
-    * con parámetros especificados por el usuario.
-    * @constructor
-    * @property {String} url - Devuelve la URL del servicio.
-    * @property {String} ids - Devuelve los ids de la capa.
-    * @property {String} cql - Devuelve el CQL de la capa.
-    * @param {string|Mx.parameters.Generic} userParameters Parámetros para la construcción
-    * de la capa.
-    * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
-    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
-    * la implementación de la capa.
-    * - visibility: Indica la visibilidad de la capa.
-    * @param {Object} vendorOptions Capa definida en con la librería base.
-    * @api
-    */
+   * Constructor principal de la clase.
+   * @constructor
+   * @param {string|Mx.parameters} userParameters Parámetros para la construcción de la capa.
+   * - name: nombre de la capa.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - isBase: Indica si la capa es base.
+   * - ids: Opcional - identificadores por los que queremos filtrar los objetos geográficos.
+   * - cql: Opcional - Sentencia CQL para filtrar los objetos geográficos.
+   *  El método setCQL(cadena_cql) refresca la capa aplicando el nuevo predicado CQL que reciba.
+   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
+   * la implementación de la capa.
+   * - visibility: Indica la visibilidad de la capa.
+   * - format: Formato de la capa, por defecto image/png.
+   * - styles: Estilos de la capa.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - queryable: Indica si la capa es consultable.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolución mínima.
+   * - maxResolution: Resolución máxima.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * @api
+   */
   constructor(userParameters, options, vendorOptions = {}) {
     const params = { ...userParameters, ...options };
 
