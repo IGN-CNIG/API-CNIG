@@ -475,7 +475,8 @@ class Map extends Base {
     }
 
     // gets the layers
-    const layers = this.getImpl().getLayers(filters).sort(Map.LAYER_SORT);
+    const layers = this.getImpl().getLayers(filters)
+      .sort((layer1, layer2) => Map.LAYER_SORT(layer1, layer2, this));
 
     return layers;
   }
@@ -507,7 +508,7 @@ class Map extends Base {
       Exception(getValue('exception').getbaselayers_method);
     }
 
-    return this.getImpl().getBaseLayers().sort(Map.LAYER_SORT);
+    return this.getImpl().getBaseLayers();
   }
 
   /**
@@ -3345,12 +3346,19 @@ class Map extends Base {
    * @param {M.layer} layer2 Otra Capa.
    * @api
    */
-  static LAYER_SORT(layer1, layer2) {
+  static LAYER_SORT(layer1, layer2, thisClass) {
     if (!isNullOrEmpty(layer1) && !isNullOrEmpty(layer2)) {
       const z1 = layer1.getZIndex();
       const z2 = layer2.getZIndex();
-
-      return (z1 - z2);
+      const zIndex = (z1 - z2);
+      if (zIndex === 0 && !isUndefined(thisClass)) {
+        // eslint-disable-next-line no-underscore-dangle
+        const i1 = thisClass.getImpl().layers_.findIndex(element => element.name === layer1.name);
+        // eslint-disable-next-line no-underscore-dangle
+        const i2 = thisClass.getImpl().layers_.findIndex(element => element.name === layer2.name);
+        return i1 - i2;
+      }
+      return zIndex;
     }
 
     // equals
