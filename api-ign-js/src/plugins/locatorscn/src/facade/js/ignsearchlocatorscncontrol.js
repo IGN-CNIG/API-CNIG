@@ -195,6 +195,13 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     this.urlReverse = options.urlReverse || 'https://geocoder.larioja.org/v1/reverse';
 
     /**
+     * This variable indicates Geocoder Reverse radius
+     * @private
+     * @type {string}
+     */
+    this.radius = options.radius || 100;
+    console.log(this.radius);
+    /**
      * This variable indicates Nomenclator url prefix
      * @private
      * @type {string}
@@ -492,15 +499,14 @@ export default class IGNSearchLocatorscnControl extends M.Control {
       const destiny = 'EPSG:4258';
       const etrs89pointCoordinates = this.getImpl()
         .reprojectReverse([e.coord[0], e.coord[1]], origin, destiny);
-      const params = `point.lon=${etrs89pointCoordinates[0]}&point.lat=${etrs89pointCoordinates[1]}&size=1&boundary.circle.radius=100&sources=${this.reverseSources.replace(',', '%2C')}`;
+      const params = `point.lon=${etrs89pointCoordinates[0]}&point.lat=${etrs89pointCoordinates[1]}&size=1&boundary.circle.radius=${this.radius}&sources=${this.reverseSources.replace(',', '%2C')}`;
       const urlToGet = `${this.urlReverse}?${params}`;
       const mapCoordinates = e.coord;
       this.geocoderCoords = etrs89pointCoordinates;
       const dataCoordinates = [etrs89pointCoordinates[1], etrs89pointCoordinates[0]];
       // let fullAddress = '';
       let addressData = {};
-      M.proxy(false);
-
+      M.proxy(this.useProxy);
       M.remote.get(urlToGet).then((res) => {
         if (res.text) {
           const returnData = JSON.parse(res.text);
@@ -575,7 +581,6 @@ export default class IGNSearchLocatorscnControl extends M.Control {
         });
         const elementList = compiledResult.querySelectorAll('li');
         elementList.forEach((listElement) => {
-          console.log(listElement);
           listElement.addEventListener('click', () => {
             this.goToLocation(listElement, true);
           });
@@ -722,7 +727,6 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     const properties = candicate.properties;
     const coordinates = candicate.geometry.coordinates;
     const type = candicate.geometry.type;
-    console.log(`${type.toUpperCase()}(${coordinates[0]} ${coordinates[1]})`);
     return {
       native: candicate,
       address: properties.label,
@@ -1081,7 +1085,6 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     if (!this.resultVisibility) {
       this.clickedElementLayer.setStyle(this.simple);
     }
-    console.log('a');
     // // show popup for streets
     M.config.MOVE_MAP_EXTRACT = false;
     // if (properties.type === 'callejero' || properties.type === 'portal') {
@@ -1138,7 +1141,6 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     addressData, mapcoords, featureCoordinates, exitState = null, e = {},
     hasOffset = true,
   ) {
-    console.log(mapcoords);
     const featureTabOpts = { content: '', title: '' };
 
     featureTabOpts.content = M.template.compileSync(ignsearchlocatorscnReverse, {

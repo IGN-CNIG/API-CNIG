@@ -15,7 +15,7 @@ const map = M.map({
 window.map = map;
 
 const mp = new Locatorscn({
-  useProxy: true,
+  useProxy: false,
   isDraggable: true,
   position: 'TC',
   // position: 'TC',
@@ -31,6 +31,7 @@ const mp = new Locatorscn({
     size: 15,
     layers: 'address,street,venue',
     sources: 'calrj',
+    radius: 200,
     // urlAutocomplete: '',
     // urlReverse: '',
   }
