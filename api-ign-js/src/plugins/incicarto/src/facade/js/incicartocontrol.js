@@ -1008,8 +1008,8 @@ export default class IncicartoControl extends M.Control {
       document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = true;
       this.showMessageInModalAdvanced(getValue('sending_email'), "okmessage");
 
-      // const theme = themeMetadataContainer.selectedOptions[0].innerText;
-      const theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
+      const themeID = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
+      const themeValue = themeMetadataContainer.selectedOptions[0].innerText;
 
       const fechaActual = new Date();
 
@@ -1024,9 +1024,9 @@ export default class IncicartoControl extends M.Control {
       // Formatear la fecha según el formato AAAA/MM/DD hh:mm:ss
       const fechaFormateada = `${año}/${mes}/${dia} ${horas}:${minutos}:${segundos}`;
 
-      let email_subject = this.prefixSubject + theme + ' - ' + fechaFormateada;
+      let email_subject = this.prefixSubject + themeValue + ' - ' + fechaFormateada;
 
-      const propiedades_incidencia = this.createContentEmail(email_subject, theme);
+      const propiedades_incidencia = this.createContentEmail(email_subject, themeID);
 
       if (this.geometryIncidenceJSON.features.length > 0) {
         this.geometryIncidenceJSON.features[0].properties = propiedades_incidencia;
