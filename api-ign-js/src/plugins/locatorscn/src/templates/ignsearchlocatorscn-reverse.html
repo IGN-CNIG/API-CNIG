@@ -7,20 +7,24 @@
     <b class="m-ignsearchlocatorscn-bold"></span> {{addressData.address}}</b> 
     <hr>
     <div class="m-ignsearchlocatorscn-standard">
-        <div><span>Calle: </span> {{addressData.native.properties.street}}</div> 
-        <div><span>Portal: </span> {{addressData.portalNumber}}</div> 
-        <div><span>Codigo postal: </span> {{addressData.postalCode}}</div> 
-        <div><span>Poblacion: </span> {{addressData.muni}}</div> 
+        <div><span>Nomvia: </span> {{addressData.native.properties.name}}</div> 
+        <div><span>Numero: </span> {{addressData.portalNumber}}</div> 
+        <div><span>Codpostal: </span> {{addressData.postalCode}}</div> 
+        <div><span>Ca: </span> {{addressData.comunidadAutonoma}}</div> 
+        <div><span>Provincia: </span> {{addressData.province}}</div> 
         <div><span>Municipio: </span> {{addressData.muni}}</div> 
-        <div><span>Comunidad autonoma: </span> {{addressData.comunidadAutonoma}}</div> 
-        <div><span>Pais: </span> {{addressData.native.properties.country}}</div> 
+        <div><span>Nivel1: </span> {{addressData.native.properties.locality}}</div> 
+        <div><span>Nivel2: </span> {{addressData.native.properties.neighbourhood}}</div> 
+        <div><span>Proveedor: </span> {{addressData.native.properties.source}}</div> 
+        <div><span>Latitud: </span> {{addressData.lat}}</div> 
+        <div><span>Longitud: </span> {{addressData.lng}}</div> 
     </div>
     <hr>
     <div class="m-ignsearchlocatorscn-standard">
         <div><span>Id: </span> {{addendum.id}}</div> 
         <div><span>Estado: </span> {{addendum.estado}}</div> 
-        <div><span>Tipologia: </span> {{addendum.tipologia}}</div> 
-        <div><span>Localizacion: </span> {{addendum.localizacion}}</div> 
+        <div><span>Tipdato: </span> {{addendum.tipologia}}</div> 
+        <div><span>Nomloc: </span> {{addendum.localizacion}}</div> 
         <div><span>Lengua: </span> {{addendum.lengua}}</div> 
         <div><span>Inetra: </span> {{addendum.inetra}}</div> 
     </div>
