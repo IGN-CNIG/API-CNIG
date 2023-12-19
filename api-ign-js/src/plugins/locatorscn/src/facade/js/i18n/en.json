@@ -1,10 +1,10 @@
 {
   "exception": {
-    "impl": "The implementation used cannot create LocatorControl.",
+    "impl": "The implementation used cannot create LocatorscnControl.",
     "impl_infocatastro": "The implementation used cannot create InfoCatastroControl.",
-    "impl_xylocator": "The implementation used cannot create XYLocatorControl.",
-    "impl_ignsearchlocator": "The implementation used cannot create IGNSearchLocatorControl.",
-    "no_controls": "The Locator plugin needs to activate at least one control.",
+    "impl_xylocatorscn": "The implementation used cannot create XYLocatorscnControl.",
+    "impl_ignsearchlocatorscn": "The implementation used cannot create IGNSearchLocatorscnControl.",
+    "no_controls": "The Locatorscn plugin needs to activate at least one control.",
     "wrong_coords": "The coordinates entered are not correct.",
     "transforming": "Error performing the transformation.",
     "wrong_values": "Some value entered are not correct. Remember that minutes and seconds must be between 0 and 59 and degrees between 0 and 180.",
@@ -21,8 +21,8 @@
     "error_findjsonp": "Error in the findJSONp service request.",
     "error_candidates": "Error in the candidatesJSONp service request."
   },
-  "tooltip": "Locator",
-  "xylocator": "Search by coordinates",
+  "tooltip": "Locatorscn",
+  "xylocatorscn": "Search by coordinates",
   "geographic": "Geographic",
   "zone": "zone",
   "dms": "DMS",

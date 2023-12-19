@@ -1,0 +1,10 @@
+<div aria-label="Plugin Locatorscn" role="menuitem" id="div-contenedor-locatorscn" class="m-control m-container m-locatorscn">
+    {{#if showTitle}}
+        <div role="heading" tabindex="0" id="m-locatorscn-title">{{translations.headertitle}}</div>
+    {{/if}}
+    <div id="m-locatorscn-previews" class="m-hidden">
+        {{#if byPlaceAddressPostal}}
+            <div tabindex="0" id="m-locatorscn-ignsearch" title="{{translations.ignsearch}}" class="locatorscn-icon-ignsearch m-hidden"></div>
+        {{/if}}
+    </div>
+</div>

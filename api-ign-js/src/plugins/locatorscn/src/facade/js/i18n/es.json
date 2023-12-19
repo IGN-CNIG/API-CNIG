@@ -1,10 +1,10 @@
 {
   "exception": {
-    "impl": "La implementación usada no puede crear controles LocatorControl.",
+    "impl": "La implementación usada no puede crear controles LocatorscnControl.",
     "impl_infocatastro": "La implementación usada no puede crear controles InfoCatastroControl.",
-    "impl_xylocator": "La implementación usada no puede crear controles XYLocatorControl.",
-    "impl_ignsearchlocator": "La implementación usada no puede crear controles IGNSearchLocatorControl.",
-    "no_controls": "El plugin Locator necesita activar al menos un control.",
+    "impl_xylocatorscn": "La implementación usada no puede crear controles XYLocatorscnControl.",
+    "impl_ignsearchlocatorscn": "La implementación usada no puede crear controles IGNSearchLocatorscnControl.",
+    "no_controls": "El plugin Locatorscn necesita activar al menos un control.",
     "wrong_coords": "Las coordenadas introducidas no son correctas.",
     "transforming": "Error realizando la transformación.",
     "wrong_values": "Algún valor introducido no es correcto. Recuerda que los minutos y los segundos tienen que tener un valor entre 0 y 59 y los grados entre 0 y 180.",
@@ -22,7 +22,7 @@
     "error_candidates": "Error en la petición del servicio candidatesJSONp."
   },
   "tooltip": "Localizador",
-  "xylocator": "Buscar por coordenadas",
+  "xylocatorscn": "Buscar por coordenadas",
   "geographic": "Geográficas",
   "zone": "huso",
   "dms": "GMS",

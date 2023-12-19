@@ -11,7 +11,7 @@ const pjson = require(PJSON_PATH);
 module.exports = {
   mode: 'production',
   entry: {
-    'locator.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    'locatorscn.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),

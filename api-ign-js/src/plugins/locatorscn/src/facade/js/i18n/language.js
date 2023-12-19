@@ -44,7 +44,7 @@ export const getTranslation = (lang) => {
   if (lang === 'es' || lang === 'en') {
     return translations[lang];
   }
-  return M.language.getTranslation(lang).locator;
+  return M.language.getTranslation(lang).locatorscn;
 };
 
 /**

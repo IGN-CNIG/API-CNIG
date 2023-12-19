@@ -1,7 +1,7 @@
 /**
- * @module M/impl/control/LocatorControl
+ * @module M/impl/control/LocatorscnControl
  */
-export default class LocatorControl extends M.impl.Control {
+export default class LocatorscnControl extends M.impl.Control {
   /**
    * This function adds the control to the specified map
    *

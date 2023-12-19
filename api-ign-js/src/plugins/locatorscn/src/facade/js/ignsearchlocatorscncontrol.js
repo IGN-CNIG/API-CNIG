@@ -1,10 +1,10 @@
 /**
- * @module M/control/IGNSearchLocatorControl
+ * @module M/control/IGNSearchLocatorscnControl
  */
-import template from 'templates/ignsearchlocator';
-import results from 'templates/ignsearchlocator-results';
-import ignsearchlocatorReverse from 'templates/ignsearchlocator-reverse';
-import IGNSearchLocatorImpl from '../../impl/ol/js/ignsearchlocatorcontrol';
+import template from 'templates/ignsearchlocatorscn';
+import results from 'templates/ignsearchlocatorscn-results';
+import ignsearchlocatorscnReverse from 'templates/ignsearchlocatorscn-reverse';
+import IGNSearchLocatorscnImpl from '../../impl/ol/js/ignsearchlocatorscncontrol';
 import { getValue } from './i18n/language';
 
 let typingTimer;
@@ -74,7 +74,7 @@ const IGNSEARCH_TYPES_CONFIGURATION = [
   'Relieve submarino',
 ];
 
-export default class IGNSearchLocatorControl extends M.Control {
+export default class IGNSearchLocatorscnControl extends M.Control {
   /**
    * Main constructor of the class. Creates a PluginControl
    * control
@@ -92,11 +92,11 @@ export default class IGNSearchLocatorControl extends M.Control {
     statusProxy,
     positionPlugin,
   ) {
-    if (M.utils.isUndefined(IGNSearchLocatorImpl)) {
-      M.exception(getValue('exception.impl_ignsearchlocator'));
+    if (M.utils.isUndefined(IGNSearchLocatorscnImpl)) {
+      M.exception(getValue('exception.impl_ignsearchlocatorscn'));
     }
-    const impl = new IGNSearchLocatorImpl(map);
-    super(impl, 'IGNSearchLocatorImpl');
+    const impl = new IGNSearchLocatorscnImpl(map);
+    super(impl, 'IGNSearchLocatorscnImpl');
 
     /**
      * Zoom
@@ -353,14 +353,14 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   active(html) {
     this.html_ = html;
-    const ignsearchactive = this.html_.querySelector('#m-locator-ignsearch').classList.contains('activated');
+    const ignsearchactive = this.html_.querySelector('#m-locatorscn-ignsearch').classList.contains('activated');
     this.deactive();
     if (!ignsearchactive) {
       if (this.positionPlugin === 'TC') {
-        document.querySelector('.m-plugin-locator').classList.remove('m-plugin-locator-tc');
-        document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc-withpanel');
+        document.querySelector('.m-plugin-locatorscn').classList.remove('m-plugin-locatorscn-tc');
+        document.querySelector('.m-plugin-locatorscn').classList.add('m-plugin-locatorscn-tc-withpanel');
       }
-      this.html_.querySelector('#m-locator-ignsearch').classList.add('activated');
+      this.html_.querySelector('#m-locatorscn-ignsearch').classList.add('activated');
       const panel = M.template.compileSync(template, {
         vars: {
           reverse: this.reverse,
@@ -372,9 +372,9 @@ export default class IGNSearchLocatorControl extends M.Control {
           },
         },
       });
-      document.querySelector('#div-contenedor-locator').appendChild(panel);
-      this.resultsBox = this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-results');
-      this.searchInput = this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-search-input');
+      document.querySelector('#div-contenedor-locatorscn').appendChild(panel);
+      this.resultsBox = this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-results');
+      this.searchInput = this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-search-input');
       this.addEvents();
     }
   }
@@ -387,11 +387,11 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   deactive() {
-    this.html_.querySelector('#m-locator-ignsearch').classList.remove('activated');
+    this.html_.querySelector('#m-locatorscn-ignsearch').classList.remove('activated');
     const panel = this.html_.querySelector('#m-ignsearch-panel');
     if (panel) {
       this.clearResults();
-      document.querySelector('#div-contenedor-locator').removeChild(panel);
+      document.querySelector('#div-contenedor-locatorscn').removeChild(panel);
     }
   }
 
@@ -403,14 +403,14 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   addEvents() {
-    this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-search-input').addEventListener('keyup', e => this.createTimeout(e));
-    this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-search-input').addEventListener('click', () => this.openRecentsResults());
+    this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-search-input').addEventListener('keyup', e => this.createTimeout(e));
+    this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-search-input').addEventListener('click', () => this.openRecentsResults());
     if (this.reverse) {
-      this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-search-input').style.width = '160px';
-      this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-locate-button').addEventListener('click', this.activateDeactivateReverse.bind(this));
+      this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-search-input').style.width = '160px';
+      this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-locate-button').addEventListener('click', this.activateDeactivateReverse.bind(this));
       this.clickReverseEvent = this.map.on(M.evt.CLICK, e => this.showReversePopUp(e));
     }
-    this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-clean-button').addEventListener('click', () => this.clearResults());
+    this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-clean-button').addEventListener('click', () => this.clearResults());
   }
 
   /**
@@ -424,12 +424,12 @@ export default class IGNSearchLocatorControl extends M.Control {
     if (!this.reverseActivated) {
       this.invokeEscKey();
       this.reverseActivated = true;
-      this.html_.querySelector('#m-ignsearchlocator-locate-button').style.color = '#71a7d3';
+      this.html_.querySelector('#m-ignsearchlocatorscn-locate-button').style.color = '#71a7d3';
       document.addEventListener('keyup', this.checkEscKey.bind(this));
       document.getElementsByTagName('body')[0].style.cursor = `url(${M.utils.concatUrlPaths([M.config.THEME_URL, '/img/pushpin.svg'])}) 0 20, auto`;
     } else {
       this.reverseActivated = false;
-      this.html_.querySelector('#m-ignsearchlocator-locate-button').style.color = '#7A7A73';
+      this.html_.querySelector('#m-ignsearchlocatorscn-locate-button').style.color = '#7A7A73';
       document.removeEventListener('keyup', this.checkEscKey);
       document.getElementsByTagName('body')[0].style.cursor = 'auto';
     }
@@ -471,7 +471,7 @@ export default class IGNSearchLocatorControl extends M.Control {
   checkEscKey(evt) {
     if (evt.key === 'Escape') {
       this.reverseActivated = false;
-      this.html_.querySelector('#m-ignsearchlocator-locate-button').style.color = '#7A7A73';
+      this.html_.querySelector('#m-ignsearchlocatorscn-locate-button').style.color = '#7A7A73';
       document.removeEventListener('keyup', this.checkEscKey);
       document.getElementsByTagName('body')[0].style.cursor = 'auto';
     }
@@ -560,8 +560,8 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   openRecentsResults() {
-    if (!this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-search-input').value &&
-      !this.html_.querySelector('#m-ignsearchlocator-results-list')) {
+    if (!this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-search-input').value &&
+      !this.html_.querySelector('#m-ignsearchlocatorscn-results-list')) {
       const recents = window.localStorage.getItem('recents');
       if (recents && recents.length > 0) {
         const compiledResult = M.template.compileSync(results, {
@@ -604,7 +604,7 @@ export default class IGNSearchLocatorControl extends M.Control {
 
     if (value.length > 2) {
       // Adds animation class during loading
-      this.resultsBox.classList.add('locator-icon-spinner');
+      this.resultsBox.classList.add('locatorscn-icon-spinner');
 
       this.nomenclatorCandidates = [];
       this.geocoderCandidates = [];
@@ -775,7 +775,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     // Clears previous search
     this.resultsBox.innerHTML = '';
     // remove animation class and return to normal font size after loading
-    this.resultsBox.classList.remove('locator-icon-spinner');
+    this.resultsBox.classList.remove('locatorscn-icon-spinner');
     const compiledResult = M.template.compileSync(results, {
       vars: {
         noresults: this.allCandidates.length === 0 &&
@@ -810,7 +810,7 @@ export default class IGNSearchLocatorControl extends M.Control {
   goToLocation(listElement, isRecentElement = false) {
     this.currentElement = listElement;
     const text = listElement.querySelector('#info').innerHTML;
-    this.html_.querySelector('#m-ignsearchlocator-search-input').value = text;
+    this.html_.querySelector('#m-ignsearchlocatorscn-search-input').value = text;
     const candidates = isRecentElement ? JSON.parse(window.localStorage.getItem('recents')) : this.allCandidates;
     const selectedObject = candidates.filter(element => element.id === this.currentElement.getAttribute('id'))[0];
     this.setRecents(selectedObject);
@@ -1006,19 +1006,19 @@ export default class IGNSearchLocatorControl extends M.Control {
    */
   zoomInLocation(service, type, zoom) {
     if (this.html_) {
-      this.resultsList = this.html_.querySelector('#m-ignsearchlocator-results-list');
+      this.resultsList = this.html_.querySelector('#m-ignsearchlocatorscn-results-list');
     }
     if (this.clickedElementLayer instanceof M.layer.Vector) {
       if (service === 'n' && type === 'Point') {
         this.clickedElementLayer.calculateMaxExtent().then((extent) => {
           this.map.setBbox(extent);
           this.map.setZoom(zoom);
-          this.fire('ignsearchlocator:entityFound', [extent]);
+          this.fire('ignsearchlocatorscn:entityFound', [extent]);
         });
       } else {
         const extent = this.clickedElementLayer.getImpl().getOL3Layer().getSource().getExtent();
         this.map.setBbox(extent);
-        this.fire('ignsearchlocator:entityFound', [extent]);
+        this.fire('ignsearchlocatorscn:entityFound', [extent]);
       }
     }
   }
@@ -1141,7 +1141,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     console.log(mapcoords);
     const featureTabOpts = { content: '', title: '' };
 
-    featureTabOpts.content = M.template.compileSync(ignsearchlocatorReverse, {
+    featureTabOpts.content = M.template.compileSync(ignsearchlocatorscnReverse, {
       vars: {
         addressData: {
           ...addressData,
@@ -1181,7 +1181,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   equals(control) {
-    return control instanceof IGNSearchLocatorControl;
+    return control instanceof IGNSearchLocatorscnControl;
   }
 
   /**
@@ -1197,7 +1197,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.searchValue = '';
     if (this.reverse) {
       this.reverseActivated = false;
-      this.html_.querySelector('#m-ignsearchlocator-locate-button').style.color = '#7A7A73';
+      this.html_.querySelector('#m-ignsearchlocatorscn-locate-button').style.color = '#7A7A73';
       document.removeEventListener('keyup', this.checkEscKey);
       document.getElementsByTagName('body')[0].style.cursor = 'auto';
     }

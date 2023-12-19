@@ -1,13 +1,13 @@
 /**
- * @module M/plugin/Locator
+ * @module M/plugin/Locatorscn
  */
-import '../assets/css/locator';
-import LocatorControl from './locatorcontrol';
+import '../assets/css/locatorscn';
+import LocatorscnControl from './locatorscncontrol';
 import es from './i18n/es';
 import en from './i18n/en';
 import { getValue } from './i18n/language';
 
-export default class Locator extends M.Plugin {
+export default class Locatorscn extends M.Plugin {
   /**
    * @classdesc
    * Main facade plugin object. This class creates a plugin
@@ -39,7 +39,7 @@ export default class Locator extends M.Plugin {
      * @public
      * @type {String}
      */
-    this.name = 'locator';
+    this.name = 'locatorscn';
 
     /**
      * Plugin parameters
@@ -139,7 +139,7 @@ export default class Locator extends M.Plugin {
     if (lang === 'en' || lang === 'es') {
       return (lang === 'en') ? en : es;
     }
-    return M.language.getTranslation(lang).locator;
+    return M.language.getTranslation(lang).locatorscn;
   }
 
   /**
@@ -151,7 +151,7 @@ export default class Locator extends M.Plugin {
    * @api
    */
   addTo(map) {
-    this.controls_.push(new LocatorControl(
+    this.controls_.push(new LocatorscnControl(
       this.isDraggable,
       this.zoom,
       this.pointStyle,
@@ -165,13 +165,13 @@ export default class Locator extends M.Plugin {
     if (this.position_ === 'TC') {
       this.collapsible = false;
     }
-    this.panel_ = new M.ui.Panel('panelLocator', {
+    this.panel_ = new M.ui.Panel('panelLocatorscn', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
       position: M.ui.position[this.position_],
-      className: 'm-plugin-locator',
+      className: 'm-plugin-locatorscn',
       tooltip: this.tooltip_,
-      collapsedButtonClass: 'locator-icon-localizacion2',
+      collapsedButtonClass: 'locatorscn-icon-localizacion2',
       order: this.order,
     });
 
@@ -199,14 +199,14 @@ export default class Locator extends M.Plugin {
 
   /**
    * This function indicates the default values
-   * for the control xylocator
+   * for the control xylocatorscn
    *
    * @public
    * @function
    * @returns Default values
    * @api
    */
-  getXYLocator() {
+  getXYLocatorscn() {
     return {
       projections: [
         { title: `ETRS89 ${getValue('geographic')} (4258) ${getValue('dd')}`, code: 'EPSG:4258', units: 'd' },
@@ -225,14 +225,14 @@ export default class Locator extends M.Plugin {
 
   /**
    * This function indicates the default values
-   * for the control ignsearchlocator
+   * for the control ignsearchlocatorscn
    *
    * @public
    * @function
    * @returns Default values
    * @api
    */
-  getIGNSearchLocator() {
+  getIGNSearchLocatorscn() {
     return {
       servicesToSearch: '',
       maxResults: 10,
@@ -289,7 +289,7 @@ export default class Locator extends M.Plugin {
   }
 
   /**
-   * This function compare if pluging recieved by param is instance of M.plugin.Locator
+   * This function compare if pluging recieved by param is instance of M.plugin.Locatorscn
    *
    * @public
    * @function
@@ -297,7 +297,7 @@ export default class Locator extends M.Plugin {
    * @api
    */
   equals(plugin) {
-    if (plugin instanceof Locator) {
+    if (plugin instanceof Locatorscn) {
       return true;
     }
     return false;

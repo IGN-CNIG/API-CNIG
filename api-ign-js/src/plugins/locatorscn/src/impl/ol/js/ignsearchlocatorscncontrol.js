@@ -1,8 +1,8 @@
 /**
- * @module M/impl/control/IGNSearchLocatorControl
+ * @module M/impl/control/IGNSearchLocatorscnControl
  */
 
-export default class IGNSearchLocatorControl extends M.impl.Control {
+export default class IGNSearchLocatorscnControl extends M.impl.Control {
   constructor(map) {
     super();
 

@@ -1,9 +1,9 @@
 {
   "url": {
-    "name": "locator",
+    "name": "locatorscn",
     "separator": "*"
   },
-  "constructor": "M.plugin.Locator",
+  "constructor": "M.plugin.Locatorscn",
   "parameters": [{
     "type": "object",
     "properties": [
@@ -73,15 +73,15 @@
   "files": {
     "ol": {
       "scripts": [
-        "locator.ol.min.js"
+        "locatorscn.ol.min.js"
       ],
       "styles": [
-        "locator.ol.min.css"
+        "locatorscn.ol.min.css"
       ]
     }
   },
   "metadata": {
-    "name": "locator",
+    "name": "locatorscn",
     "description": "Offers different localization tools",
     "text": "It offers different localization tools.",
     "version": "1.0.0",

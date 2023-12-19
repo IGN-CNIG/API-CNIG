@@ -1,13 +1,13 @@
 /**
- * @module M/control/LocatorControl
+ * @module M/control/LocatorscnControl
  */
 
-import template from '../../templates/locator';
-import LocatorImpl from '../../impl/ol/js/locator';
+import template from '../../templates/locatorscn';
+import LocatorscnImpl from '../../impl/ol/js/locatorscn';
 import { getValue } from './i18n/language';
-import IGNSearchLocatorControl from './ignsearchlocatorcontrol';
+import IGNSearchLocatorscnControl from './ignsearchlocatorscncontrol';
 
-export default class LocatorControl extends M.Control {
+export default class LocatorscnControl extends M.Control {
   /**
    * Main constructor of the class. Creates a PluginControl
    * control
@@ -20,15 +20,15 @@ export default class LocatorControl extends M.Control {
     isDraggable, zoom, pointStyle, searchOptions,
     order, useProxy, statusProxy, position,
   ) {
-    if (M.utils.isUndefined(LocatorImpl)) {
+    if (M.utils.isUndefined(LocatorscnImpl)) {
       M.exception(getValue('exception.impl'));
     }
 
-    const impl = new LocatorImpl();
-    super(impl, 'Locator');
+    const impl = new LocatorscnImpl();
+    super(impl, 'Locatorscn');
 
     /**
-     * Indicates if the control ignsearchlocator is added to the plugin
+     * Indicates if the control ignsearchlocatorscn is added to the plugin
      * @private
      * @type {Boolean|Object}
      */
@@ -116,8 +116,8 @@ export default class LocatorControl extends M.Control {
       });
       this.html = html;
       if (this.searchOptions_) {
-        // ignsearchlocator
-        this.ignsearchControl = new IGNSearchLocatorControl(
+        // ignsearchlocatorscn
+        this.ignsearchControl = new IGNSearchLocatorscnControl(
           this.map_,
           this.zoom_,
           this.pointStyle_,
@@ -133,12 +133,12 @@ export default class LocatorControl extends M.Control {
           this.ignsearchControl.active(html);
           this.control = this.ignsearchControl;
         });
-        this.ignsearchControl.on('ignsearchlocator:entityFound', (extent) => {
-          this.fire('ignsearchlocator:entityFound', [extent]);
+        this.ignsearchControl.on('ignsearchlocatorscn:entityFound', (extent) => {
+          this.fire('ignsearchlocatorscn:entityFound', [extent]);
         });
       }
       if (this.isDraggable_) {
-        M.utils.draggabillyPlugin(this.getPanel(), '#m-locator-title');
+        M.utils.draggabillyPlugin(this.getPanel(), '#m-locatorscn-title');
       }
       this.accessibilityTab(html);
       success(html);
@@ -154,7 +154,7 @@ export default class LocatorControl extends M.Control {
    * @api
    */
   equals(control) {
-    return control instanceof LocatorControl;
+    return control instanceof LocatorscnControl;
   }
 
   /**
@@ -168,15 +168,15 @@ export default class LocatorControl extends M.Control {
    * @api
    */
   deactive(html, control) {
-    const active = html.querySelectorAll('#m-locator-previews .activated')[0];
+    const active = html.querySelectorAll('#m-locatorscn-previews .activated')[0];
     if (this.position === 'TC') {
-      document.querySelector('.m-plugin-locator').classList.remove('m-plugin-locator-tc-withpanel');
-      document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc');
+      document.querySelector('.m-plugin-locatorscn').classList.remove('m-plugin-locatorscn-tc-withpanel');
+      document.querySelector('.m-plugin-locatorscn').classList.add('m-plugin-locatorscn-tc');
     }
     if (active && !active.id.includes(control)) {
       this.control.clearResults();
       active.classList.remove('activated');
-      const container = document.querySelector('#div-contenedor-locator');
+      const container = document.querySelector('#div-contenedor-locatorscn');
       if (this.position === 'TC' && container && container.children.length > 1) {
         container.removeChild(container.children[1]);
       } else if (container && container.children.length > 2) {

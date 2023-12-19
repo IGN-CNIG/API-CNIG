@@ -1,4 +1,4 @@
-import Locator from 'facade/locator';
+import Locatorscn from 'facade/locatorscn';
 
 M.language.setLang('es');
 
@@ -14,7 +14,7 @@ const map = M.map({
 
 window.map = map;
 
-const mp = new Locator({
+const mp = new Locatorscn({
   useProxy: true,
   isDraggable: true,
   position: 'TC',

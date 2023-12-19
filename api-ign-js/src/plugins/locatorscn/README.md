@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://www.ign.es/resources/viewer/images/logoApiCnig0.5.png" height="152" />
 </p>
-<h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.Locator</small></h1>
+<h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.Locatorscn</small></h1>
 
 # Descripción
 
@@ -21,12 +21,12 @@ https://www.idee.es/resources/documentos/Cartociudad/CartoCiudad_ServiciosWeb.pd
 
 Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
 
-- **locator.ol.min.js**
-- **locator.ol.min.css**
+- **locatorscn.ol.min.js**
+- **locatorscn.ol.min.css**
 
 ```html
- <link href="https://componentes.cnig.es/api-core/plugins/locator/locator.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/locator/locator.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/locatorscn/locatorscn.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/locator/locatorscn.ol.min.js"></script>
 ```
 
 # Parámetros
@@ -65,7 +65,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   }
   ```
   (Válido sólo para la creación del plugin por JS y API-REST en base64).
-- **byCoordinates**: Indica si el control XYLocator se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
+- **byCoordinates**: Indica si el control XYLocatorscn se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
   - **projections**: Proyecciones de origen que se mostrarán para seleccionar las coordenadas a localizar. Por defecto los valores posibles son:
   ```javascript
   [
@@ -93,7 +93,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   }
   ```
   (Válido sólo para la creación del plugin por JS y API-REST en base64).
-- **byPlaceAddressPostal**: Indica si el control IGNSearchLocator se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
+- **byPlaceAddressPostal**: Indica si el control IGNSearchLocatorscn se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
   - **servicesToSearch**: Servicio que se consulta: 
     - 'g': Consulta Geocoder (por defecto).
     - 'n': Consulta Comunication Pool Servlet.
@@ -140,7 +140,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 # API-REST
 
 ```javascript
-URL_API?locator=position*collapsed*collapsible*tooltip*zoom*pointStyle*isDraggable*byParcelCadastre*byCoordinates*byPlaceAddressPostal
+URL_API?locatorscn=position*collapsed*collapsible*tooltip*zoom*pointStyle*isDraggable*byParcelCadastre*byCoordinates*byPlaceAddressPostal
 ```
 
 <table>
@@ -209,11 +209,11 @@ URL_API?locator=position*collapsed*collapsible*tooltip*zoom*pointStyle*isDraggab
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?locator=TL*true*true*tooltip*16
+https://componentes.cnig.es/api-core?locatorscn=TL*true*true*tooltip*16
 ```
 
 ```
-https://componentes.cnig.es/api-core?locator=TL*true*true*tooltip*16*pinAzul*true*false*true*true
+https://componentes.cnig.es/api-core?locatorscn=TL*true*true*tooltip*16*pinAzul*true*false*true*true
 ```
 
 ### Ejemplo de uso 
@@ -227,7 +227,7 @@ M.utils.encodeBase64(obj_params);
 ```
 Ejemplo de constructor del plugin: {position:'TL', collapsible: true, collapsed: true, tooltip: 'Localización', byParcelCadastre: true, byCoordinates: false, byPlaceAddressPostal: true}
 
-https://componentes.cnig.es/api-core?locator=base64=eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2libGUiOnRydWUsImNvbGxhcHNlZCI6dHJ1ZSwidG9vbHRpcCI6IkxvY2FsaXphY2nDs24iLCJieVBhcmNlbENhZGFzdHJlIjp0cnVlLCJieUNvb3JkaW5hdGVzIjpmYWxzZSwiYnlQbGFjZUFkZHJlc3NQb3N0YWwiOnRydWV9
+https://componentes.cnig.es/api-core?locatorscn=base64=eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2libGUiOnRydWUsImNvbGxhcHNlZCI6dHJ1ZSwidG9vbHRpcCI6IkxvY2FsaXphY2nDs24iLCJieVBhcmNlbENhZGFzdHJlIjp0cnVlLCJieUNvb3JkaW5hdGVzIjpmYWxzZSwiYnlQbGFjZUFkZHJlc3NQb3N0YWwiOnRydWV9
 ```
 
 # Eventos
@@ -243,23 +243,23 @@ mp.on('infocatastro:locationCentered', (data) => {
 });
 ```
 
-- **xylocator:locationCentered**
+- **xylocatorscn:locationCentered**
   - Evento que se dispara cuando se ha localizado la búsqueda del plugin sobre el mapa.
   - Expone, como parámetro devuelto, el **punto** actual calculado en la búsqueda.
 
 ```javascript
-mp.on('xylocator:locationCentered', (data) => {
+mp.on('xylocatorscn:locationCentered', (data) => {
    window.alert(`zoom: ${data.zoom}
    center: ${data.center[0].toFixed(2)}, ${data.center[1].toFixed(2)}`);
 });
 ```
 
-- **ignsearchlocator:entityFound**
+- **ignsearchlocatorscn:entityFound**
   - Evento que se dispara cuando se ha localizado la búsqueda del plugin sobre el mapa.
   - Expone, como parámetro devuelto, el **extent** actual calculado en la búsqueda
 
 ```javascript
-pluginignsearchlocator.on('ignsearchlocator:entityFound', (extent) => {
+pluginignsearchlocatorscn.on('ignsearchlocatorscn:entityFound', (extent) => {
   // eslint-disable-next-line no-alert
   window.alert('Encontrado');
 });
@@ -272,7 +272,7 @@ const map = M.map({
   container: 'map'
 });
 
-const mp = new M.plugin.Locator({
+const mp = new M.plugin.Locatorscn({
   position: 'TL',
   collapsible: true,
   collapsed: true,
