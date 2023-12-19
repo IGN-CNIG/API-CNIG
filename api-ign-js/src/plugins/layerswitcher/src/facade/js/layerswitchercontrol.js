@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 /**
  * @module M/control/LayerswitcherControl
@@ -188,32 +189,26 @@ export default class LayerswitcherControl extends M.Control {
       }
     });
     const self = this;
+
     return new Promise((success) => {
       self.getTemplateVariables(map).then((templateVars) => {
         const html = M.template.compileSync(template, {
           vars: templateVars,
         });
 
-        // eslint-disable-next-line no-underscore-dangle
         if (self.isDraggable_) {
           M.utils.draggabillyPlugin(self.getPanel(), '#m-layerswitcher-title');
         }
 
-        this.template_ = html;
-        // click en plantilla
-        this.template_.addEventListener('click', self.clickLayer.bind(self), false);
-        // click en opacidad
-        this.template_.addEventListener('input', self.inputLayer.bind(self), false);
-        // click para mostrar/ocultar plugin
+        self.template_ = html;
+        self.template_.addEventListener('click', self.clickLayer.bind(self), false);
+        self.template_.addEventListener('input', self.inputLayer.bind(self), false);
         self.getPanel().getButtonPanel().addEventListener('click', self.collapsedPlugin.bind(self), false);
-        // Se registra evento
         self.getImpl().registerEvent(map);
+        self.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', self.openAddServices.bind(self), false);
+        self.accessibilityTab(self.template_);
 
-        this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', self.openAddServices.bind(self), false);
-
-        self.accessibilityTab(this.template_);
-
-        success(this.template_);
+        success(self.template_);
       });
     });
   }
