@@ -75,16 +75,6 @@ class Vector extends Layer {
     this.loaded_ = false;
 
     /**
-     * Vector minZoom. Zoom mínimo aplicable a la capa.
-     */
-    this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
-
-    /**
-     * Vector maxZoom. Zoom máximo aplicable a la capa.
-     */
-    this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
-
-    /**
      * Vector visibility. Define si la capa es visible o no.
      * Verdadero por defecto.
      */
