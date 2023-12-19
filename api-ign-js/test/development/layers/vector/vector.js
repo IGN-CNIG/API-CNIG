@@ -14,7 +14,12 @@ export const vector_001 = new Vector({
   //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
   //   contentType: 'kml',
   // },
-});
+},
+// {
+//   minZoom: 5,
+//   maxZoom: 10
+// }
+);
 
 // Creamos feature
 const feature = new Feature("featurePrueba002", {

@@ -15,6 +15,11 @@ export const wms_001 = new WMS({
   //     contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
   //     contentType: 'kml',
   //   },
-}, {})
+}, 
+// {
+//   minZoom: 5,
+//   maxZoom: 10
+// }
+)
 
 export const wms_002 = 'WMS*Unidadesadministrativa*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeUnit*false*true**1.3.0*true*true*true';

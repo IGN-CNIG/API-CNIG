@@ -4,7 +4,7 @@ export const wmts_001 = new WMTS({
   url: 'https://wmts-mapa-lidar.idee.es/lidar',
   name: 'EL.GridCoverageDSM',
   legend: 'Modelo Digital de Superficies LiDAR',
-  matrixSet: 'EPSG:4326',
+  matrixSet: 'GoogleMapsCompatible',
   // visibility: true,
   //   isBase: false,
   //   transparent: true,
@@ -15,7 +15,12 @@ export const wmts_001 = new WMTS({
   //     contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
   //     contentType: 'kml',
   //   },
-}, {});
+},
+// {
+//   minZoom: 5,
+//   maxZoom: 10
+// }
+);
 
 export const wmts_002 = 'WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*true*image/jpeg*true*true*true';
 

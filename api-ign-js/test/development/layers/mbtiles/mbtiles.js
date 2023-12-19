@@ -22,4 +22,9 @@ export const mbtile_01 = new MBTiles({
       }
     });
   },
-});
+},
+// {
+//   minZoom: 5,
+//   maxZoom: 10
+// }
+);

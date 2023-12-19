@@ -16,5 +16,10 @@ export const wfs_001 = new WFS({
   //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
   //   contentType: 'kml',
   // }
-});
+},
+// {
+//   minZoom: 5,
+//   maxZoom: 10
+// }
+);
 

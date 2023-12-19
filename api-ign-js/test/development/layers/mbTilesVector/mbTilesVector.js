@@ -14,4 +14,9 @@ export const mbtileVector_001 = new MBTilesVector({
       });
     });
   },
-});
+},
+// {
+//   minZoom: 5,
+//   maxZoom: 10
+// }
+);

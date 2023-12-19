@@ -16,7 +16,9 @@ export const tms_001 = new TMS({
   //   contentType: 'kml',
   // }
 }, {
-  crossOrigin: 'anonymous'
+  crossOrigin: 'anonymous',
+  // minZoom: 5,
+  // maxZoom: 10
 });
 
 // export const tms_002 = 'TMS*TMSBaseIGNRest*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17***anonymous';

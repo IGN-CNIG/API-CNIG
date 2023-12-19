@@ -14,5 +14,10 @@ export const geojson_001 = new GeoJSON({
   //   contentType: 'kml',
   // },
 });
+// {
+//   minZoom: 5,
+//   maxZoom: 10,
+// },
+
 
 export const geojson_002 = {};

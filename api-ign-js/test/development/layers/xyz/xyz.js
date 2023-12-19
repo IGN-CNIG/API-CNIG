@@ -5,7 +5,7 @@ export const xyz_001 = new XYZ({
   name: 'AtlasDeCresques',
   projection: 'EPSG:3857',
   // visibility: true,
-  // isBase: true,
+   isBase: true,
   // transparent: true,
   // attribution: {
   //   name: 'Name Prueba XYZ',
@@ -14,6 +14,11 @@ export const xyz_001 = new XYZ({
   //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
   //   contentType: 'kml',
   // },
-});
+}, 
+// {
+//   minZoom: 5,
+//   maxZoom: 10
+// }
+);
 
 export const xyz_002 = 'XYZ*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*true';
