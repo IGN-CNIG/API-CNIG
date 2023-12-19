@@ -293,10 +293,6 @@ export default class Layerswitcher extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     this.map_.addPanels(this.panel_);
-
-    setTimeout(() => {
-      this.control_.eventsPanel(this.panel_);
-    }, 500);
   }
 
   // Esta función devuelve la posición del plugin
@@ -336,7 +332,7 @@ export default class Layerswitcher extends M.Plugin {
   // Esta función elimina el plugin del mapa
   destroy() {
     this.map_.removeControls([this.control_]);
-    [this.control_, this.controls_, this.panel_] = [null, null, null];
+    this.panel_ = [null];
   }
 
   // Esta función devuelve si el plugin recibido por parámetro es instancia de Layerswitcher

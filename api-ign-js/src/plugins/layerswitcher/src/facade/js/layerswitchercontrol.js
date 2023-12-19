@@ -197,6 +197,18 @@ export default class LayerswitcherControl extends M.Control {
         this.template_.addEventListener('click', this.clickLayer.bind(this), false);
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
 
+        setTimeout(() => {
+          if (this.getPanel().getButtonPanel().parentElement.classList.contains('collapsed')) {
+            this.getImpl().removeRenderComplete();
+          }
+        }, 501);
+
+        this.getPanel().getButtonPanel().addEventListener('click', this.collapsedPlugin.bind(this), false);
+
+        if (this.isDraggable_) {
+          M.utils.draggabillyPlugin(this.getPanel(), '#m-layerswitcher-title');
+        }
+
         this.getImpl().registerEvent(map);
         this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
         this.accessibilityTab(this.template_);
