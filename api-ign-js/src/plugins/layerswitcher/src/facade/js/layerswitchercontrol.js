@@ -188,27 +188,30 @@ export default class LayerswitcherControl extends M.Control {
         });
       }
     });
-    const self = this;
 
     return new Promise((success) => {
-      self.getTemplateVariables(map).then((templateVars) => {
+      this.getTemplateVariables(map).then((templateVars) => {
         const html = M.template.compileSync(template, {
           vars: templateVars,
         });
 
-        if (self.isDraggable_) {
-          M.utils.draggabillyPlugin(self.getPanel(), '#m-layerswitcher-title');
+        if (this.isDraggable_) {
+          M.utils.draggabillyPlugin(this.getPanel(), '#m-layerswitcher-title');
         }
 
-        self.template_ = html;
-        self.template_.addEventListener('click', self.clickLayer.bind(self), false);
-        self.template_.addEventListener('input', self.inputLayer.bind(self), false);
-        self.getPanel().getButtonPanel().addEventListener('click', self.collapsedPlugin.bind(self), false);
-        self.getImpl().registerEvent(map);
-        self.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', self.openAddServices.bind(self), false);
-        self.accessibilityTab(self.template_);
+        this.template_ = html;
+        this.template_.addEventListener('click', this.clickLayer.bind(this), false);
+        this.template_.addEventListener('input', this.inputLayer.bind(this), false);
 
-        success(self.template_);
+        if (this.getPanel()) {
+          this.getPanel().getButtonPanel().addEventListener('click', this.collapsedPlugin.bind(this), false);
+        }
+
+        this.getImpl().registerEvent(map);
+        this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
+        this.accessibilityTab(this.template_);
+
+        success(this.template_);
       });
     });
   }
