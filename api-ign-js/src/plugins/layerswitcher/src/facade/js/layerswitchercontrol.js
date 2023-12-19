@@ -150,8 +150,6 @@ export default class LayerswitcherControl extends M.Control {
 
     // Attribution
     this.useAttributions_ = options.useAttributions;
-
-    this.panel_ = options.panel;
   }
 
   // Esta función crea la vista
@@ -195,17 +193,9 @@ export default class LayerswitcherControl extends M.Control {
           vars: templateVars,
         });
 
-        if (this.isDraggable_) {
-          M.utils.draggabillyPlugin(this.getPanel(), '#m-layerswitcher-title');
-        }
-
         this.template_ = html;
         this.template_.addEventListener('click', this.clickLayer.bind(this), false);
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
-
-        if (this.getPanel()) {
-          this.getPanel().getButtonPanel().addEventListener('click', this.collapsedPlugin.bind(this), false);
-        }
 
         this.getImpl().registerEvent(map);
         this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
@@ -214,6 +204,18 @@ export default class LayerswitcherControl extends M.Control {
         success(this.template_);
       });
     });
+  }
+
+  eventsPanel(panel) {
+    if (panel.getButtonPanel().parentElement.classList.contains('collapsed')) {
+      this.getImpl().removeRenderComplete();
+    }
+
+    panel.getButtonPanel().addEventListener('click', this.collapsedPlugin.bind(this), false);
+
+    if (this.isDraggable_) {
+      M.utils.draggabillyPlugin(panel, '#m-layerswitcher-title');
+    }
   }
 
   // Esta función devuelve las variables para la plantilla
@@ -2872,15 +2874,6 @@ export default class LayerswitcherControl extends M.Control {
     }
     this.loadCODSIResults(this.select_codsi);
   }
-
-  /**
-   * @function
-   * @public
-   */
-  getPanel() {
-    return this.panel_;
-  }
-
 
   accessibilityTab(html) {
     html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
