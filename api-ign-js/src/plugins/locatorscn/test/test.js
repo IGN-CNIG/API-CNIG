@@ -17,7 +17,7 @@ window.map = map;
 const mp = new Locator({
   useProxy: true,
   isDraggable: true,
-  position: 'BR',
+  position: 'TC',
   // position: 'TC',
   collapsible: true,
   collapsed: true,
