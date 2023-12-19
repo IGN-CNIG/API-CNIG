@@ -695,7 +695,20 @@ export default class IncicartoControl extends M.Control {
     let product = productMetadataContainer.options[productMetadataContainer.selectedIndex].value;
     let theme = themeMetadataContainer.selectedOptions[0].innerText;
 
-    let email_subject = 'Incidencia Cartografía - ' + theme;
+    const currentDate = new Date();
+
+    // Obtener los componentes de la fecha
+    const year = currentDate.getFullYear();
+    const month = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
+    const day = `${currentDate.getDate().toString().padStart(2, '0')}`;
+    const hours = `${currentDate.getHours().toString().padStart(2, '0')}`;
+    const mins = `${currentDate.getMinutes().toString().padStart(2, '0')}`;
+    const segs = `${currentDate.getSeconds().toString().padStart(2, '0')}`;
+
+    // Formatear la fecha según el formato AAAA/MM/DD hh:mm:ss
+    const dateFormat = `${year}/${month}/${day} ${hours}:${mins}:${segs}`;
+
+    let email_subject = 'Incidencia Cartografía - ' + theme + ' - ' + dateFormat;
 
     const propiedades_incidencia = this.createContentEmail(email_subject, theme, destinatary);
 
@@ -1011,20 +1024,20 @@ export default class IncicartoControl extends M.Control {
       const themeID = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
       const themeValue = themeMetadataContainer.selectedOptions[0].innerText;
 
-      const fechaActual = new Date();
+      const currentDate = new Date();
 
       // Obtener los componentes de la fecha
-      const año = fechaActual.getFullYear();
-      const mes = `${(fechaActual.getMonth() + 1).toString().padStart(2, '0')}`;
-      const dia = `${fechaActual.getDate().toString().padStart(2, '0')}`;
-      const horas = `${fechaActual.getHours().toString().padStart(2, '0')}`;
-      const minutos = `${fechaActual.getMinutes().toString().padStart(2, '0')}`;
-      const segundos = `${fechaActual.getSeconds().toString().padStart(2, '0')}`;
+      const year = currentDate.getFullYear();
+      const month = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
+      const day = `${currentDate.getDate().toString().padStart(2, '0')}`;
+      const hours = `${currentDate.getHours().toString().padStart(2, '0')}`;
+      const mins = `${currentDate.getMinutes().toString().padStart(2, '0')}`;
+      const segs = `${currentDate.getSeconds().toString().padStart(2, '0')}`;
 
       // Formatear la fecha según el formato AAAA/MM/DD hh:mm:ss
-      const fechaFormateada = `${año}/${mes}/${dia} ${horas}:${minutos}:${segundos}`;
+      const dateFormat = `${year}/${month}/${day} ${hours}:${mins}:${segs}`;
 
-      let email_subject = this.prefixSubject + themeValue + ' - ' + fechaFormateada;
+      let email_subject = this.prefixSubject + themeValue + ' - ' + dateFormat;
 
       const propiedades_incidencia = this.createContentEmail(email_subject, themeID);
 
