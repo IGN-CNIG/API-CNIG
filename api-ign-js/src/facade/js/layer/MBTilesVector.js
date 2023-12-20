@@ -92,44 +92,6 @@ class MBTilesVector extends Vector {
   }
 
   /**
-   * Este método obtiene la extensión máxima de esta capa:
-   * 1. Comprueba si el usuario especificó el parámetro "maxExtent".
-   * 2. Obtiene el valor del parámetro "userMaxExtent" del mapa.
-   * 3. Obtiene la extensión máxima de la proyección del mapa.
-   *
-   * @function
-   * @returns {Mx.Extent} Extensión máxima de la capa
-   * @public
-   * @api
-   */
-  getMaxExtent() {
-    let maxExtent = this.userMaxExtent; // 1
-    if (isNullOrEmpty(maxExtent)) {
-      maxExtent = this.map_.userMaxExtent; // 2
-      if (isNullOrEmpty(maxExtent)) {
-        maxExtent = this.map_.getProjection().getExtent(); // 3
-      }
-    }
-    return maxExtent;
-  }
-
-  /**
-   * Este método es la versión asíncrona de "getMaxExtent" que obtiene
-   * la extensión máxima de esta capa:
-   * 1. Comprueba si el usuario especificó el parámetro "maxExtent".
-   * 2. Obtiene el valor del parámetro "userMaxExtent" del mapa.
-   * 3. Obtiene la extensión máxima de la proyección del mapa.
-   *
-   * @function
-   * @returns {Object} Extensión máxima de la capa.
-   * @public
-   * @api
-   */
-  calculateMaxExtent() {
-    return new Promise(resolve => resolve(this.getMaxExtent()));
-  }
-
-  /**
    * Este método establece el estilo de la capa.
    *
    * @function

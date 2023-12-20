@@ -258,23 +258,6 @@ class OGCAPIFeatures extends Vector {
 
   /**
    * Este método devuelve la extensión de todas los objetos geográficos
-   * o discrimina por el filtro.
-   *
-   * @function
-   * @param {boolean} skipFilter Indica si se salta el filtro.
-   * @param {M.Filter} filter Filtro para ejecutar.
-   * @return {Array<number>} Alcance de los objetos geográficos.
-   * @api stable
-   */
-  getFeaturesExtent(skipFilter, filter) {
-    const codeProj = this.map.getProjection().code;
-    const features = this.getFeatures(skipFilter, filter);
-    const extent = ImplUtils.getFeaturesExtent(features, codeProj);
-    return extent;
-  }
-
-  /**
-   * Este método devuelve la extensión de todas los objetos geográficos
    * o discrimina por el filtro, asíncrono.
    *
    * @function
