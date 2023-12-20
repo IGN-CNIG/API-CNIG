@@ -113,8 +113,12 @@ class Vector extends LayerBase {
      */
     this.predefinedStyles =
          isUndefined(options.predefinedStyles) ? [] : options.predefinedStyles;
-    if (isUndefined(options.style) && !isUndefined(this.constructor.DEFAULT_OPTS_STYLE)) {
-      this.predefinedStyles.unshift(new Generic(this.constructor.DEFAULT_OPTS_STYLE));
+
+    const defaultOptionsStyle = !isUndefined(this.constructor.DEFAULT_OPTS_STYLE)
+      ? this.constructor.DEFAULT_OPTS_STYLE : this.constructor.DEFAULT_OPTIONS_STYLE;
+
+    if (isUndefined(options.style) && !defaultOptionsStyle) {
+      this.predefinedStyles.unshift(new Generic(defaultOptionsStyle));
     } else if (isUndefined(options.style)) {
       this.predefinedStyles.unshift(new Generic(Vector.DEFAULT_OPTIONS_STYLE));
     } else {
