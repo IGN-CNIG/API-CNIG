@@ -115,10 +115,6 @@ class GenericVector extends Vector {
     } else {
       this.predefinedStyles.unshift(options.style);
     }
-
-    this.setStyle(options.style);
-
-    impl.on(EventType.LOAD, features => this.fire(EventType.LOAD, [features]));
   }
 
   /**
