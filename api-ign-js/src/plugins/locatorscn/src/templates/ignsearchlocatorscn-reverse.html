@@ -1,31 +1,53 @@
 <div class="m-ignsearchlocatorscn-popup">
     <div class="m-ignsearchlocatorscn-small">
-        <div>Id: {{addressData.id}}</div> 
-        <div>Capa: {{addressData.native.properties.layer}}</div> 
-        <div>{{addressData.geom}}</div> 
+        {{#if addressData.id}}
+        <div>Id: {{addressData.id}}</div>
+        {{/if}}
+        {{#if addressData.native.properties.layer}}
+        <div>Capa: {{addressData.native.properties.layer}}</div>
+        {{/if}}
+        {{#if addressData.geom}}
+        <div>{{addressData.geom}}</div>
+        {{/if}}
     </div>
-    <b class="m-ignsearchlocatorscn-bold"></span> {{addressData.address}}</b> 
+    <b class="m-ignsearchlocatorscn-bold"></span> {{addressData.address}}</b>
     <hr>
     <div class="m-ignsearchlocatorscn-standard">
-        <div><span>Nomvia: </span> {{addressData.native.properties.name}}</div> 
-        <div><span>Numero: </span> {{addressData.portalNumber}}</div> 
-        <div><span>Codpostal: </span> {{addressData.postalCode}}</div> 
-        <div><span>Ca: </span> {{addressData.comunidadAutonoma}}</div> 
-        <div><span>Provincia: </span> {{addressData.province}}</div> 
-        <div><span>Municipio: </span> {{addressData.muni}}</div> 
-        <div><span>Nivel1: </span> {{addressData.native.properties.locality}}</div> 
-        <div><span>Nivel2: </span> {{addressData.native.properties.neighbourhood}}</div> 
-        <div><span>Proveedor: </span> {{addressData.native.properties.source}}</div> 
-        <div><span>Latitud: </span> {{addressData.lat}}</div> 
-        <div><span>Longitud: </span> {{addressData.lng}}</div> 
+        {{#if addressData.native.properties.name}}
+        <div><span>NOMVIA: </span> {{addressData.native.properties.street}}</div>
+        {{/if}}
+        {{#if addressData.portalNumber}}
+        <div><span>NUMERO: </span> {{addressData.portalNumber}}</div>
+        {{/if}}
+        {{#if addressData.postalCode}}
+        <div><span>CODPOSTAL: </span> {{addressData.postalCode}}</div>
+        {{/if}}
+        {{#if addressData.comunidadAutonoma}}
+        <div><span>CA: </span> {{addressData.comunidadAutonoma}}</div>
+        {{/if}}
+        {{#if addressData.province}}
+        <div><span>PROVINCIA: </span> {{addressData.province}}</div>
+        {{/if}}
+        {{#if addressData.muni}}
+        <div><span>MUNICIPIO: </span> {{addressData.muni}}</div>
+        {{/if}}
+        {{#if addressData.native.properties.locality}}
+        <div><span>NIVEL1: </span> {{addressData.native.properties.locality}}</div>
+        {{/if}}
+        {{#if addressData.native.properties.neighbourhood}}
+        <div><span>NIVEL2: </span> {{addressData.native.properties.neighbourhood}}</div>
+        {{/if}}
+        {{#if addressData.native.properties.source}}
+        <div><span>PROVEEDOR: </span> {{addressData.native.properties.source}}</div>
+        {{/if}}
+        {{#if addressData.lng}}
+        <div><span>LONGITUD: </span> {{addressData.lng}}</div>
+        {{/if}}
+        {{#if addressData.lat}}
+        <div><span>LATITUD: </span> {{addressData.lat}}</div>
+        {{/if}}
     </div>
     <hr>
-    <div class="m-ignsearchlocatorscn-standard">
-        <div><span>Id: </span> {{addendum.id}}</div> 
-        <div><span>Estado: </span> {{addendum.estado}}</div> 
-        <div><span>Tipdato: </span> {{addendum.tipologia}}</div> 
-        <div><span>Nomloc: </span> {{addendum.localizacion}}</div> 
-        <div><span>Lengua: </span> {{addendum.lengua}}</div> 
-        <div><span>Inetra: </span> {{addendum.inetra}}</div> 
+    <div id="m-ignsearchlocatorscn-addendum" class="m-ignsearchlocatorscn-standard">
     </div>
 </div>

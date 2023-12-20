@@ -181,50 +181,6 @@ export default class Locatorscn extends M.Plugin {
 
   /**
    * This function indicates the default values
-   * for the control infocatastro
-   *
-   * @public
-   * @function
-   * @returns Default values
-   * @api
-   */
-  getInfoCatastro() {
-    return {
-      cadastreWMS: '',
-      CMC_url: '',
-      DNPPP_url: '',
-      CPMRC_url: '',
-    };
-  }
-
-  /**
-   * This function indicates the default values
-   * for the control xylocatorscn
-   *
-   * @public
-   * @function
-   * @returns Default values
-   * @api
-   */
-  getXYLocatorscn() {
-    return {
-      projections: [
-        { title: `ETRS89 ${getValue('geographic')} (4258) ${getValue('dd')}`, code: 'EPSG:4258', units: 'd' },
-        { title: `WGS84 ${getValue('geographic')} (4326) ${getValue('dd')}`, code: 'EPSG:4326', units: 'd' },
-        { title: `ETRS89 ${getValue('geographic')} (4258) ${getValue('dms')}`, code: 'EPSG:4258', units: 'dms' },
-        { title: `WGS84 ${getValue('geographic')} (4326) ${getValue('dms')}`, code: 'EPSG:4326', units: 'dms' },
-        { title: 'WGS84 Pseudo Mercator (3857)', code: 'EPSG:3857', units: 'm' },
-        { title: `ETRS89 UTM ${getValue('zone')} 31N (25831)`, code: 'EPSG:25831', units: 'm' },
-        { title: `ETRS89 UTM ${getValue('zone')} 30N (25830)`, code: 'EPSG:25830', units: 'm' },
-        { title: `ETRS89 UTM ${getValue('zone')} 29N (25829)`, code: 'EPSG:25829', units: 'm' },
-        { title: `ETRS89 UTM ${getValue('zone')} 28N (25828)`, code: 'EPSG:25828', units: 'm' },
-      ],
-      help: '',
-    };
-  }
-
-  /**
-   * This function indicates the default values
    * for the control ignsearchlocatorscn
    *
    * @public

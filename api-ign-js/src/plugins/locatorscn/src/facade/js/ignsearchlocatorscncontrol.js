@@ -9,71 +9,6 @@ import { getValue } from './i18n/language';
 
 let typingTimer;
 
-/** IGNSearch List Control
- *
- * @private
- * @type {object}
- */
-const IGNSEARCH_TYPES_CONFIGURATION = [
-  'Estado',
-  // 'Comunidad aut\u00F3noma',
-  // 'Ciudad con estatuto de autonom\u00EDa',
-  // 'Provincia',
-  // 'Municipio',
-  // 'EATIM',
-  'Isla administrativa',
-  'Comarca administrativa',
-  'Jurisdicci\u00F3n',
-  // 'Capital de Estado',
-  // 'Capital de comunidad aut\u00F3noma y ciudad con estatuto de autonom\u00EDa',
-  // 'Capital de provincia',
-  // 'Capital de municipio',
-  // 'Capital de EATIM',
-  // 'Entidad colectiva',
-  // 'Entidad menor de poblaci\u00F3n',
-  // 'Distrito municipal',
-  // 'Barrio',
-  // 'Entidad singular',
-  // 'Construcci\u00F3n/instalaci\u00F3n abierta',
-  // 'Edificaci\u00F3n',
-  'V\u00E9rtice Geod\u00E9sico',
-  // 'Hitos de demarcaci\u00F3n territorial',
-  // 'Hitos en v\u00EDas de comunicaci\u00F3n',
-  'Alineaci\u00F3n monta\u00F1osa',
-  'Monta\u00F1a',
-  'Paso de monta\u00F1a',
-  'Llanura',
-  'Depresi\u00F3n',
-  'Vertientes',
-  'Comarca geogr\u00E1fica',
-  'Paraje',
-  'Elemento puntual del paisaje',
-  'Saliente costero',
-  'Playa',
-  'Isla',
-  'Otro relieve costero',
-  // 'Parque Nacional y Natural',
-  // 'Espacio protegido restante',
-  // 'Aeropuerto',
-  // 'Aer\u00F3dromo',
-  // 'Pista de aviaci\u00F3n y helipuerto',
-  // 'Puerto de Estado',
-  // 'Instalaci\u00F3n portuaria',
-  // 'Carretera',
-  // 'Camino y v\u00EDa pecuaria',
-  // 'V\u00EDa urbana',
-  // 'Ferrocarril',
-  'Curso natural de agua',
-  'Masa de agua',
-  'Curso artificial de agua',
-  // 'Embalse',
-  'Hidr\u00F3nimo puntual',
-  'Glaciares',
-  'Mar',
-  'Entrante costero y estrecho mar\u00EDtimo',
-  'Relieve submarino',
-];
-
 export default class IGNSearchLocatorscnControl extends M.Control {
   /**
    * Main constructor of the class. Creates a PluginControl
@@ -104,37 +39,6 @@ export default class IGNSearchLocatorscnControl extends M.Control {
      * @type {number}
      */
     this.zoom = zoom;
-
-    /**
-     * This variable indicates which services should be searched
-     * (geocoder, nomenclator or both)
-     * @private
-     * @type {string} - 'g' | 'n' | 'gn'
-     */
-    this.servicesToSearch = options.servicesToSearch || 'g';
-
-    /**
-     * This variable sets the maximun results returned by a service
-     * (if both services are searched the maximum results will be twice this number)
-     * @private
-     * @type {number}
-     */
-    this.maxResults = options.maxResults || 10;
-
-    /**
-     * This variable indicate which entities shouldn't be searched
-     * @private
-     * @type {string} - 'municipio' | 'poblacion' | 'toponimo' | 'callejero'
-     * | 'municipio,poblacion' | etc
-     */
-    this.noProcess = options.noProcess;
-
-    /**
-     * This variable indicates the country code.
-     * @private
-     * @type {string} - 'es'
-     */
-    this.countryCode = options.countryCode || 'es';
 
     /**
      * This variable indicates whether the option to obtain the address
@@ -174,53 +78,32 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     this.addendumField = options.addendum || 'none';
 
     /**
-     * This variable indicates pelias sources
-     * @private
-     * @type {string}
-     */
-    this.reverseSources = options.sources || 'calrj';
-
-    /**
-     * This variable indicates Geocoder Candidates service url
+     * This variable indicates pelias Candidates service url
      * @private
      * @type {string}
      */
     this.urlAutocomplete = options.urlAutocomplete || 'https://geocoder.larioja.org/v1/autocomplete';
 
     /**
-     * This variable indicates Geocoder Reverse service url
+     * This variable indicates pelias Reverse service url
      * @private
      * @type {string}
      */
     this.urlReverse = options.urlReverse || 'https://geocoder.larioja.org/v1/reverse';
 
     /**
-     * This variable indicates Geocoder Reverse radius
+     * This variable indicates Pelias Reverse radius
      * @private
      * @type {string}
      */
-    this.radius = options.radius || 100;
-    console.log(this.radius);
-    /**
-     * This variable indicates Nomenclator url prefix
-     * @private
-     * @type {string}
-     */
-    this.urlPrefix = options.urlPrefix || 'http://www.idee.es/';
+    this.reverseRadius = options.radius || 100;
 
     /**
-     * This variable indicates Nomenclator SearchAssistant service url
+     * This variable indicates pelias sources
      * @private
      * @type {string}
      */
-    this.urlAssistant = options.urlAssistant || 'https://www.idee.es/communicationsPoolServlet/SearchAssistant';
-
-    /**
-     * This variable indicates Nomenclator Dispatcher service url
-     * @private
-     * @type {string}
-     */
-    this.urlDispatcher = options.urlDispatcher || 'https://www.idee.es/communicationsPoolServlet/Dispatcher';
+    this.reverseSources = options.sources || '';
 
     /**
      * Type of icon to display when a punctual type result is found
@@ -229,59 +112,23 @@ export default class IGNSearchLocatorscnControl extends M.Control {
      */
     this.pointStyle = pointStyle;
 
-    /**
-     * This variable indicates Nomenclator SearchAssistant service url
-     * @private
-     * @type {string}
-     */
-    this.searchPosition = options.searchPosition || 'geocoder,nomenclator';
-
-    /**
-     * Text to search
-     * @private
-     * @type {string}
-     */
-    this.locationID = (options.locationID && options.locationID.replace(/\^/g, '&')) || '';
-
-    /**
-     * Text to search
-     * @private
-     * @type {string}
-     */
-    this.requestStreet = (options.requestStreet && options.requestStreet.replace(/\^/g, '&')) || '';
-
-    let geocoderCoords = options.geocoderCoords;
-    if (M.utils.isString(geocoderCoords)) {
-      geocoderCoords = geocoderCoords.split(',');
-      geocoderCoords = [Number.parseFloat(geocoderCoords[0]),
-        Number.parseFloat(geocoderCoords[1]),
+    let peliasCoords = options.peliasCoords;
+    if (M.utils.isString(peliasCoords)) {
+      peliasCoords = peliasCoords.split(',');
+      peliasCoords = [Number.parseFloat(peliasCoords[0]),
+        Number.parseFloat(peliasCoords[1]),
       ];
     }
     /**
-     * Geocoder reverse coordinates
+     * Pelias reverse coordinates
      *
      * @private
      * @type {number}
      */
-    this.geocoderCoords = geocoderCoords || [];
+    this.peliasCoords = peliasCoords || [];
 
     /**
-     * This variable indicates which entity types should be searched on Nomenclator service.
-     * @private
-     * @type {Array<string>}
-     */
-    if (options.nomenclatorSearchType) {
-      if (Array.isArray(options.nomenclatorSearchType)) {
-        this.nomenclatorSearchType = options.nomenclatorSearchType;
-      } else {
-        this.nomenclatorSearchType = options.nomenclatorSearchType.split(',');
-      }
-    } else {
-      this.nomenclatorSearchType = IGNSEARCH_TYPES_CONFIGURATION;
-    }
-
-    /**
-     * This variable indicates whether reverse geocoder button is activated.
+     * This variable indicates whether reverse button is activated.
      * @private
      * @type {Boolean}
      */
@@ -371,7 +218,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
       const panel = M.template.compileSync(template, {
         vars: {
           reverse: this.reverse,
-          placeholder: this.servicesToSearch === 'n' ? getValue('toponimo') : getValue('search_direction'),
+          placeholder: getValue('search_direction'),
           translations: {
             search_direction: getValue('search_direction'),
             get_direction: getValue('get_direction'),
@@ -421,7 +268,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
   }
 
   /**
-   * This function toggles reverse geocoder button activation.
+   * This function toggles reverse Pelias button activation.
    *
    * @public
    * @function
@@ -492,17 +339,17 @@ export default class IGNSearchLocatorscnControl extends M.Control {
    * @param {Event} e - Event
    * @api
    */
-  showReversePopUp(e, isGeocoderCoords = false) {
-    if (this.reverseActivated || isGeocoderCoords) {
+  showReversePopUp(e, isPeliasCoords = false) {
+    if (this.reverseActivated || isPeliasCoords) {
       // Reproject coordinates to ETRS89 on decimal grades (+ North latitude and East longitude)
       const origin = this.map.getProjection().code;
       const destiny = 'EPSG:4258';
       const etrs89pointCoordinates = this.getImpl()
         .reprojectReverse([e.coord[0], e.coord[1]], origin, destiny);
-      const params = `point.lon=${etrs89pointCoordinates[0]}&point.lat=${etrs89pointCoordinates[1]}&size=1&boundary.circle.radius=${this.radius}&sources=${this.reverseSources.replace(',', '%2C')}`;
+      const params = `point.lon=${etrs89pointCoordinates[0]}&point.lat=${etrs89pointCoordinates[1]}&size=1&boundary.circle.radius=${this.reverseRadius}${this.reverseSources ? `&sources=${this.reverseSources.replace(',', '%2C')}` : ''}`;
       const urlToGet = `${this.urlReverse}?${params}`;
       const mapCoordinates = e.coord;
-      this.geocoderCoords = etrs89pointCoordinates;
+      this.peliasCoords = etrs89pointCoordinates;
       const dataCoordinates = [etrs89pointCoordinates[1], etrs89pointCoordinates[0]];
       // let fullAddress = '';
       let addressData = {};
@@ -611,20 +458,14 @@ export default class IGNSearchLocatorscnControl extends M.Control {
       // Adds animation class during loading
       this.resultsBox.classList.add('locatorscn-icon-spinner');
 
-      this.nomenclatorCandidates = [];
-      this.geocoderCandidates = [];
+      this.peliasCandidates = [];
 
-      this.nomenclatorFinished = false;
       this.candidatesFinished = false;
 
-      // saves on allCandidates search results from Nomenclator (CommunicationPoolservlet)
-      this.getNomenclatorData(value, this.nomenclatorCandidates).then(() => {
-        this.nomenclatorFinished = true;
-        this.showCandidatesResults();
-      });
+      this.showCandidatesResults();
 
       // saves on allCandidates search results from CartoCiudad (geocoder)
-      this.getCandidatesData(value, this.geocoderCandidates).then(() => {
+      this.getCandidatesData(value, this.peliasCandidates).then(() => {
         this.candidatesFinished = true;
         this.showCandidatesResults();
       });
@@ -632,50 +473,23 @@ export default class IGNSearchLocatorscnControl extends M.Control {
   }
 
   /**
-   * This function adds search coincidences on Nomenclator to array
+   * This function returns the current bbox in view.
    *
    * @public
    * @function
-   * @param {string} inputValue - Location searched by user
-   * @param {Array <Object>} resultsArray - Search results
    * @api
    */
-  getNomenclatorData(inputValue, resultsArray) {
-    const newInputVal = window.encodeURIComponent(inputValue);
-    return new Promise((resolve) => {
-      if (this.servicesToSearch !== 'g') {
-        const params = `maxresults=${this.maxResults - 5}&name_equals=${newInputVal}`;
-        const urlToGet = `${this.urlAssistant}?${params}`;
-        M.proxy(this.useProxy);
-        M.remote.get(urlToGet).then((res) => {
-          const temporalData = (res.text !== '' && res.text !== null) ? JSON.parse(res.text) : { results: [] };
-          const returnData = temporalData.results;
-          for (let i = 0; i < returnData.length; i += 1) {
-            // avoid nameplaces not included in this.nomenclatorSearchType
-            if (this.nomenclatorSearchType.indexOf(returnData[i].type) >= 0) {
-              resultsArray.push(returnData[i]);
-            }
-          }
-          // move 'Núcleos de población' to start
-          for (let i = 0; i < resultsArray.length; i += 1) {
-            if (resultsArray[i].type === 'Núcleos de población') {
-              const thisElement = resultsArray.splice(i, 1);
-              resultsArray.splice(0, 0, thisElement);
-            }
-          }
-
-          resultsArray.forEach((elem) => {
-            // eslint-disable-next-line no-param-reassign
-            elem.cps = true;
-          });
-
-          resolve();
-        });
-        M.proxy(this.statusProxy);
-      } else {
-        resolve();
-      }
-    });
+  generateBoundaryParams() {
+    const bbox = this.map.getBbox();
+    const minReprojected = this.getImpl().reprojectReverse([bbox.x.min, bbox.y.min], 'EPSG:3857', 'EPSG:4326');
+    const maxReprojected = this.getImpl().reprojectReverse([bbox.x.max, bbox.y.max], 'EPSG:3857', 'EPSG:4326');
+    const boundary = {
+      min_lon: minReprojected[0],
+      max_lon: maxReprojected[0],
+      min_lat: minReprojected[1],
+      max_lat: maxReprojected[1],
+    };
+    return `boundary.rect.min_lon=${boundary.min_lon}&boundary.rect.max_lon=${boundary.max_lon}&boundary.rect.min_lat=${boundary.min_lat}&boundary.rect.max_lat=${boundary.max_lat}`;
   }
 
   /**
@@ -690,34 +504,31 @@ export default class IGNSearchLocatorscnControl extends M.Control {
   getCandidatesData(inputValue, resultsArray) {
     const newInputVal = window.encodeURIComponent(inputValue);
     return new Promise((resolve) => {
-      if (this.servicesToSearch !== 'n') {
-        const params = `text=${newInputVal}&size=${this.autocompleteSize}&layers=${this.autocompleteLayers.replace(',', '%2C')}`;
-        const urlToGet = `${this.urlAutocomplete}?${params}`;
-        M.proxy(this.useProxy);
+      const boundaryParams = this.generateBoundaryParams();
+      const params = `text=${newInputVal}&size=${this.autocompleteSize}&layers=${this.autocompleteLayers.replace(',', '%2C')}&${boundaryParams}`;
+      const urlToGet = `${this.urlAutocomplete}?${params}`;
+      M.proxy(this.useProxy);
 
-        M.remote.get(urlToGet).then((res) => {
-          if (res.code === 404 || res.code === 500) {
-            M.dialog.error(getValue('exception.error_candidates'));
-          } else {
-            const returnData = JSON.parse(res.text);
-            const { features } = returnData;
+      M.remote.get(urlToGet).then((res) => {
+        if (res.code === 404 || res.code === 500) {
+          M.dialog.error(getValue('exception.error_candidates'));
+        } else {
+          const returnData = JSON.parse(res.text);
+          const { features } = returnData;
 
-            for (let i = 0; i < features.length; i += 1) {
-              resultsArray.push(features[i]);
-            }
+          for (let i = 0; i < features.length; i += 1) {
+            resultsArray.push(features[i]);
           }
-          resolve();
-        });
-        M.proxy(this.statusProxy);
-      } else {
+        }
         resolve();
-      }
+      });
+      M.proxy(this.statusProxy);
     });
   }
 
   /**
-   * This function parses the geocoder
-   * response into a pelias format
+   * This function parses the pelias response
+   * into a geocoder friendly format
    *
    * @function
    * @public
@@ -735,8 +546,8 @@ export default class IGNSearchLocatorscnControl extends M.Control {
       extension: properties.extension,
       geom: `${type.toUpperCase()}(${coordinates[0]} ${coordinates[1]})`,
       id: properties.id,
-      lat: coordinates[0],
-      lng: coordinates[1],
+      lng: coordinates[0],
+      lat: coordinates[1],
       muni: properties.localadmin,
       municode: properties.localadmin_gid,
       noNumber: null,
@@ -762,18 +573,9 @@ export default class IGNSearchLocatorscnControl extends M.Control {
    */
   showCandidatesResults() {
     this.allCandidates = [];
-    for (let i = 0; i < this.searchPosition.split(',').length; i += 1) {
-      if (this.searchPosition.split(',')[i] === 'nomenclator') {
-        for (let j = 0; j < this.nomenclatorCandidates.length; j += 1) {
-          this.allCandidates.push(this.nomenclatorCandidates[j]);
-        }
-      }
-      if (this.searchPosition.split(',')[i] === 'geocoder') {
-        for (let j = 0; j < this.geocoderCandidates.length; j += 1) {
-          const candicate = this.geocoderCandidates[j];
-          this.allCandidates.push(this.parsePeliasToGeocoder(candicate));
-        }
-      }
+    for (let j = 0; j < this.peliasCandidates.length; j += 1) {
+      const candicate = this.peliasCandidates[j];
+      this.allCandidates.push(this.parsePeliasToGeocoder(candicate));
     }
 
     // Clears previous search
@@ -783,7 +585,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     const compiledResult = M.template.compileSync(results, {
       vars: {
         noresults: this.allCandidates.length === 0 &&
-          this.nomenclatorFinished && this.candidatesFinished,
+          this.candidatesFinished,
         places: this.allCandidates,
         translations: {
           noresults: getValue('exception.noresults'),
@@ -819,22 +621,11 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     const selectedObject = candidates.filter(element => element.id === this.currentElement.getAttribute('id'))[0];
     this.setRecents(selectedObject);
     this.createGeometryStyles();
-    // if item comes from geocoder
+    // if item comes from Pelias
     if (Object.prototype.hasOwnProperty.call(selectedObject, 'address')) {
       if (selectedObject) {
-        this.drawGeocoderResult(selectedObject);
-        // if (selectedObject.includes('"tip_via":null')
-        // && (selectedObject.includes('"type":"Municipio"')
-        // || selectedObject.includes('"type":"municipio"')
-        // || selectedObject.includes('"type":"Provincia"')
-        // || selectedObject.includes('"type":"provincia"')
-        // || selectedObject.includes('"type":"comunidad autonoma"'))) {
-        //   this.map.removePopup();
-        // }
+        this.drawPeliasResult(selectedObject);
       }
-    } else { // if item comes from nomenclator
-      this.map.removePopup();
-      this.drawNomenclatorResult(selectedObject.id);
     }
     this.resultsBox.innerHTML = '';
   }
@@ -936,69 +727,6 @@ export default class IGNSearchLocatorscnControl extends M.Control {
   }
 
   /**
-   * This function removes last search layer and adds new layer
-   * with current result (from nomenclator) features to map and zooms in result.
-   *
-   * @public
-   * @function
-   * @param {string} locationId - id of the location object
-   * @param {boolean} zoomIn - True for zoom
-   * @api
-   */
-  drawNomenclatorResult(locationId, zoomIn = true) {
-    this.requestStreet = '';
-    this.requestPlace = M.utils.addParameters(this.urlDispatcher, {
-      request: 'OpenQuerySource',
-      query: `<ogc:Filter><ogc:FeatureId fid="${locationId}"/></ogc:Filter>`,
-      sourcename: `${this.urlPrefix}communicationsPoolServlet/sourceAccessWFS-INSPIRE-NGBE.rdf`,
-      outputformat: 'application/json',
-    });
-    this.locationID = locationId;
-    M.proxy(this.useProxy);
-    M.remote.get(this.requestPlace).then((res) => {
-      const latLngString = JSON.parse(res.text).results[0].location;
-      const resultTitle = JSON.parse(res.text).results[0].title;
-      const latLngArray = latLngString.split(' ');
-      const latitude = parseFloat(latLngArray[0]);
-      const longitude = parseFloat(latLngArray[1]);
-      this.map.removeLayers(this.clickedElementLayer);
-      const newGeojson = {
-        name: 'searchresult',
-        source: {
-          type: 'FeatureCollection',
-          features: [{
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [
-                longitude, latitude,
-              ],
-            },
-            properties: {
-              name: resultTitle,
-            },
-          }],
-        },
-      };
-      this.clickedElementLayer = new M.layer.GeoJSON(newGeojson, { displayInLayerSwitcher: false });
-      this.clickedElementLayer.displayInLayerSwitcher = false;
-      this.clickedElementLayer.setStyle(this.point);
-
-      // Change zIndex value
-      this.clickedElementLayer.setZIndex(9999999999999999999);
-      // Stops showing polygon geometry
-      if (!this.resultVisibility) {
-        this.clickedElementLayer.setStyle(this.simple);
-      }
-      this.map.addLayers(this.clickedElementLayer);
-      if (zoomIn === true) {
-        this.zoomInLocation('n', 'Point', this.zoom);
-      }
-    });
-    M.proxy(this.statusProxy);
-  }
-
-  /**
    * This function zooms in MaxExtent of clicked element
    *
    * @public
@@ -1037,7 +765,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
    * @param {Object} geoJsonData - Clicked result object
    * @api
    */
-  drawGeocoderResult(geoJsonData) {
+  drawPeliasResult(geoJsonData) {
     this.map.removeLayers(this.clickedElementLayer);
 
     const olFeature = this.getImpl().readFromWKT(geoJsonData);
@@ -1113,7 +841,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     const destinyProj = this.map.getProjection().code;
     const destinySource = 'EPSG:4326';
     const newCoordinates = this.getImpl()
-      .reprojectReverse([coordinates[1], coordinates[0]], destinySource, destinyProj);
+      .reprojectReverse([coordinates[0], coordinates[1]], destinySource, destinyProj);
     let exitState;
     if (exactResult !== 1) {
       exitState = getValue('aprox');
@@ -1142,18 +870,37 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     hasOffset = true,
   ) {
     const featureTabOpts = { content: '', title: '' };
+    const addendum = addressData.native.properties.addendum[this.addendumField];
 
-    featureTabOpts.content = M.template.compileSync(ignsearchlocatorscnReverse, {
+    const addendumKeys = Object.keys(addendum);
+    addendumKeys.sort();
+    const addendumElements = addendumKeys.filter((str) => {
+      return addendum[str];
+    })
+      .map((key) => {
+        return `<span>${key.toUpperCase()}: </span> ${addendum[key]}`;
+      });
+
+    const tab = M.template.compileSync(ignsearchlocatorscnReverse, {
       vars: {
         addressData: {
           ...addressData,
           geom: addressData.geom.replace('POINT', ''),
         },
-        addendum: addressData.native.properties.addendum[this.addendumField],
+        addendum,
+        addendumHTML: addendumElements,
       },
-      parseToHtml: false,
+      parseToHtml: true,
     });
 
+    const addendumDiv = tab.querySelector('#m-ignsearchlocatorscn-addendum');
+    addendumElements.forEach((elem) => {
+      const divEle = document.createElement('div');
+      divEle.innerHTML = elem;
+      addendumDiv.appendChild(divEle);
+    });
+
+    featureTabOpts.content = tab.innerHTML;
 
     const myPopUp = new M.Popup({ panMapIfOutOfView: !e.fake });
     myPopUp.addTab(featureTabOpts);

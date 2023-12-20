@@ -44,8 +44,6 @@ div#m-locatorscn-previews {
     background-color: white;
 }
 
-#m-locatorscn-xylocatorscn,
-#m-locatorscn-infocatastro,
 #m-locatorscn-ignsearch {
     padding: 10px;
     font-size: 18px;
@@ -53,8 +51,6 @@ div#m-locatorscn-previews {
 }
 
 /* .locatorscn-icon-zoom-in.activated:before, */
-#m-locatorscn-xylocatorscn.locatorscn-icon-posicion3.activated,
-#m-locatorscn-infocatastro.locatorscn-icon-catastro.activated,
 #m-locatorscn-ignsearch.locatorscn-icon-ignsearch.activated {
     color: #71a7d3 !important;
 }
@@ -64,8 +60,6 @@ div#m-locatorscn-previews {
     justify-content: center;
 }
 
-#m-xylocatorscn-panel,
-#m-infocatastro-panel,
 #m-ignsearch-panel {
     border-top: 1px solid #adadad;
     padding: 10px;
@@ -206,62 +200,6 @@ div#m-locatorscn-previews {
     .m-bottom.m-left>.m-plugin-locatorscn.opened>.m-panel-btn {
         right: 0px;
     }
-
-    #div-contenedor-locatorscn>#m-infocatastro-panel input#m-searchParamsPoligono-input {
-        width: 19% !important;
-    }
-
-    #div-contenedor-locatorscn>#m-infocatastro-panel input#m-searchParamsParcela-input {
-        width: 19% !important;
-    }
-
-    #div-contenedor-locatorscn>#m-infocatastro-panel input#m-refCatastral-input {
-        width: 19% !important;
-    }
-
-    #div-contenedor-locatorscn>#m-infocatastro-panel #m-informa {
-        display: inline !important;
-    }
-}
-
-/* XYLocatorscn */
-
-/* COLUMN & CONTENT COLUMN */
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div>span {
-    width: 32%;
-    /* display: inline-block; */
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div>select {
-    width: 65%;
-    appearance: none;
-    padding: 2px 0px 3px 5px;
-    box-shadow: 1px 1px 3px 0px #999;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div>input {
-    width: 63%;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding: 2px 0px 3px 5px;
-    background-color: #fdfdfd;
-    box-shadow: 1px 1px 3px 0px #999;
-    border-radius: 0px;
-    margin: 0px;
-    margin-bottom: 5px;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas,
-#div-contenedor-locatorscn>#m-infocatastro-panel .m-infocatastro-datas {
-    width: 92%;
-    padding-left: 4%;
-    padding-right: 4%;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div {
-    margin-bottom: 4%;
-    margin-top: 5%;
 }
 
 /* DROPDOWN */
@@ -274,176 +212,6 @@ div#m-locatorscn-previews {
     appearance: none;
     padding: 2px 0px 3px 5px;
     box-shadow: 1px 1px 3px 0px #999;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>div.m-xylocatorscn-datas>.button>#m-xylocatorscn-loc {
-    background-color: #71a7d3;
-    border: none;
-    color: white;
-    border-radius: 2px;
-    padding: 7px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>div.m-xylocatorscn-datas>.button>#m-xylocatorscn-limpiar {
-    background-color: #71a7d3;
-    border: none;
-    color: white;
-    margin-left: 10px;
-    border-radius: 2px;
-    padding: 7px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-/* FIREFOX AND CHROME HACKS */
-@-moz-document url-prefix() {
-
-    #div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div>select,
-    #div-contenedor-locatorscn>#m-infocatastro-panel .m-infocatastro-datas>div select {
-        border: 1px solid rgb(167, 160, 160);
-        padding: 1px 1px 2px 3px;
-    }
-
-    #div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div>span {
-        width: 33%;
-        display: inline-block;
-    }
-
-    #div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>#m-xylocatorscn-dms>div {
-        min-width: 335px !important;
-    }
-
-    #div-m-xylocatorscn-coordinatesSystemParcela p.parcela--input {
-        display: inline-block;
-    }
-
-    #div-m-infocatastro-coordinatesSystemRefCatastral p.refCastastrl--input {
-        display: inline-block;
-    }
-
-    #div-contenedor-locatorscn>#m-infocatastro-panel input#m-refCatastral-input {
-        width: 17% !important;
-    }
-
-    #div-contenedor-locatorscn>#m-infocatastro-panel #m-informa {
-        font-size: 11px !important;
-    }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    #div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div>select {
-        background-color: #e9e8e8 !important;
-    }
-}
-
-/* IE HACK */
-@media all and (-ms-high-contrast: none),
-(-ms-high-contrast: active) {
-
-    #div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div>select::-ms-expand,
-    #div-contenedor-locatorscn>#m-infocatastro-panel .m-infocatastro-datas>div>select::-ms-expand {
-        display: none;
-    }
-
-    #div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div>select,
-    #div-contenedor-locatorscn>#m-infocatastro-panel .m-infocatastro-datas>div>select {
-        border: 1px solid rgb(167, 160, 160);
-    }
-}
-
-/* BUTTON */
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div.button>button {
-    background-color: #fff;
-    padding: 5px;
-    cursor: pointer;
-    display: block;
-    font-family: Muli, sans-serif !important;
-    border-radius: 4px;
-    border: 1px solid rgba(0, 0, 0, .4);
-    font-size: 14px;
-    -webkit-transition: opacity .25s ease 0s;
-    transition: opacity .25s ease 0s;
-    color: black;
-    height: 28px;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div.button {
-    align-items: center;
-    width: 100%;
-    margin: 0 auto;
-    justify-content: center;
-    text-align: center;
-    display: flex;
-}
-
-/* PANEL */
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div>input {
-    margin-top: 3%;
-    width: 60%;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div#m-xylocatorscn-latlon>input#LON {
-    margin-left: 5px;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div#m-xylocatorscn-latlon>input#LAT {
-    margin-left: 15px;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div>span {
-    display: inline;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>div>select {
-    display: block;
-    width: 100%;
-    margin-top: 3%;
-}
-
-/* HELP */
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>#m-xylocatorscn-coordinatesSystem>#m-xylocatorscn-selector-title {
-    display: flex;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>#m-xylocatorscn-coordinatesSystem>div>.m-xylocatorscn-help-button>a {
-    margin-left: 5px;
-    font-size: 16px;
-    color: #71a7d3 !important;
-    text-decoration: none;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>#m-xylocatorscn-dms p {
-    font-weight: bold;
-    margin-bottom: -1rem;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>#m-xylocatorscn-dms>div {
-    display: flex;
-    min-width: 300px;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>#m-xylocatorscn-dms>div>div>input[type="number"] {
-    width: 2.5rem;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>#m-xylocatorscn-dms>div>div>span {
-    font-size: 24px;
-    margin-left: 2px;
-    margin-right: 10px;
-}
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>#m-xylocatorscn-dms>div>div {
-    height: 67px;
-    display: flex;
-    align-items: center;
-}
-
-
-#div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>#m-xylocatorscn-dms .m-xylocatorscn-dms-radio {
-    line-height: 14px;
-    width: 70px;
 }
 
 #div-contenedor-locatorscn input::placeholder {
@@ -459,148 +227,6 @@ div#m-locatorscn-previews {
     color: #d1d0d0;
 }
 
-/* InfoCatastro*/
-#div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs .m-search-tab-panels {
-    border: 1px solid #ccc;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs .m-search-tab-panels[role=tabpanel][aria-expanded=false] {
-    display: none;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs .m-search-tab-panels[role=tabpanel][aria-expanded=true]{
-    display: block;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs>label {
-    display: inline-block;
-    position: relative;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-bottom: 0;
-    cursor: pointer;
-    text-align: center;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs>label::after {
-    content: "";
-    position: absolute;
-    bottom: 5px;
-    height: 3px;
-    background: #8d8d8d;
-    left: 10px;
-    right: 10px;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs>label:hover,
-#div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs>label:focus,
-#div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs>label[aria-selected=true] {
-    color: #71a7d3;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs>label:hover::after,
-#div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs>label:focus::after,
-#div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs>label[aria-selected=true]::after {
-    background: #71a7d3;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs>label[aria-selected=true] {
-    border-color: #ccc;
-    border-bottom: 1px solid #fff;
-    margin-bottom: -1px;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel .m-infocatastro-datas>div {
-    margin-bottom: 2%;
-    display: table;
-    width: 100%;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel p.parcela--input {
-    width: 71px;
-    display: inline-table;
-}
-
-
-#div-contenedor-locatorscn>#m-infocatastro-panel #m-searchParamsMunicipio-select,
-#div-contenedor-locatorscn>#m-infocatastro-panel #m-searchParamsProvincia-select {
-    font-size: 13px;
-    width: 72% !important;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel input#m-searchParamsPoligono-input {
-    width: 24.5%;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding: 2px 0px 3px 5px;
-    background-color: #fdfdfd;
-    box-shadow: 1px 1px 3px 0px #999;
-    border-radius: 0px;
-    margin: 0px;
-    margin-bottom: 5px;
-    margin-right: 2%;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel input#m-searchParamsParcela-input {
-    width: 24.5%;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding: 2px 0px 3px 5px;
-    background-color: #fdfdfd;
-    box-shadow: 1px 1px 3px 0px #999;
-    border-radius: 0px;
-    margin: 0px;
-    margin-bottom: 5px;
-    margin-top: 10px;
-    /* float: right; */
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel .button {
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel .button>#m-infocatastro-searchParams,
-#div-contenedor-locatorscn>#m-infocatastro-panel .button>#m-infocatastro-parcela-limpiar,
-#div-contenedor-locatorscn>#m-infocatastro-panel #m-infocatastro-refCatastral,
-#div-contenedor-locatorscn>#m-infocatastro-panel .button>#m-infocatastro-consulRef,
-#div-contenedor-locatorscn>#m-infocatastro-panel .button>#m-infocatastro-catastro-limpiar {
-    background-color: #71a7d3;
-    border: none;
-    color: white;
-    border-radius: 2px;
-    padding: 7px;
-    padding-left: 10px;
-    padding-right: 10px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel p.refCastastrl--input {
-    width: 100%;
-    display: inline-table;
-}
-
-#div-contenedor-locatorscn>#m-infocatastro-panel input#m-refCatastral-input {
-    width: 20%;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding: 2px 0px 3px 5px;
-    background-color: #fdfdfd;
-    box-shadow: 1px 1px 3px 0px #999;
-    border-radius: 0px;
-    margin: 0px;
-    margin-bottom: 5px;
-    margin-right: 6px;
-}
-
-#m-infocatastro-coordinatesSystemRefCatastral {
-    text-align: center !important;
-}
 
 /* IGNSearchLocatorscn */
 
@@ -799,8 +425,6 @@ div.m-area.m-bottom.m-left>div.m-plugin-locatorscn.m-panel.opened>button.m-panel
 
 @media only screen and (max-width: 430px) {
 
-    #m-infocatastro-panel,
-    #m-xylocatorscn-panel,
     #m-ignsearch-panel {
         width: 250px;
         font-size: 12px;
@@ -811,51 +435,8 @@ div.m-area.m-bottom.m-left>div.m-plugin-locatorscn.m-panel.opened>button.m-panel
         font-size: 12px;
     }
 
-    #div-contenedor-locatorscn>#m-ignsearch-panel>#m-ignsearchlocatorscn-clean-button,
-    #div-contenedor-locatorscn>#m-infocatastro-panel>.m-search-tabs>label {
+    #div-contenedor-locatorscn>#m-ignsearch-panel>#m-ignsearchlocatorscn-clean-button{
         font-size: 12px;
-    }
-
-    #div-contenedor-locatorscn>#m-infocatastro-panel #m-searchParamsMunicipio-select,
-    #div-contenedor-locatorscn>#m-infocatastro-panel #m-searchParamsProvincia-select {
-        width: 100% !important;
-    }
-
-    #div-contenedor-locatorscn>#m-infocatastro-panel #m-infocatastro-estatePlot {
-        display: inline-grid;
-        width: 100%;
-    }
-
-    #div-contenedor-locatorscn>#m-infocatastro-panel p.parcela--input {
-        width: 100%;
-    }
-
-    #div-contenedor-locatorscn>#m-infocatastro-panel input#m-searchParamsPoligono-input {
-        width: 97%;
-        margin-bottom: 0px;
-    }
-
-    #div-contenedor-locatorscn>#m-infocatastro-panel input#m-searchParamsParcela-input {
-        width: 97%;
-        margin-top: 0px;
-    }
-
-    #div-contenedor-locatorscn>#m-infocatastro-panel .button>#m-infocatastro-searchParams,
-    #div-contenedor-locatorscn>#m-infocatastro-panel .button>#m-infocatastro-parcela-limpiar,
-    #div-contenedor-locatorscn>#m-xylocatorscn-panel>div.m-xylocatorscn-datas>.button>#m-xylocatorscn-limpiar,
-    #div-contenedor-locatorscn>#m-xylocatorscn-panel>div.m-xylocatorscn-datas>.button>#m-xylocatorscn-loc,
-    #div-contenedor-locatorscn>#m-infocatastro-panel #m-infocatastro-refCatastral,
-    #div-contenedor-locatorscn>#m-infocatastro-panel .button>#m-infocatastro-consulRef,
-    #div-contenedor-locatorscn>#m-infocatastro-panel .button>#m-infocatastro-catastro-limpiar {
-        font-size: 12px;
-    }
-
-    #div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>#m-xylocatorscn-dms>div>div>input[type="number"] {
-        width: 1.5rem;
-    }
-
-    #div-contenedor-locatorscn>#m-xylocatorscn-panel>.m-xylocatorscn-datas>#m-xylocatorscn-dms>div>div {
-        width: 54px;
     }
 
     #m-ignsearchlocatorscn-search-input:has(+ #m-ignsearchlocatorscn-locate-button) {

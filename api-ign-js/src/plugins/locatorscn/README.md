@@ -6,16 +6,11 @@
 # Descripción
 
 Plugin que permite utilizar diferentes herramientas para la localización:
-- Servicio REST geocoder-directo: permite la búsqueda de direcciones postales, topónimos, puntos de interés, entidades de población, unidades administrativas, referencias catastrales (servicio SOAP de la Dirección General de Catastro) y solamente para su visualización los códigos postales.
-- Servicio REST geocoder-inverso: Obtener dirección en un punto del mapa.
-- El servicio Comunication Pool Servlet: permite buscar topónimos de orografía del Nomenclátor Geográfico Básico de España.
-- Localizar coordenadas en varios SRS.
-- Buscar por polígono y parcela.
-- Buscar por catastro.
-- Consultar referencia catastral.
+- Servicio REST pelias-directo: permite la búsqueda de direcciones postales, topónimos, puntos de interés, entidades de población, unidades administrativas, referencias catastrales (servicio SOAP de la Dirección General de Catastro) y solamente para su visualización los códigos postales.
+- Servicio REST pelias-inverso: Obtener dirección en un punto del mapa.
 
-Esta extensión es una fachada del servicio geocoder y del comunicationpullserver. En la siguiente dirección se puede encontrar toda la información sobre el servicio geocoder:
-https://www.idee.es/resources/documentos/Cartociudad/CartoCiudad_ServiciosWeb.pdf#page=7&zoom=100,109,585
+Esta extensión es una fachada del servicio pelias y del comunicationpullserver. En la siguiente dirección se puede encontrar toda la información sobre la api pelias:
+https://github.com/pelias/api
 
 # Dependencias
 
@@ -43,104 +38,38 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Localizador.
 - **zoom**: Zoom que aplicará al mostrar resultado de tipo puntual. Por defecto: 16.
-- **useProxy**: Determina si se desea que las peticiones que se realizan en el control de búsqueda de lugares se realizan con el proxy o no. Por defecto: true.
-  - Nota: sólo afecta a las peticiones de búsquedas por lugares. Las peticiones a catastro siempre se realizarán con el proxy.
 - **pointStyle**: Tipo de icono a mostrar cuando se encuentra un resultado de tipo puntual.
   - 'pinAzul' (por defecto)
   - 'pinRojo'
   - 'pinMorado'
 - **isDraggable**: Permite mover el plugin por el mapa. Por defecto: false.
-- **byParcelCadastre**: Indica si el control InfoCatastro se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
-  - **cadastreWMS**: Url del servicio para la consulta por referencia catastral. Por defecto: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_RCCOOR'.
-  - **CMC_url**: Url del servicio para la consulta de municipios de una provincia. Por defecto: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/ConsultaMunicipioCodigos'.
-  - **DNPPP_url**: Url del servicio para la consulta de datos no protegidos para un inmueble por su polígono parcela. Por defecto: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/Consulta_DNPPP_Codigos'.
-  - **CPMRC_url**: Url del servicio para consulta de coordenadas por Provincia, Municipio y Referencia Catastral. Por defecto: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC'.
+- **searchOptions**: Configura las opciones del servicio de pelias para poder consumirlo correctamente:
+  - **addendum**: Nombre de la propiedad que corresponde al addendum. Por defecto: 'none'.
+  - **size**: Numero de resultados maximos para la búsqueda por texto. Por defecto: 10.
+  - **layers**: Capas para pasar en la petición a pelias. Por defecto: 'address,street,venue'.
+  - **sources**: Fuentes para pasar en la petición a pelias. Por defecto: ''.
+  - **radius**: Radio maximo para hacer la búsqueda inversa. Por defecto: 100.
+  - **urlAutocomplete**: URL del servicio de autocomplete de pelias. Por defecto: 'https://geocoder.larioja.org/v1/autocomplete'.
+  - **urlReverse**: URL del servicio de reverse de pelias. Por defecto: 'https://geocoder.larioja.org/v1/reverse'.
 
   ```javascript
-  byParcelCadastre: {
-    cadastreWMS: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_RCCOOR',
-    CMC_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/ConsultaMunicipioCodigos',
-    DNPPP_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/Consulta_DNPPP_Codigos',
-    CPMRC_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC'
+  searchOptions: {
+    addendum: 'scne',
+    size: 15,
+    layers: 'address,street,venue',
+    // sources: 'calrj',
+    radius: 200,
+    // urlAutocomplete: '',
+    // urlReverse: '',
   }
   ```
   (Válido sólo para la creación del plugin por JS y API-REST en base64).
-- **byCoordinates**: Indica si el control XYLocatorscn se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
-  - **projections**: Proyecciones de origen que se mostrarán para seleccionar las coordenadas a localizar. Por defecto los valores posibles son:
-  ```javascript
-  [
-    { title: 'ETRS89 geographic (4258) dd', code: 'EPSG:4258', units: 'd' },
-    { title: 'WGS84 geographic (4326) dd', code: 'EPSG:4326', units: 'd' },
-    { title: 'ETRS89 geographic (4258) dms', code: 'EPSG:4258', units: 'dms' },
-    { title: 'WGS84 geographic (4326) dms', code: 'EPSG:4326', units: 'dms' },
-    { title: 'WGS84 Pseudo Mercator (3857)', code: 'EPSG:3857', units: 'm' },
-    { title: 'ETRS89 UTM zone 31N (25831)', code: 'EPSG:25831', units: 'm' },
-    { title: 'ETRS89 UTM zone 30N (25830)', code: 'EPSG:25830', units: 'm' },
-    { title: 'ETRS89 UTM zone 29N (25829)', code: 'EPSG:25829', units: 'm' },
-    { title: 'ETRS89 UTM zone 28N (25828)', code: 'EPSG:25828', units: 'm' },
-  ]
-  ```
-  - **help**: URL de ayuda.
-
-  ```javascript
-  byCoordinates: {
-    projections: [
-      { title: 'ETRS89 geographic (4258) dd', code: 'EPSG:4258', units: 'd' },
-      { title: 'ETRS89 geographic (4258) dms', code: 'EPSG:4258', units: 'dms' },
-      { title: 'ETRS89 UTM zone 31N (25831)', code: 'EPSG:25831', units: 'm' },
-    ],
-    help: 'https://epsg.io/'
-  }
-  ```
-  (Válido sólo para la creación del plugin por JS y API-REST en base64).
-- **byPlaceAddressPostal**: Indica si el control IGNSearchLocatorscn se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
-  - **servicesToSearch**: Servicio que se consulta: 
-    - 'g': Consulta Geocoder (por defecto).
-    - 'n': Consulta Comunication Pool Servlet.
-    - 'gn': Consulta Geocoder y Comunication Pool Servlet.
-  - **maxResults**: Número de resultados en la consulta. Por defecto: 10 (para cada servicio).
-  - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Admite combinación de 'municipio,poblacion,toponimo,callejero,carretera,portal,provincia'.
-  - **countryCode**: Código por defecto del país en la petición a geocoder. Por defecto: 'es'. 
-  - **reverse**: Valor booleano que indica si la funcionalidad obtener dirección en un punto del mapa está activada (true/false). Por defecto: true.
-  - **resultVisibility**: Indica si se muestra o no la geometría del elemento localizado (true/false). Por defecto: true.
-  - **urlCandidates**: Url del servicio candidates de geocoder. Por defecto: 'http://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp'.
-  - **urlFind**: Url del servicio find de geocoder. Por defecto: 'http://www.cartociudad.es/geocoder/api/geocoder/findJsonp'.
-  - **urlReverse**: Url del servicio geocoding inverso. Por defecto: 'http://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode'.
-  - **urlPrefix**: Prefijo del servicio Comunication Pool Servlet. Por defecto: 'http://www.idee.es/'.
-  - **urlAssistant**: Url del servicio SearchAssitant de Nomenclátor. Por defecto: 'https://www.idee.es/communicationsPoolServlet/SearchAssistant'.
-  - **urlDispatcher**: Url del servicio Dispatcher de Nomenclátor. Por defecto: 'https://www.idee.es/communicationsPoolServlet/Dispatcher'.
-  - **searchPosition**: Orden de resultados de las dos búsquedas. Por defecto: 'geocoder,nomenclator'.
-  - **locationID**: Búsqueda inicial en el servicio nomenclátor por ID, muestra el resultado y se realiza un zoom a la posición. Por defecto: ''.
-  - **geocoderCoords**: Búsqueda inicial por longitud, latitud, mediante el uso del Servicio REST geocoder-inverso. Se sitúa en la posición indicada al iniciar la extensión. Por defecto: [].
-  - **requestStreet**: URL del findJSON de un resultado de búsqueda, para que aparezca cargado al inicio. Por defecto: ''.
-  - **nomenclatorSearchType**: se muestra la lista de elementos que aporta el servicio Comunication Pool Servlet (CPS). Los elementos comentados, son aquellos que son aportados por el propio servicio REST geocoder. Si se quiere hacer uso solo del CPS se pueden descomentar, o comentar los que se quieran filtrar.
-  
-  ```javascript
-  byPlaceAddressPostal: {
-    servicesToSearch: 'gn',
-    maxResults: 10,
-    noProcess: 'municipio, poblacion',
-    countryCode: 'es',
-    reverse: true,
-    resultVisibility: true,
-    urlCandidates: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/candidatesJsonp',
-    urlFind: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/findJsonp',
-    urlReverse: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/reverseGeocode',
-    urlPrefix: 'http://www.idee.es/',
-    urlAssistant: 'https://www.idee.es/communicationsPoolServlet/SearchAssistant',
-    urlDispatcher: 'https://www.idee.es/communicationsPoolServlet/Dispatcher',
-    searchPosition: 'geocoder,nomenclator',
-    locationID: 'ES.IGN.NGBE.2805347',
-    requestStreet: 'https://www.cartociudad.es/geocoder/api/geocoder/findJsonp?q=Sevilla&type=provincia&tip_via=null&id=41&portal=null&extension=null',
-    geocoderCoords: [-5.741757, 41.512058]
-  }
-  ```
-  (Válido sólo para la creación del plugin por JS y API-REST en base64).
+- **useProxy**: Determina si se desea que las peticiones que se realizan en el control de búsqueda de lugares se realizan con el proxy o no. Por defecto: true.
 
 # API-REST
 
 ```javascript
-URL_API?locatorscn=position*collapsed*collapsible*tooltip*zoom*pointStyle*isDraggable*byParcelCadastre*byCoordinates*byPlaceAddressPostal
+URL_API?locatorscn=position*collapsed*collapsible*tooltip*zoom*pointStyle*isDraggable*searchOptions
 ```
 
 <table>
@@ -190,22 +119,11 @@ URL_API?locatorscn=position*collapsed*collapsible*tooltip*zoom*pointStyle*isDrag
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>byParcelCadastre (*)</td>
+    <td>searchOptions</td>
     <td>true/false</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
-    <td>byCoordinates (*)</td>
-    <td>true/false</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
-    <td>byPlaceAddressPostal (*)</td>
-    <td>true/false</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
+    <td>Base64 ✔️ | Separador ❌</td>
   </tr>
 </table>
-(*) Estos parámetros podrán ser enviados por API-REST con los valores true o false. Si es true indicará al plugin que se añada el control con los valores por defecto. Los valores por defecto se modificarán únicamente mediante API-REST en base64.
 ### Ejemplos de uso API-REST
 
 ```
@@ -213,7 +131,7 @@ https://componentes.cnig.es/api-core?locatorscn=TL*true*true*tooltip*16
 ```
 
 ```
-https://componentes.cnig.es/api-core?locatorscn=TL*true*true*tooltip*16*pinAzul*true*false*true*true
+https://componentes.cnig.es/api-core?locatorscn=TL*true*true*tooltip*16*pinAzul*true
 ```
 
 ### Ejemplo de uso 
@@ -231,28 +149,6 @@ https://componentes.cnig.es/api-core?locatorscn=base64=eyJwb3NpdGlvbiI6IlRMIiwiY
 ```
 
 # Eventos
-
-- **infocatastro:locationCentered**
-  - Evento que se dispara cuando se ha localizado la búsqueda del plugin sobre el mapa.
-  - Expone, como parámetro devuelto, el **punto** actual calculado en la búsqueda.
-
-```javascript
-mp.on('infocatastro:locationCentered', (data) => {
-   window.alert(`zoom: ${data.zoom}
-   center: ${data.center[0].toFixed(2)}, ${data.center[1].toFixed(2)}`);
-});
-```
-
-- **xylocatorscn:locationCentered**
-  - Evento que se dispara cuando se ha localizado la búsqueda del plugin sobre el mapa.
-  - Expone, como parámetro devuelto, el **punto** actual calculado en la búsqueda.
-
-```javascript
-mp.on('xylocatorscn:locationCentered', (data) => {
-   window.alert(`zoom: ${data.zoom}
-   center: ${data.center[0].toFixed(2)}, ${data.center[1].toFixed(2)}`);
-});
-```
 
 - **ignsearchlocatorscn:entityFound**
   - Evento que se dispara cuando se ha localizado la búsqueda del plugin sobre el mapa.
@@ -278,74 +174,14 @@ const mp = new M.plugin.Locatorscn({
   collapsed: true,
   zoom: 16,
   pointStyle: 'pinMorado',
-  byParcelCadastre: false,
-  byCoordinates: true,
-  byPlaceAddressPostal: {
-    servicesToSearch: 'g',
-    maxResults: 5,
-    noProcess: 'municipio, poblacion',
-    reverse: false,
-    searchPosition: 'geocoder,nomenclator',
-    geocoderCoords: [-5.741757, 41.512058],
-    nomenclatorSearchType: [
-     'Estado',
-     //'Comunidad autónoma',
-     //'Ciudad con estatuto de autonomía',
-     //'Provincia',
-     //'Municipio',
-     //'EATIM',
-     'Isla administrativa',
-     'Comarca administrativa',
-     'Jurisdicción',
-     //'Capital de Estado',
-     //'Capital de comunidad autónoma y ciudad con estatuto de autonomía',
-     //'Capital de provincia',
-     //'Capital de municipio',
-     //'Capital de EATIM',
-     //'Entidad colectiva',
-     //'Entidad menor de población',
-     //'Distrito municipal',
-     //'Barrio',
-     //'Entidad singular',
-     //'Construcción/instalación abierta',
-     //'Edificación',
-     'Vértice Geodésico',
-     //'Hitos de demarcación territorial',
-     //'Hitos en vías de comunicación',
-     'Alineación montañosa',
-     'Montaña',
-     'Paso de montaña',
-     'Llanura',
-     'Depresión',
-     'Vertientes',
-     'Comarca geográfica',
-     'Paraje',
-     'Elemento puntual del paisaje',
-     'Saliente costero',
-     'Playa',
-     'Isla',
-     'Otro relieve costero',
-      //'Parque Nacional y Natural',
-     //'Espacio protegido restante',
-     //'Aeropuerto',
-     //'Aeródromo',
-     //'Pista de aviación y helipuerto',
-     //'Puerto de Estado',
-     //'Instalación portuaria',
-     //'Carretera',
-     //'Camino y vía pecuaria',
-     //'Vía urbana',
-     //'Ferrocarril',
-     'Curso natural de agua',
-     'Masa de agua',
-     'Curso artificial de agua',
-     //'Embalse',
-     'Hidrónimo puntual',
-     'Glaciares',
-     'Mar',
-     'Entrante costero y estrecho marítimo',
-     'Relieve submarino',
-  ]
+    searchOptions: {
+    addendum: 'scne',
+    size: 15,
+    layers: 'address,street,venue',
+    // sources: 'calrj',
+    radius: 200,
+    // urlAutocomplete: '',
+    // urlReverse: '',
   },
   isDraggable: false,
 });

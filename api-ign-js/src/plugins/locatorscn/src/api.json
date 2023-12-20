@@ -49,24 +49,14 @@
       "position": 6
     },
     {
-      "type": "boolean",
-      "name": "byParcelCadastre",
+      "type": "base64",
+      "name": "searchOptions",
       "position": 7
     },
     {
       "type": "boolean",
-      "name": "byCoordinates",
-      "position": 8
-    },
-    {
-      "type": "boolean",
-      "name": "byPlaceAddressPostal",
-      "position": 9
-    },
-    {
-      "type": "boolean",
       "name": "useProxy",
-      "position": 10
+      "position": 8
     }
   ]
   }],
@@ -85,7 +75,7 @@
     "description": "Offers different localization tools",
     "text": "It offers different localization tools.",
     "version": "1.0.0",
-    "date": "30th May 2023",
+    "date": "11/Jan/2023",
     "author": "CNIG",
     "org": "CNIG",
     "tags": "mapea,plugin",
