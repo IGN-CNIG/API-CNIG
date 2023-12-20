@@ -3898,9 +3898,7 @@ const generic = (userParameters) => {
   const params = userParameters;
 
   if (!isString(params)) {
-    return {
-      type: 'Generic',
-    };
+    return userParameters;
   }
 
   const urlParams = params.split(/\*/);
