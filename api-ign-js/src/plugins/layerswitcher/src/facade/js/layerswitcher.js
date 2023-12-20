@@ -256,7 +256,7 @@ export default class Layerswitcher extends M.Plugin {
     this.map_ = map;
 
     // creamos panel
-    this.panel_ = new M.ui.Panel('Layerswitcher', {
+    const panel = new M.ui.Panel('Layerswitcher', {
       className: 'm-plugin-layerswitcher',
       collapsed: this.collapsed_,
       collapsible: this.collapsible_,
@@ -266,8 +266,10 @@ export default class Layerswitcher extends M.Plugin {
       order: this.order,
     });
 
+    this.panel_ = panel;
+
     // creamos control
-    this.control_ =
+    const control =
       new LayerswitcherControl({
         isDraggable: this.isDraggable,
         modeSelectLayers: this.modeSelectLayers,
@@ -283,6 +285,7 @@ export default class Layerswitcher extends M.Plugin {
         statusProxy: this.statusProxy,
         useAttributions: this.useAttributions,
       });
+    this.control_ = control;
 
     this.controls_.push(this.control_);
 
@@ -293,6 +296,8 @@ export default class Layerswitcher extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     this.map_.addPanels(this.panel_);
+
+    control.addEventPanel(panel);
   }
 
   // Esta función devuelve la posición del plugin
@@ -331,8 +336,8 @@ export default class Layerswitcher extends M.Plugin {
 
   // Esta función elimina el plugin del mapa
   destroy() {
-    this.map_.removeControls([this.control_]);
-    this.panel_ = [null];
+    this.map_.removeControls(this.controls_);
+    [this.control_] = [null];
   }
 
   // Esta función devuelve si el plugin recibido por parámetro es instancia de Layerswitcher

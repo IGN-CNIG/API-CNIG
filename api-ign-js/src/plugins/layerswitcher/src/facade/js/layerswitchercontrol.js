@@ -197,17 +197,6 @@ export default class LayerswitcherControl extends M.Control {
         this.template_.addEventListener('click', this.clickLayer.bind(this), false);
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
 
-        setTimeout(() => {
-          if (this.getPanel().getButtonPanel().parentElement.classList.contains('collapsed')) {
-            this.getImpl().removeRenderComplete();
-          }
-        }, 501);
-
-        this.getPanel().getButtonPanel().addEventListener('click', this.collapsedPlugin.bind(this), false);
-
-        if (this.isDraggable_) {
-          M.utils.draggabillyPlugin(this.getPanel(), '#m-layerswitcher-title');
-        }
 
         this.getImpl().registerEvent(map);
         this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
@@ -216,6 +205,20 @@ export default class LayerswitcherControl extends M.Control {
         success(this.template_);
       });
     });
+  }
+
+  addEventPanel(panel) {
+    if (panel.getButtonPanel().parentElement.classList.contains('collapsed')) {
+      setTimeout(() => {
+        this.getImpl().removeRenderComplete();
+      }, 501);
+    }
+
+    panel.getButtonPanel().addEventListener('click', this.collapsedPlugin.bind(this), false);
+
+    if (this.isDraggable_) {
+      M.utils.draggabillyPlugin(panel, '#m-layerswitcher-title');
+    }
   }
 
   eventsPanel(panel) {

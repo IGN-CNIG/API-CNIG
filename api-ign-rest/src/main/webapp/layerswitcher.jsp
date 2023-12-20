@@ -216,7 +216,6 @@
         }
 
         crearPlugin();
-        cambiarTest();
     </script>
 </body>
 
