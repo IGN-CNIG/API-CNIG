@@ -417,7 +417,12 @@ class Utils {
     */
   static getFeaturesExtent(features, projectionCode) {
     const olFeatures = features.map(f => (f instanceof Feature ? f.getImpl().getOLFeature() : f));
-    let extents = olFeatures.map(feature => feature.getGeometry().getExtent().slice(0));
+    let extents = [];
+    olFeatures.forEach((feature) => {
+      if (feature.getGeometry()) {
+        extents.push(feature.getGeometry().getExtent().slice(0));
+      }
+    });
     if (extents.length === 1) {
       const geometry = olFeatures[0].getGeometry();
       if (geometry.getType() === 'Point') {
