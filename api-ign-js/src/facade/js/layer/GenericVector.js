@@ -14,7 +14,6 @@ import Exception from '../exception/exception';
 import Vector from './Vector';
 import { getValue } from '../i18n/language';
 import * as EventType from '../event/eventtype';
-import GenericStyle from '../style/Generic';
 
 /**
  * @classdesc
@@ -101,24 +100,6 @@ class GenericVector extends Vector {
     * haciendo clic en el objeto geográfico, por defecto falso.
     */
     this.extract = userParameters.extract || false;
-
-    // -- Vector --
-    /**
-      * predefinedStyles: Estilos predefinidos para la capa.
-      */
-    this.predefinedStyles =
-       isUndefined(options.predefinedStyles) ? [] : options.predefinedStyles;
-
-    const defaultOptionsStyle = !isUndefined(this.constructor.DEFAULT_OPTS_STYLE)
-      ? this.constructor.DEFAULT_OPTS_STYLE : this.constructor.DEFAULT_OPTIONS_STYLE;
-
-    if (isUndefined(options.style) && !defaultOptionsStyle) {
-      this.predefinedStyles.unshift(new GenericStyle(defaultOptionsStyle));
-    } else if (isUndefined(options.style)) {
-      this.predefinedStyles.unshift(new GenericStyle(GenericStyle.DEFAULT_OPTIONS_STYLE));
-    } else {
-      this.predefinedStyles.unshift(options.style);
-    }
   }
 
   /**
