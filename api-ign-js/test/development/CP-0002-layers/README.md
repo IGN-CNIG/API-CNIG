@@ -9,3 +9,9 @@ Mapa básico con OSM.
 
 CP-004
 Mapa básico con capas genéricas.
+
+CP-005
+Mapa básico con capas TMS.
+
+CP-006
+Mapa básico con capas WMTS.
