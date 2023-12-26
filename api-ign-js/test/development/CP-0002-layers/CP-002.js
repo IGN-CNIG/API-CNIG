@@ -1,7 +1,7 @@
 import { map as Mmap } from 'M/mapea';
 // import { tms_001 } from '../layers/tms/tms';
 // import { tms_002 } from '../layers/tms/tms';
-// import { wms_001 } from '../layers/wms/wms';
+import { wms_001 } from '../layers/wms/wms';
 // import { wms_002 } from '../layers/wms/wms';
 // import { wmts_001 } from '../layers/wmts/wmts';
 // import { wmts_002 } from '../layers/wmts/wmts';
@@ -10,7 +10,7 @@ import { map as Mmap } from 'M/mapea';
 // import { osm } from '../layers/osm/osm';
 // import { osm_002 } from '../layers/osm/osm';
 // import { osm_003 } from '../layers/osm/osm';
-import { mbtile_01 } from '../layers/mbtiles/mbtiles';
+// import { mbtile_01 } from '../layers/mbtiles/mbtiles';
 
 
 const mapa = Mmap({
@@ -18,7 +18,45 @@ const mapa = Mmap({
   projection: 'EPSG:3857*m',
   center: [-443273.10081370454, 4757481.749296248],
   zoom: 6,
+  layers: [wms_001]
 });
+
+//WMTS
+// setTimeout(() => {
+//   console.log(mapa.getWMTS()[0].zindex_);
+//   console.log(mapa.getBaseLayers());
+// }, "3000");
+
+// WMS
+// setTimeout(() => {
+//   console.log(mapa.getWMS()[0].zindex_);
+//   console.log(mapa.getBaseLayers());
+// }, "3000");
+
+// TMS
+// setTimeout(() => {
+//   console.log(mapa.getTMS()[0].zindex_);
+//   console.log(mapa.getBaseLayers());
+// }, "3000");
+
+// XYZ
+// setTimeout(() => {
+//   console.log(mapa.getXYZs()[0].zindex_);
+//   console.log(mapa.getBaseLayers());
+// }, "3000");
+
+// OSM
+// setTimeout(() => {
+//   console.log(mapa.getLayers()[0].zindex_);
+//   console.log(mapa.getBaseLayers());
+// }, "3000");
+
+//MBTILES
+// setTimeout(() => {
+//   console.log(mapa.getLayers()[0].zindex_);
+//   console.log(mapa.getBaseLayers());
+// }, "3000");
+
 
 mapa.addLayers([
   // tms_001,

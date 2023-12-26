@@ -6,8 +6,8 @@ export const tms_001 = new TMS({
   projection: 'EPSG:3857',
   legend: 'Capa TMS',
   // visibility: true,
-  // transparent: true,
-  // isBase: true,
+  // transparent: false,
+  isBase: false,
   // attribution: {
   //   name: 'Name Prueba TMS',
   //   description: 'Description Prueba',
@@ -21,4 +21,4 @@ export const tms_001 = new TMS({
   // maxZoom: 10
 });
 
-// export const tms_002 = 'TMS*TMSBaseIGNRest*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17***anonymous';
+export const tms_002 = 'TMS*TMSBaseIGNRest*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17***anonymous';
