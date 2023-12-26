@@ -36,7 +36,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Gestor de capas.
 - **isDraggable**: Permite mover el plugin por el mapa. Por defecto: false.
-- **http**: Si es *true* o no se rellena se permite la carga de capas de servicios desplegados con http, si se le da valor *false* no se permitirá la carga de servicios http. Por defecto: true.
+- **http**: Si es *true* se permite la carga de capas de servicios desplegados con http, si se le da valor *false* no se permitirá la carga de servicios http. Por defecto: true.
 - **https**: Si es *true* sólo se permite la carga de capas de servicios desplegados con https, si no se rellena o se le da valor *false* se permite la carga de cualquier servicio. Por defecto: true.
 - **showCatalog**: Si es *true* se habilitará una nueva funcionalidad que permitirá la carga de servicios del catálogo habilitando un listado con buscador de dichos servicios. Disponible al pulsar sobre el botón añadir del plugin, apareciendo unos prismáticos para realizar la búsqueda. Por defecto: false.
 - **precharged**: Aquí debemos definir la estructura de los servicios predefinidos que queremos que tenga el plugin (árbol de contenido, servicios sin nodo padre, etc.). También podremos definir un parámetro para cada servicio con el que restringiremos qué capas de cada servicio queremos que sea posible cargar (white_list).
