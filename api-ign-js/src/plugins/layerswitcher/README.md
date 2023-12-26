@@ -5,7 +5,7 @@
 
 # Descripción
 
-Extensión que permite listar y gestionar los servicios añadidos en el mapa. Además permite añadir servicios de forma fácil y rápida.
+Extensión que permite listar y gestionar las capas (servicios web y/o ficheros) añadidas en el mapa. Además permite añadir servicios de forma fácil y rápida.
 La carga de nuevos servicios se pueden realizar mediante el listado predefinido o indicando la URL del servicio.
 
 
