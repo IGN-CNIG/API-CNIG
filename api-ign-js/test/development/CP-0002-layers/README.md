@@ -15,3 +15,9 @@ Mapa básico con capas TMS.
 
 CP-006
 Mapa básico con capas WMTS.
+
+CP-007
+Mapa básico con capas WFS.
+
+CP-008
+Mapa básico con capas WMS.

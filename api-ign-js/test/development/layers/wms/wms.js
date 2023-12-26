@@ -7,7 +7,7 @@ export const wms_001 = new WMS({
     // tiled: false,
     // visibility: false,
     // isBase: false,
-    transparent: true,
+    // transparent: true,
     // attribution: {
     //     name: 'Name Prueba WMS',
     //     description: 'Description Prueba',
