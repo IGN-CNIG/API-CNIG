@@ -23,7 +23,7 @@ import Generic from '../style/Generic';
  * @extends {M.Layer}
  * @property {Number} minZoom Zoom mínimo.
  * @property {Number} maxZoom Zoom máximo.
- * @property {Boolean} infoEventType. Tipo de evento para mostrar la info de una feature.
+ * @property {Array} predefinedStyles Estilos prefefinidos.
  *
  * @api
  * @extends {M.layer}
@@ -36,10 +36,6 @@ class Vector extends LayerBase {
    * @constructor
    * @param {Mx.parameters.Layer} userParameters Parámetros para la construcción de la capa.
    * - name: Nombre de la capa en la leyenda.
-   * - url: Url del fichero o servicio que genera el vector.
-   * - minZoom: Zoom mínimo aplicable a la capa.
-   * - maxZoom: Zoom máximo aplicable a la capa.
-   * - infoEventType. Tipo de evento para mostrar la info de una feature.
    * - type: Tipo de la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
@@ -48,7 +44,6 @@ class Vector extends LayerBase {
    * - style. Define el estilo de la capa.
    * - minZoom. Zoom mínimo aplicable a la capa.
    * - maxZoom. Zoom máximo aplicable a la capa.
-   * - infoEventType. Tipo de evento para mostrar la info de una feature.
    * - visibility. Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
@@ -112,10 +107,10 @@ class Vector extends LayerBase {
      * predefinedStyles: Estilos predefinidos para la capa.
      */
     this.predefinedStyles =
-         isUndefined(options.predefinedStyles) ? [] : options.predefinedStyles;
+      isUndefined(options.predefinedStyles) ? [] : options.predefinedStyles;
 
-    const defaultOptionsStyle = !isUndefined(this.constructor.DEFAULT_OPTS_STYLE)
-      ? this.constructor.DEFAULT_OPTS_STYLE : this.constructor.DEFAULT_OPTIONS_STYLE;
+    const defaultOptionsStyle = !isUndefined(this.constructor.DEFAULT_OPTS_STYLE) ?
+      this.constructor.DEFAULT_OPTS_STYLE : this.constructor.DEFAULT_OPTIONS_STYLE;
 
     if (isUndefined(options.style) && defaultOptionsStyle) {
       this.predefinedStyles.unshift(new Generic(defaultOptionsStyle));
