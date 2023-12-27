@@ -2,22 +2,22 @@ import PrintViewManagement from 'facade/printviewmanagement';
 
 M.language.setLang('es');
 
-const suelo = new M.layer.WMTS({
-  url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
-  name: 'LU.ExistingLandUse',
-  legend: 'Ocupación del suelo WMTS',
-  matrixSet: 'GoogleMapsCompatible',
-  maxZoom: 20,
-  minZoom: 4,
-  visibility: true,
-}, { crossOrigin: 'anonymous' });
+// const suelo = new M.layer.WMTS({
+//   url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
+//   name: 'LU.ExistingLandUse',
+//   legend: 'Ocupación del suelo WMTS',
+//   matrixSet: 'GoogleMapsCompatible',
+//   maxZoom: 20,
+//   minZoom: 4,
+//   visibility: true,
+// }, { crossOrigin: 'anonymous' });
 
 const map = M.map({
   container: 'mapjs',
   zoom: 9,
   maxZoom: 20,
   minZoom: 4,
-  layers: [suelo],
+  // layers: [suelo],
   center: [-467062.8225, 4683459.6216],
 });
 
@@ -32,7 +32,7 @@ const mp = new PrintViewManagement({
   tooltip: 'Imprimir',
   serverUrl: 'https://componentes.cnig.es/geoprint',
   printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
-  defaultOpenControl: 3,
+  defaultOpenControl: 2,
   georefImageEpsg: {
     tooltip: 'Georeferenciar imagen',
     layers: [{
@@ -82,13 +82,13 @@ window.map = map;
 
 // map.addLayers(capaGeoJSON);
 
-// const capaOSM = new M.layer.OSM({
-//   name: 'Capa OSM',
-//   legend: 'Capa OSM',
-//   transparent: true,
-//   url: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-//   matrixSet: 'EPSG:3857',
-// });
+const capaOSM = new M.layer.OSM({
+  name: 'Capa OSM',
+  legend: 'Capa OSM',
+  transparent: true,
+  url: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  matrixSet: 'EPSG:3857',
+});
 
 // map.addLayers(capaOSM);
 
@@ -171,46 +171,46 @@ window.map = map;
 
 // map.addLayers(capaWFS);
 
-// const capaWMS = new M.layer.WMS({
-//   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-//   name: 'AU.AdministrativeUnit',
-//   legend: 'Capa WMS l',
-// }, { crossOrigin: 'anonymous' });
+const capaWMS = new M.layer.WMS({
+  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+  name: 'AU.AdministrativeUnit',
+  legend: 'Capa WMS l',
+}, { crossOrigin: 'anonymous' });
 
 // map.addLayers(capaWMS);
 
 
-// const capaWMTS = new M.layer.WMTS({
-//   url: 'https://servicios.idee.es/wmts/ocupacion-suelo',
-//   name: 'LC.LandCoverSurfaces',
-//   legend: 'LC.LandCoverSurfaces l',
-//   matrixSet: 'GoogleMapsCompatible',
-//   format: 'image/png',
-// }, { crossOrigin: 'anonymous' });
+const capaWMTS = new M.layer.WMTS({
+  url: 'https://servicios.idee.es/wmts/ocupacion-suelo',
+  name: 'LC.LandCoverSurfaces',
+  legend: 'LC.LandCoverSurfaces l',
+  matrixSet: 'GoogleMapsCompatible',
+  format: 'image/png',
+}, { crossOrigin: 'anonymous' });
 
 // map.addLayers(capaWMTS);
 
-// const capaXYZ = new M.layer.XYZ({
-//   url: 'https://www.ign.es/web/catalogo-cartoteca/resources/webmaps/data/cresques/{z}/{x}/{y}.jpg',
-//   name: 'Capa XYZ',
-//   legend: 'Capa XYZ l',
-//   projection: 'EPSG:3857',
-// }, { crossOrigin: 'anonymous' });
+const capaXYZ = new M.layer.XYZ({
+  url: 'https://www.ign.es/web/catalogo-cartoteca/resources/webmaps/data/cresques/{z}/{x}/{y}.jpg',
+  name: 'Capa XYZ',
+  legend: 'Capa XYZ l',
+  projection: 'EPSG:3857',
+}, { crossOrigin: 'anonymous' });
 
 // map.addLayers(capaXYZ);
 
 
-// window.fetch('./cabrera.mbtiles').then((response) => {
-//   const mbtile = new M.layer.MBTiles({
-//     name: 'mbtiles',
-//     legend: 'Capa MBTiles L',
-//     source: response,
-//   });
-//   map.addLayers(mbtile);
-//   window.mbtile = mbtile;
-// }).catch((e) => {
-//   throw e;
-// });
+window.fetch('./cabrera.mbtiles').then((response) => {
+  const mbtile = new M.layer.MBTiles({
+    name: 'mbtiles',
+    legend: 'Capa MBTiles L',
+    source: response,
+  });
+  map.addLayers(mbtile);
+  window.mbtile = mbtile;
+}).catch((e) => {
+  throw e;
+});
 
 // window.fetch('./countries.mbtiles').then((response) => {
 //   const mbtilesvector = new M.layer.MBTilesVector({
