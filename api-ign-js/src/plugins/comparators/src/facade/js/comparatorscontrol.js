@@ -97,18 +97,13 @@ export default class ComparatorsControl extends M.Control {
     this.mirrorpanelParams = this.options.mirrorpanelParams || true;
     if (typeof this.mirrorpanelParams === 'object') {
       this.mirrorpanelParams.enabledKeyFunctions = this.options.enabledKeyFunctions || false;
-      this.mirrorpanelParams.tooltip = (this.mirrorpanelParams.tooltip) ? this.mirrorpanelParams.tooltip : getValue('tooltipMirrorpanel');
     }
 
     this.lyrcompareParams = this.options.lyrcompareParams || true;
-    if (typeof this.lyrcompareParams === 'object') {
-      this.lyrcompareParams.tooltip = (this.lyrcompareParams.tooltip) ? this.lyrcompareParams.tooltip : getValue('tooltipLyr');
-    }
 
     this.transparencyParams = this.options.transparencyParams || true;
     if (typeof this.transparencyParams === 'object') {
       this.transparencyParams.enabledKeyFunctions = this.options.enabledKeyFunctions || false;
-      this.transparencyParams.tooltip = (this.transparencyParams.tooltip) ? this.transparencyParams.tooltip : getValue('tooltipTransparency');
     }
 
     this.control = null;
@@ -143,59 +138,60 @@ export default class ComparatorsControl extends M.Control {
     }
 
     // Gestor de los diferentes controles
-    this.controls = [
-      {
-        id: 'mirrorpanel',
-        buttonsID: 'mirrorpanel-btn',
-        controlParam: [
-          this.mirrorpanelParams,
-          this.layersPlugin,
-          this.map_,
-          this.defaultCompareMode,
-        ],
-        controlCreate: param => new MirrorpanelControl(...param),
-        control: null,
-        active: false,
-      },
-      {
-        id: 'lyrcompare',
-        buttonsID: 'lyrcompare-btn',
-        controlParam: [
-          this.lyrcompareParams,
-          this.layersPlugin,
-          this.map_,
-        ],
-        controlCreate: param => new LyrCompareControl(...param),
-        control: null,
-        active: false,
-      },
-      {
-        id: 'transparency',
-        buttonsID: 'transparency-btn',
-        controlParam: [
-          this.transparencyParams,
-          this.layersPlugin,
-          this.map_,
-        ],
-        controlCreate: param => new TransparencyControl(...param),
-        control: null,
-        active: false,
-      },
+    this.controls = [{
+      id: 'mirrorpanel',
+      buttonsID: 'mirrorpanel-btn',
+      controlParam: [
+        this.mirrorpanelParams,
+        this.layersPlugin,
+        this.map_,
+        this.defaultCompareMode,
+      ],
+      controlCreate: param => new MirrorpanelControl(...param),
+      control: null,
+      active: false,
+    },
+    {
+      id: 'lyrcompare',
+      buttonsID: 'lyrcompare-btn',
+      controlParam: [
+        this.lyrcompareParams,
+        this.layersPlugin,
+        this.map_,
+      ],
+      controlCreate: param => new LyrCompareControl(...param),
+      control: null,
+      active: false,
+    },
+    {
+      id: 'transparency',
+      buttonsID: 'transparency-btn',
+      controlParam: [
+        this.transparencyParams,
+        this.layersPlugin,
+        this.map_,
+      ],
+      controlCreate: param => new TransparencyControl(...param),
+      control: null,
+      active: false,
+    },
     ];
 
 
     return new Promise((success, fail) => {
+      const translations = {
+        headertitle: getValue('tooltip'),
+        mirrorpanelParams_tooltip: this.mirrorpanelParams.tooltip || getValue('tooltipMirrorpanel'),
+        lyrcompareParams_tooltip: this.lyrcompareParams.tooltip || getValue('tooltipLyr'),
+        transparencyParams_tooltip: this.transparencyParams.tooltip || getValue('tooltipTransparency'),
+      };
+      console.log(translations);
       this.html = M.template.compileSync(template, {
         vars: {
           mirrorpanelParams: this.mirrorpanelParams,
           lyrcompareParams: this.lyrcompareParams,
           transparencyParams: this.transparencyParams,
-          translations: {
-            headertitle: getValue('tooltip'),
-            mirrorpanelParams_tooltip: this.mirrorpanelParams.tooltip,
-            lyrcompareParams_tooltip: this.lyrcompareParams.tooltip,
-            transparencyParams_tooltip: this.transparencyParams.tooltip,
-          },
+          translations,
         },
       });
 
@@ -321,8 +317,8 @@ export default class ComparatorsControl extends M.Control {
 
           // eslint-disable-next-line
           this.controls.forEach(c =>
-          // eslint-disable-next-line
-          c.controlParam[1] = [...c.controlParam[1], ...layersStringDefault]);
+            // eslint-disable-next-line
+            c.controlParam[1] = [...c.controlParam[1], ...layersStringDefault]);
         }
       });
     });
@@ -537,8 +533,8 @@ export default class ComparatorsControl extends M.Control {
 
     this.controls.forEach((c) => {
       const controlObjet = c;
-      controlObjet.active = (dic[this.options.defaultCompareMode] === controlObjet.id)
-        ? !controlObjet.active : false;
+      controlObjet.active = (dic[this.options.defaultCompareMode] === controlObjet.id) ?
+        !controlObjet.active : false;
     });
 
     this.eventActive_();
