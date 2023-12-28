@@ -21,6 +21,37 @@ const map = M.map({
   center: [-467062.8225, 4683459.6216],
 });
 
+const capaKML1 = new M.layer.KML({
+  url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
+  name: 'Capa KML',
+  legend: 'Capa KML',
+  extract: true,
+}, {
+  // extractStyles: false,
+  // style: new M.style.Point({
+  //   radius: 5,
+  //   fill: {
+  //     color: 'green',
+  //     opacity: 0.5,
+  //   },
+  //   stroke: {
+  //     color: '#FF0000',
+  //   },
+  // }),
+});
+
+map.addLayers(capaKML1);
+
+// const capaWFS = new M.layer.WFS({
+//   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?',
+//   namespace: 'sepim',
+//   name: 'campamentos',
+//   legend: 'Capa WFS l',
+//   geometry: 'MPOINT',
+// });
+
+// map.addLayers(capaWFS);
+
 // añadir wmts API-CNIG {url: 'http://www.ign.es/wms-inspire/mapa-raster?', name: 'mtn_rasterizado',format: 'image/jpeg',legend: 'Mapa ETRS89 UTM',EPSG: 'EPSG:4258',},
 // WMTS -> OK
 
@@ -154,23 +185,6 @@ const capaOSM = new M.layer.OSM({
 
 // map.addLayers(capaVector);
 
-// const capaWFS = new M.layer.WFS({
-//   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
-//   namespace: 'tematicos',
-//   name: 'Provincias',
-//   legend: 'Capa WFS l',
-//   geometry: 'MPOLYGON',
-//   attribution: {
-//     nameLayer: 'Nombre capa',
-//     name: 'Otro nombre', // se puede llamar description?
-//     url: 'https://www.google.es',
-//     contentAttributions: 'https://mapea-lite.desarrollo.guadaltel.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
-//     contentType: 'kml',
-//   },
-// });
-
-// map.addLayers(capaWFS);
-
 const capaWMS = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit',
@@ -200,17 +214,17 @@ const capaXYZ = new M.layer.XYZ({
 // map.addLayers(capaXYZ);
 
 
-window.fetch('./cabrera.mbtiles').then((response) => {
-  const mbtile = new M.layer.MBTiles({
-    name: 'mbtiles',
-    legend: 'Capa MBTiles L',
-    source: response,
-  });
-  map.addLayers(mbtile);
-  window.mbtile = mbtile;
-}).catch((e) => {
-  throw e;
-});
+// window.fetch('./cabrera.mbtiles').then((response) => {
+//   const mbtile = new M.layer.MBTiles({
+//     name: 'mbtiles',
+//     legend: 'Capa MBTiles L',
+//     source: response,
+//   });
+//   map.addLayers(mbtile);
+//   window.mbtile = mbtile;
+// }).catch((e) => {
+//   throw e;
+// });
 
 // window.fetch('./countries.mbtiles').then((response) => {
 //   const mbtilesvector = new M.layer.MBTilesVector({

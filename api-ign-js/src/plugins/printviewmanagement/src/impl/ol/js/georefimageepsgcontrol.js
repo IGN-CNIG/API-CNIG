@@ -54,8 +54,14 @@ export default class GeorefImageEpsgControl extends M.impl.Control {
     return (new Promise((success, fail) => {
       if (layer.type === M.layer.type.WMC) {
         // none
-      } else if (layer.type === M.layer.type.KML) {
+      } else if (layer.type === M.layer.type.KML &&
+        // eslint-disable-next-line no-underscore-dangle
+        layer.getImpl().formater_.extractStyles_ !== false) {
         success(this.encodeKML(layer));
+      } else if (layer.type === M.layer.type.KML &&
+        // eslint-disable-next-line no-underscore-dangle
+        layer.getImpl().formater_.extractStyles_ === false) {
+        success(this.encodeWFS(layer));
       } else if (layer.type === M.layer.type.WMS) {
         success(this.encodeWMS(layer));
       } else if (layer.type === M.layer.type.WFS) {
@@ -68,7 +74,7 @@ export default class GeorefImageEpsgControl extends M.impl.Control {
         });
       } else if (M.utils.isNullOrEmpty(layer.type) && layer instanceof M.layer.Vector) {
         success(this.encodeWFS(layer));
-      // eslint-disable-next-line no-underscore-dangle
+        // eslint-disable-next-line no-underscore-dangle
       } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
         success(this.encodeImage(layer));
       } else if (layer.type === M.layer.type.XYZ || layer.type === M.layer.type.TMS) {
@@ -857,7 +863,7 @@ export default class GeorefImageEpsgControl extends M.impl.Control {
               s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
             });
           });
-        /* eslint-disable no-empty */
+          /* eslint-disable no-empty */
         } catch (err) {}
         success.call(this, parsedCapabilities);
       });

@@ -6,32 +6,32 @@ import { getValue } from '../../../facade/js/i18n/language';
 
 export default class GeorefimageControl extends M.impl.Control {
   /**
-    * @classdesc
-    * Main constructor of the measure conrol.
-    *
-    * @constructor
-    * @extends {ol.control.Control}
-    * @api stable
-    */
+   * @classdesc
+   * Main constructor of the measure conrol.
+   *
+   * @constructor
+   * @extends {ol.control.Control}
+   * @api stable
+   */
   constructor(map) {
     super();
     /**
-      * Facade of the map
-      * @private
-      * @type {M.Map}
-      */
+     * Facade of the map
+     * @private
+     * @type {M.Map}
+     */
     this.facadeMap_ = map;
   }
 
   /**
-    * This function adds the control to the specified map
-    *
-    * @public
-    * @function
-    * @param {M.Map} map to add the plugin
-    * @param {function} template template of this control
-    * @api stable
-    */
+   * This function adds the control to the specified map
+   *
+   * @public
+   * @function
+   * @param {M.Map} map to add the plugin
+   * @param {function} template template of this control
+   * @api stable
+   */
   addTo(map, element) {
     this.facadeMap_ = map;
 
@@ -43,21 +43,21 @@ export default class GeorefimageControl extends M.impl.Control {
   }
 
   /**
-    * This function encodes a layer.
-    * Esta función codifica una capa, se usa tanto en el control de
-    * georreferenciación como en el de georreferenciación de imagen
-    *
-    * @public
-    * @function
-    * @param {Layer} layer to encode
-    * @api stable
-    */
+   * This function encodes a layer.
+   * Esta función codifica una capa, se usa tanto en el control de
+   * georreferenciación como en el de georreferenciación de imagen
+   *
+   * @public
+   * @function
+   * @param {Layer} layer to encode
+   * @api stable
+   */
   getParametrizedLayers(facadeMap, paramName, layers) {
     let others = facadeMap.getMapImpl().getLayers().getArray().filter((layer) => {
       return !M.utils.isNullOrEmpty(layer.getSource()) &&
-      // eslint-disable-next-line no-underscore-dangle
-         !M.utils.isNullOrEmpty(layer.getSource().params_) &&
-         layer.getSource().getParams()[paramName] !== undefined;
+        // eslint-disable-next-line no-underscore-dangle
+        !M.utils.isNullOrEmpty(layer.getSource().params_) &&
+        layer.getSource().getParams()[paramName] !== undefined;
     });
 
     others = others.filter((layer) => {
@@ -69,21 +69,27 @@ export default class GeorefimageControl extends M.impl.Control {
     return others;
   }
   /**
-    * This function encodes a layer.
-    *
-    * @public
-    * @function
-    * @param {Layer} layer to encode
-    * @api stable
-    */
+   * This function encodes a layer.
+   *
+   * @public
+   * @function
+   * @param {Layer} layer to encode
+   * @api stable
+   */
   encodeLayer(layer) {
     return (new Promise((success, fail) => {
       if (layer.type === M.layer.type.MVT) {
         success(this.encodeMVT(layer));
       } else if (layer.type === M.layer.type.MBTilesVector) {
         M.toast.error(getValue('exception.support'), 6000);
-      } else if (layer.type === M.layer.type.KML) {
+      } else if (layer.type === M.layer.type.KML &&
+        // eslint-disable-next-line no-underscore-dangle
+        layer.getImpl().formater_.extractStyles_ !== false) {
         success(this.encodeKML(layer));
+      } else if (layer.type === M.layer.type.KML &&
+        // eslint-disable-next-line no-underscore-dangle
+        layer.getImpl().formater_.extractStyles_ === false) {
+        success(this.encodeWFS(layer));
       } else if (layer.type === M.layer.type.WMS) {
         success(this.encodeWMS(layer));
       } else if (layer.type === M.layer.type.WFS) {
@@ -99,8 +105,8 @@ export default class GeorefimageControl extends M.impl.Control {
         // eslint-disable-next-line no-underscore-dangle
       } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
         success(this.encodeImage(layer));
-      } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type)
-      > -1) {
+      } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type) >
+        -1) {
         success(this.encodeXYZ(layer));
       } else {
         success(this.encodeWFS(layer));
@@ -109,14 +115,14 @@ export default class GeorefimageControl extends M.impl.Control {
   }
 
   /**
-    * This function adds the control to the specified map
-    *
-    * @public
-    * @function
-    * @param {M.Map} map to add the plugin
-    * @param {function} template template of this control
-    * @api stable
-    */
+   * This function adds the control to the specified map
+   *
+   * @public
+   * @function
+   * @param {M.Map} map to add the plugin
+   * @param {function} template template of this control
+   * @api stable
+   */
   encodeKML(layer) {
     let encodedLayer = null;
 
@@ -208,7 +214,7 @@ export default class GeorefimageControl extends M.impl.Control {
           nameFeature = `draw${index}`;
 
           if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) &&
-             !M.utils.isNullOrEmpty(text)) {
+            !M.utils.isNullOrEmpty(text)) {
             const styleStr = JSON.stringify(styleGeom);
             const styleTextStr = JSON.stringify(styleText);
             let styleName = stylesNames[styleStr];
@@ -218,7 +224,7 @@ export default class GeorefimageControl extends M.impl.Control {
               const symbolizers = [];
               let flag = 0;
               if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) &&
-                 M.utils.isUndefined(styleName)) {
+                M.utils.isUndefined(styleName)) {
                 styleName = indexGeom;
                 stylesNames[styleStr] = styleName;
                 flag = 1;
@@ -293,13 +299,13 @@ export default class GeorefimageControl extends M.impl.Control {
   }
 
   /**
-    * This function encodes a WMS layer.
-    *
-    * @public
-    * @function
-    * @param {M.layer.WMS} layer to encode
-    * @api stable
-    */
+   * This function encodes a WMS layer.
+   *
+   * @public
+   * @function
+   * @param {M.layer.WMS} layer to encode
+   * @api stable
+   */
   encodeWMS(layer) {
     let encodedLayer = null;
     const olLayer = layer.getImpl().getOL3Layer();
@@ -359,13 +365,13 @@ export default class GeorefimageControl extends M.impl.Control {
   }
 
   /**
-    * This function encodes a OL Image layer.
-    *
-    * @public
-    * @function
-    * @param {IMAGE} layer to encode
-    * @api stable
-    */
+   * This function encodes a OL Image layer.
+   *
+   * @public
+   * @function
+   * @param {IMAGE} layer to encode
+   * @api stable
+   */
   encodeImage(layer) {
     let encodedLayer = null;
     const olLayer = layer;
@@ -415,14 +421,14 @@ export default class GeorefimageControl extends M.impl.Control {
   }
 
   /**
-    * This function adds the control to the specified map
-    *
-    * @public
-    * @function
-    * @param {M.Map} map to add the plugin
-    * @param {function} template template of this control
-    * @api stable
-    */
+   * This function adds the control to the specified map
+   *
+   * @public
+   * @function
+   * @param {M.Map} map to add the plugin
+   * @param {function} template template of this control
+   * @api stable
+   */
   encodeWFS(layer) {
     let encodedLayer = null;
     const continuePrint = true;
@@ -466,7 +472,7 @@ export default class GeorefimageControl extends M.impl.Control {
           // SRC style has priority
           if (featureStyle.length > 1) {
             featureStyle = (!M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
-                 featureStyle[1].getImage().getSrc) ?
+                featureStyle[1].getImage().getSrc) ?
               featureStyle[1] : featureStyle[0];
           } else {
             featureStyle = featureStyle[0];
@@ -579,7 +585,7 @@ export default class GeorefimageControl extends M.impl.Control {
           nameFeature = `draw${index}`;
 
           if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) ||
-             !M.utils.isNullOrEmpty(text)) {
+            !M.utils.isNullOrEmpty(text)) {
             const styleStr = JSON.stringify(styleGeom);
             const styleTextStr = JSON.stringify(styleText);
             let styleName = stylesNames[styleStr];
@@ -589,7 +595,7 @@ export default class GeorefimageControl extends M.impl.Control {
               const symbolizers = [];
               let flag = 0;
               if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) &&
-                 M.utils.isUndefined(styleName)) {
+                M.utils.isUndefined(styleName)) {
                 styleName = indexGeom;
                 stylesNames[styleStr] = styleName;
                 flag = 1;
@@ -668,14 +674,14 @@ export default class GeorefimageControl extends M.impl.Control {
   }
 
   /**
-    * This function
-    *
-    * @public
-    * @function
-    * @param {M.Map} map to add the plugin
-    * @param {function} template template of this control
-    * @api stable
-    */
+   * This function
+   *
+   * @public
+   * @function
+   * @param {M.Map} map to add the plugin
+   * @param {function} template template of this control
+   * @api stable
+   */
   encodeWMTS(layer) {
     const layerImpl = layer.getImpl();
     const olLayer = layerImpl.getOL3Layer();
@@ -688,8 +694,8 @@ export default class GeorefimageControl extends M.impl.Control {
     const matrixSet = layer.matrixSet;
 
     /**
-      * @see http: //www.mapfish.org/doc/print/protocol.html#layers-params
-      */
+     * @see http: //www.mapfish.org/doc/print/protocol.html#layers-params
+     */
     return layer.getImpl().getCapabilities().then((capabilities) => {
       const matrixIdsObj = capabilities.Contents.TileMatrixSet.filter((tileMatrixSet) => {
         return (tileMatrixSet.Identifier === matrixSet);
@@ -724,14 +730,14 @@ export default class GeorefimageControl extends M.impl.Control {
   }
 
   /**
-    * This function
-    *
-    * @public
-    * @function
-    * @param {M.Map} map to add the plugin
-    * @param {function} template template of this control
-    * @api stable
-    */
+   * This function
+   *
+   * @public
+   * @function
+   * @param {M.Map} map to add the plugin
+   * @param {function} template template of this control
+   * @api stable
+   */
   encodeOSM(layer) {
     let encodedLayer = null;
 
@@ -762,14 +768,14 @@ export default class GeorefimageControl extends M.impl.Control {
   }
 
   /**
-    * This function adds the control to the specified map
-    *
-    * @public
-    * @function
-    * @param {M.Map} map to add the plugin
-    * @param {function} template template of this control
-    * @api stable
-    */
+   * This function adds the control to the specified map
+   *
+   * @public
+   * @function
+   * @param {M.Map} map to add the plugin
+   * @param {function} template template of this control
+   * @api stable
+   */
   encodeMapbox(layer) {
     let encodedLayer = null;
 
@@ -804,13 +810,13 @@ export default class GeorefimageControl extends M.impl.Control {
   }
 
   /**
-    * This function reprojects map on selected SRS.
-    *
-    * @function
-    * @param {string} origin - EPSG:25830
-    * @param {array<number>} coordinates pair
-    * @api
-    */
+   * This function reprojects map on selected SRS.
+   *
+   * @function
+   * @param {string} origin - EPSG:25830
+   * @param {array<number>} coordinates pair
+   * @api
+   */
   reproject(origin, coordinates) {
     const originProj = ol.proj.get(origin);
     const destProj = ol.proj.get('EPSG:4326');
@@ -897,14 +903,14 @@ export default class GeorefimageControl extends M.impl.Control {
 
       if (featureStyle instanceof Function) {
         featureStyle =
-           featureStyle.call(featureStyle, feature.getImpl().getOLFeature(), resolution);
+          featureStyle.call(featureStyle, feature.getImpl().getOLFeature(), resolution);
       }
 
       if (featureStyle instanceof Array) {
         // SRC style has priority
         if (featureStyle.length > 1) {
           featureStyle = (!M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
-               featureStyle[1].getImage().getSrc) ?
+              featureStyle[1].getImage().getSrc) ?
             featureStyle[1] : featureStyle[0];
         } else {
           featureStyle = featureStyle[0];
@@ -939,7 +945,7 @@ export default class GeorefimageControl extends M.impl.Control {
 
         let styleText;
         const lineDash = (featureStyle.getStroke() !== null &&
-             featureStyle.getStroke() !== undefined) ?
+            featureStyle.getStroke() !== undefined) ?
           featureStyle.getStroke().getLineDash() : undefined;
         const styleGeom = {
           type: parseType,
@@ -1074,7 +1080,7 @@ export default class GeorefimageControl extends M.impl.Control {
         nameFeature = `draw${index}`;
         const extent = geometry.getExtent();
         if ((!M.utils.isNullOrEmpty(geometry) && ol.extent.intersects(bbox, extent)) ||
-           !M.utils.isNullOrEmpty(text)) {
+          !M.utils.isNullOrEmpty(text)) {
           const styleStr = JSON.stringify(styleGeom);
           const styleTextStr = JSON.stringify(styleText);
           let styleName = stylesNames[styleStr];
@@ -1084,7 +1090,7 @@ export default class GeorefimageControl extends M.impl.Control {
             const symbolizers = [];
             let flag = 0;
             if (!M.utils.isNullOrEmpty(geometry) && ol.extent.intersects(bbox, extent) &&
-               M.utils.isUndefined(styleName)) {
+              M.utils.isUndefined(styleName)) {
               styleName = indexGeom;
               stylesNames[styleStr] = styleName;
               flag = 1;
@@ -1121,7 +1127,7 @@ export default class GeorefimageControl extends M.impl.Control {
 
           let coordinates = geometry.getFlatCoordinates();
           coordinates =
-             this.inflateCoordinatesArray(parseType, coordinates.slice(), 0, geometry.getEnds(), 2);
+            this.inflateCoordinatesArray(parseType, coordinates.slice(), 0, geometry.getEnds(), 2);
           if (coordinates.length > 0) {
             const geoJSONFeature = {
               id: feature.getId(),
@@ -1180,16 +1186,15 @@ export default class GeorefimageControl extends M.impl.Control {
   }
 
   /**
-    * This function destroys this control, clearing the HTML
-    * and unregistering all events
-    *
-    * @public
-    * @function
-    * @api stable
-    */
+   * This function destroys this control, clearing the HTML
+   * and unregistering all events
+   *
+   * @public
+   * @function
+   * @api stable
+   */
   destroy() {
     this.facadeMap_.getMapImpl().removeControl(this);
     this.facadeMap_ = null;
   }
 }
-
