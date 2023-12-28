@@ -52,7 +52,7 @@ class WMTS extends LayerBase {
    * - format: Formato.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
-   * - crossOrigin: Indica si se usa crossOrigin.
+   * - crossOrigin: Atributo crossOrigin para las imágenes cargadas
    * - opacity: Opacidad de capa, por defecto 1.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
@@ -107,7 +107,7 @@ class WMTS extends LayerBase {
     this.useCapabilities = options.useCapabilities !== false;
 
     /**
-     * CrossOrigin. Indica si se usa crossOrigin.
+     * CrossOrigin. Atributo crossOrigin para las imágenes cargadas
      */
     this.crossOrigin = options.crossOrigin || null;
 

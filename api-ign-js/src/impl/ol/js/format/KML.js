@@ -28,7 +28,6 @@ class KML extends OLFormatKML {
    * - defaultStyle: Estilo por defecto. El estilo por defecto es el mismo que
    * el de Google Earth.
    * - writeStyles: Escribir estilos en el KML. Por defecto es verdadero.
-   * - crossOrigin: Atributo para imágenes cargadas. Por defecto es 'anonymous'.
    * - iconUrlFunction: Función que toma una URL como cadena y devuelve una URL
    * como cadena.
    * -label: Define si se muestra la etiqueta o no.Por defecto mostrará la etiqueta.

@@ -67,6 +67,7 @@ class TMS extends LayerBase {
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - opacity: Opacidad de capa, por defecto 1.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import XYZSource from 'ol/source/XYZ';

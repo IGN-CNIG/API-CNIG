@@ -72,7 +72,7 @@ class WMS extends LayerBase {
    * - ratio: determina el tamaño de las solicitudes de las imágenes.1 significa que tienen el *
    * tamaño de la ventana, 2 significa que tienen el doble del tamaño de la ventana,
    * y así sucesivamente.Debe ser 1 o superior.Por defecto es 1.
-   * - crossOrigin: Indica si se usa crossOrigin.
+   * - crossOrigin: atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileWMS from 'ol/source/TileWMS';
@@ -212,7 +212,7 @@ class WMS extends LayerBase {
     }
 
     /**
-     * CrossOrigin. Indica si se usa crossOrigin.
+     * CrossOrigin. Atributo crossOrigin para las imágenes cargadas.
      */
     this.crossOrigin = options.crossOrigin || null;
   }

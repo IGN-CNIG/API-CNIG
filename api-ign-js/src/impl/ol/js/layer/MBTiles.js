@@ -82,7 +82,7 @@ class MBTiles extends Layer {
    * - opacity: Opacidad de capa, por defecto 1.
    * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
-   * - crossOrigin: Indica si se usa crossOrigin.
+   * -  CrossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLTileGrid from 'ol/tilegrid/TileGrid';
@@ -144,7 +144,7 @@ class MBTiles extends Layer {
 
 
     /**
-     * CrossOrigin. Indica si se usa crossOrigin.
+     *  CrossOrigin: Atributo crossOrigin para las imágenes cargadas.
      */
     this.crossOrigin = options.crossOrigin || null;
   }
