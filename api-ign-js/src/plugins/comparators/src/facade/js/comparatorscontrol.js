@@ -94,14 +94,17 @@ export default class ComparatorsControl extends M.Control {
 
     this.defaultCompareMode = this.options.defaultCompareMode || false;
 
-    this.mirrorpanelParams = this.options.mirrorpanelParams || true;
+    this.mirrorpanelParams =
+      M.utils.isUndefined(this.options.mirrorpanelParams) ? true : this.options.mirrorpanelParams;
     if (typeof this.mirrorpanelParams === 'object') {
       this.mirrorpanelParams.enabledKeyFunctions = this.options.enabledKeyFunctions || false;
     }
 
-    this.lyrcompareParams = this.options.lyrcompareParams || true;
+    this.lyrcompareParams =
+      M.utils.isUndefined(this.options.lyrcompareParams) ? true : this.options.lyrcompareParams;
 
-    this.transparencyParams = this.options.transparencyParams || true;
+    this.transparencyParams =
+      M.utils.isUndefined(this.options.transparencyParams) ? true : this.options.transparencyParams;
     if (typeof this.transparencyParams === 'object') {
       this.transparencyParams.enabledKeyFunctions = this.options.enabledKeyFunctions || false;
     }
@@ -185,7 +188,6 @@ export default class ComparatorsControl extends M.Control {
         lyrcompareParams_tooltip: this.lyrcompareParams.tooltip || getValue('tooltipLyr'),
         transparencyParams_tooltip: this.transparencyParams.tooltip || getValue('tooltipTransparency'),
       };
-      console.log(translations);
       this.html = M.template.compileSync(template, {
         vars: {
           mirrorpanelParams: this.mirrorpanelParams,
