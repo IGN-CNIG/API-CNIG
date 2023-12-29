@@ -21,3 +21,6 @@ Mapa básico con capas WFS.
 
 CP-008
 Mapa básico con capas WMS.
+
+CP-009
+Mapa básico con capas KML.
