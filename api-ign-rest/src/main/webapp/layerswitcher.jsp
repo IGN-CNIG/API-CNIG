@@ -215,7 +215,7 @@
             map.addPlugin(mp);
         }
 
-        crearPlugin();
+        cambiarTest();
     </script>
 </body>
 
