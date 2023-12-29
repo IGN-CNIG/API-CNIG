@@ -131,6 +131,8 @@
             center: [-467062.8225, 4783459.6216],
         });
 
+        let mp = null;
+
         let mp2 = new M.plugin.ShareMap({
             baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
@@ -206,7 +208,7 @@
             objeto.https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
             objeto.showCatalog = (selectShowCatalog.options[selectShowCatalog.selectedIndex].value == 'true');
             objeto.useProxy = (selectProxy.options[selectProxy.selectedIndex].value == 'true');
-            if (mp !== undefined) {
+            if (mp !== null) {
                 map.removePlugins(mp);
             }
             crearPlugin(objeto);
