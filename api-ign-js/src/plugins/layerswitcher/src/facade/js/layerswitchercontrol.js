@@ -2693,14 +2693,12 @@ export default class LayerswitcherControl extends M.Control {
     const results = [];
     if (data.metadata !== undefined) {
       data.metadata.forEach((m) => {
-        if (m.keyword && !m.keyword.includes('API Maps')) {
-          const links = this.getLinksCODSIResults(m);
-          if (links.length > 0) {
-            results.push({
-              title: m.title || m.defaultTitle,
-              url: links[0].split('?')[0],
-            });
-          }
+        const links = this.getLinksCODSIResults(m);
+        if (links.length > 0) {
+          results.push({
+            title: m.title || m.defaultTitle,
+            url: links[0].split('?')[0],
+          });
         }
       });
     }
