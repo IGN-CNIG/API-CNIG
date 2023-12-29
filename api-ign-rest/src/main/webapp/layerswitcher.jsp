@@ -206,7 +206,9 @@
             objeto.https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
             objeto.showCatalog = (selectShowCatalog.options[selectShowCatalog.selectedIndex].value == 'true');
             objeto.useProxy = (selectProxy.options[selectProxy.selectedIndex].value == 'true');
-            map.removePlugins(mp);
+            if (mp !== undefined) {
+                map.removePlugins(mp);
+            }
             crearPlugin(objeto);
         }
 
