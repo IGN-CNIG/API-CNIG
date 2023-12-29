@@ -253,6 +253,10 @@ export default class LayerswitcherControl extends M.Control {
             translations: {
               layers: getValue('layers'),
               show_hide: getValue('show_hide'),
+              hide_service: getValue('hide_service'),
+              show_service: getValue('show_service'),
+              show_all_services: getValue('show_all_services'),
+              hide_all_services: getValue('hide_all_services'),
               zoom: getValue('zoom'),
               info_metadata: getValue('info_metadata'),
               remove_layer: getValue('remove_layer'),
