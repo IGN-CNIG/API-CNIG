@@ -1402,10 +1402,17 @@ export default class LayerswitcherControl extends M.Control {
   addEventSearch() {
     // Elements
     const searchInput = document.querySelector(SEARCH_BTN);
+    const searchInput2 = document.querySelector(SEARCH_INPUT);
 
     searchInput.addEventListener('click', (e) => {
       this.filterName = undefined;
       this.readCapabilities(e);
+    });
+    searchInput2.addEventListener('keydown', (e) => {
+      if (e.keyCode === 13) {
+        this.filterName = undefined;
+        this.readCapabilities(e);
+      }
     });
   }
 
