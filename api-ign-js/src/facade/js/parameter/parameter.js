@@ -3995,11 +3995,9 @@ export const layer = (userParameters, forcedType) => {
         layerObj.transparent = !userParam.isBase;
       }
 
-      // if (!isNullOrEmpty(userParam.infoEventType)) {
-      //   layerObj.infoEventType = userParam.infoEventType;
-      // } else {
-      //   layerObj.infoEventType = 'click';
-      // }
+      if (!isNullOrEmpty(userParam.infoEventType)) {
+        layerObj.infoEventType = userParam.infoEventType;
+      }
       // if (!isNullOrEmpty(userParam.attribution)) {
       //   layerObj.attribution = userParam.attribution;
       // }
