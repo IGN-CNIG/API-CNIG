@@ -202,8 +202,17 @@ export default class MouseSRSControl extends M.impl.Control {
    */
   getDecimalUnits() {
     let decimalDigits;
-    // eslint-disable-next-line no-underscore-dangle
-    const srsUnits = ol.proj.get(this.srs_).units_;
+    let srsUnits;
+    try {
+      // eslint-disable-next-line no-underscore-dangle
+      srsUnits = ol.proj.get(this.srs_).units_;
+    } catch (e) {
+      M.dialog.error(getValue('exception.srs'));
+      // eslint-disable-next-line no-underscore-dangle
+      srsUnits = ol.proj.get('EPSG:4326').units_;
+      this.srs_ = 'EPSG:4326';
+    }
+
     if (srsUnits === 'd' && this.geoDecimalDigits !== undefined) {
       decimalDigits = this.geoDecimalDigits;
     } else if (srsUnits === 'm' && this.utmDecimalDigits !== undefined) {
