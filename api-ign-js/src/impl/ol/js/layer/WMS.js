@@ -712,7 +712,7 @@ class WMS extends LayerBase {
       return cap.url === this.url;
     });
 
-    if (capabilitiesInfo.capabilities) {
+    if (capabilitiesInfo) {
       this.getCapabilitiesPromise = capabilitiesInfo.capabilities;
     } else if (isNullOrEmpty(this.getCapabilitiesPromise)) {
       const layerUrl = this.url;
