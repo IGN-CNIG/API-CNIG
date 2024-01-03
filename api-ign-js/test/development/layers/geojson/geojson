@@ -2,8 +2,10 @@
 import GeoJSON from 'M/layer/GeoJSON';
 
 export const geojson_001 = new GeoJSON({
-  name: 'Provincias',
-  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application/json',
+  name: 'Municipios',
+  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Municipios&maxFeatures=50&outputFormat=application/json',
+  // extract: true,
+  // infoEventType: 'hover',
   // isBase: true,
   // transparent: false,
   // attribution: {

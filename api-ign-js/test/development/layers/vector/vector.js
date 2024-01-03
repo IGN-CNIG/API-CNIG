@@ -1,24 +1,23 @@
-
 import Vector from 'M/layer/Vector';
 import Feature from 'M/feature/Feature';
 
 export const vector_001 = new Vector({
-  name: 'capaVectorial',
-  legend: 'Capa Vector',
-  // isBase: true,
-  // transparent: false,
-  // attribution: {
-  //   name: 'Name Prueba Vector',
-  //   description: 'Description Prueba',
-  //   url: 'https://www.ign.es',
-  //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
-  //   contentType: 'kml',
-  // },
-},
-// {
-//   minZoom: 5,
-//   maxZoom: 10
-// }
+    name: 'capaVectorial',
+    legend: 'Capa Vector',
+    // isBase: true,
+    // transparent: false,
+    // attribution: {
+    //   name: 'Name Prueba Vector',
+    //   description: 'Description Prueba',
+    //   url: 'https://www.ign.es',
+    //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+    //   contentType: 'kml',
+    // },
+  },
+  // {
+  //   minZoom: 5,
+  //   maxZoom: 10
+  // }
 );
 
 // Creamos feature

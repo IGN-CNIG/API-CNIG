@@ -1,5 +1,5 @@
 import { map as Mmap } from 'M/mapea';
-import { wfs_001 } from '../layers/wfs/wfs';
+import { xyz_001 } from '../layers/xyz/xyz';
 
 
 const mapa = Mmap({
@@ -8,9 +8,10 @@ const mapa = Mmap({
   center: [-443273.10081370454, 4757481.749296248],
   zoom: 6,
   layers: ['OSM'],
+  controls: ['scale', 'getfeatureinfo'],
 });
 
-mapa.addLayers([wfs_001]);
+mapa.addLayers([xyz_001]);
 
 
 window.mapa = mapa;

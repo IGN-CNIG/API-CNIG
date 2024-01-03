@@ -36,33 +36,33 @@ const sldBody = '<?xml version="1.0" encoding="ISO-8859-1"?>' +
   '</NamedLayer>' +
   '</StyledLayerDescriptor>';
 
-export const generic_001 = new Generic({
-  // isBase: true,
-  // transparent: false,
-  // legend: 'capaGenericRaster',
-  // version: '1.2.0', OK
-  // maxExtent: [-952551.7366869409, 4498177.065457279, -669276.1098620776, 4562995.6654431075]
-  // hay que comprobar si maxExtent va en este objeto
-}, {
-  // visibility: true,
-  // opacity: 0.5,
-  // minZoom: 5,
-  // maxZoom: 7,
-  // format: 'image/jpeg',
-  // sldBody,
-  // styles: 'municipios_transparente',
-  // queryable: false,
-  // minScale: 2000000,
-  // maxScale: 7000000,
-  // minResolution: 705.5551745557614,
-  // maxResolution: 2469.443110945165,
-  // hay que comprobar si maxExtent va en este objeto
-}, new Image({
-  source: new ImageWMS({
-    url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
-    params: { LAYERS: 'tematicos:Municipios' },
-  }),
-}));
+// export const generic_001 = new Generic({
+// isBase: true,
+// transparent: false,
+// legend: 'capaGenericRaster',
+// version: '1.2.0', OK
+// maxExtent: [-952551.7366869409, 4498177.065457279, -669276.1098620776, 4562995.6654431075]
+// hay que comprobar si maxExtent va en este objeto
+// }, {
+// visibility: true,
+// opacity: 0.5,
+// minZoom: 5,
+// maxZoom: 7,
+// format: 'image/jpeg',
+// sldBody,
+// styles: 'municipios_transparente',
+// queryable: false,
+// minScale: 2000000,
+// maxScale: 7000000,
+// minResolution: 705.5551745557614,
+// maxResolution: 2469.443110945165,
+// hay que comprobar si maxExtent va en este objeto
+// }, new Image({
+//   source: new ImageWMS({
+//     url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
+//     params: { LAYERS: 'tematicos:Municipios' },
+//   }),
+// }));
 
 export const generic_002 = new Generic({
   // ids: '1,2',
@@ -70,6 +70,8 @@ export const generic_002 = new Generic({
   // version: '1.2.0',
   // extract: true,
   // opacity: 0.5,
+  // extract: true,
+  // infoEventType: 'hover',
 }, {
   visibility: false,
   minZoom: 5,
