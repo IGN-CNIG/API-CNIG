@@ -11,26 +11,26 @@ import {
   getResolutionFromScale,
   isUndefined,
 } from 'M/util/Utils';
-import popupKMLTemplate from 'templates/kml_popup';
+import geojsonPopupTemplate from 'templates/geojson_popup';
 import Vector from './Vector';
 import ImplMap from '../Map';
 import Feature from '../feature/Feature';
 
 /**
-  * @classdesc
-  * Generic permite añadir cualquier tipo de capa definida con la librería base.
-  * @property {Object} options - Opciones de la capa
-  * @property {Number} zIndex_ - Índice de la capa
-  * @property {String} sldBody - Cuerpo del SLD
-  * @property {String} styles - Estilos de la capa
-  * @property {String} style - Estilo de la capa
-  * @property {String} cql - CQL de la capa
-  * @property {Function} fnAddFeatures_ - Función para añadir features
-  * @param {Object} options - Objeto de opciones
-  * @param {Object} vendorOptions - Objeto de opciones del proveedor
-  * @api
-  * @extends {M.impl.layer.Vector}
-  */
+ * @classdesc
+ * Generic permite añadir cualquier tipo de capa definida con la librería base.
+ * @property {Object} options - Opciones de la capa
+ * @property {Number} zIndex_ - Índice de la capa
+ * @property {String} sldBody - Cuerpo del SLD
+ * @property {String} styles - Estilos de la capa
+ * @property {String} style - Estilo de la capa
+ * @property {String} cql - CQL de la capa
+ * @property {Function} fnAddFeatures_ - Función para añadir features
+ * @param {Object} options - Objeto de opciones
+ * @param {Object} vendorOptions - Objeto de opciones del proveedor
+ * @api
+ * @extends {M.impl.layer.Vector}
+ */
 class GenericVector extends Vector {
   constructor(options = {}, vendorOptions) {
     // calls the super constructor
@@ -38,21 +38,21 @@ class GenericVector extends Vector {
     this.options = options;
 
     /**
-      * Layer map. La instancia del mapa.
-      */
+     * Layer map. La instancia del mapa.
+     */
     this.map = null;
 
     /**
-      * WMS zIndex_. Índice de la capa, (+40).
-      */
+     * WMS zIndex_. Índice de la capa, (+40).
+     */
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.Generic];
 
 
     this.sldBody = options.sldBody;
 
     /**
-      * WMS styles. Estilos de la capa.
-      */
+     * WMS styles. Estilos de la capa.
+     */
     this.styles = this.options.styles || '';
 
     this.style = vendorOptions.getStyle === undefined ? null : vendorOptions.getStyle().name;
@@ -62,23 +62,23 @@ class GenericVector extends Vector {
     }
 
     /**
-      * WFS cql: Opcional: instrucción CQL para filtrar.
-      * El método setCQL(cadena_cql) refresca la capa aplicando el
-      * nuevo predicado CQL que recibe.
-      */
+     * WFS cql: Opcional: instrucción CQL para filtrar.
+     * El método setCQL(cadena_cql) refresca la capa aplicando el
+     * nuevo predicado CQL que recibe.
+     */
     this.cql = this.options.cql;
 
     this.fnAddFeatures_ = null;
   }
 
   /**
-    * Este método agrega la capa al mapa.
-    *
-    * @public
-    * @function
-    * @param {M.impl.Map} map Mapa de la implementación.
-    * @api stable
-    */
+   * Este método agrega la capa al mapa.
+   *
+   * @public
+   * @function
+   * @param {M.impl.Map} map Mapa de la implementación.
+   * @api stable
+   */
   addTo(map) {
     this.map = map;
 
@@ -123,14 +123,14 @@ class GenericVector extends Vector {
 
     // calculates the resolutions from scales
     if (!isNull(this.options) &&
-       !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
+      !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
       const units = this.map.getProjection().units;
       this.options.minResolution = getResolutionFromScale(this.options.minScale, units);
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
       this.ol3Layer.setMaxResolution(this.options.maxResolution);
       this.ol3Layer.setMinResolution(this.options.minResolution);
     } else if (!isNull(this.options) &&
-       !isNull(this.options.minResolution) && !isNull(this.options.maxResolution)) {
+      !isNull(this.options.minResolution) && !isNull(this.options.maxResolution)) {
       this.ol3Layer.setMaxResolution(this.options.maxResolution);
       this.ol3Layer.setMinResolution(this.options.minResolution);
     }
@@ -160,12 +160,12 @@ class GenericVector extends Vector {
   }
 
   /**
-    * Este método vuelve a dibujar la capa.
-    *
-    * @function
-    * @public
-    * @api stable
-    */
+   * Este método vuelve a dibujar la capa.
+   *
+   * @function
+   * @public
+   * @api stable
+   */
   redraw() {
     const olLayer = this.getOL3Layer();
     if (!isNullOrEmpty(olLayer)) {
@@ -201,34 +201,28 @@ class GenericVector extends Vector {
    * @api stable
    */
   selectFeatures(features, coord, evt) {
-    // TODO: manage multiples features
     const feature = features[0];
     if (this.extract === true) {
+      this.unselectFeatures();
       if (!isNullOrEmpty(feature)) {
-        const featureName = feature.getAttribute('name');
-        const featureDesc = feature.getAttribute('description');
-        const featureCoord = feature.getImpl().getOLFeature().getGeometry().getFirstCoordinate();
-        const htmlAsText = compileTemplate(popupKMLTemplate, {
-          vars: {
-            name: featureName,
-            desc: featureDesc,
-          },
+        const htmlAsText = compileTemplate(geojsonPopupTemplate, {
+          vars: this.parseFeaturesForTemplate_(features),
           parseToHtml: false,
         });
-        this.tabPopup_ = {
-          icon: 'g-cartografia-comentarios',
-          title: featureName,
+
+        const featureTabOpts = {
+          icon: 'g-cartografia-pin',
+          title: this.name,
           content: htmlAsText,
         };
 
-        const popup = this.map.getPopup();
-
+        let popup = this.map.getPopup();
         if (isNullOrEmpty(popup)) {
-          this.popup_ = new Popup();
-          this.popup_.addTab(this.tabPopup_);
-          this.map.addPopup(this.popup_, featureCoord);
+          popup = new Popup();
+          popup.addTab(featureTabOpts);
+          this.map.addPopup(popup, coord);
         } else {
-          popup.addTab(this.tabPopup_);
+          popup.addTab(featureTabOpts);
         }
       }
     }
@@ -275,4 +269,3 @@ class GenericVector extends Vector {
 }
 
 export default GenericVector;
-

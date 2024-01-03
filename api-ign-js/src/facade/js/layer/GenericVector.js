@@ -59,7 +59,7 @@ class GenericVector extends Vector {
   constructor(userParameters, options, vendorOptions = {}) {
     const params = { ...userParameters, ...options };
 
-    params.infoEventType = params.userParameters || 'click';
+    params.infoEventType = userParameters.infoEventType || 'click';
 
     // checks if the implementation can create Generic layers
     if (isUndefined(GenericImpl)) {
@@ -81,10 +81,10 @@ class GenericVector extends Vector {
     this.ids = userParameters.ids;
 
     /**
-      * WFS cql: Opcional: instrucción CQL para filtrar.
-      * El método setCQL(cadena_cql) refresca la capa aplicando el
-      * nuevo predicado CQL que recibe.
-      */
+     * WFS cql: Opcional: instrucción CQL para filtrar.
+     * El método setCQL(cadena_cql) refresca la capa aplicando el
+     * nuevo predicado CQL que recibe.
+     */
     this.cql = userParameters.cql;
 
     if (isNullOrEmpty(this.namespace)) {
@@ -96,33 +96,33 @@ class GenericVector extends Vector {
     }
 
     /**
-    * extract: Opcional, activa la consulta
-    * haciendo clic en el objeto geográfico, por defecto falso.
-    */
+     * extract: Opcional, activa la consulta
+     * haciendo clic en el objeto geográfico, por defecto falso.
+     */
     this.extract = userParameters.extract || false;
   }
 
   /**
-    * Devuelve la url del servicio.
-    *
-    * @function
-    * @getter
-    * @public
-    * @returns {String} URL del servicio.
-    * @api
-    */
+   * Devuelve la url del servicio.
+   *
+   * @function
+   * @getter
+   * @public
+   * @returns {String} URL del servicio.
+   * @api
+   */
   get url() {
     return this.getImpl().getURLService();
   }
 
   /**
-    * Modifica la url del servicio.
-    * @function
-    * @setter
-    * @public
-    * @param {String} newUrl Nueva URL.
-    * @api
-    */
+   * Modifica la url del servicio.
+   * @function
+   * @setter
+   * @public
+   * @param {String} newUrl Nueva URL.
+   * @api
+   */
   set url(newUrl) {
     this.getImpl().setURLService(newUrl);
   }
@@ -162,25 +162,25 @@ class GenericVector extends Vector {
   }
 
   /**
-    * Devuelve la versión del servicio, por defecto es 1.3.0.
-    *
-    * @function
-    * @getter
-    * @return {M.layer.WMS.impl.version} Versión del servicio.
-    * @api
-    */
+   * Devuelve la versión del servicio, por defecto es 1.3.0.
+   *
+   * @function
+   * @getter
+   * @return {M.layer.WMS.impl.version} Versión del servicio.
+   * @api
+   */
   get version() {
     return this.getImpl().version;
   }
 
   /**
-    * Sobrescribe la versión del servicio, por defecto es 1.3.0.
-    *
-    * @function
-    * @setter
-    * @param {String} newVersion Nueva versión del servicio.
-    * @api
-    */
+   * Sobrescribe la versión del servicio, por defecto es 1.3.0.
+   *
+   * @function
+   * @setter
+   * @param {String} newVersion Nueva versión del servicio.
+   * @api
+   */
   set version(newVersion) {
     if (!isNullOrEmpty(newVersion)) {
       this.getImpl().setVersion(newVersion);
@@ -188,21 +188,21 @@ class GenericVector extends Vector {
   }
 
   /**
-    * Devuelve los ids de la capa.
-    * @function
-    * @return {M.layer.WFS.impl.ids} Devuelve los ids.
-    * @api
-    */
+   * Devuelve los ids de la capa.
+   * @function
+   * @return {M.layer.WFS.impl.ids} Devuelve los ids.
+   * @api
+   */
   get ids() {
     return this.getImpl().ids;
   }
 
   /**
-    * Sobrescribe los ids de la capa.
-    * @function
-    * @param {Array} newIds Nuevos ids.
-    * @api
-    */
+   * Sobrescribe los ids de la capa.
+   * @function
+   * @param {Array} newIds Nuevos ids.
+   * @api
+   */
   set ids(newIds) {
     if (isNullOrEmpty(newIds)) {
       this.getImpl().ids = this.ids;
@@ -212,14 +212,14 @@ class GenericVector extends Vector {
   }
 
   /**
-    * Este método comprueba si un objeto es igual
-    * a esta capa.
-    *
-    * @function
-    * @param {Object} obj Objeto a comparar.
-    * @returns {Boolean} Valor verdadero es igual, falso no lo es.
-    * @api
-    */
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
+   *
+   * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Valor verdadero es igual, falso no lo es.
+   * @api
+   */
   equals(obj) {
     let equals = false;
     if (obj instanceof GenericVector) {
@@ -267,12 +267,12 @@ GenericVector.DEFAULT_PARAMS = {
 };
 
 /**
-   * Estilos predeterminados.
-   * @const
-   * @type {Object}
-   * @public
-   * @api
-   */
+ * Estilos predeterminados.
+ * @const
+ * @type {Object}
+ * @public
+ * @api
+ */
 GenericVector.DEFAULT_OPTIONS_STYLE = {
   point: {
     ...GenericVector.DEFAULT_PARAMS,
