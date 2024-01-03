@@ -24,3 +24,9 @@ Mapa básico con capas WMS.
 
 CP-009
 Mapa básico con capas KML.
+
+CP-010
+Mapa básico con capas XYZ.
+
+CP-011
+Mapa básico para testear parámetro isBase y transparent.
