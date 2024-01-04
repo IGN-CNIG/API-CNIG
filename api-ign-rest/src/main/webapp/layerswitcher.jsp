@@ -127,7 +127,7 @@
             container: 'mapjs',
             zoom: 5,
             maxZoom: 20,
-            minZoom: 4,
+            minZoom: 2,
             center: [-467062.8225, 4783459.6216],
         });
 
