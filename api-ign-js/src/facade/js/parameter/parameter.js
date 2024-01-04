@@ -1990,7 +1990,7 @@ export const getUseCapabilitiesWMS = (parameter) => {
     useCapabilities = /^1|(true)$/i.test(useCapabilities);
   }
 
-  if (!useCapabilities) {
+  if (isUndefined(useCapabilities)) {
     useCapabilities = true;
   }
 
@@ -2411,7 +2411,7 @@ export const getUseCapabilitiesWMTS = (parameter) => {
     useCapabilities = /^1|(true)$/i.test(useCapabilities);
   }
 
-  if (!useCapabilities) {
+  if (isUndefined(useCapabilities)) {
     useCapabilities = true;
   }
 
