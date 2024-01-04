@@ -712,29 +712,26 @@ class WMS extends LayerBase {
       return cap.url === this.url;
     });
 
-    if (capabilitiesInfo) {
-      if (capabilitiesInfo.capabilities) {
-        this.getCapabilitiesPromise = capabilitiesInfo.capabilities;
-      } else if (isNullOrEmpty(this.getCapabilitiesPromise)) {
-        const layerUrl = this.url;
-        const layerVersion = this.version;
-        const projection = this.map.getProjection();
-        this.getCapabilitiesPromise = new Promise((success, fail) => {
-          // gest the capabilities URL
-          const wmsGetCapabilitiesUrl = getWMSGetCapabilitiesUrl(layerUrl, layerVersion);
-          // gets the getCapabilities response
-          getRemote(wmsGetCapabilitiesUrl).then((response) => {
-            const getCapabilitiesDocument = response.xml;
-            const getCapabilitiesParser = new FormatWMS();
-            const getCapabilities = getCapabilitiesParser.customRead(getCapabilitiesDocument);
+    if (capabilitiesInfo.capabilities) {
+      this.getCapabilitiesPromise = capabilitiesInfo.capabilities;
+    } else if (isNullOrEmpty(this.getCapabilitiesPromise)) {
+      const layerUrl = this.url;
+      const layerVersion = this.version;
+      const projection = this.map.getProjection();
+      this.getCapabilitiesPromise = new Promise((success, fail) => {
+        // gest the capabilities URL
+        const wmsGetCapabilitiesUrl = getWMSGetCapabilitiesUrl(layerUrl, layerVersion);
+        // gets the getCapabilities response
+        getRemote(wmsGetCapabilitiesUrl).then((response) => {
+          const getCapabilitiesDocument = response.xml;
+          const getCapabilitiesParser = new FormatWMS();
+          const getCapabilities = getCapabilitiesParser.customRead(getCapabilitiesDocument);
 
-            const getCapabilitiesUtils = new GetCapabilities(getCapabilities, layerUrl, projection);
-            success(getCapabilitiesUtils);
-          });
+          const getCapabilitiesUtils = new GetCapabilities(getCapabilities, layerUrl, projection);
+          success(getCapabilitiesUtils);
         });
-
-        capabilitiesInfo.capabilities = this.getCapabilitiesPromise;
-      }
+      });
+      capabilitiesInfo.capabilities = this.getCapabilitiesPromise;
     }
 
     return this.getCapabilitiesPromise;
