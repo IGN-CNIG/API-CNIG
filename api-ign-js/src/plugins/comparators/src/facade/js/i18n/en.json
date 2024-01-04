@@ -1,7 +1,9 @@
 {
   "exception": {
     "impl": "The implementation used cannot create comparatorsControl controls",
-    "no_controls": "The Comparators plugin needs to activate at least one control."
+    "no_controls": "The Comparators plugin needs to activate at least one control.",
+    "mirrorDefaultCompareViz": "modeVizTypes parameter does not contain the value of defaultCompareViz",
+    "mirrorModeVizTypes": "modeVizTypes does not have a valid value"
   },
   "mirrorpanelParams_tooltip": "mirrorpanelParams_tooltip",
   "lyrcompareParams_tooltip": "lyrcompareParams_tooltip",

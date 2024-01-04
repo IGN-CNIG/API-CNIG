@@ -172,9 +172,15 @@ export default class MirrorpanelControl extends M.Control {
   active(html) {
     // Si es false no existe el botón, se devuelve error
     if (!this.modeVizTypes.includes(this.defaultCompareViz)) {
-      M.toast.error('Error: El modo de visualización por defecto no existe');
-      throw new Error('Error: El modo de visualización no existe');
+      M.toast.error(`Error: ${getValue('exception.mirrorDefaultCompareViz')}`);
+      this.defaultCompareViz = this.modeVizTypes[0];
     }
+
+    this.modeVizTypes.forEach((n) => {
+      if (![0, 1, 2, 3, 4, 5, 6, 7, 8, 9].includes(n)) {
+        M.toast.error(`Error: ${getValue('exception.mirrorModeVizTypes')} - ${n}`);
+      }
+    });
 
 
     this.createMapContainers();
