@@ -103,7 +103,7 @@ const getParameters = (params) => {
     legend: urlParams[2] || undefined,
     url: urlParams[3] || undefined,
     visibility: urlParams[4] || undefined,
-    transparent: urlParams[5] || undefined,
+    transparent: urlParams[5] || false,
   };
 };
 
@@ -3921,6 +3921,7 @@ const osm = (userParameters) => {
 
   if (!isString(params)) {
     return {
+      ...params,
       type: 'osm',
     };
   }
