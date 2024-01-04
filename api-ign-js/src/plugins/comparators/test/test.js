@@ -11,12 +11,12 @@ const map = M.map({
 });
 
 
-const mpFullTOC = new M.plugin.FullTOC({
+const mpLayerswitcher = new M.plugin.Layerswitcher({
   collapsed: true,
   position: 'TR',
 });
 
-map.addPlugin(mpFullTOC);
+map.addPlugin(mpLayerswitcher);
 
 // const SENTINELlistBaseLayersByString = [
 //   'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
@@ -241,6 +241,9 @@ map.addPlugin(mpFullTOC);
 // }, {});
 // map.addLayers(ocupacionSuelo);
 
+const mp2 = new M.plugin.Popup({});
+map.addPlugin(mp2);
+
 const mp = new Comparators({
   position: 'TR',
   collapsed: false,
@@ -300,34 +303,32 @@ const mp = new Comparators({
       },
       map3: {
         controls: ['scale'],
-        FullTOC: {
+        Layerswitcher: {
           position: 'TL',
         },
       },
       map4: {
-        FullTOC: {
+        Layerswitcher: {
           position: 'TL',
         },
-        BackImgLayer: {
-          position: 'TR',
-          collapsed: true,
-          collapsible: true,
-          tooltip: 'Capas de fondo',
-          layerVisibility: true,
-          columnsNumber: 0,
-          empty: true,
-          ids: 'mapa,hibrido',
-          titles: 'Mapa,Hibrido',
-          previews:
-            'https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqmapa.png,https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqhibrid.png',
-          layers:
-            'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true',
-        },
+        // BackImgLayer: {
+        //   position: 'TR',
+        //   collapsed: true,
+        //   collapsible: true,
+        //   tooltip: 'Capas de fondo',
+        //   layerVisibility: true,
+        //   columnsNumber: 0,
+        //   empty: true,
+        //   ids: 'mapa,hibrido',
+        //   titles: 'Mapa,Hibrido',
+        //   previews: 'https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqmapa.png,https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqhibrid.png',
+        //   layers: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true',
+        // },
       },
 
     },
-    defaultCompareViz: 1,
-    modeVizTypes: [0, 1], // 0 - 9
+    // defaultCompareViz: 1,
+    modeVizTypes: [0, 4], // 0 - 9
     tooltip: 'tooltipMirror',
   },
 });
