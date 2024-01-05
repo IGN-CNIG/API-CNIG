@@ -965,8 +965,11 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   // Muestra la información de la capa
-  renderInfo(vars, type) {
+  renderInfo(v, type) {
     let info;
+    const vars = v;
+    vars.translations.previous = getValue('previous');
+    vars.translations.next = getValue('next');
     if (type === 'OGCAPIFeatures') {
       info = M.template.compileSync(infoTemplateOGC, {
         jsonp: false,
@@ -1690,6 +1693,8 @@ export default class LayerswitcherControl extends M.Control {
           responsible: getValue('responsible'),
           access_constraints: getValue('access_constraints'),
           show_service_info: getValue('show_service_info'),
+          addAllLayers: getValue('addAllLayers'),
+          add_service: getValue('add_service'),
         },
       };
 
@@ -2043,6 +2048,8 @@ export default class LayerswitcherControl extends M.Control {
           name: getValue('name'),
           data_layer: getValue('data_layer'),
           layers: getValue('layers'),
+          addAllLayers: getValue('addAllLayers'),
+          add_service: getValue('add_service'),
         },
       },
     });

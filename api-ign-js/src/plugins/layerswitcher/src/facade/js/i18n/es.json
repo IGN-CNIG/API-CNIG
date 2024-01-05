@@ -100,5 +100,8 @@
   "description": "Descripción",
   "minzoom": "Zoom mínimo",
   "maxzoom": "Zoom máximo",
-  "center": "Centro"
+  "center": "Centro",
+  "addAllLayers": "Añadir todos los servicios",
+  "previous": "Anterior",
+  "next": "Siguiente"
 }

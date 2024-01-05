@@ -1,6 +1,6 @@
 {{#*inline "layerswitcherLayer"}}
     {{#each layers}}
-        <li tabindex="0" class="m-layerswitcher-layer" aria-label="Capa">
+        <li tabindex="0" class="m-layerswitcher-layer" aria-label="{{translations.layers}}">
             <div class="m-layerswitcher-title-layer">
                 {{#if ../isEyes}}
                     <div class="m-layerswitcher-visible-control">
@@ -24,7 +24,7 @@
                     </table>
                 </div>
                 {{#if ../isDelete}}
-                    <button title="{{../translations.remove_layer}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" tabindex="0" aria-label="Eliminar capa" class="m-layerswitcher-icons-delete">
+                    <button title="{{../translations.remove_layer}}" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" tabindex="0" aria-label="{{translations.remove_layer}}" class="m-layerswitcher-icons-delete">
                     </button>
                 {{/if}}
             </div>
