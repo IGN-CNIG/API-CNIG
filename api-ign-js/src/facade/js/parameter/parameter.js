@@ -3999,9 +3999,10 @@ export const layer = (userParameters, forcedType) => {
       if (!isNullOrEmpty(userParam.infoEventType)) {
         layerObj.infoEventType = userParam.infoEventType;
       }
-      // if (!isNullOrEmpty(userParam.attribution)) {
-      //   layerObj.attribution = userParam.attribution;
-      // }
+
+      if (!isNullOrEmpty(userParam.attribution)) {
+        layerObj.attribution = userParam.attribution;
+      }
 
       // if (!isNullOrEmpty(userParam.isBase)) {
       //   layerObj.isBase = userParam.isBase;
