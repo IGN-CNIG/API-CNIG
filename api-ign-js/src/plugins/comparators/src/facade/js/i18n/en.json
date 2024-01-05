@@ -53,5 +53,9 @@
   "unfreeze": "defrost cursor",
   "activate_spyeye": "SpyEye ON",
   "deactivate_spyeye": "SpyEye OFF",
-  "tooltip": "Compare panel"
+  "tooltip": "Compare panel",
+  "inputTransparentRadius": "Modify the opacity of the radius",
+  "selectTransparentRadius":"Layer selector, the radius opacity will be applied",
+  "tooltip_void": "Single map view",
+  "selectLayers": "Layers selected"
 }

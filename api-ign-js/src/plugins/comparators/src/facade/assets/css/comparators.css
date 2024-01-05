@@ -907,6 +907,15 @@ div.m-area.m-bottom.m-left>div.m-plugin-comparators.m-panel.opened>button.m-pane
 	background: #94bdde;
 }
 
+.m-lyrcompare-container input[type=range][disabled]::-webkit-slider-thumb {
+	background-color: rgba(64, 75, 83, 0.774)
+}
+
+
+.m-lyrcompare-container input[type=range][disabled]::-moz-range-thumb {
+    background-color: rgba(64, 75, 83, 0.774)
+}
+
 .m-lyrcompare-select {
 	position: relative;
 	display: flex;

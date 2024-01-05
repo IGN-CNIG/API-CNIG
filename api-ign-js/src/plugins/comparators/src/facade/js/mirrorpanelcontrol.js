@@ -184,7 +184,26 @@ export default class MirrorpanelControl extends M.Control {
 
 
     this.createMapContainers();
-    this.template = M.template.compileSync(template);
+    const options = {
+      jsonp: true,
+      vars: {
+        translations: {
+          modViz0: getValue('modViz0'),
+          modViz1: getValue('modViz1'),
+          modViz2: getValue('modViz2'),
+          modViz3: getValue('modViz3'),
+          modViz4: getValue('modViz4'),
+          modViz5: getValue('modViz5'),
+          modViz6: getValue('modViz6'),
+          modViz7: getValue('modViz7'),
+          modViz8: getValue('modViz8'),
+          modViz9: getValue('modViz9'),
+          selectLayers: getValue('selectLayers'),
+        },
+      },
+    };
+
+    this.template = M.template.compileSync(template, options);
 
     html.querySelector('#m-comparators-contents').appendChild(this.template);
 
