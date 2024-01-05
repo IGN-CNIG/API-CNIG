@@ -140,19 +140,7 @@ export default class Comparators extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
-    this.panel_.getButtonPanel().addEventListener('click', this.appleZindex.bind(this), false);
   }
-
-  appleZindex(e) {
-    if (/iPhone|iPad|iPod|Macintosh/.test(window.navigator.userAgent)) {
-      if (!e.target.parentElement.classList.contains('collapsed')) {
-        document.querySelector('.mirror1').style.zIndex = '0';
-      } else {
-        document.querySelector('.mirror1').style.zIndex = '1';
-      }
-    }
-  }
-
 
   /**
    * Gets the API REST Parameters of the plugin

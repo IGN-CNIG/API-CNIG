@@ -1350,12 +1350,7 @@ Establece la visibilidad del icono de dragging
 
 .mirror1 {
     z-index: 1;
-    position: absolute;
-}
-
-.mirror2, .mirror2, .mirror3, .mirror4 {
-    z-index: 0;
-    position: absolute;
+    position: sticky;
 }
 
 /* Dont work in firefox, 5-jul-2023.
