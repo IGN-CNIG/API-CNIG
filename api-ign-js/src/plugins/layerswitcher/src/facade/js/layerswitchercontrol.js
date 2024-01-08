@@ -1123,6 +1123,13 @@ export default class LayerswitcherControl extends M.Control {
     parentElement.appendChild(newElement);
 
     document.querySelector(SEARCH_BTN).style.display = 'none';
+
+    if (document.querySelector(CODSI_BTN)) {
+      document.querySelector(CODSI_BTN).style.display = 'none';
+    }
+
+    document.querySelector(LIST_BTN).style.display = 'none';
+
     this.loadingActive = true;
   }
 
@@ -1131,6 +1138,13 @@ export default class LayerswitcherControl extends M.Control {
     if (document.querySelector('#m-layerswitcher-loading') && document.querySelector(SEARCH_BTN)) {
       document.querySelector('#m-layerswitcher-loading').remove();
       document.querySelector(SEARCH_BTN).style.display = 'inline';
+
+      if (document.querySelector(CODSI_BTN)) {
+        document.querySelector(CODSI_BTN).style.display = 'inline';
+      }
+
+      document.querySelector(LIST_BTN).style.display = 'inline';
+
       this.loadingActive = false;
     }
   }
