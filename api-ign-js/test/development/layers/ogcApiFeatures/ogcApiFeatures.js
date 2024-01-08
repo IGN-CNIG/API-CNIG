@@ -22,3 +22,9 @@ export const ogcAPIFeatures_001 = new OGCAPIFeatures({
   //   maxZoom: 10
   // }
 );
+
+export const ogcAPIFeatures_002 = new OGCAPIFeatures({
+  url: 'https://api-features.idee.es/collections/',
+  name: 'hidrografia/Wetland',
+  legend: 'Capa OGCAPIFeatures',
+});

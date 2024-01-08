@@ -30,3 +30,6 @@ Mapa básico con capas XYZ.
 
 CP-011
 Mapa básico para testear parámetro isBase y transparent.
+
+CP-012
+Mapa básico para testear parámetro extent a las capas.

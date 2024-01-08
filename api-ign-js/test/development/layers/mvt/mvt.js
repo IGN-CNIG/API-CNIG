@@ -20,4 +20,10 @@ export const mvt_001 = new MVT({
   //   minZoom: 5,
   //   maxZoom: 10,
   // }
-)
+);
+
+export const mvt_002 = new MVT({
+  url: 'https://vts.larioja.org/rioja/{z}/{x}/{y}.pbf',
+  name: 'vectortile2',
+  projection: 'EPSG:3857',
+});

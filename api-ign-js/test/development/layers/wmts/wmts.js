@@ -7,7 +7,7 @@ export const wmts_001 = new WMTS({
     matrixSet: 'GoogleMapsCompatible',
     // visibility: true,
     // isBase: false,
-    transparent: true,
+    // transparent: true,
     // attribution: {
     //     name: 'Name Prueba WMTS',
     //     description: 'Description Prueba',

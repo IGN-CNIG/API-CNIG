@@ -24,3 +24,10 @@ export const wfs_001 = new WFS({
   //   maxZoom: 10
   // }
 );
+
+export const wfs_002 = new WFS({
+  url: "https://www.ign.es/wfs/redes-geodesicas",
+  name: "RED_REGENTE",
+  legend: "RED_REGENTE",
+  geometry: 'MPOINT',
+});

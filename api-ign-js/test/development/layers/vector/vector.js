@@ -21,7 +21,7 @@ export const vector_001 = new Vector({
 );
 
 // Creamos feature
-const feature = new Feature("featurePrueba002", {
+const feature = new Feature("featurePrueba001", {
   "type": "Feature",
   "id": "prueba_pol_wfst.1985",
   "geometry": {
@@ -48,6 +48,27 @@ const feature = new Feature("featurePrueba002", {
     "nom_ccaa": "Andalucía"
   }
 });
+
+// const feature = new Feature("featurePrueba002", {
+//   "type": "Feature",
+//   "id": "prueba_pol_wfst.1986",
+//   "geometry": {
+//     "type": "Point",
+//     "coordinates": [-626051.84, 4365196.20],
+//     "geometry_name": "geometry",
+//     "properties": {
+//       "cod_ine_municipio": "41091",
+//       "cod_ine_provincia": "-",
+//       "area": 1234,
+//       "perimetro": 345,
+//       "cod_ine_comunidad": "-",
+//       "nombre": "feature2",
+//       "nom_provincia": "Cádiz",
+//       "alias": "f2",
+//       "nom_ccaa": "Andalucía"
+//     }
+//   }
+// });
 
 // lo añadimos a la capa
 vector_001.addFeatures([feature])
