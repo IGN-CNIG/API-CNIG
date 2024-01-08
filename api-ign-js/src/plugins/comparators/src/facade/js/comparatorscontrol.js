@@ -247,7 +247,7 @@ export default class ComparatorsControl extends M.Control {
         if (c.active) {
           this.html.querySelector(`#${c.buttonsID}`).classList.add('activatedComparators');
           if (c.id === 'lyrcompare' && c.controlParam[1].length < 4) {
-            M.dialog.error('Error Layer', 'lyrcompare');
+            M.dialog.error(`${getValue('nolayertext')} - control lyrcompare`, 'lyrcompare');
             setTimeout(() => {
               this.map_.addLayers(this.layerDefault);
             }, 500);
