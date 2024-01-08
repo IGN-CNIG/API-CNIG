@@ -62,7 +62,7 @@
     <div>
         {{#gt overlayLayers.length 0}}
             {{#if isEyes}}
-                <span aria-label="{{#if allVisible}}{{translations.hide_all_services}}{{^}}{{translations.show_all_services}}{{/if}}" tabindex="0" id="m-layerswitcher-hsalllayers" class="m-layerswitcher-allstatus {{#if allVisible}}m-layerswitcher-icons-ver{{^}}m-layerswitcher-icons-ocultar{{/if}}"></span>
+                <button aria-label="{{#if allVisible}}{{translations.hide_all_services}}{{^}}{{translations.show_all_services}}{{/if}}" tabindex="0" id="m-layerswitcher-hsalllayers" class="m-layerswitcher-allstatus {{#if allVisible}}m-layerswitcher-icons-ver{{^}}m-layerswitcher-icons-ocultar{{/if}}"></button>
             {{/if}}
             <ul class="m-layerswitcher-ullayers">
                 {{> layerswitcherLayer layers=overlayLayers}}

@@ -170,6 +170,8 @@ ul.m-layerswitcher-ullayers {
 }
 
 .m-layerswitcher-allstatus {
+    border: none;
+    background-color: #f9f9f9;
     margin: 0 16px;
     font-size: 15px;
     color: orange !important;
