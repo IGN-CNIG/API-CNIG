@@ -4,8 +4,8 @@
             <div class="m-layerswitcher-title-layer">
                 {{#if ../isEyes}}
                     <div class="m-layerswitcher-visible-control">
-                        <span aria-label="{{#if visible}}{{../translations.hide_service}}{{^}}{{../translations.show_service}}{{/if}}" tabindex="0" data-select-type="eye" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-check {{#if visible}}m-layerswitcher-icons-ver{{^}}m-layerswitcher-icons-ocultar{{/if}} {{#if outOfRange}}m-layerswitcher-outOfRange{{/if}}">
-                        </span>
+                        <button aria-label="{{#if visible}}{{../translations.hide_service}}{{^}}{{../translations.show_service}}{{/if}}" tabindex="0" data-select-type="eye" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-check {{#if visible}}m-layerswitcher-icons-ver{{^}}m-layerswitcher-icons-ocultar{{/if}} {{#if outOfRange}}m-layerswitcher-outOfRange{{/if}}">
+                        </button>
                     </div>
                 {{/if}}
                 {{#if ../isRadio}}
