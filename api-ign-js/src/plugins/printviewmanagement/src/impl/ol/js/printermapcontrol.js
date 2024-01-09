@@ -457,7 +457,8 @@ export default class PrinterMapControl extends M.impl.Control {
       }
 
       if (featureStyle instanceof Function) {
-        featureStyle = featureStyle.call(featureStyle, feature, resolution);
+        featureStyle =
+           featureStyle.call(featureStyle, feature.getImpl().getOLFeature(), resolution);
       }
 
       if (featureStyle instanceof Array) {
@@ -680,33 +681,35 @@ export default class PrinterMapControl extends M.impl.Control {
           }
 
           let coordinates = geometry.getFlatCoordinates();
-          coordinates = this.inflateCoordinatesArray(coordinates, 0, geometry.getEnds(), 2);
-          const geoJSONFeature = {
-            id: feature.getId(),
-            type: 'Feature',
-            geometry: {
-              type: geometry.getType(),
-              coordinates,
-            },
-          };
+          coordinates =
+             this.inflateCoordinatesArray(parseType, coordinates.slice(), 0, geometry.getEnds(), 2);
+          if (coordinates.length > 0) {
+            const geoJSONFeature = {
+              id: feature.getId(),
+              type: 'Feature',
+              geometry: {
+                type: geometry.getType(),
+                coordinates,
+              },
+            };
+            geoJSONFeature.properties = {
+              _gx_style: styleName + styleNameText,
+              name: nameFeature,
+            };
+            encodedFeatures.push(geoJSONFeature);
+          }
 
           /*
-           if (projection.code !== 'EPSG:3857' && this.facadeMap_.getLayers().some(layerParam =>
-           (layerParam.type === M.layer.type.OSM || layerParam.type === M.layer.type.Mapbox))) {
-             geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getOLFeature(), {
-               featureProjection: projection.code,
-               dataProjection: 'EPSG:3857',
-             });
-           } else {
-             geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getOLFeature());
-           }
-           */
-
-          geoJSONFeature.properties = {
-            _gx_style: styleName + styleNameText,
-            name: nameFeature,
-          };
-          encodedFeatures.push(geoJSONFeature);
+            if (projection.code !== 'EPSG:3857' && this.facadeMap_.getLayers().some(layerParam =>
+            (layerParam.type === M.layer.type.OSM || layerParam.type === M.layer.type.Mapbox))) {
+              geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getOLFeature(), {
+                featureProjection: projection.code,
+                dataProjection: 'EPSG:3857',
+              });
+            } else {
+              geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getOLFeature());
+            }
+            */
         }
       }
     }, this);
@@ -1288,35 +1291,39 @@ export default class PrinterMapControl extends M.impl.Control {
   inflateCoordinates(flatCoordinates, offset, end, stride, optCoordinates) {
     const coordinates = optCoordinates !== undefined ? optCoordinates : [];
     let i = 0;
-    for (let j = offset; j < end[0]; j += stride) {
+    for (let j = offset; j < end; j += stride) {
       // eslint-disable-next-line no-plusplus
       coordinates[i++] = flatCoordinates.slice(j, j + stride);
     }
-
     coordinates.length = i;
     return coordinates;
   }
 
-  inflateCoordinatesArray(flatCoordinates, offset, ends, stride, optCoordinatess) {
-    const coordinatess = optCoordinatess !== undefined ? optCoordinatess : [];
+  inflateCoordinatesArray(parseType, flatCoordinates, offset, ends, stride, optCoordinatess) {
+    let coordinatess = optCoordinatess !== undefined ? optCoordinatess : [];
     let i = 0;
     // eslint-disable-next-line no-plusplus
     for (let j = 0, jj = ends.length; j < jj; ++j) {
       const end = ends[j];
-      // eslint-disable-next-line no-plusplus
-      coordinatess[i++] = this.inflateCoordinates(
+      const arrtmp = this.inflateCoordinates(
         flatCoordinates,
         offset,
         end,
         stride,
         coordinatess[i],
       );
+      if (parseType === 'point' || ((parseType === 'line' || parseType === 'linestring') && arrtmp.length >= 2) || (parseType === 'polygon' && arrtmp.length > 3)) {
+        // eslint-disable-next-line no-plusplus
+        coordinatess[i++] = arrtmp;
+      }
       // eslint-disable-next-line no-param-reassign
       offset = end;
     }
-
     coordinatess.length = i;
+    if ((parseType === 'line' || parseType === 'linestring') && coordinatess.length === 1) {
+      // eslint-disable-next-line no-plusplus
+      coordinatess = coordinatess[0];
+    }
     return coordinatess;
   }
 }
-

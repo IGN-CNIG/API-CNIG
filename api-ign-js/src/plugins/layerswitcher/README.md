@@ -53,6 +53,7 @@ El listado de capas aparece al pulsar sobre el botón añadir (Listado de alguna
   - 'style': permite cambiar el estilo a la capa (si lo permite).
   - 'delete': permite eliminar la capa del mapa.
   Por defecto añade todas las herramientas.
+- **useProxy**: Determina si se desea que las peticiones de red que se realizan en la extensión se realicen con el proxy o no. Por defecto: true.
 
 # API-REST
 
@@ -118,6 +119,11 @@ https://componentes.cnig.es/api-core/?layerswitcher=position*collapsed*collapsib
   </tr>
   <tr>
     <td>codsi</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>useProxy</td>
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>

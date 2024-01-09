@@ -89,21 +89,65 @@ export default class PrintViewManagement extends M.Plugin {
      * @private
      * @type {Boolean|Array<Object>}
      */
-    this.georefImageEpsg = options.georefImageEpsg ? this.getGeorefImageEpsg() : false;
+    if (options.georefImageEpsg === true) {
+      this.georefImageEpsg = {
+        layers: [
+          {
+            url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+            name: 'mtn_rasterizado',
+            format: 'image/jpeg',
+            legend: 'Mapa ETRS89 UTM',
+          },
+          {
+            url: 'http://www.ign.es/wms-inspire/pnoa-ma?',
+            name: 'OI.OrthoimageCoverage',
+            format: 'image/jpeg',
+            legend: 'Imagen (PNOA) ETRS89 UTM',
+          },
+        ],
+        order: 0,
+        tooltip: 'Georeferenciar imagen',
+      };
+    } else if (options.georefImageEpsg) {
+      this.georefImageEpsg = this.getGeorefImageEpsg();
+    } else {
+      this.georefImageEpsg = false;
+    }
 
     /**
      * Indicates if the control georefImage is added to the plugin
      * @private
      * @type {Boolean}
      */
-    this.georefImage = options.georefImage ? options.georefImage : false;
+    if (options.georefImage === true) {
+      this.georefImage = {
+        tooltip: 'Georeferenciar imagen',
+        printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/mapexport',
+        printSelector: true,
+      };
+    } else if (options.georefImage) {
+      this.georefImage = options.georefImage;
+    } else {
+      this.georefImage = false;
+    }
 
     /**
      * Indicates if the control printermap is added to the plugin
      * @private
      * @type {Boolean}
      */
-    this.printermap = options.printermap ? options.printermap : false;
+    if (options.printermap === true) {
+      this.printermap = {
+        printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
+        headerLegend: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
+        filterTemplates: ['A3 Horizontal'],
+        logo: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
+      };
+    } else if (options.printermap) {
+      this.printermap = options.printermap;
+    } else {
+      this.printermap = false;
+    }
 
     this.serverUrl = options.serverUrl || 'https://componentes.cnig.es/geoprint';
 
@@ -117,6 +161,20 @@ export default class PrintViewManagement extends M.Plugin {
      * @type {Number}
      */
     this.order = options.order >= -1 ? options.order : null;
+
+    /**
+     * Indicates if you want to use proxy in requests
+     * @private
+     * @type {Boolean}
+     */
+    this.useProxy = M.utils.isUndefined(options.useProxy) ? true : options.useProxy;
+
+    /**
+     * Stores the proxy state at plugin load time
+     * @private
+     * @type {Boolean}
+     */
+    this.statusProxy = M.useproxy;
   }
 
   /**
@@ -161,6 +219,8 @@ export default class PrintViewManagement extends M.Plugin {
       printTemplateUrl: this.printTemplateUrl,
       printStatusUrl: this.printStatusUrl,
       defaultOpenControl: this.defaultOpenControl,
+      useProxy: this.useProxy,
+      statusProxy: this.statusProxy,
     }));
 
     this.panel_ = new M.ui.Panel('panelPrintViewManagement', {

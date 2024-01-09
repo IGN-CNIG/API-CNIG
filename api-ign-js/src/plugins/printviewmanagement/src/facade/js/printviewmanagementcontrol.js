@@ -22,7 +22,7 @@ export default class PrintViewManagementControl extends M.Control {
    */
   constructor({
     isDraggable, georefImageEpsg, georefImage, printermap, order, map,
-    serverUrl, printStatusUrl, defaultOpenControl,
+    serverUrl, printStatusUrl, defaultOpenControl, useProxy, statusProxy,
   }) {
     if (M.utils.isUndefined(PrintViewManagementImpl)) {
       M.exception(getValue('exception.impl'));
@@ -70,6 +70,8 @@ export default class PrintViewManagementControl extends M.Control {
       this.georefImage_.printStatusUrl = printStatusUrl;
     }
 
+    this.tooltipGeorefImage_ = georefImage.tooltip || getValue('tooltip_georefimage');
+
     /**
     * Indicates if the control printermap is added to the plugin
     * @private
@@ -81,7 +83,13 @@ export default class PrintViewManagementControl extends M.Control {
       this.printermap_.printStatusUrl = printStatusUrl;
     }
 
+    this.tooltipPrintermap_ = printermap.tooltip || getValue('map_printing');
+
     this.defaultOpenControl = defaultOpenControl;
+
+    this.statusProxy = statusProxy;
+
+    this.useProxy = useProxy;
   }
   /**
    * This function creates the view
@@ -102,8 +110,8 @@ export default class PrintViewManagementControl extends M.Control {
           translations: {
             headertitle: getValue('tooltip'),
             tooltipGeorefImageEpsg: this.tooltipGeorefImageEpsg_,
-            georefImage: getValue('georeferenced_img'),
-            printermap: getValue('map_printing'),
+            georefImage: this.tooltipGeorefImage_,
+            printermap: this.tooltipPrintermap_,
             downImg: getValue('downImg'),
             delete: getValue('delete'),
           },
@@ -165,19 +173,19 @@ export default class PrintViewManagementControl extends M.Control {
   }
 
   defaultOpenControl_(html) {
-    if (this.defaultOpenControl === 1) {
+    if (this.defaultOpenControl === 1 && this.printermap_) {
       this.showDownloadButton();
       this.deactive(html, 'printermap');
       this.printerMapControl.active(html);
     }
 
-    if (this.defaultOpenControl === 2) {
+    if (this.defaultOpenControl === 2 && this.georefImage_) {
       this.showDownloadButton();
       this.deactive(html, 'georefImage');
       this.georefImageControl.active(html);
     }
 
-    if (this.defaultOpenControl === 3) {
+    if (this.defaultOpenControl === 3 && this.georefImageEpsg_) {
       this.showDownloadButton();
       this.deactive(html, 'georefImageEpsg');
       this.georefImageEpsgControl.active(html);
@@ -197,7 +205,10 @@ export default class PrintViewManagementControl extends M.Control {
   }
 
   addGeorefImageEpsgControl(html) {
-    this.georefImageEpsgControl = new GeorefImageEpsgControl(this.georefImageEpsg_, this.map_);
+    this.georefImageEpsgControl = new GeorefImageEpsgControl(
+      this.georefImageEpsg_,
+      this.map_,
+    );
     html.querySelector('#m-printviewmanagement-georefImageEpsg').addEventListener('click', () => {
       this.showDownloadButton();
       this.deactive(html, 'georefImageEpsg');
@@ -206,7 +217,10 @@ export default class PrintViewManagementControl extends M.Control {
   }
 
   addPrinterMapControl(html) {
-    this.printerMapControl = new PrinterMapControl(this.printermap_, this.map_);
+    this.printerMapControl = new PrinterMapControl(
+      this.printermap_, this.map_,
+      this.statusProxy, this.useProxy,
+    );
     html.querySelector('#m-printviewmanagement-printermap').addEventListener('click', () => {
       this.showDownloadButton();
       this.deactive(html, 'printermap');
@@ -215,7 +229,10 @@ export default class PrintViewManagementControl extends M.Control {
   }
 
   addGeorefImageControl(html) {
-    this.georefImageControl = new GeorefimageControl(this.georefImage_, this.map_);
+    this.georefImageControl = new GeorefimageControl(
+      this.georefImage_, this.map_,
+      this.statusProxy, this.useProxy,
+    );
     html.querySelector('#m-printviewmanagement-georefImage').addEventListener('click', () => {
       this.showDownloadButton();
       this.deactive(html, 'georefImage');

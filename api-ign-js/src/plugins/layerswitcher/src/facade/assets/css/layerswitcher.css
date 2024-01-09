@@ -112,7 +112,7 @@ ul.m-layerswitcher-ullayers>li {
 ul.m-layerswitcher-ullayers {
     background-color: #f9f9f9;
     list-style: none;
-    padding: 10px;
+    padding: 0px 10px 0px 10px;
     max-height: 50vh !important;
     overflow-y: auto;
     min-width: 440px;
@@ -158,7 +158,9 @@ ul.m-layerswitcher-ullayers {
 .m-layerswitcher-allstatus {
     margin: 0 16px;
     font-size: 15px;
-    color: orange !important
+    color: orange !important;
+    margin: 10px 0px 0px 20px;
+    display: block;
 }
 
 .m-layerswitcher-icons-ver {
@@ -229,7 +231,7 @@ input[type=range].m-layerswitcher-transparency:focus {
 }
 
 .m-layerswitcher-container input[type=range] {
-    padding: 7px 0px 10px 0px;
+    padding: 15px 0px 4px 0px;
 }
 
 .m-layerswitcher-container input[type=range]::-webkit-slider-runnable-track {
@@ -352,7 +354,7 @@ div.m-layerswitcher-legend>img {
     border: 1px solid #cccccc;
 }
 
-.m-layerswitcher-info-cap>p>span {
+.m-layerswitcher-info-cap>p>span, .m-layerswitcher-info-cap > div >p>span  {
     font-weight: bold;
 }
 
@@ -574,15 +576,28 @@ div.m-layerswitcher-legend>img {
 
 /* Mobile fix */
 
-@media only screen and (max-width: 1000px) {
-    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-layerswitcher.opened {
+@media only screen and (max-width: 768px) {
+    .m-plugin-layerswitcher.opened {
         width: 100vw;
         height: 100vh;
         position: fixed !important;
         top: 0;
         left: 0;
-        margin: 0;
+        margin: 0 !important;
         z-index: 999999 !important;
+    }
+
+    .m-plugin-layerswitcher.opened .m-layerswitcher-container {
+        top: 0;
+        position: absolute;
+    }
+
+    .m-areas>div.m-area.m-left>div.m-plugin-layerswitcher.opened>button.m-panel-btn {
+        right: 0;
+    }
+
+    .m-plugin-layerswitcher.opened button.m-panel-btn::before {
+        content: "\e907" !important;
     }
 
     .m-plugin-layerswitcher.opened .m-panel-btn.g-cartografia-flecha-derecha,
@@ -594,7 +609,10 @@ div.m-layerswitcher-legend>img {
         box-shadow: none;
     } 
 
-    div.m-area.m-top.m-right > div.m-panel.m-plugin-layerswitcher.opened > div,  .m-control.m-container.m-layerswitcher  {
+    div.m-area.m-top.m-right > div.m-panel.m-plugin-layerswitcher.opened > div, .m-control.m-container.m-layerswitcher,
+    div.m-area.m-top.m-left > div.m-panel.m-plugin-layerswitcher.opened > div, .m-control.m-container.m-layerswitcher,
+    div.m-area.m-buttom.m-right > div.m-panel.m-plugin-layerswitcher.opened > div, .m-control.m-container.m-layerswitcher,
+    div.m-area.m-buttom.m-left > div.m-panel.m-plugin-layerswitcher.opened > div, .m-control.m-container.m-layerswitcher  {
         max-width: 100vw !important;
         max-height: 100vh !important;
         width: 100% !important;
@@ -609,11 +627,7 @@ div.m-layerswitcher-legend>img {
     
     div.m-panel.m-plugin-layerswitcher.opened>.m-panel-controls {
         height: 100%;
-    }
-
-    div.m-panel.m-plugin-layerswitcher.opened>.m-panel-controls>.m-control.m-layerswitcher-container>div.m-layerswitcher-panel {
-        height: 100vh;
-        max-width: 100vw;
+        width: 100%;
     }
 
     ul.m-layerswitcher-ullayers {
@@ -714,22 +728,33 @@ div.m-layerswitcher-pagecontrolscontainer {
     cursor: pointer;
 }
 
+table#m-layerswitcher-table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
 table#m-layerswitcher-table.m-layerswitcher-tablepagination thead tr {
-    background-color: #f6f6f6;
-    color: black;
+    background-color: rgb(113, 167, 211);;
+    color: white;
     font-size: large;
+    padding: 5px 5px 5px 5px;
 }
 
 table#m-layerswitcher-table.m-layerswitcher-tablepagination tbody tr {
     border-bottom: 1px solid #dddddd;
 }
 
+table#m-layerswitcher-table.m-layerswitcher-tablepagination tbody tr td,
+table#m-layerswitcher-table.m-layerswitcher-tablepagination thead tr td {
+    padding: 5px;
+}
+
 table#m-layerswitcher-table.m-layerswitcher-tablepagination tbody tr:nth-of-type(even) {
-    background-color: #eee;
+    background-color: rgb(113 167 211 / 24%);
 }
 
 table#m-layerswitcher-table.m-layerswitcher-tablepagination tbody tr:hover {
-    background-color: #faf6de;
+    background-color: rgb(113 167 211 / 50%);
 }
 
 .m-layerswitcher-suggestion-caret::before {

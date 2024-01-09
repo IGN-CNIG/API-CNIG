@@ -135,6 +135,12 @@ export default class LayerswitcherControl extends M.Control {
     // active codsi
     this.codsiActive = options.codsi;
 
+    // Determina si se desea usar proxy en las peticiones
+    this.useProxy = options.useProxy;
+
+    // Estado inicial del proxy
+    this.statusProxy = options.statusProxy;
+
     // order
     this.order = options.order;
   }
@@ -257,6 +263,12 @@ export default class LayerswitcherControl extends M.Control {
       !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
 
     return new Promise((success) => {
+      let hasStyles = (hasMetadata && layer.capabilitiesMetadata.style.length > 1) ||
+        (layer instanceof M.layer.Vector && !M.utils.isNullOrEmpty(layer.predefinedStyles) &&
+          layer.predefinedStyles.length > 1);
+      if (layer.type === 'KML' && (layer.options.extractStyles || M.utils.isUndefined(layer.options.extractStyles))) {
+        hasStyles = false;
+      }
       const layerVarTemplate = {
         title: layerTitle,
         type: layer.type,
@@ -267,9 +279,7 @@ export default class LayerswitcherControl extends M.Control {
         checkedLayer: layer.checkedLayer || 'false',
         opacity: layer.getOpacity(),
         metadata: hasMetadata,
-        hasStyles: (hasMetadata && layer.capabilitiesMetadata.style.length > 1) ||
-          (layer instanceof M.layer.Vector && layer.type !== 'KML' && !M.utils.isNullOrEmpty(layer.predefinedStyles) &&
-            layer.predefinedStyles.length > 1),
+        hasStyles,
       };
       success(layerVarTemplate);
     });
@@ -429,6 +439,7 @@ export default class LayerswitcherControl extends M.Control {
             const metadataURL = `${layer.url}${layer.name}?f=json`;
             const htmlURL = `${layer.url}${layer.name}?f=html`;
             let jsonResponseOgc;
+            M.proxy(this.useProxy);
             M.remote.get(metadataURL).then((response) => {
               jsonResponseOgc = JSON.parse(response.text);
               const vars = {
@@ -453,10 +464,42 @@ export default class LayerswitcherControl extends M.Control {
                   see_more_layer: getValue('see_more_layer'),
                   see_more_service: getValue('see_more_service'),
                   metadata: getValue('metadata'),
+                  attributes: getValue('attributes'),
                 },
               };
+              const nFeatures = layer.getFeatures().length;
+              if (nFeatures > 0) {
+                const attributes = [];
+                const features = layer.getFeatures();
+                const headerAtt = Object.keys(features[0].getAttributes());
+                features.forEach((feature) => {
+                  const properties = Object.values(feature.getAttributes());
+                  if (!M.utils.isNullOrEmpty(properties)) {
+                    attributes.push({
+                      properties,
+                    });
+                  }
+                });
+                if (!M.utils.isUndefined(headerAtt)) {
+                  vars.pages = this.pageResults_(attributes);
+                  vars.allAttributes = attributes;
+                  vars.attributes = (M.utils.isNullOrEmpty(attributes)) ? false : attributes
+                    .slice(this.pages_.element, this.pages_.element + this.numPages_);
+                } else {
+                  vars.attributes = attributes;
+                }
+                vars.headerAtt = headerAtt;
+              }
               this.renderInfo(vars, 'OGCAPIFeatures');
+              this.latestVars_ = vars;
+              if (layer instanceof M.layer.Vector) {
+                document.querySelector('#m-layerswitcher-next').addEventListener('click', this.nextPage_.bind(this));
+                document.querySelector('#m-layerswitcher-previous').addEventListener('click', this.previousPage_.bind(this));
+                this.hasNext_();
+                this.hasPrevious_();
+              }
             });
+            M.proxy(this.statusProxy);
           } else if (layer.type === 'WMS' || layer.type === 'WMTS') {
             const vars = {
               name: layer.name, // nombre
@@ -486,7 +529,7 @@ export default class LayerswitcherControl extends M.Control {
               vars.metadata = layer.capabilitiesMetadata.metadataURL[0].OnlineResource;
             }
             vars.provider = this.informationProvider(layer);
-
+            M.proxy(this.useProxy);
             M.remote.get(vars.capabilities).then((response) => {
               const source = response.text;
               const urlService = source.split('<inspire_common:URL>')[1].split('<')[0].split('&amp;').join('&');
@@ -508,6 +551,7 @@ export default class LayerswitcherControl extends M.Control {
             }).catch((err) => {
               this.renderInfo(vars);
             });
+            M.proxy(this.statusProxy);
           } else {
             let rendInfo = true;
             const vars = {
@@ -562,6 +606,7 @@ export default class LayerswitcherControl extends M.Control {
               const regex = /\{z\}\/\{x\}\/\{(-?)y\}\/?.*$/;
               url = url.replace(regex, 'metadata.json');
               vars.extension = layer.getMaxExtent().toString().replaceAll(',', ', ');
+              M.proxy(this.useProxy);
               M.remote.get(url).then((response) => {
                 if (response.code === 200) {
                   const res = JSON.parse(response.text);
@@ -590,6 +635,7 @@ export default class LayerswitcherControl extends M.Control {
                 }
                 this.renderInfo(vars, 'Others');
               });
+              M.proxy(this.statusProxy);
             } else if (type === 'OSM' || type === 'MBTiles') {
               vars.extension = layer.getMaxExtent().toString().replaceAll(',', ', ');
             }
@@ -612,7 +658,7 @@ export default class LayerswitcherControl extends M.Control {
             otherStyles = layer.capabilitiesMetadata.style;
           }
 
-          if (layer instanceof M.layer.Vector && layer.type !== 'KML') {
+          if (layer instanceof M.layer.Vector) {
             otherStyles = layer.predefinedStyles;
             isVectorLayer = true;
           }
@@ -705,10 +751,10 @@ export default class LayerswitcherControl extends M.Control {
     const tableBody = document.querySelector('#m-layerswitcher-table tbody');
     tableBody.innerHTML = '';
 
-    this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes))
-      ? false
-      : this.latestVars_.allAttributes
-        .slice(this.pages_.element, this.pages_.element + this.numPages_);
+    this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes)) ?
+      false :
+      // eslint-disable-next-line max-len
+      this.latestVars_.allAttributes.slice(this.pages_.element, this.pages_.element + this.numPages_);
 
     if (this.latestVars_.attributes) {
       this.latestVars_.attributes.forEach((att) => {
@@ -819,12 +865,14 @@ export default class LayerswitcherControl extends M.Control {
         legend = url.replace('{z}/{x}/{y}', '0/0/0');
       }
       if (legend !== '') {
+        M.proxy(this.useProxy);
         M.remote.get(legend).then((response) => {
           if (response.code !== 200) {
             legend = '';
           }
           success(legend);
         });
+        M.proxy(this.statusProxy);
       }
     });
   }
@@ -905,6 +953,7 @@ export default class LayerswitcherControl extends M.Control {
 
   // Centro de descarga
   infoDownloadCenter(url, vars) {
+    M.proxy(this.useProxy);
     M.remote.get(url).then((response) => {
       const metadataText = response.text;
       const unfiltered = metadataText.split('<gmd:MD_DigitalTransferOptions>')[1].split('<gmd:URL>').filter((elem) => {
@@ -920,6 +969,7 @@ export default class LayerswitcherControl extends M.Control {
     }).catch((err) => {
       this.renderInfo(vars);
     });
+    M.proxy(this.statusProxy);
   }
 
   // Esta función muestra/oculta todas las capas
@@ -1020,6 +1070,7 @@ export default class LayerswitcherControl extends M.Control {
             if (pbf) {
               metadata = url.replace('{z}/{x}/{y}.pbf', 'metadata.json');
             }
+            M.proxy(this.useProxy);
             M.remote.get(metadata).then((meta) => {
               if (json && meta.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
                 this.printLayerModal(url, 'geojson');
@@ -1041,6 +1092,7 @@ export default class LayerswitcherControl extends M.Control {
                 this.printLayerModal(urlLayer[0], 'mvt', layers);
               }
             });
+            M.proxy(this.statusProxy);
             // TMS
           } else if (url.indexOf('{z}/{x}/{-y}') >= 0) {
             this.printLayerModal(url, 'tms');
@@ -1053,10 +1105,12 @@ export default class LayerswitcherControl extends M.Control {
           } else {
             const promise = new Promise((success, reject) => {
               const id = setTimeout(() => reject(), 15000);
+              M.proxy(this.useProxy);
               M.remote.get(M.utils.getWMTSGetCapabilitiesUrl(url)).then((response) => {
                 clearTimeout(id);
                 success(response);
               });
+              M.proxy(this.statusProxy);
             });
 
             promise.then((response) => {
@@ -1075,10 +1129,12 @@ export default class LayerswitcherControl extends M.Control {
                 } else {
                   const promise2 = new Promise((success, reject) => {
                     const id = setTimeout(() => reject(), 15000);
+                    M.proxy(this.useProxy);
                     M.remote.get(M.utils.getWMSGetCapabilitiesUrl(url, '1.3.0')).then((response2) => {
                       clearTimeout(id);
                       success(response2);
                     });
+                    M.proxy(this.statusProxy);
                   });
                   const promisewfs = new Promise((success, reject) => {
                     const id = setTimeout(() => reject(), 15000);
@@ -1089,10 +1145,12 @@ export default class LayerswitcherControl extends M.Control {
                     urlAux = M.utils.addParameters(urlAux, {
                       version: '1.3.0',
                     });
+                    M.proxy(this.useProxy);
                     M.remote.get(urlAux).then((responsewfs) => {
                       clearTimeout(id);
                       success(responsewfs);
                     });
+                    M.proxy(this.statusProxy);
                   });
                   Promise.all([promise2, promisewfs]).then((response2) => {
                     let wms = false;
@@ -1141,6 +1199,7 @@ export default class LayerswitcherControl extends M.Control {
                         if (reponseIsJson === true) {
                           this.printOGCModal(url);
                         } else {
+                          M.proxy(this.useProxy);
                           M.remote.get(url).then((response3) => {
                             // GEOJSON
                             if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
@@ -1158,8 +1217,10 @@ export default class LayerswitcherControl extends M.Control {
                               this.printLayerModal(url, 'kml', names);
                             }
                           });
+                          M.proxy(this.statusProxy);
                         }
                       });
+                      M.proxy(this.statusProxy);
                     }
                   }).catch((eerror) => {
                     M.dialog.error(getValue('exception.capabilities'));
@@ -1619,6 +1680,7 @@ export default class LayerswitcherControl extends M.Control {
 
   // Determina si es OGCAPI
   checkIfOGCAPIFeatures(url) {
+    M.proxy(this.useProxy);
     return M.remote.get(`${url}?f=json`).then((response) => {
       let isJson = false;
       if (!M.utils.isNullOrEmpty(response) && !M.utils.isNullOrEmpty(response.text) && response.text.indexOf('collections') !== -1) {
@@ -1966,6 +2028,7 @@ export default class LayerswitcherControl extends M.Control {
       document.querySelector(SEARCH_INPUT).value = url;
 
       const collections = `${(urlOGC.endsWith('/') ? urlOGC : `${urlOGC}/`)}collections?f=json`;
+      M.proxy(this.useProxy);
       M.remote.get(collections).then((response) => {
         const resJSON = JSON.parse(response.text);
         const layers = resJSON.collections;
@@ -2020,6 +2083,7 @@ export default class LayerswitcherControl extends M.Control {
         urlOGC = '';
         M.dialog.error(getValue('exception.error_ogc'));
       });
+      M.proxy(this.statusProxy);
     }
   }
 
@@ -2124,6 +2188,7 @@ export default class LayerswitcherControl extends M.Control {
           }
           document.querySelector('#m-layerswitcher-ogc-check-results').innerHTML = `${results1}${numberFeatures}${results2}`;
         });
+        M.proxy(this.statusProxy);
       }
     });
 
@@ -2135,6 +2200,7 @@ export default class LayerswitcherControl extends M.Control {
       const limit = document.querySelector('#m-layerswitcher-ogc-limit-items').value;
       const checked = document.querySelector('#m-layerswitcher-ogc-search-bbox').checked;
       const urlQueryables = `${urlOGC}/collections/${selectValue}/queryables`;
+      M.proxy(this.useProxy);
       M.remote.get(urlQueryables).then((queryablesResponse) => {
         try {
           const res = JSON.parse(queryablesResponse.text);
@@ -2257,6 +2323,7 @@ export default class LayerswitcherControl extends M.Control {
       }).catch((err) => {
         M.dialog.error(getValue('no_results'));
       });
+      M.proxy(this.statusProxy);
     });
   }
 
@@ -2371,6 +2438,7 @@ export default class LayerswitcherControl extends M.Control {
     const url = this.getFeatureUrl(layer);
     let numberFeatures;
     let jsonResponseOgc;
+    M.proxy(this.useProxy);
     return M.remote.get(url).then((response) => {
       jsonResponseOgc = JSON.parse(response.text);
       if (jsonResponseOgc !== null) {
@@ -2484,7 +2552,7 @@ export default class LayerswitcherControl extends M.Control {
     const DATA_SUMMARY = '@count';
 
     const url = this.generateUrlCODSI(pageNumber);
-
+    M.proxy(this.useProxy);
     M.remote.get(url).then((response) => {
       const data = JSON.parse(response.text);
       const total = data.summary[DATA_SUMMARY];
@@ -2496,6 +2564,7 @@ export default class LayerswitcherControl extends M.Control {
     }).catch((err) => {
       M.dialog.error(getValue('exception.codsi'));
     });
+    M.proxy(this.statusProxy);
   }
 
   getResultCODSI(data) {

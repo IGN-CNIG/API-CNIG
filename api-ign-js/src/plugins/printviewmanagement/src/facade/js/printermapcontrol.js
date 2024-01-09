@@ -19,18 +19,21 @@ export default class PrinterMapControl extends M.Control {
     * @extends {M.Control}
     * @api stable
     */
-  constructor({
-    serverUrl,
-    printTemplateUrl,
-    printStatusUrl,
-    credits,
-    logo,
-    fixedDescription,
-    headerLegend,
-    filterTemplates,
-    order,
-    tooltip,
-  }, map) {
+  constructor(
+    {
+      serverUrl,
+      printTemplateUrl,
+      printStatusUrl,
+      credits,
+      logo,
+      fixedDescription,
+      headerLegend,
+      filterTemplates,
+      order,
+      tooltip,
+    }, map, statusProxy,
+    useProxy,
+  ) {
     const impl = new PrinterMapControlImpl(map);
 
     super(impl, PrinterMapControl.NAME);
@@ -209,6 +212,9 @@ export default class PrinterMapControl extends M.Control {
     this.order = order >= -1 ? order : null;
 
     this.tooltip_ = tooltip || getValue('tooltip');
+
+    this.statusProxy = statusProxy;
+    this.useProxy = useProxy;
   }
 
   /**
@@ -217,16 +223,16 @@ export default class PrinterMapControl extends M.Control {
     * @param {Function} callback - function that removes loading icon class.
     */
   getStatus(url, callback) {
-    M.proxy(false);
+    M.proxy(this.useProxy);
     const param = new Date().getTime();
     M.remote.get(`${url}?timestamp=${param}`).then((response) => {
       const statusJson = JSON.parse(response.text);
       const { status } = statusJson;
       if (status === 'finished') {
-        M.proxy(true);
+        M.proxy(this.statusProxy);
         callback();
       } else if (status === 'error' || status === 'cancelled') {
-        M.proxy(true);
+        M.proxy(this.statusProxy);
         callback();
         if (statusJson.error.toLowerCase().indexOf('network is unreachable') > -1 || statusJson.error.toLowerCase().indexOf('illegalargument') > -1) {
           M.dialog.error(getValue('exception.tile'));
@@ -236,7 +242,7 @@ export default class PrinterMapControl extends M.Control {
 
         // this.queueContainer_.lastChild.remove();
       } else {
-        M.proxy(true);
+        M.proxy(this.statusProxy);
         setTimeout(() => this.getStatus(url, callback), 1000);
       }
     });
@@ -459,7 +465,7 @@ export default class PrinterMapControl extends M.Control {
       }
 
       // FIXME: delete proxy deactivation and uncomment if/else when proxy is fixed on Mapea
-      M.proxy(false);
+      M.proxy(this.useProxy);
       M.remote.post(url, printData).then((responseParam) => {
         let response = responseParam;
         const responseStatusURL = JSON.parse(response.text);
@@ -485,7 +491,7 @@ export default class PrinterMapControl extends M.Control {
         //   M.dialog.error('Se ha producido un error en la impresión.');
         // }
       });
-      M.proxy(true);
+      M.proxy(this.statusProxy);
     });
     if (!M.utils.isNullOrEmpty(this.getImpl().errors)) {
       M.toast.error(getValue('exception.error_layers') + this.getImpl().errors.join(', '), null, 6000);
@@ -505,7 +511,7 @@ export default class PrinterMapControl extends M.Control {
     if (M.utils.isNullOrEmpty(this.capabilitiesPromise_)) {
       this.capabilitiesPromise_ = new Promise((success, fail) => {
         const capabilitiesUrl = M.utils.concatUrlPaths([this.printTemplateUrl_, 'capabilities.json']);
-        M.proxy(false);
+        M.proxy(this.useProxy);
         M.remote.get(capabilitiesUrl).then((response) => {
           let capabilities = {};
           try {
@@ -516,7 +522,7 @@ export default class PrinterMapControl extends M.Control {
           success(capabilities);
         });
 
-        M.proxy(true);
+        M.proxy(this.statusProxy);
       });
     }
     return this.capabilitiesPromise_;

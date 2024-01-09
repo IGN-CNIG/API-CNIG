@@ -731,13 +731,12 @@ export default class IncicartoControl extends M.Control {
     let onlyURL = false;
 
     const { x, y } = this.map_.getCenter();
-    const center = `&center=${x},${y}`;
+    const center = `center=${x},${y}`;
     const zoom = `&zoom=${this.map_.getZoom()}`;
     const srs = `&srs=${this.map_.getProjection().code}`;
     const layers = `&layers=${this.getLayersInLayerswitcher().toString()}`;
-    const controls = `&controls=${this.getControlsFormat()}`;
-    const plugin = `&${this.getPlugins()}`;
-
+    const controls = (this.getControlsFormat()) ? `&controls=${this.getControlsFormat()}` : '';
+    const plugin = (this.getPlugins()) ? `&${this.getPlugins()}` : '';
 
     // File 
     // URL del visor - centro, zoom, srs, capas por url.
@@ -760,8 +759,9 @@ export default class IncicartoControl extends M.Control {
       // URL del visor - centro, zoom, srs, capas por url.
       // URL de la API - centro, zoom, srs, capas por url.
       url = url.split('?')[0];
-      url+= `?${center}${zoom}${srs}&layers=${M.config.MAP_VIEWER_LAYERS.toString()}`;
-      api_url+= `?${center}${zoom}${srs}&layers=${M.config.MAP_VIEWER_LAYERS.toString()}`;
+      const layers_url = (M.config.MAP_VIEWER_LAYERS.toString() !== '') ? `&layers=${M.config.MAP_VIEWER_LAYERS.toString()}` : '';
+      url+= `?${center}${zoom}${srs}${layers_url}`;
+      api_url+= `?${center}${zoom}${srs}${layers_url}`;
     }
 
     if (url.indexOf('.jsp') > -1) {

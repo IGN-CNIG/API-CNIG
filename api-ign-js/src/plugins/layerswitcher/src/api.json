@@ -51,6 +51,10 @@
       "type": "boolean",
       "name": "codsi",
       "position": 10
+    }, {
+      "type": "boolean",
+      "name": "useProxy",
+      "position": 11
     }]
   }],
   "files": {
