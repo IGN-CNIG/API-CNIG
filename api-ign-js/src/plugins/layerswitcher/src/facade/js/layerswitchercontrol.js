@@ -764,7 +764,7 @@ export default class LayerswitcherControl extends M.Control {
 
 
   eventIconTarget_(layerType, layer) {
-    const layersTypes = ['WMTS', 'WFS', 'MBTilesVector', 'MBTiles', 'OSM', 'XYZ', 'TMS', 'GeoJSON', 'KML', 'OGCAPIFeatures', 'Vector', 'Generic', 'MVT'];
+    const layersTypes = ['WMTS', 'WFS', 'MBTilesVector', 'MBTiles', 'OSM', 'XYZ', 'TMS', 'GeoJSON', 'KML', 'OGCAPIFeatures', 'Vector', 'GenericRaster', 'GenericVector', 'MVT'];
     if (layerType === 'WMS') {
       layer.getMaxExtent((me) => {
         this.map_.setBbox(me);

@@ -3894,7 +3894,7 @@ export const ogcapifeatures = (userParameters) => {
 };
 
 
-const generic = (userParameters) => {
+const generic = (userParameters, type) => {
   const params = userParameters;
 
   if (!isString(params)) {
@@ -3903,7 +3903,7 @@ const generic = (userParameters) => {
 
   const urlParams = params.split(/\*/);
   return {
-    type: 'Generic',
+    type,
     // eslint-disable-next-line no-eval
     vendorOptions: eval(decodeURIComponent(escape(window.atob(urlParams[1])))) || undefined,
     name: urlParams[2] || undefined,
@@ -3914,6 +3914,14 @@ const generic = (userParameters) => {
     displayInLayerSwitcher: urlParams[7] || undefined,
     visibility: urlParams[8] || undefined,
   };
+};
+
+const genericvector = (userParameters) => {
+  return generic(userParameters, 'GenericVector');
+};
+
+const genericraster = (userParameters) => {
+  return generic(userParameters, 'GenericRaster');
 };
 
 const osm = (userParameters) => {
@@ -3949,7 +3957,8 @@ const parameterFunction = {
   mbtiles,
   mbtilesvector,
   ogcapifeatures,
-  generic,
+  genericvector,
+  genericraster,
 };
 
 

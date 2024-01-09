@@ -1,7 +1,7 @@
 /**
  * @module M/layer/GenericVector
  */
-import GenericImpl from 'impl/layer/Generic';
+import GenericVectorImpl from 'impl/layer/GenericVector';
 import {
   isNullOrEmpty,
   isUndefined,
@@ -9,6 +9,7 @@ import {
   isArray,
   normalize,
   isString,
+  isObject,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';
@@ -62,11 +63,11 @@ class GenericVector extends Vector {
     params.infoEventType = userParameters.infoEventType || 'click';
 
     // checks if the implementation can create Generic layers
-    if (isUndefined(GenericImpl)) {
+    if (isUndefined(GenericVectorImpl)) {
       Exception(getValue('exception').generic_method);
     }
 
-    const impl = new GenericImpl(options, vendorOptions, 'vector');
+    const impl = new GenericVectorImpl(options, vendorOptions, 'vector');
 
     // calls the super constructor
     super(params, options, vendorOptions, impl);
@@ -100,6 +101,52 @@ class GenericVector extends Vector {
      * haciendo clic en el objeto geográfico, por defecto falso.
      */
     this.extract = userParameters.extract || false;
+  }
+
+  /**
+  * Este método devuelve extensión máxima de esta capa.
+  *
+  * @function
+  * @returns {Array} Devuelve la extensión máxima de esta capa.
+  * @api
+  */
+  getMaxExtent(isSource = true) {
+    let extent = !isSource ? this.maxExtent_ : this.getImpl().getMaxExtent();
+    if (isUndefined(extent) || isNullOrEmpty(extent)) {
+      extent = this.map_.getProjection().getExtent();
+    }
+    return extent;
+  }
+
+  /**
+    * Este método calcula la extensión máxima de esta capa.
+    *
+    * @function
+    * @returns {M.layer.maxExtent} Devuelve una promesa, con la extensión máxima de esta capa.
+    * @api
+    */
+  calculateMaxExtent() {
+    return new Promise(resolve => resolve(this.getMaxExtent(false)));
+  }
+  /**
+    * Este método cambia la extensión máxima de la capa.
+    *
+    * @function
+    * @param {Array|Object} maxExtent Nuevo valor para el "MaxExtent".
+    * @api
+    * @export
+    */
+  setMaxExtent(maxExtent) {
+    let extent = maxExtent;
+    if (!isArray(maxExtent) && isObject(maxExtent)) {
+      extent = [
+        maxExtent.x.min,
+        maxExtent.y.min,
+        maxExtent.x.max,
+        maxExtent.y.max,
+      ];
+    }
+    this.getImpl().setMaxExtent(extent);
   }
 
   /**

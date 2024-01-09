@@ -46,7 +46,8 @@ import WMS from './layer/WMS';
 import WMTS from './layer/WMTS';
 import MVT from './layer/MVT';
 import OGCAPIFeatures from './layer/OGCAPIFeatures';
-import Generic from './layer/Generic';
+import GenericRaster from './layer/GenericRaster';
+import GenericVector from './layer/GenericVector';
 import Panel from './ui/Panel';
 import * as Position from './ui/position';
 import GeoJSON from './layer/GeoJSON';
@@ -608,8 +609,11 @@ class Map extends Base {
               case 'OGCAPIFeatures':
                 layer = new OGCAPIFeatures(layerParam, { style: parameterVariable.style });
                 break;
-              case 'Generic':
-                layer = new Generic(layerParam);
+              case 'GenericRaster':
+                layer = new GenericRaster(layerParam);
+                break;
+              case 'GenericVector':
+                layer = new GenericVector(layerParam);
                 break;
               default:
                 Dialog.error(getValue('dialog').invalid_type_layer);

@@ -691,7 +691,8 @@ export default class GeorefimageControl extends M.Control {
       return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' &&
         layer.name !== 'empty_layer' &&
         layer.name !== '__draw__' &&
-        layer.type !== 'Generic');
+        layer.type !== 'GenericRaster' &&
+        layer.type !== 'GenericVector');
     });
 
     if (this.map_.getZoom() === 20) {

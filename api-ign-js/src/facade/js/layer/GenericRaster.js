@@ -1,11 +1,13 @@
 /**
  * @module M/layer/GenericRaster
  */
-import GenericImpl from 'impl/layer/Generic';
+import GenericRasterImpl from 'impl/layer/GenericRaster';
 import {
   isNullOrEmpty,
   isUndefined,
   isFunction,
+  isObject,
+  isArray,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
@@ -65,11 +67,11 @@ class GenericRaster extends LayerBase {
     const params = { ...userParameters, ...options };
 
     // checks if the implementation can create Generic layers
-    if (isUndefined(GenericImpl)) {
+    if (isUndefined(GenericRasterImpl)) {
       Exception(getValue('exception').generic_method);
     }
 
-    const impl = new GenericImpl(options, vendorOptions, 'raster');
+    const impl = new GenericRasterImpl(options, vendorOptions, 'raster');
 
     // calls the super constructor
     super(params, impl);
@@ -78,6 +80,53 @@ class GenericRaster extends LayerBase {
       impl.setFacadeObj(this);
     }
   }
+
+  /**
+  * Este método devuelve extensión máxima de esta capa.
+  *
+  * @function
+  * @returns {Array} Devuelve la extensión máxima de esta capa.
+  * @api
+  */
+  getMaxExtent(isSource = true) {
+    let extent = !isSource ? this.maxExtent_ : this.getImpl().getMaxExtent();
+    if (isUndefined(extent) || isNullOrEmpty(extent)) {
+      extent = this.map_.getProjection().getExtent();
+    }
+    return extent;
+  }
+
+  /**
+    * Este método calcula la extensión máxima de esta capa.
+    *
+    * @function
+    * @returns {M.layer.maxExtent} Devuelve una promesa, con la extensión máxima de esta capa.
+    * @api
+    */
+  calculateMaxExtent() {
+    return new Promise(resolve => resolve(this.getMaxExtent(false)));
+  }
+  /**
+    * Este método cambia la extensión máxima de la capa.
+    *
+    * @function
+    * @param {Array|Object} maxExtent Nuevo valor para el "MaxExtent".
+    * @api
+    * @export
+    */
+  setMaxExtent(maxExtent) {
+    let extent = maxExtent;
+    if (!isArray(maxExtent) && isObject(maxExtent)) {
+      extent = [
+        maxExtent.x.min,
+        maxExtent.y.min,
+        maxExtent.x.max,
+        maxExtent.y.max,
+      ];
+    }
+    this.getImpl().setMaxExtent(extent);
+  }
+
 
   /**
     * Devuelve la url del servicio.
