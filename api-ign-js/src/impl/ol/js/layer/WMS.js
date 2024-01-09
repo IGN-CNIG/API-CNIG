@@ -348,6 +348,9 @@ class WMS extends LayerBase {
       this.addCapabilitiesMetadata(capabilitiesLayer);
 
       extent = this.facadeLayer_.calculateMaxExtentWithCapabilities(capabilities);
+      if (isNullOrEmpty(this.facadeLayer_.maxExtent_)) {
+        this.facadeLayer_.maxExtent_ = extent;
+      }
     }
 
     const minResolution = this.options.minResolution;
