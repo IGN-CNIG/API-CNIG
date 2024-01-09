@@ -74,15 +74,15 @@ export const generic_002 = new Generic({
   // extract: true,
   // infoEventType: 'hover',
 }, {
-  visibility: false,
-  minZoom: 5,
-  maxZoom: 7,
-  opacity: 0.5,
-  style: new Polygon({
-    fill: {
-      color: 'red',
-    },
-  }),
+  // visibility: false,
+  // minZoom: 5,
+  // maxZoom: 7,
+  // opacity: 0.5,
+  // style: new Polygon({
+  //   fill: {
+  //     color: 'red',
+  //   },
+  // }),
 }, new VectorLayer({
   source: new VectorSource({
     format: new GeoJSON(),

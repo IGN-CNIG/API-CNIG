@@ -27,7 +27,7 @@ import { map as Mmap } from 'M/mapea';
 // import { xyz_002 } from '../layers/xyz/xyz';
 // import { osm } from '../layers/osm/osm';
 // import { mbtile_01 } from '../layers/mbtiles/mbtiles';
-// import { generic_002 } from '../layers/generic/generic';
+import { generic_002 } from '../layers/generic/generic';
 
 
 const mapa = Mmap({

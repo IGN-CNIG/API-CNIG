@@ -64,30 +64,30 @@ class Generic {
 
 
   /**
-  * Este método modifica la URL del servicio.
-  *
-  * @function
-  * @param {String} URL del servicio.
-  * @api
-  */
+   * Este método modifica la URL del servicio.
+   *
+   * @function
+   * @param {String} URL del servicio.
+   * @api
+   */
   setURLService(url) {
     if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-           !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
+      !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
       this.ol3Layer.getSource().setUrl(url);
     }
   }
 
   /**
-  * Este método obtiene la URL del servicio.
-  *
-  * @function
-  * @returns {String} URL del servicio
-  * @api
-  */
+   * Este método obtiene la URL del servicio.
+   *
+   * @function
+   * @returns {String} URL del servicio
+   * @api
+   */
   getURLService() {
     let url = '';
     if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-            !isNullOrEmpty(this.ol3Layer.getSource())) {
+      !isNullOrEmpty(this.ol3Layer.getSource())) {
       const source = this.ol3Layer.getSource();
       if (!isNullOrEmpty(source.getUrl)) {
         url = this.ol3Layer.getSource().getUrl();
@@ -99,62 +99,62 @@ class Generic {
   }
 
   /**
-  * Este método establece la clase de la fachada
-  * de MBTiles.
-  *
-  * @function
-  * @param {Object} obj Objeto a establecer como fachada.
-  * @public
-  * @api
-  */
+   * Este método establece la clase de la fachada
+   * de MBTiles.
+   *
+   * @function
+   * @param {Object} obj Objeto a establecer como fachada.
+   * @public
+   * @api
+   */
   setFacadeObj(obj) {
     this.facadeLayer_ = obj;
   }
 
   /**
-  * Este método obtiene la resolución máxima para
-  * este WMS.
-  *
-  *
-  * @public
-  * @function
-  * @return {Number} Resolución Máxima.
-  * @api stable
-  */
+   * Este método obtiene la resolución máxima para
+   * este WMS.
+   *
+   *
+   * @public
+   * @function
+   * @return {Number} Resolución Máxima.
+   * @api stable
+   */
   getMaxResolution() {
     return this.ol3Layer.getMaxResolution();
   }
 
 
   /**
-  * Este método obtiene la resolución mínima.
-  *
-  * @public
-  * @function
-  * @return {Number} Resolución mínima.
-  * @api stable
-  */
+   * Este método obtiene la resolución mínima.
+   *
+   * @public
+   * @function
+   * @return {Number} Resolución mínima.
+   * @api stable
+   */
   getMinResolution() {
     return this.ol3Layer.getMinResolution();
   }
 
   /**
-  * Este método actualiza la capa.
-  * @function
-  * @api stable
-  */
+   * Este método actualiza la capa.
+   * @function
+   * @api stable
+   */
   refresh() {
     this.ol3Layer.getSource().refresh();
   }
 
   /**
-  * Devuelve la URL de la leyenda.
-  *
-  * @public
-  * @function
-  * @returns {String} URL de la leyenda.
-  * @api stable
-  */
+   * Devuelve la URL de la leyenda.
+   *
+   * @public
+   * @function
+   * @returns {String} URL de la leyenda.
+   * @api stable
+   */
   getLegendURL() {
     return this.legendUrl_;
   }
@@ -178,7 +178,7 @@ class Generic {
    * @api stable
    */
   getMaxExtent() {
-    return this.ol3Layer.getExtent();
+    return this.ol3Layer.getSource().getExtent();
   }
 
   /**
@@ -192,13 +192,13 @@ class Generic {
   }
 
   /**
-  * Este método indica si la capa es consultable.
-  *
-  * @function
-  * @returns {Boolean} Verdadero es consultable, falso si no.
-  * @api stable
-  * @expose
-  */
+   * Este método indica si la capa es consultable.
+   *
+   * @function
+   * @returns {Boolean} Verdadero es consultable, falso si no.
+   * @api stable
+   * @expose
+   */
   isQueryable() {
     return (this.options.queryable !== false);
   }
