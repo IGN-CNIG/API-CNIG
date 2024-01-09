@@ -12,11 +12,9 @@ import { map as Mmap } from 'M/mapea';
 // import { ogcAPIFeatures_001 } from '../layers/ogcApiFeatures/ogcApiFeatures';
 // import { ogcAPIFeatures_002 } from '../layers/ogcApiFeatures/ogcApiFeatures';
 // import { mbtileVector_001 } from '../layers/mbTilesVector/mbTilesVector';
-// import { generic_001 } from '../layers/generic/generic';
 
 
 
-// import { wmts_002 } from '../layers/wmts/wmts';
 
 // KOS
 // import { wms_001 } from '../layers/wms/wms';
@@ -26,8 +24,12 @@ import { map as Mmap } from 'M/mapea';
 // import { xyz_001 } from '../layers/xyz/xyz';
 // import { xyz_002 } from '../layers/xyz/xyz';
 // import { osm } from '../layers/osm/osm';
-// import { mbtile_01 } from '../layers/mbtiles/mbtiles';
-import { generic_002 } from '../layers/generic/generic';
+import { mbtile_01 } from '../layers/mbtiles/mbtiles';
+import MBTiles from 'M/layer/MBTiles';
+
+// import { generic_002 } from '../layers/generic/generic';
+// import { generic_001 } from '../layers/generic/generic';
+
 
 
 const mapa = Mmap({
@@ -48,8 +50,21 @@ setTimeout(() => {
   zoomToLayer();
 }, "5000");
 
+window.capa = mbtile_01;
+mapa.addLayers(mbtile_01);
 
-window.capa = generic_002;
-mapa.addLayers(generic_002);
+
+// window.fetch('./cabrera.mbtiles').then((response) => {
+//   const mbtile = new MBTiles({
+//     name: 'mbtiles',
+//     legend: 'Capa MBTiles L',
+//     source: response,
+//   });
+//   mapa.addLayers(mbtile);
+//   window.capa = mbtile;
+// }).catch((e) => {
+//   throw e;
+// });
+
 
 window.mapa = mapa;

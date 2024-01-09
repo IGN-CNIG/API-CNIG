@@ -265,6 +265,7 @@ class MBTiles extends Layer {
       });
     } else {
       const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 28);
+      this.maxExtent_ = this.maxExtent_ || extent;
       this.ol3Layer = this.createLayer({
         resolutions,
         extent: this.maxExtent_ || extent,
