@@ -25,3 +25,7 @@ export const wms_001 = new WMS({
 )
 
 export const wms_002 = 'WMS*Unidadesadministrativa*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeUnit*false*true**1.3.0*true*true*true';
+
+export const wms_003 = new WMS({
+  url: 'https://www.ideandalucia.es/wms/mdt_2016?',
+}, )

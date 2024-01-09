@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import ImageWMS from 'ol/source/ImageWMS';
-import Generic from 'M/layer/Generic';
+import GenericRaster from 'M/layer/GenericRaster';
+import GenericVector from 'M/layer/GenericVector';
 import Polygon from 'M/style/Polygon';
 import { Image, Vector as VectorLayer } from 'ol/layer';
 import VectorSource from 'ol/source/Vector';
@@ -36,7 +37,7 @@ const sldBody = '<?xml version="1.0" encoding="ISO-8859-1"?>' +
   '</NamedLayer>' +
   '</StyledLayerDescriptor>';
 
-export const generic_001 = new Generic({
+export const generic_001 = new GenericRaster({
   // isBase: true,
   // transparent: false,
   // legend: 'capaGenericRaster',
@@ -65,7 +66,7 @@ export const generic_001 = new Generic({
   }),
 }));
 
-export const generic_002 = new Generic({
+export const generic_002 = new GenericVector({
   // ids: '1,2',
   // cql: "nombre LIKE '%ada%'",
   // version: '1.2.0',

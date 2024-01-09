@@ -19,12 +19,11 @@ import { map as Mmap } from 'M/mapea';
 // import { tms_001 } from '../layers/tms/tms';
 // import { wmts_001 } from '../layers/wmts/wmts';
 // import { wmts_004 } from '../layers/wmts/wmts';
+// import { wms_001 } from '../layers/wms/wms';
+// import { wms_003 } from '../layers/wms/wms';
 
-
-// KOS
-import { wms_001 } from '../layers/wms/wms';
 // import { generic_002 } from '../layers/generic/generic';
-// import { generic_001 } from '../layers/generic/generic';
+import { generic_001 } from '../layers/generic/generic';
 
 
 
@@ -46,8 +45,8 @@ setTimeout(() => {
   zoomToLayer();
 }, "5000");
 
-window.capa = wms_001;
-mapa.addLayers(wms_001);
+window.capa = generic_001;
+mapa.addLayers(generic_001);
 
 
 // window.fetch('./cabrera.mbtiles').then((response) => {
