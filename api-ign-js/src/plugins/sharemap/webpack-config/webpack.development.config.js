@@ -1,9 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: path.resolve(__dirname, '..', 'test', 'test.js'),
+  entry: [
+    path.resolve(__dirname, '..', 'test', 'test.js'),
+  ],
   resolve: {
     alias: {
       templates: path.resolve(__dirname, '../src/templates'),
@@ -11,9 +14,15 @@ module.exports = {
       facade: path.resolve(__dirname, '../src/facade/js'),
     },
     extensions: ['.wasm', '.mjs', '.js', '.json', '.css', '.hbs', '.html', '.svg'],
+    fallback: {
+      fs: false,
+      path: false,
+      crypto: false,
+    },
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.js$/,
         exclude: /(node_modules\/(?!ol)|bower_components)/,
         use: {
@@ -22,11 +31,6 @@ module.exports = {
             presets: ['@babel/preset-env'],
           },
         },
-      },
-      {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        exclude: [/node_modules/, /lib/, /test/, /dist/],
       },
       {
         test: [/\.hbs$/, /\.html$/],
@@ -45,15 +49,24 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new ESLintPlugin({
+      // extensions: [`js`, `jsx`],
+      files: 'src/**/*.js',
+      exclude: ['**/node_modules/**', '/lib/', '/test/', '/dist/'],
+    }),
   ],
   devServer: {
+    // https: true,
     hot: true,
     open: true,
     port: 6123,
-    openPage: 'test/dev.html',
-    watchOptions: {
-      poll: 1000,
+    open: 'test/dev.html',
+    static: {
+      directory: path.join(__dirname, '/../'),
     },
+  },
+  watchOptions: {
+    poll: 1000,
   },
   devtool: 'eval-source-map',
 };

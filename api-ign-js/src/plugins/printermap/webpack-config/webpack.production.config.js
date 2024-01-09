@@ -33,7 +33,8 @@ module.exports = {
     },
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.js$/,
         exclude: /(node_modules\/(?!ol)|bower_components)/,
         use: {
@@ -51,12 +52,9 @@ module.exports = {
       {
         test: /\.css$/,
         loader: MiniCssExtractPlugin.loader,
-        exclude: /node_modules/,
       }, {
         test: /\.css$/,
         loader: 'css-loader',
-        exclude: /node_modules/,
-
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,

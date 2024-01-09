@@ -2,8 +2,8 @@
   "extends": "airbnb",
   "globals": {
     "M": true,
-    "ol": true,
-    "CustomEvent": true,
+    "ol": "true",
+    "CustomEvent": "true",
     "Handlebars": true,
     "proj4": true,
     "ActiveXObject": true,
