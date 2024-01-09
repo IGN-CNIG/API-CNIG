@@ -1,0 +1,131 @@
+/** Estilos propios*/
+
+.m-areas>div.m-area>div.m-panel.m-plugin-contactlink.collapsed {
+    max-height: 40px;
+}
+
+.m-areas>div.m-area>div.m-plugin-contactlink.collapsed>button.m-panel-btn {
+    background-color: #71a7d3 !important;
+    font-family: 'g-contactlink' !important;
+}
+
+.m-areas>div.m-area>div.m-plugin-contactlink.opened>button.m-panel-btn {
+    background-color: white !important;
+    color: #71a7d3 !important;
+}
+
+.m-areas>div.m-area.m-left>div.m-plugin-contactlink.opened>button.m-panel-btn {
+    position: absolute;
+    margin-left: 360px;
+    background-color: #71a7d3;
+}
+
+.m-areas>div.m-area.m-right>div.m-plugin-contactlink.opened>button.m-panel-btn {
+    position: absolute;
+    left: -40px;
+    background-color: #71a7d3;
+}
+
+.m-areas>div.m-area>div.m-plugin-contactlink.opened>button.m-panel-btn.opened-left {
+    position: absolute;
+    right: -2.53rem;
+    left: unset !important;
+    color: #71a7d3;
+}
+
+.m-areas>div.m-area>div.m-plugin-contactlink.opened>button.m-panel-btn.opened-right {
+    position: absolute;
+    left: -2.53rem;
+    right: unset !important;
+    color: #71a7d3;
+}
+
+#div-contenedor-m-contactlink {
+    display: block;
+}
+
+/*********************
+     contact TITLE
+*********************/
+
+.m-control.m-container.m-contactlink>div.title {
+    color: #fff !important;
+    background-color: #71a7d3;
+    font-family: 'Muli',
+        'sans-serif' !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    font-size: 15px;
+    height: 39px;
+    line-height: 40px;
+    text-align: center;
+}
+
+/*********************
+     LINKS
+*********************/
+
+.m-control.m-container.m-contactlink>div.links {
+    margin: 10px;
+}
+
+.m-control.m-container.m-contactlink>div.links>div.web>div.web1>a,
+.m-control.m-container.m-contactlink>div.links>div.web>div.web2>a {
+    color: #404040;
+    text-align: center;
+    font-family: 'Muli', 'sans-serif' !important;
+    text-decoration: none;
+    margin: 10px 0px;
+    width: 50%;
+}
+
+.m-control.m-container.m-contactlink>div.links>div.web>div.web1,
+.m-control.m-container.m-contactlink>div.links>div.web>div.web2 {
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+}
+
+.m-control.m-container.m-contactlink>div.links>div.social>a {
+    color: #404040;
+    font-family: 'Muli',
+        'sans-serif' !important;
+    text-decoration: none;
+    margin: 10px;
+}
+
+.m-control.m-container.m-contactlink>div.links .link {
+  cursor: pointer;
+}
+
+.m-control.m-container.m-contactlink>div.links>div.web,
+.m-control.m-container.m-contactlink>div.links>div.social,
+.m-control.m-container.m-contactlink>div.links>div.other {
+    justify-content: center;
+}
+
+.m-control.m-container.m-contactlink>div.links>div.web>div.web1>a>img,
+.m-control.m-container.m-contactlink>div.links>div.web>div.web2>a>img {
+    filter: invert(67%) sepia(50%) saturate(359%) hue-rotate(167deg) brightness(87%) contrast(90%);
+    width: 42px;
+    height: 42px;
+    border: 0;
+    /* margin-bottom: 20px; */
+}
+
+.m-control.m-container.m-contactlink>div.links>div.social>a>img {
+    filter: invert(67%) sepia(50%) saturate(359%) hue-rotate(167deg) brightness(87%) contrast(90%);
+    width: 30px;
+    height: 30px;
+    border: 0;
+}
+
+.m-control.m-container.m-contactlink>div.links>div.web {
+    border-bottom: 1px solid;
+    display: block;
+    border-color: #71a7d3;
+}
+
+.m-control.m-container.m-contactlink>div.links>div.social {
+    display: flex;
+    margin-top: inherit;
+}

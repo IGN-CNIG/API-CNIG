@@ -1,0 +1,10 @@
+{
+  "exception": {
+    "impl": "La implementación no puede crear controles de Attribution."
+  },
+  "title": "Compartir URL",
+  "text": "HTML embebido",
+  "copy": "Copiar",
+  "tooltip": "¡Copiado!",
+  "tooltipPanel": "Compartir"
+}

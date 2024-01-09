@@ -1,0 +1,16 @@
+{
+  "exception": {
+    "impl": "La implementación no puede crear controles de Perfiltopografico."
+  },
+  "tooltip": "Perfil Topográfico",
+  "title": "Perfil Topográfico",
+  "profil": {
+    "title": "Perfil Topográfico",
+    "zmin": "Alt. min",
+    "zmax": "Alt. max",
+    "altitude": "Altitud",
+    "distance": "Dist. total",
+    "ytitle": "Altitud (m)",
+    "xtitle": "Distancia (km)"
+  }
+}

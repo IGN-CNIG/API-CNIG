@@ -1,0 +1,49 @@
+<div id="m-queryattributes-information-content">
+  <p>
+    {{translations.information}}
+    <span>
+      <span class="icon-colapsar" title="{{translations.show_hide}}"></span>
+      <span class="icon-cerrar" title="{{translations.close}}"></span>
+    </span>
+  </p>
+  <div>
+    {{#each fields}}
+      <p>
+        {{#if isLinkURL}}
+          <span class="lbl-descript">🔹 {{this.name}}:</span>
+          <br/>        
+          <a href="{{this.value}}" target="_blank" rel="noopener noreferrer">{{this.typeparam}}</a>
+        {{/if}}
+
+        {{#if isButtonURL}}
+          <br/>        
+          <a class="m-queryattributes-information-button-link" href="{{this.value}}" target="_blank" rel="noopener noreferrer">{{this.typeparam}}</a>
+        {{/if}}
+
+        {{#if isImage}}
+          <span class="lbl-descript">🔹 {{this.name}}:</span>
+          <br/>  
+          <a class="m-queryattributes-information-image-link" href="{{this.value}}" target="_blank" rel="noopener noreferrer"><img src="{{this.value}}" /></a>
+        {{/if}}
+
+        {{#if isString}}
+          <span class="lbl-descript">🔹 {{this.name}}:</span>
+          <br/>  
+          {{this.value}}
+        {{/if}}
+
+        {{#if isPercentage}}
+          <span class="lbl-descript">🔹 {{this.name}}:</span>
+          <br/>  
+          <progress value="{{this.value}}" max="100"> {{this.value}} % </progress> {{this.value}} %
+        {{/if}}
+
+        {{#if isFormatter}}
+          <span class="lbl-descript">🔹 {{this.name}}:</span>
+          <br/>  
+          {{pattern}}
+        {{/if}}
+      </p>
+    {{/each}}
+  </div>
+</div>

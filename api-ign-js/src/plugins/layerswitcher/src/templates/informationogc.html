@@ -1,0 +1,13 @@
+<div>
+    <div class="m-layerswitcher-info-cap">
+        <p tabindex="0"><span>{{translations.title}}:</span>&nbsp; {{title}}</p>
+
+        <p class="m-layerswitcher-otherTitles" tabindex="0"><span>{{translations.abstract}}:</span></p>
+        <div>
+            {{abstract}}
+        </div>
+        {{#if metadata}}
+            <p><a tabindex="0" class="m-layerswitcher-provider-link" target="_blank" href="{{metadata}}">{{translations.see_more_layer}}</a></p>
+        {{/if}}
+    </div>
+</div>

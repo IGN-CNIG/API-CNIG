@@ -1,0 +1,322 @@
+/* Opening & closing buttons */
+
+.m-panel.m-plugin-selectionzoom.collapsed {
+    height: 40px;
+}
+
+.m-plugin-selectionzoom.opened .m-panel-btn.g-cartografia-flecha-derecha,
+.m-plugin-selectionzoom.opened .m-panel-btn.g-cartografia-flecha-izquierda {
+    background-color: white !important;
+    color: #71a7d3 !important;
+}
+
+/* Title and images container */
+
+.m-control.m-container.m-selectionzoom {
+    min-width: 220px;
+}
+
+/* Título */
+
+div#m-selectionzoom-titulo {
+    background-color: #71a7d3;
+    color: white;
+    display: block;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 5px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Images container */
+
+.m-panel.m-plugin-selectionzoom.opened .m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews>div[id^="m-selectionzoom-lyr-"] {
+    border: 5px solid #e9e8e8;
+    box-sizing: border-box;
+    float: left;
+    font-size: 0.9em;
+    height: 110px;
+    position: relative;
+    width: 110px;
+    background-color: #e9e8e8;
+}
+
+div[id^="m-selectionzoom-lyr-"]>span {
+    background-color: white;
+    color: rgb(73, 73, 73);
+    height: 20px;
+    margin-top: 0;
+    top: 80px;
+    left: 0;
+    line-height: 25px;
+    opacity: 0.6;
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    /* To insert animation: */
+    /* height: 0; */
+    /* margin-top: 20px; */
+    /* transition: all 0.3s linear; */
+    /* top: 100px; */
+}
+
+/* span transition */
+div[id^="m-selectionzoom-lyr-"]:hover>span {
+    height: 20px;
+    margin-top: 0;
+    top: 80px;
+}
+
+.m-selectionzoom .activeSelectionZoomDiv {
+    border: 5px solid #92c1e7 !important;
+}
+
+/* Bottom positions fix when images row turns into columns */
+
+.m-bottom .m-control.m-container.m-selectionzoom>#m-selectionzoom-previews {
+    display: flex;
+}
+
+.m-bottom.m-left>.m-panel.m-plugin-selectionzoom.opened>.m-panel-controls {
+    display: flow-root;
+}
+
+.m-bottom.m-left>.m-plugin-selectionzoom.opened>.m-panel-btn {
+    position: relative;
+    right: -40px;
+}
+
+.m-areas>div.m-area>div.m-panel.opened.m-plugin-selectionzoom {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    order: 0;
+}
+
+.m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.m-plugin-selectionzoom>div.m-panel-controls>div.m-control.m-container.m-selectionzoom {
+    padding-right: 40px;
+}
+
+.m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.no-collapsible.m-plugin-selectionzoom>div.m-panel-controls>div.m-control.m-container.m-selectionzoom {
+    padding-right: 0px;
+
+}
+
+.m-areas>div.m-area>div.m-panel.collapsed>div.m-panel-controls {
+    display: none;
+}
+
+.m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.collapsed>div.m-panel-controls>div {
+    display: none;
+}
+
+/* Firefox fix */
+
+@-moz-document url-prefix() {
+    .m-bottom.m-right .m-plugin-selectionzoom.opened {
+        display: flex;
+    }
+
+    .m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.m-plugin-selectionzoom>div.m-panel-controls>div.m-control.m-container.m-selectionzoom {
+        padding-right: unset;
+    }
+
+    .m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.no-collapsible.m-plugin-selectionzoom>div.m-panel-controls>div.m-control.m-container.m-selectionzoom {
+        padding-right: 0px;
+    }
+}
+
+/* Mobile fix */
+
+@media only screen and (max-width: 1000px) {
+    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-selectionzoom.opened {
+        margin-right: 10px;
+    }
+
+    .m-areas>div.m-area.m-right>div.m-panel.m-plugin-selectionzoom.opened {
+        margin-left: 10px;
+    }
+
+    .m-bottom .m-control.m-container.m-selectionzoom>#m-selectionzoom-previews {
+        display: block;
+    }
+
+    .m-bottom.m-left>.m-panel.m-plugin-selectionzoom.opened>button {
+        left: unset;
+        top: unset;
+    }
+
+    .m-areas>div.m-area>div.m-panel.opened {
+        z-index: 10;
+    }
+
+    .m-panel.m-plugin-selectionzoom.opened>button {
+        left: 0;
+        top: 0;
+    }
+
+    .m-control.m-container.m-selectionzoom {
+        min-width: unset;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-titulo {
+        font-size: 13px;
+        padding-left: 0;
+        padding-right: 0;
+        width: 145px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews {
+        height: calc(100vh - 50px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: 145px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews>div {
+        height: 145px;
+        width: 145px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews>div>img {
+        height: 135px;
+        width: 135px;
+    }
+
+    .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews>div>span {
+        font-size: 1.3em;
+        height: 40px;
+        line-height: 40px;
+        top: 95px;
+        width: 135px;
+    }
+
+    /* Firefox fix */
+    @-moz-document url-prefix() {
+        .m-bottom.m-left>.m-panel.m-plugin-selectionzoom.opened>.m-panel-controls {
+            display: flow-root;
+        }
+
+        .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened {
+            width: auto;
+        }
+
+        .m-bottom.m-left>.m-panel.m-plugin-selectionzoom.opened>.m-panel-controls {
+            display: flex;
+        }
+
+        .m-bottom.m-left>.m-panel.m-plugin-selectionzoom.opened>button {
+            left: 0px;
+        }
+
+        .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+            display: flex;
+        }
+    }
+
+    /* Chrome fix */
+    @media screen and (-webkit-min-device-pixel-ratio:0) {
+        .m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom.opened>div.m-panel-controls>div.m-control.m-container.m-selectionzoom>div#m-selectionzoom-previews {
+            height: calc(100vh - 100px);
+        }
+    }
+
+
+    /* Edge fix */
+    @supports (-ms-ime-align:auto) {
+
+        .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+            padding-left: 0px;
+        }
+
+        .m-bottom.m-left>.m-plugin-selectionzoom.opened>.m-panel-btn {
+            position: static;
+        }
+    }
+
+
+
+
+}
+
+/* Edge fix */
+@supports (-ms-ime-align:auto) {
+    .m-areas>div.m-area>div.m-panel>div.m-panel-controls {
+        padding-left: 40px;
+    }
+
+    .m-bottom.m-left>.m-plugin-selectionzoom.opened>.m-panel-btn {
+        right: 0px;
+    }
+}
+
+
+@font-face {
+    font-family: 'g-selectionzoom';
+    src: url('../fonts/g-selectionzoom.eot?ymyjx');
+    src: url('../fonts/g-selectionzoom.eot?ymyjx#iefix') format('embedded-opentype'),
+        url('../fonts/g-selectionzoom.ttf?ymyjx') format('truetype'),
+        url('../fonts/g-selectionzoom.woff?ymyjx') format('woff'),
+        url('../fonts/g-selectionzoom.svg?ymyjx#g-selectionzoom') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+.m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom>div.m-panel-controls>div.m-control>button,
+.m-areas>div.m-area>div.m-panel.m-plugin-selectionzoom>button.m-panel-btn.g-selectionzoom-selezoom,
+[class^="g-selectionzoom-"],
+[class*=" g-selectionzoom-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'g-selectionzoom' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.g-selectionzoom-selezoom:before {
+    content: "\e1555";
+    position: relative;
+    bottom: 1px;
+    right: 1px;
+}
+
+div.m-area.m-top.m-left>div.m-plugin-selectionzoom.m-panel>button.m-panel-btn {
+    font-family: g-selectionzoom !important;
+}
+
+div.m-area.m-top.m-left>div.m-plugin-selectionzoom.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
+
+div.m-area.m-top.m-right>div.m-plugin-selectionzoom.m-panel>button.m-panel-btn {
+    font-family: g-selectionzoom !important;
+}
+
+div.m-area.m-top.m-right>div.m-plugin-selectionzoom.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
+
+div.m-area.m-bottom.m-right>div.m-plugin-selectionzoom.m-panel>button.m-panel-btn {
+    font-family: g-selectionzoom !important;
+}
+
+div.m-area.m-bottom.m-right>div.m-plugin-selectionzoom.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}
+
+div.m-area.m-bottom.m-left>div.m-plugin-selectionzoom.m-panel>button.m-panel-btn {
+    font-family: g-selectionzoom !important;
+}
+
+div.m-area.m-bottom.m-left>div.m-plugin-selectionzoom.m-panel.opened>button.m-panel-btn {
+    font-family: g-cartografia !important;
+}

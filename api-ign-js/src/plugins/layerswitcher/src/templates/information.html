@@ -1,0 +1,36 @@
+<div>
+    <div class="m-layerswitcher-info-cap">
+        <p tabindex="0"><span>{{translations.title}}:</span>&nbsp; {{title}}</p>
+        <p tabindex="0"><span>{{translations.name}}:</span>&nbsp; {{name}}</p>
+
+        <p class="m-layerswitcher-otherTitles" tabindex="0"><span>{{translations.abstract}}:</span></p>
+        <div>
+            {{abstract}}
+        </div>
+        {{#if provider}}
+            <p class="m-layerswitcher-otherTitles" tabindex="0"><span>{{translations.provider}}:</span></p>
+        {{/if}}
+        {{#if provider}}
+            <div>
+                {{{provider}}}
+            </div>
+        {{/if}}
+        {{#if hasMetadata }}
+            <p class="m-layerswitcher-otherTitles" tabindex="0"><span>{{translations.metadata}}:</span></p>
+        {{/if}}
+        {{#if metadata}}
+            <p><a tabindex="0" class="m-layerswitcher-provider-link" target="_blank" href="{{metadata}}">{{translations.see_more_layer}}</a></p>
+        {{/if}}
+        {{#if metadata_service}}
+            <p><a tabindex="0" class="m-layerswitcher-provider-link" target="_blank" href="{{metadata_service}}">{{translations.see_more_service}}</a></p>
+        {{/if}}
+    </div>
+    <div class="m-layerswitcher-btn-container">
+        {{#if capabilities}}
+            <a tabindex="0" class="m-layerswitcher-common-btn" href="{{capabilities}}" target="_blank">{{translations.service_info}}</a>
+        {{/if}}
+        {{#if downloadCenter}}
+            <a tabindex="0" class="m-layerswitcher-common-btn" href="{{downloadCenter}}" target="_blank">{{translations.download_center}}</a>
+        {{/if}}
+    </div>
+</div>

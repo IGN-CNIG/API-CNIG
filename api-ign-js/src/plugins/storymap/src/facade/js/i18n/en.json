@@ -1,0 +1,8 @@
+{
+  "exception": {
+    "cobertura": "Checking coverage in the area...",
+    "nocobertura": "This layer has no coverage in this area"
+  },
+  "tooltip": "Story Map",
+  "warning": "WARNING"
+}

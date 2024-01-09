@@ -1,0 +1,56 @@
+<div data-role="m-choropleth" class="m-stylemanager-simple-section m-hidden m-choropleth">
+    <div class="styles-row">
+        <div class="title">{{translations.options}}</div>
+        <div class="m-styles-body">
+
+            <div class="group-row">
+
+                <div class="style-col-1">
+                    <span>{{translations.attributes}}:</span>
+                    <select data-options="attributeName">
+                        {{#each attributes}}
+                            <option value="{{this.name}}" {{#eq this.name this.selected}} selected {{/eq}}>{{this.name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+            </div>
+            <div class="group-row">
+
+                <div class="style-col-1">
+                    <span>{{translations.algorithm}}:</span>
+                    <select data-options="quantification">
+                        <option value="ARITHMETIC_PROGRESSION" {{#eq quantification "arithmetic_progression"}}selected{{/eq}}>{{translations.arithmeticProgression}}</option>
+                        <option value="EQUAL_INTERVAL" {{#eq quantification "equal_interval"}}selected{{/eq}}>{{translations.equalIntervals}}</option>
+                        <option value="GEOMETRIC_PROGRESSION" {{#eq quantification "geometric_progression"}}selected{{/eq}}>{{translations.geometricProgression}}</option>
+                        <option value="MEDIA_SIGMA" {{#eq quantification "media_sigma"}}selected{{/eq}}>{{translations.meanSigma}}</option>
+                        <option value="JENKS" {{#eq quantification "jenks"}}selected{{/eq}}>{{translations.naturalBreaks}}</option>
+                        <option value="QUANTILE" {{#eq quantification "quantile"}}selected{{/eq}}>{{translations.quantile}}</option>
+                    </select>
+                </div>
+
+                <div class="style-col-2">
+                    <span>{{translations.ranges}}:</span>
+                    <input type="number" min="2" data-number-ranges data-options="ranges" value="{{ranges}}">
+                </div>
+            </div>
+            <div class="subtitle">
+                <span>{{translations.colorRamp}}</span>
+                <button title="{{translations.addColor}}" class="m-button-add-styles" data-add-color><i class="fa fa-plus"></i></button>
+            </div>
+            <div class="group-row">
+                <div class="style-col-color">
+                    <span>{{translations.initial}}:</span>
+                    <input type="color" data-array-options="colors" value="{{startColor}}">
+                </div>
+                <div data-colors class="style-col-color">
+                </div>
+                <div class="style-col-color">
+                    <span>{{translations.final}}:</span>
+                    <input type="color" data-array-options="colors" value="{{endColor}}">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

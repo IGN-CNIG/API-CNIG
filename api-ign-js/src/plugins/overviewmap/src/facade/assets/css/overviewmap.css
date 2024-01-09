@@ -1,0 +1,77 @@
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control {
+    margin-left: 0 !important;
+}
+
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control>button::before {
+    font-family: 'overviewmap' !important;
+}
+
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control.ol-collapsed>button>span {
+    display: none;
+}
+
+/* Closing arrows*/
+
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control:not(.ol-collapsed)>button {
+    padding-bottom: 10px !important;
+    padding-left: 4px !important;
+}
+
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control:not(.ol-collapsed)>button::before {
+    font-family: 'g-cartografia' !important;
+    font-size: 8px !important;
+}
+
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control:not(.ol-collapsed)>button.g-cartografia-flecha-derecha {
+    right: 135px !important;
+}
+
+div.m-area>div.m-panel.m-overviewmap-panel>div.m-panel-controls>div.ol-overviewmap.ol-unselectable.ol-control:not(.ol-collapsed)>button.g-cartografia-flecha-izquierda {
+    left: 135px !important;
+}
+
+/* Zoomed bbox preview square */
+
+div.ol-overviewmap-box {
+    border: 1px solid red;
+    min-width: 8px;
+    min-height: 8px;
+}
+
+/* Collapsed icon font */
+
+@font-face {
+    font-family: 'overviewmap';
+    src: url('../fonts/overviewmap.eot?c6upgl');
+    src: url('../fonts/overviewmap.eot?c6upgl#iefix') format('embedded-opentype'),
+        url('../fonts/overviewmap.ttf?c6upgl') format('truetype'),
+        url('../fonts/overviewmap.woff?c6upgl') format('woff'),
+        url('../fonts/overviewmap.svg?c6upgl#overviewmap') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+.m-areas>div.m-area>div.m-panel>button.m-panel-btn.overviewmap-mundo,
+[class^="overviewmap-"],
+[class*=" overviewmap-"] {
+    font-family: 'overviewmap' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+button.overviewmap-mundo {
+    border: 2px solid white;
+}
+
+
+.overviewmap-mundo:before {
+    content: "\e1950";
+}

@@ -1,0 +1,8 @@
+{
+  "exception": {
+    "formatMRE": "No value specified for the bbox or zoom and center parameters.",
+    "parameterizationDeprecated": "Warning M.plugin.selectionzoom: The parameter definition set in the plugin has been deprecated. Review the new definition: https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/selectionzoom",
+    "formatBBoxAndZoom": "No value specified for the bbox or zoom parameters."
+  },
+  "tooltip": "Default views"
+}

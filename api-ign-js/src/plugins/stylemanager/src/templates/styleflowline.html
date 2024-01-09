@@ -1,0 +1,62 @@
+<!-- Flow Line -->
+<div data-role="m-flowline" class="m-stylemanager-simple-section m-flowline m-hidden">
+    <div class="styles-row">
+        <div class="title">{{translations.options}}</div>
+        <div class="m-styles-body">
+            <div class="group-row">
+                <div class="style-col-1">
+                    <span>Color:</span>
+                    <input data-options="color" type="color" value="{{color}}">
+                </div>
+                <div class="style-col-2">
+                    <span>Color 2:</span>
+                    <input data-options="color2" type="color" value="{{color2}}">
+                </div>
+            </div>
+            <div class="group-row">
+                <div class="style-col-1">
+                    <span>{{translations.width}}:</span>
+                    <input data-options="width" type="number" value="{{width}}">
+                </div>
+                <div class="style-col-2">
+                    <span>{{translations.width}} 2:</span>
+                    <input data-options="width2" type="number" value="{{width2}}">
+                </div>
+            </div>
+            <div class="group-row">
+                <div class="style-col-1">
+                    <span>{{translations.arrow}}:</span>
+                    <select data-options="arrow">
+                        {{#each arrowlist}}
+                            <option value="{{this.name}}" {{#eq this.name this.selected}} selected {{/eq}}>
+                                {{this.name}}
+                            </option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="style-col-2">
+                    <span>{{translations.arrowColor}}:</span>
+                    <input value="{{arrowColor}}" type="color" data-options="arrowColor">
+                </div>
+            </div>
+            <div class="group-row">
+                <div class="style-col-1">
+                    <span>Line Cap:</span>
+                    <select data-options="lineCap">
+                        {{#each linecap}}
+                            <option value="{{this.id}}" {{#eq this.id this.selected}}selected{{/eq}}>
+                                {{this.name}}
+                            </option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="style-col-2">
+                    <span>Offset:</span>
+                    <input value="{{offset0}}" type="number" data-options="offset0">
+                    <span class="empty">&nbsp;</span>
+                    <input value="{{offset1}}" type="number" data-options="offset1">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

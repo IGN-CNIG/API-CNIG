@@ -1,0 +1,19 @@
+<div class="">
+    <table class="m-table-category">
+        <tr>
+            <th>{{translations.attributeValue}}</th>
+            <th>{{translations.preview}}</th>
+        </tr>
+        {{#each values}}
+            <tr>
+                <td id="{{this.name}}">{{this.name}}</td>
+                <td><img id="img-{{this.name}}" src="" alt=""></td>
+            </tr>
+        {{/each}} {{#if attributeExists}}
+            <tr>
+                <td id="other">{{translations.others}}</td>
+                <td><img id="img-other" src="" alt=""></td>
+            </tr>
+        {{/if}}
+    </table>
+</div>

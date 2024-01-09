@@ -1,0 +1,17 @@
+<div aria-label="Plugin View Management" role="menuitem" id="div-contenedor-viewmanagement" class="m-control m-container m-viewmanagement">
+    <div role="heading" tabindex="0" id="m-viewmanagement-title">{{translations.headertitle}}</div>
+    <div id="m-viewmanagement-previews">
+        {{#if predefinedzoom}}
+            <div role="button" tabindex="0" id="m-viewmanagement-predefinedzoom" title="{{translations.predefinedzoom}}" class="viewmanagement-icon-home"></div>
+        {{/if}}
+        {{#if zoomextent}}
+            <div tabindex="0" id="m-viewmanagement-zoomextent" title="{{translations.zoomextent}}" class="viewmanagement-icon-zoom-extension"></div>
+        {{/if}}
+        {{#if viewhistory}}
+            <div tabindex="0" id="m-viewmanagement-viewhistory" title="{{translations.viewhistory}}" class="viewmanagement-icon-flecha-historial"></div>
+        {{/if}}
+        {{#if zoompanel}}
+            <div tabindex="0" id="m-viewmanagement-zoompanel" title="{{translations.zoompanel}}" class="viewmanagement-icon-zoompanel"></div>
+        {{/if}}
+    </div>
+</div>

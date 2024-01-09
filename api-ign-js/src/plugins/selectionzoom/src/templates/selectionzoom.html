@@ -1,0 +1,12 @@
+<div aria-label="Plugin Selection Zoom" role="menuitem"  id="div-contenedor" class="m-control m-container m-selectionzoom">
+    <div role="tab" tabindex="0" id="m-selectionzoom-titulo">{{translations.headertitle}}</div>
+    <div id="m-selectionzoom-previews">
+        {{#each layers}}    
+            <div aria-label="{{this.title}}" tabindex="0" role="tab" id="m-selectionzoom-lyr-{{this.id}}" title="{{this.title}}">
+                <img aria-hidden="true" src="{{this.preview}}" alt="{{this.title}}" height="100px" width="100px" />
+                <span aria-hidden="true">{{this.title}}</span>
+            </div>
+        {{/each}}
+        <!-- <button class="m-selectionzoom-unique-btn" id="m-selectionzoom-unique-btn" title="Selección de capa de fondo"></button> -->
+    </div>
+</div>

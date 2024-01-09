@@ -1,0 +1,55 @@
+<div id="div-contenedor" class="m-lyrcompare-container">
+    <div class="div-m-lyrcompare-panel">
+        <div class="m-lyrcompare-effect-buttoms">
+            <button tabindex="0" value="void" id="m-lyrcompare-void" class="big-buttom button-comparators cp-void" title="{{translations.tooltip_void}}"></button>
+            <button tabindex="0" value="vcurtain" id="m-lyrcompare-vcurtain" class="big-buttom button-comparators cp-columns" title="{{translations.tooltip_vcurtain}}"></button>
+            <button tabindex="0" value="hcurtain" id="m-lyrcompare-hcurtain" class="big-buttom button-comparators cp-columns-rotate" title="{{translations.tooltip_hcurtain}}"></button>
+            <button tabindex="0" value="multicurtain" id="m-lyrcompare-multicurtain" class="big-buttom button-comparators cp-th-large" title="{{translations.tooltip_multicurtain}}"></button>
+        </div>
+        <div class="div-m-lyrcompare-transparent-opacity">
+            <label tabindex="0" for="input-transparent-opacity" title="{{translations.opacity_tooltip}}">{{translations.opacity}}: </label>
+            <input tabindex="0" type="range" min="0" max="100" value="100" id="input-transparent-opacity" title="{{translations.opacity_tooltip}}"></input>
+        </div>
+        <div class="div-m-lyrcompare-transparent-static">
+            <input tabindex="0" type="radio" id="div-m-lyrcompare-transparent-dynamic" name="staticDivision" value="0"><label for="div-m-lyrcompare-transparent-dynamic" title="{{translations.dynamic_tooltip}}">{{translations.dynamic}}</label>
+            <input tabindex="0" type="radio" id="div-m-lyrcompare-transparent-static" name="staticDivision" value="1"><label for="div-m-lyrcompare-transparent-static" title="{{translations.static_tooltip}}">{{translations.static}}</label>
+            <input tabindex="0" type="radio" id="div-m-lyrcompare-transparent-mixed" name="staticDivision" value="2"><label for="div-m-lyrcompare-transparent-mixed" title="{{translations.mixed_tooltip}}">{{translations.mixed}}</label>
+        </div>
+
+        {{#if options}}
+            <div class="m-lyrcompare-select" id="m-lyrcompare-lyrA-cont">
+                <label tabindex="0" id="m-lyrcompare-lyrA-lbl" for="m-lyrcompare-lyrA" title="{{translations.lyrLeftSelect_tooltip}}"></label>
+                <select tabindex="0" disabled id="m-lyrcompare-lyrA">
+                    {{#each options}}
+                        <option value='{{this.name}}'>{{this.legend}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="m-lyrcompare-select" id="m-lyrcompare-lyrB-cont">
+                <label tabindex="0" id="m-lyrcompare-lyrB-lbl" for="m-lyrcompare-lyrB" title="{{translations.lyrRightSelect_tooltip}}"></label>
+                <select tabindex="0" disabled id="m-lyrcompare-lyrB">
+                    {{#each options}}
+                        <option value='{{this.name}}'>{{this.legend}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <!--Multi Curtain-->
+            <div class="m-lyrcompare-select" id="m-lyrcompare-lyrC-cont">
+                <label tabindex="0" id="m-lyrcompare-lyrC-lbl" for="m-lyrcompare-lyrC" title="{{translations.lyrLeftSelect_tooltip}}"></label>
+                <select tabindex="0" disabled id="m-lyrcompare-lyrC">
+                    {{#each options}}
+                        <option value='{{this.name}}'>{{this.legend}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="m-lyrcompare-select" id="m-lyrcompare-lyrD-cont">
+                <label id="m-lyrcompare-lyrD-lbl" for="m-lyrcompare-lyrD" title="{{translations.lyrRightSelect_tooltip}}"></label>
+                <select tabindex="0" disabled id="m-lyrcompare-lyrD">
+                    {{#each options}}
+                        <option value='{{this.name}}'>{{this.legend}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        {{/if}}
+    </div>
+</div>

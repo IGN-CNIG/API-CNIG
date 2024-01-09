@@ -1,0 +1,16 @@
+<div aria-label="Plugin Locator" role="menuitem" id="div-contenedor-locator" class="m-control m-container m-locator">
+    {{#if showTitle}}
+        <div role="heading" tabindex="0" id="m-locator-title">{{translations.headertitle}}</div>
+    {{/if}}
+    <div id="m-locator-previews">
+        {{#if byPlaceAddressPostal}}
+            <div tabindex="0" id="m-locator-ignsearch" title="{{translations.ignsearch}}" class="locator-icon-ignsearch"></div>
+        {{/if}}
+        {{#if byParcelCadastre}}
+            <div tabindex="0" id="m-locator-infocatastro" title="{{translations.infocatastro}}" class="locator-icon-catastro"></div>
+        {{/if}}
+        {{#if byCoordinates}}
+            <div tabindex="0" id="m-locator-xylocator" title="{{translations.xylocator}}" class="locator-icon-posicion3"></div>
+        {{/if}}
+    </div>
+</div>

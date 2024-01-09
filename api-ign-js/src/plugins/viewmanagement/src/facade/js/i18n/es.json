@@ -1,0 +1,19 @@
+{
+  "exception": {
+    "impl": "La implementación usada no puede crear controles ViewManagementControl.",
+    "impl_zoomextent": "La implementación usada no puede crear controles ZoomExtentControl.",
+    "impl_viewhistory": "La implementación usada no puede crear controles ViewHistoryControl.",
+    "impl_zoompanel": "La implementación usada no puede crear controles ZoomPanelControl.",
+    "impl_predefinedzoom": "La implementación usada no puede crear controles PredefinedZoomControl.",
+    "no_controls": "El plugin ViewManagement necesita activar al menos un control."
+  },
+  "tooltip": "Gestión de la vista",
+  "viewhistory": "Historial",
+  "nextView": "Vista siguiente",
+  "previousView": "Vista anterior",
+  "predefinedzoom": "Zoom predefinido",
+  "zoomextent": "Zoom al recuadro",
+  "zoompanel": "Herramientas de zoom",
+  "zoomin": "Aumentar zoom",
+  "zoomout": "Disminuir zoom"
+}

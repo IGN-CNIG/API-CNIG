@@ -1,0 +1,17 @@
+{
+  "exception": {
+    "impl": "The implementation used cannot create Attributions controls."
+  },
+  "tooltip": "IGN links and contact",
+  "title": "Links and contact",
+  "links": {
+    "downloads": "CNIG Downloads",
+    "compare": "PNOA Comparator",
+    "3d": "3D Display",
+    "photo": "Aerial Photography Viewer"
+  },
+  "accessibility": {
+    "webLinks": "Enlaces a sitios web del IGN",
+    "socialMedia": "Enlaces a las redes sociales del IGN"
+  }
+}
