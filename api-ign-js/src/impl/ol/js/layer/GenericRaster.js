@@ -50,7 +50,7 @@ class GenericRaster extends LayerBase {
     /**
        * WMS zIndex_. Índice de la capa, (+40).
        */
-    this.zIndex_ = ImplMap.Z_INDEX[LayerType.Generic];
+    this.zIndex_ = ImplMap.Z_INDEX[LayerType.GenericRaster];
 
     this.sldBody = options.sldBody;
 
@@ -69,6 +69,12 @@ class GenericRaster extends LayerBase {
        * WMS format. Formato de la capa, por defecto image/png.
        */
     this.format = this.options.format;
+
+    this.ol3Layer = vendorOptions;
+    this.maxExtent = options.userMaxExtent || [];
+    this.ids = options.ids;
+    this.version = options.version;
+    this.legend = options.legend;
   }
 
   /**

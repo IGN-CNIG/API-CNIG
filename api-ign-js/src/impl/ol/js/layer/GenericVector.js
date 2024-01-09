@@ -45,7 +45,7 @@ class GenericVector extends Vector {
     /**
      * WMS zIndex_. Índice de la capa, (+40).
      */
-    this.zIndex_ = ImplMap.Z_INDEX[LayerType.Generic];
+    this.zIndex_ = ImplMap.Z_INDEX[LayerType.GenericVector];
 
 
     this.sldBody = options.sldBody;
@@ -69,6 +69,12 @@ class GenericVector extends Vector {
     this.cql = this.options.cql;
 
     this.fnAddFeatures_ = null;
+
+    this.ol3Layer = vendorOptions;
+    this.maxExtent = options.userMaxExtent || [];
+    this.ids = options.ids;
+    this.version = options.version;
+    this.legend = options.legend;
   }
 
   /**

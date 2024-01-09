@@ -2806,6 +2806,7 @@ Map.Z_INDEX[LayerType.MBTilesVector] = 40;
 Map.Z_INDEX[LayerType.XYZ] = 40;
 Map.Z_INDEX[LayerType.TMS] = 40;
 Map.Z_INDEX[LayerType.OGCAPIFeatures] = 40;
-Map.Z_INDEX[LayerType.Generic] = 40;
+Map.Z_INDEX[LayerType.GenericVector] = 40;
+Map.Z_INDEX[LayerType.GenericRaster] = 40;
 
 export default Map;
