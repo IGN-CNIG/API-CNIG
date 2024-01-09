@@ -337,7 +337,7 @@ class WMS extends LayerBase {
    */
   addSingleLayer_(capabilities) {
     const selff = this;
-    let extent;
+    let extent = this.facadeLayer_.userMaxExtent;
 
     if (capabilities) {
       const capabilitiesLayer = capabilities.capabilities.Capability.Layer.Layer;
@@ -347,8 +347,8 @@ class WMS extends LayerBase {
       }
       this.addCapabilitiesMetadata(capabilitiesLayer);
 
-      extent = this.facadeLayer_.calculateMaxExtentWithCapabilities(capabilities);
-      if (isNullOrEmpty(this.facadeLayer_.maxExtent_)) {
+      if (isNullOrEmpty(extent)) {
+        extent = this.facadeLayer_.calculateMaxExtentWithCapabilities(capabilities);
         this.facadeLayer_.maxExtent_ = extent;
       }
     }

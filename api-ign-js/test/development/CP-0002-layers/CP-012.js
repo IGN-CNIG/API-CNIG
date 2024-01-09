@@ -12,21 +12,17 @@ import { map as Mmap } from 'M/mapea';
 // import { ogcAPIFeatures_001 } from '../layers/ogcApiFeatures/ogcApiFeatures';
 // import { ogcAPIFeatures_002 } from '../layers/ogcApiFeatures/ogcApiFeatures';
 // import { mbtileVector_001 } from '../layers/mbTilesVector/mbTilesVector';
-
-
+// import { mbtile_01 } from '../layers/mbtiles/mbtiles';
+// import MBTiles from 'M/layer/MBTiles';
+// import { osm } from '../layers/osm/osm';
+// import { xyz_002 } from '../layers/xyz/xyz';
+// import { tms_001 } from '../layers/tms/tms';
+// import { wmts_001 } from '../layers/wmts/wmts';
+// import { wmts_004 } from '../layers/wmts/wmts';
 
 
 // KOS
-// import { wms_001 } from '../layers/wms/wms';
-// import { wmts_001 } from '../layers/wmts/wmts';
-// import { wmts_004 } from '../layers/wmts/wmts';
-// import { tms_001 } from '../layers/tms/tms';
-// import { xyz_001 } from '../layers/xyz/xyz';
-// import { xyz_002 } from '../layers/xyz/xyz';
-// import { osm } from '../layers/osm/osm';
-import { mbtile_01 } from '../layers/mbtiles/mbtiles';
-import MBTiles from 'M/layer/MBTiles';
-
+import { wms_001 } from '../layers/wms/wms';
 // import { generic_002 } from '../layers/generic/generic';
 // import { generic_001 } from '../layers/generic/generic';
 
@@ -50,8 +46,8 @@ setTimeout(() => {
   zoomToLayer();
 }, "5000");
 
-window.capa = mbtile_01;
-mapa.addLayers(mbtile_01);
+window.capa = wms_001;
+mapa.addLayers(wms_001);
 
 
 // window.fetch('./cabrera.mbtiles').then((response) => {
