@@ -270,7 +270,7 @@ export default class IGNSearchControl extends M.Control {
             }
 
             // Change zIndex value
-            this.clickedElementLayer.setZIndex(9999999999999999999);
+            this.clickedElementLayer.setZIndex(999999999999999);
 
             // Stops showing polygon geometry
             if (!this.resultVisibility_) {
@@ -616,7 +616,7 @@ export default class IGNSearchControl extends M.Control {
       }
 
       // Change zIndex value
-      this.clickedElementLayer.setZIndex(9999999999999999999);
+      this.clickedElementLayer.setZIndex(999999999999999);
 
       // Stops showing polygon geometry
       if (!this.resultVisibility_) {
@@ -658,7 +658,7 @@ export default class IGNSearchControl extends M.Control {
     }
 
     // Change zIndex value
-    this.clickedElementLayer.setZIndex(9999999999999999999);
+    this.clickedElementLayer.setZIndex(999999999999999);
 
     // Stops showing polygon geometry
     if (!this.resultVisibility_) {
@@ -756,7 +756,7 @@ export default class IGNSearchControl extends M.Control {
       this.clickedElementLayer.setStyle(this.point);
 
       // Change zIndex value
-      this.clickedElementLayer.setZIndex(9999999999999999999);
+      this.clickedElementLayer.setZIndex(999999999999999);
       // Stops showing polygon geometry
       if (!this.resultVisibility_) {
         this.clickedElementLayer.setStyle(this.simple);

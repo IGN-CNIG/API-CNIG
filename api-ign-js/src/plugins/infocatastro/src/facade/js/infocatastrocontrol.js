@@ -169,7 +169,8 @@ export default class InfoCatastroControl extends M.Control {
         popup = new M.Popup();
         popup.addTab(tab);
         this.facadeMap_.addPopup(popup, coordinates);
-      } else if (popup.getCoordinate()[0] === coordinates[0] && popup.getCoordinate()[1] === coordinates[1]) {
+      } else if (popup.getCoordinate()[0] === coordinates[0]
+        && popup.getCoordinate()[1] === coordinates[1]) {
         let hasExternalContent = false;
         popup.getTabs().forEach((t) => {
           if (t.title !== this.POPUP_TITLE) {

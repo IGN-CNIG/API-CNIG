@@ -502,8 +502,7 @@ export default class FullTOC extends M.Plugin {
   addTo(map) {
     this.map_ = map;
     this.control_ = new FullTOCControl(
-      this.http, this.https, this.precharged,
-      this.codsi, this.order,
+      this.http, this.https, this.precharged, this.codsi, this.order,
     );
     this.panel_ = new M.ui.Panel('FullTOC', {
       className: 'm-plugin-fulltoc',

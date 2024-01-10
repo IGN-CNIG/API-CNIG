@@ -666,7 +666,7 @@ export default class InfoCatastroControl extends M.Control {
     }
     this.coordinatesLayer.setStyle(new M.style.Point(style));
     // Change zIndex value
-    this.coordinatesLayer.setZIndex(9999999999999999999);
+    this.coordinatesLayer.setZIndex(999999999999999);
 
     this.map.addLayers(this.coordinatesLayer);
   }

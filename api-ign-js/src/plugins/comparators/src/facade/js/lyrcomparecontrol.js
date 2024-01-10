@@ -543,8 +543,12 @@ export default class LyrCompareControl extends M.Control {
           this.removeEffectsComparison();
           this.getImpl().effectSelectedCurtain(
             this.layerSelectedA,
-            this.layerSelectedB, this.layerSelectedC,
-            this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode,
+            this.layerSelectedB,
+            this.layerSelectedC,
+            this.layerSelectedD,
+            this.opacityVal,
+            this.staticDivision,
+            this.comparisonMode,
           );
           this.updateControls();
         }, 1000);
@@ -593,8 +597,12 @@ export default class LyrCompareControl extends M.Control {
     setTimeout(() => {
       this.getImpl().effectSelectedCurtain(
         this.layerSelectedA,
-        this.layerSelectedB, this.layerSelectedC,
-        this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode,
+        this.layerSelectedB,
+        this.layerSelectedC,
+        this.layerSelectedD,
+        this.opacityVal,
+        this.staticDivision,
+        this.comparisonMode,
       );
       this.updateControls();
     }, 1000);
@@ -756,7 +764,7 @@ export default class LyrCompareControl extends M.Control {
       this.template.querySelector('#div-m-lyrcompare-transparent-static').disabled = true; // Deshabilita options de tipo de control de cortina
       this.template.querySelector('#div-m-lyrcompare-transparent-mixed').disabled = true; // Deshabilita options de tipo de control de cortina
       return;
-    } else if (this.comparisonMode === 1) {
+    } if (this.comparisonMode === 1) {
       if (swapControl) swapControl.style.opacity = '1';
       this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add('cp-columns-2');
       this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add('cp-columns-1');

@@ -656,8 +656,7 @@ export default class GeorefimageControl extends M.Control {
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
       if (map.getProjection().code !== projection) {
         printData.attributes.map.bbox = this.getImpl().transformExt(
-          printData.attributes.map.bbox, this.map_.getProjection().code,
-          projection,
+          printData.attributes.map.bbox, this.map_.getProjection().code, projection,
         );
       }
 
@@ -831,7 +830,7 @@ export default class GeorefimageControl extends M.Control {
     fileIMG,
     ] : [fileIMG];
 
-      // CREATE ZIP
+    // CREATE ZIP
     createZipFile(files, TYPE_SAVE, titulo);
   }
 

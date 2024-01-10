@@ -150,12 +150,7 @@ export default class GeorefImageEpsgControl extends M.Control {
     evt.preventDefault();
     const date = new Date();
     this.titulo_ = 'mapa_'.concat(
-      date.getFullYear(), '-',
-      date.getMonth() + 1, '-',
-      date.getDay() + 1, '_',
-      date.getHours(),
-      date.getMinutes(),
-      date.getSeconds(),
+      date.getFullYear(), '-', date.getMonth() + 1, '-', date.getDay() + 1, '_', date.getHours(), date.getMinutes(), date.getSeconds(),
     );
 
     this.queueEl = innerQueueElement(

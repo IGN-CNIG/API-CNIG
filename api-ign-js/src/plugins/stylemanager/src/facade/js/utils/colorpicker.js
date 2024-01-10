@@ -32,7 +32,7 @@ export class ColorPickerPolyfill {
         }
 
         // set the input
-        this.input = (this.inputs[inputId] = this.inputs[inputId]) ||
+        this.input = (this.inputs[inputId]) ||
           document.getElementById(inputId);
 
         if (!this.input) {

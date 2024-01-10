@@ -57,8 +57,9 @@ module.exports = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?name=fonts/[name].[ext]',
-      }
+        exclude: /node_modules/,
+        type: 'asset/inline',
+      },
     ],
   },
   optimization: {
@@ -66,13 +67,8 @@ module.exports = {
     minimizer: [
       new OptimizeCssAssetsPlugin(),
       new TerserPlugin({
-        sourceMap: true,
         terserOptions: {
-          mangle: {
-            properties: {
-              regex: /.*_/,
-            },
-          },
+          sourceMap: true,
         },
       }),
     ],

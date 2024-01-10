@@ -151,14 +151,14 @@ export default class ContactLink extends M.Plugin {
      * @public
      * @type {boolean}
      */
-    this.collapsed = (options.collapsed === false) ? false : true;
+    this.collapsed = options.collapsed !== false;
 
     /**
      * Collapsible attribute
      * @public
      * @type {boolean}
      */
-    this.collapsible = (options.collapsible === false) ? false : true;
+    this.collapsible = options.collapsible !== false;
 
     /**
      * ContactLink control
@@ -175,7 +175,7 @@ export default class ContactLink extends M.Plugin {
       instagram: this.linksInstagram,
       youtube: this.linksYoutube,
       mail: this.linksMail,
-      pinterest: this.linksPinterest
+      pinterest: this.linksPinterest,
     });
 
     /**
@@ -190,7 +190,6 @@ export default class ContactLink extends M.Plugin {
      * @type {object}
      */
     this.options = options;
-
   }
 
   /**

@@ -915,7 +915,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.clickedElementLayer.setStyle(this.point);
 
       // Change zIndex value
-      this.clickedElementLayer.setZIndex(9999999999999999999);
+      this.clickedElementLayer.setZIndex(999999999999999);
       // Stops showing polygon geometry
       if (!this.resultVisibility) {
         this.clickedElementLayer.setStyle(this.simple);
@@ -1057,7 +1057,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     }
 
     // Change zIndex value
-    this.clickedElementLayer.setZIndex(99999999999999999);
+    this.clickedElementLayer.setZIndex(9999999999999);
     // Stops showing polygon geometry
     if (!this.resultVisibility) {
       this.clickedElementLayer.setStyle(this.simple);

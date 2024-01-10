@@ -64,6 +64,9 @@
     "max-classes-per-file": "off",
     "quote-props": "off",
     "import/no-absolute-path": "off",
-    "import/no-cycle": "off"
+    "import/no-cycle": "off",
+    "consistent-return": "off",
+    "array-callback-return": "off",
+    "grouped-accessor-pairs": "off"
   }
 }

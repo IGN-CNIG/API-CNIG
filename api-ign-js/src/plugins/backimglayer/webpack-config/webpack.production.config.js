@@ -82,13 +82,19 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
-    new CopywebpackPlugin([{
-      from: 'src/api.json',
-      to: 'api.json',
-    }, {
-      from: 'src/facade/assets/images',
-      to: 'images',
-    }]),
+    new CopywebpackPlugin({
+      patterns: [
+        {
+          from: 'src/api.json',
+          to: 'api.json',
+        },
+        {
+          from: 'src/facade/assets/images',
+          to: 'images',
+        }
+      ],
+    },
+    ),
   ],
   devtool: 'source-map',
 };

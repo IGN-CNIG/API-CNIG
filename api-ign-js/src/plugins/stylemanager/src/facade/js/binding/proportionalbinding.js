@@ -64,8 +64,7 @@ export class ProportionalBinding extends Binding {
       options['attributes'] = this.getAttributes();
       options['attributes'].forEach(attribute => attribute['selected'] = options.attributeName);
       options['functions'] = ProportionalBinding.arrayDataToTemplate(
-        options.proportionalFunction, ['absolute', 'flannery'],
-        [getValue('absolute'), 'Flannery'],
+        options.proportionalFunction, ['absolute', 'flannery'], [getValue('absolute'), 'Flannery'],
       );
     }
     return options;

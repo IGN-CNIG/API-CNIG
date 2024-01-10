@@ -9,15 +9,20 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      facade: path.resolve(__dirname, '..', 'src', 'facade', 'js'),
       templates: path.resolve(__dirname, '..', 'src', 'templates'),
-      css: path.resolve(__dirname, '..', 'src', 'facade', 'assets', 'css'),
-      fonts: path.resolve(__dirname, '..', 'src', 'facade', 'assets', 'fonts'),
       impl: path.resolve(__dirname, '..', 'src', 'impl', 'ol', 'js'),
+      facade: path.resolve(__dirname, '..', 'src', 'facade', 'js'),
+      fonts: path.resolve(__dirname, '..', 'src', 'facade', 'assets', 'fonts'),
+      css: path.resolve(__dirname, '..', 'src', 'facade', 'assets', 'css'),
     },
     extensions: ['.wasm', '.mjs', '.js', '.json', '.css', '.hbs', '.html',
       '.woff', '.woff2', '.eot', '.ttf', '.svg',
     ],
+    fallback: {
+      fs: false,
+      path: false,
+      crypto: false,
+    },
   },
   module: {
     rules: [

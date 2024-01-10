@@ -19,6 +19,8 @@ module.exports = {
       fs: false,
       path: false,
       crypto: false,
+      "buffer": require.resolve("buffer/"),
+      "assert": require.resolve("assert/"),
     },
   },
   module: {
@@ -60,6 +62,10 @@ module.exports = {
     ],
   },
   plugins: [
+    // fix "process is not defined" error:
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new ESLintPlugin({
       // extensions: [`js`, `jsx`],

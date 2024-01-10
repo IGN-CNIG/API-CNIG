@@ -1766,8 +1766,13 @@ export default class FullTOCControl extends M.Control {
             this.printOGCModal(url, indexCurrentLayer, limit, checked);
           } else {
             this.printOGCModal(
-              url, indexCurrentLayer, limit, checked, cDict,
-              filterByIDTemp, filterByOtherFiltersTemp,
+              url,
+              indexCurrentLayer,
+              limit,
+              checked,
+              cDict,
+              filterByIDTemp,
+              filterByOtherFiltersTemp,
             );
           }
         });
@@ -1778,8 +1783,7 @@ export default class FullTOCControl extends M.Control {
             return capa.id === selectValue;
           });
           this.printOGCModal(
-            url, indexCurrentLayer, limit, checked,
-            summary, filterByID, filterByOtherFilters,
+            url, indexCurrentLayer, limit, checked, summary, filterByID, filterByOtherFilters,
           );
         });
       }).catch((err) => {
@@ -1902,8 +1906,14 @@ export default class FullTOCControl extends M.Control {
         this.setOnClickCloseBtn();
 
         this.setOnClickersFiltersButtons(
-          summary, urlOGC, radioBtnFilterByID, radioBtnFilterByOther,
-          layers, url, filterByID, filterByOtherFilters,
+          summary,
+          urlOGC,
+          radioBtnFilterByID,
+          radioBtnFilterByOther,
+          layers,
+          url,
+          filterByID,
+          filterByOtherFilters,
         );
       }).catch((err) => {
         urlOGC = '';

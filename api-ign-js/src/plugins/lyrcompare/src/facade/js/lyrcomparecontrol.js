@@ -5,16 +5,18 @@
 import LyrcompareImplControl from 'impl/lyrcomparecontrol';
 import template from 'templates/lyrcompare';
 import {
-  getValue as getValueTranslate
+  getValue as getValueTranslate,
 } from './i18n/language';
 
-Array.prototype.unique = function (a) {
+// eslint-disable-next-line no-extend-native, func-names
+Array.prototype.unique = (function (a) {
+  // eslint-disable-next-line func-names
   return function () {
-    return this.filter(a)
-  }
-}(function (a, b, c) {
-  return c.indexOf(a, b + 1) < 0
-});
+    return this.filter(a);
+  };
+}((a, b, c) => {
+  return c.indexOf(a, b + 1) < 0;
+}));
 
 export default class LyrCompareControl extends M.Control {
   /**
@@ -162,7 +164,7 @@ export default class LyrCompareControl extends M.Control {
     if (this.comparisonMode > 0) {
       this.on(M.evt.ADDED_TO_MAP, (e) => {
         this.activateCurtain();
-      })
+      });
     }
     this.map = map;
     return new Promise((success, fail) => {
@@ -183,7 +185,7 @@ export default class LyrCompareControl extends M.Control {
               this.setFunctionsAndCompile(success);
             }
           },
-            200);
+          200);
         }
       } else {
         M.dialog.error(getValueTranslate('no_layers_plugin'), 'lyrcompare');
@@ -200,14 +202,14 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   setFunctionsAndCompile(success) {
-    let layers = this.layers.map(function (layer) {
+    const layers = this.layers.map((layer) => {
       return layer instanceof Object ? {
         name: layer.name,
-        legend: layer.legend
+        legend: layer.legend,
       } : {
-          name: layer,
-          legend: layer
-        };
+        name: layer,
+        legend: layer,
+      };
     });
 
     const options = {
@@ -233,37 +235,36 @@ export default class LyrCompareControl extends M.Control {
           lyr2Select_tooltip: getValueTranslate('lyr2Select_tooltip'),
           lyr3Select_tooltip: getValueTranslate('lyr3Select_tooltip'),
           lyr4Select_tooltip: getValueTranslate('lyr4Select_tooltip'),
-        }
-      }
-    }
+        },
+      },
+    };
 
-    //template with default options
+    // template with default options
     this.template = M.template.compileSync(template, options);
     this.setEventsAndValues();
     this.updateControls();
 
-    if (this.layers.length == 0) {
+    if (this.layers.length === 0) {
       M.dialog.error(getValueTranslate('no_layers_plugin'));
     } else {
-      //e2m: Toogle activate/desactivate vcurtain, hcurtain, multicurtain ---> comparisonMode = 1, 2, 3
+      // e2m: Toogle activate/desactivate vcurtain, hcurtain, multicurtain
+      // ---> comparisonMode = 1, 2, 3
       this.template.querySelectorAll('button[id^="m-lyrcompare-"]')
         .forEach((button, i) => {
           button.addEventListener('click', evt => {
             if (this.comparisonMode === 0) {
               this.comparisonMode = i + 1;
               this.activateCurtain();
-              return;
             } else if (this.comparisonMode === i + 1) {
               this.comparisonMode = 0;
               this.deactivateCurtain();
-              return;
             } else {
-              //Cambiamos de modo de visualización sin apagar/encender la interacción
+              // Cambiamos de modo de visualización sin apagar/encender la interacción
               this.comparisonMode = i + 1;
               this.updateControls();
               this.getImpl().setComparisonMode(this.comparisonMode);
             }
-          })
+          });
         });
     }
     return success(this.template);
@@ -278,14 +279,14 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   setEventsAndValues() {
-    //opacity control
+    // opacity control
     this.template.querySelector('#input-transparent-opacity').value = this.opacityVal;
     this.template.querySelector('#input-transparent-opacity').addEventListener('input', (evt) => {
       this.opacityVal = Number(evt.target.value);
       this.getImpl().setOpacity(this.opacityVal);
     });
 
-    //division selector
+    // division selector
     if (this.staticDivision === 1) {
       this.template.querySelector('#div-m-lyrcompare-transparent-static').checked = true;
     } else if (this.staticDivision === 0) {
@@ -310,97 +311,109 @@ export default class LyrCompareControl extends M.Control {
     });
 
     this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
-
       item.addEventListener('change', evt => {
-
-        const layer = this.layers.filter(function (layer) {
-
-          return layer.name === evt.target.value
-
+        const layer = this.layers.filter((l) => {
+          return l.name === evt.target.value;
         });
 
         let lstLayers = [];
 
-        if (item.id === "m-lyrcompare-lyrA") {
-
-          lstLayers = [layer[0].name, this.layerSelectedB.name, this.layerSelectedC.name, this.layerSelectedD.name];
-
-        } else if (item.id === "m-lyrcompare-lyrB") {
-
-          lstLayers = [this.layerSelectedA.name, layer[0].name, this.layerSelectedC.name, this.layerSelectedD.name];
-
-        } else if (item.id === "m-lyrcompare-lyrC") {
-
-          lstLayers = [this.layerSelectedA.name, this.layerSelectedB.name, layer[0].name, this.layerSelectedD.name];
-
-        } else if (item.id === "m-lyrcompare-lyrD") {
-
-          lstLayers = [this.layerSelectedA.name, this.layerSelectedB.name, this.layerSelectedC.name, layer[0].name];
-
+        if (item.id === 'm-lyrcompare-lyrA') {
+          lstLayers = [
+            layer[0].name,
+            this.layerSelectedB.name,
+            this.layerSelectedC.name,
+            this.layerSelectedD.name,
+          ];
+        } else if (item.id === 'm-lyrcompare-lyrB') {
+          lstLayers = [
+            this.layerSelectedA.name,
+            layer[0].name,
+            this.layerSelectedC.name,
+            this.layerSelectedD.name,
+          ];
+        } else if (item.id === 'm-lyrcompare-lyrC') {
+          lstLayers = [
+            this.layerSelectedA.name,
+            this.layerSelectedB.name,
+            layer[0].name,
+            this.layerSelectedD.name,
+          ];
+        } else if (item.id === 'm-lyrcompare-lyrD') {
+          lstLayers = [
+            this.layerSelectedA.name,
+            this.layerSelectedB.name,
+            this.layerSelectedC.name,
+            layer[0].name,
+          ];
         }
 
-        //e2m: de esta forma pasamos los parámetros en forma de array
+        // e2m: de esta forma pasamos los parámetros en forma de array
 
         if (this.checkLayersAreDifferent(...lstLayers) === false) {
           M.dialog.info(getValueTranslate('advice_sameLayer'));
-          if (item.id === "m-lyrcompare-lyrA") {
-            this.template.querySelector('#' + item.id).value = this.layerSelectedA.name
-          } else if (item.id === "m-lyrcompare-lyrB") {
-            this.template.querySelector('#' + item.id).value = this.layerSelectedB.name
-          } else if (item.id === "m-lyrcompare-lyrC") {
-            this.template.querySelector('#' + item.id).value = this.layerSelectedC.name
-          } else if (item.id === "m-lyrcompare-lyrD") {
-            this.template.querySelector('#' + item.id).value = this.layerSelectedD.name
+          if (item.id === 'm-lyrcompare-lyrA') {
+            this.template.querySelector(`#${item.id}`).value = this.layerSelectedA.name;
+          } else if (item.id === 'm-lyrcompare-lyrB') {
+            this.template.querySelector(`#${item.id}`).value = this.layerSelectedB.name;
+          } else if (item.id === 'm-lyrcompare-lyrC') {
+            this.template.querySelector(`#${item.id}`).value = this.layerSelectedC.name;
+          } else if (item.id === 'm-lyrcompare-lyrD') {
+            this.template.querySelector(`#${item.id}`).value = this.layerSelectedD.name;
           }
           return false;
         }
 
-        if (item.id === "m-lyrcompare-lyrA") {
+        if (item.id === 'm-lyrcompare-lyrA') {
           if (layer[0].name === this.layerSelectedC.name) {
             this.layerSelectedC.setVisible(false);
             this.layerSelectedC = this.layerSelectedA;
-            this.template.querySelector('#m-lyrcompare-lyrC').value = this.layerSelectedA.name
+            this.template.querySelector('#m-lyrcompare-lyrC').value = this.layerSelectedA.name;
           }
 
           if (layer[0].name === this.layerSelectedD.name) {
             this.layerSelectedD.setVisible(false);
             this.layerSelectedD = this.layerSelectedA;
-            this.template.querySelector('#m-lyrcompare-lyrD').value = this.layerSelectedA.name
+            this.template.querySelector('#m-lyrcompare-lyrD').value = this.layerSelectedA.name;
           }
-
-        } else if (item.id === "m-lyrcompare-lyrB") {
+        } else if (item.id === 'm-lyrcompare-lyrB') {
           if (layer[0].name === this.layerSelectedC.name) {
             this.layerSelectedC.setVisible(false);
             this.layerSelectedC = this.layerSelectedB;
-            this.template.querySelector('#m-lyrcompare-lyrC').value = this.layerSelectedB.name
+            this.template.querySelector('#m-lyrcompare-lyrC').value = this.layerSelectedB.name;
           }
 
           if (layer[0].name === this.layerSelectedD.name) {
             this.layerSelectedD.setVisible(false);
             this.layerSelectedD = this.layerSelectedB;
-            this.template.querySelector('#m-lyrcompare-lyrD').value = this.layerSelectedB.name
+            this.template.querySelector('#m-lyrcompare-lyrD').value = this.layerSelectedB.name;
           }
-
         }
-        if (item.id === "m-lyrcompare-lyrA") {
+        if (item.id === 'm-lyrcompare-lyrA') {
           this.layerSelectedA.setVisible(false);
           this.layerSelectedA = layer[0];
-        } else if (item.id === "m-lyrcompare-lyrB") {
+        } else if (item.id === 'm-lyrcompare-lyrB') {
           this.layerSelectedB.setVisible(false);
           this.layerSelectedB = layer[0];
-
-        } else if (item.id === "m-lyrcompare-lyrC") {
+        } else if (item.id === 'm-lyrcompare-lyrC') {
           this.layerSelectedC.setVisible(false);
           this.layerSelectedC = layer[0];
-        } else if (item.id === "m-lyrcompare-lyrD") {
+        } else if (item.id === 'm-lyrcompare-lyrD') {
           this.layerSelectedD.setVisible(false);
           this.layerSelectedD = layer[0];
         }
         this.removeEffectsComparison();
-        this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
-
-      })
-    })
+        this.getImpl().effectSelectedCurtain(
+          this.layerSelectedA,
+          this.layerSelectedB,
+          this.layerSelectedC,
+          this.layerSelectedD,
+          this.opacityVal,
+          this.staticDivision,
+          this.comparisonMode,
+        );
+      });
+    });
   }
 
   /**
@@ -419,12 +432,12 @@ export default class LyrCompareControl extends M.Control {
   checkLayersAreDifferent(lyerA, lyerB, lyerC, lyerD) {
     if ((this.comparisonMode === 1) || (this.comparisonMode === 2)) {
       if (lyerA === lyerB) {
-        return false
+        return false;
       }
     } else {
-      let compLyers = [lyerA, lyerB, lyerC, lyerD];
+      const compLyers = [lyerA, lyerB, lyerC, lyerD];
       if (compLyers.length !== compLyers.unique().length) {
-        return false
+        return false;
       }
     }
     return true;
@@ -439,7 +452,15 @@ export default class LyrCompareControl extends M.Control {
    */
   activateCurtain() {
     this.activeDefault();
-    this.getImpl().effectSelectedCurtain(this.layerSelectedA, this.layerSelectedB, this.layerSelectedC, this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode);
+    this.getImpl().effectSelectedCurtain(
+      this.layerSelectedA,
+      this.layerSelectedB,
+      this.layerSelectedC,
+      this.layerSelectedD,
+      this.opacityVal,
+      this.staticDivision,
+      this.comparisonMode,
+    );
     this.updateControls();
   }
 
@@ -482,7 +503,8 @@ export default class LyrCompareControl extends M.Control {
       this.layerSelectedA.setVisible(false);
       this.layerSelectedB.setVisible(false);
     }
-    if (this.layerSelectedC !== null && this.layerSelectedD !== null && this.layerSelectedC !== undefined && this.layerSelectedD !== undefined) {
+    if (this.layerSelectedC !== null && this.layerSelectedD !== null
+      && this.layerSelectedC !== undefined && this.layerSelectedD !== undefined) {
       this.layerSelectedC.setVisible(false);
       this.layerSelectedD.setVisible(false);
     }
@@ -507,29 +529,29 @@ export default class LyrCompareControl extends M.Control {
    *
    */
   updateControls() {
-
     this.removeActivate();
     this.activateByMode();
 
     const swapControl = document.querySelector('.lyrcompare-swipe-control');
-    if (this.comparisonMode == 0) {
+    if (this.comparisonMode === 0) {
       this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
+        // eslint-disable-next-line no-param-reassign
         item.disabled = true;
       });
-      this.template.querySelector('input').disabled = true; //Deshabilita el range del radio
+      this.template.querySelector('input').disabled = true; // Deshabilita el range del radio
       return;
-    } else if (this.comparisonMode === 1) {
+    } if (this.comparisonMode === 1) {
       if (swapControl) swapControl.style.opacity = '1';
-      this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add("lyrcompare-icon-columns-2");
-      this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add("lyrcompare-icon-columns-1");
+      this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add('lyrcompare-icon-columns-2');
+      this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add('lyrcompare-icon-columns-1');
       this.template.querySelector('#m-lyrcompare-lyrA-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrB-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrA').disabled = false;
       this.template.querySelector('#m-lyrcompare-lyrB').disabled = false;
     } else if (this.comparisonMode === 2) {
       if (swapControl) swapControl.style.opacity = '1';
-      this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add("lyrcompare-icon-columns-4");
-      this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add("lyrcompare-icon-columns-3");
+      this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add('lyrcompare-icon-columns-4');
+      this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add('lyrcompare-icon-columns-3');
       this.template.querySelector('#m-lyrcompare-lyrA-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrB-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrA').disabled = false;
@@ -537,28 +559,29 @@ export default class LyrCompareControl extends M.Control {
     } else if (this.comparisonMode === 3) {
       if (swapControl) swapControl.style.opacity = '1';
       this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
+        // eslint-disable-next-line no-param-reassign
         item.disabled = false;
       });
-      this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add("lyrcompare-icon-th-large-1");
-      this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add("lyrcompare-icon-th-large-2");
-      this.template.querySelector('#m-lyrcompare-lyrC-lbl').classList.add("lyrcompare-icon-th-large-3");
-      this.template.querySelector('#m-lyrcompare-lyrD-lbl').classList.add("lyrcompare-icon-th-large-4");
+      this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add('lyrcompare-icon-th-large-1');
+      this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add('lyrcompare-icon-th-large-2');
+      this.template.querySelector('#m-lyrcompare-lyrC-lbl').classList.add('lyrcompare-icon-th-large-3');
+      this.template.querySelector('#m-lyrcompare-lyrD-lbl').classList.add('lyrcompare-icon-th-large-4');
 
       this.template.querySelector('#m-lyrcompare-lyrA-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrB-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrC-cont').style.display = 'block';
       this.template.querySelector('#m-lyrcompare-lyrD-cont').style.display = 'block';
     }
-    this.template.querySelector('input').disabled = false; //Habilita el range del radio
+    this.template.querySelector('input').disabled = false; // Habilita el range del radio
   }
 
   activateByMode() {
     if (this.comparisonMode === 1) {
-      this.template.querySelector('#m-lyrcompare-vcurtain').classList.add('buttom-pressed-vcurtain'); //VCurtain pulsado
+      this.template.querySelector('#m-lyrcompare-vcurtain').classList.add('buttom-pressed-vcurtain'); // VCurtain pulsado
     } else if (this.comparisonMode === 2) {
-      this.template.querySelector('#m-lyrcompare-hcurtain').classList.add('buttom-pressed-hcurtain'); //HCurtain pulsado
+      this.template.querySelector('#m-lyrcompare-hcurtain').classList.add('buttom-pressed-hcurtain'); // HCurtain pulsado
     } else if (this.comparisonMode === 3) {
-      this.template.querySelector('#m-lyrcompare-multicurtain').classList.add('buttom-pressed-multicurtain'); //MultiCurtain pulsado
+      this.template.querySelector('#m-lyrcompare-multicurtain').classList.add('buttom-pressed-multicurtain'); // MultiCurtain pulsado
     }
   }
 
@@ -592,28 +615,33 @@ export default class LyrCompareControl extends M.Control {
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
-          let name = urlLayer[3]
-          const layerByUrl = this.map.getLayers().filter(l => name.includes(l.name))[this.map.getLayers().filter(l => name.includes(l.name)).length - 1];
+          const name = urlLayer[3];
+          const layerByUrl = this.map.getLayers()
+            .filter(l => name.includes(l.name))[this.map.getLayers()
+              .filter(l => name.includes(l.name)).length - 1];
           this.map.removeLayers(layerByUrl);
-
         } else {
-          const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[this.map.getLayers().filter(l => layer.includes(l.name)).length - 1];
+          const layerByName = this.map.getLayers()
+            .filter(l => layer.includes(l.name))[this.map.getLayers()
+              .filter(l => layer.includes(l.name)).length - 1];
           this.map.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
-        const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[this.map.getLayers().filter(l => layer.name.includes(l.name)).length - 1];
+        const layerByObject = this.map.getLayers()
+          .filter(l => layer.name.includes(l.name))[this.map.getLayers()
+            .filter(l => layer.name.includes(l.name)).length - 1];
         this.map.removeLayers(layerByObject);
       }
     });
   }
 
   allLayerLoad() {
-    if (this.layers[0].load === undefined || this.layers[1].load === undefined &&
-      (this.layers[2] !== undefined && this.layers[3] !== undefined && (this.layers[2].load === undefined || this.layers[3].load === undefined))) {
+    if (this.layers[0].load === undefined || (this.layers[1].load === undefined &&
+      (this.layers[2] !== undefined && this.layers[3] !== undefined
+        && (this.layers[2].load === undefined || this.layers[3].load === undefined)))) {
       return false;
-    } else {
-      return true;
     }
+    return true;
   }
 
   /**
@@ -625,24 +653,25 @@ export default class LyrCompareControl extends M.Control {
    * @return
    */
   transformToLayers(layers) {
-    const transform = layers.map(function (layer) {
+    const transform = layers.map((layer) => {
       let newLayer = null;
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
-          if (urlLayer[0].toUpperCase() == 'WMS') {
+          if (urlLayer[0].toUpperCase() === 'WMS') {
             newLayer = new M.layer.WMS({
               url: urlLayer[2],
-              name: urlLayer[3]
+              name: urlLayer[3],
             });
             if (this.map.getLayers().filter(l => newLayer.name.includes(l.name)).length > 0) {
-              this.map.removeLayers(this.map.getLayers().filter(l => newLayer.name.includes(l.name))[0]);
+              this.map.removeLayers(this.map.getLayers()
+                .filter(l => newLayer.name.includes(l.name))[0]);
             }
             this.map.addLayers(newLayer);
-          } else if (urlLayer[0].toUpperCase() == 'WMTS') {
+          } else if (urlLayer[0].toUpperCase() === 'WMTS') {
             newLayer = new M.layer.WMTS({
               url: urlLayer[1],
-              name: urlLayer[2]
+              name: urlLayer[2],
             });
             this.map.addLayers(newLayer);
           }
@@ -661,6 +690,7 @@ export default class LyrCompareControl extends M.Control {
             if (newLayer.type === 'WMS') {
               newLayer.load = true;
             } else if (newLayer.type === 'WMTS') {
+              // eslint-disable-next-line no-underscore-dangle
               newLayer.facadeLayer_.load = true;
             }
           }, 1000);
@@ -669,11 +699,9 @@ export default class LyrCompareControl extends M.Control {
         }
         newLayer.displayInLayerSwitcher = false;
         newLayer.setVisible(false);
-        return newLayer
-      } else {
-        this.layers.remove(layer);
+        return newLayer;
       }
-
+      this.layers.remove(layer);
     }, this);
     return (transform[0] === undefined) ? [] : transform;
   }
@@ -706,6 +734,4 @@ export default class LyrCompareControl extends M.Control {
   getLayersNames() {
     return this.layers.map(l => l.name);
   }
-
-
 }

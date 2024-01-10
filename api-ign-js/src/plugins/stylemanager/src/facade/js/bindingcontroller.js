@@ -9,6 +9,7 @@ import stylechoropleth from 'templates/stylechoropleth';
 import stylecategory from 'templates/stylecategory';
 import styleheatmap from 'templates/styleheatmap';
 import stylechart from 'templates/stylechart';
+import styleflowline from 'templates/styleflowline';
 import { SimpleBinding } from './binding/simplebinding';
 import { ProportionalBinding } from './binding/proportionalbinding';
 import { ClusterBinding } from './binding/clusterbinding';
@@ -17,7 +18,6 @@ import { ChoroplethBinding } from './binding/choroplethbinding';
 import { CategoryBinding } from './binding/categorybinding';
 import { ChartBinding } from './binding/chartbinding';
 import { getValue } from './i18n/language';
-import styleflowline from 'templates/styleflowline';
 import { FlowLineBinding } from './binding/flowlinebinding';
 
 export default class BindingController {
@@ -419,8 +419,8 @@ export default class BindingController {
    * @function
    */
   getMainStyle() {
-    return this.getSelectedPanels().map(binding => binding.generateStyle()).find(style =>
-      style instanceof M.style.Composite);
+    return this.getSelectedPanels().map(binding => binding.generateStyle())
+      .find(style => style instanceof M.style.Composite);
   }
 
   /**

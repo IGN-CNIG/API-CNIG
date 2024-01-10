@@ -29,6 +29,11 @@ module.exports = {
     extensions: ['.wasm', '.mjs', '.js', '.json', '.css', '.hbs', '.html',
       '.woff', '.woff2', '.eot', '.ttf', '.svg',
     ],
+    fallback: {
+      fs: false,
+      path: false,
+      crypto: false,
+    },
   },
   module: {
     rules: [

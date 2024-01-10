@@ -17,7 +17,6 @@ export default class TopographicprofileControl extends M.Control {
    * @api stable
    */
   constructor(opts) {
-
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(TopographicprofileImplControl)) {
       M.exception('La implementación usada no puede crear controles TopographicprofileControl');
@@ -25,8 +24,6 @@ export default class TopographicprofileControl extends M.Control {
     // 2. implementation of this control
     const impl = new TopographicprofileImplControl(opts);
     super(impl, 'Topographicprofile');
-
-
   }
 
   /**

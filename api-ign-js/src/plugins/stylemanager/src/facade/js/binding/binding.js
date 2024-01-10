@@ -627,7 +627,7 @@ export class Binding {
       if (M.utils.isArray(value)) {
         value = [...value];
       } else if (M.utils.isObject(value)) {
-        value = Object.assign({}, value);
+        value = { ...value };
       }
       obj[key] = value;
     } else if (keyLength > 1) { // recursive case

@@ -70,12 +70,10 @@ export default class Transparency extends M.Plugin {
     if (options.layers === undefined || options.layers === '') {
       M.dialog.error(getValue('errorLayer'));
       this.layers = [];
+    } else if (Array.isArray(options.layers)) {
+      this.layers = options.layers;
     } else {
-      if (Array.isArray(options.layers)) {
-        this.layers = options.layers;
-      } else {
-        this.layers = options.layers.split(",");
-      }
+      this.layers = options.layers.split(',');
     }
 
     /**
@@ -85,16 +83,14 @@ export default class Transparency extends M.Plugin {
      * @public
      */
 
-    if (!isNaN(parseInt(options.radius))) {
-
+    if (!Number.isNaN(parseInt(options.radius, 10))) {
       if (options.radius >= 30 && options.radius <= 200) {
-        this.radius = parseInt(options.radius);
+        this.radius = parseInt(options.radius, 10);
       } else if (options.radius > 200) {
         this.radius = 200;
       } else if (options.radius < 30) {
         this.radius = 30;
       }
-
     } else {
       this.radius = 100; // Default value
     }
@@ -121,14 +117,14 @@ export default class Transparency extends M.Plugin {
      * @public
      * @type {boolean}
      */
-    this.collapsed = (options.collapsed === false) ? false : true;
+    this.collapsed = options.collapsed !== false;
 
     /**
      * Collapsible attribute
      * @public
      * @type {boolean}
      */
-    this.collapsible = (options.collapsed === false) ? false : true;
+    this.collapsible = options.collapsed !== false;
   }
 
   /**
@@ -139,7 +135,7 @@ export default class Transparency extends M.Plugin {
    * @param {string} lang type language
    * @api stable
    */
-   static getJSONTranslations(lang) {
+  static getJSONTranslations(lang) {
     if (lang === 'en' || lang === 'es') {
       return (lang === 'en') ? en : es;
     }
@@ -155,7 +151,6 @@ export default class Transparency extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-
     const values = {
       layers: this.layers,
       radius: this.radius,
@@ -187,7 +182,8 @@ export default class Transparency extends M.Plugin {
     this.control_.removeEffects();
     this.control_.removeTransparencyLayers(this.control_.getLayersNames());
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.layers, this.radius] = [null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.layers, this.radius]
+      = [null, null, null, null, null];
   }
 
   /**
@@ -221,11 +217,13 @@ export default class Transparency extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    let layersTransparency = this.control_.getLayersNames();
+    const layersTransparency = this.control_.getLayersNames();
 
-    return `${this.name}=${this.position}${this.collapsible}${this.collapsed}${this.separatorApiJson}${layersTransparency.join(',')}${this.separatorApiJson}${this.radius}`;
+    return `${this.name}=${this.position}${this.collapsible}${this.collapsed}${this.separatorApiJson}${layersTransparency
+      .join(',')}${this.separatorApiJson}${this.radius}`;
 
-    // return `${this.name}=${this.position}${this.separatorApiJson}${this.layers.join(',')}${this.separatorApiJson}${this.radius}`;
+    // return `${this.name}=${this.position}${this.separatorApiJson}
+    // ${this.layers.join(',')}${this.separatorApiJson}${this.radius}`;
   }
 
   /**

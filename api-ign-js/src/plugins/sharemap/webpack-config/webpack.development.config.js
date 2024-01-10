@@ -38,13 +38,24 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
-        loader: 'style-loader!css-loader',
+        test: /\.css$/i,
+        use: [
+          {
+            loader: "style-loader",
+            options: {
+              // insert: 'head',
+              injectType: 'singletonStyleTag',
+            }, 
+          },
+          "css-loader",
+        ],
+        exclude: [/node_modules/],
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?name=fonts/[name].[ext]',
-      }
+        exclude: /node_modules/,
+        type: 'asset/inline',
+      },
     ],
   },
   plugins: [

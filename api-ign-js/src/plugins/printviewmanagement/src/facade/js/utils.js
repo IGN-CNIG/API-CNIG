@@ -1,8 +1,8 @@
-import { getValue } from './i18n/language';
 // eslint-disable-next-line import/first
 import JsZip from 'jszip';
 // eslint-disable-next-line import/first
 import { saveAs } from 'file-saver';
+import { getValue } from './i18n/language';
 
 // ID and CLASS
 const LOADING_CLASS = 'printing';

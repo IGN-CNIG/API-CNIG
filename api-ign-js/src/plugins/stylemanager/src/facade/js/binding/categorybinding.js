@@ -528,8 +528,8 @@ export class CategoryBinding extends Binding {
    */
   getAllValuesAttribute(attribute) {
     const features = this.layer_.getFeatures();
-    return features.map(feature =>
-      feature.getAttribute(attribute)).filter((elem, pos, arr) => arr.indexOf(elem) === pos);
+    return features.map(feature => feature.getAttribute(attribute))
+      .filter((elem, pos, arr) => arr.indexOf(elem) === pos);
   }
 
   /**

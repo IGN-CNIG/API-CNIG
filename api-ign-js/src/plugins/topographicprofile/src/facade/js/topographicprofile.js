@@ -65,15 +65,14 @@ export default class Topographicprofile extends M.Plugin {
      */
     this.options_.distance = opts.distance || 30;
 
-     /**
+    /**
      * Hide or show panel. By default true.
      * @private
      * @type {Boolean}
      */
-    this.options_.visible = opts.hasOwnProperty('visible') ? opts.visible : true;
+    this.options_.visible = Object.prototype.hasOwnProperty.call(opts, 'visible') ? opts.visible : true;
     // this.options_.serviceURL = opts.serviceURL || ((M.config.GGIS_RESTAPI) ? M.config.GGIS_RESTAPI + "/services/elevation" : "http://ggiscloud.guadaltel.com/ggiscloud/restapi/services/elevation");
-    //'http://idecan5.grafcan.es/ServicioWPS/mdt';
-
+    // 'http://idecan5.grafcan.es/ServicioWPS/mdt';
   }
 
   /**
@@ -84,7 +83,7 @@ export default class Topographicprofile extends M.Plugin {
    * @param {string} lang type language
    * @api stable
    */
-   static getJSONTranslations(lang) {
+  static getJSONTranslations(lang) {
     if (lang === 'en' || lang === 'es') {
       return (lang === 'en') ? en : es;
     }
@@ -108,11 +107,11 @@ export default class Topographicprofile extends M.Plugin {
       'className': 'm-topographicprofile',
       'collapsedButtonClass': 'icon-chart',
       'position': M.ui.position[this.position_],
-      'tooltip': getValue('tooltip')
+      'tooltip': getValue('tooltip'),
     });
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
-    if(!this.options_.visible) {
+    if (!this.options_.visible) {
       setTimeout(() => {
         document.querySelector('#m-topographicprofile-btn').click();
         document.getElementsByClassName('m-topographicprofile')[0].style.setProperty('display', 'none', 'important');
@@ -128,6 +127,7 @@ export default class Topographicprofile extends M.Plugin {
    * @api stable
    */
   setDataFromLocal(coordsXYZ) {
+    // eslint-disable-next-line no-underscore-dangle
     this.controls_[0].impl_.setDataFromLocal(coordsXYZ);
   }
 
@@ -150,7 +150,7 @@ export default class Topographicprofile extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}`
+    return `${this.name}=${this.position_}`;
   }
 
   /**
@@ -166,6 +166,6 @@ export default class Topographicprofile extends M.Plugin {
   }
 
   get name() {
-    return "topographicprofile";
+    return 'topographicprofile';
   }
 }

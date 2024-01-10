@@ -218,8 +218,7 @@ export default class PrintViewManagementControl extends M.Control {
 
   addPrinterMapControl(html) {
     this.printerMapControl = new PrinterMapControl(
-      this.printermap_, this.map_,
-      this.statusProxy, this.useProxy,
+      this.printermap_, this.map_, this.statusProxy, this.useProxy,
     );
     html.querySelector('#m-printviewmanagement-printermap').addEventListener('click', () => {
       this.showDownloadButton();
@@ -230,8 +229,7 @@ export default class PrintViewManagementControl extends M.Control {
 
   addGeorefImageControl(html) {
     this.georefImageControl = new GeorefimageControl(
-      this.georefImage_, this.map_,
-      this.statusProxy, this.useProxy,
+      this.georefImage_, this.map_, this.statusProxy, this.useProxy,
     );
     html.querySelector('#m-printviewmanagement-georefImage').addEventListener('click', () => {
       this.showDownloadButton();

@@ -719,8 +719,8 @@ export default class LayerswitcherControl extends M.Control {
    */
   nextPage_() {
     if (this.pages_.total > this.pages_.actual) {
-      this.pages_.actual = this.pages_.actual + 1;
-      this.pages_.element = this.pages_.element + this.numPages_;
+      this.pages_.actual += 1;
+      this.pages_.element += this.numPages_;
 
       this.updateTablePage_();
     }
@@ -734,8 +734,8 @@ export default class LayerswitcherControl extends M.Control {
    */
   previousPage_() {
     if (this.pages_.actual > 1) {
-      this.pages_.actual = this.pages_.actual - 1;
-      this.pages_.element = this.pages_.element - this.numPages_;
+      this.pages_.actual -= 1;
+      this.pages_.element -= this.numPages_;
 
       this.updateTablePage_();
     }
@@ -2076,8 +2076,14 @@ export default class LayerswitcherControl extends M.Control {
         this.setOnChanges(summary);
         this.setOnClickCloseBtn();
         this.setOnClickersFiltersButtons(
-          summary, urlOGC, radioBtnFilterByID, radioBtnFilterByOther,
-          layers, url, filterByID, filterByOtherFilters,
+          summary,
+          urlOGC,
+          radioBtnFilterByID,
+          radioBtnFilterByOther,
+          layers,
+          url,
+          filterByID,
+          filterByOtherFilters,
         );
       }).catch((err) => {
         urlOGC = '';
@@ -2304,8 +2310,13 @@ export default class LayerswitcherControl extends M.Control {
             this.printOGCModal(url, indexCurrentLayer, limit, checked);
           } else {
             this.printOGCModal(
-              url, indexCurrentLayer, limit, checked, cDict,
-              filterByIDTemp, filterByOtherFiltersTemp,
+              url,
+              indexCurrentLayer,
+              limit,
+              checked,
+              cDict,
+              filterByIDTemp,
+              filterByOtherFiltersTemp,
             );
           }
         });
@@ -2316,8 +2327,7 @@ export default class LayerswitcherControl extends M.Control {
             return capa.id === selectValue;
           });
           this.printOGCModal(
-            url, indexCurrentLayer, limit, checked,
-            summary, filterByID, filterByOtherFilters,
+            url, indexCurrentLayer, limit, checked, summary, filterByID, filterByOtherFilters,
           );
         });
       }).catch((err) => {

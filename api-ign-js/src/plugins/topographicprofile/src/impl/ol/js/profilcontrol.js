@@ -1,19 +1,21 @@
-/*	Copyright (c) 2016 Jean-Marc VIGLINO,
-	released under the CeCILL-B license (French BSD license)
-	(http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
+/*  Copyright (c) 2016 Jean-Marc VIGLINO,
+  released under the CeCILL-B license (French BSD license)
+  (http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
 */
-/*eslint no-constant-condition: ["error", { "checkLoops": false }]*/
+/* eslint no-constant-condition: ["error", { "checkLoops": false }] */
 
-/*import ol_ext_inherits from '../util/ext'
+/* import ol_ext_inherits from '../util/ext'
 import { getDistance as ol_sphere_getDistance } from 'ol/sphere'
 import { transform as ol_proj_transform } from 'ol/proj'
 import ol_control_Control from 'ol/control/Control'
-import ol_Feature from 'ol/Feature'*/
+import ol_Feature from 'ol/Feature' */
 
 import { getValue } from '../../../facade/js/i18n/language';
 
 const inherits = (child, parent) => {
+  // eslint-disable-next-line no-param-reassign
   child.prototype = Object.create(parent.prototype);
+  // eslint-disable-next-line no-param-reassign
   child.prototype.constructor = child;
 };
 
@@ -21,16 +23,16 @@ const inherits = (child, parent) => {
  * @api stable
  */
 const info = {
-  "zmin": "Zmin",
-  "zmax": "Zmax",
-  "ytitle": "Altitude (m)",
-  "xtitle": "Distance (km)",
-  "time": "Time",
-  "altitude": "Altitude",
-  "distance": "Distance",
-  "altitudeUnits": "m",
-  "distanceUnitsM": "m",
-  "distanceUnitsKM": "km",
+  'zmin': 'Zmin',
+  'zmax': 'Zmax',
+  'ytitle': 'Altitude (m)',
+  'xtitle': 'Distance (km)',
+  'time': 'Time',
+  'altitude': 'Altitude',
+  'distance': 'Distance',
+  'altitudeUnits': 'm',
+  'distanceUnitsM': 'm',
+  'distanceUnitsKM': 'km',
 };
 
 
@@ -248,7 +250,7 @@ Profil.prototype.onMove = function(e) {
     this.element.querySelector(".point-info .time").textContent = p[2];
     if (dx > this.canvas_.width / ratio / 2) this.popup_.classList.add('ol-left');
     else this.popup_.classList.remove('ol-left');
-    this.dispatchEvent({ type: 'over', click: e.type == "click", coord: p[3], time: p[2], distance: p[0] });
+    this.dispatchEvent({ type: 'over', click: e.type === "click", coord: p[3], time: p[2], distance: p[0] });
   } else {
     if (this.bar_.parentElement.classList.contains("over")) {
       this.bar_.style.display = 'none';
@@ -384,7 +386,7 @@ Profil.prototype.setGeometry = function(g, options) {
     z = p[2];
     if (z < zmin) zmin = z;
     if (z > zmax) zmax = z;
-    if (i == 0) d = 0;
+    if (i === 0) d = 0;
     else d += dist2d(c[i - 1], p);
     ti = getTime(c[0][3], p[3]);
     t.push([d, z, ti, p]);
@@ -412,8 +414,8 @@ Profil.prototype.setGeometry = function(g, options) {
   }
 
   // Set amplitude
-  if (typeof(options.zmin) == 'number' && zmin > options.zmin) zmin = options.zmin;
-  if (typeof(options.zmax) == 'number' && zmax < options.zmax) zmax = options.zmax;
+  if (typeof(options.zmin) === 'number' && zmin > options.zmin) zmin = options.zmin;
+  if (typeof(options.zmax) === 'number' && zmax < options.zmax) zmax = options.zmax;
   var amplitude = options.amplitude;
   if (amplitude) {
     zmax = Math.max(zmin + amplitude, zmax);
@@ -455,7 +457,7 @@ Profil.prototype.setGeometry = function(g, options) {
     else step = d;
   }
   for (i = 0; i <= d; i += step) {
-    var txt = (unit == "m") ? i : (i / 1000);
+    var txt = (unit === "m") ? i : (i / 1000);
     //if (i+step>d) txt += " "+ (options.zunits || "km");
     ctx.fillText(Math.round(txt * 10) / 10, i * scx, 4 * ratio);
     ctx.moveTo(i * scx, 2 * ratio);
@@ -476,7 +478,7 @@ Profil.prototype.setGeometry = function(g, options) {
   ctx.setLineDash([]);
   ctx.beginPath();
   for (i = 0; p = t[i]; i++) {
-    if (i == 0) ctx.moveTo(p[0] * scx, p[1] * scy + dy);
+    if (i === 0) ctx.moveTo(p[0] * scx, p[1] * scy + dy);
     else ctx.lineTo(p[0] * scx, p[1] * scy + dy);
   }
   ctx.stroke();

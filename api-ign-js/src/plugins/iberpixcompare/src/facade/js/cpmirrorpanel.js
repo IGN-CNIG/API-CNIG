@@ -5,7 +5,7 @@
 import 'assets/css/cpmirrorpanel';
 import MirrorpanelControl from './cpmirrorpanelcontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';   //e2m: Multilanguage support
+import { getValue } from './i18n/language'; // e2m: Multilanguage support
 
 export default class Mirrorpanel extends M.Plugin {
   /**
@@ -162,8 +162,8 @@ export default class Mirrorpanel extends M.Plugin {
         return;
       }
 
-      for (let i = 0; i < 10; i++) {
-        if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'F' + (i + 1)) {  // case sensitive
+      for (let i = 0; i < 10; i += 1) {
+        if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === `F${i + 1}`) { // case sensitive
           this.control_.manageVisionPanelByCSSGrid(i);
         }
       }
@@ -191,7 +191,10 @@ export default class Mirrorpanel extends M.Plugin {
     this.control_.removeMaps();
     this.control_.destroyMapsContainer();
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.collapsible, this.collapsed, this.modeViz, this.enabledKeyFunctions, this.showCursors, this.backImgLayersParams, this.interface] = [null, null, null, null, null, null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.collapsible,
+      this.collapsed, this.modeViz, this.enabledKeyFunctions,
+      this.showCursors, this.backImgLayersParams, this.interface]
+      = [null, null, null, null, null, null, null, null, null, null];
   }
 
   /**

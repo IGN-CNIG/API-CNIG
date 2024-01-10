@@ -63,23 +63,22 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new ESLintPlugin({
       // extensions: [`js`, `jsx`],
-    fallback: {
-      fs: false,
-      path: false,
-      crypto: false,
-    },
       files: 'src/**/*.js',
       exclude: ['**/node_modules/**', '/lib/', '/test/', '/dist/'],
     }),
   ],
   devServer: {
+    // https: true,
     hot: true,
     open: true,
-    // port: 6123,
-    openPage: 'test/dev.html',
-    watchOptions: {
-      poll: 1000,
+    port: 6123,
+    open: 'test/dev.html',
+    static: {
+      directory: path.join(__dirname, '/../'),
     },
+  },
+  watchOptions: {
+    poll: 1000,
   },
   devtool: 'eval-source-map',
 };

@@ -130,7 +130,7 @@ export default class XYLocatorControl extends M.Control {
     const xFloat = parseFloat(x);
     const yFloat = parseFloat(y);
     this.map.removeLayers(this.coordinatesLayer);
-    if (!isNaN(xFloat) && !isNaN(yFloat)) {
+    if (!Number.isNaN(xFloat) && !Number.isNaN(yFloat)) {
       this.map.setCenter(`${xFloat},${yFloat}*false`);
       this.map.setZoom(this.zoom);
       this.fire('xylocator:locationCentered', [{

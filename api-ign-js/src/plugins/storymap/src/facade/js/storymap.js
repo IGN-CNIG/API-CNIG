@@ -136,7 +136,9 @@ export default class StoryMap extends M.Plugin {
     // TO DO Parametrizar indice y poner que sea un max de x minimo
     this.control = new StoryMapControl(
       this.content_[M.language.getLang()],
-      this.delay, this.indexInContent, this.isDraggable,
+      this.delay,
+      this.indexInContent,
+      this.isDraggable,
     );
     this.map_ = map;
     window.map = map;

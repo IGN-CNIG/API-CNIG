@@ -78,6 +78,7 @@ export default class ShareMap extends M.Plugin {
     super();
 
     if (M.utils.isNullOrEmpty(options.baseUrl)) {
+      // eslint-disable-next-line no-console
       console.warn('options.baseUrl is null or undefined.');
     }
 

@@ -47,6 +47,7 @@ export default class Attributions extends M.Plugin {
     if (options.mode === MODES.mapAttributions && !M.utils.isNullOrEmpty(options.url)) {
       if (M.utils.isNullOrEmpty(options.type)) {
         // throw new Error(getValue('exception.type'));
+        // eslint-disable-next-line no-console
         console.warn(getValue('exception.type'));
       }
     }
@@ -54,6 +55,7 @@ export default class Attributions extends M.Plugin {
     if (options.mode === MODES.mapAttributions && !M.utils.isNullOrEmpty(options.layerName)) {
       if (M.utils.isNullOrEmpty(options.type)) {
         // throw new Error(getValue('exception.layerName'));
+        // eslint-disable-next-line no-console
         console.warn(getValue('exception.layerName'));
       }
     }
@@ -423,8 +425,9 @@ export default class Attributions extends M.Plugin {
         attribution: feature.getAttribute(this.attributionParam_) || '',
         url: feature.getAttribute(this.urlParam_) || this.defaultURL_,
       };
-    }).filter((element, index, array) => // remove repeat elements
-      array.map(e => e.attribution).indexOf(element.attribution) === index);
+    }).filter((element, index, array) => array
+    // remove repeat elements
+      .map(e => e.attribution).indexOf(element.attribution) === index);
   }
 
   /**

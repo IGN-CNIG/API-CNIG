@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack')
 const OptimizeCssAssetsPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const GenerateVersionPlugin = require('./GenerateVersionPlugin');
@@ -30,6 +31,8 @@ module.exports = {
       fs: false,
       path: false,
       crypto: false,
+      "buffer": require.resolve("buffer/"),
+      "assert": require.resolve("assert/"),
     },
   },
   module: {
@@ -75,6 +78,10 @@ module.exports = {
     ],
   },
   plugins: [
+    // fix "process is not defined" error:
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     // new GenerateVersionPlugin({
     //   version: pjson.version,
     //   regex: /([A-Za-z]+)(\..*)/,
