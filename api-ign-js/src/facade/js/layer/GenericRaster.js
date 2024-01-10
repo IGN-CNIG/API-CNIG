@@ -14,7 +14,6 @@ import Exception from '../exception/exception';
 import LayerBase from './Layer';
 import { getValue } from '../i18n/language';
 import * as parameter from '../parameter/parameter';
-
 import * as LayerType from './Type';
 
 /**

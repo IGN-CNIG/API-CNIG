@@ -2,6 +2,7 @@
  * @module M/layer/GenericVector
  */
 import GenericVectorImpl from 'impl/layer/GenericVector';
+import Utils from 'impl/util/Utils';
 import {
   isNullOrEmpty,
   isUndefined,
@@ -15,6 +16,8 @@ import Exception from '../exception/exception';
 import Vector from './Vector';
 import { getValue } from '../i18n/language';
 import * as EventType from '../event/eventtype';
+import * as parameter from '../parameter/parameter';
+import * as LayerType from './Type';
 
 /**
  * @classdesc
@@ -58,9 +61,26 @@ class GenericVector extends Vector {
    * @api
    */
   constructor(userParameters, options, vendorOptions = {}) {
-    const params = { ...userParameters, ...options };
+    let params = { ...userParameters, ...options };
+    const opts = options;
+
+    if (typeof userParameters === 'string') {
+      params = parameter.layer(userParameters, LayerType.GenericRaster);
+    } else if (!isNullOrEmpty(userParameters)) {
+      params.type = LayerType.GenericRaster;
+    }
+
+    if (vendorOptions) {
+      opts.name = Utils.addFacadeName(params.name, vendorOptions);
+      params.name = params.name || opts.name;
+
+      opts.legend = Utils.addFacadeLegend(vendorOptions) || params.name;
+      params.legend = params.legend || opts.legend;
+    }
+
 
     params.infoEventType = userParameters.infoEventType || 'click';
+    opts.userMaxExtent = params.maxExtent || opts.userMaxExtent;
 
     // checks if the implementation can create Generic layers
     if (isUndefined(GenericVectorImpl)) {
