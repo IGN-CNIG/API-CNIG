@@ -36,6 +36,8 @@ export default class AttributionsControl extends M.Control {
    */
   createView(map) {
     this.map = map;
+    // eslint-disable-next-line
+    console.warn(getValue('exception.attribution_obsolete'));
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
         vars: {

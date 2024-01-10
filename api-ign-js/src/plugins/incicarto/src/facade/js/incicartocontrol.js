@@ -320,6 +320,7 @@ export default class IncicartoControl extends M.Control {
           let maxZIndex = Math.max(...(layers.map((l) => {
             return l.getZIndex();
           })));
+
           from.querySelectorAll('li.m-incicarto-layer').forEach((elem) => {
             const name = elem.getAttribute('name');
             const url = elem.getAttribute('url');
@@ -335,6 +336,15 @@ export default class IncicartoControl extends M.Control {
         },
       });
     }
+  }
+
+  getMaxZIndex() {
+    const filterLayers = this.map_.getLayers().filter((layer) => layer.name !== '__draw__');
+
+    const maxZIndex = Math.max(...(filterLayers.map((l) => {
+      return l.getZIndex();
+    })));
+    return maxZIndex
   }
 
   /**
@@ -527,7 +537,7 @@ export default class IncicartoControl extends M.Control {
         document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
       });
 
-      document.getElementById('fileUpload').onchange = function () {
+      document.getElementById('fileUpload').onchange = function() {
         let fileName = 'Adjuntar fichero &hellip;';
         if (this.files) {
           if (this.files.length > 1) {
@@ -596,7 +606,7 @@ export default class IncicartoControl extends M.Control {
         }
       });
 
-      document.getElementById('fileUpload').onchange = function () {
+      document.getElementById('fileUpload').onchange = function() {
         let fileName = 'Adjuntar fichero &hellip;';
         if (this.files) {
           if (this.files.length > 1) {
@@ -685,7 +695,20 @@ export default class IncicartoControl extends M.Control {
     let product = productMetadataContainer.options[productMetadataContainer.selectedIndex].value;
     let theme = themeMetadataContainer.selectedOptions[0].innerText;
 
-    let email_subject = 'Incidencia Cartografía - ' + theme;
+    const currentDate = new Date();
+
+    // Obtener los componentes de la fecha
+    const year = currentDate.getFullYear();
+    const month = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
+    const day = `${currentDate.getDate().toString().padStart(2, '0')}`;
+    const hours = `${currentDate.getHours().toString().padStart(2, '0')}`;
+    const mins = `${currentDate.getMinutes().toString().padStart(2, '0')}`;
+    const segs = `${currentDate.getSeconds().toString().padStart(2, '0')}`;
+
+    // Formatear la fecha según el formato AAAA/MM/DD hh:mm:ss
+    const dateFormat = `${year}/${month}/${day} ${hours}:${mins}:${segs}`;
+
+    let email_subject = 'Incidencia Cartografía - ' + theme + ' - ' + dateFormat;
 
     const propiedades_incidencia = this.createContentEmail(email_subject, theme, destinatary);
 
@@ -739,8 +762,8 @@ export default class IncicartoControl extends M.Control {
     const plugin = (this.getPlugins()) ? `&${this.getPlugins()}` : '';
 
     // File 
-    // URL del visor - centro, zoom, srs, capas por url.
-    // URL de la API - centro, zoom, srs, capas por url.
+    // URL del visor - centro, zoom, srs, todas las capas.
+    // URL de la API - centro, zoom, srs, todas las capas.
     if (url.startsWith('file:///')) {
       const index = url.lastIndexOf('/');
       url = `file://${url.substring(index)}`;
@@ -750,18 +773,17 @@ export default class IncicartoControl extends M.Control {
     // API
     // M.config.MAP_VIWER_LAYERS
     // URL de la API - centro, zoom, srs, todas las capas, plugin y controles
-    if(HOSTNAME.includes(window.location.hostname) && window.location.pathname.includes(PATH_NAME)) {
+    if (HOSTNAME.includes(window.location.hostname) && window.location.pathname.includes(PATH_NAME)) {
       onlyURL = true;
       url = url.split('?')[0];
-      api_url+= `?${center}${zoom}${srs}${layers}${controls}${plugin}`;
+      api_url += `?${center}${zoom}${srs}${layers}${controls}${plugin}`;
     } else {
       // Visor
-      // URL del visor - centro, zoom, srs, capas por url.
-      // URL de la API - centro, zoom, srs, capas por url.
+      // URL del visor - centro, zoom, srs, todas las capas.
+      // URL de la API - centro, zoom, srs, todas las capas.
       url = url.split('?')[0];
-      const layers_url = (M.config.MAP_VIEWER_LAYERS.toString() !== '') ? `&layers=${M.config.MAP_VIEWER_LAYERS.toString()}` : '';
-      url+= `?${center}${zoom}${srs}${layers_url}`;
-      api_url+= `?${center}${zoom}${srs}${layers_url}`;
+      url += `?${center}${zoom}${srs}${layers}`;
+      api_url += `?${center}${zoom}${srs}${layers}`;
     }
 
     if (url.indexOf('.jsp') > -1) {
@@ -784,11 +806,11 @@ export default class IncicartoControl extends M.Control {
 
 
   /**
- * This method gets the externs layers parameters
- *
- * @public
- * @function
- */
+   * This method gets the externs layers parameters
+   *
+   * @public
+   * @function
+   */
   getLayersInLayerswitcher() {
     const layers = this.map_.getLayers().filter((layer) => {
       return layer.displayInLayerSwitcher === true && layer.transparent === true;
@@ -834,11 +856,11 @@ export default class IncicartoControl extends M.Control {
   }
 
   /**
- * This method gets the geojson url parameter
- *
- * @public
- * @function
- */
+   * This method gets the geojson url parameter
+   *
+   * @public
+   * @function
+   */
   getVector(layer) {
     let source = Object.assign(layer.toGeoJSON());
     source.crs = {
@@ -864,11 +886,11 @@ export default class IncicartoControl extends M.Control {
   }
 
   /**
- * This method gets the wfs url parameter
- *
- * @public
- * @function
- */
+   * This method gets the wfs url parameter
+   *
+   * @public
+   * @function
+   */
   getWFS(layer) {
     const style = layer.getStyle().serialize();
     return `WFS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.namespace}:${layer.name}:*${layer.geometry || ''}*${layer.ids || ''}*${layer.cql || ''}*${style || ''}`;
@@ -892,11 +914,11 @@ export default class IncicartoControl extends M.Control {
   }
 
   /**
-* This methods gets the kml url parameters
-*
-* @public
-* @function
-*/
+   * This methods gets the kml url parameters
+   *
+   * @public
+   * @function
+   */
   getKML(layer) {
     return `KML*${layer.name}*${layer.url}*${layer.extract}*${layer.label}*${layer.isVisible()}`;
   }
@@ -924,14 +946,14 @@ export default class IncicartoControl extends M.Control {
       // if (M.utils.isFunction(plugin.getAPIRestBase64)) {
       //   newCurrent = plugin.getAPIRestBase64();
       // } else 
-      if(M.utils.isFunction(plugin.getAPIRest)) {
+      if (M.utils.isFunction(plugin.getAPIRest)) {
         newCurrent = plugin.getAPIRest();
       }
       return newCurrent;
     }).join('&');
   }
 
-  getControlsFormat () {
+  getControlsFormat() {
     const controls = this.getControls()
 
     let newControls = controls.filter((c) => {
@@ -957,33 +979,33 @@ export default class IncicartoControl extends M.Control {
   getControls() {
     const controls = this.map_.getControls().map(control => control.name);
 
-        const allowedControls = CONTROLS;
-        const resolvedControls = controls.filter(control => allowedControls.includes(control))
-          .filter(c => c !== 'backgroundlayers');
-        if (resolvedControls.includes('mouse')) {
-          const mouseControl = this.map_.getControls().find(c => c.name === 'mouse');
-          const { showProj } = mouseControl.getImpl();
-          const index = resolvedControls.indexOf('mouse');
-          resolvedControls[index] = showProj === true ? 'mouse*true' : 'mouse';
-        }
-        if (resolvedControls.includes('scale')) {
-          const scaleControl = this.map_.getControls().find(c => c.name === 'scale');
-          const { exactScale } = scaleControl.getImpl();
-          const index = resolvedControls.indexOf('scale');
-          resolvedControls[index] = exactScale === true ? 'scale*true' : 'scale';
-        }
-        const backgroundlayers = this.map_.getControls().filter(c => c.name === 'backgroundlayers')[0];
-        let backgroundlayersAPI;
-        if (!M.utils.isNullOrEmpty(backgroundlayers)) {
-          const { visible, activeLayer } = backgroundlayers;
-          if (typeof visible === 'boolean' && typeof activeLayer === 'number') {
-            backgroundlayersAPI = `backgroundlayers*${activeLayer}*${visible}`;
-          } else {
-            backgroundlayersAPI = 'backgroundlayers';
-          }
-        }
-        resolvedControls.push(backgroundlayersAPI);
-        return resolvedControls;
+    const allowedControls = CONTROLS;
+    const resolvedControls = controls.filter(control => allowedControls.includes(control))
+      .filter(c => c !== 'backgroundlayers');
+    if (resolvedControls.includes('mouse')) {
+      const mouseControl = this.map_.getControls().find(c => c.name === 'mouse');
+      const { showProj } = mouseControl.getImpl();
+      const index = resolvedControls.indexOf('mouse');
+      resolvedControls[index] = showProj === true ? 'mouse*true' : 'mouse';
+    }
+    if (resolvedControls.includes('scale')) {
+      const scaleControl = this.map_.getControls().find(c => c.name === 'scale');
+      const { exactScale } = scaleControl.getImpl();
+      const index = resolvedControls.indexOf('scale');
+      resolvedControls[index] = exactScale === true ? 'scale*true' : 'scale';
+    }
+    const backgroundlayers = this.map_.getControls().filter(c => c.name === 'backgroundlayers')[0];
+    let backgroundlayersAPI;
+    if (!M.utils.isNullOrEmpty(backgroundlayers)) {
+      const { visible, activeLayer } = backgroundlayers;
+      if (typeof visible === 'boolean' && typeof activeLayer === 'number') {
+        backgroundlayersAPI = `backgroundlayers*${activeLayer}*${visible}`;
+      } else {
+        backgroundlayersAPI = 'backgroundlayers';
+      }
+    }
+    resolvedControls.push(backgroundlayersAPI);
+    return resolvedControls;
   }
 
   /**
@@ -999,12 +1021,25 @@ export default class IncicartoControl extends M.Control {
       document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = true;
       this.showMessageInModalAdvanced(getValue('sending_email'), "okmessage");
 
-      // const theme = themeMetadataContainer.selectedOptions[0].innerText;
-      const theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
+      const themeID = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
+      const themeValue = themeMetadataContainer.selectedOptions[0].innerText;
 
-      let email_subject = this.prefixSubject + theme;
+      const currentDate = new Date();
 
-      const propiedades_incidencia = this.createContentEmail(email_subject, theme);
+      // Obtener los componentes de la fecha
+      const year = currentDate.getFullYear();
+      const month = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
+      const day = `${currentDate.getDate().toString().padStart(2, '0')}`;
+      const hours = `${currentDate.getHours().toString().padStart(2, '0')}`;
+      const mins = `${currentDate.getMinutes().toString().padStart(2, '0')}`;
+      const segs = `${currentDate.getSeconds().toString().padStart(2, '0')}`;
+
+      // Formatear la fecha según el formato AAAA/MM/DD hh:mm:ss
+      const dateFormat = `${year}/${month}/${day} ${hours}:${mins}:${segs}`;
+
+      let email_subject = this.prefixSubject + themeValue + ' - ' + dateFormat;
+
+      const propiedades_incidencia = this.createContentEmail(email_subject, themeID);
 
       if (this.geometryIncidenceJSON.features.length > 0) {
         this.geometryIncidenceJSON.features[0].properties = propiedades_incidencia;
@@ -1209,6 +1244,7 @@ export default class IncicartoControl extends M.Control {
     const layerName = `incidencia_${new Date().getTime()}`;
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.geometry = geom;
+    layer.setZIndex(this.getMaxZIndex() + 1);
     this.map.addLayers(layer);
     setTimeout(() => {
       document.querySelector(`li[name="${layerName}"] span.m-incicarto-layer-add`).click();

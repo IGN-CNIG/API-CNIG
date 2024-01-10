@@ -165,6 +165,8 @@ export default class TransparencyControl extends M.Control {
             unfreeze: getValue('unfreeze'),
             activate_spyeye: getValue('activate_spyeye'),
             deactivate_spyeye: getValue('deactivate_spyeye'),
+            inputTransparentRadius: getValue('inputTransparentRadius'),
+            selectTransparentRadius: getValue('selectTransparentRadius'),
           },
         },
       };

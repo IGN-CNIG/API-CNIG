@@ -7,7 +7,7 @@ import { getValue } from '../../../facade/js/i18n/language';
 
 export default class MouseSRSControl extends M.impl.Control {
   /* eslint-disable-next-line max-len */
-  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl, order) {
+  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl, order, draggableDialog, epsgFormat) {
     super();
 
     /**
@@ -71,6 +71,10 @@ export default class MouseSRSControl extends M.impl.Control {
     this.helpUrl = helpUrl;
 
     this.order = order;
+
+    this.epsgFormat = epsgFormat;
+
+    this.draggableDialog = draggableDialog;
   }
 
   /**
@@ -141,6 +145,43 @@ export default class MouseSRSControl extends M.impl.Control {
       button.style.width = '75px';
       button.style.backgroundColor = '#71a7d3';
     }, 10);
+    if (this.draggableDialog) {
+      M.utils.draggabillyElement('.m-dialog .m-modal .m-content', '.m-dialog .m-modal .m-content .m-title');
+    }
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape') {
+        const btn = document.querySelector('.m-dialog .m-content .m-button > button');
+        if (btn !== null) {
+          btn.click();
+        }
+      }
+    });
+  }
+
+
+  formatEPSGs(html) {
+    // GET EPSG of Selectors
+    const query = [...html.querySelectorAll('select option')];
+
+    query.forEach((option) => {
+      // eslint-disable-next-line no-param-reassign
+      option.innerText = this.formatEPSG(option.value);
+    });
+  }
+
+  formatEPSG(epsg) {
+    // Format M.impl.ol.js.projections.getSupportedProjs()
+    const supportedProjs = M.impl.ol.js.projections.getSupportedProjs();
+
+    // Find EPSG in supportedProjs
+    const find = supportedProjs.find(p => p.codes.includes(epsg));
+
+    if (!find) return epsg;
+
+    const { datum, proj } = find;
+    const format = `${datum} - ${proj} `;
+
+    return format;
   }
 
   changeSRS(map, html) {
@@ -159,8 +200,17 @@ export default class MouseSRSControl extends M.impl.Control {
    */
   getDecimalUnits() {
     let decimalDigits;
-    // eslint-disable-next-line no-underscore-dangle
-    const srsUnits = ol.proj.get(this.srs_).units_;
+    let srsUnits;
+    try {
+      // eslint-disable-next-line no-underscore-dangle
+      srsUnits = ol.proj.get(this.srs_).units_;
+    } catch (e) {
+      M.dialog.error(getValue('exception.srs'));
+      // eslint-disable-next-line no-underscore-dangle
+      srsUnits = ol.proj.get('EPSG:4326').units_;
+      this.srs_ = 'EPSG:4326';
+    }
+
     if (srsUnits === 'd' && this.geoDecimalDigits !== undefined) {
       decimalDigits = this.geoDecimalDigits;
     } else if (srsUnits === 'm' && this.utmDecimalDigits !== undefined) {

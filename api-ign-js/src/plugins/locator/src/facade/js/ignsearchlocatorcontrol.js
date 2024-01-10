@@ -952,6 +952,11 @@ export default class IGNSearchLocatorControl extends M.Control {
       } else {
         const extent = this.clickedElementLayer.getImpl().getOL3Layer().getSource().getExtent();
         this.map.setBbox(extent);
+        this.map.setZoom(zoom);
+        const isFeatureInView = this.getImpl().containsExtentView(extent);
+        if (!isFeatureInView) {
+          this.map.setBbox(extent);
+        }
         this.fire('ignsearchlocator:entityFound', [extent]);
       }
     }

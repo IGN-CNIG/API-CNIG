@@ -15,9 +15,10 @@ import { getValue } from '../i18n/language';
  * @property {string} name Nombre de la capa.
  * @property {Boolean} transparent Falso si es una capa base, verdadero en caso contrario.
  * @property {Array<Number>} userMaxExtent MaxExtent proporcionado por el usuario, la medida en que
-  * restringe la visualización a una región específica.
+ * restringe la visualización a una región específica.
  * @property {string} legend Indica el nombre que queremos que aparezca en el árbol
  * de contenidos, si lo hay.
+ * @property {Boolean} isbase Define si la capa es base.
  *
  * @api
  * @extends {M.Base}
@@ -29,6 +30,7 @@ class LayerBase extends Base {
    * @constructor
    * @extends {M.facade.Base}
    * @param {string|Mx.parameters.Layer} userParameters Parámetros proporcionados por el usuario.
+   * - isBase: Indica si la capa es base.
    * @param {Object} impl Implementación.
    * @api
    */
@@ -40,9 +42,14 @@ class LayerBase extends Base {
     const parameter = parserParameter.layer(userParameters);
 
     /**
+     * attribution: Atribución de la capa.
+     */
+    this.attribution = userParameters.attribution;
+
+    /**
      * Layer type: Tipo de la capa.
      */
-    this.type = parameter.type;
+    this._type = parameter.type;
 
     /**
      * Layer url: URL del servicio.
@@ -58,13 +65,18 @@ class LayerBase extends Base {
      * Layer transparent:
      * Falso si es una capa base, verdadero en caso contrario.
      */
-    this.transparent = parameter.transparent;
+    this.transparent = true;
+    if (!isNullOrEmpty(parameter.transparent)) {
+      this.transparent = parameter.transparent;
+    } else if (!isNullOrEmpty(userParameters.isBase)) {
+      this.transparent = !userParameters.isBase;
+    }
 
     /**
      * Layer isBase:
      * Verdadero si es una capa base, falso en caso contrario.
      */
-    this.isBase = parameter.isBase;
+    this.isBase = !this.transparent;
 
     /**
      * Layer maxExtent_:
@@ -104,6 +116,35 @@ class LayerBase extends Base {
      * Zoom máximo aplicable a la capa.
      */
     this.maxZoom = parameter.maxZoom || Number.POSITIVE_INFINITY;
+  }
+
+  /**
+   * Devuelve el tipo de layer.
+   *
+   * @function
+   * @getter
+   * @returns {String} Tipo.
+   * @api
+   */
+  get type() {
+    return this._type;
+  }
+
+  /**
+   * Sobrescribe el tipo de capa.
+   *
+   * @function
+   * @setter
+   * @param {String} newType Nuevo tipo.
+   * @api
+   */
+  set type(newType) {
+    if (!isUndefined(newType) &&
+      !isNullOrEmpty(newType) && (newType !== this._type)) {
+      Exception('El tipo de capa debe ser \''
+        .concat(this._type)
+        .concat('\' pero se ha especificado \'').concat(newType).concat('\''));
+    }
   }
 
   /**
@@ -179,6 +220,41 @@ class LayerBase extends Base {
    */
   set name(newName) {
     this.getImpl().name = newName;
+  }
+
+  /**
+   * Devuelve el valor de la propiedad "isBase" de la capa.
+   * @function
+   * @getter
+   * @public
+   * @returns {M.layer.impl.transparent} Valor de la propiedad "isBase".
+   * @api
+   */
+  get isBase() {
+    return this.getImpl().isBase;
+  }
+
+  /**
+   * Sobrescribe el valor de la propiedad "isBase".
+   * @function
+   * @setter
+   * @public
+   * @param {Boolean} newIsBase  Nuevo valor para la propiedad "isBase".
+   * @api
+   */
+  set isBase(newIsBase) {
+    if (!isNullOrEmpty(newIsBase)) {
+      if (isString(newIsBase)) {
+        this.getImpl().isBase = newIsBase === 'true';
+        this.transparent = newIsBase !== 'true';
+      } else {
+        this.transparent = !newIsBase;
+        this.getImpl().isBase = newIsBase;
+      }
+    } else {
+      this.getImpl().isBase = false;
+      this.transparent = true;
+    }
   }
 
   /**
@@ -552,6 +628,10 @@ class LayerBase extends Base {
    */
   setOpacity(opacity) {
     this.getImpl().setOpacity(opacity);
+  }
+
+  getAttribution() {
+    return this.attribution;
   }
 
   /**

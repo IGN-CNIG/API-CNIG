@@ -7,7 +7,6 @@ import Exception from '../exception/exception';
 import * as LayerType from '../layer/Type';
 import Layer from '../layer/Layer';
 import { getValue } from '../i18n/language';
-import osm from './osm';
 
 /**
  * Analiza el parámetro del centro de usuario especificado en un objeto.
@@ -94,6 +93,18 @@ export const center = (centerParameterVar) => {
   }
 
   return centerParam;
+};
+
+const getParameters = (params) => {
+  const urlParams = params.split(/\*/);
+  return {
+    type: urlParams[0] || undefined,
+    name: urlParams[1] || undefined,
+    legend: urlParams[2] || undefined,
+    url: urlParams[3] || undefined,
+    visibility: urlParams[4] || undefined,
+    transparent: urlParams[5] || false,
+  };
 };
 
 /**
@@ -1414,6 +1425,9 @@ export const geojson = (userParameters) => {
     // gets the name
     layerObj.name = getLegendGeoJSON(userParam);
 
+    // get the legend
+    layerObj.legend = getLegendGeoJSON(userParam);
+
     // gets the URL
     layerObj.url = getURLGeoJSON(userParam);
 
@@ -1495,6 +1509,26 @@ export const getNameMVT = (parameter) => {
 };
 
 /**
+ * Esta función obtiene la leyenda de la capa MVT especificado por el usuario.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @function
+ * @public
+ * @param {string|Mx.parameters.MVT} parameter Parámetro para obtener la
+ * leyenda de la capa MVT.
+ * @returns {string} Leyenda de la capa.
+ * @throws {Exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getLegendMVT = (parameter) => {
+  let legend;
+  if (isObject(parameter) && !isNullOrEmpty(parameter.legend)) {
+    legend = parameter.legend.trim();
+  }
+  return legend;
+};
+
+/**
  * Analiza los parámetros especificados por el usuario para la capa MVT.
  *
  * @public
@@ -1524,6 +1558,8 @@ export const mvt = (userParameters) => {
     layerObj.type = LayerType.MVT;
 
     layerObj.name = getNameMVT(userParam);
+
+    layerObj.legend = getLegendMVT(userParam);
 
     layerObj.url = getURLMVT(userParam);
 
@@ -1953,6 +1989,11 @@ export const getUseCapabilitiesWMS = (parameter) => {
   if (!isNullOrEmpty(useCapabilities)) {
     useCapabilities = /^1|(true)$/i.test(useCapabilities);
   }
+
+  if (isUndefined(useCapabilities)) {
+    useCapabilities = true;
+  }
+
   return useCapabilities;
 };
 
@@ -1994,6 +2035,7 @@ export const wms = (userParameters) => {
     const queryable = getQueryableWMS(userParam);
     const visibility = getVisibilityWMS(userParam);
     const useCapabilities = getUseCapabilitiesWMS(userParam);
+
     return {
       type,
       name,
@@ -2008,7 +2050,6 @@ export const wms = (userParameters) => {
       visibility,
       options,
       useCapabilities,
-      isBase: (transparent !== undefined) ? !transparent : userParam.isBase,
     };
   });
 
@@ -2815,6 +2856,11 @@ export const getUseCapabilitiesWMTS = (parameter) => {
   if (!isNullOrEmpty(useCapabilities)) {
     useCapabilities = /^1|(true)$/i.test(useCapabilities);
   }
+
+  if (isUndefined(useCapabilities)) {
+    useCapabilities = true;
+  }
+
   return useCapabilities;
 };
 
@@ -3052,9 +3098,6 @@ export const xyz = (userParamer) => {
     // gets the legend
     layerObj.legend = getExtraParameter(userParam, layerObj.name, 3, 'legend') || layerObj.name;
 
-    layerObj.isBase = (layerObj.transparent === undefined) ?
-      userParam.isBase : !layerObj.transparent;
-
     return layerObj;
   });
 
@@ -3161,8 +3204,8 @@ export const tms = (userParamer) => {
     // gets the legend
     layerObj.legend = getExtraParameter(userParam, layerObj.name, 4, 'legend');
 
-    layerObj.isBase = (layerObj.transparent === undefined) ?
-      userParam.isBase : !layerObj.transparent;
+    // gets the crossOrigin
+    layerObj.crossOrigin = getExtraParameter(userParam, undefined, 5, 'crossOrigin');
 
     return layerObj;
   });
@@ -3236,9 +3279,6 @@ export const wmts = (userParameters) => {
 
     // get visibility
     layerObj.useCapabilities = getUseCapabilitiesWMTS(userParam);
-
-    layerObj.isBase = (layerObj.transparent === undefined) ?
-      userParam.isBase : !layerObj.transparent;
 
     return layerObj;
   });
@@ -3636,9 +3676,6 @@ export const mbtiles = (userParameters) => {
     layerObj.tileLoadFunction = getTileLoadFunctionMBTiles(userParam);
 
     layerObj.tileSize = getTileSizeMBTiles(userParam);
-
-    layerObj.isBase = (layerObj.transparent === undefined) ?
-      userParam.isBase : !layerObj.transparent;
 
     return layerObj;
   });
@@ -4373,6 +4410,50 @@ export const ogcapifeatures = (userParameters) => {
   return layers;
 };
 
+
+const generic = (userParameters, type) => {
+  const params = userParameters;
+
+  if (!isString(params)) {
+    return userParameters;
+  }
+
+  const urlParams = params.split(/\*/);
+  return {
+    type,
+    // eslint-disable-next-line no-eval
+    vendorOptions: eval(decodeURIComponent(escape(window.atob(urlParams[1])))) || undefined,
+    name: urlParams[2] || undefined,
+    legend: urlParams[3] || undefined,
+    transparent: urlParams[4] || undefined,
+    minZoom: urlParams[5] || undefined,
+    maxZoom: urlParams[6] || undefined,
+    displayInLayerSwitcher: urlParams[7] || undefined,
+    visibility: urlParams[8] || undefined,
+  };
+};
+
+const genericvector = (userParameters) => {
+  return generic(userParameters, 'GenericVector');
+};
+
+const genericraster = (userParameters) => {
+  return generic(userParameters, 'GenericRaster');
+};
+
+const osm = (userParameters) => {
+  const params = userParameters;
+
+  if (!isString(params)) {
+    return {
+      ...params,
+      type: 'osm',
+    };
+  }
+
+  return getParameters(params);
+};
+
 /**
  * Parámetros con los tipos de capa soportados.
  * @const
@@ -4394,6 +4475,8 @@ const parameterFunction = {
   mbtiles,
   mbtilesvector,
   ogcapifeatures,
+  genericvector,
+  genericraster,
 };
 
 
@@ -4436,11 +4519,42 @@ export const layer = (userParameters, forcedType) => {
         layerObj = userParam;
       }
 
+      if (!isNullOrEmpty(userParam.isBase)) {
+        layerObj.transparent = !userParam.isBase;
+      }
+
       if (!isNullOrEmpty(userParam.infoEventType)) {
         layerObj.infoEventType = userParam.infoEventType;
-      } else {
-        layerObj.infoEventType = 'click';
       }
+
+      if (!isNullOrEmpty(userParam.attribution)) {
+        layerObj.attribution = userParam.attribution;
+      }
+
+      // if (!isNullOrEmpty(userParam.isBase)) {
+      //   layerObj.isBase = userParam.isBase;
+      // } else if (userParam.name !== '__draw__') {
+      //   layerObj.isBase = (userParam.transparent !== undefined) ?
+      //     !userParam.transparent : false;
+      // }
+
+      // if (!isNullOrEmpty(userParam.minZoom)) {
+      //   layerObj.minZoom = userParam.minZoom;
+      // }
+
+      // if (!isNullOrEmpty(userParam.maxZoom)) {
+      //   layerObj.maxZoom = userParam.maxZoom;
+      // }
+
+      // // name
+      // if (!isNullOrEmpty(userParam.name)) {
+      //   layerObj.name = userParam.name;
+      // }
+
+      // // legend
+      // if (!isNullOrEmpty(userParam.legend)) {
+      //   layerObj.legend = userParam.legend;
+      // }
     }
 
     return layerObj;

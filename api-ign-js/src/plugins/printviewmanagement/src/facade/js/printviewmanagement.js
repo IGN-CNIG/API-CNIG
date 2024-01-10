@@ -84,12 +84,14 @@ export default class PrintViewManagement extends M.Plugin {
      */
     this.isDraggable = options.isDraggable ? options.isDraggable : false;
 
+    const { georefImageEpsg = true } = options;
+
     /**
      * Indicates if the control georefImageEpsg is added to the plugin
      * @private
      * @type {Boolean|Array<Object>}
      */
-    if (options.georefImageEpsg === true) {
+    if (georefImageEpsg === true) {
       this.georefImageEpsg = {
         layers: [
           {
@@ -106,7 +108,6 @@ export default class PrintViewManagement extends M.Plugin {
           },
         ],
         order: 0,
-        tooltip: 'Georeferenciar imagen',
       };
     } else if (options.georefImageEpsg) {
       this.georefImageEpsg = this.getGeorefImageEpsg();
@@ -114,12 +115,14 @@ export default class PrintViewManagement extends M.Plugin {
       this.georefImageEpsg = false;
     }
 
+    const { georefImage = true } = options;
+
     /**
      * Indicates if the control georefImage is added to the plugin
      * @private
      * @type {Boolean}
      */
-    if (options.georefImage === true) {
+    if (georefImage === true) {
       this.georefImage = {
         tooltip: 'Georeferenciar imagen',
         printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/mapexport',
@@ -131,17 +134,20 @@ export default class PrintViewManagement extends M.Plugin {
       this.georefImage = false;
     }
 
+    const { printermap = true } = options;
+
     /**
      * Indicates if the control printermap is added to the plugin
      * @private
      * @type {Boolean}
      */
-    if (options.printermap === true) {
+    if (printermap === true) {
       this.printermap = {
         printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
-        headerLegend: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
-        filterTemplates: ['A3 Horizontal'],
-        logo: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
+        // headerLegend: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
+        filterTemplates: [],
+        credits: '',
+        // logo: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
       };
     } else if (options.printermap) {
       this.printermap = options.printermap;

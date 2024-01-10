@@ -1814,4 +1814,22 @@ export default class VectorsControl extends M.impl.Control {
       this.facadeControl.renderLayers();
     }
   }
+
+  waitLayerLoadedAsync(layer) {
+    return new Promise((resolve) => {
+      const geometry = !M.utils.isNullOrEmpty(layer.geometry) ?
+        layer.geometry : layer.getGeometryType();
+
+      if (geometry === null) {
+        setTimeout(() => {
+          this.waitLayerLoadedAsync(layer).then(() => {
+            resolve();
+          });
+        }, 200);
+      } else {
+        layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
+        resolve();
+      }
+    });
+  }
 }

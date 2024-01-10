@@ -59,6 +59,14 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     background-color: #f4f4f4;
 }
 
+.m-layerswitcher-title-box {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    max-width: 250px;
+}
+
 /* Título */
 .m-layerswitcher-title {
     font-weight: bold !important;
@@ -145,9 +153,20 @@ ul.m-layerswitcher-ullayers {
 }
 
 .m-layerswitcher-title-layer span {
-    width: 10%;
+    width: 100%;
 }
 
+.m-layerswitcher-title-layer button {
+    border: none;
+    background-color: transparent;
+}
+
+.m-layerswithcer-ogc-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
 
 
 .m-layerswitcher-icons-ver,
@@ -156,6 +175,8 @@ ul.m-layerswitcher-ullayers {
 }
 
 .m-layerswitcher-allstatus {
+    border: none;
+    background-color: #f9f9f9;
     margin: 0 16px;
     font-size: 15px;
     color: orange !important;
@@ -527,6 +548,10 @@ div.m-layerswitcher-legend>img {
 
 .m-layerswitcher-suggestion-group.active {
     display: block;
+}
+
+.m-layerswitcher-suggestion-group.active>li {
+    color: #71a7d3;
 }
 
 .m-layerswitcher-suggestion-group {
@@ -1131,6 +1156,16 @@ div.codsi-no-results {
 
 #m-layerswitcher-addservices-codsi-results {
     font-size: 12px;
+}
+
+#m-layerswitcher-addservices-codsi-results > tr > td > span {
+    cursor: pointer;
+}
+
+span.m-layerswitcher-codsi-result::before {
+    content: '\2022';
+    margin-right: 10px;
+    color: #71a7d3;
 }
 
 /* MODAL */

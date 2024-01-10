@@ -187,7 +187,7 @@ const PRECHARGED = {
   ],
 };
 
-const mp = new Layerswitcher({
+const mp1 = new Layerswitcher({
   collapsed: false,
   position: 'TL',
   tooltip: 'Capas',
@@ -201,18 +201,20 @@ const mp = new Layerswitcher({
   precharged: PRECHARGED,
   https: true,
   http: true,
-  codsi: true,
+  showCatalog: true,
   useProxy: true,
 });
-map.addPlugin(mp);
+map.addPlugin(mp1);
+
+const mp2 = new M.plugin.Vectors({});
+map.addPlugin(mp2);
 
 // CAPAS
 // M.proxy(false);
-let capaGeoJSON = new M.layer.GeoJSON({
+const capaGeoJSON = new M.layer.GeoJSON({
   name: 'Capa GeoJSON',
   legend: 'Capa GeoJSON',
-  url: 'http://localhost:6123/test/features.json',
-  // url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
+  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
   extract: true,
 });
 
@@ -352,6 +354,22 @@ const capaXYZ = new M.layer.XYZ({
   projection: 'EPSG:3857',
 });
 
+const generic_001 = new M.layer.Generic({}, {}, new ol.layer.Image({
+  source: new ol.source.ImageWMS({
+    url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
+    params: { LAYERS: 'tematicos:Municipios' },
+  }),
+}));
+
+const generic_002 = new M.layer.Generic({}, {}, new ol.layer.Vector({
+  source: new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    url: 'https://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
+    strategy: ol.loadingstrategy.bbox,
+  }),
+}));
+
+
 
 // map.addLayers(capaGeoJSON);
 // map.getMapImpl().on('moveend', () => {
@@ -366,9 +384,12 @@ const capaXYZ = new M.layer.XYZ({
 //   map.addLayers(capaGeoJSON);
 // });
 
+// map.addLayers(generic_001);
+// map.addLayers(generic_002);
 // map.addLayers(capaOSM);
 window.capaOSM = capaOSM;
-// map.addLayers(capaKML);
+map.addLayers(capaKML);
+window.capaGeoJSON = capaGeoJSON;
 window.capaKML = capaKML;
 // map.addLayers(capaMVT);
 // map.addLayers(capaOGCAPIFeatures);
@@ -376,7 +397,7 @@ window.capaOGCAPIFeatures = capaOGCAPIFeatures;
 // map.addLayers(capaTMS);
 // map.addLayers(capaVector);
 // capaVector.addFeatures(feature);
-// map.addLayers(capaWFS);
+map.addLayers(capaWFS);
 window.capaWFS = capaWFS;
 // map.addLayers(capaWMS);
 // map.addLayers(capaWMTS);
@@ -498,6 +519,5 @@ window.capaKML = capaKML;
 //   modeSelectLayers: 'eyes',
 // });
 // map.addPlugin(mp2);
-window.mp = mp;
 
 window.map = map;

@@ -33,11 +33,12 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **utmDecimalDigits**. Cifras decimales para proyecciones UTM.
 - **activeZ**. Activar visualización valor z. Por defecto: false
 - **helpUrl**. URL a la ayuda para el icono.
+- **draggableDialog**. Permite mover el dialog por la pantalla. Por defecto: true.
 
 # API-REST
 
 ```javascript
-URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*activeZ*helpUrl
+URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*activeZ*helpUrl*draggableDialog*epsgFormat
 ```
 
 <table>
@@ -84,6 +85,11 @@ URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*a
   <tr>
     <td>helpUrl</td>
     <td>URL del icono para la ayuda</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
+  <tr>
+    <td>epsgFormat</td>
+    <td>Formatear EPSG</td>
     <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
 </table>

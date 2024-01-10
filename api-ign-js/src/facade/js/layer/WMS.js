@@ -26,7 +26,7 @@ import { getValue } from '../i18n/language';
  * @property {Number} maxZoom Limitar el zoom máximo.
  * @property {Object} options Capa de opciones WMS.
  * @property {Boolean} useCapabilities Define si se utilizará el capabilities para generar la capa.
- *
+ * @property {Boolean} isbase Define si la capa es base.
  * @api
  * @extends {M.Layer}
  */
@@ -46,6 +46,7 @@ class WMS extends LayerBase {
    *   y aparecería como no visible.
    * - version: Versión WMS.
    * - type: Tipo de la capa.
+   * - isBase: Indica si la capa es base.
    * - useCapabilities: Define si se utilizará el capabilities para generar la capa.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
@@ -69,6 +70,7 @@ class WMS extends LayerBase {
    * - ratio: determina el tamaño de las solicitudes de las imágenes. 1 significa que tienen el
    * tamaño de la ventana, 2 significa que tienen el doble del tamaño de la ventana,
    * y así sucesivamente. Debe ser 1 o superior. Por defecto es 1.
+   * crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileWMS from 'ol/source/TileWMS';
@@ -99,7 +101,9 @@ class WMS extends LayerBase {
       queryable: parameters.queryable,
       displayInLayerSwitcher: parameters.displayInLayerSwitcher,
       useCapabilities: parameters.useCapabilities,
+      transparent: parameters.transparent,
     };
+
     const impl = new WMSImpl(optionsVar, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
@@ -114,18 +118,13 @@ class WMS extends LayerBase {
      */
     this.version = parameters.version;
 
+
     /**
      * WMS tiled: Verdadero si queremos dividir la capa en mosaicos, falso en caso contrario.
      */
     if (!isNullOrEmpty(parameters.tiled)) {
       this.tiled = parameters.tiled;
     }
-
-
-    /**
-     * WMS transparent: Falso si es una capa base, verdadero en caso contrario.
-     */
-    this.transparent = parameters.transparent;
 
     /**
      * WMS capabilitiesMetadata: Capacidades de metadatos WMS.
@@ -162,33 +161,6 @@ class WMS extends LayerBase {
     this.useCapabilities = userParameters.useCapabilities !== false;
 
     this._updateNoCache();
-  }
-
-  /**
-   * Devuelve el tipo de layer, WMS.
-   *
-   * @function
-   * @getter
-   * @returns {M.LayerType.WMS} Tipo WMS.
-   * @api
-   */
-  get type() {
-    return LayerType.WMS;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.WMS)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.WMS).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
   }
 
   /**
@@ -373,12 +345,10 @@ class WMS extends LayerBase {
   calculateMaxExtentWithCapabilities(capabilities) {
     // -- Prevent to calculate maxExtent if it is already calculated
     if (isNullOrEmpty(this.userMaxExtent) && this.userMaxExtent) return this.userMaxExtent;
-
     if (isNullOrEmpty(this.options.wmcMaxExtent) && this.options.wmcMaxExtent) {
       this.maxExtent_ = this.options.wmcMaxExtent;
       return this.maxExtent_;
     }
-
     if (isNullOrEmpty(this.map_.userMaxExtent) && this.map_.userMaxExtent) {
       this.maxExtent_ = this.map_.userMaxExtent;
       return this.maxExtent_;
@@ -387,13 +357,11 @@ class WMS extends LayerBase {
     // -- Use capabilities
     const capabilitiesMaxExtent = this.getImpl()
       .getExtentFromCapabilities(capabilities);
-
-    if (capabilitiesMaxExtent.length !== 0) {
-      this.maxExtent_ = capabilitiesMaxExtent;
+    if (isNullOrEmpty(capabilitiesMaxExtent)) {
+      const projMaxExtent = this.map_.getProjection().getExtent();
+      this.maxExtent_ = projMaxExtent;
       return this.maxExtent_;
     }
-    const projMaxExtent = this.map_.getProjection().getExtent();
-    this.maxExtent_ = projMaxExtent;
     return capabilitiesMaxExtent;
   }
 

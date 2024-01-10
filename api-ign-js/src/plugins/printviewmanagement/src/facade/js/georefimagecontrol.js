@@ -36,15 +36,19 @@ const TYPE_SAVE = '.zip';
 
 export default class GeorefimageControl extends M.Control {
   /**
-    * @classdesc
-    * Main constructor of the class.
-    *
-    * @constructor
-    * @extends {M.Control}
-    * @api stable
-    */
+   * @classdesc
+   * Main constructor of the class.
+   *
+   * @constructor
+   * @extends {M.Control}
+   * @api stable
+   */
   constructor({
-    serverUrl, printTemplateUrl, printStatusUrl, printSelector, printType,
+    serverUrl,
+    printTemplateUrl,
+    printStatusUrl,
+    printSelector,
+    printType,
   }, map, statusProxy, useProxy) {
     const impl = new GeorefimageControlImpl(map);
     super(impl, GeorefimageControl.NAME);
@@ -58,24 +62,24 @@ export default class GeorefimageControl extends M.Control {
     }
 
     /**
-      * Mapfish server url
-      * @private
-      * @type {String}
-      */
+     * Mapfish server url
+     * @private
+     * @type {String}
+     */
     this.serverUrl_ = serverUrl || 'https://componentes.cnig.es/geoprint';
 
     /**
-      * Mapfish template url
-      * @private
-      * @type {String}
-      */
+     * Mapfish template url
+     * @private
+     * @type {String}
+     */
     this.printTemplateUrl_ = printTemplateUrl || 'https://componentes.cnig.es/geoprint/print/mapexport';
 
     /**
-      * Url for getting priting status
-      * @private
-      * @type {String}
-      */
+     * Url for getting priting status
+     * @private
+     * @type {String}
+     */
     this.printStatusUrl_ = printStatusUrl || 'https://componentes.cnig.es/geoprint/print/status';
 
     this.printSelector = !!printSelector;
@@ -83,59 +87,59 @@ export default class GeorefimageControl extends M.Control {
     this.printType = printType === 'client' ? 'client' : 'server';
 
     /**
-      * Map title
-      * @private
-      * @type {HTMLElement}
-      */
+     * Map title
+     * @private
+     * @type {HTMLElement}
+     */
     this.elementTitle_ = null;
 
     /**
-      * Map description
-      * @private
-      * @type {HTMLElement}
-      */
+     * Map description
+     * @private
+     * @type {HTMLElement}
+     */
     this.areaDescription_ = null;
 
     /**
-      * Layout
-      * @private
-      * @type {HTMLElement}
-      */
+     * Layout
+     * @private
+     * @type {HTMLElement}
+     */
     this.layout_ = null;
 
     /**
-      * Map format to print
-      * @private
-      * @type {HTMLElement}
-      */
+     * Map format to print
+     * @private
+     * @type {HTMLElement}
+     */
     this.format_ = null;
 
     /**
-      * Map projection to print
-      * @private
-      * @type {HTMLElement}
-      */
+     * Map projection to print
+     * @private
+     * @type {HTMLElement}
+     */
     this.projection_ = null;
 
     /**
-      * Map dpi to print
-      * @private
-      * @type {HTMLElement}
-      */
+     * Map dpi to print
+     * @private
+     * @type {HTMLElement}
+     */
     this.dpi_ = null;
 
     /**
-      * Force scale boolean
-      * @private
-      * @type {HTMLElement}
-      */
+     * Force scale boolean
+     * @private
+     * @type {HTMLElement}
+     */
     this.forceScale_ = null;
 
     /**
-      * Mapfish params
-      * @private
-      * @type {String}
-      */
+     * Mapfish params
+     * @private
+     * @type {String}
+     */
     this.params_ = {
       layout: {
         outputFilename: 'mapa_${yyyy-MM-dd_hhmmss}',
@@ -148,17 +152,17 @@ export default class GeorefimageControl extends M.Control {
     };
 
     /**
-      * Facade of the map
-      * @private
-      * @type {Promise}
-      */
+     * Facade of the map
+     * @private
+     * @type {Promise}
+     */
     this.capabilitiesPromise_ = null;
 
     /**
-      * Mapfish options params
-      * @private
-      * @type {String}
-      */
+     * Mapfish options params
+     * @private
+     * @type {String}
+     */
     this.options_ = {
       dpi: 150,
       forceScale: false,
@@ -181,30 +185,30 @@ export default class GeorefimageControl extends M.Control {
   }
 
   /**
-    * This function checks when map printing is finished.
-    * @param {String} url - Mapfish GET request url
-    * @param {Function} callback - function that removes loading icon class.
-    */
+   * This function checks when map printing is finished.
+   * @param {String} url - Mapfish GET request url
+   * @param {Function} callback - function that removes loading icon class.
+   */
   getStatus(url, callback) {
     M.proxy(this.useProxy);
     const newUrl = `${url}?timestamp=${new Date().getTime()}`;
     M.remote.get(newUrl).then((response) => {
-      const statusJson = JSON.parse(response.text);
+      const statusJson = response.text ? JSON.parse(response.text) : 'error';
       const { status } = statusJson;
       if (status === 'finished') {
         callback();
       } else if (status === 'error' || status === 'cancelled') {
         callback();
         if (statusJson.error.toLowerCase().indexOf('network is unreachable') > -1 || statusJson.error.toLowerCase().indexOf('illegalargument') > -1) {
-          M.dialog.error(getValue('exception.teselaError'), 'Error');
+          M.toast.error(getValue('exception.teselaError'), 6000);
         } else {
-          M.dialog.error(getValue('exception.printError'), 'Error');
+          M.toast.error(getValue('exception.printError'), 6000);
         }
         getQueueContainer(this.html_).lastChild.remove();
       } else {
         setTimeout(() => this.getStatus(url, callback), 1000);
       }
-    }).catch((err) => { });
+    }).catch((err) => {});
     M.proxy(this.statusProxy);
   }
 
@@ -332,13 +336,13 @@ export default class GeorefimageControl extends M.Control {
   }
 
   /**
-    * Esta función añade los eventos a los elementos del control
-    *
-    * @public
-    * @function
-    * @param {HTMLElement} html Contenedor del control
-    * @api stable
-    */
+   * Esta función añade los eventos a los elementos del control
+   *
+   * @public
+   * @function
+   * @param {HTMLElement} html Contenedor del control
+   * @api stable
+   */
   addEvents() {
     const DEFAULT_PROJECTION_SERVER = 'EPSG:3857';
 
@@ -396,11 +400,11 @@ export default class GeorefimageControl extends M.Control {
   }
 
   /**
-    * This function prints on click
-    *
-    * @private
-    * @function
-    */
+   * This function prints on click
+   *
+   * @private
+   * @function
+   */
   printClick(evt) {
     evt.preventDefault();
     const valueFieldset = (this.printSelector) ? this.elementFieldset_.querySelector('input[type="radio"]:checked').value : this.printType;
@@ -426,7 +430,7 @@ export default class GeorefimageControl extends M.Control {
       M.proxy(this.useProxy);
       M.remote.post(printUrl, printData).then((responseParam) => {
         let response = responseParam;
-        const responseStatusURL = JSON.parse(response.text);
+        const responseStatusURL = response.text && JSON.parse(response.text);
         const ref = responseStatusURL.ref;
         const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
         this.getStatus(
@@ -470,10 +474,14 @@ export default class GeorefimageControl extends M.Control {
       this.elementQueueContainer_,
     );
 
-    const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
-
-    removeLoadQueueElement(queueEl);
-    queueEl.addEventListener('click', evt => this.downloadPrint(evt, base64image));
+    try {
+      const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
+      queueEl.addEventListener('click', evt => this.downloadPrint(evt, base64image));
+    } catch (exceptionVar) {
+      M.dialog.error(getValue('exception.error_download_image'));
+    } finally {
+      removeLoadQueueElement(queueEl);
+    }
   }
 
   getSourceAsDOM(url) {
@@ -486,13 +494,13 @@ export default class GeorefimageControl extends M.Control {
   }
 
   /**
-    * Gets capabilities
-    *
-    * @public
-    * @function
-    * @param {M.Map} map to add the control
-    * @api stable
-    */
+   * Gets capabilities
+   *
+   * @public
+   * @function
+   * @param {M.Map} map to add the control
+   * @api stable
+   */
   getCapabilities() {
     if (M.utils.isNullOrEmpty(this.capabilitiesPromise_)) {
       this.capabilitiesPromise_ = new Promise((success, fail) => {
@@ -516,12 +524,12 @@ export default class GeorefimageControl extends M.Control {
   }
 
   /**
-    * Converts decimal degrees coordinates to degrees, minutes, seconds
-    * @public
-    * @function
-    * @param {String} coordinate - single coordinate (one of a pair)
-    * @api
-    */
+   * Converts decimal degrees coordinates to degrees, minutes, seconds
+   * @public
+   * @function
+   * @param {String} coordinate - single coordinate (one of a pair)
+   * @api
+   */
   converterDecimalToDMS(coordinate) {
     let dms;
     let aux;
@@ -545,12 +553,12 @@ export default class GeorefimageControl extends M.Control {
   }
 
   /**
-    * Converts original bbox coordinates to DMS coordinates.
-    * @public
-    * @function
-    * @api
-    * @param {Array<Object>} bbox - { x: {min, max}, y: {min, max} }
-    */
+   * Converts original bbox coordinates to DMS coordinates.
+   * @public
+   * @function
+   * @api
+   * @param {Array<Object>} bbox - { x: {min, max}, y: {min, max} }
+   */
   convertBboxToDMS(bbox) {
     const proj = this.map_.getProjection();
     let dmsBbox = bbox;
@@ -576,12 +584,12 @@ export default class GeorefimageControl extends M.Control {
   }
 
   /**
-    * Converts decimal coordinates Bbox to DMS coordinates Bbox.
-    * @public
-    * @function
-    * @api
-    * @param { Array < Object > } bbox - { x: { min, max }, y: { min, max } }
-    */
+   * Converts decimal coordinates Bbox to DMS coordinates Bbox.
+   * @public
+   * @function
+   * @api
+   * @param { Array < Object > } bbox - { x: { min, max }, y: { min, max } }
+   */
   convertDecimalBoxToDMS(bbox) {
     return {
       x: {
@@ -596,11 +604,11 @@ export default class GeorefimageControl extends M.Control {
   }
 
   /**
-    * This function returns request JSON.
-    *
-    * @private
-    * @function
-    */
+   * This function returns request JSON.
+   *
+   * @private
+   * @function
+   */
   getPrintData() {
     let projection;
     const elementDpi = document.querySelector(ID_DPI);
@@ -660,21 +668,30 @@ export default class GeorefimageControl extends M.Control {
         );
       }
 
+      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM))) {
+        printData.attributes.map.projection = 'EPSG:3857';
+        printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
+      }
+
       return printData;
     });
   }
 
   /**
-    * This function encodes layers.
-    *
-    * @private
-    * @function
-    */
+   * This function encodes layers.
+   *
+   * @private
+   * @function
+   */
   encodeLayers() {
     // Filters WMS and WMTS visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     let layers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer' && layer.name !== '__draw__');
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' &&
+        layer.name !== 'empty_layer' &&
+        layer.name !== '__draw__' &&
+        layer.type !== 'GenericRaster' &&
+        layer.type !== 'GenericVector');
     });
 
     if (this.map_.getZoom() === 20) {
@@ -776,12 +793,12 @@ export default class GeorefimageControl extends M.Control {
 
 
   /**
-    * This function downloads printed map.
-    *
-    * @public
-    * @function
-    * @api stable
-    */
+   * This function downloads printed map.
+   *
+   * @public
+   * @function
+   * @api stable
+   */
   downloadPrint(evt, imgBase64) {
     if (evt.key !== undefined && evt.key !== 'Enter' && evt.key !== ' ') {
       return;
@@ -835,12 +852,12 @@ export default class GeorefimageControl extends M.Control {
   }
 
   /**
-    *  Converts epsg code to projection name.
-    * @public
-    * @function
-    * @param {String} projection - EPSG:xxxx
-    * @api
-    */
+   *  Converts epsg code to projection name.
+   * @public
+   * @function
+   * @param {String} projection - EPSG:xxxx
+   * @api
+   */
   turnProjIntoLegend(projection) {
     let projectionLegend;
     switch (projection) {
@@ -872,11 +889,11 @@ export default class GeorefimageControl extends M.Control {
   }
 
   /**
-    * This function checks if an object is equal to this control.
-    *
-    * @function
-    * @api stable
-    */
+   * This function checks if an object is equal to this control.
+   *
+   * @function
+   * @api stable
+   */
   equals(obj) {
     let equals = false;
     if (obj instanceof GeorefimageControl) {
@@ -894,58 +911,56 @@ export default class GeorefimageControl extends M.Control {
   }
 
   /**
- * This function destroys this control
- *
- * @public
- * @function
- * @api
- */
-  destroy() {
-  }
+   * This function destroys this control
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroy() {}
 }
 
 /**
-  * Name for this controls
-  * @const
-  * @type {string}
-  * @public
-  * @api stable
-  */
+ * Name for this controls
+ * @const
+ * @type {string}
+ * @public
+ * @api stable
+ */
 GeorefimageControl.NAME = 'georefimagecontrol';
 
 /**
-  * M.template for this controls
-  * @const
-  * @type {string}
-  * @public
-  * @api stable
-  */
+ * M.template for this controls
+ * @const
+ * @type {string}
+ * @public
+ * @api stable
+ */
 GeorefimageControl.TEMPLATE = 'georefimage.html';
 
 /**
-  * M.template for this controls
-  * @const
-  * @type {string}
-  * @public
-  * @api stable
-  */
+ * M.template for this controls
+ * @const
+ * @type {string}
+ * @public
+ * @api stable
+ */
 GeorefimageControl.LOADING_CLASS = 'printing';
 
 /**
-  * M.template for this controls
-  * @const
-  * @type {string}
-  * @public
-  * @api stable
-  */
+ * M.template for this controls
+ * @const
+ * @type {string}
+ * @public
+ * @api stable
+ */
 GeorefimageControl.DOWNLOAD_ATTR_NAME = 'data-donwload-url-print';
 
 /**
-  * M.template for this controls
-  * @const
-  * @type {string}
-  * @public
-  * @api stable
-  */
+ * M.template for this controls
+ * @const
+ * @type {string}
+ * @public
+ * @api stable
+ */
 GeorefimageControl.NO_TITLE = '(Sin titulo)';
-

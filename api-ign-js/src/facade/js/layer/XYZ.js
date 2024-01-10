@@ -3,7 +3,7 @@
  */
 import XYZImpl from 'impl/layer/XYZ';
 import LayerBase from './Layer';
-import { isNullOrEmpty, isUndefined } from '../util/Utils';
+import { isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
@@ -25,6 +25,7 @@ import { getValue } from '../i18n/language';
  * @property {Number} maxZoom Limitar el zoom máximo.
  * @property {Number} tileGridMaxZoom Zoom máximo de la tesela en forma de rejilla.
  * @property {Object} options Opciones de capa XYZ.
+ * @property {Boolean} isbase Define si la capa es base.
  *
  * @api
  * @extends {M.layer}
@@ -40,8 +41,9 @@ class XYZ extends LayerBase {
    * - name: Identificador de la capa.
    * - projection: La proyección destino de la capa.
    * - visibility: Indica si la capa estará por defecto visible o no.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - type: Tipo de la capa.
+   * - isBase: Indica si la capa es base.
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
    * - opacity: Opacidad de la capa.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
@@ -112,33 +114,6 @@ class XYZ extends LayerBase {
      * XYZ options: Opciones de la capa.
      */
     this.options = options;
-  }
-
-  /**
-   * Devuelve el tipo de capa.
-   *
-   * @function
-   * @getter
-   * @return {M.LayerType.XYZ} Devuelve XYZ.
-   * @api
-   */
-  get type() {
-    return LayerType.XYZ;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.XYZ)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.XYZ).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
   }
 
   /**

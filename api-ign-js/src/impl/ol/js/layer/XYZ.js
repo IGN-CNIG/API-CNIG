@@ -50,6 +50,7 @@ class XYZ extends Layer {
    * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
+   * - crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import XYZSource from 'ol/source/XYZ';
@@ -121,7 +122,7 @@ class XYZ extends Layer {
     this.displayInLayerSwitcher = userParameters.displayInLayerSwitcher !== false;
 
     /**
-     * CrossOrigin. Indica si se usa crossOrigin.
+     * CrossOrigin: Atributo crossOrigin para las imágenes cargadas.
      */
     this.crossOrigin = options.crossOrigin || null;
   }

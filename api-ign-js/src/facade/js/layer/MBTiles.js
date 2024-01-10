@@ -20,6 +20,7 @@ import * as parameter from '../parameter/parameter';
  * @property {string} name Nombre de la capa, identificador.
  * @property {string} legend Leyenda de la capa.
  * @property {object} options Opciones MBTiles.
+ * @property {Boolean} isbase Define si la capa es base.
  *
  * @api
  * @extends {M.Layer}
@@ -45,6 +46,7 @@ class MBTiles extends LayerBase {
    * - tileSize: Tamaño de la tesela, por defecto 256.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - opacity: Opacidad de capa, por defecto 1.
+   * - isBase: Indica si la capa es base.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a la implementación.
    * Están proporcionados por el usuario.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
@@ -140,33 +142,6 @@ class MBTiles extends LayerBase {
       this.getImpl().legend = this.name;
     } else {
       this.getImpl().legend = newLegend;
-    }
-  }
-
-  /**
-   * Devuelve el tipo de capa, en este caso MBTiles.
-   *
-   * @function
-   * @getter
-   * @return {String} Tipo de capa, MBTiles.
-   * @api
-   */
-  get type() {
-    return LayerType.MBTiles;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo de capa.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.MBTiles)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.MBTiles).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
     }
   }
 

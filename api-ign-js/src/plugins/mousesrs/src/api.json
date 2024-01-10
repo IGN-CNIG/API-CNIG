@@ -22,7 +22,7 @@
       "type": "number",
       "name": "precision",
       "position": 3
-    }, {
+    },{
       "type": "number",
       "name": "geoDecimalDigits",
       "position": 4
@@ -38,6 +38,14 @@
       "type": "simple",
       "name": "helpUrl",
       "position": 7
+    }, {
+      "type": "boolean",
+      "name": "draggableDialog",
+      "position": 8
+    }, {
+      "type": "boolean",
+      "name": "epsgFormat",
+      "position": 9
     }]
   }],
   "files": {

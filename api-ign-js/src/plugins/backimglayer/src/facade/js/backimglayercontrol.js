@@ -25,10 +25,10 @@ export default class BackImgLayerControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(
-    map, layerOpts, idLayer, visible, ids, titles, previews, layers,
+  constructor({
+    map, visible, layerOpts, layerId: idLayer, ids, titles, previews, layers,
     numColumns, empty, order,
-  ) {
+  }) {
     const impl = new M.impl.Control();
     let numColumnsV;
     super(impl, 'BackImgLayer');
@@ -138,6 +138,7 @@ export default class BackImgLayerControl extends M.Control {
             },
           }, this.layers[this.activeLayer], this.activeLayer);
         }
+
         if (visible === false) {
           this.map.removeLayers(this.map.getBaseLayers());
           this.html.querySelector('.activeBackimglayerDiv').classList.remove('activeBackimglayerDiv');

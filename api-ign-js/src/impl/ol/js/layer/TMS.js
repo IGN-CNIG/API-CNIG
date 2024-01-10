@@ -41,6 +41,7 @@ class TMS extends MXYZ {
    * - displayInLayerSwitcher:  Indica si la capa se muestra en el selector de capas.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
+   * - crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import XYZSource from 'ol/source/XYZ';

@@ -72,7 +72,7 @@ class MBTiles extends Layer {
    * - url: Url del fichero o servicio que genera el MBTiles.
    * - type: Tipo de la capa.
    * - maxZoomLevel: Zoom máximo aplicable a la capa.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que aparece en el árbol de contenidos, si lo hay.
    * - tileLoadFunction: Función de carga de la tesela proporcionada por el usuario.
@@ -82,6 +82,7 @@ class MBTiles extends Layer {
    * - opacity: Opacidad de capa, por defecto 1.
    * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * -  CrossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLTileGrid from 'ol/tilegrid/TileGrid';
@@ -143,7 +144,7 @@ class MBTiles extends Layer {
 
 
     /**
-     * CrossOrigin. Indica si se usa crossOrigin.
+     *  CrossOrigin: Atributo crossOrigin para las imágenes cargadas.
      */
     this.crossOrigin = options.crossOrigin || null;
   }
@@ -207,7 +208,11 @@ class MBTiles extends Layer {
    * @returns {Array} Devuelve la extensión de la capa.
    */
   getMaxExtent() {
-    return this.maxExtent_ || this.getExtentFromProvider();
+    const extent = this.maxExtent_ || this.getExtentFromProvider();
+    if (!extent) {
+      this.maxExtent_ = this.map.getExtent();
+    }
+    return this.maxExtent_;
   }
 
   /**
@@ -244,11 +249,11 @@ class MBTiles extends Layer {
           }
           const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_);
           this.getExtentFromProvider().then((reprojectedExtent) => {
-            this.maxExtent_ = reprojectedExtent || extent;
+            this.maxExtent_ = this.maxExtent_ || reprojectedExtent || extent;
             this.ol3Layer = this.createLayer({
               tileProvider,
               resolutions,
-              extent: reprojectedExtent || extent,
+              extent: this.maxExtent_,
               sourceExtent: extent,
               projection,
             });
@@ -260,9 +265,10 @@ class MBTiles extends Layer {
       });
     } else {
       const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 28);
+      this.maxExtent_ = this.maxExtent_ || extent;
       this.ol3Layer = this.createLayer({
         resolutions,
-        extent,
+        extent: this.maxExtent_ || extent,
         sourceExtent: extent,
         projection,
       });

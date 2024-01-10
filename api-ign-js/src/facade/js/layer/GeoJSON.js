@@ -72,8 +72,11 @@ class GeoJSON extends LayerVector {
      */
     const impl = new GeoJSONImpl(parameters, options, vendorOptions);
 
+    const opts = parameters;
+    opts.type = GeoJSONType;
+
     // Llama al contructor del que se extiende la clase
-    super(parameters, options, undefined, impl);
+    super(opts, options, undefined, impl);
 
     // Comprueba si la implementación puede crear capas GeoJSON
     if (isUndefined(GeoJSONImpl)) {
@@ -140,33 +143,6 @@ class GeoJSON extends LayerVector {
      * GeoJSON options: Opciones que se mandan a la implementación.
      */
     this.options = options;
-  }
-
-  /**
-   * Devuelve el tipo de capa, en este caso GeoJSON.
-   *
-   * @function
-   * @getter
-   * @return {String} Tipo de capa, GeoJSON.
-   * @api
-   */
-  get type() {
-    return GeoJSONType;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo de capa.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== GeoJSONType)) {
-      Exception('El tipo de capa debe ser \''.concat(GeoJSONType).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
   }
 
   /**

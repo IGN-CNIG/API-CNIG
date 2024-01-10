@@ -184,15 +184,27 @@ class Map extends MObject {
     this.currentZoom = null;
 
     /**
+     * Extent restringido de navegación para el mapa.
+     * @api
+     * @type {Mx.Extent}
+     */
+    this.viewExtent = options.viewExtent;
+
+    /**
      * Implementación del mapa.
      * @private
      * @type {ol.Map}
      */
+    let view = new View();
+    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
+      view = new View({ extent: this.viewExtent });
+    }
+
     this.map_ = new OLMap({
       controls: [],
       target: div.id,
       // renderer,
-      view: new View(),
+      view,
     });
 
     this.registerEvents_();
@@ -260,7 +272,7 @@ class Map extends MObject {
    * @api
    */
   getBaseLayers() {
-    return this.getLayers().filter(layer => layer.isBase === true);
+    return this.layers_.filter(layer => layer.transparent === false);
   }
 
   /**
@@ -312,6 +324,8 @@ class Map extends MObject {
         this.facadeMap_.addTMS(layer);
       } else if (!LayerType.know(layer.type)) {
         this.addUnknowLayers_([layer]);
+        // eslint-disable-next-line no-underscore-dangle
+        this.facadeMap_.addUnknowLayers_(layer);
       }
     });
 
@@ -527,6 +541,10 @@ class Map extends MObject {
               if (!isNullOrEmpty(filterLayer.legend)) {
                 layerMatched = (layerMatched && (filterLayer.legend === wmsLayer.legend));
               }
+              // isBase
+              if (!isNullOrEmpty(filterLayer.isBase)) {
+                layerMatched = (layerMatched && (filterLayer.isBase === wmsLayer.isBase));
+              }
               // transparent
               if (!isNullOrEmpty(filterLayer.transparent)) {
                 layerMatched = (layerMatched && (filterLayer.transparent === wmsLayer.transparent));
@@ -580,7 +598,7 @@ class Map extends MObject {
 
           /* if the layer is a base layer then
           sets its visibility */
-          if (layer.transparent !== true) {
+          if (layer.transparent === false) {
             layer.setVisible(!existsBaseLayer);
             existsBaseLayer = true;
             layer.setZIndex(Map.Z_INDEX_BASELAYER);
@@ -1166,7 +1184,7 @@ class Map extends MObject {
           this.layers_.push(layer);
           /* if the layer is a base layer then
                  sets its visibility */
-          if (layer.transparent !== true) {
+          if (layer.transparent === false) {
             layer.setVisible(!existsBaseLayer);
             existsBaseLayer = true;
             if (layer.isVisible()) {
@@ -1291,7 +1309,7 @@ class Map extends MObject {
           this.layers_.push(layer);
           addedLayers.push(layer);
 
-          if (layer.transparent !== true) {
+          if (layer.transparent === false) {
             layer.setVisible(!existsBaseLayer);
             existsBaseLayer = true;
             layer.setZIndex(Map.Z_INDEX_BASELAYER);
@@ -1518,7 +1536,7 @@ class Map extends MObject {
 
         /* if the layer is a base layer then
         sets its visibility */
-        if (layer.transparent !== true) {
+        if (layer.transparent === false) {
           layer.setVisible(!existsBaseLayer);
           existsBaseLayer = true;
           if (layer.isVisible()) {
@@ -1558,7 +1576,7 @@ class Map extends MObject {
       if (includes(this.layers_, layer)) {
         this.layers_ = this.layers_.filter(layer2 => !layer2.equals(layer));
         layer.getImpl().destroy();
-        if (layer.transparent !== true) {
+        if (layer.transparent === false) {
           // it was base layer so sets the visibility of the first one
           const baseLayers = this.facadeMap_.getBaseLayers();
           if (baseLayers.length > 0) {
@@ -2392,7 +2410,11 @@ class Map extends MObject {
     const maxZoom = olMap.getView().getMaxZoom();
     const size = olMap.getSize();
 
-    const newView = new View({ projection });
+    let newView = new View({ projection });
+    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
+      newView = new View({ projection, extent: this.viewExtent });
+    }
+
     newView.setProperties(oldViewProperties);
     newView.setResolutions(resolutions);
     newView.setUserZoom(oldZoom);
@@ -2517,7 +2539,11 @@ class Map extends MObject {
     const maxZoom = olMap.getView().getMaxZoom();
 
     // sets the new view
-    const newView = new View({ projection: olProjection });
+    let newView = new View({ projection: olProjection });
+    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
+      newView = new View({ projection: olProjection, extent: this.viewExtent });
+    }
+
     newView.setProperties(oldViewProperties);
     if (!isNullOrEmpty(resolutions)) {
       newView.setResolutions(resolutions);
@@ -2917,5 +2943,7 @@ Map.Z_INDEX[LayerType.MBTilesVector] = 40;
 Map.Z_INDEX[LayerType.XYZ] = 40;
 Map.Z_INDEX[LayerType.TMS] = 40;
 Map.Z_INDEX[LayerType.OGCAPIFeatures] = 40;
+Map.Z_INDEX[LayerType.GenericVector] = 40;
+Map.Z_INDEX[LayerType.GenericRaster] = 40;
 
 export default Map;

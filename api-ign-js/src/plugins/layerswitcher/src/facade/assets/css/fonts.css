@@ -93,3 +93,11 @@
 .m-layerswitcher-icons-style:before {
   content: "\e90c";
 }
+
+.m-filter-btn:before {
+  content: "\e964";
+}
+
+.m-clean-btn:before {
+  content: "\e9ac";
+}

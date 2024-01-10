@@ -1,6 +1,7 @@
 {
   "exception": {
-    "impl": "La implementación usada no puede crear controles MouseSRSControl."
+    "impl": "La implementación usada no puede crear controles MouseSRSControl.",
+    "srs": "Plugin MouseSRS: El parámetro srs no es correcto. Por defecto se usará EPSG:4326"
   },
   "tooltip": "Coordenadas",
   "select_srs": "Selecciona un sistema de referencia",

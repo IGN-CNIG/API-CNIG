@@ -11,6 +11,10 @@
     "scale": "Escala",
     "level": "Nivel de zoom"
   },
+  "attributions": {
+    "attribution": "atribución",
+    "tooltip": "Reconocimientos"
+  },
   "getfeatureinfo": {
     "info": "Información",
     "title": "Consultar capa",
@@ -146,6 +150,7 @@
     "layerswitcher_method": "La implementación usada no puede crear controles LayerSwitcher",
     "location_method": "La implementación usada no puede crear controles Location",
     "wms_method": "La implementación usada no puede crear capas WMS",
+    "generic_method": "La implementación usada no puede crear capas Genéricas",
     "wmts_method": "La implementación usada no puede crear capas WMTS",
     "no_impl": "No se ha especificado ninguna implementación",
     "no_container": "No ha especificado ningún parámetro contenedor",
@@ -165,6 +170,8 @@
     "mbtiles_method": "La implementación usada no puede crear capas MBTiles",
     "no_source": "Fuente no especificada.",
     "addmbtiles_method": "La implementación usada no posee el método addMBTilesVector.",
-    "removembtiles_method": "La implementación usada no posee el método removeMBTilesVector."
+    "removembtiles_method": "La implementación usada no posee el método removeMBTilesVector.",
+    "browser_audio": "Su navegador no soporta el elemento de audio",
+    "browser_video": "Su navegador no soporta el elemento de video"
   }
 }

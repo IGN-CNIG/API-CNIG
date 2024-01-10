@@ -672,6 +672,49 @@ export default class ShareMapControl extends M.Control {
     return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${this.normalizeString(legend)}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
   }
 
+  // TO-DO
+  // getGeneric(layer) {
+  //   const ol3 = layer.getImpl().getOL3Layer();
+  //   const ol3Source = ol3.getSource();
+  //   const typeSource = layer.getImpl().getSourceType();
+  //   const typeLayer = layer.getImpl().getLayerType();
+  //   const typeFormat = layer.getImpl().getFormatType ? layer.getImpl().getFormatType() : false;
+
+  //   const properties = ol3.getProperties();
+  //   delete properties.source;
+
+
+  //   const vendorOptions = `
+  //     new ol.layer.${typeLayer}({
+  //        source: new ol.source.${typeSource}({
+  //         ${ol3Source.getParams ? `params:${JSON.stringify(ol3Source.getParams())},` : ''}
+  //         url: ${ol3Source.getUrl ? ol3Source.getUrl() : ol3Source.getUrls()[0]},
+  //         ${ol3Source.getLayer ? `layer: ${ol3Source.getLayer()},` : ''}
+  //         ${ol3Source.getMatrixSet ? `matrixSet: ${ol3Source.getMatrixSet()},` : ''}
+  //         ${ol3Source.getFormat ? `format: ${JSON.stringify(ol3Source.getFormat())},` : ''}
+  //         ${ol3Source.getProjection ? `projection: ${ol3Source.getProjection()},` : ''}
+  //         ${ol3Source.getTileGrid ? `tileGrid: ${ol3Source.getTileGrid()},` : ''}
+  //         ${ol3Source.getStyle ? `style: ${ol3Source.getStyle()},` : ''}
+  //         ${typeFormat ? `format: new ${typeFormat}(),` : ''}
+  //        }),
+  //        properties: ${JSON.stringify(properties)},
+  //     })
+  //   `;
+
+  //   const {
+  //     name = '',
+  //     legend = '',
+  //     transparent,
+  //     minZoom,
+  //     maxZoom,
+  //     displayInLayerSwitcher = true,
+  //     visibility = true,
+  //   } = layer;
+
+  //   return `Generic*${M.utils.encodeBase64(vendorOptions)}*${name}*${legend}
+  // *${transparent}*${minZoom}*${maxZoom}*${displayInLayerSwitcher}*${visibility}`;
+  // }
+
   /**
    * This method gets the plugins url parameter
    */

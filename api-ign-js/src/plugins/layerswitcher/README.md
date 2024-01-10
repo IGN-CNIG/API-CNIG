@@ -5,7 +5,7 @@
 
 # Descripción
 
-Extensión que permite listar y gestionar los servicios añadidos en el mapa. Además permite añadir servicios de forma fácil y rápida.
+Extensión que permite listar y gestionar las capas (servicios web y/o ficheros) añadidas en el mapa, de forma fácil y rápida.
 La carga de nuevos servicios se pueden realizar mediante el listado predefinido o indicando la URL del servicio.
 
 
@@ -31,14 +31,13 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-  - 'TC': (top center) - Arriba en el centro.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Gestor de capas.
 - **isDraggable**: Permite mover el plugin por el mapa. Por defecto: false.
-- **http**: Si es *true* o no se rellena se permite la carga de capas de servicios desplegados con http, si se le da valor *false* no se permitirá la carga de servicios http. Por defecto: true.
+- **http**: Si es *true* se permite la carga de capas de servicios desplegados con http, si se le da valor *false* no se permitirá la carga de servicios http. Por defecto: true.
 - **https**: Si es *true* sólo se permite la carga de capas de servicios desplegados con https, si no se rellena o se le da valor *false* se permite la carga de cualquier servicio. Por defecto: true.
-- **codsi**: Si es *true* se habilitará una nueva funcionalidad que permitirá la carga de servicios del catálogo codsi habilitando un listado con buscador de dichos servicios. Disponible al pulsar sobre el botón añadir del plugin, apareciendo unos prismáticos para realizar la búsqueda. Por defecto: false.
+- **showCatalog**: Si es *true* se habilitará una nueva funcionalidad que permitirá la carga de servicios del catálogo habilitando un listado con buscador de dichos servicios. Disponible al pulsar sobre el botón añadir del plugin, apareciendo unos prismáticos para realizar la búsqueda. Por defecto: false.
 - **precharged**: Aquí debemos definir la estructura de los servicios predefinidos que queremos que tenga el plugin (árbol de contenido, servicios sin nodo padre, etc.). También podremos definir un parámetro para cada servicio con el que restringiremos qué capas de cada servicio queremos que sea posible cargar (white_list).
 El listado de capas aparece al pulsar sobre el botón añadir (Listado de algunas capas disponibles).
 - **isMoveLayers**: Permite mover las capas en el árbol de contenidos para cambiar el orden de visualización. Por defecto: false.
@@ -58,7 +57,7 @@ El listado de capas aparece al pulsar sobre el botón añadir (Listado de alguna
 # API-REST
 
 ```javascript
-https://componentes.cnig.es/api-core/?layerswitcher=position*collapsed*collapsible*tooltip*isDraggable*isMoveLayers*modeSelectLayers*tools*http*https*codsi`;
+https://componentes.cnig.es/api-core/?layerswitcher=position*collapsed*collapsible*tooltip*isDraggable*isMoveLayers*modeSelectLayers*tools*http*https*showCatalog`;
 ```
 
 <table>
@@ -118,7 +117,7 @@ https://componentes.cnig.es/api-core/?layerswitcher=position*collapsed*collapsib
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
-    <td>codsi</td>
+    <td>showCatalog</td>
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
@@ -150,7 +149,7 @@ Ejemplo de constructor del plugin:
            isMoveLayers: true,
            https: true,
            http: true,
-           codsi: false,
+           showCatalog: false,
        }
 ```
 ```
@@ -176,7 +175,7 @@ const mp = new M.plugin.Layerswitcher({
   isMoveLayers: true,
   https: true,
   http: true,
-  codsi: false,
+  showCatalog: false,
 });
 
 map.addPlugin(mp);

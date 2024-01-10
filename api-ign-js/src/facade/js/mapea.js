@@ -43,10 +43,7 @@ export const map = (parameters, options) => {
   if (isNullOrEmpty(MapImpl)) {
     Exception(getValue('exception').no_impl);
   }
-  // REV
   const mapa = new Map(parameters, options);
-  // eslint-disable-next-line no-console
-  console.log('mapa', mapa);
   return mapa;
 };
 

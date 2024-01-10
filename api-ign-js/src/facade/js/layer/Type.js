@@ -151,6 +151,24 @@ export const MBTiles = 'MBTiles';
 export const MBTilesVector = 'MBTilesVector';
 
 /**
+ * Tipo GenericVector. Es un tipo de capa que permite cualquier tipo de servicio.
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const GenericVector = 'GenericVector';
+
+/**
+ * Tipo GenericRaster. Es un tipo de capa que permite cualquier tipo de servicio.
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const GenericRaster = 'GenericRaster';
+
+/**
  * Todos los tipos de capas
  * @const
  * @type {object}
@@ -171,6 +189,8 @@ const layertypes = {
   MBTiles,
   MBTilesVector,
   OGCAPIFeatures,
+  GenericRaster,
+  GenericVector,
 };
 
 /**

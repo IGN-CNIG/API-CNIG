@@ -34,7 +34,7 @@
         <!-- Selección de DPI -->
         <div>
             <label tabindex="0" role="text" aria-label="DPI">DPI </label>
-            <select tabindex="0" role="select" id="m-printermap-dpi" title="">
+            <select tabindex="0" role="select" aria-label="DPI" id="m-printermap-dpi" title="DPI">
                 {{#each dpis}}
                     <option value="{{value}}" {{#if default}} selected{{/if}}>{{value}}</option>
                 {{/each}}

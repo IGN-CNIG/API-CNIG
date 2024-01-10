@@ -355,6 +355,7 @@ export default class LyrCompareControl extends M.Control {
         translations: {
           tooltip_vcurtain: getValue('tooltip_vcurtain'),
           tooltip_hcurtain: getValue('tooltip_hcurtain'),
+          tooltip_void: getValue('tooltip_void'),
           tooltip_multicurtain: getValue('tooltip_multicurtain'),
           tooltip_deactivatecurtain: getValue('tooltip_deactivatecurtain'),
           opacity: getValue('opacity'),

@@ -283,6 +283,42 @@ class Utils {
     return img;
   }
 
+  static addFacadeName(facadeName, olLayer) {
+    const ol3layer = olLayer;
+    if (isNullOrEmpty(facadeName) && !isNullOrEmpty(ol3layer.getSource()) &&
+        !isNullOrEmpty(ol3layer.getSource().getParams) &&
+        !isNullOrEmpty(ol3layer.getSource().getParams().LAYERS)) {
+      return ol3layer.getSource().getParams().LAYERS;
+    } else if (isNullOrEmpty(facadeName) && !isNullOrEmpty(ol3layer.getSource()) &&
+        !isNullOrEmpty(ol3layer.getSource().getUrl) &&
+        !isNullOrEmpty(ol3layer.getSource().getUrl()) && typeof ol3layer.getSource().getUrl() !== 'function') {
+      const url = ol3layer.getSource().getUrl();
+      let result = null;
+      const typeName = url.split('&typeName=')[1];
+      if (!isNullOrEmpty(typeName)) {
+        result = typeName.split('&')[0].split(':');
+      }
+      if (!isNullOrEmpty(result)) {
+        return result[1];
+        // facadeLayer.namespace = result[0];
+      }
+      return generateRandom('layer_');
+    } else if (ol3layer.getSource().getLayer) {
+      return ol3layer.getSource().getLayer();
+    } else if (isNullOrEmpty(facadeName)) {
+      return generateRandom('layer_');
+    }
+    return facadeName;
+  }
+
+  static addFacadeLegend(olLayer) {
+    const ol3layer = olLayer;
+    if (ol3layer.getProperties() && ol3layer.getProperties().legend) {
+      return ol3layer.getProperties().legend;
+    }
+    return null;
+  }
+
   /**
     * Este método obtiene la altura de una extensión.
     *
@@ -378,7 +414,12 @@ class Utils {
     */
   static getFeaturesExtent(features, projectionCode) {
     const olFeatures = features.map(f => (f instanceof Feature ? f.getImpl().getOLFeature() : f));
-    let extents = olFeatures.map(feature => feature.getGeometry().getExtent().slice(0));
+    let extents = [];
+    olFeatures.forEach((feature) => {
+      if (feature.getGeometry()) {
+        extents.push(feature.getGeometry().getExtent().slice(0));
+      }
+    });
     if (extents.length === 1) {
       const geometry = olFeatures[0].getGeometry();
       if (geometry.getType() === 'Point') {

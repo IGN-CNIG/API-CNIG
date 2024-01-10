@@ -123,32 +123,6 @@ class KML extends LayerVector {
   }
 
   /**
-   * Devuelve el tipo de capa, KML.
-   * @function
-   * @getter
-   * @returns {M.LayerType.KML} Tipo de capa.
-   * @api
-   */
-  get type() {
-    return LayerType.KML;
-  }
-
-  /**
-   * Sobrescribe el tipo de la capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.KML)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.KML).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
-  }
-
-  /**
    * Devuelve el valor de la propiedad "extract". La propiedad "extract" tiene la
    * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
    *

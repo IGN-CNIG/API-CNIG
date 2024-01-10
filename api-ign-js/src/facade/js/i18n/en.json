@@ -10,6 +10,10 @@
     "scale": "Scale",
     "level": "Zoom level"
   },
+  "attributions": {
+    "attribution": "attribution",
+    "tooltip": "Recognitions"
+  },
   "getfeatureinfo": {
     "info": "Information",
     "title": "Consult layer",
@@ -145,6 +149,7 @@
     "layerswitcher_method": "The used implementation can not create LayerSwitcher controls",
     "location_method": "The used implementation can not create Location controls",
     "wms_method": "The used implementation can not create WMS layers",
+    "generic_method": "The used implementation can not create Generic layers",
     "wmts_method": "The used implementation can not create WMTS layers",
     "no_impl": "No implementation specified",
     "no_container": "You have not specified any container parameters",
@@ -164,6 +169,8 @@
     "mbtiles_method": "The used implementation can not create MBTiles layers",
     "no_source": "No source was specified.",
     "addmbtiles_method": "The implementation used does not have the method addMBTilesVector.",
-    "removembtiles_method": "The implementation used does not have the method removeMBTilesVector."
+    "removembtiles_method": "The implementation used does not have the method removeMBTilesVector.",
+    "browser_audio": "Your browser does not support the audio element",
+    "browser_video": "Your browser does not support the video element"
   }
 }

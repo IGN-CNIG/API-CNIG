@@ -6,34 +6,34 @@ import { getValue } from '../../../facade/js/i18n/language';
 
 export default class PrinterMapControl extends M.impl.Control {
   /**
-    * @classdesc
-    * Main constructor of the measure conrol.
-    *
-    * @constructor
-    * @extends {ol.control.Control}
-    * @api stable
-    */
+   * @classdesc
+   * Main constructor of the measure conrol.
+   *
+   * @constructor
+   * @extends {ol.control.Control}
+   * @api stable
+   */
   constructor(map) {
     super();
     /**
-      * Facade of the map
-      * @private
-      * @type {M.Map}
-      */
+     * Facade of the map
+     * @private
+     * @type {M.Map}
+     */
     this.facadeMap_ = map;
 
     this.errors = [];
   }
 
   /**
-    * This function adds the control to the specified map
-    *
-    * @public
-    * @function
-    * @param {M.Map} map to add the plugin
-    * @param {function} template template of this control
-    * @api stable
-    */
+   * This function adds the control to the specified map
+   *
+   * @public
+   * @function
+   * @param {M.Map} map to add the plugin
+   * @param {function} template template of this control
+   * @api stable
+   */
   addTo(map, element) {
     this.facadeMap_ = map;
 
@@ -45,19 +45,19 @@ export default class PrinterMapControl extends M.impl.Control {
   }
 
   /**
-    * This function encodes a layer.
-    *
-    * @public
-    * @function
-    * @param {Layer} layer to encode
-    * @api stable
-    */
+   * This function encodes a layer.
+   *
+   * @public
+   * @function
+   * @param {Layer} layer to encode
+   * @api stable
+   */
   getParametrizedLayers(paramName, layers) {
     let others = this.facadeMap_.getMapImpl().getLayers().getArray().filter((layer) => {
       return !M.utils.isNullOrEmpty(layer.getSource()) &&
-         // eslint-disable-next-line no-underscore-dangle
-         !M.utils.isNullOrEmpty(layer.getSource().params_) &&
-         layer.getSource().getParams()[paramName] !== undefined;
+        // eslint-disable-next-line no-underscore-dangle
+        !M.utils.isNullOrEmpty(layer.getSource().params_) &&
+        layer.getSource().getParams()[paramName] !== undefined;
     });
 
     others = others.filter((layer) => {
@@ -70,20 +70,23 @@ export default class PrinterMapControl extends M.impl.Control {
   }
 
   /**
-    * This function encodes a layer.
-    *
-    * @public
-    * @function
-    * @param {Layer} layer to encode
-    * @api stable
-    */
+   * This function encodes a layer.
+   *
+   * @public
+   * @function
+   * @param {Layer} layer to encode
+   * @api stable
+   */
   encodeLayer(layer) {
     return (new Promise((success, fail) => {
       try {
-        if (layer.type === M.layer.type.WMC) {
-          // none
-        } else if (layer.type === M.layer.type.KML) {
+        // eslint-disable-next-line no-underscore-dangle
+        if (layer.type === M.layer.type.KML && layer.getImpl().formater_.extractStyles_ !== false) {
           success(this.encodeKML(layer));
+        } else if (layer.type === M.layer.type.KML &&
+          // eslint-disable-next-line no-underscore-dangle
+          layer.getImpl().formater_.extractStyles_ === false) {
+          success(this.encodeWFS(layer));
         } else if (layer.type === M.layer.type.WMS) {
           success(this.encodeWMS(layer));
         } else if (layer.type === M.layer.type.WFS) {
@@ -99,13 +102,13 @@ export default class PrinterMapControl extends M.impl.Control {
           // eslint-disable-next-line no-underscore-dangle
         } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
           success(this.encodeImage(layer));
-        } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type)
-           > -1) {
+        } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type) >
+          -1) {
           success(this.encodeXYZ(layer));
         } else if (layer.type === M.layer.type.MVT) {
           success(this.encodeMVT(layer));
         } else if (layer.type === M.layer.type.MBTiles ||
-           layer.type === M.layer.type.MBTilesVector) {
+          layer.type === M.layer.type.MBTilesVector) {
           this.errors.push(layer.name);
           success('');
         } else {
@@ -119,14 +122,14 @@ export default class PrinterMapControl extends M.impl.Control {
   }
 
   /**
-    * This function adds the control to the specified map
-    *
-    * @public
-    * @function
-    * @param {M.Map} map to add the plugin
-    * @param {function} template template of this control
-    * @api stable
-    */
+   * This function adds the control to the specified map
+   *
+   * @public
+   * @function
+   * @param {M.Map} map to add the plugin
+   * @param {function} template template of this control
+   * @api stable
+   */
   encodeKML(layer) {
     let encodedLayer = null;
 
@@ -159,7 +162,10 @@ export default class PrinterMapControl extends M.impl.Control {
       if (!M.utils.isNullOrEmpty(styleFn)) {
         let featureStyle;
         try {
-          featureStyle = styleFn(feature, resolution)[0];
+          featureStyle = styleFn(feature, resolution);
+          if (Array.isArray(featureStyle)) {
+            featureStyle = featureStyle[0];
+          }
         } catch (e) {
           featureStyle = styleFn.call(feature, resolution)[0];
         }
@@ -187,7 +193,7 @@ export default class PrinterMapControl extends M.impl.Control {
             graphicHeight: imgSize[0],
             graphicWidth: imgSize[1],
             graphicOpacity: img.getOpacity(),
-            strokeWidth: stroke.getWidth(),
+            strokeWidth: stroke ? stroke.getWidth() : undefined,
             type: parseType,
           };
           const text = (featureStyle.getText && featureStyle.getText());
@@ -216,8 +222,8 @@ export default class PrinterMapControl extends M.impl.Control {
 
           nameFeature = `draw${index}`;
 
-          if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) ||
-             !M.utils.isNullOrEmpty(text)) {
+          if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) &&
+            !M.utils.isNullOrEmpty(text)) {
             const styleStr = JSON.stringify(styleGeom);
             const styleTextStr = JSON.stringify(styleText);
             let styleName = stylesNames[styleStr];
@@ -227,7 +233,7 @@ export default class PrinterMapControl extends M.impl.Control {
               const symbolizers = [];
               let flag = 0;
               if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) &&
-                 M.utils.isUndefined(styleName)) {
+                M.utils.isUndefined(styleName)) {
                 styleName = indexGeom;
                 stylesNames[styleStr] = styleName;
                 flag = 1;
@@ -303,13 +309,13 @@ export default class PrinterMapControl extends M.impl.Control {
   }
 
   /**
-    * This function encodes a WMS layer.
-    *
-    * @public
-    * @function
-    * @param {M.layer.WMS} layer to encode
-    * @api stable
-    */
+   * This function encodes a WMS layer.
+   *
+   * @public
+   * @function
+   * @param {M.layer.WMS} layer to encode
+   * @api stable
+   */
   encodeWMS(layer) {
     let encodedLayer = null;
     const olLayer = layer.getImpl().getOL3Layer();
@@ -371,13 +377,13 @@ export default class PrinterMapControl extends M.impl.Control {
   }
 
   /**
-    * This function encodes a OL Image layer.
-    *
-    * @public
-    * @function
-    * @param {IMAGE} layer to encode
-    * @api stable
-    */
+   * This function encodes a OL Image layer.
+   *
+   * @public
+   * @function
+   * @param {IMAGE} layer to encode
+   * @api stable
+   */
   encodeImage(layer) {
     let encodedLayer = null;
     const olLayer = layer;
@@ -458,14 +464,14 @@ export default class PrinterMapControl extends M.impl.Control {
 
       if (featureStyle instanceof Function) {
         featureStyle =
-           featureStyle.call(featureStyle, feature.getImpl().getOLFeature(), resolution);
+          featureStyle.call(featureStyle, feature.getImpl().getOLFeature(), resolution);
       }
 
       if (featureStyle instanceof Array) {
         // SRC style has priority
         if (featureStyle.length > 1) {
           featureStyle = (!M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
-               featureStyle[1].getImage().getSrc) ?
+              featureStyle[1].getImage().getSrc) ?
             featureStyle[1] : featureStyle[0];
         } else {
           featureStyle = featureStyle[0];
@@ -500,7 +506,7 @@ export default class PrinterMapControl extends M.impl.Control {
 
         let styleText;
         const lineDash = (featureStyle.getStroke() !== null &&
-             featureStyle.getStroke() !== undefined) ?
+            featureStyle.getStroke() !== undefined) ?
           featureStyle.getStroke().getLineDash() : undefined;
         const styleGeom = {
           type: parseType,
@@ -635,7 +641,7 @@ export default class PrinterMapControl extends M.impl.Control {
         nameFeature = `draw${index}`;
         const extent = geometry.getExtent();
         if ((!M.utils.isNullOrEmpty(geometry) && ol.extent.intersects(bbox, extent)) ||
-           !M.utils.isNullOrEmpty(text)) {
+          !M.utils.isNullOrEmpty(text)) {
           const styleStr = JSON.stringify(styleGeom);
           const styleTextStr = JSON.stringify(styleText);
           let styleName = stylesNames[styleStr];
@@ -645,7 +651,7 @@ export default class PrinterMapControl extends M.impl.Control {
             const symbolizers = [];
             let flag = 0;
             if (!M.utils.isNullOrEmpty(geometry) && ol.extent.intersects(bbox, extent) &&
-               M.utils.isUndefined(styleName)) {
+              M.utils.isUndefined(styleName)) {
               styleName = indexGeom;
               stylesNames[styleStr] = styleName;
               flag = 1;
@@ -682,7 +688,7 @@ export default class PrinterMapControl extends M.impl.Control {
 
           let coordinates = geometry.getFlatCoordinates();
           coordinates =
-             this.inflateCoordinatesArray(parseType, coordinates.slice(), 0, geometry.getEnds(), 2);
+            this.inflateCoordinatesArray(parseType, coordinates.slice(), 0, geometry.getEnds(), 2);
           if (coordinates.length > 0) {
             const geoJSONFeature = {
               id: feature.getId(),
@@ -741,14 +747,14 @@ export default class PrinterMapControl extends M.impl.Control {
   }
 
   /**
-    * This function adds the control to the specified map
-    *
-    * @public
-    * @function
-    * @param {M.Map} map to add the plugin
-    * @param {function} template template of this control
-    * @api stable
-    */
+   * This function adds the control to the specified map
+   *
+   * @public
+   * @function
+   * @param {M.Map} map to add the plugin
+   * @param {function} template template of this control
+   * @api stable
+   */
   encodeWFS(layer) {
     let encodedLayer = null;
     const olLayer = layer.getImpl().getOL3Layer();
@@ -844,11 +850,11 @@ export default class PrinterMapControl extends M.impl.Control {
       // SRC style has priority
       if (featureStyle.length > 1) {
         styleIcon = !M.utils.isNullOrEmpty(featureStyle[1]) &&
-           !M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
-           featureStyle[1].getImage().getGlyph ?
+          !M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
+          featureStyle[1].getImage().getGlyph ?
           featureStyle[1].getImage() : null;
         featureStyle = (!M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
-             featureStyle[1].getImage().getSrc) ?
+            featureStyle[1].getImage().getSrc) ?
           featureStyle[1] : featureStyle[0];
       } else {
         featureStyle = featureStyle[0];
@@ -883,7 +889,7 @@ export default class PrinterMapControl extends M.impl.Control {
 
       let styleText;
       const lineDash = (featureStyle.getStroke() !== null &&
-           featureStyle.getStroke() !== undefined) ?
+          featureStyle.getStroke() !== undefined) ?
         featureStyle.getStroke().getLineDash() : undefined;
       const styleGeom = {
         type: parseType,
@@ -936,7 +942,7 @@ export default class PrinterMapControl extends M.impl.Control {
       }
 
       const imageIcon = !M.utils.isNullOrEmpty(styleIcon) &&
-         styleIcon.getImage ? styleIcon.getImage() : null;
+        styleIcon.getImage ? styleIcon.getImage() : null;
       if (!M.utils.isNullOrEmpty(imageIcon)) {
         if (styleIcon.getRadius && styleIcon.getRadius()) {
           styleGeom.pointRadius = styleIcon.getRadius && styleIcon.getRadius();
@@ -1031,7 +1037,7 @@ export default class PrinterMapControl extends M.impl.Control {
 
       nameFeature = `draw${index}`;
       if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) ||
-         !M.utils.isNullOrEmpty(text)) {
+        !M.utils.isNullOrEmpty(text)) {
         const styleStr = JSON.stringify(styleGeom);
         const styleTextStr = JSON.stringify(styleText);
         let styleName = stylesNames[styleStr];
@@ -1040,7 +1046,7 @@ export default class PrinterMapControl extends M.impl.Control {
           const symbolizers = [];
           let flag = 0;
           if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) &&
-             M.utils.isUndefined(styleName)) {
+            M.utils.isUndefined(styleName)) {
             styleName = indexGeom;
             // eslint-disable-next-line no-param-reassign
             stylesNames[styleStr] = styleName;
@@ -1150,7 +1156,7 @@ export default class PrinterMapControl extends M.impl.Control {
           if (M.utils.isUndefined(styleName)) {
             const symbolizers = [];
             if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) &&
-               M.utils.isUndefined(styleName)) {
+              M.utils.isUndefined(styleName)) {
               styleName = indexGeom;
               stylesNames[styleStr] = styleName;
               symbolizers.push(styleStr);
@@ -1200,14 +1206,14 @@ export default class PrinterMapControl extends M.impl.Control {
   }
 
   /**
-    * This function
-    *
-    * @public
-    * @function
-    * @param {M.Map} map to add the plugin
-    * @param {function} template template of this control
-    * @api stable
-    */
+   * This function
+   *
+   * @public
+   * @function
+   * @param {M.Map} map to add the plugin
+   * @param {function} template template of this control
+   * @api stable
+   */
   encodeWMTS(layer) {
     const layerImpl = layer.getImpl();
     const olLayer = layerImpl.getOL3Layer();
@@ -1220,8 +1226,8 @@ export default class PrinterMapControl extends M.impl.Control {
     const matrixSet = layer.matrixSet;
 
     /**
-      * @see http: //www.mapfish.org/doc/print/protocol.html#layers-params
-      */
+     * @see http: //www.mapfish.org/doc/print/protocol.html#layers-params
+     */
     return layer.getImpl().getCapabilities().then((capabilities) => {
       const matrixIdsObj = capabilities.Contents.TileMatrixSet.filter((tileMatrixSet) => {
         return (tileMatrixSet.Identifier === matrixSet);
@@ -1256,13 +1262,13 @@ export default class PrinterMapControl extends M.impl.Control {
   }
 
   /**
-    * This function reprojects map on selected SRS.
-    *
-    * @function
-    * @param {string} origin - EPSG:25830
-    * @param {array<number>} coordinates pair
-    * @api
-    */
+   * This function reprojects map on selected SRS.
+   *
+   * @function
+   * @param {string} origin - EPSG:25830
+   * @param {array<number>} coordinates pair
+   * @api
+   */
   reproject(origin, coordinates) {
     const originProj = ol.proj.get(origin);
     const destProj = ol.proj.get('EPSG:4326');
@@ -1275,13 +1281,13 @@ export default class PrinterMapControl extends M.impl.Control {
   }
 
   /**
-    * This function destroys this control, clearing the HTML
-    * and unregistering all events
-    *
-    * @public
-    * @function
-    * @api stable
-    */
+   * This function destroys this control, clearing the HTML
+   * and unregistering all events
+   *
+   * @public
+   * @function
+   * @api stable
+   */
   destroy() {
     this.facadeMap_.getMapImpl().removeControl(this);
     this.facadeMap_ = null;

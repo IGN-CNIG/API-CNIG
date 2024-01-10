@@ -7,6 +7,7 @@ import Vector from './Vector';
 import { isUndefined, isNullOrEmpty, normalize, isString } from '../util/Utils';
 import Exception from '../exception/exception';
 import { MVT as MVTType } from './Type';
+import * as parameter from '../parameter/parameter';
 
 /**
  * Posibles modos para la capa MVT.
@@ -73,8 +74,14 @@ class MVT extends Vector {
    * @api
    */
   constructor(parameters = {}, options = {}, vendorOptions = {}, implParam) {
-    const impl = implParam || new MVTTileImpl(parameters, options, vendorOptions);
-    super(parameters, options, vendorOptions, impl);
+    let opts = parameter.layer(parameters, MVTType);
+
+    if (typeof parameters !== 'string') {
+      opts = { ...opts, ...parameters };
+    }
+
+    const impl = implParam || new MVTTileImpl(opts, options, vendorOptions);
+    super(opts, options, vendorOptions, impl);
 
     if (isUndefined(MVTTileImpl)) {
       Exception('La implementación usada no puede crear capas Vector');
@@ -84,35 +91,7 @@ class MVT extends Vector {
      * extract: Optional Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */
-    this.extract = parameters.extract;
-  }
-
-
-  /**
-   * Devuelve el tipo de capa, MVT.
-   *
-   * @function
-   * @getter
-   * @return {M.LayerType.MVT} Tipo MVT.
-   * @api
-   */
-  get type() {
-    return MVTType;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== MVTType)) {
-      Exception('El tipo de capa debe ser \''.concat(MVTType).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
+    this.extract = opts.extract;
   }
 
   /**
@@ -143,35 +122,6 @@ class MVT extends Vector {
     } else {
       this.getImpl().extract = false;
     }
-  }
-
-  /**
-   * Este método calcula la extensión máxima de esta capa.
-   *
-   * @function
-   * @returns {M.layer.MVT.maxExtent} maxExtent.
-   * @api
-   */
-  getMaxExtent() {
-    let maxExtent = this.userMaxExtent;
-    if (isNullOrEmpty(maxExtent)) {
-      maxExtent = this.map_.userMaxExtent;
-      if (isNullOrEmpty(maxExtent)) {
-        maxExtent = this.map_.getProjection().getExtent();
-      }
-    }
-    return maxExtent;
-  }
-
-  /**
-   * Este método calcula la extensión máxima de esta capa, devuelve una promesa.
-   *
-   * @function
-   * @returns {M.layer.MVT.maxExtent} Promesa, maxExtent.
-   * @api
-   */
-  calculateMaxExtent() {
-    return new Promise(resolve => resolve(this.getMaxExtent()));
   }
 
   /**

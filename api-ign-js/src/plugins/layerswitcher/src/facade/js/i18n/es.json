@@ -31,7 +31,7 @@
   "url_service": "Incluir URL del servicio a cargar",
   "query": "Consultar",
   "loaded_services": "Capas de información geográfica",
-  "codsi_services": "Catálogo de Servicios INSPIRE (CODSI)",
+  "codsi_services": "Catálogo de Servicios",
   "clean": "Limpiar búsqueda",
   "availables": "Listado de algunas capas disponibles",
   "title": "Título",
@@ -52,6 +52,11 @@
   "online_resources": "Recursos online",
   "show_service_info": "Mostrar información del servicio",
   "hide_service_info": "Ocultar información del servicio",
+  "hide_service": "Ocultar servicio",
+  "show_service": "Mostrar servicio",
+  "show_all_services": "Mostrar todos los servicios",
+  "hide_all_services": "Ocultar todos los servicios",
+  "type_service": "Tipo de servicio",
   "filter_results": "Filtrar resultados",
   "clean_filter": "Limpiar filtro",
   "filter_text": "Texto a buscar",
@@ -95,5 +100,8 @@
   "description": "Descripción",
   "minzoom": "Zoom mínimo",
   "maxzoom": "Zoom máximo",
-  "center": "Centro"
+  "center": "Centro",
+  "addAllLayers": "Añadir todos los servicios",
+  "previous": "Anterior",
+  "next": "Siguiente"
 }

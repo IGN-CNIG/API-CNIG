@@ -14,159 +14,159 @@ import en from './i18n/en';
 // Estas capas hacen referencia a la estructura de iberpix
 const PRECHARGED = {
   groups: [{
-      name: 'Cartografía',
-      services: [{
-          name: 'Mapas',
-          type: 'WMTS',
-          url: 'https://www.ign.es/wmts/mapa-raster?',
-        },
-        {
-          name: 'Callejero ',
-          type: 'WMTS',
-          url: 'https://www.ign.es/wmts/ign-base?',
-        },
-        {
-          name: 'Primera edición MTN y Minutas de 1910-1970',
-          type: 'WMTS',
-          url: 'https://www.ign.es/wmts/primera-edicion-mtn?',
-        },
-        {
-          name: 'Planimetrías (1870 y 1950)',
-          type: 'WMS',
-          url: 'https://www.ign.es/wms/minutas-cartograficas?',
-        },
-        {
-          name: 'Planos de Madrid (1622 - 1960)',
-          type: 'WMTS',
-          url: 'https://www.ign.es/wmts/planos?',
-        },
-        {
-          name: 'Hojas kilométricas (Madrid - 1860)',
-          type: 'WMS',
-          url: 'https://www.ign.es/wms/hojas-kilometricas?',
-        },
-        {
-          name: 'Cuadrículas Mapa Topográfico Nacional',
-          type: 'WMS',
-          url: 'https://www.ign.es/wms-inspire/cuadriculas?',
-        },
+    name: 'Cartografía',
+    services: [{
+      name: 'Mapas',
+      type: 'WMTS',
+      url: 'https://www.ign.es/wmts/mapa-raster?',
+    },
+    {
+      name: 'Callejero ',
+      type: 'WMTS',
+      url: 'https://www.ign.es/wmts/ign-base?',
+    },
+    {
+      name: 'Primera edición MTN y Minutas de 1910-1970',
+      type: 'WMTS',
+      url: 'https://www.ign.es/wmts/primera-edicion-mtn?',
+    },
+    {
+      name: 'Planimetrías (1870 y 1950)',
+      type: 'WMS',
+      url: 'https://www.ign.es/wms/minutas-cartograficas?',
+    },
+    {
+      name: 'Planos de Madrid (1622 - 1960)',
+      type: 'WMTS',
+      url: 'https://www.ign.es/wmts/planos?',
+    },
+    {
+      name: 'Hojas kilométricas (Madrid - 1860)',
+      type: 'WMS',
+      url: 'https://www.ign.es/wms/hojas-kilometricas?',
+    },
+    {
+      name: 'Cuadrículas Mapa Topográfico Nacional',
+      type: 'WMS',
+      url: 'https://www.ign.es/wms-inspire/cuadriculas?',
+    },
 
-      ],
+    ],
+  },
+  {
+    name: 'Imágenes',
+    services: [{
+      name: 'Ortofotos máxima actualidad PNOA',
+      type: 'WMTS',
+      url: 'https://www.ign.es/wmts/pnoa-ma?',
     },
     {
-      name: 'Imágenes',
-      services: [{
-          name: 'Ortofotos máxima actualidad PNOA',
-          type: 'WMTS',
-          url: 'https://www.ign.es/wmts/pnoa-ma?',
-        },
-        {
-          name: 'Ortofotos históricas y PNOA anual',
-          type: 'WMS',
-          url: 'https://www.ign.es/wms/pnoa-historico?',
-        },
-        {
-          name: 'Ortofotos provisionales PNOA',
-          type: 'WMS',
-          url: 'https://wms-pnoa.idee.es/pnoa-provisionales?',
-        },
-        {
-          name: 'Mosaicos de satélite',
-          type: 'WMS',
-          url: 'https://wms-satelites-historicos.idee.es/satelites-historicos?',
-        },
-        {
-          name: 'Fototeca (Consulta de fotogramas históricos y PNOA)',
-          type: 'WMS',
-          url: 'https://wms-fototeca.idee.es/fototeca?',
-        },
-      ],
+      name: 'Ortofotos históricas y PNOA anual',
+      type: 'WMS',
+      url: 'https://www.ign.es/wms/pnoa-historico?',
     },
     {
-      name: 'Información geográfica de referencia y temática',
-      services: [{
-          name: 'Catastro ',
-          type: 'WMS',
-          url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
-        },
-        {
-          name: 'Unidades administrativas',
-          type: 'WMS',
-          url: ' https://www.ign.es/wms-inspire/unidades-administrativas?',
-        },
-        {
-          name: 'Nombres geográficos (Nomenclátor Geográfico Básico NGBE)',
-          type: 'WMS',
-          url: 'https://www.ign.es/wms-inspire/ngbe?',
-        },
-        {
-          name: 'Redes de transporte',
-          type: 'WMS',
-          url: 'https://servicios.idee.es/wms-inspire/transportes?',
-        },
-        {
-          name: 'Hidrografía ',
-          type: 'WMS',
-          url: 'https://servicios.idee.es/wms-inspire/hidrografia?',
-        },
-        {
-          name: 'Direcciones y códigos postales',
-          type: 'WMS',
-          url: 'https://www.cartociudad.es/wms-inspire/direcciones-ccpp?',
-        },
-        {
-          name: 'Ocupación del suelo (Corine y SIOSE)',
-          type: 'WMTS',
-          url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
-        },
-        {
-          name: 'Ocupación del suelo Histórico (Corine y SIOSE)',
-          type: 'WMS',
-          url: 'https://servicios.idee.es/wms-inspire/ocupacion-suelo-historico?',
-        },
-        {
-          name: 'Copernicus Land Monitoring Service',
-          type: 'WMS',
-          url: 'https://servicios.idee.es/wms/copernicus-landservice-spain?',
-        },
-        {
-          name: 'Información sísmica (terremotos)',
-          type: 'WMS',
-          url: 'https://www.ign.es/wms-inspire/geofisica?',
-        },
-        {
-          name: 'Red de vigilancia volcánica',
-          type: 'WMS',
-          url: 'https://wms-volcanologia.ign.es/volcanologia?',
-        },
-        {
-          name: 'Redes geodésicas',
-          type: 'WMS',
-          url: 'https://www.ign.es/wms-inspire/redes-geodesicas?',
-        },
-      ],
+      name: 'Ortofotos provisionales PNOA',
+      type: 'WMS',
+      url: 'https://wms-pnoa.idee.es/pnoa-provisionales?',
     },
     {
-      name: 'Modelos digitales de elevaciones',
-      services: [{
-          name: 'Modelo Digital de Superficies (Sombreado superficies y consulta de elevaciones edificios y vegetación)',
-          type: 'WMTS',
-          url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-        },
-        {
-          name: 'Modelo Digital del Terreno (Sombreado terreno y consulta de altitudes)',
-          type: 'WMTS',
-          url: 'https://servicios.idee.es/wmts/mdt?',
-          white_list: ['EL.ElevationGridCoverage'],
-        },
-        {
-          name: 'Curvas de nivel y puntos acotados',
-          type: 'WMS',
-          url: 'https://servicios.idee.es/wms-inspire/mdt?',
-          white_list: ['EL.ContourLine', 'EL.SpotElevation'],
-        },
-      ],
+      name: 'Mosaicos de satélite',
+      type: 'WMS',
+      url: 'https://wms-satelites-historicos.idee.es/satelites-historicos?',
     },
+    {
+      name: 'Fototeca (Consulta de fotogramas históricos y PNOA)',
+      type: 'WMS',
+      url: 'https://wms-fototeca.idee.es/fototeca?',
+    },
+    ],
+  },
+  {
+    name: 'Información geográfica de referencia y temática',
+    services: [{
+      name: 'Catastro ',
+      type: 'WMS',
+      url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
+    },
+    {
+      name: 'Unidades administrativas',
+      type: 'WMS',
+      url: ' https://www.ign.es/wms-inspire/unidades-administrativas?',
+    },
+    {
+      name: 'Nombres geográficos (Nomenclátor Geográfico Básico NGBE)',
+      type: 'WMS',
+      url: 'https://www.ign.es/wms-inspire/ngbe?',
+    },
+    {
+      name: 'Redes de transporte',
+      type: 'WMS',
+      url: 'https://servicios.idee.es/wms-inspire/transportes?',
+    },
+    {
+      name: 'Hidrografía ',
+      type: 'WMS',
+      url: 'https://servicios.idee.es/wms-inspire/hidrografia?',
+    },
+    {
+      name: 'Direcciones y códigos postales',
+      type: 'WMS',
+      url: 'https://www.cartociudad.es/wms-inspire/direcciones-ccpp?',
+    },
+    {
+      name: 'Ocupación del suelo (Corine y SIOSE)',
+      type: 'WMTS',
+      url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
+    },
+    {
+      name: 'Ocupación del suelo Histórico (Corine y SIOSE)',
+      type: 'WMS',
+      url: 'https://servicios.idee.es/wms-inspire/ocupacion-suelo-historico?',
+    },
+    {
+      name: 'Copernicus Land Monitoring Service',
+      type: 'WMS',
+      url: 'https://servicios.idee.es/wms/copernicus-landservice-spain?',
+    },
+    {
+      name: 'Información sísmica (terremotos)',
+      type: 'WMS',
+      url: 'https://www.ign.es/wms-inspire/geofisica?',
+    },
+    {
+      name: 'Red de vigilancia volcánica',
+      type: 'WMS',
+      url: 'https://wms-volcanologia.ign.es/volcanologia?',
+    },
+    {
+      name: 'Redes geodésicas',
+      type: 'WMS',
+      url: 'https://www.ign.es/wms-inspire/redes-geodesicas?',
+    },
+    ],
+  },
+  {
+    name: 'Modelos digitales de elevaciones',
+    services: [{
+      name: 'Modelo Digital de Superficies (Sombreado superficies y consulta de elevaciones edificios y vegetación)',
+      type: 'WMTS',
+      url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+    },
+    {
+      name: 'Modelo Digital del Terreno (Sombreado terreno y consulta de altitudes)',
+      type: 'WMTS',
+      url: 'https://servicios.idee.es/wmts/mdt?',
+      white_list: ['EL.ElevationGridCoverage'],
+    },
+    {
+      name: 'Curvas de nivel y puntos acotados',
+      type: 'WMS',
+      url: 'https://servicios.idee.es/wms-inspire/mdt?',
+      white_list: ['EL.ContourLine', 'EL.SpotElevation'],
+    },
+    ],
+  },
 
   ],
 };
@@ -227,8 +227,8 @@ export default class Layerswitcher extends M.Plugin {
       this.https = false;
     }
 
-    // codsi
-    this.codsi = options.codsi || false;
+    // showCatalog
+    this.showCatalog = options.showCatalog || false;
 
     // use proxy
     this.useProxy = M.utils.isUndefined(options.useProxy) ? true : options.useProxy;
@@ -238,6 +238,9 @@ export default class Layerswitcher extends M.Plugin {
 
     // Indicates order to the plugin
     this.order = options.order >= -1 ? options.order : null;
+
+    // Añadir attributions
+    this.useAttributions = options.useAttributions || false;
   }
 
   // Devuelve el idioma del plugin
@@ -251,8 +254,22 @@ export default class Layerswitcher extends M.Plugin {
   // Esta función añade el plugin al mapa
   addTo(map) {
     this.map_ = map;
+
+    // creamos panel
+    const panel = new M.ui.Panel('Layerswitcher', {
+      className: 'm-plugin-layerswitcher',
+      collapsed: this.collapsed_,
+      collapsible: this.collapsible_,
+      position: M.ui.position[this.position_],
+      collapsedButtonClass: 'm-layerswitcher-icons-layers',
+      tooltip: this.tooltip_,
+      order: this.order,
+    });
+
+    this.panel_ = panel;
+
     // creamos control
-    this.control_ =
+    const control =
       new LayerswitcherControl({
         isDraggable: this.isDraggable,
         modeSelectLayers: this.modeSelectLayers,
@@ -262,21 +279,14 @@ export default class Layerswitcher extends M.Plugin {
         precharged: this.precharged,
         http: this.http,
         https: this.https,
-        codsi: this.codsi,
+        showCatalog: this.showCatalog,
         order: this.order,
         useProxy: this.useProxy,
         statusProxy: this.statusProxy,
+        useAttributions: this.useAttributions,
       });
-    // creamos panel
-    this.panel_ = new M.ui.Panel('Layerswitcher', {
-      className: 'm-plugin-layerswitcher',
-      collapsed: this.collapsed_,
-      collapsible: this.collapsible_,
-      position: M.ui.position[this.position_],
-      collapsedButtonClass: 'm-layerswitcher-icons-layers',
-      tooltip: this.tooltip_,
-      order: this.order,
-    });
+    this.control_ = control;
+
     this.controls_.push(this.control_);
 
     // se dispara evento cuando se añade al mapa
@@ -286,6 +296,8 @@ export default class Layerswitcher extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     this.map_.addPanels(this.panel_);
+
+    control.addEventPanel(panel);
   }
 
   // Esta función devuelve la posición del plugin
@@ -305,7 +317,7 @@ export default class Layerswitcher extends M.Plugin {
 
   // Devuelve la cadena API-REST del plugin
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${this.isMoveLayers}*${this.modeSelectLayers}*${this.tools}*${this.http}*${this.https}*${this.codsi}*${this.useProxy}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${this.isMoveLayers}*${this.modeSelectLayers}*${this.tools}*${this.http}*${this.https}*${this.showCatalog}*${this.useProxy}`;
   }
 
   // Devuelve la cadena API-REST del plugin en base64
@@ -318,10 +330,14 @@ export default class Layerswitcher extends M.Plugin {
     return this.metadata_;
   }
 
+  getPanel() {
+    return this.panel_;
+  }
+
   // Esta función elimina el plugin del mapa
   destroy() {
-    this.map_.removeControls([this.control_]);
-    [this.control_, this.controls_, this.panel_] = [null, null, null];
+    this.map_.removeControls(this.controls_);
+    [this.control_] = [null];
   }
 
   // Esta función devuelve si el plugin recibido por parámetro es instancia de Layerswitcher

@@ -18,7 +18,7 @@ import { getValue } from '../i18n/language';
  * el árbol de contenidos, si lo hay.
  * @property {Boolean} transparent Falso si es una capa base, verdadero en caso contrario.
  * @property {Object} options Opciones OSM.
- *
+ * @property {Boolean} isbase Define si la capa es base.
  * @api
  * @extends {M.Layer}
  */
@@ -36,6 +36,7 @@ class OSM extends LayerBase {
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - isBase: Indica si la capa es base.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán
    * a la implementación de la capa.
    * - visibility: Define si la capa es visible o no.
@@ -78,14 +79,9 @@ class OSM extends LayerBase {
 
     // This layer is of parameters.
     const parameters = parameter.layer(userParameters, LayerType.OSM);
-
-    let isBaseParam = !!userParameters.isBase;
-
     if (isNullOrEmpty(parameters.name)) {
       parameters.name = 'osm';
-      isBaseParam = true;
     }
-
 
     // Calls the super constructor.
     super(parameters, impl);
@@ -109,38 +105,10 @@ class OSM extends LayerBase {
      */
     this.transparent = parameters.transparent;
 
-    this.isBase = (parameters.transparent === undefined)
-      ? isBaseParam
-      : !parameters.transparent;
-
     /**
      * OSM options. Opciones OSM.
      */
     this.options = options;
-  }
-
-  /**
-   * Devuelve el valor de la propiedad "transparent".
-   * @function
-   * @return {M.layer.OSM.impl.transparent} Valor de "transparent".
-   * @api
-   */
-  get transparent() {
-    return this.getImpl().transparent;
-  }
-
-  /**
-   * Sobrescribe el valor de la propiedad "transparent".
-   * @function
-   * @param {Boolean} newTransparent Nuevo valor de "transparent".
-   * @api
-   */
-  set transparent(newTransparent) {
-    if (!isNullOrEmpty(newTransparent)) {
-      this.getImpl().transparent = newTransparent;
-    } else {
-      this.getImpl().transparent = false;
-    }
   }
 
   /**

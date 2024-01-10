@@ -62,7 +62,7 @@
         <label for="inputTooltip">Tooltip</label>
         <input type="text" name="tooltip" id="inputTooltip">
         <label for="inputTools">Herramientas</label>
-        <input type="text" name="tools" id="inputTools">
+        <input type="text" name="tools" id="inputTools" value="transparency, zoom, legend, information, style, delete">
         <label for="isDraggable">isDraggable</label>
         <select name="draggableValue" id="isDraggable">
             <option value=true>true</option>
@@ -90,8 +90,8 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
-        <label for="isCodsi">isCodsi</label>
-        <select name="isCodsiValue" id="isCodsi">
+        <label for="isShowCatalog">isShowCatalog</label>
+        <select name="isShowCatalogValue" id="isShowCatalog">
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
@@ -127,9 +127,11 @@
             container: 'mapjs',
             zoom: 5,
             maxZoom: 20,
-            minZoom: 4,
+            minZoom: 2,
             center: [-467062.8225, 4783459.6216],
         });
+
+        let mp = null;
 
         let mp2 = new M.plugin.ShareMap({
             baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
@@ -157,9 +159,6 @@
         map.addLayers(capaOGCAPIFeatures);
         map.addLayers(capaWMS);
 
-        let mp, position, collapsed, collapsible, tooltip, tools;
-        crearPlugin(position, collapsed, collapsible, tooltip, tools);
-
         const selectPosition = document.getElementById("selectPosition");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
@@ -171,7 +170,7 @@
         const inputPrecharged = document.getElementById("inputPrecharged");
         const selectHttp = document.getElementById("isHttp");
         const selectHttps = document.getElementById("isHttps");
-        const selectCodsi = document.getElementById("isCodsi");
+        const selectShowCatalog = document.getElementById("isShowCatalog");
         const selectProxy = document.getElementById("selectProxy");
 
         const botonEliminar = document.getElementById("botonEliminar");
@@ -187,7 +186,7 @@
         inputPrecharged.addEventListener('change', cambiarTest);
         selectHttp.addEventListener('change', cambiarTest);
         selectHttps.addEventListener('change', cambiarTest);
-        selectCodsi.addEventListener('change', cambiarTest);
+        selectShowCatalog.addEventListener('change', cambiarTest);
         selectProxy.addEventListener('change', cambiarTest);
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
@@ -200,16 +199,18 @@
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             inputTooltip.value !== "" ? objeto.tooltip = inputTooltip.value : objeto.tooltip = "";
-            inputTools.value !== "" ? objeto.tools = inputTools.value : objeto.tools = [];
+            inputTools.value !== "" ? objeto.tools = inputTools.value.split(', ') : objeto.tools = [];
             objeto.isDraggable = (selectDraggable.options[selectDraggable.selectedIndex].value == 'true');
             objeto.isMoveLayers = (selectMoveLayer.options[selectMoveLayer.selectedIndex].value == 'true');
             objeto.modeSelectLayers = selectModeSelectLayers.options[selectModeSelectLayers.selectedIndex].value;
             inputPrecharged.value !== "" ? objeto.precharged = inputPrecharged.value : objeto.precharged = "";
             objeto.http = (selectHttp.options[selectHttp.selectedIndex].value == 'true');
             objeto.https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
-            objeto.codsi = (selectCodsi.options[selectCodsi.selectedIndex].value == 'true');
+            objeto.showCatalog = (selectShowCatalog.options[selectShowCatalog.selectedIndex].value == 'true');
             objeto.useProxy = (selectProxy.options[selectProxy.selectedIndex].value == 'true');
-            map.removePlugins(mp);
+            if (mp !== null) {
+                map.removePlugins(mp);
+            }
             crearPlugin(objeto);
         }
 
@@ -217,6 +218,8 @@
             mp = new M.plugin.Layerswitcher(propiedades);
             map.addPlugin(mp);
         }
+
+        cambiarTest();
     </script>
 </body>
 
