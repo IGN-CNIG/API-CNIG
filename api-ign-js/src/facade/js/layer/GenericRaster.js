@@ -90,6 +90,8 @@ class GenericRaster extends LayerBase {
       Exception(getValue('exception').generic_method);
     }
 
+    opts.userMaxExtent = params.maxExtent || opts.userMaxExtent;
+
     const impl = new GenericRasterImpl(opts, vendorOptions, 'raster');
 
     // calls the super constructor
