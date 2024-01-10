@@ -2,6 +2,7 @@
  * @module M/layer/GenericRaster
  */
 import GenericRasterImpl from 'impl/layer/GenericRaster';
+import Utils from 'impl/util/Utils';
 import {
   isNullOrEmpty,
   isUndefined,
@@ -12,6 +13,9 @@ import {
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
 import { getValue } from '../i18n/language';
+import * as parameter from '../parameter/parameter';
+
+import * as LayerType from './Type';
 
 /**
  * @classdesc
@@ -64,14 +68,27 @@ class GenericRaster extends LayerBase {
    * @api
    */
   constructor(userParameters, options, vendorOptions = {}) {
-    const params = { ...userParameters, ...options };
+    let params = {};
+    const opts = options;
+
+    if (typeof userParameters === 'string') {
+      params = parameter.layer(userParameters, LayerType.GenericRaster);
+    } else if (!isNullOrEmpty(userParameters)) {
+      params.type = LayerType.GenericRaster;
+    }
+
+    if (vendorOptions) {
+      opts.name = Utils.addFacadeName(params.name, vendorOptions);
+      params.name = params.name || opts.name;
+      opts.legend = opts.legend || Utils.addFacadeLegend(vendorOptions);
+    }
 
     // checks if the implementation can create Generic layers
     if (isUndefined(GenericRasterImpl)) {
       Exception(getValue('exception').generic_method);
     }
 
-    const impl = new GenericRasterImpl(options, vendorOptions, 'raster');
+    const impl = new GenericRasterImpl(opts, vendorOptions, 'raster');
 
     // calls the super constructor
     super(params, impl);
