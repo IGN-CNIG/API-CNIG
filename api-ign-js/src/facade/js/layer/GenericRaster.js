@@ -80,7 +80,9 @@ class GenericRaster extends LayerBase {
     if (vendorOptions) {
       opts.name = Utils.addFacadeName(params.name, vendorOptions);
       params.name = params.name || opts.name;
-      opts.legend = opts.legend || Utils.addFacadeLegend(vendorOptions);
+
+      opts.legend = Utils.addFacadeLegend(vendorOptions) || params.name;
+      params.legend = params.legend || opts.legend;
     }
 
     // checks if the implementation can create Generic layers
@@ -92,6 +94,8 @@ class GenericRaster extends LayerBase {
 
     // calls the super constructor
     super(params, impl);
+
+    this.version = params.version;
 
     if (!isNullOrEmpty(impl) && isFunction(impl.setFacadeObj)) {
       impl.setFacadeObj(this);
