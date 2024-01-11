@@ -416,7 +416,7 @@ const pluginsLanguage = {
   locatorscn: {
     esLocatorscn,
     enLocatorscn,
-  },scn
+  },
 };
 
 export default pluginsLanguage;
