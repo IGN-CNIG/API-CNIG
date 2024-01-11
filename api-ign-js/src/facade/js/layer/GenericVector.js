@@ -65,9 +65,9 @@ class GenericVector extends Vector {
     const opts = options;
 
     if (typeof userParameters === 'string') {
-      params = parameter.layer(userParameters, LayerType.GenericRaster);
+      params = parameter.layer(userParameters, LayerType.GenericVector);
     } else if (!isNullOrEmpty(userParameters)) {
-      params.type = LayerType.GenericRaster;
+      params.type = LayerType.GenericVector;
     }
 
     if (vendorOptions) {
@@ -101,12 +101,14 @@ class GenericVector extends Vector {
     // -- WFS --
     this.ids = userParameters.ids;
 
+    this.version = params.version;
+
     /**
      * WFS cql: Opcional: instrucción CQL para filtrar.
      * El método setCQL(cadena_cql) refresca la capa aplicando el
      * nuevo predicado CQL que recibe.
      */
-    this.cql = userParameters.cql;
+    this.cql = params.cql;
 
     if (isNullOrEmpty(this.namespace)) {
       if (isNullOrEmpty(userParameters.namespace)) {
@@ -250,8 +252,50 @@ class GenericVector extends Vector {
    */
   set version(newVersion) {
     if (!isNullOrEmpty(newVersion)) {
-      this.getImpl().setVersion(newVersion);
+      this.getImpl().version = newVersion;
+    } else {
+      this.getImpl().version = '1.0.0'; // default value
     }
+  }
+
+  /**
+   * Devuelve el CQL de la capa.
+   * @function
+   * @return {M.layer.WFS.impl.cql}  Devuelve el CQL.
+   * @api
+   */
+  get cql() {
+    return this.getImpl().cql;
+  }
+
+  /**
+     * Sobrescribe el cql de la capa.
+     * @function
+     * @param {String} newCQL Nuevo CQL.
+     * @api
+     */
+  set cql(newCQL) {
+    this.getImpl().cql = newCQL;
+  }
+
+  /**
+   * Este método Sobrescribe el filtro CQL.
+   * @function
+   * @param {String} newCQLparam Nuevo filtro CQL.
+   * @api
+   */
+  setCQL(newCQLparam) {
+    let newCQL = newCQLparam;
+    this.getImpl().getDescribeFeatureType().then((describeFeatureType) => {
+      if (!isNullOrEmpty(newCQL)) {
+        const geometryName = describeFeatureType.geometryName;
+        // if exist, replace {{geometryName}} with the value geometryName
+        newCQL = newCQL.replace(/{{geometryName}}/g, geometryName);
+      }
+      if (this.getImpl().cql !== newCQL) {
+        this.getImpl().setCQL(newCQL);
+      }
+    });
   }
 
   /**
@@ -293,6 +337,7 @@ class GenericVector extends Vector {
       equals = (this.legend === obj.legend);
       equals = equals && (this.url === obj.url);
       equals = equals && (this.name === obj.name);
+      equals = equals && (this.cql === obj.cql);
     }
 
     return equals;
