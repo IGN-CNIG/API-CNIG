@@ -348,6 +348,9 @@ class GenericVector extends Vector {
    * @api stable
    */
   getMaxExtent() {
+    if (this.maxExtent.length !== 0) {
+      return this.maxExtent;
+    }
     return this.ol3Layer.getSource().getExtent();
   }
 
@@ -358,6 +361,7 @@ class GenericVector extends Vector {
    * @api stable
    */
   setMaxExtent(extent) {
+    this.maxExtent = extent;
     return this.ol3Layer.setExtent(extent);
   }
 

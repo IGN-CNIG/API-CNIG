@@ -132,12 +132,17 @@ class GenericRaster extends LayerBase {
     } else if (
       this.ol3Layer.getSource() instanceof TileWMS ||
       this.ol3Layer.getSource() instanceof ImageWMS) {
-      this.capabilities.then((capabilities) => {
-        this.maxExtent = capabilities.getLayerExtent('Provincias');
+      if (this.ol3Layer.getExtent()) {
+        this.maxExtent = this.ol3Layer.getExtent();
         this.ol3Layer.setExtent(this.maxExtent);
-        // eslint-disable-next-line no-underscore-dangle
-        this.facadeLayer_.maxExtent_ = this.maxExtent;
-      });
+      } else {
+        this.capabilities.then((capabilities) => {
+          this.maxExtent = capabilities.getLayerExtent();
+          this.ol3Layer.setExtent(this.maxExtent);
+          // eslint-disable-next-line no-underscore-dangle
+          this.facadeLayer_.maxExtent_ = this.maxExtent;
+        });
+      }
     } else if ((this.ol3Layer.getSource() instanceof OLSourceWMTS)) {
       const capabilities = this.getCapabilitiesWMTS_(this.ol3Layer);
       capabilities.then((c) => {
