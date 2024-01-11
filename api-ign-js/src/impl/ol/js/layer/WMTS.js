@@ -52,6 +52,7 @@ class WMTS extends LayerBase {
    * - format: Formato.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - crossOrigin: Atributo crossOrigin para las imágenes cargadas
    * - opacity: Opacidad de capa, por defecto 1.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
@@ -106,7 +107,7 @@ class WMTS extends LayerBase {
     this.useCapabilities = options.useCapabilities !== false;
 
     /**
-     * CrossOrigin. Indica si se usa crossOrigin.
+     * CrossOrigin. Atributo crossOrigin para las imágenes cargadas
      */
     this.crossOrigin = options.crossOrigin || null;
 
@@ -226,10 +227,10 @@ class WMTS extends LayerBase {
   setVisible(visibility) {
     this.visibility = visibility;
     // if this layer is base then it hides all base layers
-    if ((visibility === true) && (this.transparent !== true)) {
+    if ((visibility === true) && (this.isBase === true)) {
       // hides all base layers
       this.map.getBaseLayers()
-        .filter(layer => !layer.equals(this) && layer.isVisible())
+        .filter(layer => !layer.equals(this.facadeLayer_) && layer.isVisible())
         .forEach(layer => layer.setVisible(false));
 
       // set this layer visible
@@ -247,7 +248,6 @@ class WMTS extends LayerBase {
       this.ol3Layer.setVisible(visibility);
     }
   }
-
   /**
    * Este método agrega esta capa como capa única.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.

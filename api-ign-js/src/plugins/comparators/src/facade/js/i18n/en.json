@@ -1,7 +1,9 @@
 {
   "exception": {
     "impl": "The implementation used cannot create comparatorsControl controls",
-    "no_controls": "The Comparators plugin needs to activate at least one control."
+    "no_controls": "The Comparators plugin needs to activate at least one control.",
+    "mirrorDefaultCompareViz": "modeVizTypes parameter does not contain the value of defaultCompareViz",
+    "mirrorModeVizTypes": "modeVizTypes does not have a valid value"
   },
   "mirrorpanelParams_tooltip": "mirrorpanelParams_tooltip",
   "lyrcompareParams_tooltip": "lyrcompareParams_tooltip",
@@ -51,5 +53,9 @@
   "unfreeze": "defrost cursor",
   "activate_spyeye": "SpyEye ON",
   "deactivate_spyeye": "SpyEye OFF",
-  "tooltip": "Compare panel"
+  "tooltip": "Compare panel",
+  "inputTransparentRadius": "Modify the opacity of the radius",
+  "selectTransparentRadius":"Layer selector, the radius opacity will be applied",
+  "tooltip_void": "Single map view",
+  "selectLayers": "Layers selected"
 }

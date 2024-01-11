@@ -5,7 +5,6 @@ import HandlerImpl from 'impl/handler/Feature';
 import { isFunction, includes } from '../util/Utils';
 import Exception from '../exception/exception';
 import Base from '../Base';
-import FacadeFeature from '../feature/Feature';
 import * as EventType from '../event/eventtype';
 import { getValue } from '../i18n/language';
 
@@ -152,37 +151,59 @@ class Features extends Base {
   moveOverMap_(evt) {
     if (this.activated_ === true) {
       const impl = this.getImpl();
-
-      this.layers_.forEach((layer) => {
-        const hoveredFeatures = impl.getFeaturesByLayer(evt, layer);
-        const prevFeatures = [...this.prevHoverFeatures_[layer.name]];
-        // no features selected then unselect prev selected features
-        if (hoveredFeatures.length === 0 && prevFeatures.length > 0) {
-          if (layer.infoEventType === 'hover') {
-            this.unselectFeatures(prevFeatures, layer, evt);
-          }
-          this.leaveFeatures_(prevFeatures, layer, evt);
-        } else if (hoveredFeatures.length > 0) {
-          const newFeatures = hoveredFeatures
-            .filter(f => (f instanceof FacadeFeature) && !prevFeatures.some(pf => pf.equals(f)));
-          const diffFeatures = prevFeatures.filter(f => !hoveredFeatures.some(pf => pf.equals(f)));
-          // unselect prev selected features which have not been selected this time
-          if (diffFeatures.length > 0) {
+      this.hookStopMoveEvent_(evt).then((e) => {
+        this.layers_.forEach((layer) => {
+          const hoveredFeatures = impl.getFeaturesByLayer(evt, layer);
+          const prevFeatures = [...this.prevHoverFeatures_[layer.name]];
+          // no features selected then unselect prev selected features
+          if (hoveredFeatures.length === 0 && prevFeatures.length > 0) {
             if (layer.infoEventType === 'hover') {
-              this.unselectFeatures(diffFeatures, layer, evt);
+              this.unselectFeatures(prevFeatures, layer, evt);
             }
-            this.leaveFeatures_(diffFeatures, layer, evt);
-          }
-          // select new selected features
-          if (newFeatures.length > 0) {
-            if (layer.infoEventType === 'hover') {
-              this.selectFeatures(newFeatures, layer, evt);
+            this.leaveFeatures_(prevFeatures, layer, evt);
+          } else if (hoveredFeatures.length > 0) {
+            const newFeatures = hoveredFeatures
+              .filter(f => !prevFeatures.some(pf => pf.equals(f)));
+            const diffFeatures = prevFeatures.filter(f =>
+              !hoveredFeatures.some(pf => pf.equals(f)));
+            // unselect prev selected features which have not been selected this time
+            if (diffFeatures.length > 0) {
+              if (layer.infoEventType === 'hover') {
+                this.unselectFeatures(diffFeatures, layer, evt);
+              }
+              this.leaveFeatures_(diffFeatures, layer, evt);
             }
-            this.hoverFeatures_(newFeatures, layer, evt);
+            // select new selected features
+            if (newFeatures.length > 0) {
+              if (layer.infoEventType === 'hover') {
+                this.selectFeatures(newFeatures, layer, e);
+              }
+              this.hoverFeatures_(newFeatures, layer, e);
+            }
           }
-        }
+        });
       });
     }
+  }
+
+  /**
+   * Este método se encarga comprobar si se mueve el ratón.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @plublic
+   * @function
+   * @param {Object} evt Evento.
+   * @return {Promise} Promesa.
+   * @api
+   */
+  hookStopMoveEvent_(evt) {
+    const mouseMoveDelay = 50;
+    clearTimeout(this.mouseMoverTimer);
+
+    return new Promise((resolve) => {
+      this.mouseMoverTimer = setTimeout(() => {
+        resolve(evt);
+      }, mouseMoveDelay);
+    });
   }
 
   /**
@@ -227,6 +248,8 @@ class Features extends Base {
     if (isFunction(layerImpl.unselectFeatures)) {
       layerImpl.unselectFeatures(features, evt.coord);
     }
+
+    if (this.map_.getPopup()) { this.map_.getPopup().hide(); }
     layer.fire(EventType.UNSELECT_FEATURES, [features, evt.coord]);
   }
 
@@ -242,9 +265,11 @@ class Features extends Base {
    * @api
    */
   hoverFeatures_(features, layer, evt) {
-    this.prevHoverFeatures_[layer.name] = this.prevHoverFeatures_[layer.name].concat(features);
-    layer.fire(EventType.HOVER_FEATURES, [features, evt]);
-    this.getImpl().addCursorPointer(evt);
+    if (layer.name) {
+      this.prevHoverFeatures_[layer.name] = this.prevHoverFeatures_[layer.name].concat(features);
+      layer.fire(EventType.HOVER_FEATURES, [features, evt]);
+      this.getImpl().addCursorPointer(evt);
+    }
   }
 
   /**

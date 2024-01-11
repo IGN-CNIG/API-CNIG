@@ -108,7 +108,6 @@ export default class PrintViewManagement extends M.Plugin {
           },
         ],
         order: 0,
-        tooltip: 'Georeferenciar imagen',
       };
     } else if (options.georefImageEpsg) {
       this.georefImageEpsg = this.getGeorefImageEpsg();
@@ -145,9 +144,10 @@ export default class PrintViewManagement extends M.Plugin {
     if (printermap === true) {
       this.printermap = {
         printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
-        headerLegend: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
-        filterTemplates: ['A3 Horizontal'],
-        logo: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
+        // headerLegend: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
+        filterTemplates: [],
+        credits: '',
+        // logo: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png',
       };
     } else if (options.printermap) {
       this.printermap = options.printermap;

@@ -155,14 +155,6 @@ export default class Transparency extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-
-    this.layers = this.layers.filter((layer) => {
-      if (typeof layer === 'string') {
-        return !layer.includes('Generic');
-      }
-      return layer.type !== 'Generic';
-    });
-
     const values = {
       layers: this.layers,
       radius: this.radius,

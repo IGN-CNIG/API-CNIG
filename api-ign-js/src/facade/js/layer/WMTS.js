@@ -19,12 +19,13 @@ import { getValue } from '../i18n/language';
  * @property {Number} minZoom Limitar el zoom mínimo.
  * @property {Number} maxZoom Limitar el zoom máximo.
  * @property {String} matrixSet La matriz seleccionada de las definidas en las Capacidades
-  * del servicio.
+ * del servicio.
  * @property {String} legend El nombre que la capa mostrará en el árbol de contenido, si existe.
  * @property {Boolean} transparent Falso si es una capa base, verdadero en caso contrario.
  * @property {Object} options Opciones de capas de WMTS.
  * @property {Object} capabilitiesMetadata Capacidades de metadatos WMTS.
  * @property {Boolean} useCapabilities Define si se utilizará el capabilities para generar la capa.
+ * @property {Boolean} isbase Define si la capa es base.
  *
  * @api
  * @extends {M.Layer}
@@ -56,6 +57,7 @@ class WMTS extends LayerBase {
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - opacity: Opacidad de capa, por defecto 1.
+   * - crossOrigin: Atributo crossOrigin para las imágenes cargadas
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import { default as OLSourceWMTS } from 'ol/source/WMTS';
@@ -126,11 +128,6 @@ class WMTS extends LayerBase {
     this.legend = parameters.legend;
 
     /**
-     * WMTS transparent: Falso si es una capa base, verdadero en caso contrario.
-     */
-    this.transparent = parameters.transparent;
-
-    /**
      * WMTS options: Opciones de capas de WMTS.
      */
     this.options = optionsVar;
@@ -140,10 +137,6 @@ class WMTS extends LayerBase {
      */
     this.useCapabilities = parameters.useCapabilities !== false;
 
-    /**
-     * WMTS attribution: Atribución de la capa.
-     */
-    this.attribution = parameters.attribution;
 
     /**
      * WMTS capabilitiesMetadata: Capacidades de metadatos WMTS.

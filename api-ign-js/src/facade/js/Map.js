@@ -46,7 +46,8 @@ import WMS from './layer/WMS';
 import WMTS from './layer/WMTS';
 import MVT from './layer/MVT';
 import OGCAPIFeatures from './layer/OGCAPIFeatures';
-import Generic from './layer/Generic';
+import GenericRaster from './layer/GenericRaster';
+import GenericVector from './layer/GenericVector';
 import Panel from './ui/Panel';
 import * as Position from './ui/position';
 import GeoJSON from './layer/GeoJSON';
@@ -190,6 +191,7 @@ class Map extends Base {
     this.evtSetAttributions_();
     this.evtRemoveAttributions_();
     this.controlAttributions = null; // Contiene el control de atribuciones
+    this._attributionsMap = [];
 
     // adds class to the container
     params.container.classList.add('m-mapea-container');
@@ -344,13 +346,20 @@ class Map extends Base {
       tooltip,
       position,
       scale,
-      collectionsAttributions,
+      collectionsAttributions = [],
       order,
     } = options;
     const atribucionControl = new Attributions({
       map: this,
       scale,
-      collectionsAttributions,
+      collectionsAttributions: collectionsAttributions.map((l) => {
+        if (typeof l !== 'string') {
+          const attr = l;
+          attr.id = window.crypto.randomUUID();
+          return attr;
+        }
+        return l;
+      }),
       order,
     });
     const panel = new Panel(Attributions.NAME, {
@@ -365,6 +374,10 @@ class Map extends Base {
     panel.addControls(atribucionControl);
     this.getImpl().addControls([atribucionControl]);
     this.controlAttributions = atribucionControl;
+
+    if (collectionsAttributions) {
+      this._attributionsMap = [...this._attributionsMap, ...collectionsAttributions];
+    }
   }
 
   /**
@@ -374,7 +387,7 @@ class Map extends Base {
    * @param {attribuccion} attribuccion Atribución.
    * @api
    */
-  addAttribution(attribuccion) {
+  addAttribution(attribuccion, _addMapAttribution = true) {
     try {
       if (Object.keys(attribuccion).length === 0) {
         return;
@@ -385,18 +398,25 @@ class Map extends Base {
       return;
     }
 
-
     // Comprobar si existe el control
     if (!this.getControls().some(({ name }) => name === 'attributions')) {
       this.createAttribution();
     }
 
+    const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
+    let addAttribution = null;
 
-    const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions');
-    if (attribuccion && controlAttributions) {
-      const addId = attribuccion;
-      addId.id = window.crypto.randomUUID();
-      controlAttributions[0].addAttributions(addId);
+    if (typeof attribuccion === 'string') {
+      addAttribution = attribuccion;
+    } else if (attribuccion && controlAttributions) {
+      addAttribution = attribuccion;
+      addAttribution.id = window.crypto.randomUUID();
+    }
+
+    controlAttributions.addAttributions(addAttribution);
+
+    if (_addMapAttribution) {
+      this._attributionsMap.push(attribuccion);
     }
   }
 
@@ -410,9 +430,22 @@ class Map extends Base {
   removeAttribution(id) {
     const attributions = this.controlAttributions.getAttributions();
     let filterAttributions = attributions.filter(attribution => attribution.id !== id);
-    filterAttributions = filterAttributions.filter(attribution => attribution.nameLayer !== id);
+    filterAttributions = filterAttributions.filter(attribution => attribution.name !== id);
 
     this.controlAttributions.setAttributions(filterAttributions);
+  }
+
+  /**
+   * Método que devuelve las attribuciones del Mapa.
+   * @function
+   * @returns {Boolean} Verdadero devuelve todas las attribuciones.
+   * @api
+   */
+  getAttributions(allAttributions) {
+    if (allAttributions) {
+      return this.controlAttributions.getAttributions();
+    }
+    return this._attributionsMap;
   }
 
   /**
@@ -443,7 +476,8 @@ class Map extends Base {
     }
 
     // gets the layers
-    const layers = this.getImpl().getLayers(filters).sort(Map.LAYER_SORT);
+    const layers = this.getImpl().getLayers(filters)
+      .sort((layer1, layer2) => Map.LAYER_SORT(layer1, layer2, this));
 
     return layers;
   }
@@ -475,7 +509,7 @@ class Map extends Base {
       Exception(getValue('exception').getbaselayers_method);
     }
 
-    return this.getImpl().getBaseLayers().sort(Map.LAYER_SORT);
+    return this.getImpl().getBaseLayers();
   }
 
   /**
@@ -567,7 +601,7 @@ class Map extends Base {
                 layer = new XYZ(parameterVariable);
                 break;
               case 'TMS':
-                layer = new TMS(parameterVariable);
+                layer = new TMS(parameterVariable, { crossOrigin: parameterVariable.crossOrigin });
                 break;
               case 'OSM':
                 layer = new OSM(layerParam);
@@ -575,8 +609,11 @@ class Map extends Base {
               case 'OGCAPIFeatures':
                 layer = new OGCAPIFeatures(layerParam, { style: parameterVariable.style });
                 break;
-              case 'Generic':
-                layer = new Generic(layerParam);
+              case 'GenericRaster':
+                layer = new GenericRaster(layerParam);
+                break;
+              case 'GenericVector':
+                layer = new GenericVector(layerParam);
                 break;
               default:
                 Dialog.error(getValue('dialog').invalid_type_layer);
@@ -1933,7 +1970,12 @@ class Map extends Base {
               control = new GetFeatureInfo(true);
               break;
             case Attributions.NAME:
-              this.createAttribution();
+              if (controlParam.length === 2) {
+                this.createAttribution({ collectionsAttributions: [controlParam[1]] });
+              } else {
+                this.createAttribution();
+              }
+
               return;
             case Rotate.NAME:
               control = new Rotate();
@@ -3231,11 +3273,11 @@ class Map extends Base {
         if (layer.attribution && layers.name !== '__draw__') {
           const attribuccion = layer.attribution;
 
-          if (!attribuccion.nameLayer) {
-            attribuccion.nameLayer = layer.name;
+          if (typeof attribuccion !== 'string' && !attribuccion.name) {
+            attribuccion.name = layer.name;
           }
 
-          this.addAttribution(attribuccion);
+          this.addAttribution(attribuccion, false);
         }
       });
     });
@@ -3308,12 +3350,19 @@ class Map extends Base {
    * @param {M.layer} layer2 Otra Capa.
    * @api
    */
-  static LAYER_SORT(layer1, layer2) {
+  static LAYER_SORT(layer1, layer2, thisClass) {
     if (!isNullOrEmpty(layer1) && !isNullOrEmpty(layer2)) {
       const z1 = layer1.getZIndex();
       const z2 = layer2.getZIndex();
-
-      return (z1 - z2);
+      const zIndex = (z1 - z2);
+      if (zIndex === 0 && !isUndefined(thisClass)) {
+        // eslint-disable-next-line no-underscore-dangle
+        const i1 = thisClass.getImpl().layers_.findIndex(element => element.name === layer1.name);
+        // eslint-disable-next-line no-underscore-dangle
+        const i2 = thisClass.getImpl().layers_.findIndex(element => element.name === layer2.name);
+        return i1 - i2;
+      }
+      return zIndex;
     }
 
     // equals

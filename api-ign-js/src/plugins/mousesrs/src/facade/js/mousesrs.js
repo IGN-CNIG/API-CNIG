@@ -150,8 +150,8 @@ export default class MouseSRS extends M.Plugin {
       this.activeZ,
       this.helpUrl,
       this.order,
-      this.epsgFormat,
       this.draggableDialog,
+      this.epsgFormat,
     );
     this.controls_.push(this.control_);
     this.map_ = map;
@@ -240,7 +240,7 @@ export default class MouseSRS extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    let cadena = `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*${this.precision}*${this.epsgFormat}`;
+    let cadena = `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*${this.precision}`;
 
     if (this.geoDecimalDigits === undefined || this.geoDecimalDigits == null || this.geoDecimalDigits === '') {
       cadena += '*';
@@ -254,7 +254,7 @@ export default class MouseSRS extends M.Plugin {
       cadena += `*${this.utmDecimalDigits}`;
     }
 
-    cadena += `*${this.draggableDialog}`;
+    cadena += `*${this.activeZ}*${this.helpUrl}*${this.draggableDialog}*${this.epsgFormat}`;
 
     return cadena;
   }

@@ -156,6 +156,17 @@ ul.m-layerswitcher-ullayers {
     width: 100%;
 }
 
+.m-layerswitcher-title-layer button {
+    border: none;
+    background-color: transparent;
+}
+
+.m-layerswithcer-ogc-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
 
 
 .m-layerswitcher-icons-ver,
@@ -164,6 +175,8 @@ ul.m-layerswitcher-ullayers {
 }
 
 .m-layerswitcher-allstatus {
+    border: none;
+    background-color: #f9f9f9;
     margin: 0 16px;
     font-size: 15px;
     color: orange !important;

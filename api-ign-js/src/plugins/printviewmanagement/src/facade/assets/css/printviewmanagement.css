@@ -82,23 +82,6 @@
     color: #6c6c6c;
 }
 
-.m-predefinedzoom-button-container {
-    display: flex;
-    border: 1px solid #adadad;
-    margin: 2px;
-    background-color: #F7F6F6;
-    padding: 5px;
-}
-
-.m-predefinedzoom-namezoom {
-    display: inline;
-    margin-top: auto;
-    margin-bottom: auto;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
 .printviewmanagement-icon-flecha-historial.activated,
 .printviewmanagement-icon-zoompanel.activated,
 .printviewmanagement-icon-expand.activated:before ,
@@ -125,20 +108,7 @@
     width: 230px;
 }
 
-#m-predefinedzoom-panel {
-    background-color: #ededed;
-    border-top: 1px solid #adadad;
-    padding: 5px;
-    max-height: 220px;
-    overflow: auto;
-    width: 240px;
-}
-
-#m-historyprevious-button,
-#m-historynext-button,
-#m-zoompanel-zoomin,
-#m-zoompanel-zoomout,
-#m-predefinedzoom-panel .printviewmanagement-icon-expand {
+.printviewmanagement-icon-expand {
     border: none;
     background-color: transparent;
     font-size: 22px;

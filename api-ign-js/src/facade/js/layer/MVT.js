@@ -92,11 +92,6 @@ class MVT extends Vector {
      * por defecto falso.
      */
     this.extract = opts.extract;
-
-    /**
-     * Attribution: Optional Atribución de la capa.
-     */
-    this.attribution = opts.attribution;
   }
 
   /**
@@ -127,35 +122,6 @@ class MVT extends Vector {
     } else {
       this.getImpl().extract = false;
     }
-  }
-
-  /**
-   * Este método calcula la extensión máxima de esta capa.
-   *
-   * @function
-   * @returns {M.layer.MVT.maxExtent} maxExtent.
-   * @api
-   */
-  getMaxExtent() {
-    let maxExtent = this.userMaxExtent;
-    if (isNullOrEmpty(maxExtent)) {
-      maxExtent = this.map_.userMaxExtent;
-      if (isNullOrEmpty(maxExtent)) {
-        maxExtent = this.map_.getProjection().getExtent();
-      }
-    }
-    return maxExtent;
-  }
-
-  /**
-   * Este método calcula la extensión máxima de esta capa, devuelve una promesa.
-   *
-   * @function
-   * @returns {M.layer.MVT.maxExtent} Promesa, maxExtent.
-   * @api
-   */
-  calculateMaxExtent() {
-    return new Promise(resolve => resolve(this.getMaxExtent()));
   }
 
   /**

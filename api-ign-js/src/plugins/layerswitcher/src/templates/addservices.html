@@ -18,11 +18,13 @@
     </div>
     <div id="m-layerswitcher-addservices-suggestions" class="m-layerswitcher-addservices-suggestions">
         <table>
+            {{#if precharged}}
             <thead>
                 <tr>
-                    <th>{{translations.availables}}</th>
+                    <th tabindex="0">{{translations.availables}}</th>
                 </tr>
             </thead>
+            {{/if}}
             <tbody>
                 {{#each precharged.groups}}
                     <tr>
@@ -44,6 +46,7 @@
             </tbody>
         </table>
     </div>
+   
     <div id="m-layerswitcher-addservices-codsi" style="display: none;">
         <p><a tabindex="0" href="https://www.idee.es/csw-inspire-idee/srv/spa/catalog.search#/home" target="_blank">{{translations.codsi_services}}</a></p>
         <div class="m-layerswitcher-addservices-codsi-search-panel">

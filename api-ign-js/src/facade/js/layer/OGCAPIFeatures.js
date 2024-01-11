@@ -180,11 +180,6 @@ class OGCAPIFeatures extends Vector {
     this.geometry = parameters.geometry;
 
     /**
-     * OGCAPIFeatures attribution: Atributos de la capa.
-     */
-    this.attribution = parameters.attribution;
-
-    /**
      * OGCAPIFeatures opt: Opciones.
      */
     this.opt = opt;

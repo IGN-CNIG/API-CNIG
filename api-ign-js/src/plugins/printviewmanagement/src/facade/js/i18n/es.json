@@ -11,7 +11,8 @@
     "printError": "Se ha producido un error en la impresión.",
     "encode_method": "La implementación usada no posee el método encodeLayer",
     "tile": "La petición de alguna tesela ha provocado un error en la impresión. <br/>Por favor, inténtelo de nuevo.",
-    "support": "Las capas MVT y MBTilesVector no están soportadas."
+    "support": "Las capas MBTiles y MBTilesVector no están soportadas.",
+    "error_download_image": "No ha podido realizarse la descarga."
   },
   "tooltip": "Impresión del mapa",
   "map_printing": "Impresión del mapa",
@@ -19,7 +20,7 @@
   "previousView": "Vista anterior",
   "service_epsg": "Servicios EPSG",
   "georeferenced_img": "Imagen georreferenciada",
-  "format": "Format",
+  "format": "Formato",
   "errorProjectionCapabilities": "La proyeccion seleccionada no está disponible para esta capa base. Por favor elija otra proyección.",
   "printInfo": "Impresión generada a través de Mapea",
   "generating": "Generando imagen georreferenciada",

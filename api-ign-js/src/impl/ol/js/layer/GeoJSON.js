@@ -213,23 +213,6 @@ class GeoJSON extends Vector {
 
   /**
    * Este método devuelve la extensión de todos los objetos geográficos, se
-   * le puede pasar un filtro.
-   *
-   * @function
-   * @param {boolean} skipFilter Indica si se filtra por el filtro "skip".
-   * @param {M.Filter} filter Filtro.
-   * @return {Array<number>} Extensión de los objetos geográficos.
-   * @api stable
-   */
-  getFeaturesExtent(skipFilter, filter) {
-    const codeProj = this.map.getProjection().code;
-    const features = this.getFeatures(skipFilter, filter);
-    const extent = ImplUtils.getFeaturesExtent(features, codeProj);
-    return extent;
-  }
-
-  /**
-   * Este método devuelve la extensión de todos los objetos geográficos, se
    * le puede pasar un filtro. Asíncrono.
    *
    * @function

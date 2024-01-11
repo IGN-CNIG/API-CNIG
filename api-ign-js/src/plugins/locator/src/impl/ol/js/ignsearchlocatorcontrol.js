@@ -105,4 +105,14 @@ export default class IGNSearchLocatorControl extends M.impl.Control {
 
     return res;
   }
+
+  /**
+   * Esta función comprueba si un extent está dentro de la vista
+   */
+  containsExtentView(extent) {
+    const size = this.facadeMap_.getMapImpl().getSize();
+    const viewExtent =
+      this.facadeMap_.getMapImpl().getView().calculateExtent(size);
+    return ol.extent.containsExtent(viewExtent, extent);
+  }
 }

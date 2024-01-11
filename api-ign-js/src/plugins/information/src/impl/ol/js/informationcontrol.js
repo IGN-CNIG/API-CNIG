@@ -235,7 +235,7 @@ export default class InformationControl extends M.impl.Control {
   }
 
   buildGenericInfoURL() {
-    const layersGeneric = this.facadeMap_.getLayers().filter(layer => layer.type === 'Generic');
+    const layersGeneric = this.facadeMap_.getLayers().filter(layer => layer.type === 'GenericRaster');
     const urlsWMTS = [];
     const urlsWMS = [];
     layersGeneric.forEach((layer) => {

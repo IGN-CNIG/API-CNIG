@@ -20,6 +20,7 @@ import * as parameter from '../parameter/parameter';
  * @property {string} name Nombre de la capa, identificador.
  * @property {string} legend Leyenda de la capa.
  * @property {object} options Opciones MBTiles.
+ * @property {Boolean} isbase Define si la capa es base.
  *
  * @api
  * @extends {M.Layer}
@@ -82,11 +83,6 @@ class MBTiles extends LayerBase {
 
     // calls the super constructor
     super(parameters, impl);
-
-    /**
-     * MBTiles attribution: Atribución de la capa.
-     */
-    this.attribution = parameters.attribution;
 
     /**
      * MBTiles name: Nombre de la capa.

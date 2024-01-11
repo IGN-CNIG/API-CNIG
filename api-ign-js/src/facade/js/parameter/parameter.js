@@ -7,7 +7,6 @@ import Exception from '../exception/exception';
 import * as LayerType from '../layer/Type';
 import Layer from '../layer/Layer';
 import { getValue } from '../i18n/language';
-import osm from './osm';
 
 /**
  * Analiza el parámetro del centro de usuario especificado en un objeto.
@@ -94,6 +93,18 @@ export const center = (centerParameterVar) => {
   }
 
   return centerParam;
+};
+
+const getParameters = (params) => {
+  const urlParams = params.split(/\*/);
+  return {
+    type: urlParams[0] || undefined,
+    name: urlParams[1] || undefined,
+    legend: urlParams[2] || undefined,
+    url: urlParams[3] || undefined,
+    visibility: urlParams[4] || undefined,
+    transparent: urlParams[5] || false,
+  };
 };
 
 /**
@@ -1979,7 +1990,7 @@ export const getUseCapabilitiesWMS = (parameter) => {
     useCapabilities = /^1|(true)$/i.test(useCapabilities);
   }
 
-  if (!useCapabilities) {
+  if (isUndefined(useCapabilities)) {
     useCapabilities = true;
   }
 
@@ -2400,7 +2411,7 @@ export const getUseCapabilitiesWMTS = (parameter) => {
     useCapabilities = /^1|(true)$/i.test(useCapabilities);
   }
 
-  if (!useCapabilities) {
+  if (isUndefined(useCapabilities)) {
     useCapabilities = true;
   }
 
@@ -2675,6 +2686,9 @@ export const tms = (userParamer) => {
 
     // gets the legend
     layerObj.legend = getExtraParameter(userParam, layerObj.name, 4, 'legend');
+
+    // gets the crossOrigin
+    layerObj.crossOrigin = getExtraParameter(userParam, undefined, 5, 'crossOrigin');
 
     return layerObj;
   });
@@ -3880,18 +3894,16 @@ export const ogcapifeatures = (userParameters) => {
 };
 
 
-const generic = (userParameters) => {
+const generic = (userParameters, type) => {
   const params = userParameters;
 
   if (!isString(params)) {
-    return {
-      type: 'Generic',
-    };
+    return userParameters;
   }
 
   const urlParams = params.split(/\*/);
   return {
-    type: 'Generic',
+    type,
     // eslint-disable-next-line no-eval
     vendorOptions: eval(decodeURIComponent(escape(window.atob(urlParams[1])))) || undefined,
     name: urlParams[2] || undefined,
@@ -3902,6 +3914,27 @@ const generic = (userParameters) => {
     displayInLayerSwitcher: urlParams[7] || undefined,
     visibility: urlParams[8] || undefined,
   };
+};
+
+const genericvector = (userParameters) => {
+  return generic(userParameters, 'GenericVector');
+};
+
+const genericraster = (userParameters) => {
+  return generic(userParameters, 'GenericRaster');
+};
+
+const osm = (userParameters) => {
+  const params = userParameters;
+
+  if (!isString(params)) {
+    return {
+      ...params,
+      type: 'osm',
+    };
+  }
+
+  return getParameters(params);
 };
 
 /**
@@ -3924,7 +3957,8 @@ const parameterFunction = {
   mbtiles,
   mbtilesvector,
   ogcapifeatures,
-  generic,
+  genericvector,
+  genericraster,
 };
 
 
@@ -3967,38 +4001,42 @@ export const layer = (userParameters, forcedType) => {
         layerObj = userParam;
       }
 
+      if (!isNullOrEmpty(userParam.isBase)) {
+        layerObj.transparent = !userParam.isBase;
+      }
+
       if (!isNullOrEmpty(userParam.infoEventType)) {
         layerObj.infoEventType = userParam.infoEventType;
-      } else {
-        layerObj.infoEventType = 'click';
       }
+
       if (!isNullOrEmpty(userParam.attribution)) {
         layerObj.attribution = userParam.attribution;
       }
 
-      if (!isNullOrEmpty(userParam.isBase)) {
-        layerObj.isBase = userParam.isBase;
-      } else if (userParam.name !== '__draw__') {
-        layerObj.isBase = layerObj.transparent === undefined ? false : !layerObj.transpare;
-      }
+      // if (!isNullOrEmpty(userParam.isBase)) {
+      //   layerObj.isBase = userParam.isBase;
+      // } else if (userParam.name !== '__draw__') {
+      //   layerObj.isBase = (userParam.transparent !== undefined) ?
+      //     !userParam.transparent : false;
+      // }
 
-      if (!isNullOrEmpty(userParam.minZoom)) {
-        layerObj.minZoom = userParam.minZoom;
-      }
+      // if (!isNullOrEmpty(userParam.minZoom)) {
+      //   layerObj.minZoom = userParam.minZoom;
+      // }
 
-      if (!isNullOrEmpty(userParam.maxZoom)) {
-        layerObj.maxZoom = userParam.maxZoom;
-      }
+      // if (!isNullOrEmpty(userParam.maxZoom)) {
+      //   layerObj.maxZoom = userParam.maxZoom;
+      // }
 
-      // name
-      if (!isNullOrEmpty(userParam.name)) {
-        layerObj.name = userParam.name;
-      }
+      // // name
+      // if (!isNullOrEmpty(userParam.name)) {
+      //   layerObj.name = userParam.name;
+      // }
 
-      // legend
-      if (!isNullOrEmpty(userParam.legend)) {
-        layerObj.legend = userParam.legend;
-      }
+      // // legend
+      // if (!isNullOrEmpty(userParam.legend)) {
+      //   layerObj.legend = userParam.legend;
+      // }
     }
 
     return layerObj;

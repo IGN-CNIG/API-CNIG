@@ -1468,8 +1468,18 @@ export const draggabillyElement = (elem, handleEl) => {
 export const returnPositionHtmlElement = (className, map) => {
   const element = document.querySelector(`.${className}`);
   const bounding = element.getBoundingClientRect();
-  const position = [bounding.left + (bounding.width / 2), bounding.top + (bounding.height / 2)];
-  return map.getMapImpl().getCoordinateFromPixel(position);
+  // const position = [bounding.left + (bounding.width / 2), bounding.top + (bounding.height / 2)];
+  // return map.getMapImpl().getCoordinateFromPixel(position);
+  // ---
+  const container = map.getMapImpl().getViewport().getBoundingClientRect();
+  // eslint-disable-next-line no-mixed-operators
+  const pixelX = bounding.left - container.left + bounding.width / 2;
+  // eslint-disable-next-line no-mixed-operators
+  const pixelY = bounding.top - container.top + bounding.height / 2;
+
+  const position = map.getMapImpl().getCoordinateFromPixel([pixelX, pixelY]);
+
+  return position;
 };
 
 /**

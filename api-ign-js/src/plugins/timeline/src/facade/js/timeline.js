@@ -181,9 +181,9 @@ export default class Timeline extends M.Plugin {
 
     this.intervals = this.intervals.filter(({layer}) => {
       if (typeof layer === 'string') {
-        return !layer.includes('Generic');
+        return !layer.includes('GenericRaster') || !layer.includes('GenericVector');
       }
-      return layer.type !== 'Generic';
+      return layer.type !== 'GenericRaster' || layer.type !== 'GenericVector';
     });
 
     this.control_ = new TimelineControl({

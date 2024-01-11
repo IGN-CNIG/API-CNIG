@@ -26,7 +26,7 @@ import { getValue } from '../i18n/language';
  * @property {Number} maxZoom Limitar el zoom máximo.
  * @property {Object} options Capa de opciones WMS.
  * @property {Boolean} useCapabilities Define si se utilizará el capabilities para generar la capa.
- *
+ * @property {Boolean} isbase Define si la capa es base.
  * @api
  * @extends {M.Layer}
  */
@@ -70,6 +70,7 @@ class WMS extends LayerBase {
    * - ratio: determina el tamaño de las solicitudes de las imágenes. 1 significa que tienen el
    * tamaño de la ventana, 2 significa que tienen el doble del tamaño de la ventana,
    * y así sucesivamente. Debe ser 1 o superior. Por defecto es 1.
+   * crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileWMS from 'ol/source/TileWMS';
@@ -100,7 +101,9 @@ class WMS extends LayerBase {
       queryable: parameters.queryable,
       displayInLayerSwitcher: parameters.displayInLayerSwitcher,
       useCapabilities: parameters.useCapabilities,
+      transparent: parameters.transparent,
     };
+
     const impl = new WMSImpl(optionsVar, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
@@ -115,10 +118,6 @@ class WMS extends LayerBase {
      */
     this.version = parameters.version;
 
-    /**
-     * Attribution: Atribución de la capa.
-     */
-    this.attribution = parameters.attribution;
 
     /**
      * WMS tiled: Verdadero si queremos dividir la capa en mosaicos, falso en caso contrario.
@@ -126,12 +125,6 @@ class WMS extends LayerBase {
     if (!isNullOrEmpty(parameters.tiled)) {
       this.tiled = parameters.tiled;
     }
-
-
-    /**
-     * WMS transparent: Falso si es una capa base, verdadero en caso contrario.
-     */
-    this.transparent = parameters.transparent;
 
     /**
      * WMS capabilitiesMetadata: Capacidades de metadatos WMS.

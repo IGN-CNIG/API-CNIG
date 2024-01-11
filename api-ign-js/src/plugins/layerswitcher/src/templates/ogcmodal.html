@@ -49,7 +49,7 @@
             <fieldset tabindex="0" id="m-layerswitcher-ogc-other-filters" style="display:none;" class="m-layerswitcher-ogc-filter-custom-query">
         {{/if}}
         <div id="m-layerswitcher-ogc-search-formothers">
-            <div><label tabindex="0">{{translations.amount_results}} </label><input tabindex="0" type="text" id="m-layerswitcher-ogc-limit-items" value="{{#if limit}}{{limit}}{{else}}10{{/if}}" step="1" class="fieldset-limit"><label>{{translations.amount_results_2}} </label></div><br>
+            <div tabindex="0"><label>{{translations.amount_results}} </label><input tabindex="0" type="text" id="m-layerswitcher-ogc-limit-items" value="{{#if limit}}{{limit}}{{else}}10{{/if}}" step="1" class="fieldset-limit"><label>{{translations.amount_results_2}} </label></div><br>
             <div><label class="fieldset-bbox" tabindex="0">{{translations.bbox_select}}<input tabindex="0" type="checkbox" id="m-layerswitcher-ogc-search-bbox" {{#if bbox}}checked{{/if}}></label>
             </div><br>
             {{#if summary}}
@@ -68,13 +68,15 @@
 
         {{/if}}
 
-        <div class="m-layerswitcher-ogc-warning-msg">{{translations.warning}}</div></br>
+        <div tabindex="0" class="m-layerswitcher-ogc-warning-msg">{{translations.warning}}</div></br>
         <button class="m-layerswitcher-common-btn" id="m-layerswitcher-ogc-custom-query-button"> {{translations.custom_query_btn}}</button>
     </div>
     </fieldset>
     </fieldset>
-    <p id="m-layerswitcher-ogc-check-results"></p>
-    <button tabindex="0" class="m-layerswitcher-common-btn" id="m-layerswitcher-ogc-select-button"> {{translations.add_btn}}</button>
-    <button tabindex="0" class="m-layerswitcher-common-btn" id="m-layerswitcher-ogc-check-button"> {{translations.check_results}}</button>
+    <p tabindex="0" id="m-layerswitcher-ogc-check-results" style="display: none;"></p>
+    <div class="m-layerswithcer-ogc-buttons">
+        <button tabindex="0" class="m-layerswitcher-common-btn" id="m-layerswitcher-ogc-select-button"> {{translations.add_btn}}</button>
+        <button tabindex="0" class="m-layerswitcher-common-btn" id="m-layerswitcher-ogc-check-button" style="margin-right: 0;"> {{translations.check_results}}</button>
+    </div>
 </div>
 </div>

@@ -25,6 +25,7 @@ import { getValue } from '../i18n/language';
  * @property {Number} maxZoom Limitar el zoom máximo.
  * @property {Number} tileGridMaxZoom Zoom máximo de la tesela en forma de rejilla.
  * @property {Object} options Opciones de capa XYZ.
+ * @property {Boolean} isbase Define si la capa es base.
  *
  * @api
  * @extends {M.layer}
@@ -40,8 +41,9 @@ class XYZ extends LayerBase {
    * - name: Identificador de la capa.
    * - projection: La proyección destino de la capa.
    * - visibility: Indica si la capa estará por defecto visible o no.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - type: Tipo de la capa.
+   * - isBase: Indica si la capa es base.
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
    * - opacity: Opacidad de la capa.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
@@ -112,11 +114,6 @@ class XYZ extends LayerBase {
      * XYZ options: Opciones de la capa.
      */
     this.options = options;
-
-    /**
-     * XYZ Attribution: Atribución de la capa.
-     */
-    this.attribution = parameters.attribution;
   }
 
   /**

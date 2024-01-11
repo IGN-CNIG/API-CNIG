@@ -3,7 +3,7 @@
  */
 import TMSImpl from 'impl/layer/TMS';
 import LayerBase from './Layer';
-import { isUndefined } from '../util/Utils';
+import { isNullOrEmpty, isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
@@ -36,6 +36,7 @@ import { getValue } from '../i18n/language';
  * árbol de contenidos, si lo hay.
  * @property {Array<Number>} maxExtent_ Extensión máxima.
  * @property {Boolean} displayInLayerSwitcher Indica si la capa se muestra en el selector de capas.
+ * @property {Boolean} isbase Define si la capa es base.
  * @api
  * @extends {M.layer}
  */
@@ -51,7 +52,7 @@ class TMS extends LayerBase {
    * - url: Urlque genera la capa TMS.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica,
    * [x.min, y.min, x.max, y.max].
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
@@ -66,6 +67,7 @@ class TMS extends LayerBase {
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - opacity: Opacidad de capa, por defecto 1.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import XYZSource from 'ol/source/XYZ';
@@ -86,13 +88,20 @@ class TMS extends LayerBase {
     }
 
     const parameters = parameter.layer(userParameters, LayerType.TMS);
+
+    const optionsVars = { ...options };
+
+    if (!isNullOrEmpty(parameters.crossOrigin)) {
+      optionsVars.crossOrigin = parameters.crossOrigin;
+    }
+
     /**
      * Implementación.
      * @public
      * @implements {M.impl.layer.TMS}
      * @type {M.impl.layer.TMS}
      */
-    const impl = new TMSImpl(parameters, options, vendorOptions);
+    const impl = new TMSImpl(parameters, optionsVars, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
 
@@ -128,11 +137,6 @@ class TMS extends LayerBase {
      * TMS tileGridMaxZoom. Zoom máximo de cuadrícula de mosaico.
      */
     this.tileGridMaxZoom = parameters.tileGridMaxZoom;
-
-    /**
-     * TMS Attribution. Atribución de la capa.
-     */
-    this.attribution = parameters.attribution;
 
     /**
      * TMS options. Opciones de capa.

@@ -75,16 +75,6 @@ class Vector extends Layer {
     this.loaded_ = false;
 
     /**
-     * Vector minZoom. Zoom mínimo aplicable a la capa.
-     */
-    this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
-
-    /**
-     * Vector maxZoom. Zoom máximo aplicable a la capa.
-     */
-    this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
-
-    /**
      * Vector visibility. Define si la capa es visible o no.
      * Verdadero por defecto.
      */
@@ -186,7 +176,7 @@ class Vector extends Layer {
         addAttribute = !includes(this.hiddenAttributes_, key);
       }
 
-      if (typeof properties[key] === 'object' && !Array.isArray(properties[key])) {
+      if ((typeof properties[key] === 'object' && properties[key]) && !Array.isArray(properties[key])) {
         const values = this.recursiveExtract_(properties[key], (parentKey) ? `${parentKey} | ${key}` : key);
         attributes.push(...values);
       } else if (addAttribute) { // No se añade si es null o undefined

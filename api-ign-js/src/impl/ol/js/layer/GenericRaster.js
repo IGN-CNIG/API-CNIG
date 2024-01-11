@@ -50,7 +50,7 @@ class GenericRaster extends LayerBase {
     /**
        * WMS zIndex_. Índice de la capa, (+40).
        */
-    this.zIndex_ = ImplMap.Z_INDEX[LayerType.Generic];
+    this.zIndex_ = ImplMap.Z_INDEX[LayerType.GenericRaster];
 
     this.sldBody = options.sldBody;
 
@@ -69,6 +69,12 @@ class GenericRaster extends LayerBase {
        * WMS format. Formato de la capa, por defecto image/png.
        */
     this.format = this.options.format;
+
+    this.ol3Layer = vendorOptions;
+    this.maxExtent = options.userMaxExtent || [];
+    this.ids = options.ids;
+    this.version = options.version;
+    this.legend = options.legend;
   }
 
   /**
@@ -266,6 +272,161 @@ class GenericRaster extends LayerBase {
     }
     return defaultExtent;
   }
+
+  /**
+   * Este método modifica la URL del servicio.
+   *
+   * @function
+   * @param {String} URL del servicio.
+   * @api
+   */
+  setURLService(url) {
+    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
+        !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
+      this.ol3Layer.getSource().setUrl(url);
+    }
+  }
+
+  /**
+   * Este método obtiene la URL del servicio.
+   *
+   * @function
+   * @returns {String} URL del servicio
+   * @api
+   */
+  getURLService() {
+    let url = '';
+    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
+        !isNullOrEmpty(this.ol3Layer.getSource())) {
+      const source = this.ol3Layer.getSource();
+      if (!isNullOrEmpty(source.getUrl)) {
+        url = this.ol3Layer.getSource().getUrl();
+      } else if (!isNullOrEmpty(source.getUrls)) {
+        url = this.ol3Layer.getSource().getUrls();
+      }
+    }
+    return url;
+  }
+
+  /**
+   * Este método establece la clase de la fachada
+   * de MBTiles.
+   *
+   * @function
+   * @param {Object} obj Objeto a establecer como fachada.
+   * @public
+   * @api
+   */
+  setFacadeObj(obj) {
+    this.facadeLayer_ = obj;
+  }
+
+  /**
+   * Este método obtiene la resolución máxima para
+   * este WMS.
+   *
+   *
+   * @public
+   * @function
+   * @return {Number} Resolución Máxima.
+   * @api stable
+   */
+  getMaxResolution() {
+    return this.ol3Layer.getMaxResolution();
+  }
+
+  /**
+   * Este método obtiene la resolución mínima.
+   *
+   * @public
+   * @function
+   * @return {Number} Resolución mínima.
+   * @api stable
+   */
+  getMinResolution() {
+    return this.ol3Layer.getMinResolution();
+  }
+
+  /**
+   * Este método actualiza la capa.
+   * @function
+   * @api stable
+   */
+  refresh() {
+    this.ol3Layer.getSource().refresh();
+  }
+
+  /**
+   * Devuelve la URL de la leyenda.
+   *
+   * @public
+   * @function
+   * @returns {String} URL de la leyenda.
+   * @api stable
+   */
+  getLegendURL() {
+    return this.legendUrl_;
+  }
+
+  /**
+   * Establece la URL de la leyenda.
+   * @function
+   * @param {String} newLegend URL de la leyenda.
+   * @api stable
+   */
+  setLegendURL(newLegend) {
+    if (!isNullOrEmpty(newLegend)) {
+      this.legendUrl_ = newLegend;
+    }
+  }
+
+  /**
+   * Devuelve la extensión máxima de la capa.
+   * @function
+   * @returns {Array<Number>} Extensión máxima.
+   * @api stable
+   */
+  getMaxExtent() {
+    return this.ol3Layer.getExtent();
+  }
+
+  /**
+   * Establece la extensión máxima de la capa.
+   * @function
+   * @param {Array<Number>} extent Extensión máxima.
+   * @api stable
+   */
+  setMaxExtent(extent) {
+    return this.ol3Layer.setExtent(extent);
+  }
+
+  /**
+   * Este método indica si la capa es consultable.
+   *
+   * @function
+   * @returns {Boolean} Verdadero es consultable, falso si no.
+   * @api stable
+   * @expose
+   */
+  isQueryable() {
+    return (this.options.queryable !== false);
+  }
+
+  /**
+   * Este método establece la versión de la capa.
+   * @function
+   * @param {String} newVersion Nueva versión de la capa.
+   * @api stable
+   */
+  setVersion(newVersion) {
+    this.version = newVersion;
+    this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
+  }
+
+  getLayerType() {
+    return this.ol3Layer.constructor.name;
+  }
+
 
   /**
    * Este método destruye esta capa, limpiando el HTML

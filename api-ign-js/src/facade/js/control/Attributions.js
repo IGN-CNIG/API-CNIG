@@ -37,7 +37,10 @@ class Attributions extends ControlBase {
     super(impl, Attributions.NAME);
 
     this.position = options.position;
-    this.closePanel = options.closePanel; // TO-DO Eliminar
+    this.closePanel = options.closePanel;
+    this.urlAttribute = options.urlAttribute || 'Gobierno de España';
+    this.options = options;
+
     this.url_ = options.url || 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml';
     this.type_ = options.type || 'kml';
     this.layerName_ = options.layerName || 'attributions';
@@ -45,13 +48,9 @@ class Attributions extends ControlBase {
     this.scale_ = Number.parseInt(options.scale, 10) || 10000;
     this.attributionParam_ = options.attributionParam || 'atribucion';
     this.urlParam_ = options.urlParam || 'url';
-
     this.defaultAttribution_ = options.defaultAttribution || 'Instituto Geogr&aacute;fico Nacional';
     this.defaultURL_ = options.defaultURL || 'https://www.ign.es/';
     this.tooltip_ = options.tooltip || getValue('attributions').tooltip;
-    this.urlAttribute = options.urlAttribute || 'Gobierno de España';
-    this.options = options;
-
     this.collectionsAttributions_ = options.collectionsAttributions || [];
 
     /**
@@ -158,6 +157,11 @@ class Attributions extends ControlBase {
     const layers = this.collectionsAttributions_;
 
     layers.forEach((layer) => {
+      if (typeof layer === 'string') {
+        this.addHTMLContent(layer);
+        return;
+      }
+
       let featureAttributions = false;
 
       const zoom = this.map_.getZoom();
@@ -244,8 +248,8 @@ class Attributions extends ControlBase {
     */
   addContent(attributions) {
     const html = this.html_;
-    const id = attributions[0].nameLayer || '';
-    const links = attributions.map((attrOpt, index, arr) => {
+    const id = attributions[0].name || '';
+    const links = attributions.map((attrOpt) => {
       const element = attrOpt.url ? 'a' : 'p';
       const link = document.createElement(element);
 
@@ -257,10 +261,8 @@ class Attributions extends ControlBase {
 
 
       link.setAttribute('tabindex', this.order);
-
-      link.innerHTML = attrOpt.name || '';
-      const attributeURL = this.map_.getScale() > this.scale_ ? '' : ' '.concat(this.urlAttribute);
-      link.innerHTML += arr.length - 1 === index ? attributeURL : ' ';
+      const text = attrOpt.description ? attrOpt.description : `${attrOpt.name}, ${this.urlAttribute}`;
+      link.innerHTML = text || '';
       return link;
     });
     const div = document.createElement('div');
@@ -283,7 +285,7 @@ class Attributions extends ControlBase {
    * @api
    */
   addHTMLContent(html) {
-    this.html_.innerHTML += `<div>${html}</div>`;
+    this.html_.innerHTML += `<section class="attributionElements">${html}</section>`;
   }
 
   /**
@@ -341,16 +343,18 @@ class Attributions extends ControlBase {
   addAttributions(attribuccionParams) {
     if (typeof attribuccionParams === 'string') {
       this.addHTMLContent(attribuccionParams);
+      this.collectionsAttributions_.push(attribuccionParams);
+    } else if (attribuccionParams.collectionsAttributions) {
+      attribuccionParams.collectionsAttributions.forEach((collectionAttribution) => {
+        this.collectionsAttributions_.push(attribuccionParams);
+        this.addHTMLContent(collectionAttribution);
+      });
     } else {
       this.collectionsAttributions_.push(attribuccionParams);
 
       const { id, contentType, contentAttributions } = attribuccionParams;
       this.createVectorLayer(id, contentAttributions, contentType);
     }
-
-    setTimeout(() => {
-      this.changeAttributions();
-    }, 500);
   }
 
   /**
