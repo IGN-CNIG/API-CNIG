@@ -129,6 +129,7 @@ class GenericVector extends Vector {
   * Este método devuelve extensión máxima de esta capa.
   *
   * @function
+  * @param {Boolean} isSource Extent de la biblioteca base o no, por defecto verdadero.
   * @returns {Array} Devuelve la extensión máxima de esta capa.
   * @api
   */
@@ -150,6 +151,7 @@ class GenericVector extends Vector {
   calculateMaxExtent() {
     return new Promise(resolve => resolve(this.getMaxExtent(false)));
   }
+
   /**
     * Este método cambia la extensión máxima de la capa.
     *
@@ -235,7 +237,7 @@ class GenericVector extends Vector {
    *
    * @function
    * @getter
-   * @return {M.layer.WMS.impl.version} Versión del servicio.
+   * @return {M.layer.GenericVector.impl.version} Versión del servicio.
    * @api
    */
   get version() {
@@ -343,6 +345,17 @@ class GenericVector extends Vector {
     return equals;
   }
 
+  /**
+   * Este método incluye objetos geográficos a la capa.
+   *
+   * @function
+   * @public
+   * @param {Array<M.feature>} features Objetos geográficos que
+   * se incluirán a la capa.
+   * @param {Boolean} update Verdadero se vuelve a cargar la capa,
+   * falso no la vuelve a cargar.
+   * @api
+   */
   addFeatures(featuresParam, update = false) {
     let features = featuresParam;
     if (!isNullOrEmpty(features)) {

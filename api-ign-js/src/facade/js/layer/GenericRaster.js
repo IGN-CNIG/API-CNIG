@@ -107,6 +107,7 @@ class GenericRaster extends LayerBase {
   * Este método devuelve extensión máxima de esta capa.
   *
   * @function
+  * @param {Boolean} isSource Extent de la biblioteca base o no, por defecto verdadero.
   * @returns {Array} Devuelve la extensión máxima de esta capa.
   * @api
   */
@@ -180,7 +181,7 @@ class GenericRaster extends LayerBase {
     *
     * @function
     * @getter
-    * @return {M.layer.WMS.impl.version} Versión del servicio.
+    * @return {M.layer.GenericRaster.impl.version} Versión del servicio.
     * @api
     */
   get version() {
