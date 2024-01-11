@@ -37,10 +37,14 @@ class GenericVector extends Vector {
   /**
    * Constructor principal de la clase.
    * @constructor
-   * @param {string|Mx.parameters} userParameters Parámetros para la construcción de la capa.
+   * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
    * - name: nombre de la capa.
    * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - version: Versión WMS.
+   * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
+   * - infoEventType: Define si consultar la capa con un clic o con "hover".
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - isBase: Indica si la capa es base.
    * - ids: Opcional - identificadores por los que queremos filtrar los objetos geográficos.
    * - cql: Opcional - Sentencia CQL para filtrar los objetos geográficos.
@@ -58,6 +62,14 @@ class GenericVector extends Vector {
    * - minResolution: Resolución mínima.
    * - maxResolution: Resolución máxima.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import Vector from 'ol/source/Vector';
+   * {
+   *  source: new Vector({
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api
    */
   constructor(userParameters, options, vendorOptions = {}) {

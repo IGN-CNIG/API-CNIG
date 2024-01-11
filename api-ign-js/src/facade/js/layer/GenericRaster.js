@@ -34,15 +34,18 @@ class GenericRaster extends LayerBase {
   /**
    * Constructor principal de la clase.
    * @constructor
-   * @param {string|Mx.parameters} userParameters Parámetros para la construcción de la capa.
+   * @param {string|Mx.parameters.GenericRaster} userParameters Parámetros para la
+   * construcción de la capa.
    * - name: nombre de la capa.
    * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
-   * - version: Versión.
+   * - version: Versión GenericRaster.
    * - isBase: Indica si la capa es base.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - visibility: Indica la visibilidad de la capa.
+   * - opacity: Opacidad de capa, por defecto 1.
    * - format: Formato de la capa, por defecto image/png.
    * - styles: Estilos de la capa.
    * - sldBody: Parámetros "ol.source.ImageWMS"
@@ -57,9 +60,7 @@ class GenericRaster extends LayerBase {
    * <pre><code>
    * import OLSourceTileWMS from 'ol/source/TileWMS';
    * {
-   *  opacity: 0.1,
    *  source: new OLSourceTileWMS({
-   *    attributions: 'wms',
    *    ...
    *  })
    * }

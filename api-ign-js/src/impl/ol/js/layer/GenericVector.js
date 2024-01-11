@@ -25,21 +25,8 @@ import Feature from '../feature/Feature';
  */
 class GenericVector extends Vector {
   /**
-   * Constructor principal de la clase. Crea una capa WMS
-   * con parámetros especificados por el usuario.
+   * Constructor principal de la clase.
    * @constructor
-   * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
-   * - name: nombre de la capa.
-   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
-   * - version: Versión WMS.
-   * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
-   * - infoEventType: Define si consultar la capa con un clic o con "hover".
-   * - maxExtent: La medida en que restringe la visualización a una región específica.
-   * - isBase: Indica si la capa es base.
-   * - ids: Opcional - identificadores por los que queremos filtrar los objetos geográficos.
-   * - cql: Opcional - Sentencia CQL para filtrar los objetos geográficos.
-   *  El método setCQL(cadena_cql) refresca la capa aplicando el nuevo predicado CQL que reciba.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - visibility: Indica la visibilidad de la capa.
@@ -407,10 +394,6 @@ class GenericVector extends Vector {
     this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
   }
 
-  getLayerType() {
-    return this.ol3Layer.constructor.name;
-  }
-
   /**
    * Este método destruye esta capa, limpiando el HTML
    * y anulando el registro de todos los eventos.
@@ -425,11 +408,6 @@ class GenericVector extends Vector {
       olMap.removeLayer(this.ol3Layer);
     }
     this.map = null;
-  }
-
-
-  getFormatType() {
-    return this.ol3Layer.getSource().getFormat().constructor.name;
   }
 
   /**

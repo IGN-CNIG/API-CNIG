@@ -31,16 +31,9 @@ import ImplMap from '../Map';
    */
 class GenericRaster extends LayerBase {
   /**
-   * Constructor principal de la clase. Crea una capa WMS
-   * con parámetros especificados por el usuario.
+   * Constructor principal de la clase.
+   *
    * @constructor
-   * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
-   * - name: nombre de la capa.
-   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
-   * - version: Versión WMS.
-   * - isBase: Indica si la capa es base.
-   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - visibility: Indica la visibilidad de la capa.
@@ -456,11 +449,6 @@ class GenericRaster extends LayerBase {
     this.version = newVersion;
     this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
   }
-
-  getLayerType() {
-    return this.ol3Layer.constructor.name;
-  }
-
 
   /**
    * Este método destruye esta capa, limpiando el HTML
