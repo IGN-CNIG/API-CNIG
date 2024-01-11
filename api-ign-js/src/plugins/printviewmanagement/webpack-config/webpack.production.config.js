@@ -12,6 +12,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'printviewmanagement.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`printviewmanagement-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
@@ -28,40 +29,40 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.js$/,
-      exclude: /(node_modules\/(?!ol)|bower_components)/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env'],
+        test: /\.js$/,
+        exclude: /(node_modules\/(?!ol)|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
         },
       },
-    },
-    {
-      test: /\.js$/,
-      loader: 'eslint-loader',
-      exclude: /node_modules/,
-    },
-    {
-      test: [/\.hbs$/, /\.html$/],
-      loader: 'html-loader',
-      exclude: /node_modules/,
-    },
-    {
-      test: /\.css$/,
-      loader: MiniCssExtractPlugin.loader,
-      exclude: /node_modules/,
-    }, {
-      test: /\.css$/,
-      loader: 'css-loader',
-      exclude: /node_modules/,
+      {
+        test: /\.js$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: [/\.hbs$/, /\.html$/],
+        loader: 'html-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        loader: MiniCssExtractPlugin.loader,
+        exclude: /node_modules/,
+      }, {
+        test: /\.css$/,
+        loader: 'css-loader',
+        exclude: /node_modules/,
 
-    },
-    {
-      test: /\.(woff|woff2|eot|ttf|svg)$/,
-      exclude: /node_modules/,
-      loader: 'url-loader?name=fonts/[name].[ext]',
-    },
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|svg)$/,
+        exclude: /node_modules/,
+        loader: 'url-loader?name=fonts/[name].[ext]',
+      },
     ],
   },
   optimization: {

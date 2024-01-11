@@ -12,6 +12,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'overviewmap.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`overviewmap-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),

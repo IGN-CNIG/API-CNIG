@@ -12,6 +12,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'comparepanel.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`comparepanel-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),

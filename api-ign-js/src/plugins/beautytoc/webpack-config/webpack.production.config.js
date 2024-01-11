@@ -12,6 +12,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'beautytoc.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`beautytoc-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
