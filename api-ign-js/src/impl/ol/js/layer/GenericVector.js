@@ -18,20 +18,51 @@ import Feature from '../feature/Feature';
 
 /**
  * @classdesc
- * Generic permite añadir cualquier tipo de capa definida con la librería base.
- * @property {Object} options - Opciones de la capa
- * @property {Number} zIndex_ - Índice de la capa
- * @property {String} sldBody - Cuerpo del SLD
- * @property {String} styles - Estilos de la capa
- * @property {String} style - Estilo de la capa
- * @property {String} cql - CQL de la capa
- * @property {Function} fnAddFeatures_ - Función para añadir features
- * @param {Object} options - Objeto de opciones
- * @param {Object} vendorOptions - Objeto de opciones del proveedor
+ * GenericVector permite añadir cualquier tipo de capa vectorial definida con la librería base.
+ *
  * @api
  * @extends {M.impl.layer.Vector}
  */
 class GenericVector extends Vector {
+  /**
+   * Constructor principal de la clase. Crea una capa WMS
+   * con parámetros especificados por el usuario.
+   * @constructor
+   * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
+   * - name: nombre de la capa.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - version: Versión WMS.
+   * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
+   * - infoEventType: Define si consultar la capa con un clic o con "hover".
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - isBase: Indica si la capa es base.
+   * - ids: Opcional - identificadores por los que queremos filtrar los objetos geográficos.
+   * - cql: Opcional - Sentencia CQL para filtrar los objetos geográficos.
+   *  El método setCQL(cadena_cql) refresca la capa aplicando el nuevo predicado CQL que reciba.
+   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
+   * la implementación de la capa.
+   * - visibility: Indica la visibilidad de la capa.
+   * - format: Formato de la capa, por defecto image/png.
+   * - styles: Estilos de la capa.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - queryable: Indica si la capa es consultable.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolución mínima.
+   * - maxResolution: Resolución máxima.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import Vector from 'ol/source/Vector';
+   * {
+   *  source: new Vector({
+   *    ...
+   *  })
+   * }
+   * </code></pre>
+   * @api
+   */
   constructor(options = {}, vendorOptions) {
     // calls the super constructor
     super(options, vendorOptions);

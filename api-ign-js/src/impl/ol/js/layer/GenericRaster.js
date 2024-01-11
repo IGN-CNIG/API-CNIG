@@ -25,18 +25,47 @@ import ImplMap from '../Map';
 
 /**
    * @classdesc
-   * Generic permite añadir cualquier tipo de capa definida con la librería base.
-   * @property {Object} options - Opciones de la capa
-   * @property {Number} zIndex_ - Índice de la capa
-   * @property {String} sldBody - Cuerpo del SLD
-   * @property {String} format - Formato de la capa
-   * @param {Object} options - Objeto de opciones
-   * @param {Object} vendorOptions - Objeto de opciones del proveedor
-   *
+   * GenericRaster permite añadir cualquier tipo de capa raster definida con la librería base.
    * @api
    * @extends {M.impl.layer.Layer}
    */
 class GenericRaster extends LayerBase {
+  /**
+   * Constructor principal de la clase. Crea una capa WMS
+   * con parámetros especificados por el usuario.
+   * @constructor
+   * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
+   * - name: nombre de la capa.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - version: Versión WMS.
+   * - isBase: Indica si la capa es base.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
+   * la implementación de la capa.
+   * - visibility: Indica la visibilidad de la capa.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * - format: Formato de la capa, por defecto image/png.
+   * - styles: Estilos de la capa.
+   * - sldBody: Parámetros "ol.source.ImageWMS"
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - queryable: Indica si la capa es consultable.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolución mínima.
+   * - maxResolution: Resolución máxima.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceTileWMS from 'ol/source/TileWMS';
+   * {
+   *  source: new OLSourceTileWMS({
+   *    ...
+   *  })
+   * }
+   * </code></pre>
+   * @api
+   */
   constructor(options = {}, vendorOptions) {
     // calls the super constructor
     super(options, vendorOptions);
