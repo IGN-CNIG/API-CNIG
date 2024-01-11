@@ -3,6 +3,9 @@
  */
 import OLFormatWFS from 'ol/format/WFS';
 import { unByKey } from 'ol/Observable';
+import WMTS from 'ol/source/WMTS';
+import TileWMS from 'ol/source/TileWMS';
+import ImageWMS from 'ol/source/ImageWMS';
 import * as dialog from 'M/dialog';
 import getfeatureinfoPopupTemplate from 'templates/getfeatureinfo_popup';
 import getfeatureinfoLayers from 'templates/getfeatureinfo_layers';
@@ -114,17 +117,34 @@ class GetFeatureInfo extends Control {
   buildUrl_(dialogParam, evt) {
     this.evt = evt;
     const olMap = this.facadeMap_.getMapImpl();
-    const wmsInfoURLS = this.buildWMSInfoURL(this.facadeMap_.getWMS());
-    const wmtsInfoURLS = this.buildWMTSInfoURL(this.facadeMap_.getWMTS());
+    const [urlsWMTS, urlsWMS] = this.buildGenericInfoURL();
+    const wmsInfoURLS = this.buildWMSInfoURL([...this.facadeMap_.getWMS(), ...urlsWMS]);
+    const wmtsInfoURLS = this.buildWMTSInfoURL([...this.facadeMap_.getWMTS(), ...urlsWMTS]);
     const layerNamesUrls = [...wmtsInfoURLS, ...wmsInfoURLS]
       .filter(layer => !isNullOrEmpty(layer));
-
+    console.log(wmsInfoURLS, wmtsInfoURLS);
     if (layerNamesUrls.length > 0) {
       this.showInfoFromURL_(layerNamesUrls, evt.coordinate, olMap);
     } else {
       dialogParam.info('No existen capas consultables');
     }
   }
+
+  buildGenericInfoURL() {
+    const layersGeneric = this.facadeMap_.getLayers().filter(layer => layer.type === 'GenericRaster');
+    const urlsWMTS = [];
+    const urlsWMS = [];
+    layersGeneric.forEach((layer) => {
+      if (layer.getImpl().getOL3Layer().getSource() instanceof WMTS) {
+        urlsWMTS.push(layer);
+      } else if (layer.getImpl().getOL3Layer().getSource() instanceof TileWMS
+      || layer.getImpl().getOL3Layer().getSource() instanceof ImageWMS) {
+        urlsWMS.push(layer);
+      }
+    });
+    return [urlsWMTS, urlsWMS];
+  }
+
 
   /**
    * Devuelve un objeto con la leyenda o el nombre de la capa y la url.
