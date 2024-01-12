@@ -25,18 +25,40 @@ import ImplMap from '../Map';
 
 /**
    * @classdesc
-   * Generic permite añadir cualquier tipo de capa definida con la librería base.
-   * @property {Object} options - Opciones de la capa
-   * @property {Number} zIndex_ - Índice de la capa
-   * @property {String} sldBody - Cuerpo del SLD
-   * @property {String} format - Formato de la capa
-   * @param {Object} options - Objeto de opciones
-   * @param {Object} vendorOptions - Objeto de opciones del proveedor
-   *
+   * GenericRaster permite añadir cualquier tipo de capa raster definida con la librería base.
    * @api
    * @extends {M.impl.layer.Layer}
    */
 class GenericRaster extends LayerBase {
+  /**
+   * Constructor principal de la clase.
+   *
+   * @constructor
+   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
+   * la implementación de la capa.
+   * - visibility: Indica la visibilidad de la capa.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * - format: Formato de la capa, por defecto image/png.
+   * - styles: Estilos de la capa.
+   * - sldBody: Parámetros "ol.source.ImageWMS"
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - queryable: Indica si la capa es consultable.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolución mínima.
+   * - maxResolution: Resolución máxima.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import OLSourceTileWMS from 'ol/source/TileWMS';
+   * {
+   *  source: new OLSourceTileWMS({
+   *    ...
+   *  })
+   * }
+   * </code></pre>
+   * @api
+   */
   constructor(options = {}, vendorOptions) {
     // calls the super constructor
     super(options, vendorOptions);
@@ -132,12 +154,17 @@ class GenericRaster extends LayerBase {
     } else if (
       this.ol3Layer.getSource() instanceof TileWMS ||
       this.ol3Layer.getSource() instanceof ImageWMS) {
-      this.capabilities.then((capabilities) => {
-        this.maxExtent = capabilities.getLayerExtent('Provincias');
+      if (this.ol3Layer.getExtent()) {
+        this.maxExtent = this.ol3Layer.getExtent();
         this.ol3Layer.setExtent(this.maxExtent);
-        // eslint-disable-next-line no-underscore-dangle
-        this.facadeLayer_.maxExtent_ = this.maxExtent;
-      });
+      } else {
+        this.capabilities.then((capabilities) => {
+          this.maxExtent = capabilities.getLayerExtent();
+          this.ol3Layer.setExtent(this.maxExtent);
+          // eslint-disable-next-line no-underscore-dangle
+          this.facadeLayer_.maxExtent_ = this.maxExtent;
+        });
+      }
     } else if ((this.ol3Layer.getSource() instanceof OLSourceWMTS)) {
       const capabilities = this.getCapabilitiesWMTS_(this.ol3Layer);
       capabilities.then((c) => {
@@ -422,11 +449,6 @@ class GenericRaster extends LayerBase {
     this.version = newVersion;
     this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
   }
-
-  getLayerType() {
-    return this.ol3Layer.constructor.name;
-  }
-
 
   /**
    * Este método destruye esta capa, limpiando el HTML

@@ -16,6 +16,7 @@ module.exports = {
   // },
   entry: {
     [`${pjson.name}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`${pjson.name}-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
@@ -92,6 +93,14 @@ module.exports = {
       extensions: [`js`, `jsx`],
       // files: 'src/**/*',
       exclude: ['src/**/*', '**/node_modules/**', '/lib/', '/test/', '/dist/'],
+    }),
+    new CopywebpackPlugin({
+      patterns: [
+        {
+          from: 'src/configuration.js',
+          to: `filter/configuration-${pjson.version}.js`,
+        }
+      ],
     }),
     new CopywebpackPlugin({
       patterns: [

@@ -202,6 +202,10 @@ import enViewmanagement from '../../../plugins/viewmanagement/src/facade/js/i18n
 import esLocator from '../../../plugins/locator/src/facade/js/i18n/es';
 import enLocator from '../../../plugins/locator/src/facade/js/i18n/en';
 
+// Locatorscn
+import esLocatorscn from '../../../plugins/locatorscn/src/facade/js/i18n/es';
+import enLocatorscn from '../../../plugins/locatorscn/src/facade/js/i18n/en';
+
 /**
  * Este objeto devuelve un objeto JSON dinámico que contiene
  * los plugins disponibles que soportan traducciones.
@@ -400,6 +404,10 @@ const pluginsLanguage = {
   locator: {
     esLocator,
     enLocator,
+  },
+  locatorscn: {
+    esLocatorscn,
+    enLocatorscn,
   },
 };
 

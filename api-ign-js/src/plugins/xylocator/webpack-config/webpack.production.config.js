@@ -13,6 +13,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'xylocator.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`xylocator-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),

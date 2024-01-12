@@ -14,6 +14,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'vectors.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`vectors-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),

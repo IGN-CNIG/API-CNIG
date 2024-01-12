@@ -42,7 +42,7 @@
     "name": "Transparency",
     "description": "Efecto transparencia sobre capa",
     "text": "Plugin que permite realizar un efecto de transparencia sobre una capa. En caso de indicar varias capas, se realizará el efecto sobre la capa seleccionada en el selector. ",
-    "version": "2.0.0",
+    "version": "1.1.0",
     "date": "Febrero, 2020",
     "author": "",
     "org": "CNIG",

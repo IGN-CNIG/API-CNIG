@@ -13,6 +13,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'viewmanagement.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`viewmanagement-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),

@@ -18,20 +18,38 @@ import Feature from '../feature/Feature';
 
 /**
  * @classdesc
- * Generic permite añadir cualquier tipo de capa definida con la librería base.
- * @property {Object} options - Opciones de la capa
- * @property {Number} zIndex_ - Índice de la capa
- * @property {String} sldBody - Cuerpo del SLD
- * @property {String} styles - Estilos de la capa
- * @property {String} style - Estilo de la capa
- * @property {String} cql - CQL de la capa
- * @property {Function} fnAddFeatures_ - Función para añadir features
- * @param {Object} options - Objeto de opciones
- * @param {Object} vendorOptions - Objeto de opciones del proveedor
+ * GenericVector permite añadir cualquier tipo de capa vectorial definida con la librería base.
+ *
  * @api
  * @extends {M.impl.layer.Vector}
  */
 class GenericVector extends Vector {
+  /**
+   * Constructor principal de la clase.
+   * @constructor
+   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
+   * la implementación de la capa.
+   * - visibility: Indica la visibilidad de la capa.
+   * - format: Formato de la capa, por defecto image/png.
+   * - styles: Estilos de la capa.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - queryable: Indica si la capa es consultable.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolución mínima.
+   * - maxResolution: Resolución máxima.
+   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import Vector from 'ol/source/Vector';
+   * {
+   *  source: new Vector({
+   *    ...
+   *  })
+   * }
+   * </code></pre>
+   * @api
+   */
   constructor(options = {}, vendorOptions) {
     // calls the super constructor
     super(options, vendorOptions);
@@ -348,6 +366,9 @@ class GenericVector extends Vector {
    * @api stable
    */
   getMaxExtent() {
+    if (this.maxExtent.length !== 0) {
+      return this.maxExtent;
+    }
     return this.ol3Layer.getSource().getExtent();
   }
 
@@ -358,6 +379,7 @@ class GenericVector extends Vector {
    * @api stable
    */
   setMaxExtent(extent) {
+    this.maxExtent = extent;
     return this.ol3Layer.setExtent(extent);
   }
 
@@ -370,10 +392,6 @@ class GenericVector extends Vector {
   setVersion(newVersion) {
     this.version = newVersion;
     this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
-  }
-
-  getLayerType() {
-    return this.ol3Layer.constructor.name;
   }
 
   /**
@@ -390,11 +408,6 @@ class GenericVector extends Vector {
       olMap.removeLayer(this.ol3Layer);
     }
     this.map = null;
-  }
-
-
-  getFormatType() {
-    return this.ol3Layer.getSource().getFormat().constructor.name;
   }
 
   /**

@@ -13,6 +13,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'attributions.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`attributions-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
@@ -33,8 +34,7 @@ module.exports = {
     },
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.js$/,
         exclude: /(node_modules\/(?!ol)|bower_components)/,
         use: {

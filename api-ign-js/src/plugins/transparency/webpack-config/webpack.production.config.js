@@ -13,6 +13,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'transparency.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`transparency-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),

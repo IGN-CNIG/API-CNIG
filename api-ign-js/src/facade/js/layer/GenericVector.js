@@ -2,6 +2,7 @@
  * @module M/layer/GenericVector
  */
 import GenericVectorImpl from 'impl/layer/GenericVector';
+import Utils from 'impl/util/Utils';
 import {
   isNullOrEmpty,
   isUndefined,
@@ -15,6 +16,8 @@ import Exception from '../exception/exception';
 import Vector from './Vector';
 import { getValue } from '../i18n/language';
 import * as EventType from '../event/eventtype';
+import * as parameter from '../parameter/parameter';
+import * as LayerType from './Type';
 
 /**
  * @classdesc
@@ -34,10 +37,14 @@ class GenericVector extends Vector {
   /**
    * Constructor principal de la clase.
    * @constructor
-   * @param {string|Mx.parameters} userParameters Parámetros para la construcción de la capa.
+   * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
    * - name: nombre de la capa.
    * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - version: Versión WMS.
+   * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
+   * - infoEventType: Define si consultar la capa con un clic o con "hover".
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - isBase: Indica si la capa es base.
    * - ids: Opcional - identificadores por los que queremos filtrar los objetos geográficos.
    * - cql: Opcional - Sentencia CQL para filtrar los objetos geográficos.
@@ -55,22 +62,55 @@ class GenericVector extends Vector {
    * - minResolution: Resolución mínima.
    * - maxResolution: Resolución máxima.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+   * <pre><code>
+   * import Vector from 'ol/source/Vector';
+   * {
+   *  source: new Vector({
+   *    ...
+   *  })
+   * }
+   * </code></pre>
    * @api
    */
-  constructor(userParameters, options, vendorOptions = {}) {
-    const params = { ...userParameters, ...options };
+  constructor(userParameters = {}, options = {}, vendorOptions = {}) {
+    let params = { ...userParameters, ...options };
+    const opts = options;
+    let vOptions = vendorOptions;
+
+    if (typeof userParameters === 'string') {
+      params = parameter.layer(userParameters, LayerType.GenericVector);
+      vOptions = params.vendorOptions;
+    } else if (!isNullOrEmpty(userParameters)) {
+      params.type = LayerType.GenericVector;
+    }
+
+    if (params.name) {
+      opts.name = params.name;
+    } else if (vOptions) {
+      opts.name = Utils.addFacadeName(params.name, vOptions);
+      params.name = params.name || opts.name;
+    }
+
+    if (params.legend) {
+      opts.legend = params.legend;
+    } else if (vOptions) {
+      opts.legend = Utils.addFacadeLegend(vOptions) || params.name;
+      params.legend = params.legend || opts.legend;
+    }
+
 
     params.infoEventType = userParameters.infoEventType || 'click';
+    opts.userMaxExtent = params.maxExtent || opts.userMaxExtent;
 
     // checks if the implementation can create Generic layers
     if (isUndefined(GenericVectorImpl)) {
       Exception(getValue('exception').generic_method);
     }
 
-    const impl = new GenericVectorImpl(options, vendorOptions, 'vector');
+    const impl = new GenericVectorImpl(options, vOptions, 'vector');
 
     // calls the super constructor
-    super(params, options, vendorOptions, impl);
+    super(params, options, vOptions, impl);
 
     if (!isNullOrEmpty(impl) && isFunction(impl.setFacadeObj)) {
       impl.setFacadeObj(this);
@@ -81,12 +121,14 @@ class GenericVector extends Vector {
     // -- WFS --
     this.ids = userParameters.ids;
 
+    this.version = params.version;
+
     /**
      * WFS cql: Opcional: instrucción CQL para filtrar.
      * El método setCQL(cadena_cql) refresca la capa aplicando el
      * nuevo predicado CQL que recibe.
      */
-    this.cql = userParameters.cql;
+    this.cql = params.cql;
 
     if (isNullOrEmpty(this.namespace)) {
       if (isNullOrEmpty(userParameters.namespace)) {
@@ -107,6 +149,7 @@ class GenericVector extends Vector {
   * Este método devuelve extensión máxima de esta capa.
   *
   * @function
+  * @param {Boolean} isSource Extent de la biblioteca base o no, por defecto verdadero.
   * @returns {Array} Devuelve la extensión máxima de esta capa.
   * @api
   */
@@ -128,6 +171,7 @@ class GenericVector extends Vector {
   calculateMaxExtent() {
     return new Promise(resolve => resolve(this.getMaxExtent(false)));
   }
+
   /**
     * Este método cambia la extensión máxima de la capa.
     *
@@ -213,7 +257,7 @@ class GenericVector extends Vector {
    *
    * @function
    * @getter
-   * @return {M.layer.WMS.impl.version} Versión del servicio.
+   * @return {M.layer.GenericVector.impl.version} Versión del servicio.
    * @api
    */
   get version() {
@@ -230,8 +274,50 @@ class GenericVector extends Vector {
    */
   set version(newVersion) {
     if (!isNullOrEmpty(newVersion)) {
-      this.getImpl().setVersion(newVersion);
+      this.getImpl().version = newVersion;
+    } else {
+      this.getImpl().version = '1.0.0'; // default value
     }
+  }
+
+  /**
+   * Devuelve el CQL de la capa.
+   * @function
+   * @return {M.layer.WFS.impl.cql}  Devuelve el CQL.
+   * @api
+   */
+  get cql() {
+    return this.getImpl().cql;
+  }
+
+  /**
+     * Sobrescribe el cql de la capa.
+     * @function
+     * @param {String} newCQL Nuevo CQL.
+     * @api
+     */
+  set cql(newCQL) {
+    this.getImpl().cql = newCQL;
+  }
+
+  /**
+   * Este método Sobrescribe el filtro CQL.
+   * @function
+   * @param {String} newCQLparam Nuevo filtro CQL.
+   * @api
+   */
+  setCQL(newCQLparam) {
+    let newCQL = newCQLparam;
+    this.getImpl().getDescribeFeatureType().then((describeFeatureType) => {
+      if (!isNullOrEmpty(newCQL)) {
+        const geometryName = describeFeatureType.geometryName;
+        // if exist, replace {{geometryName}} with the value geometryName
+        newCQL = newCQL.replace(/{{geometryName}}/g, geometryName);
+      }
+      if (this.getImpl().cql !== newCQL) {
+        this.getImpl().setCQL(newCQL);
+      }
+    });
   }
 
   /**
@@ -273,11 +359,23 @@ class GenericVector extends Vector {
       equals = (this.legend === obj.legend);
       equals = equals && (this.url === obj.url);
       equals = equals && (this.name === obj.name);
+      equals = equals && (this.cql === obj.cql);
     }
 
     return equals;
   }
 
+  /**
+   * Este método incluye objetos geográficos a la capa.
+   *
+   * @function
+   * @public
+   * @param {Array<M.feature>} features Objetos geográficos que
+   * se incluirán a la capa.
+   * @param {Boolean} update Verdadero se vuelve a cargar la capa,
+   * falso no la vuelve a cargar.
+   * @api
+   */
   addFeatures(featuresParam, update = false) {
     let features = featuresParam;
     if (!isNullOrEmpty(features)) {

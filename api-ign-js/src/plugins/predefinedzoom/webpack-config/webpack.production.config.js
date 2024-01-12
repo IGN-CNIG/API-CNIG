@@ -13,6 +13,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'predefinedzoom.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`predefinedzoom-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
