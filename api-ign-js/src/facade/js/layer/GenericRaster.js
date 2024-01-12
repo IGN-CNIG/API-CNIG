@@ -77,10 +77,16 @@ class GenericRaster extends LayerBase {
       params.type = LayerType.GenericRaster;
     }
 
-    if (vendorOptions) {
+    if (params.name) {
+      opts.name = params.name;
+    } else if (vendorOptions) {
       opts.name = Utils.addFacadeName(params.name, vendorOptions);
       params.name = params.name || opts.name;
+    }
 
+    if (params.legend) {
+      opts.legend = params.legend;
+    } else if (vendorOptions) {
       opts.legend = Utils.addFacadeLegend(vendorOptions) || params.name;
       params.legend = params.legend || opts.legend;
     }
