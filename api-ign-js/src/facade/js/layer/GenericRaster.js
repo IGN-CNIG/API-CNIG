@@ -67,7 +67,7 @@ class GenericRaster extends LayerBase {
    * </code></pre>
    * @api
    */
-  constructor(userParameters, options, vendorOptions = {}) {
+  constructor(userParameters = {}, options = {}, vendorOptions = {}) {
     let params = { ...userParameters, ...options };
     const opts = options;
 
