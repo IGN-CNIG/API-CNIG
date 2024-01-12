@@ -3,6 +3,13 @@ import MBTilesVector from 'M/layer/MBTilesVector';
 export const mbtileVector_001 = new MBTilesVector({
     name: 'mbtilesvector',
     legend: 'Capa personalizada MBTilesVector',
+    // attribution: {
+    //   name: 'Name Prueba MBTilesVector',
+    //   description: 'Description Prueba',
+    //   url: 'https://www.ign.es',
+    //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+    //   contentType: 'kml',
+    // },
     // isBase: true,
     // transparent: false,
     // extract: true,
