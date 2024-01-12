@@ -71,7 +71,7 @@
     "name": "backimglayer",
     "description": "Sets background layer",
     "text": "Shows different options for background layer as clickable images and changes background layer on click on an option.",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "date": "3rd September 2019",
     "author": "CNIG",
     "org": "CNIG",
