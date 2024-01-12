@@ -176,6 +176,17 @@
     "obsolete": false
   },
   {
+    "name": "locatorscn",
+    "plugin": "[locatorscn]",
+    "version": "v1.0",
+    "url_es": "locatorscn.jsp?language=es",
+    "url_en": "locatorscn.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/locatorscn",
+    "image": "img/api-logo.png",
+    "description": "Plugin que ofrece diferentes herramientas de localización.",
+    "obsolete": false
+  },
+  {
     "name": "lyrcompare",
     "plugin": "[lyrcompare]",
     "version": "v1.0",
