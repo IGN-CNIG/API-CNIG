@@ -70,24 +70,26 @@ class GenericRaster extends LayerBase {
   constructor(userParameters = {}, options = {}, vendorOptions = {}) {
     let params = { ...userParameters, ...options };
     const opts = options;
+    let vOptions = vendorOptions;
 
     if (typeof userParameters === 'string') {
       params = parameter.layer(userParameters, LayerType.GenericRaster);
+      vOptions = params.vendorOptions;
     } else if (!isNullOrEmpty(userParameters)) {
       params.type = LayerType.GenericRaster;
     }
 
     if (params.name) {
       opts.name = params.name;
-    } else if (vendorOptions) {
-      opts.name = Utils.addFacadeName(params.name, vendorOptions);
+    } else if (vOptions) {
+      opts.name = Utils.addFacadeName(params.name, vOptions);
       params.name = params.name || opts.name;
     }
 
     if (params.legend) {
       opts.legend = params.legend;
-    } else if (vendorOptions) {
-      opts.legend = Utils.addFacadeLegend(vendorOptions) || params.name;
+    } else if (vOptions) {
+      opts.legend = Utils.addFacadeLegend(vOptions) || params.name;
       params.legend = params.legend || opts.legend;
     }
 
@@ -98,7 +100,7 @@ class GenericRaster extends LayerBase {
 
     opts.userMaxExtent = params.maxExtent || opts.userMaxExtent;
 
-    const impl = new GenericRasterImpl(opts, vendorOptions, 'raster');
+    const impl = new GenericRasterImpl(opts, vOptions, 'raster');
 
     // calls the super constructor
     super(params, impl);

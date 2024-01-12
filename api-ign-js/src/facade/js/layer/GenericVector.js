@@ -75,24 +75,26 @@ class GenericVector extends Vector {
   constructor(userParameters = {}, options = {}, vendorOptions = {}) {
     let params = { ...userParameters, ...options };
     const opts = options;
+    let vOptions = vendorOptions;
 
     if (typeof userParameters === 'string') {
       params = parameter.layer(userParameters, LayerType.GenericVector);
+      vOptions = params.vendorOptions;
     } else if (!isNullOrEmpty(userParameters)) {
       params.type = LayerType.GenericVector;
     }
 
     if (params.name) {
       opts.name = params.name;
-    } else if (vendorOptions) {
-      opts.name = Utils.addFacadeName(params.name, vendorOptions);
+    } else if (vOptions) {
+      opts.name = Utils.addFacadeName(params.name, vOptions);
       params.name = params.name || opts.name;
     }
 
     if (params.legend) {
       opts.legend = params.legend;
-    } else if (vendorOptions) {
-      opts.legend = Utils.addFacadeLegend(vendorOptions) || params.name;
+    } else if (vOptions) {
+      opts.legend = Utils.addFacadeLegend(vOptions) || params.name;
       params.legend = params.legend || opts.legend;
     }
 
@@ -105,10 +107,10 @@ class GenericVector extends Vector {
       Exception(getValue('exception').generic_method);
     }
 
-    const impl = new GenericVectorImpl(options, vendorOptions, 'vector');
+    const impl = new GenericVectorImpl(options, vOptions, 'vector');
 
     // calls the super constructor
-    super(params, options, vendorOptions, impl);
+    super(params, options, vOptions, impl);
 
     if (!isNullOrEmpty(impl) && isFunction(impl.setFacadeObj)) {
       impl.setFacadeObj(this);
