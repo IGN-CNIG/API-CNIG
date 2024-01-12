@@ -808,7 +808,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     }
 
     // Change zIndex value
-    this.clickedElementLayer.setZIndex(99999999999999999);
+    this.clickedElementLayer.setZIndex(9999999999999);
     // Stops showing polygon geometry
     if (!this.resultVisibility) {
       this.clickedElementLayer.setStyle(this.simple);
