@@ -478,7 +478,7 @@ export default class GeorefimageControl extends M.Control {
       const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
       queueEl.addEventListener('click', evt => this.downloadPrint(evt, base64image));
     } catch (exceptionVar) {
-      M.dialog.error(getValue('exception.error_download_image'));
+      M.toast.error('Error CrossOrigin', null, 6000);
     } finally {
       removeLoadQueueElement(queueEl);
     }
@@ -694,6 +694,22 @@ export default class GeorefimageControl extends M.Control {
         layer.type !== 'GenericRaster' &&
         layer.type !== 'GenericVector');
     });
+
+    const errorLayers = this.map_.getLayers().filter((layer) => {
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' &&
+        layer.name !== 'empty_layer' &&
+        layer.name !== '__draw__' && (
+        layer.type === 'GenericRaster' ||
+        layer.type === 'GenericVector' ||
+        layer.type === 'MBTiles' ||
+        layer.type === 'MBTilesVector' ||
+        layer.type === 'MVT'
+      ));
+    });
+
+    if (errorLayers.length !== 0) {
+      M.toast.error(getValue('exception.error_layers') + errorLayers.map(l => l.name).join(', '), null, 6000);
+    }
 
     if (this.map_.getZoom() === 20) {
       let contains = false;
