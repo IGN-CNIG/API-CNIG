@@ -205,7 +205,7 @@
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             objeto.tooltip = tooltipInput.value != "" ? tooltipInput.value : "";
-            objeto.defaultOpenControl = defaultOpenControlInput.value;
+            objeto.defaultOpenControl = Number(defaultOpenControlInput.value);
             let isDraggableValor = selectIsdraggable.options[selectIsdraggable.selectedIndex].value;
             isdraggable = isDraggableValor != "" ? objeto.isDraggable = (isDraggableValor == "true" || isDraggableValor == true) : "true";
             let useProxyValor = selectUseProxy.options[selectUseProxy.selectedIndex].value;
