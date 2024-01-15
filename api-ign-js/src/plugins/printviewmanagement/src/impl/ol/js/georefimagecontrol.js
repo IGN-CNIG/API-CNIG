@@ -80,8 +80,6 @@ export default class GeorefimageControl extends M.impl.Control {
     return (new Promise((success, fail) => {
       if (layer.type === M.layer.type.MVT) {
         success(this.encodeMVT(layer));
-      } else if (layer.type === M.layer.type.MBTilesVector) {
-        M.toast.error(getValue('exception.support'), 6000);
       } else if (layer.type === M.layer.type.KML &&
         // eslint-disable-next-line no-underscore-dangle
         layer.getImpl().formater_.extractStyles_ !== false) {
