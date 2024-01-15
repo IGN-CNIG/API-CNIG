@@ -204,7 +204,6 @@ export default class GeorefimageControl extends M.Control {
         } else {
           M.toast.error(getValue('exception.printError'), 6000);
         }
-        getQueueContainer(this.html_).lastChild.remove();
       } else {
         setTimeout(() => this.getStatus(url, callback), 1000);
       }
@@ -693,7 +692,9 @@ export default class GeorefimageControl extends M.Control {
         layer.name !== 'empty_layer' &&
         layer.name !== '__draw__' &&
         layer.type !== 'GenericRaster' &&
-        layer.type !== 'GenericVector');
+        layer.type !== 'GenericVector' &&
+        layer.type !== 'MBTiles' &&
+        layer.type !== 'MBTilesVector');
     });
 
     const errorLayers = this.map_.getLayers().filter((layer) => {
