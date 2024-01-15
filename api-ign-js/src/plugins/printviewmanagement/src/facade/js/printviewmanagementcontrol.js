@@ -70,7 +70,7 @@ export default class PrintViewManagementControl extends M.Control {
       this.georefImage_.printStatusUrl = printStatusUrl;
     }
 
-    this.tooltipGeorefImage_ = georefImage.tooltip || getValue('tooltip_georefimage');
+    this.tooltipGeorefImage_ = georefImage.tooltip || getValue('georeferenced_img');
 
     /**
     * Indicates if the control printermap is added to the plugin
