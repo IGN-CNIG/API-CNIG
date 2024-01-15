@@ -1310,7 +1310,14 @@ export default class LayerswitcherControl extends M.Control {
                   } else {
                     this.checkIfOGCAPIFeatures(url).then((reponseIsJson) => {
                       if (reponseIsJson === true) {
-                        this.printOGCModal(url);
+                        this.checkIfOGCAPICollection(url).then((responseIsOGC) => {
+                          if (responseIsOGC) {
+                            this.printOGCModal(url);
+                          } else {
+                            M.dialog.error(getValue('exception.ogcfeatures'));
+                            this.removeLoading();
+                          }
+                        });
                       } else {
                         M.proxy(this.useProxy);
                         M.remote.get(url).then((response3) => {
@@ -1802,11 +1809,26 @@ export default class LayerswitcherControl extends M.Control {
     return M.remote.get(`${url}?f=json`).then((response) => {
       let isJson = false;
       if (!M.utils.isNullOrEmpty(response) && !M.utils.isNullOrEmpty(response.text) && response.text.indexOf('collections') !== -1) {
-        const responseString = response.text;
-        JSON.parse(responseString);
         isJson = true;
       }
       return isJson;
+    }).catch(() => {
+      return false;
+    });
+  }
+
+  checkIfOGCAPICollection(url) {
+    M.proxy(this.useProxy);
+    const collections = `${(url.endsWith('/') ? url : `${url}/`)}collections?f=json`;
+    return M.remote.get(collections).then((response) => {
+      let isOGCAPI = false;
+      if (!M.utils.isNullOrEmpty(response) && !M.utils.isNullOrEmpty(response.text)) {
+        const responseJson = JSON.parse(response.text);
+        if (responseJson.collections.length > 0 && responseJson.collections[0].itemType === 'feature') {
+          isOGCAPI = true;
+        }
+      }
+      return isOGCAPI;
     }).catch(() => {
       return false;
     });

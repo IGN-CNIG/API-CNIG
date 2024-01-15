@@ -3,6 +3,7 @@
     "impl": "The implementation used cannot create LayerswitcherControl.",
     "extent": "Cannot get the extent of the layer",
     "capabilities": "An error has occurred in obtaining the GetCapabilities document",
+    "ogcfeatures": "The provided url does not correspond to a valid layer type",
     "only_http": "Only http services are allowed",
     "only_https": "Only https services are allowed",
     "no_http_https": "No http or https services allowed",
