@@ -16,6 +16,15 @@ Plugin que permite comparar varias capas dividiendo la pantalla en varias partes
  <script type="text/javascript" src="../../plugins/mirrorpanel/mirrorpanel.ol.min.js"></script>
 ```
 
+# Uso del histórico de versiones
+
+Existe un histórico de versiones de todos los plugins de API-CNIG en [api-ign-legacy](https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-legacy/plugins) para hacer uso de versiones anteriores.
+Ejemplo:
+```html
+ <link href="https://componentes.cnig.es/api-core/plugins/mirrorpanel/mirrorpanel-1.0.0.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/mirrorpanel/mirrorpanel-1.0.0.ol.min.js"></script>
+```
+
 # Parámetros
 
 El constructor se inicializa con un JSON de options con los siguientes atributos:

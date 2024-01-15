@@ -15,6 +15,15 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
  <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/viewhistory/viewhistory.ol.min.js"></script>
 ```
 
+# Uso del histórico de versiones
+
+Existe un histórico de versiones de todos los plugins de API-CNIG en [api-ign-legacy](https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-legacy/plugins) para hacer uso de versiones anteriores.
+Ejemplo:
+```html
+ <link href="https://componentes.cnig.es/api-core/plugins/viewhistory/viewhistory-1.0.0.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/viewhistory/viewhistory-1.0.0.ol.min.js"></script>
+```
+
 
 # Parámetros
 
