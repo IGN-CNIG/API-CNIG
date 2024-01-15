@@ -47,6 +47,7 @@ class Vector extends LayerBase {
    * - visibility. Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
+   * - predefinedStyles: Estilos predefinidos para la capa.
    * @param {Object} implParam Valores de la implementación por defecto.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
