@@ -110,6 +110,7 @@ export default class PrinterMapControl extends M.impl.Control {
         } else if (layer.type === M.layer.type.MBTiles ||
           layer.type === M.layer.type.MBTilesVector) {
           this.errors.push(layer.name);
+          M.toast.error(getValue('exception.support'), 6000);
           success('');
         } else {
           success(this.encodeWFS(layer));
