@@ -24,11 +24,11 @@ import getLayerExtent from '../util/wmtscapabilities';
 import ImplMap from '../Map';
 
 /**
-   * @classdesc
-   * GenericRaster permite añadir cualquier tipo de capa raster definida con la librería base.
-   * @api
-   * @extends {M.impl.layer.Layer}
-   */
+ * @classdesc
+ * GenericRaster permite añadir cualquier tipo de capa raster definida con la librería base.
+ * @api
+ * @extends {M.impl.layer.Layer}
+ */
 class GenericRaster extends LayerBase {
   /**
    * Constructor principal de la clase.
@@ -65,20 +65,20 @@ class GenericRaster extends LayerBase {
     this.options = options;
 
     /**
-       * Layer map. La instancia del mapa.
-       */
+     * Layer map. La instancia del mapa.
+     */
     this.map = null;
 
     /**
-       * WMS zIndex_. Índice de la capa, (+40).
-       */
+     * WMS zIndex_. Índice de la capa, (+40).
+     */
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.GenericRaster];
 
     this.sldBody = options.sldBody;
 
     /**
-       * WMS styles. Estilos de la capa.
-       */
+     * WMS styles. Estilos de la capa.
+     */
     this.styles = this.options.styles || '';
 
     this.style = vendorOptions.getStyle === undefined ? null : vendorOptions.getStyle().name;
@@ -88,8 +88,8 @@ class GenericRaster extends LayerBase {
     }
 
     /**
-       * WMS format. Formato de la capa, por defecto image/png.
-       */
+     * WMS format. Formato de la capa, por defecto image/png.
+     */
     this.format = this.options.format;
 
     this.ol3Layer = vendorOptions;
@@ -100,13 +100,13 @@ class GenericRaster extends LayerBase {
   }
 
   /**
-     * Este método agrega la capa al mapa.
-     *
-     * @public
-     * @function
-     * @param {M.impl.Map} map Mapa de la implementación.
-     * @api stable
-     */
+   * Este método agrega la capa al mapa.
+   *
+   * @public
+   * @function
+   * @param {M.impl.Map} map Mapa de la implementación.
+   * @api stable
+   */
   addTo(map) {
     this.map = map;
 
@@ -183,14 +183,14 @@ class GenericRaster extends LayerBase {
 
     // calculates the resolutions from scales
     if (!isNull(this.options) &&
-        !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
+      !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
       const units = this.map.getProjection().units;
       this.options.minResolution = getResolutionFromScale(this.options.minScale, units);
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
       this.ol3Layer.setMaxResolution(this.options.maxResolution);
       this.ol3Layer.setMinResolution(this.options.minResolution);
     } else if (!isNull(this.options) &&
-        !isNull(this.options.minResolution) && !isNull(this.options.maxResolution)) {
+      !isNull(this.options.minResolution) && !isNull(this.options.maxResolution)) {
       this.ol3Layer.setMaxResolution(this.options.maxResolution);
       this.ol3Layer.setMinResolution(this.options.minResolution);
     }
@@ -223,21 +223,21 @@ class GenericRaster extends LayerBase {
   getCapabilitiesWMS_(layerOl, projection) {
     const olSource = layerOl.getSource();
     const projectionCode = (olSource.getProjection()) ?
-      olSource.getProjection().getCode()
-      : projection;
+      olSource.getProjection().getCode() :
+      projection;
 
     const layerUrl = olSource.getUrl ? olSource.getUrl() : olSource.getUrls()[0];
 
     // serverUrl, version
     return new Promise((success, fail) => {
-      const url = getWMSGetCapabilitiesUrl(layerUrl, '1.3.0');
+      const url = getWMSGetCapabilitiesUrl(layerUrl, this.version);
       getRemote(url).then((response) => {
         const getCapabilitiesDocument = response.xml;
         const getCapabilitiesParser = new FormatWMS();
         const getCapabilities = getCapabilitiesParser.customRead(getCapabilitiesDocument);
 
         const getCapabilitiesUtils =
-            new GetCapabilities(getCapabilities, layerUrl, projectionCode);
+          new GetCapabilities(getCapabilities, layerUrl, projectionCode);
         success(getCapabilitiesUtils);
       });
     });
@@ -309,7 +309,7 @@ class GenericRaster extends LayerBase {
    */
   setURLService(url) {
     if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-        !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
+      !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
       this.ol3Layer.getSource().setUrl(url);
     }
   }
@@ -324,7 +324,7 @@ class GenericRaster extends LayerBase {
   getURLService() {
     let url = '';
     if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-        !isNullOrEmpty(this.ol3Layer.getSource())) {
+      !isNullOrEmpty(this.ol3Layer.getSource())) {
       const source = this.ol3Layer.getSource();
       if (!isNullOrEmpty(source.getUrl)) {
         url = this.ol3Layer.getSource().getUrl();
@@ -485,4 +485,3 @@ class GenericRaster extends LayerBase {
 }
 
 export default GenericRaster;
-
