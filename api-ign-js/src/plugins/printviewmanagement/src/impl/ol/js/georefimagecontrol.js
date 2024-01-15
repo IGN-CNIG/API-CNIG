@@ -106,7 +106,7 @@ export default class GeorefimageControl extends M.impl.Control {
       } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type) >
         -1) {
         success(this.encodeXYZ(layer));
-      } else {
+      } else if (layer.type !== M.layer.type.MBTiles && layer.type !== M.layer.type.MBTilesVector) {
         success(this.encodeWFS(layer));
       }
     }));
