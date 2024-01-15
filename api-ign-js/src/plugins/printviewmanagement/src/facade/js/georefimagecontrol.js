@@ -478,6 +478,7 @@ export default class GeorefimageControl extends M.Control {
       const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
       queueEl.addEventListener('click', evt => this.downloadPrint(evt, base64image));
     } catch (exceptionVar) {
+      queueEl.parentElement.remove();
       M.toast.error('Error CrossOrigin', null, 6000);
     } finally {
       removeLoadQueueElement(queueEl);
