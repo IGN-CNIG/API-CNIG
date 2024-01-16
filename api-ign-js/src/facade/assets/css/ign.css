@@ -210,6 +210,10 @@ button::-moz-focus-inner {
 	height: 500px !important;
 }*/
 
+.ol-viewport {
+   position: inherit !important; 
+}
+
 .ol-viewport,
 .ol-overlaycontainer-stopevent,
 .m-areas,
