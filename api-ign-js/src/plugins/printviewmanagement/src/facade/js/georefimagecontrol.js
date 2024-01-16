@@ -2,6 +2,7 @@
  * @module M/control/GeorefimageControl
  */
 import GeorefimageControlImpl from '../../impl/ol/js/georefimagecontrol';
+import { reproject, transformExt } from '../../impl/ol/js/utils';
 import georefimageHTML from '../../templates/georefimage';
 import { getValue } from './i18n/language';
 
@@ -565,8 +566,8 @@ export default class GeorefimageControl extends M.Control {
     if (proj.units === 'm') {
       const min = [bbox.x.min, bbox.y.min];
       const max = [bbox.x.max, bbox.y.max];
-      const newMin = this.getImpl().reproject(proj.code, min);
-      const newMax = this.getImpl().reproject(proj.code, max);
+      const newMin = reproject(proj.code, min);
+      const newMax = reproject(proj.code, max);
       dmsBbox = {
         x: {
           min: newMin[0],
@@ -663,7 +664,7 @@ export default class GeorefimageControl extends M.Control {
       printData.attributes.map.height = height;
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
       if (map.getProjection().code !== projection) {
-        printData.attributes.map.bbox = this.getImpl().transformExt(
+        printData.attributes.map.bbox = transformExt(
           printData.attributes.map.bbox, this.map_.getProjection().code,
           projection,
         );
@@ -671,7 +672,7 @@ export default class GeorefimageControl extends M.Control {
 
       if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM))) {
         printData.attributes.map.projection = 'EPSG:3857';
-        printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
+        printData.attributes.map.bbox = transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
       }
 
       return printData;
@@ -845,7 +846,7 @@ export default class GeorefimageControl extends M.Control {
       this.map_.getBbox().x.max,
       this.map_.getBbox().y.max,
     ];
-    bbox = this.getImpl().transformExt(bbox, code, this.projection_);
+    bbox = transformExt(bbox, code, this.projection_);
 
     // GET TITLE
     const titulo = generateTitle(title);

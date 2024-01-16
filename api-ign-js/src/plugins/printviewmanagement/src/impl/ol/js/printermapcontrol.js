@@ -582,25 +582,6 @@ export default class PrinterMapControl extends M.impl.Control {
   }
 
   /**
-   * This function reprojects map on selected SRS.
-   *
-   * @function
-   * @param {string} origin - EPSG:25830
-   * @param {array<number>} coordinates pair
-   * @api
-   */
-  reproject(origin, coordinates) {
-    const originProj = ol.proj.get(origin);
-    const destProj = ol.proj.get('EPSG:4326');
-    const coordinatesTransform = ol.proj.transform(coordinates, originProj, destProj);
-    return coordinatesTransform;
-  }
-
-  transformExt(box, code, currProj) {
-    return ol.proj.transformExtent(box, code, currProj);
-  }
-
-  /**
    * This function destroys this control, clearing the HTML
    * and unregistering all events
    *

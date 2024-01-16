@@ -2,6 +2,7 @@
  * @module M/control/GeorefImageEpsgControl
  */
 import Georefimage2ControlImpl from '../../impl/ol/js/georefimageepsgcontrol';
+import { reproject } from '../../impl/ol/js/utils';
 import georefimage2HTML from '../../templates/georefimageepsg';
 import { getValue } from './i18n/language';
 
@@ -31,11 +32,6 @@ export default class GeorefImageEpsgControl extends M.Control {
     if (M.utils.isUndefined(Georefimage2ControlImpl)) {
       M.exception(getValue('exception.impl'));
     }
-
-    if (M.utils.isUndefined(Georefimage2ControlImpl.prototype.encodeLayer)) {
-      M.exception(getValue('exception.encode_method'));
-    }
-
 
     this.layers_ = layers || [
       {
@@ -216,7 +212,7 @@ export default class GeorefImageEpsgControl extends M.Control {
   getUTMZoneProjection() {
     let res = this.map_.getProjection().code;
     const mapCenter = [this.map_.getCenter().x, this.map_.getCenter().y];
-    const center = this.getImpl().reproject(this.map_.getProjection().code, mapCenter);
+    const center = reproject(this.map_.getProjection().code, mapCenter);
     if (center[0] < -12 && center[0] >= -20) {
       res = 'EPSG:25828';
     } else if (center[0] < -6 && center[0] >= -12) {
