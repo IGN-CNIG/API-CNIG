@@ -99,6 +99,7 @@ export default class MouseSRSControl extends M.impl.Control {
       coordinateFormat: ol.coordinate.createStringXY(this.getDecimalUnits()), // this.precision_),
       projection: this.srs_,
       label: this.label_,
+      placeholder: '',
       undefinedHTML: '',
       className: 'm-mouse-srs',
       target: this.html_,
