@@ -101,6 +101,12 @@ https://componentes.cnig.es/api-core/?layerswitcher=position*collapsed*collapsib
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
+  <tr>
+    <td>precharged</td>
+    <td>Objeto</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
     <td>isMoveLayers</td>
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
