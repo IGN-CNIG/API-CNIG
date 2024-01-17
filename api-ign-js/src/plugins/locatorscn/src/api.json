@@ -49,7 +49,7 @@
       "position": 6
     },
     {
-      "type": "base64",
+      "type": "boolean",
       "name": "searchOptions",
       "position": 7
     },
