@@ -2,7 +2,9 @@
  * @module M/impl/control/GeorefimageControl
  */
 
-import { encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS, encodeMVT } from './encoders';
+import {
+  encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS, encodeMVT,
+} from './encoders';
 
 export default class GeorefimageControl extends M.impl.Control {
   /**
