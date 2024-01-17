@@ -69,16 +69,20 @@ class OSM extends LayerBase {
       userParameters = 'OSM';
     }
 
+    // This layer is of parameters.
+    const parameters = parameter.layer(userParameters, LayerType.OSM);
+    const optionsVar = {
+      ...parameters,
+    };
+
     /**
      * Implementación.
      * @public
      * @implements {M.layer.OSMImpl}
      * @type {M.layer.OSMImpl}
      */
-    const impl = new OSMImpl(userParameters, options, vendorOptions);
+    const impl = new OSMImpl(parameters, optionsVar, vendorOptions);
 
-    // This layer is of parameters.
-    const parameters = parameter.layer(userParameters, LayerType.OSM);
     if (isNullOrEmpty(parameters.name)) {
       parameters.name = 'osm';
     }

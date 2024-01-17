@@ -5,6 +5,7 @@
 import JsZip from 'jszip';
 import { saveAs } from 'file-saver';
 import PrinterMapControlImpl from '../../impl/ol/js/printermapcontrol';
+import { reproject, transformExt } from '../../impl/ol/js/utils';
 import printermapHTML from '../../templates/printermap';
 import { getValue } from './i18n/language';
 
@@ -570,8 +571,8 @@ export default class PrinterMapControl extends M.Control {
     if (proj.units === 'm') {
       const min = [bbox.x.min, bbox.y.min];
       const max = [bbox.x.max, bbox.y.max];
-      const newMin = this.getImpl().reproject(proj.code, min);
-      const newMax = this.getImpl().reproject(proj.code, max);
+      const newMin = reproject(proj.code, min);
+      const newMax = reproject(proj.code, max);
       dmsBbox = {
         x: {
           min: newMin[0],
@@ -688,7 +689,7 @@ export default class PrinterMapControl extends M.Control {
 
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
       if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
-        printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
+        printData.attributes.map.bbox = transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
       }
 
       return printData;

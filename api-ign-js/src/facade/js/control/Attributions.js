@@ -22,6 +22,13 @@ import KML from '../layer/KML';
  * @property {Number} order Accesibilidad, tabIndex.
  * @property {String} url_ URL del fichero de atribuciones.
  * @property {Object} collectionsAttributions Colección de atribuciones.
+ * @property {Boolean} closePanel Panel cerrado o abierto.
+ * @property {String} urlAttribute Texto de la url.
+ * @property {String} type geojson o kml, dependiendo de la url.
+ * @property {Number} scale Define cuando cambiara la atribución.
+ * @property {String} defaultAttribution Atribución por defecto.
+ * @property {String} defaultURL URL por defecto.
+ * @property {Number} order Accesibilidad, z-index.
  * @api
  */
 class Attributions extends ControlBase {
@@ -29,7 +36,19 @@ class Attributions extends ControlBase {
    * Constructor principal de la clase.
    *
    * @constructor
-   * @param {Object} options Opciones del control.
+   * @param {Number} scale_ Escala de visualización de la capa de atribuciones.
+   * @param {String} tooltip Texto del tooltip.
+   * @param {String} position Posición del control.
+   * @param {Number} order Accesibilidad, tabIndex.
+   * @param {String} url URL del fichero de atribuciones.
+   * @param {Object} collectionsAttributions Colección de atribuciones.
+   * @param {Boolean} closePanel Panel cerrado o abierto.
+   * @param {String} urlAttribute Texto de la url.
+   * @param {String} type geojson o kml, dependiendo de la url.
+   * @param {Number} scale Define cuando cambiara la atribución.
+   * @param {String} defaultAttribution Atribución por defecto.
+   * @param {String} defaultURL URL por defecto.
+   * @param {Number} order Accesibilidad, z-index.
    * @api
    */
   constructor(options = {}) {

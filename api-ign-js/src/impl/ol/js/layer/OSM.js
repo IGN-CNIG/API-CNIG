@@ -131,7 +131,8 @@ class OSM extends Layer {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
-    this.ol3Layer = new OLLayerTile(extend({}, this.vendorOptions_, true));
+    this.ol3Layer =
+        new OLLayerTile(extend({ visible: this.visibility }, this.vendorOptions_, true));
     this.updateSource_();
     this.map.getMapImpl().addLayer(this.ol3Layer);
 
@@ -211,7 +212,9 @@ class OSM extends Layer {
     }
     if (!isNullOrEmpty(this.ol3Layer) && isNullOrEmpty(this.vendorOptions_.source)) {
       const extent = this.facadeLayer_.getMaxExtent();
-      const newSource = new SourceOSM({});
+      const newSource = new SourceOSM({
+        url: this.url,
+      });
       this.ol3Layer.setSource(newSource);
       this.ol3Layer.setExtent(extent);
     }

@@ -105,7 +105,7 @@ class GenericRaster extends LayerBase {
     // calls the super constructor
     super(params, impl);
 
-    this.version = params.version;
+    this.version = params.version || '1.3.0';
 
     if (!isNullOrEmpty(impl) && isFunction(impl.setFacadeObj)) {
       impl.setFacadeObj(this);
@@ -113,13 +113,13 @@ class GenericRaster extends LayerBase {
   }
 
   /**
-  * Este método devuelve extensión máxima de esta capa.
-  *
-  * @function
-  * @param {Boolean} isSource Extent de la biblioteca base o no, por defecto verdadero.
-  * @returns {Array} Devuelve la extensión máxima de esta capa.
-  * @api
-  */
+   * Este método devuelve extensión máxima de esta capa.
+   *
+   * @function
+   * @param {Boolean} isSource Extent de la biblioteca base o no, por defecto verdadero.
+   * @returns {Array} Devuelve la extensión máxima de esta capa.
+   * @api
+   */
   getMaxExtent(isSource = true) {
     let extent = !isSource ? this.maxExtent_ : this.getImpl().getMaxExtent();
     if (isUndefined(extent) || isNullOrEmpty(extent)) {
@@ -129,23 +129,23 @@ class GenericRaster extends LayerBase {
   }
 
   /**
-    * Este método calcula la extensión máxima de esta capa.
-    *
-    * @function
-    * @returns {M.layer.maxExtent} Devuelve una promesa, con la extensión máxima de esta capa.
-    * @api
-    */
+   * Este método calcula la extensión máxima de esta capa.
+   *
+   * @function
+   * @returns {M.layer.maxExtent} Devuelve una promesa, con la extensión máxima de esta capa.
+   * @api
+   */
   calculateMaxExtent() {
     return new Promise(resolve => resolve(this.getMaxExtent(false)));
   }
   /**
-    * Este método cambia la extensión máxima de la capa.
-    *
-    * @function
-    * @param {Array|Object} maxExtent Nuevo valor para el "MaxExtent".
-    * @api
-    * @export
-    */
+   * Este método cambia la extensión máxima de la capa.
+   *
+   * @function
+   * @param {Array|Object} maxExtent Nuevo valor para el "MaxExtent".
+   * @api
+   * @export
+   */
   setMaxExtent(maxExtent) {
     let extent = maxExtent;
     if (!isArray(maxExtent) && isObject(maxExtent)) {
@@ -161,50 +161,50 @@ class GenericRaster extends LayerBase {
 
 
   /**
-    * Devuelve la url del servicio.
-    *
-    * @function
-    * @getter
-    * @public
-    * @returns {String} URL del servicio.
-    * @api
-    */
+   * Devuelve la url del servicio.
+   *
+   * @function
+   * @getter
+   * @public
+   * @returns {String} URL del servicio.
+   * @api
+   */
   get url() {
     return this.getImpl().getURLService();
   }
 
   /**
-    * Modifica la url del servicio.
-    * @function
-    * @setter
-    * @public
-    * @param {String} newUrl Nueva URL.
-    * @api
-    */
+   * Modifica la url del servicio.
+   * @function
+   * @setter
+   * @public
+   * @param {String} newUrl Nueva URL.
+   * @api
+   */
   set url(newUrl) {
     this.getImpl().setURLService(newUrl);
   }
 
   /**
-    * Devuelve la versión del servicio, por defecto es 1.3.0.
-    *
-    * @function
-    * @getter
-    * @return {M.layer.GenericRaster.impl.version} Versión del servicio.
-    * @api
-    */
+   * Devuelve la versión del servicio, por defecto es 1.3.0.
+   *
+   * @function
+   * @getter
+   * @return {M.layer.GenericRaster.impl.version} Versión del servicio.
+   * @api
+   */
   get version() {
     return this.getImpl().version;
   }
 
   /**
-    * Sobrescribe la versión del servicio, por defecto es 1.3.0.
-    *
-    * @function
-    * @setter
-    * @param {String} newVersion Nueva versión del servicio.
-    * @api
-    */
+   * Sobrescribe la versión del servicio, por defecto es 1.3.0.
+   *
+   * @function
+   * @setter
+   * @param {String} newVersion Nueva versión del servicio.
+   * @api
+   */
   set version(newVersion) {
     if (!isNullOrEmpty(newVersion)) {
       this.getImpl().setVersion(newVersion);
@@ -212,14 +212,14 @@ class GenericRaster extends LayerBase {
   }
 
   /**
-    * Este método comprueba si un objeto es igual
-    * a esta capa.
-    *
-    * @function
-    * @param {Object} obj Objeto a comparar.
-    * @returns {Boolean} Valor verdadero es igual, falso no lo es.
-    * @api
-    */
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
+   *
+   * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Valor verdadero es igual, falso no lo es.
+   * @api
+   */
   equals(obj) {
     let equals = false;
     if (obj instanceof GenericRaster) {

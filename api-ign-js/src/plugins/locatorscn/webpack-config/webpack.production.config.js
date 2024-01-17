@@ -13,6 +13,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'locatorscn.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`locatorscn-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),

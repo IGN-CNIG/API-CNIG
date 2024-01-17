@@ -56,6 +56,7 @@ class MBTilesVector extends Vector {
    * - opacity: Opacidad de capa, por defecto 1.
    * - style: Define el estilo de la capa.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - predefinedStyles: Estilos predefinidos para la capa.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVectorTile from 'ol/source/VectorTile';

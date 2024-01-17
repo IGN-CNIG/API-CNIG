@@ -3,6 +3,7 @@
     "impl": "La implementación usada no puede crear controles LayerswitcherControl.",
     "extent": "No se puede obtener la extensión de la capa",
     "capabilities": "Ha ocurrido un error al obtener el documento GetCapabilities",
+    "ogcfeatures": "La url proporcionada no se corresponde con un tipo de capa válida",
     "only_http": "Sólo se permiten servicios http",
     "only_https": "Sólo se permiten servicios https",
     "no_http_https": "No se permiten servicios http ni https",

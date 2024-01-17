@@ -6,7 +6,7 @@ import Control from './Control';
 
 /**
  * @classdesc
- * Agregar escala numérica.
+ * Panel de atribuciones API-CING.
  * @api
  */
 class Attributions extends Control {
@@ -14,10 +14,6 @@ class Attributions extends Control {
    * Constructor principal de la clase.
    *
    * @constructor
-   * @param {Object} options Opciones del control.
-   * - Order: Orden que tendrá con respecto al
-   * resto de plugins y controles por pantalla.
-   * - exactScale: Escala exacta.
    * @extends {ol.control.Control}
    * @api stable
    */

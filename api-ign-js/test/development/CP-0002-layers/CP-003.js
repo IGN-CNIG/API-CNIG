@@ -10,8 +10,10 @@ const mapa = Mmap({
   layers: [osm]
 });
 
+// mapa.addLayers('OSM*nombre*legend*https://a.tile.opentopomap.org/{z}/{x}/{y}.png*true*true')
 // mapa.addLayers(osm);
 
 window.mapa = mapa;
+// window.osm = osm
 
 

@@ -96,14 +96,15 @@ export const center = (centerParameterVar) => {
 };
 
 const getParameters = (params) => {
-  const urlParams = params.split(/\*/);
+  const [type, name, legend, url, visibility, transparent = false] = params.split(/\*/);
+  const visibilidadBoolean = visibility === undefined ? undefined : visibility === 'true';
   return {
-    type: urlParams[0] || undefined,
-    name: urlParams[1] || undefined,
-    legend: urlParams[2] || undefined,
-    url: urlParams[3] || undefined,
-    visibility: urlParams[4] || undefined,
-    transparent: urlParams[5] || false,
+    type,
+    name,
+    legend,
+    url,
+    visibility: visibilidadBoolean,
+    transparent: transparent === 'true',
   };
 };
 
