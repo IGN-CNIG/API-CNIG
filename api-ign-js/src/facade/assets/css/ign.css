@@ -211,8 +211,8 @@ button::-moz-focus-inner {
 }*/
 
 .ol-viewport {
-   position: inherit !important; 
-}
+    position: initial !important; 
+ }
 
 .ol-viewport,
 .ol-overlaycontainer-stopevent,
