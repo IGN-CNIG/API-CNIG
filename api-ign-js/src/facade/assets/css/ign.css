@@ -211,7 +211,7 @@ button::-moz-focus-inner {
 }*/
 
 .ol-viewport {
-    position: initial !important; 
+    position: inherit !important; 
  }
 
 .ol-viewport,
