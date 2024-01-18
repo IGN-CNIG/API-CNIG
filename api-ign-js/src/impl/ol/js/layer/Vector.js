@@ -80,6 +80,8 @@ class Vector extends Layer {
      */
     this.visibility = options.visibility !== false;
 
+    this.maxExtent_ = options.maxExtent;
+
     // [WARN]
     // applyOLLayerSetStyleHook();
   }
@@ -103,6 +105,7 @@ class Vector extends Layer {
     olMap.addLayer(this.ol3Layer);
     this.ol3Layer.setMaxZoom(this.maxZoom);
     this.ol3Layer.setMinZoom(this.minZoom);
+    this.ol3Layer.setExtent(this.maxExtent_);
   }
 
   /**

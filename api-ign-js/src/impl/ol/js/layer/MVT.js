@@ -141,7 +141,8 @@ class MVT extends Vector {
       });
     }
 
-    const extent = this.facadeVector_.getMaxExtent();
+    const extent = this.maxExtent_ || this.facadeVector_.getMaxExtent();
+
     const source = new OLSourceVectorTile({
       format: this.formater_,
       url: this.url,

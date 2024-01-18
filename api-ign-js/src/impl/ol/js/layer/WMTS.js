@@ -280,6 +280,7 @@ class WMTS extends LayerBase {
         source: wmtsSource,
         minResolution,
         maxResolution,
+        extent: this.userMaxExtent,
       }, this.vendorOptions_, true));
 
       // keeps z-index values before ol resets
@@ -348,6 +349,7 @@ class WMTS extends LayerBase {
         source: wmtsSource,
         minResolution,
         maxResolution,
+        extent: this.userMaxExtent,
       }, this.vendorOptions_, true));
 
       // keeps z-index values before ol resets

@@ -78,12 +78,23 @@ class WFS extends Vector {
    * </code></pre>
    * @api
    */
-  constructor(userParams, options = {}, vendorOpts = {}, impl = new WFSImpl(options, vendorOpts)) {
+  constructor(userParams = {}, options = {}, vendorOpts = {}, implParam) {
     // This layer is of parameters.
     const parameters = parameter.layer(userParams, LayerType.WFS);
 
+    const optionsVar = options;
+
+    if (typeof userParams !== 'string') {
+      optionsVar.maxExtent = userParams.maxExtent;
+    }
+
+    let impl = implParam;
+    if (!implParam) {
+      impl = new WFSImpl(optionsVar, vendorOpts);
+    }
+
     // calls the super constructor
-    super(parameters, options, undefined, impl);
+    super(parameters, optionsVar, undefined, impl);
 
     // checks if the implementation can create WFS layers.
     if (isUndefined(WFSImpl)) {

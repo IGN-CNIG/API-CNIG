@@ -449,18 +449,6 @@ class MBTilesVector extends Vector {
   }
 
   /**
-   * Este método establece la máxima extensión de la capa.
-   *
-   * @function
-   * @param {Mx.Extent} maxExtent Máxima extensión.
-   * @public
-   * @api
-   */
-  setMaxExtent(maxExtent) {
-    this.ol3Layer.setExtent(maxExtent);
-  }
-
-  /**
    * Este método obtiene la mínima resolución de la capa.
    *
    * @function

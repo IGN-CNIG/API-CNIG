@@ -64,20 +64,26 @@ class GeoJSON extends LayerVector {
    * </code></pre>
    * @api
    */
-  constructor(parameters, options = {}, vendorOptions) {
+  constructor(parameters = {}, options = {}, vendorOptions) {
+    const optionsVar = options;
+
+    if (typeof parameters !== 'string') {
+      optionsVar.maxExtent = parameters.maxExtent;
+    }
+
     /**
      * Implementación
      * @public
      * @implements {M.impl.layer.GeoJSON}
      * @type {M.impl.layer.GeoJSON}
      */
-    const impl = new GeoJSONImpl(parameters, options, vendorOptions);
+    const impl = new GeoJSONImpl(parameters, optionsVar, vendorOptions);
 
     const opts = parameters;
     opts.type = GeoJSONType;
 
     // Llama al contructor del que se extiende la clase
-    super(opts, options, undefined, impl);
+    super(opts, optionsVar, undefined, impl);
 
     // Comprueba si la implementación puede crear capas GeoJSON
     if (isUndefined(GeoJSONImpl)) {

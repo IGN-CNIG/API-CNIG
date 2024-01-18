@@ -73,10 +73,12 @@ class WMTS extends LayerBase {
    */
   constructor(userParameters, options = {}, vendorOptions = {}) {
     const parameters = parameter.layer(userParameters, LayerType.WMTS);
-    const optionsVar = {
-      ...options,
-      ...parameters,
-    };
+
+    const optionsVar = options;
+
+    if (typeof userParameters !== 'string') {
+      optionsVar.maxExtent = userParameters.maxExtent;
+    }
 
     /**
      * WMTS minZoom: Límite del zoom mínimo.

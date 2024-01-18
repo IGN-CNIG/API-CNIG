@@ -87,6 +87,8 @@ class LayerBase extends MObject {
      * Layer maxZoom. Zoom máximo aplicable a la capa.
      */
     this.maxZoom = this.options.maxZoom || Number.POSITIVE_INFINITY;
+
+    this.userMaxExtent = options.maxExtent;
   }
 
   /**
@@ -331,6 +333,30 @@ class LayerBase extends MObject {
    */
   getLegendURL() {
     return this.legendUrl_;
+  }
+
+  /**
+   * Este método establece la máxima extensión de la capa.
+   *
+   * @function
+   * @param {Mx.Extent} maxExtent Máxima extensión.
+   * @public
+   * @api
+   */
+  setMaxExtent(maxExtent) {
+    this.ol3Layer.setExtent(maxExtent);
+  }
+
+  /**
+   * Este método devuelve la máxima extensión de la capa.
+   *
+   * @function
+   * @param {Mx.Extent} maxExtent Máxima extensión.
+   * @public
+   * @api
+   */
+  getMaxExtent() {
+    this.ol3Layer.getExtent();
   }
 
   /**

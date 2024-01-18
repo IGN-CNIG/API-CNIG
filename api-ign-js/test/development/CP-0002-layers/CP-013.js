@@ -15,7 +15,7 @@ import { map as Mmap } from 'M/mapea';
 // import { wmts_001 } from '../layers/wmts/wmts';
 // import { xyz_001 } from '../layers/xyz/xyz';
 // import { osm } from '../layers/osm/osm';
-import { mbtile_01 } from '../layers/mbtiles/mbtiles';
+// import { mbtile_01 } from '../layers/mbtiles/mbtiles';
 
 
 const mapa = Mmap({
@@ -60,17 +60,21 @@ const mapa = Mmap({
 //     geojson_001.setMaxExtent([-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652])
 // }, 5000);
 
-// [NO CARGA :(] mbtilesvector
+// [-] mbtilesvector
+// mapa.addLayers(mbtileVector_001)
+// console.log(mbtileVector_001.getMaxExtent())
+// setTimeout(() => {
+//   mbtileVector_001.setMaxExtent([-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652])
+// }, 5000);
 
 // [NO APLICA ¿?] OGCAPI
 // mapa.addLayers(ogcAPIFeatures_001)
-// console.log(geojson_001.getMaxExtent())
+// console.log(ogcAPIFeatures_001.getMaxExtent())
 // setTimeout(() => {
-//     geojson_001.setMaxExtent([-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652])
+//     ogcAPIFeatures_001.setMaxExtent([-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652])
 // }, 5000);
 
 // [-] GenericVector
-// [ ] Refactorizar ¿?
 // mapa.addLayers(generic_002)
 // console.log(generic_002.getMaxExtent())
 // setTimeout(() => {
@@ -88,14 +92,21 @@ const mapa = Mmap({
 // }, 5000);
 
 
-// [??] TMS
+// [-] TMS
 // mapa.addLayers(tms_001)
+// console.log(tms_001.getMaxExtent())
+// setTimeout(() => {
+//   tms_001.setMaxExtent([-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652])
+// }, 5000);
 
 // [-] XYZ
 // mapa.addLayers(xyz_001)
+// console.log(xyz_001.getMaxExtent())
+// setTimeout(() => {
+//   xyz_001.setMaxExtent([-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652])
+// }, 5000);
 
 // [-] OSM
-// [ ] Refactorizar ?¿
 // mapa.addLayers(osm)
 // console.log(osm.getMaxExtent())
 // setTimeout(() => {
@@ -104,7 +115,10 @@ const mapa = Mmap({
 
 // [-] MBTILES
 // mapa.addLayers(mbtile_01)
-
+// console.log(mbtile_01.getMaxExtent())
+// setTimeout(() => {
+//     mbtile_01.setMaxExtent([-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652])
+// }, 5000);
 
 window.mapa = mapa;
 

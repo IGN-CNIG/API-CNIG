@@ -89,7 +89,11 @@ class TMS extends LayerBase {
 
     const parameters = parameter.layer(userParameters, LayerType.TMS);
 
-    const optionsVars = { ...options };
+    const optionsVars = options;
+
+    if (typeof userParameters !== 'string') {
+      optionsVars.maxExtent = userParameters.maxExtent;
+    }
 
     if (!isNullOrEmpty(parameters.crossOrigin)) {
       optionsVars.crossOrigin = parameters.crossOrigin;

@@ -77,7 +77,14 @@ class XYZ extends LayerBase {
      * @implements {M.impl.layer.XYZ}
      * @type {M.impl.layer.XYZ}
      */
-    const impl = new XYZImpl(userParameters, options, vendorOptions);
+
+    const optionsVar = options;
+
+    if (typeof userParameters !== 'string') {
+      optionsVar.maxExtent = userParameters.maxExtent;
+    }
+
+    const impl = new XYZImpl(userParameters, optionsVar, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
     /**

@@ -63,15 +63,21 @@ class KML extends LayerVector {
    * </code></pre>
    * @api
    */
-  constructor(userParameters, options = {}, vendorOptions = {}) {
+  constructor(userParameters = {}, options = {}, vendorOptions = {}) {
     const parameters = parameter.layer(userParameters, LayerType.KML);
     const optionsVar = options;
+
     optionsVar.label = parameters.label;
     optionsVar.visibility = parameters.visibility;
     optionsVar.layers = userParameters.layers || undefined;
     optionsVar.removeFolderChildren = isUndefined(userParameters.removeFolderChildren) ?
       true :
       userParameters.removeFolderChildren;
+
+    if (typeof userParameters !== 'string') {
+      optionsVar.maxExtent = userParameters.maxExtent;
+    }
+
     /**
      * Implementación de la capa.
      * @public

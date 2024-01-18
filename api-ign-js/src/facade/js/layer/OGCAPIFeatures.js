@@ -89,16 +89,21 @@ class OGCAPIFeatures extends Vector {
     // This layer is of parameters.
     const parameters = parameter.layer(userParams, LayerType.OGCAPIFeatures);
 
+    const optionsVar = opt;
+
+    if (typeof userParams !== 'string') {
+      optionsVar.maxExtent = userParams.maxExtent;
+    }
     /**
      * Implementación
      * @public
      * @implements {M.impl.layer.OGCAPIFeatures}
      * @type {M.impl.layer.OGCAPIFeatures}
      */
-    const impl = new OGCAPIFeaturesImpl(opt, vendorOpts);
+    const impl = new OGCAPIFeaturesImpl(optionsVar, vendorOpts);
 
     // Llama al contructor del que se extiende la clase
-    super(parameters, opt, undefined, impl);
+    super(parameters, optionsVar, undefined, impl);
 
     // Comprueba si la implementación puede crear capas OGCAPIFeatures
     if (isUndefined(OGCAPIFeaturesImpl)) {
