@@ -45,6 +45,7 @@ class WMTS extends LayerBase {
    * - type: Tipo de la capa.
    * - isBase: Define si la capa es base o no.
    * - useCapabilities: Define si se utilizará el capabilities para generar la capa.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán
    * a la implementación de la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.

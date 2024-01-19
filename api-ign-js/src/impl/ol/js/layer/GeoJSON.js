@@ -41,6 +41,7 @@ class GeoJSON extends Vector {
    * - opacity. Opacidad de capa, por defecto 1.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - style. Define el estilo de la capa.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';

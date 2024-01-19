@@ -24,6 +24,7 @@ class LayerBase extends MObject {
    * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Pasa los "vendorOptions" heredados a la clase
    * MObject (M/Object).
    *

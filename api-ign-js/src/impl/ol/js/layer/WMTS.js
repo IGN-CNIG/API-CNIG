@@ -54,6 +54,7 @@ class WMTS extends LayerBase {
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - crossOrigin: Atributo crossOrigin para las imágenes cargadas
    * - opacity: Opacidad de capa, por defecto 1.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import { default as OLSourceWMTS } from 'ol/source/WMTS';

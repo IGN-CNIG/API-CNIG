@@ -50,6 +50,7 @@ class MVT extends Vector {
    * - mode: Modo de renderizado de la capa. Valores posibles: 'renderizar' | 'característica'.
    * - extract: Opcional Activa la consulta por click en el objeto geográfico, por defecto falso.
    * - type: Tipo de la capa.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - style: Define el estilo de la capa.

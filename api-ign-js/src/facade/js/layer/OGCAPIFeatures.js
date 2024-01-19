@@ -66,6 +66,7 @@ class OGCAPIFeatures extends Vector {
    * - geometry: Tipo de geometría: POINT(Punto), MPOINT(Multiples puntos),
    * LINE(línea), MLINE(Multiples línes), POLYGON(Polígono), or MPOLYGON(Multiples polígonos).
    * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - predefinedStyles: Estilos predefinidos para la capa.
