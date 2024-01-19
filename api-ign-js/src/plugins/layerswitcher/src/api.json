@@ -28,7 +28,7 @@
       "name": "isDraggable",
       "position": 4
     }, {
-      "type": "simple",
+      "type": "boolean",
       "name": "isMoveLayers",
       "position": 5
     }, {

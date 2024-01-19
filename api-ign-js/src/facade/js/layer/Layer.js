@@ -31,6 +31,7 @@ class LayerBase extends Base {
    * @extends {M.facade.Base}
    * @param {string|Mx.parameters.Layer} userParameters Parámetros proporcionados por el usuario.
    * - isBase: Indica si la capa es base.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} impl Implementación.
    * @api
    */
@@ -99,7 +100,7 @@ class LayerBase extends Base {
      * MaxExtent proporcionado por el usuario, la medida en que
      * restringe la visualización a una región específica.
      */
-    this.userMaxExtent = parameter.maxExtent;
+    this.userMaxExtent = parameter.maxExtent || userParameters.maxExtent;
 
     /**
      * Layer Legend:

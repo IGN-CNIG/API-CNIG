@@ -48,6 +48,7 @@ class WMS extends LayerBase {
    * - type: Tipo de la capa.
    * - isBase: Indica si la capa es base.
    * - useCapabilities: Define si se utilizará el capabilities para generar la capa.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - visibility: Indica la visibilidad de la capa.

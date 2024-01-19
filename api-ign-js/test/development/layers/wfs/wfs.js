@@ -6,6 +6,7 @@ export const wfs_001 = new WFS({
     name: "Provincias",
     legend: "Provincias",
     geometry: 'MPOLYGON',
+    // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
     // extract: true,
     // infoEventType: 'click',
     // ids:"3,4",

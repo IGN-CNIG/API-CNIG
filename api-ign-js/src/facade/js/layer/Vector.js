@@ -66,8 +66,15 @@ class Vector extends LayerBase {
     const optns = parameters;
     optns.type = !parameters.type ? LayerType.Vector : parameters.type;
 
+    const optionsVars = options;
+
+    if (typeof parameters !== 'string') {
+      optionsVars.maxExtent = (parameters.maxExtent) ? parameters.maxExtent : options.maxExtent;
+      optns.maxExtent = optionsVars.maxExtent;
+    }
+
     // calls the super constructor
-    const impl = implParam || new VectorImpl(options, vendorOptions);
+    const impl = implParam || new VectorImpl(optionsVars, vendorOptions);
     super(optns, impl);
 
     // checks if the implementation can create Vector

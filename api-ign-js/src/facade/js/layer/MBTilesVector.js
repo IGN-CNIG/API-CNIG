@@ -73,13 +73,19 @@ class MBTilesVector extends Vector {
   constructor(userParameters = {}, options = {}, vendorOptions = {}) {
     const parameters = parameter.layer(userParameters, LayerType.MBTilesVector);
 
+    const optionsVar = options;
+
+    if (typeof userParameters !== 'string') {
+      optionsVar.maxExtent = userParameters.maxExtent;
+    }
+
     /**
      * Implementación.
      * @public
      * @implements {M.impl.layer.MBTilesVector}
      * @type {M.impl.layer.MBTilesVector}
      */
-    const impl = new MBTilesVectorImpl(parameters, options, vendorOptions);
+    const impl = new MBTilesVectorImpl(parameters, optionsVar, vendorOptions);
     super(parameters, options, vendorOptions, impl);
     if (isUndefined(MBTilesVectorImpl)) {
       Exception(getValue('exception').mbtilesvector_method);

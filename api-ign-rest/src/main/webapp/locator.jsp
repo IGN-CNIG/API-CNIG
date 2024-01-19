@@ -89,10 +89,18 @@
             <option value="false">false</option>
         </select>
         <label for="inputByPlaceAddressPostal">byPlaceAddressPostal</label>
-        <select name="byPlaceAddressPostal" id="inputByPlaceAddressPostal">
-            <option value="true" selected="selected">true</option>
-            <option value="false">false</option>
-        </select>
+        <textarea name="byPlaceAddressPostal" id="inputByPlaceAddressPostal" rows="4">{
+ "maxResults": 20,
+ "noProcess": "poblacion",
+ "countryCode": "es",
+ "reverse": false,
+ "resultVisibility": true,
+ "urlCandidates": "http://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp",
+ "urlFind": "http://www.cartociudad.es/geocoder/api/geocoder/findJsonp",
+ "urlReverse": "http://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode",
+ "geocoderCoords": [-5.741757, 41.512058],
+ "requestStreet": "https://www.cartociudad.es/geocoder/api/geocoder/findJsonp?q=Sevilla&type=provincia&tip_via=null&id=41&portal=null&extension=null",
+}</textarea>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -174,7 +182,7 @@
             objeto.isDraggable = (selectDraggable.options[selectDraggable.selectedIndex].value == 'true');
             objeto.byParcelCadastre = (selectParcel.options[selectParcel.selectedIndex].value == 'true');
             objeto.byCoordinates = (selectCoordinates.options[selectCoordinates.selectedIndex].value == 'true');
-            objeto.byPlaceAddressPostal = (selectPlace.options[selectPlace.selectedIndex].value == 'true');
+            objeto.byPlaceAddressPostal = JSON.parse(selectPlace.value);
             map.removePlugins(mp);
             crearPlugin(objeto);
         }

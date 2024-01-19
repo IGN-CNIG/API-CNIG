@@ -6,6 +6,7 @@ export const ogcAPIFeatures_001 = new OGCAPIFeatures({
     legend: 'Capa OGCAPIFeatures',
     extract: true,
     infoEventType: 'hover',
+    // maxExtent: [-953031.9167337259, 5198473.475942763, -879652.3695799566, 5233405.1978690885],
     // limit: 20,
     // isBase: true,
     // transparent: false,
@@ -23,8 +24,8 @@ export const ogcAPIFeatures_001 = new OGCAPIFeatures({
   // }
 );
 
-export const ogcAPIFeatures_002 = new OGCAPIFeatures({
-  url: 'https://api-features.idee.es/collections/',
-  name: 'hidrografia/Wetland',
-  legend: 'Capa OGCAPIFeatures',
-});
+// export const ogcAPIFeatures_002 = new OGCAPIFeatures({
+//   url: 'https://api-features.idee.es/collections/',
+//   name: 'hidrografia/Wetland',
+//   legend: 'Capa OGCAPIFeatures',
+// });

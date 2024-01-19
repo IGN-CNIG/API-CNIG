@@ -33,6 +33,7 @@ class Vector extends Layer {
    * - visibility. Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -80,6 +81,8 @@ class Vector extends Layer {
      */
     this.visibility = options.visibility !== false;
 
+    this.maxExtent_ = options.maxExtent;
+
     // [WARN]
     // applyOLLayerSetStyleHook();
   }
@@ -98,11 +101,15 @@ class Vector extends Layer {
     map.on(EventType.CHANGE_PROJ, this.setProjection_.bind(this), this);
     this.ol3Layer = new OLLayerVector(this.vendorOptions_);
     this.updateSource_();
+    if (this.opacity_) {
+      this.setOpacity(this.opacity_);
+    }
     this.setVisible(this.visibility);
     const olMap = this.map.getMapImpl();
     olMap.addLayer(this.ol3Layer);
     this.ol3Layer.setMaxZoom(this.maxZoom);
     this.ol3Layer.setMinZoom(this.minZoom);
+    this.ol3Layer.setExtent(this.maxExtent_);
   }
 
   /**

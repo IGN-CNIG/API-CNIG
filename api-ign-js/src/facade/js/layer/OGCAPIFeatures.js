@@ -66,6 +66,7 @@ class OGCAPIFeatures extends Vector {
    * - geometry: Tipo de geometría: POINT(Punto), MPOINT(Multiples puntos),
    * LINE(línea), MLINE(Multiples línes), POLYGON(Polígono), or MPOLYGON(Multiples polígonos).
    * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - predefinedStyles: Estilos predefinidos para la capa.
@@ -89,16 +90,21 @@ class OGCAPIFeatures extends Vector {
     // This layer is of parameters.
     const parameters = parameter.layer(userParams, LayerType.OGCAPIFeatures);
 
+    const optionsVar = opt;
+
+    if (typeof userParams !== 'string') {
+      optionsVar.maxExtent = userParams.maxExtent;
+    }
     /**
      * Implementación
      * @public
      * @implements {M.impl.layer.OGCAPIFeatures}
      * @type {M.impl.layer.OGCAPIFeatures}
      */
-    const impl = new OGCAPIFeaturesImpl(opt, vendorOpts);
+    const impl = new OGCAPIFeaturesImpl(optionsVar, vendorOpts);
 
     // Llama al contructor del que se extiende la clase
-    super(parameters, opt, undefined, impl);
+    super(parameters, optionsVar, undefined, impl);
 
     // Comprueba si la implementación puede crear capas OGCAPIFeatures
     if (isUndefined(OGCAPIFeaturesImpl)) {

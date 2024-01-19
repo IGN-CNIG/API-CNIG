@@ -404,7 +404,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/transparency",
     "image": "img/api-logo.png",
     "description": "Herramienta de comparación de tipo lupa.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "vectors",

@@ -44,6 +44,7 @@ class XYZ extends LayerBase {
    * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - type: Tipo de la capa.
    * - isBase: Indica si la capa es base.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
    * - opacity: Opacidad de la capa.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
@@ -77,7 +78,14 @@ class XYZ extends LayerBase {
      * @implements {M.impl.layer.XYZ}
      * @type {M.impl.layer.XYZ}
      */
-    const impl = new XYZImpl(userParameters, options, vendorOptions);
+
+    const optionsVar = options;
+
+    if (typeof userParameters !== 'string') {
+      optionsVar.maxExtent = userParameters.maxExtent;
+    }
+
+    const impl = new XYZImpl(userParameters, optionsVar, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
     /**

@@ -171,7 +171,7 @@ class XYZ extends Layer {
       visible: this.visibility,
       opacity: this.opacity_,
       zIndex: this.zIndex_,
-      extent,
+      extent: this.userMaxExtent || extent,
     }, this.vendorOptions_, true));
     this.map.getMapImpl().addLayer(this.ol3Layer);
     const source = new XYZSource({

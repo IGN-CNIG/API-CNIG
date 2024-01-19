@@ -41,6 +41,7 @@ class KML extends Vector {
    * - layers. Permite filtrar el fichero KML por nombre de carpetas.
    * - removeFolderChildren: Permite no mostrar las
    * carpetas descendientes de las carpetas filtradas. Por defecto: true.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -153,7 +154,10 @@ class KML extends Vector {
       extractStyles: this.extractStyles_,
     });
     this.loader_ = new LoaderKML(this.map, this.url, this.formater_);
-    this.ol3Layer = new OLLayerVector(extend({}, this.vendorOptions_, true));
+    this.ol3Layer = new OLLayerVector(extend({
+      extent: this.maxExtent_,
+      opacity: this.opacity_,
+    }, this.vendorOptions_, true));
     this.updateSource_();
     // sets its visibility if it is in range
     // if (this.options.visibility !== false) {

@@ -5,6 +5,7 @@ export const wmts_001 = new WMTS({
     name: 'EL.GridCoverageDSM',
     legend: 'Modelo Digital de Superficies LiDAR',
     matrixSet: 'GoogleMapsCompatible',
+    maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
     // visibility: true,
     // isBase: false,
     // transparent: true,

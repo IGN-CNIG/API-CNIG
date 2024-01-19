@@ -3,6 +3,7 @@ import MBTilesVector from 'M/layer/MBTilesVector';
 export const mbtileVector_001 = new MBTilesVector({
     name: 'mbtilesvector',
     legend: 'Capa personalizada MBTilesVector',
+    // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
     // attribution: {
     //   name: 'Name Prueba MBTilesVector',
     //   description: 'Description Prueba',

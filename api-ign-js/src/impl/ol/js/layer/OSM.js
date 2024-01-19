@@ -32,6 +32,7 @@ class OSM extends Layer {
    * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import SourceOSM from 'ol/source/OSM';
@@ -134,6 +135,9 @@ class OSM extends Layer {
     this.ol3Layer =
         new OLLayerTile(extend({ visible: this.visibility }, this.vendorOptions_, true));
     this.updateSource_();
+    if (this.opacity_) {
+      this.setOpacity(this.opacity_);
+    }
     this.map.getMapImpl().addLayer(this.ol3Layer);
 
     this.map.getImpl().getMapImpl().getControls().getArray()
