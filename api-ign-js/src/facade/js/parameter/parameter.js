@@ -2691,6 +2691,9 @@ export const tms = (userParamer) => {
     // gets the crossOrigin
     layerObj.crossOrigin = getExtraParameter(userParam, undefined, 5, 'crossOrigin');
 
+    // gets tileSize
+    layerObj.tileSize = getExtraParameter(userParam, undefined, 6, 'tileSize');
+
     return layerObj;
   });
 
