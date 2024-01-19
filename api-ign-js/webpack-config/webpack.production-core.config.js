@@ -4,6 +4,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopywebpackPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const webpack = require('webpack');
 
 const PJSON_PATH = path.resolve(__dirname, '..', 'package.json');
 const pjson = require(PJSON_PATH);
@@ -21,6 +22,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
     filename: 'js/[name].js',
+    chunkFilename: 'chunk.js'
   },
   resolve: {
     alias: {
@@ -41,6 +43,11 @@ module.exports = {
     },
   },
   module: {
+    parser: {
+      javascript: {
+        dynamicImportMode: "eager"
+      }
+    },
     rules: [
       {
         test: /\.js$/,
@@ -86,6 +93,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1,
+    }),
     new MiniCssExtractPlugin({
       filename: 'assets/css/[name].css',
     }),
