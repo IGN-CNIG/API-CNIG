@@ -122,7 +122,6 @@ class GetFeatureInfo extends Control {
     const wmtsInfoURLS = this.buildWMTSInfoURL([...this.facadeMap_.getWMTS(), ...urlsWMTS]);
     const layerNamesUrls = [...wmtsInfoURLS, ...wmsInfoURLS]
       .filter(layer => !isNullOrEmpty(layer));
-    console.log(wmsInfoURLS, wmtsInfoURLS);
     if (layerNamesUrls.length > 0) {
       this.showInfoFromURL_(layerNamesUrls, evt.coordinate, olMap);
     } else {

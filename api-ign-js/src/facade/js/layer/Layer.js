@@ -99,7 +99,7 @@ class LayerBase extends Base {
      * MaxExtent proporcionado por el usuario, la medida en que
      * restringe la visualización a una región específica.
      */
-    this.userMaxExtent = parameter.maxExtent;
+    this.userMaxExtent = parameter.maxExtent || userParameters.maxExtent;
 
     /**
      * Layer Legend:

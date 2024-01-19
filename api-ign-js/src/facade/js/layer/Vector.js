@@ -69,7 +69,8 @@ class Vector extends LayerBase {
     const optionsVars = options;
 
     if (typeof parameters !== 'string') {
-      optionsVars.maxExtent = parameters.maxExtent;
+      optionsVars.maxExtent = (parameters.maxExtent) ? parameters.maxExtent : options.maxExtent;
+      optns.maxExtent = optionsVars.maxExtent;
     }
 
     // calls the super constructor
