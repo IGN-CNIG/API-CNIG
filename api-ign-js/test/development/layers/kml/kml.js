@@ -6,6 +6,7 @@ export const kml_001 = new KML({
     name: 'capaKML',
     extract: true,
     infoEventType: 'click',
+    // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
     // isBase: true,
     // transparent: false,
     // attribution: {

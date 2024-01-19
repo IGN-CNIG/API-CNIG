@@ -5,6 +5,7 @@ export const tms_001 = new TMS({
   name: 'TMSBaseIGN',
   projection: 'EPSG:3857',
   legend: 'Capa TMS',
+  // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
   // visibility: true,
   // transparent: false,
   isBase: false,
