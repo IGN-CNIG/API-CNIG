@@ -134,6 +134,9 @@ class OSM extends Layer {
     this.ol3Layer =
         new OLLayerTile(extend({ visible: this.visibility }, this.vendorOptions_, true));
     this.updateSource_();
+    if (this.opacity_) {
+      this.setOpacity(this.opacity_);
+    }
     this.map.getMapImpl().addLayer(this.ol3Layer);
 
     this.map.getImpl().getMapImpl().getControls().getArray()

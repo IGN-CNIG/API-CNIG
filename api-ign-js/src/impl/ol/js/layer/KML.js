@@ -155,6 +155,7 @@ class KML extends Vector {
     this.loader_ = new LoaderKML(this.map, this.url, this.formater_);
     this.ol3Layer = new OLLayerVector(extend({
       extent: this.maxExtent_,
+      opacity: this.opacity_,
     }, this.vendorOptions_, true));
     this.updateSource_();
     // sets its visibility if it is in range

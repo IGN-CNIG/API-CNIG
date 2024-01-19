@@ -281,6 +281,7 @@ class WMTS extends LayerBase {
         minResolution,
         maxResolution,
         extent: this.userMaxExtent,
+        opacity: this.opacity_,
       }, this.vendorOptions_, true));
 
       // keeps z-index values before ol resets
