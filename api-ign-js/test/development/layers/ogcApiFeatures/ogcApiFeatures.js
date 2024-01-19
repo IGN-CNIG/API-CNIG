@@ -6,7 +6,7 @@ export const ogcAPIFeatures_001 = new OGCAPIFeatures({
     legend: 'Capa OGCAPIFeatures',
     extract: true,
     infoEventType: 'hover',
-    maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
+    // maxExtent: [-953031.9167337259, 5198473.475942763, -879652.3695799566, 5233405.1978690885],
     // limit: 20,
     // isBase: true,
     // transparent: false,
