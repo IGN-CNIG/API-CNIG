@@ -3,10 +3,10 @@ import { map as Mmap } from 'M/mapea';
 // import { wfs_001 } from '../layers/wfs/wfs';
 // import { geojson_001 } from '../layers/geojson/geojson';
 // import { kml_001 } from '../layers/kml/kml';
-// import { mvt_001 } from '../layers/mvt/mvt';
+import { mvt_001 } from '../layers/mvt/mvt';
 // import { ogcAPIFeatures_001 } from '../layers/ogcApiFeatures/ogcApiFeatures';
 // import { mbtileVector_001 } from '../layers/mbTilesVector/mbTilesVector';
-// import { generic_002 } from '../layers/generic/generic';
+import { generic_002 } from '../layers/generic/generic';
 
 // ---
 
@@ -16,6 +16,8 @@ import { map as Mmap } from 'M/mapea';
 // import { xyz_001 } from '../layers/xyz/xyz';
 // import { osm } from '../layers/osm/osm';
 // import { mbtile_01 } from '../layers/mbtiles/mbtiles';
+import { generic_001 } from '../layers/generic/generic';
+
 
 
 const mapa = Mmap({
@@ -25,6 +27,7 @@ const mapa = Mmap({
   zoom: 6,
 });
 
+
 // [-] KML
 // mapa.addLayers(kml_001)
 // console.log(kml_001.getMaxExtent())
@@ -33,7 +36,7 @@ const mapa = Mmap({
 // }, 5000);
 
 // [-] MVT
-// mapa.addLayers(mvt_001)
+mapa.addLayers(mvt_001)
 // console.log(mvt_001.getMaxExtent())
 // setTimeout(() => {
 //     mvt_001.setMaxExtent([-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652])
@@ -81,6 +84,13 @@ const mapa = Mmap({
 //     generic_002.setMaxExtent([-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652])
 // }, 5000);
 
+// [-] GenericRaster
+// mapa.addLayers(generic_001)
+// console.log(generic_001.getMaxExtent())
+// setTimeout(() => {
+//   generic_001.setMaxExtent([-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652])
+// }, 5000);
+
 // [-] WMS
 // mapa.addLayers(wms_001)
 
@@ -121,4 +131,3 @@ const mapa = Mmap({
 // }, 5000);
 
 window.mapa = mapa;
-
