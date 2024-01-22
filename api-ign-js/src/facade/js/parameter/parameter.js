@@ -2525,7 +2525,11 @@ export const getExtraParameter = (parameter, defaultValue, position, nameVariabl
       extraParam = defaultValue;
     }
   } else if (isObject(parameter)) {
-    extraParam = normalize(parameter[nameVariable]);
+    if (nameVariable !== 'legend') {
+      extraParam = normalize(parameter[nameVariable]);
+    } else {
+      extraParam = parameter[nameVariable];
+    }
   } else {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }

@@ -3,6 +3,7 @@ import XYZ from 'M/layer/XYZ';
 export const xyz_001 = new XYZ({
     url: 'https://www.ign.es/web/catalogo-cartoteca/resources/webmaps/data/cresques/{z}/{x}/{y}.jpg',
     name: 'AtlasDeCresques',
+    legend: 'Leyenda XYZ',
     maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
     projection: 'EPSG:3857',
     // visibility: true,
