@@ -26,6 +26,11 @@
   "parserOptions": {
     "ecmaVersion": 2020
   },
+  "settings": {
+    "react": {
+      "version": "18.2.0"
+    }
+  },
   "rules": {
     "no-underscore-dangle": [
       "error",
