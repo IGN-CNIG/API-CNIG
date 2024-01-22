@@ -30,7 +30,7 @@ var Profil = function(opt_options) {
   } else {
     element = document.createElement('div');
     element.id = 'containerTopo';
-    element.className = ((options.className || 'ol-profil') + ' ol-unselectable ol-control ol-collapsed').trim();
+    element.className = ((options.className || 'ol-profil') + ' ol-unselectable ol-control-vector ol-collapsed').trim();
     let elementTitle = document.createElement('p');
     elementTitle.id = 'titleTopo';
     elementTitle.textContent = opt_options.title;
@@ -39,7 +39,7 @@ var Profil = function(opt_options) {
     button.setAttribute('type', 'button');
     button.setAttribute('class', 'profile-close-button');
     const close = (e) => {
-      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+      document.querySelector('.ol-profil.ol-unselectable.ol-control-vector').remove();
       if (options.pointLayer !== undefined) {
         options.pointLayer.clear();
       }
