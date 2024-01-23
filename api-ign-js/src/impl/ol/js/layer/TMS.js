@@ -12,7 +12,7 @@ import ImplMap from '../Map';
  * para usar índices numéricos y proporcionar metadatos para la configuración
  * e investigación. Las capas TMS tienen la siguiente estructura:
  *
- * https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg
+ * https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg
  *
  * {z} especifica el nivel de zoom; {x} el número de columna; {y} el número de fila.
  *
