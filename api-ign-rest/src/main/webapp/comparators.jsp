@@ -372,7 +372,7 @@
                                                 ShareMap: {}, // Opciones por defecto
                                             },
                                             map3: {
-                                                constrols: ['scale'],
+                                                controls: ['scale'],
                                             },
                                         },
                                         enabledDisplayInLayerSwitcher: true,
