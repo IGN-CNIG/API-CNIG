@@ -79,15 +79,28 @@
             <option value="false" selected="selected">false</option>
         </select>
         <label for="inputByParcelCadastre">byParcelCadastre</label>
-        <select name="byParcelCadastre" id="inputByParcelCadastre">
-            <option value="true" selected="selected">true</option>
-            <option value="false">false</option>
-        </select>
+        <textarea name="byParcelCadastre" id="inputByParcelCadastre" rows="4">{
+"cadastreWMS": "http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_RCCOOR",
+"CMC_url": "http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/ConsultaMunicipioCodigos",
+"DNPPP_url": "http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/Consulta_DNPPP_Codigos",
+"CPMRC_url": "http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC"
+}</textarea>
         <label for="inputByCoordinates">byCoordinates</label>
-        <select name="byCoordinates" id="inputByCoordinates">
-            <option value="true" selected="selected">true</option>
-            <option value="false">false</option>
-        </select>
+        <textarea name="byCoordinates" id="inputByCoordinates" rows="4">{
+"projections": [
+{
+    "title": "ETRS89 geographic (4258) dd",
+    "code": "EPSG:4258",
+    "units": "d"
+},
+{
+    "title": "ETRS89 geographic (4258) dms",
+    "code": "EPSG:4258",
+    "units": "dms"
+}
+],
+"help": "https://www.google.com/"
+}</textarea>
         <label for="inputByPlaceAddressPostal">byPlaceAddressPostal</label>
         <textarea name="byPlaceAddressPostal" id="inputByPlaceAddressPostal" rows="4">{
  "maxResults": 20,
@@ -99,7 +112,7 @@
  "urlFind": "http://www.cartociudad.es/geocoder/api/geocoder/findJsonp",
  "urlReverse": "http://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode",
  "geocoderCoords": [-5.741757, 41.512058],
- "requestStreet": "https://www.cartociudad.es/geocoder/api/geocoder/findJsonp?q=Sevilla&type=provincia&tip_via=null&id=41&portal=null&extension=null",
+ "requestStreet": "https://www.cartociudad.es/geocoder/api/geocoder/findJsonp?q=Sevilla&type=provincia&tip_via=null&id=41&portal=null&extension=null"
 }</textarea>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
@@ -180,8 +193,8 @@
             inputZoom.value !== "" ? objeto.zoom = inputZoom.value : objeto.zoom = "16";
             objeto.pointStyle = selectPointStyle.options[selectPointStyle.selectedIndex].value;
             objeto.isDraggable = (selectDraggable.options[selectDraggable.selectedIndex].value == 'true');
-            objeto.byParcelCadastre = (selectParcel.options[selectParcel.selectedIndex].value == 'true');
-            objeto.byCoordinates = (selectCoordinates.options[selectCoordinates.selectedIndex].value == 'true');
+            objeto.byParcelCadastre = JSON.parse(selectParcel.value);
+            objeto.byCoordinates = JSON.parse(selectCoordinates.value);
             objeto.byPlaceAddressPostal = JSON.parse(selectPlace.value);
             map.removePlugins(mp);
             crearPlugin(objeto);
