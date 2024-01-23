@@ -57,6 +57,8 @@ class MBTilesVector extends Vector {
    * - style: Define el estilo de la capa.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - predefinedStyles: Estilos predefinidos para la capa.
+   * - minZoom. Zoom mínimo aplicable a la capa.
+   * - maxZoom. Zoom máximo aplicable a la capa.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVectorTile from 'ol/source/VectorTile';

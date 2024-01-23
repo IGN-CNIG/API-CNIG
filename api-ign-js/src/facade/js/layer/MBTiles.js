@@ -50,6 +50,8 @@ class MBTiles extends LayerBase {
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a la implementación.
    * Están proporcionados por el usuario.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - minZoom. Zoom mínimo aplicable a la capa.
+   * - maxZoom. Zoom máximo aplicable a la capa.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLTileGrid from 'ol/tilegrid/TileGrid';
