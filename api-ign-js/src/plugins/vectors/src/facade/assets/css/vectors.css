@@ -495,7 +495,7 @@ div.m-vector-layer-actions .active-tool {
     border: none;
     background-color: transparent;
     cursor: move;
-    width: 15px;
+    width: fit-content;
 }
 
 .ol-profil button.profile-download-button:hover, .ol-profil button.profile-move-button:hover {
