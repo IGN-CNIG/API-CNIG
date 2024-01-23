@@ -499,13 +499,20 @@
 
 @media only screen and (max-width: 1000px) {
      .m-plugin-comparators.opened {
-        max-width: 75vw;
-        width: 75%;
+        width: 100vw;
+        height: 100vh;
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        margin: 0 !important;
         z-index: 999999 !important;
     }
 
     .m-plugin-comparators.opened .m-panel-btn.g-cartografia-flecha-derecha,
     .m-plugin-comparators.opened .m-panel-btn.g-cartografia-flecha-izquierda {
+       position: absolute;
+        left: auto !important;
+        right: 0;
         z-index: 999999;
         box-shadow: none;
     } 
@@ -549,10 +556,6 @@
         .m-bottom.m-left>.m-panel.m-plugin-comparators.opened>.m-panel-controls {
             display: flow-root;
         }
-/*
-        .m-areas>div.m-area>div.m-panel.m-plugin-comparators.opened {
-            width: auto;
-        }*/
 
         .m-bottom.m-left>.m-panel.m-plugin-comparators.opened>.m-panel-controls {
             display: flex;
