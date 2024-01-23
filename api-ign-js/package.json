@@ -39,7 +39,6 @@
     "mocha": "10.2.0",
     "style-loader": "3.3.3",
     "terser-webpack-plugin": "5.3.9",
-    "uglify-js": "^2.6.1",
     "walk": "2.3.15",
     "webpack": "5.88.2",
     "webpack-cli": "5.1.4",
