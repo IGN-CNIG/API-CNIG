@@ -62,6 +62,9 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     new ESLintPlugin({
       // extensions: [`js`, `jsx`],
       files: 'src/**/*.js',

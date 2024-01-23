@@ -82,6 +82,9 @@ module.exports = {
     //   version: pjson.version,
     //   regex: /([A-Za-z]+)(\..*)/,
     // }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
