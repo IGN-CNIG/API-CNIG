@@ -85,8 +85,6 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 
-- **order**: Define la colocación del plugin respecto al resto, modifica todos los tabIndex del plugin.
-
 - **listLayers**: Array de capas (String o Object), estas capas se verán en el selector (WMS o WMTS).
 ```JavaScript
 // Ejemplos de definiciones de capas esperadas por el
