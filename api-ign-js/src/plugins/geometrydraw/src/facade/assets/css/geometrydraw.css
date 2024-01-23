@@ -36,6 +36,10 @@ div.m-panel.m-geometrydraw.collapsed {
     /* border-bottom: 1px solid rgb(100, 100, 100); */
 }
 
+#downloadFormat {
+    width: 100%;
+}
+
 div.m-panel.m-geometrydraw.collapsed * {
     display: none
 }
@@ -166,7 +170,6 @@ div.m-panel.m-geometrydraw>div#drawingtools input#featureName {
 div.m-panel.m-geometrydraw>div#drawingtools #featureInfo {
     border-top: 1px solid silver;
     margin-top: 10px;
-    max-width: 200px;
     padding: 10px 0 0;
     text-align: center;
 }
