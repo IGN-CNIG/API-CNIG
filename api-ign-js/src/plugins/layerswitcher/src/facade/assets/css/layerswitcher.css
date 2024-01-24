@@ -681,10 +681,6 @@ div.m-layerswitcher-legend>img {
             display: flow-root;
         }
 
-        .m-areas>div.m-area>div.m-panel.m-plugin-layerswitcher.opened {
-            width: auto;
-        }
-
         .m-bottom.m-left>.m-panel.m-plugin-layerswitcher.opened>.m-panel-controls {
             display: flex;
         }

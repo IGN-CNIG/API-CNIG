@@ -49,6 +49,7 @@
 - Plugin comparators: se cambia estilo para que se vea correctamente en móvil
 - Plugin printviewmanagement: Se añade evento para cerrar con esc.
 - Plugin modal: Se añade evento para cerrar con esc.
+- Plugin layerswitcher: Modificación de estilo para que se visualice bien en Firefox
 
 
 16/06/2023 - Versión 4.7.0
