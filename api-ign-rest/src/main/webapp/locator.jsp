@@ -111,7 +111,6 @@
  "urlCandidates": "http://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp",
  "urlFind": "http://www.cartociudad.es/geocoder/api/geocoder/findJsonp",
  "urlReverse": "http://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode",
- "geocoderCoords": [-5.741757, 41.512058],
  "requestStreet": "https://www.cartociudad.es/geocoder/api/geocoder/findJsonp?q=Sevilla&type=provincia&tip_via=null&id=41&portal=null&extension=null"
 }</textarea>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
@@ -143,23 +142,6 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let posicion, collapsed = true,
-            collapsible = true,
-            tooltip, zoomL,
-            pointStyle, isdraggable, byParcelCadastre, byCoordinates,
-            byPlaceAddressPostal;
-        crearPlugin({
-            position: posicion,
-            collapsed: collapsed,
-            collapsible: collapsible,
-            tooltip: tooltip,
-            zoom: zoomL,
-            pointStyle: pointStyle,
-            isDraggable: isdraggable,
-            byParcelCadastre: byParcelCadastre,
-            byCoordinates: byCoordinates,
-            byPlaceAddressPostal: byPlaceAddressPostal
-        });
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
@@ -183,7 +165,21 @@
         selectCoordinates.addEventListener('change', cambiarTest);
         selectPlace.addEventListener('change', cambiarTest);
 
+        
+        crearPlugin(getOptions());
+
         function cambiarTest() {
+            const objeto = getOptions();
+            map.removePlugins(mp);
+            crearPlugin(objeto);
+        }
+
+        function crearPlugin(propiedades) {
+            mp = new M.plugin.Locator(propiedades);
+            map.addPlugin(mp);
+        }
+
+        function getOptions() {
             let objeto = {};
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
@@ -196,14 +192,9 @@
             objeto.byParcelCadastre = JSON.parse(selectParcel.value);
             objeto.byCoordinates = JSON.parse(selectCoordinates.value);
             objeto.byPlaceAddressPostal = JSON.parse(selectPlace.value);
-            map.removePlugins(mp);
-            crearPlugin(objeto);
+            return objeto;
         }
 
-        function crearPlugin(propiedades) {
-            mp = new M.plugin.Locator(propiedades);
-            map.addPlugin(mp);
-        }
         let mp2 = new M.plugin.ShareMap({
             baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",
