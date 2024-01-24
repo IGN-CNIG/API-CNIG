@@ -205,14 +205,8 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
       },
       map3: {
         controls: ['scale'],
-        FullTOC: {
-          position: 'TL',
-        },
       },
       map4: {
-        FullTOC: {
-          position: 'TL',
-        },
         BackImgLayer: {
           position: 'TR',
           collapsible: true,
@@ -434,9 +428,6 @@ Ejemplo de constructor:
     enabledControlsPlugins: {
       map2: {
         controls: ['scale'],
-        FullTOC: {
-          position: 'TL',
-        },
       },
     },
     enabledDisplayInLayerSwitcher: true,
