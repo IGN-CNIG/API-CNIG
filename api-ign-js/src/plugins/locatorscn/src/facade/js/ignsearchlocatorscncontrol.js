@@ -75,7 +75,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
      * @private
      * @type {string}
      */
-    this.addendumField = options.addendum || 'none';
+    this.addendumField = options.addendum || 'iderioja';
 
     /**
      * This variable indicates pelias Candidates service url
