@@ -47,6 +47,7 @@
 - KML se añade nuevo paráemtro removeFolderChildren para decidir si mostrar los hijos de las carpetas
 - Se añade a la clase utilidades los métodos getImageMap (para capturar el canvas del mapa) y copyImageClipBoard (para copiar una imagen al portapapeles)
 - Plugin comparators: se cambia estilo para que se vea correctamente en móvil
+- Plugin printviewmanagement: Se añade evento para cerrar con esc.
 
 
 16/06/2023 - Versión 4.7.0
