@@ -588,6 +588,8 @@ export default class ShareMapControl extends M.Control {
       param = this.getGeoJSON(layer);
     } else if (layer.type === 'Vector') {
       param = this.getVector(layer);
+    } else if (layer.type === 'MVT') {
+      param = this.getMVT(layer);
     }
     return param;
   }
@@ -632,6 +634,10 @@ export default class ShareMapControl extends M.Control {
     source = window.btoa(unescape(encodeURIComponent(JSON.stringify(source))));
     const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
     return `GeoJSON*${layer.name}*${source}**${style}`;
+  }
+
+  getMVT(layer) {
+    return `MVT*${layer.url}*${layer.name}*${layer.getProjection()}`;
   }
 
   /**

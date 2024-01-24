@@ -549,12 +549,21 @@ class WMS extends LayerBase {
    */
   addAllLayers_() {
     this.getCapabilities().then((getCapabilities) => {
+      if (this.useCapabilities) {
+        const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
+          return cap.url === this.url;
+        }) || { capabilities: false };
+
+        capabilitiesInfo.capabilites = getCapabilities;
+      }
+
       getCapabilities.getLayers().forEach((layer) => {
         const wmsLayer = new FacadeWMS({
           url: this.url,
           name: layer.name,
           version: layer.version,
           tiled: this.tiled,
+          useCapabilities: this.useCapabilities,
         }, this.vendorOptions_);
         this.layers.push(wmsLayer);
       });
@@ -713,7 +722,7 @@ class WMS extends LayerBase {
   getCapabilities() {
     const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
       return cap.url === this.url;
-    });
+    }) || { capabilities: false };
 
     if (capabilitiesInfo.capabilities) {
       this.getCapabilitiesPromise = capabilitiesInfo.capabilities;

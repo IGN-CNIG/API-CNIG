@@ -1326,8 +1326,8 @@ export default class VectorsControl extends M.Control {
     const selector = `#m-vector-list li[name="${this.drawLayer.name}"] div.m-vector-layer-actions-container`;
     document.querySelector(selector).appendChild(this.drawingTools);
     document.querySelector('div.m-vector-layer-actions-container #drawingtools button').style.display = 'block';
-    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
-      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control-vector') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control-vector').remove();
     }
 
     this.emphasizeSelectedFeature();
@@ -1343,8 +1343,8 @@ export default class VectorsControl extends M.Control {
   onModify() {
     this.emphasizeSelectedFeature();
     this.showFeatureInfo();
-    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
-      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control-vector') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control-vector').remove();
     }
   }
 
@@ -1469,8 +1469,8 @@ export default class VectorsControl extends M.Control {
     this.isEditionActive = false;
     this.deactivateSelection();
     this.deactivateDrawing();
-    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
-      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control-vector') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control-vector').remove();
     }
 
     const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
@@ -1509,8 +1509,8 @@ export default class VectorsControl extends M.Control {
     this.isDrawingActive = false;
     this.deactivateSelection();
     this.deactivateDrawing();
-    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
-      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control-vector') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control-vector').remove();
     }
 
     const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
@@ -1810,8 +1810,8 @@ export default class VectorsControl extends M.Control {
   }
 
   getProfile() {
-    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
-      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control-vector') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control-vector').remove();
     }
 
     this.getImpl().calculateProfile(this.feature);

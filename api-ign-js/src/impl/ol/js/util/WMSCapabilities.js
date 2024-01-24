@@ -2,7 +2,6 @@
  * @module M/impl/GetCapabilities
  */
 import { isNullOrEmpty, isArray, isObject, isUndefined, isString } from 'M/util/Utils';
-import WMS from 'M/layer/WMS';
 import { get as getProjection } from 'ol/proj';
 import ImplUtils from './Utils';
 
@@ -200,19 +199,18 @@ class GetCapabilities {
         }
         /* eslint-disable no-empty */
       } catch (err) {}
-
-      layers.push(new WMS({
+      layers.push({
         url: this.serviceUrl_,
         name: layer.Name,
         legend: !isNullOrEmpty(layer.Title) ? layer.Title : '',
-      }, { format: imageFormat }, {
+        format: imageFormat,
         capabilitiesMetadata: {
           abstract: !isNullOrEmpty(layer.Abstract) ? layer.Abstract : '',
           attribution: !isNullOrEmpty(layer.Attribution) ? layer.Attribution : '',
           metadataURL: !isNullOrEmpty(layer.MetadataURL) ? layer.MetadataURL : '',
           style: !isNullOrEmpty(layer.Style) ? layer.Style : '',
         },
-      }));
+      });
     }
     return layers;
   }

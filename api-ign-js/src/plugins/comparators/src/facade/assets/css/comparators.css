@@ -510,7 +510,7 @@
 
      .m-plugin-comparators.opened .m-panel-btn.g-cartografia-flecha-derecha,
     .m-plugin-comparators.opened .m-panel-btn.g-cartografia-flecha-izquierda {
-        position: absolute;
+       position: absolute;
         left: auto !important;
         right: 0;
         z-index: 999999;
@@ -539,10 +539,6 @@
     @-moz-document url-prefix() {
         .m-bottom.m-left>.m-panel.m-plugin-comparators.opened>.m-panel-controls {
             display: flow-root;
-        }
-
-        .m-areas>div.m-area>div.m-panel.m-plugin-comparators.opened {
-            width: auto;
         }
 
         .m-bottom.m-left>.m-panel.m-plugin-comparators.opened>.m-panel-controls {

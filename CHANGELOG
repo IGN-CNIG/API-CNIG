@@ -1,4 +1,52 @@
-11/09/2023 - Versión 4.8.0
+15/09/2023 - Versión 4.8.0
+- Se activa nueva política de versionado de CORE y plugins
+- Se implementa plugin layerswitcher para la gestión de capas dejando obsoleto el plugin fulltoc y toc
+- Se implementa plugin printerviewmanagement para la gestión de impresión dejando obsoletos los plugins printermap, georefimage y georefimae2
+- Se implementa plugin comparators para la gestión de comparaciones dejando obsoletos los plugins transparency, lyrcompare, mirrorpanel y comparepanel
+- Se implementa plugin modal para sustituir al plugin popup
+- Se implementa método getSupportedProjs para conocer las proyecciones disponibles. M.impl.ol.js.projections.getSupportedProjs()
+- Se añade parámetro infoEventType a las capas vectores para consultarlas mediante click o mediante hover
+- Se añade parametro zoomConstrains para permitir niveles de zoom intermedios
+- Se añade parámetro predefinedStyles a las capas vectoriales para añadir un listado de estilos predefinidos
+- Se permite cambiar la visibilidad de las capas WMS y WMTS aunque esten fuera de rango
+- Plugin incicarto: modificación de la plantilla de correos
+- Plugin incicarto: se añade fecha y hora en el asunto del correo
+- Se añade parámetro isBase a capas rásters para definir si la capa será base o no
+- Se define proyección EPSG:3857 en projections.js
+- Se actualizan iconos galería circleIcons
+- Plugin locator: se soluciona problemas con búsquedas mediante proxy
+- Se parametriza getZoom de la clase Map para permitir obtener el zoom exacto
+- Plugin mousesrs: se solucionan problemas de estilos
+- Plugin mousesrs: se controla error si se pone un SRS incorrecto
+- Plugin mousesrs: se añade parámetro epsgFormat para aplicar un formateo a la proyección
+- Se dota de inteligencia a la clase Popup y Dialog
+- Se soluciona problemas con parámetro maxExtent en todos los tipos de capas
+- Se permite cambiar estilos a capas KML
+- Se parametriza la propiedad extractStyles en KML
+- Se adapta control backgroundlayers para que acepte objetos
+- Se soluciona problemas con los parámetros minZoom y maxZoom en las capas MBTilesVector, MBTiles, OSM, XYZ, MVT y KML
+- MouseSRS: se añade parámetro para permitir mover diálogo
+- Se soluciona problemas con leyenda en capas GeoJSON, MVT, XYZ, TMS, KML y OSM
+- Plugins attributions se marca como obsoleto y se añade funcionalidad a nivel de capa y mapa creando un control para ello
+- Se crean dos nuevos tipos de capas: GenericRaster y GenericVector
+- Plugin measurebar: se soluciona problema con tooltip
+- Se añade parámetro viewExtent al objeto mapa para limitar la zona visible / navegable
+- Plugin popup y modal: se cierra el diálogo con tecla Esc
+- Los plugins measurebar, mousesrs, printermap y zoompanel se cerrarán cuando se pulse sobre la tecla Esc
+- Plugin Locator tendrá en cuenta si la busqueda de una direccion esta dentro del bbox de la vista
+- Plugin iberpixcompare: se modifica servicio wms ign-base
+- Plugin sharemap permite compartir MVT
+- Plugin locator: se elimina el uso del servicio Comunication Pool Servlet
+- Se evita dobre peticion al anadir OGCAPIFeatures
+- Se soluciona problemas con opacity en varios tipos de capas
+- Se añade parámetro tileSize a TMS por REST
+- Control backimglayers: se soluciona problemas con layerVisibility 
+- Se crea nuevo parámetro crossorigin para las capas XYZ, WMS, WMTS, MBTiles y TMS
+- Se soluciona problemas con parámetro extract en MVT y MBTilesVector
+- Se adaptan los controles backimglayers y getfeatureinfo y los plugins layerswitcher e information para aceptar capas GenericRaster/GenericVector
+- KML se añade nuevo paráemtro removeFolderChildren para decidir si mostrar los hijos de las carpetas
+- Se añade a la clase utilidades los métodos getImageMap (para capturar el canvas del mapa) y copyImageClipBoard (para copiar una imagen al portapapeles)
+- Plugin comparators: se cambia estilo para que se vea correctamente en móvil
 
 
 16/06/2023 - Versión 4.7.0

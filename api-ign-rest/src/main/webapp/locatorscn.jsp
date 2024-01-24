@@ -125,7 +125,11 @@
             collapsible = true,
             tooltip, zoomL,
             pointStyle, isdraggable,
-            searchOptions = {};
+            searchOptions = {
+                addendum: 'iderioja',
+                layers: 'address,street,venue',
+                sources: 'calrj',
+            };
         crearPlugin({
             position: posicion,
             collapsed: collapsed,

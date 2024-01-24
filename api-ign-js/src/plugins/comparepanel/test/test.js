@@ -1,6 +1,6 @@
 import Comparepanel from 'facade/comparepanel';
 
-M.language.setLang('es');//Español
+M.language.setLang('es'); //Español
 M.proxy(false)
 
 /*
@@ -33,19 +33,19 @@ const map = M.map({
     //y: 42.2365656,
     draw: false,
   },
-  controls: ['scale','location'],
+  controls: ['scale', 'location'],
   projection: 'EPSG:3857*m',
   //projection: 'EPSG:4326*d',
   zoom: 6,
 });
 
 const objWMTSsiose = new M.layer.WMTS({
-    url: "https://servicios.idee.es/wmts/ocupacion-suelo",
-    name: "LC.LandCoverSurfaces",
-    matrixSet: "GoogleMapsCompatible",
-    legend: "CORINE / SIOSE",
-    format: 'image/png'
-  });
+  url: "https://servicios.idee.es/wmts/ocupacion-suelo",
+  name: "LC.LandCoverSurfaces",
+  matrixSet: "GoogleMapsCompatible",
+  legend: "CORINE / SIOSE",
+  format: 'image/png'
+});
 
 const objWMTSMapa = new M.layer.WMTS({
   url: "https://www.ign.es/wmts/mapa-raster",
@@ -56,7 +56,7 @@ const objWMTSMapa = new M.layer.WMTS({
 });
 
 const lyrIGNBaseXYZ = new M.layer.XYZ({
-  url: 'https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
+  url: 'https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
   name: 'IGNBaseTodo',
   legend: 'Mapa IGN',
   projection: 'EPSG:3857',
@@ -79,7 +79,7 @@ const lyrMTN501EdiWMTS = new M.layer.WMTS({
   format: 'image/jpeg',
 });
 
-const lyrPNOAXYZ =new M.layer.XYZ({
+const lyrPNOAXYZ = new M.layer.XYZ({
   url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
   name: 'PNOA-MA',
   legend: 'Ortoimagen',
@@ -91,7 +91,7 @@ const lyrPNOAXYZ =new M.layer.XYZ({
   tileGridMaxZoom: 19,
 });
 
-const lyrCartografiaXYZ =new M.layer.XYZ({
+const lyrCartografiaXYZ = new M.layer.XYZ({
   url: 'https://tms-mapa-raster.ign.es/1.0.0/mapa-raster/{z}/{x}/{-y}.jpeg',
   name: 'MTN',
   legend: 'Mapa Raster',
@@ -184,7 +184,7 @@ const getWMTSLyrs = () => {
         id: 'hibrido',
         title: 'Imagen Híbrido',
         preview: 'http://www.ign.es/iberpix/static/media/hibrido.485e957e.png',
-        layers: [lyrPNOAXYZ,lyrIGNBaseWMTSTextos],
+        layers: [lyrPNOAXYZ, lyrIGNBaseWMTSTextos],
       },
       // LiDAR
       {
@@ -198,7 +198,7 @@ const getWMTSLyrs = () => {
         id: 'lidar-hibrido',
         title: 'LiDAR Híbrido',
         preview: 'http://www.ign.es/iberpix/static/media/lidar.5aa94e82.png',
-        layers: [lyrLiDARWMTS,lyrIGNBaseWMTSTextos],
+        layers: [lyrLiDARWMTS, lyrIGNBaseWMTSTextos],
       },
       // SIOSE
       {
@@ -224,7 +224,7 @@ const backImgLayersConfig = getWMTSLyrs();
 
 const mpBILBasico = new M.plugin.BackImgLayer(
   backImgLayersConfig
-  );
+);
 
 map.addPlugin(mpBILBasico);
 
@@ -254,47 +254,47 @@ const PNOAlistBaseLayersByString = [
 
 
 const SENTINELlistBaseLayersByString = [
-    ['Huellas Sentinel2', '2018', 'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true'],
-    ['Invierno 2022 falso color natural', '2022', 'WMS*Invierno 2022 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_432-1184*true'],
-    ['Invierno 2022 falso color infrarrojo', '2022', 'WMS*Invierno 2022 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_843*true'],
-    ['Filomena', '2021', 'WMS*Filomena*https://wms-satelites-historicos.idee.es/satelites-historicos*Filomena*true'],
-    ['Invierno 2021 falso color natural', '2021', 'WMS*Invierno 2021 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2021invierno_432-1184*true'],
-    ['Invierno 2021 falso color infrarrojo', '2021', 'WMS*Invierno 2021 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2021invierno_843*true'],
-    ['Verano 2021 falso color natural', '2021', 'WMS*Verano 2021 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2021verano_432-1184*true'],
-    ['Verano 2021 falso color infrarrojo', '2021', 'WMS*Verano 2021 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2021verano_843*true'],
-    ['Invierno 2020 falso color natural', '2020', 'WMS*Invierno 2020 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2020invierno_432-1184*true'],
-    ['Invierno 2020 falso color infrarrojo', '2020', 'WMS*Invierno 2020 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2020invierno_843*true'],
-    ['Verano 2020 falso color natural', '2020', 'WMS*Verano 2020 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2020verano_432-1184*true'],
-    ['Verano 2020 falso color infrarrojo', '2020', 'WMS*Verano 2020 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2020verano_843*true'],
-    ['Invierno 2019 falso color natural', '2019', 'WMS*Invierno 2019 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2019invierno_432-1184*true'],
-    ['Invierno 2019 falso color infrarrojo', '2019', 'WMS*Invierno 2019 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2019invierno_843*true'],
-    ['Verano 2019 falso color natural', '2019', 'WMS*Verano 2019 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2019verano_432-1184*true'],
-    ['Verano 2019 falso color infrarrojo', '2019', 'WMS*Verano 2019 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2019verano_843*true'],
-    ['Verano 2018 falso color natural', '2018', 'WMS*Verano 2018 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2018verano_432-1184*true'],
-    ['Verano 2018 falso color infrarrojo', '2018', 'WMS*Verano 2018 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2018verano_843*true'],
-    ['Huellas Spot5', '2005', 'WMS*Huellas Spot5*https://wms-satelites-historicos.idee.es/satelites-historicos*HuellasSpot5_espanna*true'],
-    ['2014. Pseudocolor natural', '2014', 'WMS*2014. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2014*true'],
-    ['2013. Pseudocolor natural', '2013', 'WMS*2013. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2013*true'],
-    ['2012. Pseudocolor natural', '2012', 'WMS*2012. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2012*true'],
-    ['2011. Pseudocolor natural', '2011', 'WMS*2011. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2011*true'],
-    ['2009. Pseudocolor natural', '2009', 'WMS*2009. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2009*true'],
-    ['2008. Pseudocolor natural', '2008', 'WMS*2008. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2008*true'],
-    ['2005. Pseudocolor natural', '2005', 'WMS*2005. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2005*true'],
-    ['Huellas Landsat8', '1971', 'WMS*Huellas Landsat8*https://wms-satelites-historicos.idee.es/satelites-historicos*Landsat_huellas_espanna*true'],
-    ['Landsat 8 2014. Color natural', '2014', 'WMS*Landsat 8 2014. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT8.2014_432*true'],
-    ['Landsat 8 2014. Falso color infrarrojo', '2014', 'WMS*Landsat 8 2014. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT8.2014_654*true'],
-    ['Landsat 5 TM 2006. Color natural', '2006', 'WMS*Landsat 5 TM 2006. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.2006_321-543'],
-    ['Landsat 5 TM 2006. Falso color infrarrojo', '2006', 'WMS*Landsat 5 TM 2006. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.2006_432*true'],
-    ['Landsat 5 TM 1996. Color natural', '1996', 'WMS*Landsat 5 TM 1996. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1996_321-543*true'],
-    ['Landsat 5 TM 1996. Falso color infrarrojo', '1996', 'WMS*Landsat 5 TM 1996. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1996_432*true'],
-    ['Landsat 5 TM 1991. Color natural', '1991', 'WMS*Landsat 5 TM 1991. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1991_321-543*true'],
-    ['Landsat 5 TM 1991. Falso color infrarrojo', '1991', 'WMS*Landsat 5 TM 1991. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1991_432*true'],
-    ['Landsat 5 TM 1986. Color natural', '1986', 'WMS*Landsat 5 TM 1986. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1986_321-543*true'],
-    ['Landsat 5 TM 1986. Falso color infrarrojo', '1986', 'WMS*Landsat 5 TM 1986. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1986_432*true'],
-    ['Landsat 1 1971-1975. Color natural', '1971', 'WMS*Landsat 1 1971-1975. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT1_544-574*true'],
-    ['Landsat 1 1971-1975. Falso color infrarrojo', '1971', 'WMS*Landsat 1 1971-1975. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT1_654*true'],
-    ['Fondo', '2001', 'WMS*Fondo*https://wms-satelites-historicos.idee.es/satelites-historicos*fondo*true'],
-];/* 40 capas */
+  ['Huellas Sentinel2', '2018', 'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true'],
+  ['Invierno 2022 falso color natural', '2022', 'WMS*Invierno 2022 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_432-1184*true'],
+  ['Invierno 2022 falso color infrarrojo', '2022', 'WMS*Invierno 2022 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_843*true'],
+  ['Filomena', '2021', 'WMS*Filomena*https://wms-satelites-historicos.idee.es/satelites-historicos*Filomena*true'],
+  ['Invierno 2021 falso color natural', '2021', 'WMS*Invierno 2021 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2021invierno_432-1184*true'],
+  ['Invierno 2021 falso color infrarrojo', '2021', 'WMS*Invierno 2021 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2021invierno_843*true'],
+  ['Verano 2021 falso color natural', '2021', 'WMS*Verano 2021 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2021verano_432-1184*true'],
+  ['Verano 2021 falso color infrarrojo', '2021', 'WMS*Verano 2021 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2021verano_843*true'],
+  ['Invierno 2020 falso color natural', '2020', 'WMS*Invierno 2020 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2020invierno_432-1184*true'],
+  ['Invierno 2020 falso color infrarrojo', '2020', 'WMS*Invierno 2020 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2020invierno_843*true'],
+  ['Verano 2020 falso color natural', '2020', 'WMS*Verano 2020 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2020verano_432-1184*true'],
+  ['Verano 2020 falso color infrarrojo', '2020', 'WMS*Verano 2020 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2020verano_843*true'],
+  ['Invierno 2019 falso color natural', '2019', 'WMS*Invierno 2019 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2019invierno_432-1184*true'],
+  ['Invierno 2019 falso color infrarrojo', '2019', 'WMS*Invierno 2019 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2019invierno_843*true'],
+  ['Verano 2019 falso color natural', '2019', 'WMS*Verano 2019 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2019verano_432-1184*true'],
+  ['Verano 2019 falso color infrarrojo', '2019', 'WMS*Verano 2019 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2019verano_843*true'],
+  ['Verano 2018 falso color natural', '2018', 'WMS*Verano 2018 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2018verano_432-1184*true'],
+  ['Verano 2018 falso color infrarrojo', '2018', 'WMS*Verano 2018 falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2018verano_843*true'],
+  ['Huellas Spot5', '2005', 'WMS*Huellas Spot5*https://wms-satelites-historicos.idee.es/satelites-historicos*HuellasSpot5_espanna*true'],
+  ['2014. Pseudocolor natural', '2014', 'WMS*2014. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2014*true'],
+  ['2013. Pseudocolor natural', '2013', 'WMS*2013. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2013*true'],
+  ['2012. Pseudocolor natural', '2012', 'WMS*2012. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2012*true'],
+  ['2011. Pseudocolor natural', '2011', 'WMS*2011. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2011*true'],
+  ['2009. Pseudocolor natural', '2009', 'WMS*2009. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2009*true'],
+  ['2008. Pseudocolor natural', '2008', 'WMS*2008. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2008*true'],
+  ['2005. Pseudocolor natural', '2005', 'WMS*2005. Pseudocolor natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SPOT.2005*true'],
+  ['Huellas Landsat8', '1971', 'WMS*Huellas Landsat8*https://wms-satelites-historicos.idee.es/satelites-historicos*Landsat_huellas_espanna*true'],
+  ['Landsat 8 2014. Color natural', '2014', 'WMS*Landsat 8 2014. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT8.2014_432*true'],
+  ['Landsat 8 2014. Falso color infrarrojo', '2014', 'WMS*Landsat 8 2014. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT8.2014_654*true'],
+  ['Landsat 5 TM 2006. Color natural', '2006', 'WMS*Landsat 5 TM 2006. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.2006_321-543'],
+  ['Landsat 5 TM 2006. Falso color infrarrojo', '2006', 'WMS*Landsat 5 TM 2006. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.2006_432*true'],
+  ['Landsat 5 TM 1996. Color natural', '1996', 'WMS*Landsat 5 TM 1996. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1996_321-543*true'],
+  ['Landsat 5 TM 1996. Falso color infrarrojo', '1996', 'WMS*Landsat 5 TM 1996. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1996_432*true'],
+  ['Landsat 5 TM 1991. Color natural', '1991', 'WMS*Landsat 5 TM 1991. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1991_321-543*true'],
+  ['Landsat 5 TM 1991. Falso color infrarrojo', '1991', 'WMS*Landsat 5 TM 1991. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1991_432*true'],
+  ['Landsat 5 TM 1986. Color natural', '1986', 'WMS*Landsat 5 TM 1986. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1986_321-543*true'],
+  ['Landsat 5 TM 1986. Falso color infrarrojo', '1986', 'WMS*Landsat 5 TM 1986. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1986_432*true'],
+  ['Landsat 1 1971-1975. Color natural', '1971', 'WMS*Landsat 1 1971-1975. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT1_544-574*true'],
+  ['Landsat 1 1971-1975. Falso color infrarrojo', '1971', 'WMS*Landsat 1 1971-1975. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT1_654*true'],
+  ['Fondo', '2001', 'WMS*Fondo*https://wms-satelites-historicos.idee.es/satelites-historicos*fondo*true'],
+]; /* 40 capas */
 
 
 const mpTOC = new M.plugin.FullTOC({
@@ -361,11 +361,11 @@ const pluginComparepanel = new Comparepanel({
   vertical: false,
   collapsed: false,
   collapsible: true,
-  defaultCompareMode: 'mirror',// mirror - curtain - spyeye - none
+  defaultCompareMode: 'mirror', // mirror - curtain - spyeye - none
   defaultCompareViz: 1,
   baseLayers: listBaseLayersByString,
   urlcoberturas: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/comparador_pnoa/coberturas.geojson',
-  lyrsMirrorMinZindex:100,
+  lyrsMirrorMinZindex: 100,
   /*timelineParams: {
     animation: true,
   },*/
@@ -373,18 +373,18 @@ const pluginComparepanel = new Comparepanel({
     radius: 100,
   },
   lyrcompareParams: {
-      staticDivision: 2,
-      defaultLyrA:0,
-      defaultLyrB:1,
-      defaultLyrC:2,
-      defaultLyrD:3,
-      opacityVal:100,
-   },
+    staticDivision: 2,
+    defaultLyrA: 0,
+    defaultLyrB: 1,
+    defaultLyrC: 2,
+    defaultLyrD: 3,
+    opacityVal: 100,
+  },
   mirrorpanelParams: {
-      showCursors: true,
-      reverseLayout:true,
-      enabledPlugins: true,
-      enabledKeyFunctions: true,
+    showCursors: true,
+    reverseLayout: true,
+    enabledPlugins: true,
+    enabledKeyFunctions: true,
   }
 });
 

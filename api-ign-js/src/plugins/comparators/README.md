@@ -85,7 +85,6 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 
-
 - **listLayers**: Array de capas (String o Object), estas capas se verán en el selector (WMS o WMTS).
 ```JavaScript
 // Ejemplos de definiciones de capas esperadas por el
@@ -173,6 +172,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
   collapsed: false,
   collapsible: true,
   defaultCompareMode: 'mirror', // mirror - curtain - spyeye - none
+  order: 4,
   listLayers: [
     'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
     'WMS*Invierno 2022 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_432-1184*true',

@@ -339,6 +339,18 @@ class MVT extends Vector {
   }
 
   /**
+   * Devuelve la proyeccion de la capa.
+   *
+   * @public
+   * @function
+   * @returns {String} SRS de la capa.
+   * @api stable
+   */
+  getProjection() {
+    return this.projection_;
+  }
+
+  /**
    * Devuelve verdadero si la capa esta cargada.
    *
    * @function

@@ -31,7 +31,6 @@
                     <link href="plugins/selectionzoom/selectionzoom.ol.min.css" rel="stylesheet" />
                     <link href="plugins/buffer/buffer.ol.min.css" rel="stylesheet" />
                     <link href="plugins/xylocator/xylocator.ol.min.css" rel="stylesheet" />
-                    <link href="plugins/fulltoc/fulltoc.ol.min.css" rel="stylesheet" />
                     <link href="plugins/overviewmap/overviewmap.ol.min.css" rel="stylesheet" />
                     <link href="plugins/calendar/calendar.ol.min.css" rel="stylesheet" />
                     <link href="plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
@@ -235,7 +234,6 @@
                     <script type="text/javascript" src="plugins/selectionzoom/selectionzoom.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/buffer/buffer.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/xylocator/xylocator.ol.min.js"></script>
-                    <script type="text/javascript" src="plugins/fulltoc/fulltoc.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/overviewmap/overviewmap.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/calendar/calendar.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/contactlink/contactlink.ol.min.js"></script>
@@ -374,100 +372,7 @@
                                                 ShareMap: {}, // Opciones por defecto
                                             },
                                             map3: {
-                                                constrols: ['scale'],
-                                                FullTOC: {
-                                                    position: 'TL',
-                                                },
-                                            },
-                                            map4: {
-                                                FullTOC: {
-                                                    position: 'TL',
-                                                },
-                                                BackImgLayer: {
-                                                    position: 'TR',
-                                                    collapsible: true,
-                                                    collapsed: true,
-                                                    layerId: 0,
-                                                    columnsNumber: 2,
-                                                    layerVisibility: true,
-                                                    layerOpts: [{
-                                                        id: 'mapa',
-                                                        preview: 'plugins/backimglayer/images/svqmapa.png', // ruta relativa, edite por la deseada
-                                                        title: 'Mapa',
-                                                        layers: [new M.layer.WMTS({
-                                                            url: 'http://www.ign.es/wmts/ign-base?',
-                                                            name: 'IGNBaseTodo',
-                                                            legend: 'Mapa IGN',
-                                                            matrixSet: 'GoogleMapsCompatible',
-                                                            transparent: false,
-                                                            displayInLayerSwitcher: false,
-                                                            queryable: false,
-                                                            visible: true,
-                                                            format: 'image/jpeg',
-                                                        })],
-                                                    },
-                                                    {
-                                                        id: 'imagen',
-                                                        title: 'Imagen',
-                                                        preview: 'plugins/backimglayer/images/svqimagen.png', // ruta relativa, edite por la deseada
-                                                        layers: [new M.layer.WMTS({
-                                                            url: 'http://www.ign.es/wmts/pnoa-ma?',
-                                                            name: 'OI.OrthoimageCoverage',
-                                                            legend: 'Imagen (PNOA)',
-                                                            matrixSet: 'GoogleMapsCompatible',
-                                                            transparent: false,
-                                                            displayInLayerSwitcher: false,
-                                                            queryable: false,
-                                                            visible: true,
-                                                            format: 'image/jpeg',
-                                                        })],
-                                                    },
-                                                    {
-                                                        id: 'hibrido',
-                                                        title: 'Híbrido',
-                                                        preview: 'plugins/backimglayer/images/svqhibrid.png', // ruta relativa, edite por la deseada
-                                                        layers: [new M.layer.WMTS({
-                                                            url: 'http://www.ign.es/wmts/pnoa-ma?',
-                                                            name: 'OI.OrthoimageCoverage',
-                                                            legend: 'Imagen (PNOA)',
-                                                            matrixSet: 'GoogleMapsCompatible',
-                                                            transparent: true,
-                                                            displayInLayerSwitcher: false,
-                                                            queryable: false,
-                                                            visible: true,
-                                                            format: 'image/png',
-                                                        }),
-                                                        new M.layer.WMTS({
-                                                            url: 'http://www.ign.es/wmts/ign-base?',
-                                                            name: 'IGNBaseOrto',
-                                                            matrixSet: 'GoogleMapsCompatible',
-                                                            legend: 'Mapa IGN',
-                                                            transparent: false,
-                                                            displayInLayerSwitcher: false,
-                                                            queryable: false,
-                                                            visible: true,
-                                                            format: 'image/png',
-                                                        }),
-                                                        ],
-                                                    },
-                                                    {
-                                                        id: 'lidar',
-                                                        preview: 'plugins/backimglayer/images/svqlidar.png', // ruta relativa, edite por la deseada
-                                                        title: 'LIDAR',
-                                                        layers: [new M.layer.WMTS({
-                                                            url: 'https://wmts-mapa-lidar.idee.es/lidar?',
-                                                            name: 'EL.GridCoverageDSM',
-                                                            legend: 'Modelo Digital de Superficies LiDAR',
-                                                            matrixSet: 'GoogleMapsCompatible',
-                                                            transparent: false,
-                                                            displayInLayerSwitcher: false,
-                                                            queryable: false,
-                                                            visible: true,
-                                                            format: 'image/png',
-                                                        })],
-                                                    },
-                                                    ],
-                                                },
+                                                controls: ['scale'],
                                             },
                                         },
                                         enabledDisplayInLayerSwitcher: true,

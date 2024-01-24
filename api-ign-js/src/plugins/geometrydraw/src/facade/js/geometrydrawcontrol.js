@@ -871,11 +871,11 @@ export default class GeometryDrawControl extends M.Control {
     this.feature.setStyle(new M.style.Point({
       radius: 3,
       fill: {
-        color: 'red',
+        color: '#ff5733',
         opacity: 1,
       },
       stroke: {
-        color: 'transparent',
+        color: '#fdfefe',
         width: 0,
       },
       label: {

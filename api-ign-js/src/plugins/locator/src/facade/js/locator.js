@@ -103,7 +103,7 @@ export default class Locator extends M.Plugin {
      * @private
      * @type {Boolean|Object}
      */
-    this.byParcelCadasstre = M.utils.isUndefined(options.byParcelCadastre) ||
+    this.byParcelCadastre = M.utils.isUndefined(options.byParcelCadastre) ||
       options.byParcelCadastre === true ?
       this.getInfoCatastro() : options.byParcelCadastre;
 
