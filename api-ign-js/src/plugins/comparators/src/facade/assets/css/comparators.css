@@ -550,6 +550,11 @@
         line-height: 40px;
     }
 
+    /* Iphone fix */
+    .mirror1 > .ol-viewport {
+        position: static !important;
+    }
+
     /* Firefox fix */
 
     @-moz-document url-prefix() {
