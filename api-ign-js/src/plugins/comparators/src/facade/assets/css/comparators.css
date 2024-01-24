@@ -1358,6 +1358,12 @@ Establece la visibilidad del icono de dragging
     position: absolute;
 }
 
+.mirror2, .mirror2, .mirror3, .mirror4 {
+    z-index: 0;
+    position: absolute;
+}
+
+
 /* Dont work in firefox, 5-jul-2023.
 Todo: see can i use and delete this commet */
 .m-plugin-comparators.opened:is(:has(
