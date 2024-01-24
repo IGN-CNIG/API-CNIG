@@ -53,7 +53,7 @@ const map = M.map({
   container: 'mapjs',
 });
 
-const mp = new GeometryDraw();
+const mp = new M.plugin.GeometryDraw();
 
 map.addPlugin(mp);
 ```
@@ -63,7 +63,7 @@ const map = M.map({
   container: 'mapjs',
 });
 
-const mp = new GeometryDraw({
+const mp = new M.plugin.GeometryDraw({
   position: 'TL',
   collapsed: true,
   collapsible: true,
