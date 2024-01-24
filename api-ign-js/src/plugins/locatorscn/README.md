@@ -63,7 +63,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 
   ```javascript
   searchOptions: {
-    addendum: 'scne',
+    addendum: 'iderioja',
     size: 15,
     layers: 'address,street,venue',
     // sources: 'calrj',
@@ -152,9 +152,9 @@ M.utils.encodeBase64(obj_params);
 ```
 
 ```
-Ejemplo de constructor del plugin: {position:'TL', collapsible: true, collapsed: true, tooltip: 'Localización', byParcelCadastre: true, byCoordinates: false, byPlaceAddressPostal: true}
+Ejemplo de constructor del plugin: {position:'TL', collapsible: true, collapsed: true, tooltip: 'Localización', searchOptions: {addendum: 'iderioja', size: 15, layers: 'address,street,venue', radius: 200}}
 
-https://componentes.cnig.es/api-core?locatorscn=base64=eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2libGUiOnRydWUsImNvbGxhcHNlZCI6dHJ1ZSwidG9vbHRpcCI6IkxvY2FsaXphY2nDs24iLCJieVBhcmNlbENhZGFzdHJlIjp0cnVlLCJieUNvb3JkaW5hdGVzIjpmYWxzZSwiYnlQbGFjZUFkZHJlc3NQb3N0YWwiOnRydWV9
+https://componentes.cnig.es/api-core?locatorscn=base64=eyJwb3NpdGlvbiI6IlRMIiwiY29sbGFwc2libGUiOnRydWUsImNvbGxhcHNlZCI6dHJ1ZSwidG9vbHRpcCI6IkxvY2FsaXphY2nDs24iLCJzZWFyY2hPcHRpb25zIjp7ImFkZGVuZHVtIjoiaWRlcmlvamEiLCJzaXplIjoxNSwibGF5ZXJzIjoiYWRkcmVzcyxzdHJlZXQsdmVudWUiLCJyYWRpdXMiOjIwMH19
 ```
 
 # Eventos
@@ -184,7 +184,7 @@ const mp = new M.plugin.Locatorscn({
   zoom: 16,
   pointStyle: 'pinMorado',
     searchOptions: {
-    addendum: 'scne',
+    addendum: 'iderioja',
     size: 15,
     layers: 'address,street,venue',
     // sources: 'calrj',
