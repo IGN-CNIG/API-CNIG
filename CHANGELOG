@@ -54,7 +54,6 @@
 - Se soluciona problema de estilos en el perfil topográfipo del plugin vector.
 - Se documenta en el JSDoc los parámetros minZoom y maxZoom en las capas MBTiles y MBTilesVector.
 - Se soluciona problema del collectorCapabilities al usar addAllLayers.
-- Plugin layerswitcher: Se soluciona problema al añadir capas WMS.
 
 
 
