@@ -82,7 +82,7 @@ export default class PrintViewManagement extends M.Plugin {
      * @private
      * @type {Boolean}
      */
-    this.isDraggable = options.isDraggable === true || options.isDraggable === 'true' ? true: false;
+    this.isDraggable = options.isDraggable === true || options.isDraggable === 'true';
 
     const { georefImageEpsg = true } = options;
 
