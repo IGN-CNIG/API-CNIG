@@ -170,6 +170,15 @@ export default class PrintViewManagementControl extends M.Control {
         }
       }
     });
+
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape') {
+        const elem = document.querySelector('.m-panel.m-plugin-printviewmanagement.opened');
+        if (elem !== null) {
+          elem.querySelector('button.m-panel-btn').click();
+        }
+      }
+    });
   }
 
   defaultOpenControl_(html) {

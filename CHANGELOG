@@ -47,6 +47,15 @@
 - KML se añade nuevo paráemtro removeFolderChildren para decidir si mostrar los hijos de las carpetas
 - Se añade a la clase utilidades los métodos getImageMap (para capturar el canvas del mapa) y copyImageClipBoard (para copiar una imagen al portapapeles)
 - Plugin comparators: se cambia estilo para que se vea correctamente en móvil
+- Plugin printviewmanagement: Se añade evento para cerrar con esc.
+- Plugin modal: Se añade evento para cerrar con esc.
+- Plugin layerswitcher: Modificación de estilo para que se visualice bien en Firefox.
+- Se soluciona problema de estilos y funcionalidad de texto en geometrydraw.
+- Se soluciona problema de estilos en el perfil topográfipo del plugin vector.
+- Se documenta en el JSDoc los parámetros minZoom y maxZoom en las capas MBTiles y MBTilesVector.
+- Se soluciona problema del collectorCapabilities al usar addAllLayers.
+- Plugin layerswitcher: Se soluciona problema al añadir capas WMS.
+
 
 
 16/06/2023 - Versión 4.7.0
