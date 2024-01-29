@@ -1602,11 +1602,12 @@ export const transfomContent = (text, pSizes = {}) => {
  * @api
  */
 export const adjustArrayCoordinates = (bbox, epsg) => {
-  const { typeCoordinates } = M.impl.ol.js.projections.getSupportedProjs().filter((proj) => proj.codes.includes(epsg))[0];
- 
-  if ('geographic' === typeCoordinates) {
+  const { typeCoordinates } = M.impl.ol.js.projections.getSupportedProjs()
+    .filter(proj => proj.codes.includes(epsg))[0];
+
+  if (typeCoordinates === 'geographic') {
     return [bbox.y.min, bbox.x.min, bbox.y.max, bbox.x.max];
-  } else if ('projected' === typeCoordinates) {
+  } else if (typeCoordinates === 'projected') {
     return [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
   }
   return null;
