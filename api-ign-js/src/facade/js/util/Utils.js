@@ -1594,6 +1594,61 @@ export const transfomContent = (text, pSizes = {}) => {
 };
 
 /**
+ * Devuelve los EPSG soportados por la API, coordenadas geográficas.
+ * @returns {Array<String>} Matriz con los diferentes EPSG.
+ */
+export const geographicCoordinates = () => {
+  return [
+    'EPSG:4326',
+    'EPSG:4258',
+    'EPSG:4230',
+    'EPSG:4081',
+    'EPSG:4082',
+    'EPSG:4083',
+  ];
+};
+
+/**
+ * Devuelve los EPSG soportados por la API, sistemas geodésicos.
+ * @returns {Array<String>} Matriz con los diferentes EPSG.
+ */
+export const projectedCoordinates = () => {
+  return [
+    'EPSG:3857',
+    'EPSG:102100',
+    'EPSG:102113',
+    'EPSG:900913',
+    'EPSG:32627',
+    'EPSG:32628',
+    'EPSG:32629',
+    'EPSG:32630',
+    'EPSG:32631',
+    'EPSG:25829',
+    'EPSG:25828',
+    'EPSG:25830',
+    'EPSG:25831',
+    'EPSG:3395',
+  ];
+};
+
+/**
+ * Esta función transforma las coordenadas, dependiendo del epsg.
+ * @param {Array} bbox Bbox.
+ * @param {String} epsg EPSG.
+ * @function
+ * @returns {Array} bbox.
+ * @api
+ */
+export const adjustCoordinates = (bbox, epsg) => {
+  if (geographicCoordinates().includes(epsg)) {
+    return [bbox[1], bbox[0], bbox[3], bbox[2]];
+  } else if (projectedCoordinates().includes(epsg)) {
+    return bbox;
+  }
+  return null;
+};
+
+/**
  * Este comentario no se verá, es necesario incluir
  * una exportación por defecto para que el compilador
  * muestre las funciones.
