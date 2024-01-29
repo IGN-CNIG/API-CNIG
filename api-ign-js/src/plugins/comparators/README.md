@@ -85,6 +85,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 
+- **enabledDisplayInLayerSwitcher**: Define si se incluirán en el selector de capas las capas con displayInLayerSwitcher *true*.
+
 - **listLayers**: Array de capas (String o Object), estas capas se verán en el selector (WMS o WMTS).
 ```JavaScript
 // Ejemplos de definiciones de capas esperadas por el
@@ -148,7 +150,6 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
   - enabledControlsPlugins: Define los plugins y controles que irán en cada mapa. Es necesario hacer las importaciones CDN de los diferentes plugins, para definir el plugin se utiliza el nombre del constructor.
   ⚠️ Por API-REST solo funcionarán los plugins que se hayan cargado en el mapa principal.
   ⚠️ El método getAPIRestBase64 solo funcionará si se le pasa las capas a los plugins en formato String.
-  - enabledDisplayInLayerSwitcher: Define si se incluirán en el selector de capas las capas con displayInLayerSwitcher *true*.
   - modeVizTypes: Define los modos de comparación.
   - tooltip: Valor a usar para mostrar en el tooltip del control, por defecto Comparador de mapas espejo / Mirror Comparison.
   - defaultCompareViz: Modo de visualización, indicamos de 0 a 9 el modo de visualización:
@@ -169,6 +170,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
 ```javascript
  const mp = new M.plugin.Comparators({
   position: 'TR',
+  enabledDisplayInLayerSwitcher: true,
   collapsed: false,
   collapsible: true,
   defaultCompareMode: 'mirror', // mirror - curtain - spyeye - none
@@ -294,7 +296,6 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
         },
       },
     },
-    enabledDisplayInLayerSwitcher: true,
     defaultCompareViz: 2,
     modeVizTypes: [0, 1, 2, 3, 5], // 0 - 9
     tooltip: 'tooltipMirror',
@@ -398,6 +399,7 @@ Ejemplo de constructor:
   isDraggable: true,
   tooltip: 'Plugin Comparators',
   defaultCompareMode: 'mirror',
+  enabledDisplayInLayerSwitcher: true,
   listLayers: [
     'WMS*Landsat 5 TM 1996. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1996_321-543*true',
     'WMS*Landsat 5 TM 1996. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1996_432*true',
@@ -430,7 +432,6 @@ Ejemplo de constructor:
         controls: ['scale'],
       },
     },
-    enabledDisplayInLayerSwitcher: true,
     defaultCompareViz: 2,
     modeVizTypes: [0, 2],
     tooltip: 'tooltipMirror',
