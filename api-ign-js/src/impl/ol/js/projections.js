@@ -51,6 +51,7 @@ const proj3857 = {
   datum: 'WGS 84',
   proj: 'Pseudo-Mercator',
   typeCoordinates: 'projected',
+  global: true,
 };
 
 
@@ -480,6 +481,7 @@ const addProjections = (projectionsParam) => {
         units: projection.units,
         metersPerUnit: projection.metersPerUnit,
         axisOrientation: projection.axisOrientation,
+        global: projection.global,
       });
     });
     addEquivalentProjections(olProjections);
