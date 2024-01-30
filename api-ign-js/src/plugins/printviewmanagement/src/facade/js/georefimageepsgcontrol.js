@@ -162,13 +162,13 @@ export default class GeorefImageEpsgControl extends M.Control {
     this.canceled = false;
 
     // La del mapa, hacer un getProjection si se cambia
-    const DEFAULT_EPSG = 'EPSG:3857';
+    const DEFAULT_EPSG = this.map_.getProjection().code;
     const ID_IMG_EPSG = '#m-georefimageepsg-select';
 
     // get value select option id m-georefimageepsg-select
     const value = this.template_.querySelector(ID_IMG_EPSG).value;
     const {
-      url, name, format, EPSG: epsg,
+      url, name, format, EPSG: epsg, version,
     } = this.layers_.filter(({ name: layerName }) => layerName === value)[0];
 
 
@@ -179,13 +179,22 @@ export default class GeorefImageEpsgControl extends M.Control {
 
     if (epsg) {
       const projection = epsg;
+      let ext = false;
+      if (DEFAULT_EPSG === projection) {
+        ext = M.utils.adjustArrayCoordinates(mapBbox, DEFAULT_EPSG);
+      } else if (version === '1.1.1' || version === '1.1.0') {
+        const transformBbox = [mapBbox.x.min, mapBbox.y.min, mapBbox.x.max, mapBbox.y.max];
+        ext = ol.proj.transformExtent(transformBbox, DEFAULT_EPSG, projection);
+      } else {
+        const transformBbox = M.utils.adjustArrayCoordinates(mapBbox, projection);
+        ext = ol.proj.transformExtent(transformBbox, DEFAULT_EPSG, projection);
+      }
 
-      const transformBbox = [mapBbox.y.min, mapBbox.x.min, mapBbox.y.max, mapBbox.x.max];
-      const ext = ol.proj.transformExtent(transformBbox, DEFAULT_EPSG, projection);
       const extString = ext.join(',');
 
-      const urlLayer = this.generateURLLayer_(url, projection, size, extString, format, name);
-      this.downloadPrint(urlLayer, transformBbox);
+      const urlLayer =
+        this.generateURLLayer_(url, projection, size, extString, format, name, version);
+      this.downloadPrint(urlLayer, ext);
     } else {
       const projection = this.getUTMZoneProjection();
 
@@ -196,14 +205,15 @@ export default class GeorefImageEpsgControl extends M.Control {
       const f = (ext[2] - ext[0]) / size[0];
       ext[3] = ext[1] + (f * size[1]);
 
-      const urlLayer = this.generateURLLayer_(url, projection, size, ext, format, name);
+      const urlLayer = this.generateURLLayer_(url, projection, size, ext, format, name, version);
       this.downloadPrint(urlLayer, ext);
     }
   }
 
-  generateURLLayer_(url, projection, size, bbox, format, name) {
+  generateURLLayer_(url, projection, size, bbox, format, name, version = '1.3.0') {
     let urlLayer = url;
-    urlLayer += `SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&SRS=${projection}&CRS=${projection}&WIDTH=${size[0]}&HEIGHT=${size[1]}`;
+    const coord = (version === '1.1.1' || version === '1.1.0') ? 'SRS' : 'CRS';
+    urlLayer += `SERVICE=WMS&VERSION=${version}&REQUEST=GetMap&${coord}=${projection}&WIDTH=${size[0]}&HEIGHT=${size[1]}`;
     urlLayer += `&BBOX=${bbox}&FORMAT=${format}&TRANSPARENT=true&STYLES=default`;
     urlLayer += `&LAYERS=${name}`;
     return urlLayer;
