@@ -7,5 +7,5 @@ createattributions como en addattribution
 CP-003
 GetLayers
 
-CP-002
+CP-004
 Parámetros view en vendor
