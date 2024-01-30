@@ -1606,9 +1606,9 @@ export const adjustArrayCoordinates = (bbox, epsg) => {
     .filter(proj => proj.codes.includes(epsg))[0];
 
   if (typeCoordinates === 'geographic') {
-    return [bbox.y.min, bbox.x.min, bbox.y.max, bbox.x.max];
-  } else if (typeCoordinates === 'projected') {
     return [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+  } else if (typeCoordinates === 'projected') {
+    return [bbox.y.min, bbox.x.min, bbox.y.max, bbox.x.max]; 
   }
   return null;
 };
