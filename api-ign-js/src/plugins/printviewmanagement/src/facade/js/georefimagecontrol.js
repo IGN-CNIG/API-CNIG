@@ -747,9 +747,11 @@ export default class GeorefimageControl extends M.Control {
       for (let i = 0; i < layers.length; i += 1) {
         if (layers[i].matrixSet != null) {
           const matrixSet = layers[i].matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
-          const optsMatrixSet = layers[i].options.matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
           layers[i].matrixSet = matrixSet;
-          layers[i].options.matrixSet = optsMatrixSet;
+          if (layers[i].options.matrixSet) {
+            const optsMatrixSet = layers[i].options.matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
+            layers[i].options.matrixSet = optsMatrixSet;
+          }
         }
 
         encodedLayersModified.push(layers[i]);
