@@ -3,3 +3,9 @@ Mapa básico
 
 CP-002
 createattributions como en addattribution
+
+CP-003
+GetLayers
+
+CP-002
+Parámetros view en vendor

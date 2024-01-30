@@ -35,15 +35,16 @@ export const config = (configKey, configValue) => {
  * @function
  * @param {string|Mx.parameters.Map} parameters Para construir el mapa.
  * @param {Mx.parameters.MapOptions} options Opciones personalizadas para construir el mapa.
+ * @property {object} viewVendorOptions Parámetros para la vista del mapa de la librería base.
  * @returns {M.Map}
  * @api
  */
-export const map = (parameters, options) => {
+export const map = (parameters, options, viewOptions) => {
   // checks if the user specified an implementation
   if (isNullOrEmpty(MapImpl)) {
     Exception(getValue('exception').no_impl);
   }
-  const mapa = new Map(parameters, options);
+  const mapa = new Map(parameters, options, viewOptions);
   return mapa;
 };
 

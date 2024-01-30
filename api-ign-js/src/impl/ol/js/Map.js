@@ -61,6 +61,8 @@ import FormatWMS from './format/WMS';
  * Por defecto falso.
  * @property {ol.Map} map_ Implementación del mapa.
  * @property {Object} Z_INDEX_BASELAYER Objeto con los valores de los z-index.
+ * @property {Number} currentZoom Almacena el zoom del mapa.
+ * @property {Object} objectView Almacena las propiedades indicadas por el usuario para la vista.
  *
  * @api
  * @extends {M.Object}
@@ -84,10 +86,10 @@ class Map extends MObject {
    * en su defecto, en el centro (center)
    * establecido del mapa.
    * - resolutions: Array con las resoluciones asociadas a cada nivel de zoom del mapa.
-   *
+   * @param {object} viewVendorOptions Parámetros para la vista del mapa de la librería base.
    * @api
    */
-  constructor(div, facadeMap, options = {}) {
+  constructor(div, facadeMap, options = {}, viewVendorOptions) {
     super();
     /**
      * Fachada del mapa a implementar.
@@ -191,14 +193,22 @@ class Map extends MObject {
     this.viewExtent = options.viewExtent;
 
     /**
+     * Almacena las propiedades indicadas por el usuario para la vista.
+     * @api
+     * @type {Object}
+     */
+    this.objectView = viewVendorOptions;
+
+    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
+      this.objectView.extent = this.viewExtent;
+    }
+
+    /**
      * Implementación del mapa.
      * @private
      * @type {ol.Map}
      */
-    let view = new View();
-    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
-      view = new View({ extent: this.viewExtent });
-    }
+    const view = new View(this.objectView);
 
     this.map_ = new OLMap({
       controls: [],
@@ -2274,9 +2284,9 @@ class Map extends MObject {
     const maxZoom = olMap.getView().getMaxZoom();
     const size = olMap.getSize();
 
-    let newView = new View({ projection });
+    let newView = new View({ ...this.objectView, projection });
     if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
-      newView = new View({ projection, extent: this.viewExtent });
+      newView = new View({ ...this.objectView, projection, extent: this.viewExtent });
     }
 
     newView.setProperties(oldViewProperties);
@@ -2403,9 +2413,9 @@ class Map extends MObject {
     const maxZoom = olMap.getView().getMaxZoom();
 
     // sets the new view
-    let newView = new View({ projection: olProjection });
+    let newView = new View({ ...this.objectView, projection: olProjection });
     if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
-      newView = new View({ projection: olProjection, extent: this.viewExtent });
+      newView = new View({ ...this.objectView, projection: olProjection, extent: this.viewExtent });
     }
 
     newView.setProperties(oldViewProperties);

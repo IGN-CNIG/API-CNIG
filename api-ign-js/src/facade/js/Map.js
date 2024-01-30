@@ -80,15 +80,16 @@ class Map extends Base {
    * @param { string | Mx.parameters.Map } userParameters Parámetros.
    * @param { Mx.parameters.MapOptions } options Opciones personalizadas para la implementación
    * proporcionado por el usuario.
+   * @property {object} viewVendorOptions Parámetros para la vista del mapa de la librería base.
    * @api
    */
-  constructor(userParameters, options = {}) {
+  constructor(userParameters, options = {}, viewVendorOptions = {}) {
     // parses parameters to build the new map
     const params = new Parameters(userParameters);
 
     // calls the super constructor
     super();
-    const impl = new MapImpl(params.container, this, options);
+    const impl = new MapImpl(params.container, this, options, viewVendorOptions);
     // impl.setFacadeMap(this);
     this.setImpl(impl);
 
