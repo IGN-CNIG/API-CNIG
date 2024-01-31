@@ -56,6 +56,7 @@
 - Se soluciona problema del collectorCapabilities al usar addAllLayers.
 - Se cambia enlace servicio de capa base
 - Se soluciona error de visualización del mapa con proyección por defecto 3857.
+- Plugin printviewmanagement: Se soluciona error por el que no tenía en cuenta los parámetros minZoom y maxZoom
 
 
 

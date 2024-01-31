@@ -712,11 +712,13 @@ export default class PrinterMapControl extends M.Control {
   encodeLayers() {
     // Filters visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
+    const mapZoom = this.map_.getZoom();
     let layers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer');
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer' &&
+      mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
     });
 
-    if (this.map_.getZoom() === 20) {
+    if (mapZoom === 20) {
       let contains = false;
       layers.forEach((l) => {
         if (l.url !== undefined && l.url === 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg') {
@@ -729,7 +731,7 @@ export default class PrinterMapControl extends M.Control {
           return l.url !== 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg';
         });
       }
-    } else if (this.map_.getZoom() < 20) {
+    } else if (mapZoom < 20) {
       let contains = false;
       layers.forEach((l) => {
         if (l.url !== undefined && l.name !== undefined && l.url === 'https://www.ign.es/wmts/pnoa-ma?' && l.name === 'OI.OrthoimageCoverage') {
