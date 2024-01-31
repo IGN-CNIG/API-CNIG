@@ -1632,15 +1632,15 @@ class Map extends MObject {
     layers.forEach((layer) => {
       // checks if layer is XYZ and was added to the map
       if (layer.type === LayerType.XYZ) {
-        if (!includes(this.layers_, layer) && layer.transparent === true) {
+        if (!includes(this.layers_, layer)) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
-          const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.XYZ];
-          layer.setZIndex(zIndex);
-        } else {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(0);
+          if (layer.transparent === true) {
+            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.XYZ];
+            layer.setZIndex(zIndex);
+          } else {
+            layer.setZIndex(0);
+          }
         }
       }
     });
@@ -1733,15 +1733,15 @@ class Map extends MObject {
     layers.forEach((layer) => {
       // checks if layer is TMS and was added to the map
       if (layer.type === LayerType.TMS) {
-        if (!includes(this.layers_, layer) && layer.transparent === true) {
+        if (!includes(this.layers_, layer)) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
-          const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.TMS];
-          layer.setZIndex(zIndex);
-        } else {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(0);
+          if (layer.transparent === true) {
+            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.TMS];
+            layer.setZIndex(zIndex);
+          } else {
+            layer.setZIndex(0);
+          }
         }
       }
     });

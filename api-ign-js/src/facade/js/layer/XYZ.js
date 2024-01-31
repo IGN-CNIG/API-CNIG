@@ -45,10 +45,10 @@ class XYZ extends LayerBase {
    * - type: Tipo de la capa.
    * - isBase: Indica si la capa es base.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
    * - opacity: Opacidad de la capa.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
-   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
