@@ -87,9 +87,11 @@ class Map extends Base {
     // parses parameters to build the new map
     const params = new Parameters(userParameters);
 
+    const opts = { viewExtent: params.viewExtent, ...options };
+
     // calls the super constructor
     super();
-    const impl = new MapImpl(params.container, this, options, viewVendorOptions);
+    const impl = new MapImpl(params.container, this, opts, viewVendorOptions);
     // impl.setFacadeMap(this);
     this.setImpl(impl);
 

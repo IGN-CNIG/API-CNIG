@@ -9,3 +9,6 @@ GetLayers
 
 CP-004
 Parámetros view en vendor
+
+CP-005
+Parámetros mapa
