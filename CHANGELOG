@@ -58,6 +58,7 @@
 - Se soluciona error de visualización del mapa con proyección por defecto 3857.
 - Plugin printviewmanagement: Se soluciona error por el que no tenía en cuenta los parámetros minZoom y maxZoom
 - Se soluciona duplicidad de capas XYZ y TMS en layerswitcher.
+- Plugin sharemap: Permite compartir capa OGCAPIFetures
 
 
 

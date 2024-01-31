@@ -590,6 +590,8 @@ export default class ShareMapControl extends M.Control {
       param = this.getVector(layer);
     } else if (layer.type === 'MVT') {
       param = this.getMVT(layer);
+    } else if (layer.type === 'OGCAPIFeatures') {
+      param = this.getOGCAPIFeatures(layer);
     }
     return param;
   }
@@ -618,6 +620,17 @@ export default class ShareMapControl extends M.Control {
   }
 
   /**
+   * This method gets the ogcApiFeatures url parameter
+   *
+   * @public
+   * @function
+   */
+  getOGCAPIFeatures(layer) {
+    const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
+    return `OGCAPIFeatures*${layer.legend || layer.name}*${layer.url}*${layer.name}*${layer.limit || ''}*${layer.bbox || ''}*${layer.id || ''}*${layer.offset || ''}*${layer.format || ''}*${style}*${layer.extract || ''}`;
+  }
+
+  /**
    * This method gets the geojson url parameter
    *
    * @public
@@ -636,6 +649,12 @@ export default class ShareMapControl extends M.Control {
     return `GeoJSON*${layer.name}*${source}**${style}`;
   }
 
+  /**
+   * This method gets the mvt url parameter
+   *
+   * @public
+   * @function
+   */
   getMVT(layer) {
     return `MVT*${layer.url}*${layer.name}*${layer.getProjection()}`;
   }
