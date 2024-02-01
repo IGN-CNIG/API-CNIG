@@ -1605,14 +1605,12 @@ export const adjustArrayCoordinates = (bbox, epsg) => {
   const { def } = M.impl.ol.js.projections.getSupportedProjs()
     .filter(proj => proj.codes.includes(epsg))[0];
 
-  const typeCoordinates = def.includes('+proj=longlat') ? 'geographic' : 'projected';
+  const typeCoordinates = def.includes('+proj=longlat');
 
-  if (typeCoordinates === 'geographic') {
-    return [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-  } else if (typeCoordinates === 'projected') {
+  if (typeCoordinates) {
     return [bbox.y.min, bbox.x.min, bbox.y.max, bbox.x.max];
   }
-  return null;
+  return [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
 };
 
 /**
