@@ -181,13 +181,14 @@ export default class GeorefImageEpsgControl extends M.Control {
       const projection = epsg;
       let ext = false;
       if (DEFAULT_EPSG === projection) {
-        ext = M.utils.adjustArrayCoordinates(mapBbox, DEFAULT_EPSG);
+        ext = M.utils.ObjectToArrayExtent(mapBbox, DEFAULT_EPSG);
       } else if (version === '1.1.1' || version === '1.1.0') {
         const transformBbox = [mapBbox.x.min, mapBbox.y.min, mapBbox.x.max, mapBbox.y.max];
         ext = ol.proj.transformExtent(transformBbox, DEFAULT_EPSG, projection);
       } else {
-        const transformBbox = M.utils.adjustArrayCoordinates(mapBbox, projection);
+        const transformBbox = M.utils.ObjectToArrayExtent(mapBbox, DEFAULT_EPSG);
         ext = ol.proj.transformExtent(transformBbox, DEFAULT_EPSG, projection);
+        ext = this.transformExtentOL(ext, projection);
       }
 
       const extString = ext.join(',');
@@ -208,6 +209,18 @@ export default class GeorefImageEpsgControl extends M.Control {
       const urlLayer = this.generateURLLayer_(url, projection, size, ext, format, name, version);
       this.downloadPrint(urlLayer, ext);
     }
+  }
+
+  transformExtentOL(extent, projection) {
+    const { def } = M.impl.ol.js.projections.getSupportedProjs()
+      .filter(proj => proj.codes.includes(projection))[0];
+    const typeCoordinates = def.includes('+proj=longlat');
+
+    if (typeCoordinates) {
+      return [extent[1], extent[0], extent[3], extent[2]];
+    }
+
+    return extent;
   }
 
   generateURLLayer_(url, projection, size, bbox, format, name, version = '1.3.0') {
