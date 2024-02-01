@@ -60,6 +60,7 @@
 - Se soluciona duplicidad de capas XYZ y TMS en layerswitcher.
 - Plugin sharemap: Permite compartir capa OGCAPIFetures
 - Se actualiza listado de servicios disponibles en https://componentes.cnig.es/api-core/api/actions/services
+- Se crea método ObjectToArrayExtent Utils
 
 
 
