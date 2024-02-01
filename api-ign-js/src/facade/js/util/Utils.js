@@ -1601,7 +1601,7 @@ export const transfomContent = (text, pSizes = {}) => {
  * @returns {Array} bbox.
  * @api
  */
-export const adjustArrayCoordinates = (bbox, epsg) => {
+export const ObjectToArrayExtent = (bbox, epsg) => {
   const { def } = M.impl.ol.js.projections.getSupportedProjs()
     .filter(proj => proj.codes.includes(epsg))[0];
 
