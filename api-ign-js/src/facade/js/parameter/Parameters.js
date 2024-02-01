@@ -508,15 +508,15 @@ export const parseViewExtent = (parameter) => {
 
   if (isString(parameter)) {
     viewExtent = getParameterValue('viewExtent', parameter);
-    if (!isNullOrEmpty(viewExtent) && !isArray(viewExtent)) {
-      viewExtent = viewExtent.split(',');
-    }
   } else if (isObject(parameter)) {
     viewExtent = parameter.viewExtent;
   } else {
     Exception(`El tipo del parámetro viewExtent no es válido: ${typeof parameter}`);
   }
 
+  if (!isNullOrEmpty(viewExtent) && !isArray(viewExtent)) {
+    viewExtent = viewExtent.split(',').map(Number);
+  }
   return viewExtent;
 };
 

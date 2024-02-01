@@ -99,6 +99,12 @@ public class Parameters {
       }
    }
 
+   public void addViewExtent (String viewextent) {
+      if (viewextent != null) {
+         parameters.put("viewExtent", viewextent);
+      }
+   }
+
    public void addControls (String rawControls) {
       if (rawControls != null) {
          List<String> controls = ParametersParser.parseControls(rawControls);
