@@ -5,6 +5,7 @@ import * as LayerType from 'M/layer/Type';
 import * as EventType from 'M/event/eventtype';
 import { compileSync as compileTemplate } from 'M/util/Template';
 import Popup from 'M/Popup';
+import { getValue } from 'M/i18n/language';
 import {
   isNullOrEmpty,
   isNull,
@@ -392,7 +393,16 @@ class GenericVector extends Vector {
    */
   setVersion(newVersion) {
     this.version = newVersion;
-    this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
+    try {
+      this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
+    } catch (error) {
+      const err = getValue('exception').versionError
+        .replace('[replace1]', this.name)
+        .replace('[replace2]', this.ol3Layer.constructor.name);
+
+      // eslint-disable-next-line no-console
+      console.warn(err);
+    }
   }
 
   /**

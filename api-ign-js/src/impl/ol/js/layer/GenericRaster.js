@@ -2,6 +2,7 @@
  * @module M/impl/layer/GenericRaster
  */
 import * as LayerType from 'M/layer/Type';
+import { getValue } from 'M/i18n/language';
 import {
   isNullOrEmpty,
   isNull,
@@ -132,21 +133,43 @@ class GenericRaster extends LayerBase {
     }
 
     if (!isNullOrEmpty(this.sldBody)) {
-      this.ol3Layer.getSource().updateParams({ SLD_BODY: this.sldBody });
+      try {
+        this.ol3Layer.getSource().updateParams({ SLD_BODY: this.sldBody });
+      } catch (error) {
+        const err = getValue('exception').sldBODYError
+          .replace('[replace1]', this.name)
+          .replace('[replace2]', this.ol3Layer.constructor.name);
+
+        // eslint-disable-next-line no-console
+        console.warn(err);
+      }
     }
 
     if (!isNullOrEmpty(this.styles)) {
-      this.ol3Layer.getSource().updateParams({ STYLES: this.styles });
+      try {
+        this.ol3Layer.getSource().updateParams({ STYLES: this.styles });
+      } catch (error) {
+        const err = getValue('exception').styleError
+          .replace('[replace1]', this.name)
+          .replace('[replace2]', this.ol3Layer.constructor.name);
+
+        // eslint-disable-next-line no-console
+        console.warn(err);
+      }
     }
 
     if (!isNullOrEmpty(this.format)) {
-      this.ol3Layer.getSource().updateParams({ FORMAT: this.format });
-    }
+      try {
+        this.ol3Layer.getSource().updateParams({ FORMAT: this.format });
+      } catch (error) {
+        const err = getValue('exception').formatError
+          .replace('[replace1]', this.name)
+          .replace('[replace2]', this.ol3Layer.constructor.name);
 
-    if (!isNullOrEmpty(this.version)) {
-      this.ol3Layer.getSource().updateParams({ VERSION: this.version });
+        // eslint-disable-next-line no-console
+        console.warn(err);
+      }
     }
-
 
     this.capabilities = this.getCapabilities(this.ol3Layer, map.getProjection());
 
@@ -448,7 +471,16 @@ class GenericRaster extends LayerBase {
    */
   setVersion(newVersion) {
     this.version = newVersion;
-    this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
+    try {
+      this.ol3Layer.getSource().updateParams({ VERSION: newVersion });
+    } catch (error) {
+      const err = getValue('exception').versionError
+        .replace('[replace1]', this.name)
+        .replace('[replace2]', this.ol3Layer.constructor.name);
+
+      // eslint-disable-next-line no-console
+      console.warn(err);
+    }
   }
 
   /**
