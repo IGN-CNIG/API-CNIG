@@ -24,7 +24,6 @@ const proj4258 = {
   metersPerUnit: 111319.49079327358,
   datum: 'GRS80 (ETRS89)',
   proj: 'long, lat',
-  typeCoordinates: 'geographic',
 };
 
 /**
@@ -50,7 +49,6 @@ const proj3857 = {
   metersPerUnit: 1,
   datum: 'WGS 84',
   proj: 'Pseudo-Mercator',
-  typeCoordinates: 'projected',
   global: true,
 };
 
@@ -71,7 +69,6 @@ const proj25828 = {
   units: 'm',
   datum: 'GRS80 (ETRS89)',
   proj: 'UTM 28 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -89,7 +86,6 @@ const proj25829 = {
   units: 'm',
   datum: 'GRS80 (ETRS89)',
   proj: 'UTM 29 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -108,7 +104,6 @@ const proj25830 = {
   units: 'm',
   datum: 'GRS80 (ETRS89)',
   proj: 'UTM 30 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -127,7 +122,6 @@ const proj25831 = {
   units: 'm',
   datum: 'GRS80 (ETRS89)',
   proj: 'UTM 31 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -147,7 +141,6 @@ const proj4230 = {
   metersPerUnit: 111319.49079327358,
   datum: 'ED50',
   proj: 'long, lat',
-  typeCoordinates: 'geographic',
 };
 
 /**
@@ -167,7 +160,6 @@ const proj23028 = {
   units: 'm',
   datum: 'ED50',
   proj: 'UTM 28 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -187,7 +179,6 @@ const proj23029 = {
   units: 'm',
   datum: 'ED50',
   proj: 'UTM 29 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -207,7 +198,6 @@ const proj23030 = {
   units: 'm',
   datum: 'ED50',
   proj: 'UTM 30 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -227,7 +217,6 @@ const proj23031 = {
   units: 'm',
   datum: 'ED50',
   proj: 'UTM 31 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -248,7 +237,6 @@ const proj4326 = {
   axisOrientation: 'neu',
   datum: 'WGS 84',
   proj: 'longitud, latitud',
-  typeCoordinates: 'geographic',
 };
 
 /**
@@ -268,7 +256,6 @@ const proj32627 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'UTM 27 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -287,7 +274,6 @@ const proj32628 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'UTM 28 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -307,7 +293,6 @@ const proj32629 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'UTM 29 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -327,7 +312,6 @@ const proj32630 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'UTM 30 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -347,7 +331,6 @@ const proj32631 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'UTM 31 N',
-  typeCoordinates: 'projected',
 };
 
 /**
@@ -367,7 +350,6 @@ const proj4081 = {
   metersPerUnit: 111319.49079327358,
   datum: 'REGCAN95',
   proj: 'long, lat',
-  typeCoordinates: 'geographic',
 };
 
 /**
@@ -385,7 +367,6 @@ const proj4082 = {
   units: 'm',
   datum: 'REGCAN95',
   proj: 'UTM 27 N',
-  typeCoordinates: 'geographic',
 };
 
 /**
@@ -404,7 +385,6 @@ const proj4083 = {
   units: 'm',
   datum: 'REGCAN95',
   proj: 'UTM 28 N',
-  typeCoordinates: 'geographic',
 };
 
 /**
@@ -426,7 +406,6 @@ const proj3395 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'World Mercator',
-  typeCoordinates: 'projected',
 };
 
 /**
