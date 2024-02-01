@@ -3268,6 +3268,9 @@ class Map extends Base {
   evtSetAttributions_() {
     // getAttributions
     this.on(EventType.ADDED_LAYER, (layersEvt) => {
+      const control = this.getControls().some(c => c.name === 'attributions');
+      if (!control) { return; }
+
       let layers = layersEvt;
       if (!Array.isArray(layers)) {
         layers = [layers];
