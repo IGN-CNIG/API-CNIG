@@ -1594,16 +1594,18 @@ export const transfomContent = (text, pSizes = {}) => {
 };
 
 /**
- * Esta función transforma las coordenadas, dependiendo del epsg.
+ * Esta función ordena el bbox dependiendo del sistema de referencia.
  * @param {Object} bbox Bbox.
- * @param {String} epsg EPSG.
+ * @param {String} epsg EPSG del bbox.
  * @function
  * @returns {Array} bbox.
  * @api
  */
 export const adjustArrayCoordinates = (bbox, epsg) => {
-  const { typeCoordinates } = M.impl.ol.js.projections.getSupportedProjs()
+  const { def } = M.impl.ol.js.projections.getSupportedProjs()
     .filter(proj => proj.codes.includes(epsg))[0];
+
+  const typeCoordinates = def.includes('+proj=longlat') ? 'geographic' : 'projected';
 
   if (typeCoordinates === 'geographic') {
     return [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
