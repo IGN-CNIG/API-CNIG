@@ -61,6 +61,7 @@
 - Plugin sharemap: Permite compartir capa OGCAPIFetures
 - Se actualiza listado de servicios disponibles en https://componentes.cnig.es/api-core/api/actions/services
 - Se crea método ObjectToArrayExtent Utils
+- Se configura capas bases con quicklayers (capa base y capas de backgroundlayers)
 
 
 

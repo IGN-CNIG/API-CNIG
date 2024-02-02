@@ -271,9 +271,9 @@ class Map extends Base {
       this.addControls(params.controls);
     }
 
-    // default WMTS
+    // default TMS
     if (isNullOrEmpty(params.layers) && !isArray(params.layers)) {
-      this.addTMS(M.config.tms.base);
+      this.addQuickLayers(M.config.tms.base);
     }
 
     // center
