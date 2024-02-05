@@ -56,12 +56,12 @@
 - Se soluciona problema del collectorCapabilities al usar addAllLayers.
 - Se cambia enlace servicio de capa base
 - Se soluciona error de visualización del mapa con proyección por defecto 3857.
-- Plugin printviewmanagement: Se soluciona error por el que no tenía en cuenta los parámetros minZoom y maxZoom
-- Se soluciona duplicidad de capas XYZ y TMS en layerswitcher.
+- Se controla que se puedan añadir varias veces la misma capa de tipo XYZ y TMS.
 - Plugin sharemap: Permite compartir capa OGCAPIFetures
 - Se actualiza listado de servicios disponibles en https://componentes.cnig.es/api-core/api/actions/services
 - Se crea método ObjectToArrayExtent Utils
 - Se configura capas bases con quicklayers (capa base y capas de backgroundlayers)
+- Se añade nuevo parámetro a la clase mapa "viewVendorOptions" para indicar propiedades de la vista del mapa de la librería base
 
 
 
