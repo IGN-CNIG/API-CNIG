@@ -293,7 +293,7 @@ export default class GeorefimageControl extends M.Control {
         return codes.includes(this.map_.getProjection().code);
       })[0];
 
-      const projFormat = `${proj.datum} ${proj.codes[0]} - ${proj.proj.toUpperCase()} `;
+      const projFormat = `${proj.datum} - ${proj.proj.toUpperCase()} (${proj.codes[0]})`;
 
       this.projection_ = this.map_.getProjection().code;
       this.projectionFormat_ = projFormat;
@@ -367,13 +367,13 @@ export default class GeorefimageControl extends M.Control {
           return codes.includes(this.map_.getProjection().code);
         })[0];
         if (proj) {
-          this.elementProjection_.innerText = `${proj.datum} ${proj.codes[0]} - ${proj.proj.toUpperCase()} `;
+          this.elementProjection_.innerText = `${proj.datum} - ${proj.proj.toUpperCase()} (${proj.codes[0]})`;
         }
       } else {
         const proj = M.impl.ol.js.projections.getSupportedProjs().filter(({ codes }) => {
           return codes[0] === DEFAULT_PROJECTION_SERVER;
         })[0];
-        this.elementProjection_.innerText = `${proj.datum} ${proj.codes[0]} - ${proj.proj.toUpperCase()} `;
+        this.elementProjection_.innerText = `${proj.datum} - ${proj.proj.toUpperCase()} (${proj.codes[0]})`;
       }
     });
 
