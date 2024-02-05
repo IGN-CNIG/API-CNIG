@@ -426,11 +426,13 @@ class Map extends Base {
    * @api
    */
   removeAttribution(id) {
-    const attributions = this.controlAttributions.getAttributions();
-    let filterAttributions = attributions.filter(attribution => attribution.id !== id);
-    filterAttributions = filterAttributions.filter(attribution => attribution.name !== id);
+    if (id) {
+      const attributions = this.controlAttributions.getAttributions();
+      let filterAttributions = attributions.filter(attribution => attribution.id !== id);
+      filterAttributions = filterAttributions.filter(attribution => attribution.name !== id);
 
-    this.controlAttributions.setAttributions(filterAttributions);
+      this.controlAttributions.setAttributions(filterAttributions);
+    }
   }
 
   /**
