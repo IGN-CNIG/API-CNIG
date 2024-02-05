@@ -113,6 +113,7 @@ let quickLayers = () => {
       visible: true,
       transparent: false,
       tileGridMaxZoom: 17,
+      name: 'IGNBaseTodo',
       attribution: {
         name: 'Nombre 1',
         description: 'Description 1',
@@ -127,6 +128,7 @@ let quickLayers = () => {
     BASE_PNOA_MA_TMS: new TMS({
       url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
       legend: 'PNOA_MA',
+      name: 'PNOA_MA',
       visible: true,
       transparent: false,
       tileGridMaxZoom: 19,
