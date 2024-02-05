@@ -89,7 +89,7 @@ class Attributions extends ControlBase {
    * @api
    */
   createView(map) {
-    this.map = map;
+    this.map_ = map;
 
     return new Promise((success, fail) => {
       const html = compileTemplate(attributionsTemplate, {
@@ -109,7 +109,7 @@ class Attributions extends ControlBase {
       });
 
       this.accessibilityTab(html);
-      this.map.getLayers().forEach(({ attribution }) => {
+      this.map_.getLayers().forEach(({ attribution }) => {
         if (attribution) {
           this.addAttributions(attribution);
         }
@@ -159,9 +159,8 @@ class Attributions extends ControlBase {
       }
     }
 
-
-    if (this.map.getLayers({ name: layer }).length < 1) {
-      this.map.addLayers(layer);
+    if (this.map_.getLayers({ name: layer }).length < 1) {
+      this.map_.addLayers(layer);
       layer.displayInLayerSwitcher = false;
       layer.setVisible(false);
     }
@@ -207,7 +206,12 @@ class Attributions extends ControlBase {
       // Features Attributions
       if (this.map_.getScale() <= this.scale_) {
         this.setVisible(true);
-        const vectorAttribution = this.map_.getLayers().filter(l => l.name.includes(`${layer.id}_attributions`));
+        const vectorAttribution = this.map_.getLayers().filter((l) => {
+          if (l.name) {
+            return l.name.includes(`${layer.id}_attributions`);
+          }
+          return false;
+        });
         if (vectorAttribution.length > 0) {
           const features = vectorAttribution[0].getFeatures();
           featureAttributions = this.getMapAttributions(features);
@@ -451,7 +455,7 @@ class Attributions extends ControlBase {
      * @public
      */
   onMoveEnd(callback) {
-    this.impl_.registerEvent('moveend', this.map, e => callback(e));
+    this.impl_.registerEvent('moveend', this.map_, e => callback(e));
   }
 
   /**
