@@ -401,11 +401,6 @@ class Map extends Base {
       return;
     }
 
-    // Comprobar si existe el control
-    if (!this.getControls().some(({ name }) => name === 'attributions')) {
-      this.createAttribution();
-    }
-
     const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
     let addAttribution = null;
 
