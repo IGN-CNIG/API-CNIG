@@ -378,7 +378,7 @@ class Attributions extends ControlBase {
       });
     } else {
       this.collectionsAttributions_.push(attribuccionParams);
-
+      this.addContent([attribuccionParams]);
       const { id, contentType, contentAttributions } = attribuccionParams;
       this.createVectorLayer(id, contentAttributions, contentType);
     }
