@@ -171,6 +171,10 @@
     "addmbtiles_method": "The implementation used does not have the method addMBTilesVector.",
     "removembtiles_method": "The implementation used does not have the method removeMBTilesVector.",
     "browser_audio": "Your browser does not support the audio element",
-    "browser_video": "Your browser does not support the video element"
+    "browser_video": "Your browser does not support the video element",
+    "versionError": "Layer [replace1] of type [replace2] does not support the version.",
+    "sldBODYError": "Layer [replace1] of type [replace2] does not support SLD_BODY.",
+    "styleError": "Layer [replace1] of type [replace2] does not support STYLE.",
+    "formatError": "Layer [replace1] of type [replace2] does not support FORMAT."
   }
 }

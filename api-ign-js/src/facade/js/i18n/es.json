@@ -172,6 +172,10 @@
     "addmbtiles_method": "La implementación usada no posee el método addMBTilesVector.",
     "removembtiles_method": "La implementación usada no posee el método removeMBTilesVector.",
     "browser_audio": "Su navegador no soporta el elemento de audio",
-    "browser_video": "Su navegador no soporta el elemento de video"
+    "browser_video": "Su navegador no soporta el elemento de video",
+    "versionError": "La capa [replace1] de tipo [replace2] no soporta la versión.",
+    "sldBODYError": "La capa [replace1] de tipo [replace2] no soporta SLD_BODY",
+    "styleError": "La capa [replace1] de tipo [replace2] no soporta STYLE",
+    "formatError": "La capa [replace1] de tipo [replace2] no soporta FORMAT"
   }
 }
