@@ -148,6 +148,7 @@ class Attributions extends ControlBase {
       const optionsLayer = {
         name: `${id}_attributions`,
         url,
+        legend: `${id}_attributions`,
       };
 
       if (type === 'geojson') {
@@ -207,8 +208,8 @@ class Attributions extends ControlBase {
       if (this.map_.getScale() <= this.scale_) {
         this.setVisible(true);
         const vectorAttribution = this.map_.getLayers().filter((l) => {
-          if (l.name) {
-            return l.name.includes(`${layer.id}_attributions`);
+          if (l.name || l.legend) {
+            return l.name ? l.name.includes(`${layer.id}_attributions`) : l.legend.includes(`${layer.id}_attributions`);
           }
           return false;
         });
