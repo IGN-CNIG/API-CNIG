@@ -1594,6 +1594,26 @@ export const transfomContent = (text, pSizes = {}) => {
 };
 
 /**
+ * Esta función ordena el bbox dependiendo del sistema de referencia.
+ * @param {Object} bbox Bbox.
+ * @param {String} epsg EPSG del bbox.
+ * @function
+ * @returns {Array} bbox.
+ * @api
+ */
+export const ObjectToArrayExtent = (bbox, epsg) => {
+  const { def } = M.impl.ol.js.projections.getSupportedProjs()
+    .filter(proj => proj.codes.includes(epsg))[0];
+
+  const typeCoordinates = def.includes('+proj=longlat');
+
+  if (typeCoordinates) {
+    return [bbox.y.min, bbox.x.min, bbox.y.max, bbox.x.max];
+  }
+  return [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+};
+
+/**
  * Este comentario no se verá, es necesario incluir
  * una exportación por defecto para que el compilador
  * muestre las funciones.

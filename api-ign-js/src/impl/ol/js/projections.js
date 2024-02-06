@@ -49,6 +49,7 @@ const proj3857 = {
   metersPerUnit: 1,
   datum: 'WGS 84',
   proj: 'Pseudo-Mercator',
+  global: true,
 };
 
 
@@ -459,6 +460,7 @@ const addProjections = (projectionsParam) => {
         units: projection.units,
         metersPerUnit: projection.metersPerUnit,
         axisOrientation: projection.axisOrientation,
+        global: projection.global,
       });
     });
     addEquivalentProjections(olProjections);

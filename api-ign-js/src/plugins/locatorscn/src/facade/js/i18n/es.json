@@ -57,7 +57,7 @@
   "description": "Descripción",
   "noReference": "No hay referencia",
   "ignsearch": "Buscar por lugares",
-  "search_direction": "Topónimo, dirección o código postal",
+  "search_direction": "Topónimo o dirección",
   "get_direction": "Obtener dirección en un punto del mapa",
   "toponimo": "Toponimo"
 }

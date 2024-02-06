@@ -57,7 +57,7 @@
   "description": "Description",
   "noReference": "No reference",
   "ignsearch": "Search places",
-  "search_direction": "Place name, address or postal code",
+  "search_direction": "Place name or address",
   "get_direction": "Get direction at a point on the map",
   "toponimo": "Place name"
 }

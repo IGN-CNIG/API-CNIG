@@ -293,7 +293,7 @@ export default class GeorefimageControl extends M.Control {
         return codes.includes(this.map_.getProjection().code);
       })[0];
 
-      const projFormat = `${proj.datum} ${proj.codes[0]} - ${proj.proj.toUpperCase()} `;
+      const projFormat = `${proj.datum} - ${proj.proj.toUpperCase()} (${proj.codes[0]})`;
 
       this.projection_ = this.map_.getProjection().code;
       this.projectionFormat_ = projFormat;
@@ -367,13 +367,13 @@ export default class GeorefimageControl extends M.Control {
           return codes.includes(this.map_.getProjection().code);
         })[0];
         if (proj) {
-          this.elementProjection_.innerText = `${proj.datum} ${proj.codes[0]} - ${proj.proj.toUpperCase()} `;
+          this.elementProjection_.innerText = `${proj.datum} - ${proj.proj.toUpperCase()} (${proj.codes[0]})`;
         }
       } else {
         const proj = M.impl.ol.js.projections.getSupportedProjs().filter(({ codes }) => {
           return codes[0] === DEFAULT_PROJECTION_SERVER;
         })[0];
-        this.elementProjection_.innerText = `${proj.datum} ${proj.codes[0]} - ${proj.proj.toUpperCase()} `;
+        this.elementProjection_.innerText = `${proj.datum} - ${proj.proj.toUpperCase()} (${proj.codes[0]})`;
       }
     });
 
@@ -687,6 +687,7 @@ export default class GeorefimageControl extends M.Control {
   encodeLayers() {
     // Filters WMS and WMTS visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
+    const mapZoom = this.map_.getZoom();
     let layers = this.map_.getLayers().filter((layer) => {
       return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' &&
         layer.name !== 'empty_layer' &&
@@ -694,7 +695,8 @@ export default class GeorefimageControl extends M.Control {
         layer.type !== 'GenericRaster' &&
         layer.type !== 'GenericVector' &&
         layer.type !== 'MBTiles' &&
-        layer.type !== 'MBTilesVector');
+        layer.type !== 'MBTilesVector' &&
+        mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
     });
 
     const errorLayers = this.map_.getLayers().filter((layer) => {
@@ -713,7 +715,7 @@ export default class GeorefimageControl extends M.Control {
       M.toast.error(getValue('exception.error_layers') + errorLayers.map(l => l.name).join(', '), null, 6000);
     }
 
-    if (this.map_.getZoom() === 20) {
+    if (mapZoom === 20) {
       let contains = false;
       layers.forEach((l) => {
         if (l.url !== undefined && l.url === 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg') {
@@ -726,7 +728,7 @@ export default class GeorefimageControl extends M.Control {
           return l.url !== 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg';
         });
       }
-    } else if (this.map_.getZoom() < 20) {
+    } else if (mapZoom < 20) {
       let contains = false;
       layers.forEach((l) => {
         if (l.url !== undefined && l.name !== undefined && l.url === 'https://www.ign.es/wmts/pnoa-ma?' && l.name === 'OI.OrthoimageCoverage') {
@@ -746,9 +748,11 @@ export default class GeorefimageControl extends M.Control {
       for (let i = 0; i < layers.length; i += 1) {
         if (layers[i].matrixSet != null) {
           const matrixSet = layers[i].matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
-          const optsMatrixSet = layers[i].options.matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
           layers[i].matrixSet = matrixSet;
-          layers[i].options.matrixSet = optsMatrixSet;
+          if (layers[i].options.matrixSet) {
+            const optsMatrixSet = layers[i].options.matrixSet.replace(layers[i].matrixSet, 'GoogleMapsCompatible');
+            layers[i].options.matrixSet = optsMatrixSet;
+          }
         }
 
         encodedLayersModified.push(layers[i]);

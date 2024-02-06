@@ -54,7 +54,15 @@
 - Se soluciona problema de estilos en el perfil topográfipo del plugin vector.
 - Se documenta en el JSDoc los parámetros minZoom y maxZoom en las capas MBTiles y MBTilesVector.
 - Se soluciona problema del collectorCapabilities al usar addAllLayers.
-- Plugin layerswitcher: Se soluciona problema al añadir capas WMS.
+- Se cambia enlace servicio de capa base
+- Se soluciona error de visualización del mapa con proyección por defecto 3857.
+- Se controla que se puedan añadir varias veces la misma capa de tipo XYZ y TMS.
+- Plugin sharemap: Permite compartir capa OGCAPIFetures
+- Se actualiza listado de servicios disponibles en https://componentes.cnig.es/api-core/api/actions/services
+- Se crea método ObjectToArrayExtent Utils
+- Se configura capas bases con quicklayers (capa base y capas de backgroundlayers)
+- Se añade nuevo parámetro a la clase mapa "viewVendorOptions" para indicar propiedades de la vista del mapa de la librería base
+- Plugin printviewmanagement: Rotulación sistema de referencia - Coger texto
 
 
 

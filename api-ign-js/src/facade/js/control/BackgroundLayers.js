@@ -7,6 +7,7 @@ import ControlImpl from 'impl/control/Control';
 import WMS from 'M/layer/WMS';
 import WMTS from 'M/layer/WMTS';
 import TMS from 'M/layer/TMS';
+import { getQuickLayers } from '../mapea';
 import ControlBase from './Control';
 import { compileSync as compileTemplate } from '../util/Template';
 import { LOAD, ADDED_TO_MAP } from '../event/eventtype';
@@ -62,12 +63,17 @@ class BackgroundLayers extends ControlBase {
         layers: layer.layers.map((subLayer) => {
           let l = subLayer;
           if (typeof subLayer === 'string') {
-            if (/WMTS.*/.test(subLayer)) {
-              l = new WMTS(subLayer);
-            } else if (/TMS.*/.test(subLayer)) {
-              l = new TMS(subLayer);
-            } else {
-              l = new WMS(subLayer);
+            if (/QUICK.*/.test(subLayer)) {
+              l = getQuickLayers(subLayer.replace('QUICK*', ''));
+            }
+            if (typeof l === 'string') {
+              if (/WMTS.*/.test(l)) {
+                l = new WMTS(l);
+              } else if (/TMS.*/.test(l)) {
+                l = new TMS(l);
+              } else {
+                l = new WMS(l);
+              }
             }
           }
           return l;

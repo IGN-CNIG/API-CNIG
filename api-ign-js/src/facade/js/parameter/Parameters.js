@@ -1,7 +1,7 @@
 /**
  * @module M/Parameters
  */
-import { isString, isNullOrEmpty, getParameterValue, isObject, isUndefined } from '../util/Utils';
+import { isString, isNullOrEmpty, getParameterValue, isObject, isUndefined, isArray } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 
@@ -492,6 +492,35 @@ export const parseLabel = (parameter) => {
 };
 
 /**
+ * Esta función analiza un parámetro de "viewExtent" en un formato legible.
+ * parámetro a API-CNIG y chequea posibles errores.
+ *
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Map} parameter Parámetros.
+ * @returns {String} Devuelve el "viewExtent".
+ * @api
+ */
+export const parseViewExtent = (parameter) => {
+  let viewExtent;
+
+  if (isString(parameter)) {
+    viewExtent = getParameterValue('viewExtent', parameter);
+  } else if (isObject(parameter)) {
+    viewExtent = parameter.viewExtent;
+  } else {
+    Exception(`El tipo del parámetro viewExtent no es válido: ${typeof parameter}`);
+  }
+
+  if (!isNullOrEmpty(viewExtent) && !isArray(viewExtent)) {
+    viewExtent = viewExtent.split(',').map(Number);
+  }
+  return viewExtent;
+};
+
+/**
  * @classdesc
  * Analiza y transforma los parámetros especificados por el usuario.
  * @property {Object} container Contenedor del mapa.
@@ -513,6 +542,7 @@ export const parseLabel = (parameter) => {
  * @property {Object} label Etiqueta del mapa.
  * @property {Object} ticket Ticket de autenticación.
  * @property {Object} zoomConstrains Valor para la constrain de zoom.
+ * @property {Object} viewExtent Extent restringido de navegación para el mapa.
  * @api
  */
 class Parameters {
@@ -539,6 +569,7 @@ class Parameters {
    * - label: Etiqueta del mapa.
    * - ticket: Ticket de autenticación.
    * - zoomConstrains: Valor para la constrain de zoom.
+   * - viewExtent Extent restringido de navegación para el mapa.
    * @api
    */
   constructor(userParameters) {
@@ -678,6 +709,13 @@ class Parameters {
      * @api
      */
     this.zoomConstrains = parseZoomConstrains(userParameters);
+
+    /**
+     * @public
+     * @type {Array}
+     * @api
+     */
+    this.viewExtent = parseViewExtent(userParameters);
   }
 }
 

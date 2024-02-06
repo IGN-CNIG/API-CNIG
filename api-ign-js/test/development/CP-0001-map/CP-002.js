@@ -4,13 +4,19 @@ import { wms_001 } from '../layers/wms/wms'
 const mapa = Mmap({
   container: 'map',
   projection: 'EPSG:3857*m',
-  // controls: ['attributions*Hola'],
+  // ? Caso de uso backgroundlayers
+  // ! Añadir attribution capas rápidas -> mapea.js
+  // ! Añadir capas rápidas al configuration.js, ejemplo:
+  // const backgroundlayersLayers = 'QUICK*Base_IGNBaseTodo_TMS,QUICK*BASE_PNOA_MA_TMS,TMS*PNOA-MA*...;
+  controls: ['attributions', 'backgroundlayers'],
+  // layers: [wms_001],
 });
 
 // mapa.createAttribution({
 //   collectionsAttributions: ['Prueba Attribution String 1'],
 // });
 
+/*
 mapa.createAttribution({
   collectionsAttributions: [
     {
@@ -20,8 +26,12 @@ mapa.createAttribution({
     }
   ],
 });
+*/
 
-mapa.addAttribution('Prueba Attribution String 2');
+// ? Se añade una atribución al mapa
+// mapa.addAttribution('Prueba Attribution String 2');
+// ? Se consulta las atribuciones del mapa
+// console.log(mapa.getAttributions());
 
 mapa.addLayers(wms_001);
 

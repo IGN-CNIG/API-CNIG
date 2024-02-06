@@ -81,15 +81,18 @@ class Map extends Base {
    * @param { string | Mx.parameters.Map } userParameters Parámetros.
    * @param { Mx.parameters.MapOptions } options Opciones personalizadas para la implementación
    * proporcionado por el usuario.
+   * @property {object} viewVendorOptions Parámetros para la vista del mapa de la librería base.
    * @api
    */
-  constructor(userParameters, options = {}) {
+  constructor(userParameters, options = {}, viewVendorOptions = {}) {
     // parses parameters to build the new map
     const params = new Parameters(userParameters);
 
+    const opts = { viewExtent: params.viewExtent, ...options };
+
     // calls the super constructor
     super();
-    const impl = new MapImpl(params.container, this, options);
+    const impl = new MapImpl(params.container, this, opts, viewVendorOptions);
     // impl.setFacadeMap(this);
     this.setImpl(impl);
 
@@ -269,9 +272,9 @@ class Map extends Base {
       this.addControls(params.controls);
     }
 
-    // default WMTS
+    // default TMS
     if (isNullOrEmpty(params.layers) && !isArray(params.layers)) {
-      this.addTMS(M.config.tms.base);
+      this.addQuickLayers(M.config.tms.base);
     }
 
     // center
@@ -399,11 +402,6 @@ class Map extends Base {
       return;
     }
 
-    // Comprobar si existe el control
-    if (!this.getControls().some(({ name }) => name === 'attributions')) {
-      this.createAttribution();
-    }
-
     const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
     let addAttribution = null;
 
@@ -429,11 +427,13 @@ class Map extends Base {
    * @api
    */
   removeAttribution(id) {
-    const attributions = this.controlAttributions.getAttributions();
-    let filterAttributions = attributions.filter(attribution => attribution.id !== id);
-    filterAttributions = filterAttributions.filter(attribution => attribution.name !== id);
+    if (id) {
+      const attributions = this.controlAttributions.getAttributions();
+      let filterAttributions = attributions.filter(attribution => attribution.id !== id);
+      filterAttributions = filterAttributions.filter(attribution => attribution.name !== id);
 
-    this.controlAttributions.setAttributions(filterAttributions);
+      this.controlAttributions.setAttributions(filterAttributions);
+    }
   }
 
   /**
@@ -3383,6 +3383,9 @@ class Map extends Base {
   evtSetAttributions_() {
     // getAttributions
     this.on(EventType.ADDED_LAYER, (layersEvt) => {
+      const control = this.getControls().some(c => c.name === 'attributions');
+      if (!control) { return; }
+
       let layers = layersEvt;
       if (!Array.isArray(layers)) {
         layers = [layers];

@@ -103,7 +103,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   (Válido sólo para la creación del plugin por JS y API-REST en base64).
 - **byPlaceAddressPostal**: Indica si el control IGNSearchLocator se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
   - **maxResults**: Número de resultados en la consulta. Por defecto: 20 (para cada servicio).
-  - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Admite combinación de 'municipio, poblacion, toponimo, callejero, carretera, portal, provincia, ngbe, expendeduria, comunidad autónoma'.
+  - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Admite combinación de 'municipio, poblacion, toponimo, callejero, carretera, portal, provincia, ngbe, expendeduria, comunidad autónoma'. Por defecto: ''.
   - **countryCode**: Código por defecto del país en la petición a geocoder. Por defecto: 'es'. 
   - **reverse**: Valor booleano que indica si la funcionalidad obtener dirección en un punto del mapa está activada (true/false). Por defecto: true.
   - **resultVisibility**: Indica si se muestra o no la geometría del elemento localizado (true/false). Por defecto: true.

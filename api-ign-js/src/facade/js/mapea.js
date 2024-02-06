@@ -8,6 +8,7 @@ import 'impl/projections';
 import MapImpl from 'impl/Map';
 import Map from 'M/Map';
 import WFS from 'M/layer/WFS';
+import TMS from 'M/layer/TMS';
 import Point from 'M/style/Point';
 import 'assets/css/ign';
 import { isNullOrEmpty, isUndefined } from './util/Utils';
@@ -35,15 +36,16 @@ export const config = (configKey, configValue) => {
  * @function
  * @param {string|Mx.parameters.Map} parameters Para construir el mapa.
  * @param {Mx.parameters.MapOptions} options Opciones personalizadas para construir el mapa.
+ * @property {object} viewVendorOptions Parámetros para la vista del mapa de la librería base.
  * @returns {M.Map}
  * @api
  */
-export const map = (parameters, options) => {
+export const map = (parameters, options, viewOptions) => {
   // checks if the user specified an implementation
   if (isNullOrEmpty(MapImpl)) {
     Exception(getValue('exception').no_impl);
   }
-  const mapa = new Map(parameters, options);
+  const mapa = new Map(parameters, options, viewOptions);
   return mapa;
 };
 
@@ -105,10 +107,30 @@ let quickLayers = () => {
     SatelitesHistoricos_SentinelInvierno23_WMS: 'WMS*SentinelInvierno23*https://wms-satelites-historicos.idee.es/satelites-historicos?*SENTINEL.2023invierno_432-1184',
     PNOA_Provisional_MosaicElement_WMS: 'WMS*MosaicElement*https://wms-pnoa.idee.es/pnoa-provisionales?*OI.MosaicElement',
     // TMS
+    Base_IGNBaseTodo_TMS: new TMS({
+      url: 'https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
+      legend: 'IGNBaseTodo',
+      visible: true,
+      transparent: false,
+      tileGridMaxZoom: 17,
+      name: 'IGNBaseTodo',
+    }, {
+      crossOrigin: 'anonymous',
+    }),
     IGNBaseTodo_TMS: 'TMS*IGNBaseTodo*https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
     IGNBaseOrto_TMS: 'TMS*IGNBaseOrto*https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png',
     IGNBaseSimplificado_TMS: 'TMS*IGNBaseSimplificado*https://tms-ign-base.idee.es/1.0.0/IGNBaseSimplificado/{z}/{x}/{-y}.png',
     MapaRaster_TMS: 'TMS*MapaRaster*https://tms-mapa-raster.ign.es/1.0.0/mapa-raster/{z}/{x}/{-y}.jpeg',
+    BASE_PNOA_MA_TMS: new TMS({
+      url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+      legend: 'PNOA_MA',
+      name: 'PNOA_MA',
+      visible: true,
+      transparent: false,
+      tileGridMaxZoom: 19,
+    }, {
+      crossOrigin: 'anonymous',
+    }),
     PNOA_MA_TMS: 'TMS*PNOA_MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
     RelieveSombreado_TMS: 'TMS*RelieveSombreado*https://tms-relieve.idee.es/1.0.0/relieve/{z}/{x}/{-y}.jpeg',
     // MVT
