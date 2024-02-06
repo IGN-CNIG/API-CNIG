@@ -114,10 +114,6 @@ let quickLayers = () => {
       transparent: false,
       tileGridMaxZoom: 17,
       name: 'IGNBaseTodo',
-      attribution: {
-        name: 'Nombre 1',
-        description: 'Description 1',
-      },
     }, {
       crossOrigin: 'anonymous',
     }),
@@ -132,10 +128,6 @@ let quickLayers = () => {
       visible: true,
       transparent: false,
       tileGridMaxZoom: 19,
-      attribution: {
-        name: 'Nombre 2',
-        description: 'Description 2',
-      },
     }, {
       crossOrigin: 'anonymous',
     }),
