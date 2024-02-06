@@ -3,6 +3,7 @@
  */
 import VectorImpl from 'impl/layer/Vector';
 import { geojsonTo4326 } from 'impl/util/Utils';
+import projAPI from 'impl/projections';
 import { isUndefined, isArray, isNullOrEmpty, isString, modifySVG } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
@@ -495,7 +496,18 @@ class Vector extends LayerBase {
   toGeoJSON() {
     const code = this.map_.getProjection().code;
     const featuresAsJSON = this.getFeatures().map(feature => feature.getGeoJSON());
-    return { type: 'FeatureCollection', features: geojsonTo4326(featuresAsJSON, code) };
+    const projection = projAPI.getSupportedProjs()
+      .filter(proj => proj.codes.includes('EPSG:4326'))[0];
+    return {
+      type: 'FeatureCollection',
+      crs: {
+        type: 'name',
+        properties: {
+          name: projection.codes[projection.codes.length - 2],
+        },
+      },
+      features: geojsonTo4326(featuresAsJSON, code),
+    };
   }
 }
 
