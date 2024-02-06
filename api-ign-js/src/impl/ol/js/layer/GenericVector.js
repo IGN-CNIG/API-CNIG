@@ -162,27 +162,43 @@ class GenericVector extends Vector {
     }
 
     map.getMapImpl().addLayer(this.ol3Layer);
+    const source = this.ol3Layer.getSource();
+
+    // ? Capas con features ya cargados
+    this.addFeaturesToFacade();
+    // ? Por si los features todavía no han sido cargados
     this.fnAddFeatures_ = this.addFeaturesToFacade.bind(this);
-    this.ol3Layer.getSource().on('change', this.fnAddFeatures_);
+
+    source.on('change', this.fnAddFeatures_);
   }
 
   addFeaturesToFacade() {
-    if (this.ol3Layer.getSource().getState() === 'ready') {
-      if (this.ol3Layer.getSource().getFeatures) {
-        const features = this.ol3Layer.getSource().getFeatures().map((f) => {
+    const source = this.ol3Layer.getSource();
+    if (source.getState() === 'ready' && !this.loaded_) {
+      if (source.getFeatures) {
+        const features = source.getFeatures().map((f) => {
           return Feature.olFeature2Facade(f);
         });
-        this.loaded_ = true;
-        this.facadeLayer_.addFeatures(features);
-        this.deactivate();
-        this.fire(EventType.LOAD, [this.features_]);
-        if (this.style !== 'createDefaultStyle') {
-          this.ol3Layer.setStyle(this.style);
+        if (features.length > 0) {
+          this.loaded_ = true;
+          this.facadeLayer_.addFeatures(features);
+          this.deactivate();
+          this.fire(EventType.LOAD, [this.features_]);
+          if (this.style !== 'createDefaultStyle') {
+            this.ol3Layer.setStyle(this.style);
+          }
         }
-      } else {
+      } else if (source.getState() === 'error') {
+        this.deactivate();
+      } else if (source.getState() === 'ready' && this.loaded_) {
         this.deactivate();
       }
     }
+
+    // ? Despues de 5s se elimina el evento
+    setTimeout(() => {
+      this.deactivate();
+    }, 5000);
   }
 
   /**
