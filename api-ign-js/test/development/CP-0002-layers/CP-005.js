@@ -11,7 +11,7 @@ const mapa = Mmap({
   layers: [tms_001]
 });
 
-// mapa.addLayers([tms_002]);
+mapa.addLayers([tms_002]);
 
 
 window.mapa = mapa;

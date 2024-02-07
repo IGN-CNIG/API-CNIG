@@ -6,6 +6,12 @@ export const ogcAPIFeatures_001 = new OGCAPIFeatures({
     legend: 'Capa OGCAPIFeatures',
     extract: true,
     infoEventType: 'hover',
+    // bbox: [
+    //   -157000.66673495102,
+    //   -744037.0439651047, 
+    //   5403089.153398914,
+    //   5099481.277050193
+    // ],
     // maxExtent: [-953031.9167337259, 5198473.475942763, -879652.3695799566, 5233405.1978690885],
     // limit: 20,
     // isBase: true,

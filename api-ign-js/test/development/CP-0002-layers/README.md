@@ -33,3 +33,12 @@ Mapa básico para testear parámetro isBase y transparent.
 
 CP-012
 Mapa básico para testear parámetro extent a las capas.
+
+CP-013
+Mapa básico con capas MVT.
+
+CP-014
+Mapa básico con capas MBTiles.
+
+CP-015
+Mapa básico con capas OGCAPIFeatures.
