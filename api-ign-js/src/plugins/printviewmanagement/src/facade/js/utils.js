@@ -89,7 +89,20 @@ export function removeQueueElements(html) {
 }
 
 // Generate wld file
-export function createWLD(bbox, dpi, size) {
+export function createWLD(bbox, dpi, size, epsgUser) {
+  const epsgWLD = epsgUser;
+  const rotateX = 0;
+  const rotateY = 0;
+
+  if (epsgWLD) {
+    const sizePixelX = ((bbox[2] - bbox[0]) / size[0]);
+    const sizePixelY = ((bbox[3] - bbox[1]) / size[1]) * -1;
+    const upperLeftX = bbox[0] + (sizePixelX / 2);
+    const upperLeftY = bbox[3] + (sizePixelY / 2);
+
+    return sizePixelX.toString().concat('\n', rotateX.toString(), '\n', rotateY.toString(), '\n', sizePixelY.toString(), '\n', upperLeftX.toString(), '\n', upperLeftY.toString());
+  }
+
   const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
   const GiroA = (0).toString();
   const GiroB = (0).toString();
@@ -98,6 +111,7 @@ export function createWLD(bbox, dpi, size) {
   const Cy = (bbox[3] + (Py / 2)).toString();
   return Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy);
 }
+
 
 // Create jsZip file
 export function createZipFile(files, type, titulo) {
