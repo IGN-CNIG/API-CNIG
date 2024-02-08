@@ -268,11 +268,12 @@ export const transformToStringLayers = (layer, map, remove = true) => {
   } else if (layer.type === 'WMTS') {
     const {
       url, name, legend, matrixSet, options,
-      // useCapabilities, transparent, options, displayInLayerSwitcher,
+      useCapabilities,
+      // transparent, options, displayInLayerSwitcher,
     } = layer;
     if (remove) { map.removeWMTS(name); }
     const { code } = map.getProjection();
-    return `WMTS*${url}*${name}*${matrixSet || code}*${legend}*${options.format || 'image/png'}*false`;
+    return `WMTS*${url}*${name}*${matrixSet || code}*${legend}*${options.format || 'image/png'}*${useCapabilities}`;
   }
 
   return false; // No son objetos
@@ -299,13 +300,11 @@ export const transformToLayers = (layers, index) => {
       legend: urlLayer[4],
       matrixSet: urlLayer[3],
       transparent: true, // Es una capa Overlay -> zIndex > 0
-      displayInLayerSwitcher: false, // No aparece en el TOC
       queryable: false, // No GetFeatureInfo
       visibility: false, // Visible a false por defecto
       format: urlLayer[5],
       useCapabilities: urlLayer[6] === 'true' || false,
-    });
-
+    }, { displayInLayerSwitcher: false });
     l.setZIndex(index);
 
     return l;
