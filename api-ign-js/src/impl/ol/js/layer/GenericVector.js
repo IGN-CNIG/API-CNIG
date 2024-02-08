@@ -162,24 +162,51 @@ class GenericVector extends Vector {
     }
 
     map.getMapImpl().addLayer(this.ol3Layer);
-    this.fnAddFeatures_ = this.addFeaturesToFacade.bind(this);
-    this.ol3Layer.getSource().on('change', this.fnAddFeatures_);
+    const source = this.ol3Layer.getSource();
+
+    // ? Capas con features ya cargados
+    if (source.getFeatures().length > 0 && source.getState() === 'ready') {
+      const features = source.getFeatures().map((f) => {
+        return Feature.olFeature2Facade(f);
+      });
+      this.loaded_ = true;
+      this.facadeLayer_.addFeatures(features);
+      this.fire(EventType.LOAD, [this.features_]);
+      if (this.style !== 'createDefaultStyle') {
+        this.ol3Layer.setStyle(this.style);
+      }
+    } else if (source.loading && source.getState() === 'ready') {
+      // ? Capas sin features cargados
+      this.loaded_ = true;
+      if (this.style !== 'createDefaultStyle') {
+        this.ol3Layer.setStyle(this.style);
+      }
+    } else {
+      // ? Features todavía no han sido cargados
+      this.fnAddFeatures_ = this.addFeaturesToFacade.bind(this);
+      source.on('change', this.fnAddFeatures_);
+    }
   }
 
   addFeaturesToFacade() {
-    if (this.ol3Layer.getSource().getState() === 'ready') {
-      if (this.ol3Layer.getSource().getFeatures) {
-        const features = this.ol3Layer.getSource().getFeatures().map((f) => {
+    const source = this.ol3Layer.getSource();
+    if (source.getState() === 'ready' && !this.loaded_) {
+      if (source.getFeatures) {
+        const features = source.getFeatures().map((f) => {
           return Feature.olFeature2Facade(f);
         });
-        this.loaded_ = true;
-        this.facadeLayer_.addFeatures(features);
-        this.deactivate();
-        this.fire(EventType.LOAD, [this.features_]);
-        if (this.style !== 'createDefaultStyle') {
-          this.ol3Layer.setStyle(this.style);
+        if (features.length > 0) {
+          this.loaded_ = true;
+          this.facadeLayer_.addFeatures(features);
+          this.deactivate();
+          this.fire(EventType.LOAD, [this.features_]);
+          if (this.style !== 'createDefaultStyle') {
+            this.ol3Layer.setStyle(this.style);
+          }
         }
-      } else {
+      } else if (source.getState() === 'error') {
+        this.deactivate();
+      } else if (source.getState() === 'ready' && this.loaded_) {
         this.deactivate();
       }
     }
@@ -263,7 +290,7 @@ class GenericVector extends Vector {
    */
   setURLService(url) {
     if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-        !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
+      !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
       this.ol3Layer.getSource().setUrl(url);
     }
   }
@@ -278,7 +305,7 @@ class GenericVector extends Vector {
   getURLService() {
     let url = '';
     if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-        !isNullOrEmpty(this.ol3Layer.getSource())) {
+      !isNullOrEmpty(this.ol3Layer.getSource())) {
       const source = this.ol3Layer.getSource();
       if (!isNullOrEmpty(source.getUrl)) {
         url = this.ol3Layer.getSource().getUrl();

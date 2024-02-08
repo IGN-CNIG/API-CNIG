@@ -359,7 +359,8 @@ class Map extends Base {
       collectionsAttributions: collectionsAttributions.map((l) => {
         if (typeof l !== 'string') {
           const attr = l;
-          attr.id = window.crypto.randomUUID();
+          attr.id = window.crypto.randomUUID
+            ? window.crypto.randomUUID() : new Date().getTime();
           return attr;
         }
         return l;
@@ -409,7 +410,8 @@ class Map extends Base {
       addAttribution = attribuccion;
     } else if (attribuccion && controlAttributions) {
       addAttribution = attribuccion;
-      addAttribution.id = window.crypto.randomUUID();
+      addAttribution.id = window.crypto.randomUUID
+        ? window.crypto.randomUUID() : new Date().getTime();
     }
 
     controlAttributions.addAttributions(addAttribution);

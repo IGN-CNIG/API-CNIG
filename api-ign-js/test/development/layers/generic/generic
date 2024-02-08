@@ -47,7 +47,6 @@ export const generic_001 = new GenericRaster({
 // [-] legend: 'capaGenericRaster',
 // [-] version: '1.2.0',
 // maxExtent: [-952551.7366869409, 4498177.065457279, -669276.1098620776, 4562995.6654431075],
-// hay que comprobar si maxExtent va en este objeto
 }, {
 // [-] visibility: false,
 // [-] opacity: 0.5,

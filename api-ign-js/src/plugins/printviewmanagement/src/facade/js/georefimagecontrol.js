@@ -706,8 +706,7 @@ export default class GeorefimageControl extends M.Control {
         layer.type === 'GenericRaster' ||
         layer.type === 'GenericVector' ||
         layer.type === 'MBTiles' ||
-        layer.type === 'MBTilesVector' ||
-        layer.type === 'MVT'
+        layer.type === 'MBTilesVector'
       ));
     });
 
