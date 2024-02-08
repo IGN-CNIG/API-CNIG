@@ -712,7 +712,7 @@ export default class GeorefimageControl extends M.Control {
     });
 
     if (errorLayers.length !== 0) {
-      M.toast.error(getValue('exception.error_layers') + errorLayers.map(l => l.name).join(', '), null, 6000);
+      M.toast.warning(getValue('exception.error_layers') + errorLayers.map(l => l.name).join(', '), null, 6000);
     }
 
     if (mapZoom === 20) {

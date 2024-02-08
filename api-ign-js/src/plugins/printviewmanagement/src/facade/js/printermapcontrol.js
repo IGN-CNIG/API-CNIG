@@ -495,7 +495,7 @@ export default class PrinterMapControl extends M.Control {
       M.proxy(this.statusProxy);
     });
     if (!M.utils.isNullOrEmpty(this.getImpl().errors)) {
-      M.toast.error(getValue('exception.error_layers') + this.getImpl().errors.join(', '), null, 6000);
+      M.toast.warning(getValue('exception.error_layers') + this.getImpl().errors.join(', '), null, 6000);
       this.getImpl().errors = [];
     }
   }
