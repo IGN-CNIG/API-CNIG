@@ -37,11 +37,13 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       .map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
     this.addLayerB(layerB);
 
-    if (optionsE.lyrC !== undefined && optionsE.lyrD !== undefined) {
+    if (optionsE.lyrC) {
       const layerC = [optionsE.lyrC]
         .map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
       this.addLayerC(layerC);
+    }
 
+    if (optionsE.lyrD) {
       const layerD = [optionsE.lyrD]
         .map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
       this.addLayerD(layerD);
@@ -55,10 +57,13 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       // e2m: Por aquí pasamos al desactivar el control
       for (let i = 0; i < this.layers_.length; i += 1) {
         if (this.OLVersion === 'OL6') {
-          if (this.layers_[i].prerender) ol.Observable.unByKey(this.layers_[i].prerender);
-          if (this.layers_[i].postrender) ol.Observable.unByKey(this.layers_[i].postrender);
-          // eslint-disable-next-line no-multi-assign
-          this.layers_[i].prerender = this.layers_[i].postrender = null;
+          if (this.layers_[i]) {
+            if (this.layers_[i].prerender) ol.Observable.unByKey(this.layers_[i].prerender);
+            if (this.layers_[i].postrender) ol.Observable.unByKey(this.layers_[i].postrender);
+
+            // eslint-disable-next-line no-multi-assign
+            this.layers_[i].prerender = this.layers_[i].postrender = null;
+          }
         } else {
           if (this.layers_[i].precompose) ol.Observable.unByKey(this.layers_[i].precompose);
           if (this.layers_[i].postcompose) ol.Observable.unByKey(this.layers_[i].postcompose);

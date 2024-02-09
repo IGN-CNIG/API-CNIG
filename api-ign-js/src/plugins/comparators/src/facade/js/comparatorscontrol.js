@@ -246,13 +246,6 @@ export default class ComparatorsControl extends M.Control {
       if (c.controlParam[0]) {
         if (c.active) {
           this.html.querySelector(`#${c.buttonsID}`).classList.add('activatedComparators');
-          if (c.id === 'lyrcompare' && c.controlParam[1].length < 4) {
-            M.dialog.error(`${getValue('nolayertext')} - control lyrcompare`, 'lyrcompare');
-            setTimeout(() => {
-              this.map_.addLayers(this.layerDefault);
-            }, 500);
-            return;
-          }
           const control = c.controlCreate(c.controlParam);
           // eslint-disable-next-line no-param-reassign
           c.control = control;

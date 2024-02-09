@@ -3,7 +3,8 @@
     "impl":  "La implementación usada no puede crear controles comparatorsControl",
     "no_controls": "El plugin Comparators necesita activar al menos un control.",
     "mirrorDefaultCompareViz": "El parámetro modeVizTypes no contiene el valor de defaultCompareViz",
-    "mirrorModeVizTypes": "modeVizTypes no tiene un valor válido"
+    "mirrorModeVizTypes": "modeVizTypes no tiene un valor válido",
+    "fourLayers": "El modo de visualización seleccionado requiere cuatro capas"
   },
   "nolayertext": "No hay capas de comparación",
   "title": "Panel de Comparadores",

@@ -3,7 +3,8 @@
     "impl": "The implementation used cannot create comparatorsControl controls",
     "no_controls": "The Comparators plugin needs to activate at least one control.",
     "mirrorDefaultCompareViz": "modeVizTypes parameter does not contain the value of defaultCompareViz",
-    "mirrorModeVizTypes": "modeVizTypes does not have a valid value"
+    "mirrorModeVizTypes": "modeVizTypes does not have a valid value",
+    "fourLayers": "The number of layers is insufficient to apply the effect"
   },
   "mirrorpanelParams_tooltip": "mirrorpanelParams_tooltip",
   "lyrcompareParams_tooltip": "lyrcompareParams_tooltip",
