@@ -114,10 +114,22 @@ let quickLayers = () => {
       transparent: false,
       tileGridMaxZoom: 17,
       name: 'IGNBaseTodo',
+      attribution: '<p> IDEE: <a href="www.scne.es" target="_blank">SCNE</a></p>',
     }, {
       crossOrigin: 'anonymous',
     }),
     IGNBaseTodo_TMS: 'TMS*IGNBaseTodo*https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
+    BASE_IGNBaseOrto_TMS: new TMS({
+      url: 'https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png',
+      legend: 'IGNBaseOrto',
+      name: 'IGNBaseOrto',
+      visible: true,
+      transparent: false,
+      tileGridMaxZoom: 17,
+      attribution: '<p> IDEE: <a href="www.scne.es" target="_blank">SCNE</a></p>',
+    }, {
+      crossOrigin: 'anonymous',
+    }),
     IGNBaseOrto_TMS: 'TMS*IGNBaseOrto*https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png',
     IGNBaseSimplificado_TMS: 'TMS*IGNBaseSimplificado*https://tms-ign-base.idee.es/1.0.0/IGNBaseSimplificado/{z}/{x}/{-y}.png',
     MapaRaster_TMS: 'TMS*MapaRaster*https://tms-mapa-raster.ign.es/1.0.0/mapa-raster/{z}/{x}/{-y}.jpeg',
@@ -128,6 +140,13 @@ let quickLayers = () => {
       visible: true,
       transparent: false,
       tileGridMaxZoom: 19,
+      attribution: {
+        name: 'PNOA-MA',
+        description: 'PNOA-MA',
+        url: 'https://www.ign.es',
+        contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+        contentType: 'kml',
+      },
     }, {
       crossOrigin: 'anonymous',
     }),

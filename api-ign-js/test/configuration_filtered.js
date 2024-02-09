@@ -1,6 +1,6 @@
 const backgroundlayersIds = 'mapa,imagen,hibrido'.split(',');
 const backgroundlayersTitles = 'Mapa,Imagen,Hibrido'.split(',');
-const backgroundlayersLayers = 'QUICK*Base_IGNBaseTodo_TMS,QUICK*BASE_PNOA_MA_TMS,TMS*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19+TMS*IGNBaseOrto*https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png*true*false*17'.split(',');
+const backgroundlayersLayers = 'QUICK*Base_IGNBaseTodo_TMS,QUICK*BASE_PNOA_MA_TMS,QUICK*BASE_PNOA_MA_TMS+QUICK*BASE_IGNBaseOrto_TMS'.split(',');
 const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
   return {
     id,
