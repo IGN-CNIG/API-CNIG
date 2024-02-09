@@ -124,7 +124,7 @@ class XYZ extends Layer {
     /**
      * CrossOrigin: Atributo crossOrigin para las imágenes cargadas.
      */
-    this.crossOrigin = options.crossOrigin || null;
+    this.crossOrigin = options.crossOrigin || 'anonymous';
   }
 
   /**

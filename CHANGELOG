@@ -63,6 +63,7 @@
 - Se configura capas bases con quicklayers (capa base y capas de backgroundlayers)
 - Se añade nuevo parámetro a la clase mapa "viewVendorOptions" para indicar propiedades de la vista del mapa de la librería base
 - Plugin printviewmanagement: Rotulación sistema de referencia - Coger texto
+- Las capas MBTiles, WMS, WMTS, TMS y XYZ 
 
 
 
