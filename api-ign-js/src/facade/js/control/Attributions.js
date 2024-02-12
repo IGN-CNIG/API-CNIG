@@ -72,11 +72,26 @@ class Attributions extends ControlBase {
     this.tooltip_ = options.tooltip || getValue('attributions').tooltip;
     this.collectionsAttributions_ = options.collectionsAttributions || [];
 
+    this.collectionsAttributions_ = this.collectionsAttributions_.map((attr) => {
+      if (typeof attr === 'string') {
+        return this.transformString(attr);
+      }
+      return attr;
+    });
+
     /**
      * Order: Orden que tendrá con respecto al
      * resto de plugins y controles por pantalla.
      */
     this.order = options.order;
+  }
+
+  transformString(attrString) {
+    return {
+      attribuccion: attrString,
+      id: window.crypto.randomUUID
+        ? window.crypto.randomUUID() : new Date().getTime(),
+    };
   }
 
   /**
@@ -180,6 +195,12 @@ class Attributions extends ControlBase {
     const layers = this.collectionsAttributions_;
 
     layers.forEach((layer) => {
+      if (typeof layer === 'string') {
+        // ? Change value by reference
+        // eslint-disable-next-line no-param-reassign
+        layer = this.transformString(layer);
+      }
+
       if (/<[a-z][\s\S]*>/i.test(layer.attribuccion)) {
         this.addHTMLContent(layer.attribuccion);
         return;
