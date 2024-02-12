@@ -921,9 +921,7 @@ div.m-area.m-bottom.m-left>div.m-plugin-comparators.m-panel.opened>button.m-pane
 	position: relative;
 	display: flex;
 	align-items: center;
-	padding: 0px 5px 5px 5px;
-	padding-left: 8%;
-	color: #000000;
+    margin: 5px 0;
 }
 
 .m-lyrcompare-select select {

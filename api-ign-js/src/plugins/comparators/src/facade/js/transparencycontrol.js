@@ -206,7 +206,7 @@ export default class TransparencyControl extends M.Control {
         });
 
       if (this.layers.length === 0 || this.layers === '') {
-        M.dialog.error(getValue('errorLayer'));
+        M.toast.error(getValue('exception.notLayers'), null, 6000);
       } else if (options !== '') {
         this.template.querySelector('#m-transparency-lock').style.visibility =
              'hidden';
@@ -291,6 +291,8 @@ export default class TransparencyControl extends M.Control {
      'visible';
     this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
     this.activate();
+
+    this.map_.addLayers(this.layers);
   }
 
   setDefaultLayer() {

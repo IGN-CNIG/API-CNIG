@@ -65,11 +65,11 @@ Ejemplo:
   <img src="./src/facade/assets/comparadoresv2.png" height="256" />
 </p>
 
-**Comparador de espejo / Mirror**: permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.
+**Comparador de espejo / mirrorpanelParams**: permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.
 
-**Comparador de cortina / Curtain**: permite comparar varias capas sobre una cartografía base. La extensión de las capas sobre lienzo vienen definidas por la posición del ratón o por el punto medio del lienzo.
+**Comparador de cortina / lyrcompareParams**: permite comparar varias capas sobre una cartografía base. La extensión de las capas sobre lienzo vienen definidas por la posición del ratón o por el punto medio del lienzo.
 
-**Comparador zonal / Spyeye**: reducción de la capa comparativa a una zona circular para contratarla con el mapa de fondo.
+**Comparador zonal / transparecyParams**: reducción de la capa comparativa a una zona circular para contratarla con el mapa de fondo.
 
 ## Parámetros
 
@@ -109,15 +109,15 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 ]
 ```
 - **defaultCompareMode**: Indica el modo de comparación que se arranca por defecto.
-  - 'mirror': Comparador de espejo.
-  - 'curtain': Comparador de paneles móviles.
-  - 'spyeye': Comparador de zona o puntual.
+  - 'mirrorpanelParams': Comparador de espejo.
+  - 'lyrcompareParams': Comparador de paneles móviles.
+  - 'transparecyParams': Comparador de zona o puntual.
   - 'none': no arranca ninguno de los comparadores.
 
 - **enabledKeyFunctions**:  
 Comparación en modo espejo:
 Si es true, se pueden usar las combinaciones de teclas Ctrl + Shift + [F1-F8] para cambiar entre los distintos modos de visualización. Con la tecla Escape se destruye el plugin.  <br>
-Comparación en modo spyeye:
+Comparación en modo transparecyParams:
 Ctrl + Shift + Enter: Alterna el estado de congelación.  
 Ctrl + Shift + Flecha hacia arriba: Aumenta el radio, si el radio alcanza el valor máximo de 200, no ocurre ningún cambio.  
 Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valor mínimo de 32, no ocurre ningún cambio.  
@@ -173,7 +173,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
   enabledDisplayInLayerSwitcher: true,
   collapsed: false,
   collapsible: true,
-  defaultCompareMode: 'mirror', // mirror - curtain - spyeye - none
+  defaultCompareMode: 'mirrorpanelParams', // mirrorpanelParams - lyrcompareParams - transparecyParams - none
   order: 4,
   listLayers: [
     'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
@@ -349,7 +349,7 @@ URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!list
     </tr>
      <tr>
         <td>defaultCompareMode</td>
-        <td>Indica el modo de comparación que se arranca por defecto. (mirror - curtain - spyeye - none)</td>
+        <td>Indica el modo de comparación que se arranca por defecto. (mirrorpanelParams - lyrcompareParams - transparecyParams - none)</td>
         <td>Base64 ✔️ | Separador ✔️</td>
     </tr>
     <tr>

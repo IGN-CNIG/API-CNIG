@@ -5,6 +5,8 @@
 import LyrcompareImplControl from 'impl/lyrcomparecontrol';
 import template from 'templates/lyrcompare';
 import { getValue } from './i18n/language';
+import dicAccesibilityButtonES from './i18n/accessibility_es';
+import dicAccesibilityButtonEN from './i18n/accessibility_en';
 import { transformToLayers } from './utils';
 
 // eslint-disable-next-line no-extend-native
@@ -216,6 +218,9 @@ export default class LyrCompareControl extends M.Control {
       *@type{boolean}
       */
     this.interface = values.interface === undefined ? true : values.interface;
+
+
+    this.dicAccesibilityButton = (M.language.getLang() === 'es') ? dicAccesibilityButtonES : dicAccesibilityButtonEN;
   }
 
 
@@ -349,6 +354,27 @@ export default class LyrCompareControl extends M.Control {
   }
 
   /**
+   * Change span text
+   * @param {String} class Texto
+   */
+  changeSpanText(idButton) {
+    const dicMirrorLang = {
+      'm-lyrcompare-vcurtain': 'set-mirror-1',
+      'm-lyrcompare-hcurtain': 'set-mirror-2',
+      'm-lyrcompare-void': 'set-mirror-0',
+      'm-lyrcompare-multicurtain': 'set-mirror-5',
+    };
+
+    const mirrorID = dicMirrorLang[idButton];
+    const langMirror = this.dicAccesibilityButton[mirrorID];
+
+
+    langMirror.forEach(({ id, text }) => {
+      document.querySelector(`.${id}`).innerHTML = text.secondaryMap;
+    });
+  }
+
+  /**
     * This function set plugin behavior and compile template
     *
     * @public
@@ -396,14 +422,15 @@ export default class LyrCompareControl extends M.Control {
     //   this.activateCurtain();
     // }
 
-    this.activateCurtain();
 
-    if (this.layers.length === 0) {
+    if ((this.layers.length - 1) === 0) {
       M.dialog.error(getValue('no_layers_plugin'));
     } else {
+      this.activateCurtain();
       this.template.querySelectorAll('button[id^="m-lyrcompare-"]').forEach((button, i) => {
         button.addEventListener('click', (evt) => {
           const nLayers = (this.map_.getWMS().length + this.map_.getWMTS().length) - 1;
+          this.changeSpanText(evt.target.id);
 
           if (nLayers < 3 && button.value === 'multicurtain') {
             M.toast.error(getValue('exception.fourLayers'), null, 6000);
@@ -523,7 +550,7 @@ export default class LyrCompareControl extends M.Control {
 
         // e2m: de esta forma pasamos los parámetros en forma de array
         if (this.checkLayersAreDifferent(...lstLayers) === false) {
-          M.dialog.info(getValue('advice_sameLayer'));
+          M.toast.error(getValue('advice_sameLayer'), null, 6000);
           if (item.id === 'm-lyrcompare-lyrA') {
             this.template.querySelector(`#${item.id}`).value = this.layerSelectedA.name;
           } else if (item.id === 'm-lyrcompare-lyrB') {
@@ -863,8 +890,8 @@ export default class LyrCompareControl extends M.Control {
     this.template.querySelector('#m-lyrcompare-lyrB-cont').style.display = 'none';
     this.template.querySelector('#m-lyrcompare-lyrC-cont').style.display = 'none';
     this.template.querySelector('#m-lyrcompare-lyrD-cont').style.display = 'none';
-    this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList = '';
-    this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList = '';
+    this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.remove('cp-th-large-1', 'cp-columns-2');
+    this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.remove('cp-th-large-2', 'cp-columns-3');
     const swapControl = document.querySelector('.lyrcompare-swipe-control');
     if (swapControl) {
       swapControl.style.opacity = '0';

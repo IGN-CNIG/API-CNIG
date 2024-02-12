@@ -18,7 +18,6 @@ export default class ComparatorsControl extends M.impl.Control {
     this.facadeMap_ = map;
   }
 
-  // TO-DO Ver si es necesario
   /**
    * This functions transform coordinates of center to the
    * predefined zoom

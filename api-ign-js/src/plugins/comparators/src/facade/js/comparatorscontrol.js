@@ -246,6 +246,13 @@ export default class ComparatorsControl extends M.Control {
       if (c.controlParam[0]) {
         if (c.active) {
           this.html.querySelector(`#${c.buttonsID}`).classList.add('activatedComparators');
+          if (c.id === 'lyrcompare' && c.controlParam[1].length < 1) {
+            M.toast.error(getValue('exception.notLayers'), null, 6000);
+            setTimeout(() => {
+              this.map_.addLayers(this.layerDefault);
+            }, 500);
+            return;
+          }
           const control = c.controlCreate(c.controlParam);
           // eslint-disable-next-line no-param-reassign
           c.control = control;
@@ -519,11 +526,10 @@ export default class ComparatorsControl extends M.Control {
 
   defaultCompareMode_() {
     if (!this.options.defaultCompareMode || this.options.defaultCompareMode === 'none') return;
-    // mirror - curtain - spyeye - none
     const dic = {
-      mirror: 'mirrorpanel',
-      curtain: 'lyrcompare',
-      spyeye: 'transparency',
+      mirrorpanelParams: 'mirrorpanel',
+      lyrcompareParams: 'lyrcompare',
+      transparecyParams: 'transparency',
     };
 
     this.controls.forEach((c) => {
