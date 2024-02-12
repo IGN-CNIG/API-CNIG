@@ -82,8 +82,8 @@ export default class BackImgLayerControl extends M.Control {
 
         backgroundLayers = backgroundLayers.map((urlLayer) => {
           let aux = null;
-          if (/QUICK.*/.test(aux)) {
-            aux = M.getQuickLayers(aux.replace('QUICK*', ''));
+          if (/QUICK.*/.test(urlLayer)) {
+            aux = M.getQuickLayers(urlLayer.replace('QUICK*', ''));
           }
           let mapeaLayer;
           if (M.utils.isNullOrEmpty(aux)) {
