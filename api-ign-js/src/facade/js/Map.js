@@ -402,18 +402,20 @@ class Map extends Base {
       return;
     }
 
-    const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
+    this.controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
     let addAttribution = null;
 
     if (typeof attribuccion === 'string') {
+      addAttribution = {};
+      addAttribution.attribuccion = attribuccion;
+    } else if (attribuccion && this.controlAttributions) {
       addAttribution = attribuccion;
-    } else if (attribuccion && controlAttributions) {
-      addAttribution = attribuccion;
-      addAttribution.id = window.crypto.randomUUID
-        ? window.crypto.randomUUID() : new Date().getTime();
     }
 
-    controlAttributions.addAttributions(addAttribution);
+    addAttribution.id = window.crypto.randomUUID
+      ? window.crypto.randomUUID() : new Date().getTime();
+
+    this.controlAttributions.addAttributions(addAttribution);
 
     if (_addMapAttribution) {
       this._attributionsMap.push(attribuccion);
@@ -428,6 +430,7 @@ class Map extends Base {
    * @api
    */
   removeAttribution(id) {
+    console.log('1.-.-', id);
     if (id) {
       const attributions = this.controlAttributions.getAttributions();
       let filterAttributions = attributions.filter(attribution => attribution.id !== id);
@@ -3312,7 +3315,12 @@ class Map extends Base {
         if (name === '__draw__') {
           return;
         }
-        if (attribution) {
+        if (/<[a-z][\s\S]*>/i.test(attribution)) {
+          // eslint-disable-next-line no-underscore-dangle
+          const removeAttr = this.controlAttributions
+            .collectionsAttributions_.filter(attr => attr.attribuccion === attribution);
+          this.removeAttribution(removeAttr[0].id);
+        } else if (attribution) {
           this.removeAttribution(attribution.id);
         }
       });

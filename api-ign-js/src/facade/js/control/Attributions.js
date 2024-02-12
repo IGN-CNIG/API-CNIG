@@ -180,8 +180,8 @@ class Attributions extends ControlBase {
     const layers = this.collectionsAttributions_;
 
     layers.forEach((layer) => {
-      if (typeof layer === 'string') {
-        this.addHTMLContent(layer);
+      if (/<[a-z][\s\S]*>/i.test(layer.attribuccion)) {
+        this.addHTMLContent(layer.attribuccion);
         return;
       }
 
@@ -369,8 +369,12 @@ class Attributions extends ControlBase {
    * @api
    */
   addAttributions(attribuccionParams) {
-    if (typeof attribuccionParams === 'string') {
-      this.addHTMLContent(attribuccionParams);
+    if (this.collectionsAttributions_.some(({ id }) => attribuccionParams === id)) {
+      return;
+    }
+
+    if (/<[a-z][\s\S]*>/i.test(attribuccionParams.attribuccion)) {
+      this.addHTMLContent(attribuccionParams.attribuccion);
       this.collectionsAttributions_.push(attribuccionParams);
     } else if (attribuccionParams.collectionsAttributions) {
       attribuccionParams.collectionsAttributions.forEach((collectionAttribution) => {
