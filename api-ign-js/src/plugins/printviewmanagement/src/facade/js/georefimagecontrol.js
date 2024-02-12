@@ -356,10 +356,8 @@ export default class GeorefimageControl extends M.Control {
 
       if (value === 'client') {
         elementDpi.setAttribute('disabled', 'disabled');
-        this.elementWld_.setAttribute('disabled', 'disabled');
       } else {
         elementDpi.removeAttribute('disabled');
-        this.elementWld_.removeAttribute('disabled');
       }
 
       if (value === 'client') {
