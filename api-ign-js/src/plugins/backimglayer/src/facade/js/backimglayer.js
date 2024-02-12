@@ -108,7 +108,7 @@ export default class BackImgLayer extends M.Plugin {
      * @public
      * @type {String}
      */
-    this.layers = options.layers || 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true';
+    this.layers = options.layers || 'QUICK*BASE_MapaBase_IGNBaseTodo_WMTS';
 
     /**
      * @private

@@ -9,6 +9,7 @@ import MapImpl from 'impl/Map';
 import Map from 'M/Map';
 import WFS from 'M/layer/WFS';
 import TMS from 'M/layer/TMS';
+import WMTS from 'M/layer/WMTS';
 import Point from 'M/style/Point';
 import 'assets/css/ign';
 import { isNullOrEmpty, isUndefined } from './util/Utils';
@@ -82,6 +83,19 @@ export const proxy = (enable) => {
 let quickLayers = () => {
   return {
     // WMTS
+    BASE_MapaBase_IGNBaseTodo_WMTS: new WMTS({
+      url: 'https://www.ign.es/wmts/ign-base?',
+      name: 'IGNBaseTodo',
+      legend: 'Mapa IGN',
+      matrixSet: 'GoogleMapsCompatible',
+      transparent: false,
+      attribution: '<p><b>IDEE</b>: <a style="color: #0000FF" href="https://www.scne.es" target="_blank">SCNE</a></p>',
+    }, {
+      format: 'image/jpeg',
+      displayInLayerSwitcher: false,
+      queryable: false,
+      visible: true,
+    }),
     MapaBase_CallejeroGris_WMTS: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBase-gris*GoogleMapsCompatible*IGNBaseGris*true*image/jpeg',
     OcupacionSuelo_LandCoverSurfaces_WMTS: 'WMTS*https://servicios.idee.es/wmts/ocupacion-suelo?*LC.LandCoverSurfaces*GoogleMapsCompatible*LandCoverSurfaces*true*image/png',
     MDT_ElevationGridCoverage_WMTS: 'WMTS*https://servicios.idee.es/wmts/mdt?*EL.ElevationGridCoverage*GoogleMapsCompatible*ElevationGridCoverage*true*image/jpeg',
@@ -114,9 +128,10 @@ let quickLayers = () => {
       transparent: false,
       tileGridMaxZoom: 17,
       name: 'IGNBaseTodo',
-      attribution: '<p> IDEE: <a href="www.scne.es" target="_blank">SCNE</a></p>',
+      attribution: '<p><b>IDEE</b>: <a style="color: #0000FF" href="https://www.scne.es" target="_blank">SCNE</a></p>',
     }, {
       crossOrigin: 'anonymous',
+      displayInLayerSwitcher: false,
     }),
     IGNBaseTodo_TMS: 'TMS*IGNBaseTodo*https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
     BASE_IGNBaseOrto_TMS: new TMS({
@@ -126,9 +141,10 @@ let quickLayers = () => {
       visible: true,
       transparent: false,
       tileGridMaxZoom: 17,
-      attribution: '<p> IDEE: <a href="www.scne.es" target="_blank">SCNE</a></p>',
+      attribution: '<p><b>IDEE</b>: <a style="color: #0000FF" href="https://www.scne.es" target="_blank">SCNE</a></p>',
     }, {
       crossOrigin: 'anonymous',
+      displayInLayerSwitcher: false,
     }),
     IGNBaseOrto_TMS: 'TMS*IGNBaseOrto*https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png',
     IGNBaseSimplificado_TMS: 'TMS*IGNBaseSimplificado*https://tms-ign-base.idee.es/1.0.0/IGNBaseSimplificado/{z}/{x}/{-y}.png',
@@ -142,13 +158,14 @@ let quickLayers = () => {
       tileGridMaxZoom: 19,
       attribution: {
         name: 'PNOA-MA',
-        description: 'PNOA-MA',
+        description: 'IGN',
         url: 'https://www.ign.es',
         contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
         contentType: 'kml',
       },
     }, {
       crossOrigin: 'anonymous',
+      displayInLayerSwitcher: false,
     }),
     PNOA_MA_TMS: 'TMS*PNOA_MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
     RelieveSombreado_TMS: 'TMS*RelieveSombreado*https://tms-relieve.idee.es/1.0.0/relieve/{z}/{x}/{-y}.jpeg',
