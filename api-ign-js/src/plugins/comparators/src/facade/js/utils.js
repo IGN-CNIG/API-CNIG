@@ -261,10 +261,10 @@ export const checkLayers = (layer, comparatorLayers) => {
 export const transformToStringLayers = (layer, map, remove = true) => {
   if (layer.type === 'WMS') {
     const {
-      url, name, legend, useCapabilities, options,
+      url, name, legend, useCapabilities, options, version,
     } = layer;
     if (remove) { map.removeWMS(name); }
-    return `WMS*${legend}*${url}*${name}*${options.format || 'image/png'}*${useCapabilities}`;
+    return `WMS*${legend}*${url}*${name}*true*${options.format || 'image/png'}*${useCapabilities}*${version}`;
   } else if (layer.type === 'WMTS') {
     const {
       url, name, legend, matrixSet, options,
@@ -289,6 +289,7 @@ export const transformToLayers = (layers, index) => {
         legend: urlLayer[1],
         format: urlLayer[4],
         useCapabilities: urlLayer[5] === 'true' || false,
+        version: urlLayer[7],
       });
       l.setZIndex(index);
       return l;
