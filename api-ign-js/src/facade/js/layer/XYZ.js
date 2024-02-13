@@ -39,6 +39,7 @@ class XYZ extends LayerBase {
    * @param {string|Mx.parameters.XYZ} userParameters Parámetros para la construcción de la capa.
    * - url: URL del servicio XYZ.
    * - name: Identificador de la capa.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
    * - projection: La proyección destino de la capa.
    * - visibility: Indica si la capa estará por defecto visible o no.
    * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
@@ -47,8 +48,6 @@ class XYZ extends LayerBase {
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
-   * - opacity: Opacidad de la capa.
-   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
