@@ -436,7 +436,17 @@ export default class LayerswitcherControl extends M.Control {
               });
             } else if (legendUrl.indexOf('assets/img/legend-default.png') >= 0) {
               this.errorLegendLayer(layer).then((newLegend) => {
-                if (newLegend !== '') {
+                if (newLegend === 'error legend') {
+                  const img = legend.querySelector('img');
+                  const messageError = document.createElement('p');
+                  const icon = document.createElement('span');
+                  icon.classList.add('m-layerswitcher-icons-cancel');
+                  messageError.classList.add('m-layerswitcher-legend-error');
+                  messageError.appendChild(icon);
+                  const text = document.createTextNode(getValue('legend_error'));
+                  messageError.appendChild(text);
+                  img.parentNode.insertBefore(messageError, img);
+                } else if (newLegend !== '') {
                   legend.querySelector('img').src = newLegend;
                 } else {
                   legend.querySelector('img').src = legendUrl;
@@ -447,6 +457,11 @@ export default class LayerswitcherControl extends M.Control {
             }
             legend.style.display = 'block';
           } else {
+            const img = legend.querySelector('img');
+            const p = img.parentElement.querySelector('p');
+            if (!M.utils.isNullOrEmpty(p)) {
+              p.remove();
+            }
             legend.style.display = 'none';
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
@@ -968,6 +983,8 @@ export default class LayerswitcherControl extends M.Control {
           success(legend);
         });
         M.proxy(this.statusProxy);
+      } else {
+        success('error legend');
       }
     });
   }

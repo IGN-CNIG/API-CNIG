@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'layerswitcher-icons';
-    src: url('../fonts/layerswitcher-icons.eot?54xh9a');
-    src: url('../fonts/layerswitcher-icons.eot?54xh9a#iefix') format('embedded-opentype'),
-        url('../fonts/layerswitcher-icons.woff2?54xh9a') format('woff2'),
-        url('../fonts/layerswitcher-icons.woff?54xh9a') format('woff'),
-        url('../fonts/layerswitcher-icons.ttf?54xh9a') format('truetype'),
-        url('../fonts/layerswitcher-icons.svg?54xh9a#layerswitcher-icons') format('svg');
+    src: url('../fonts/layerswitcher-icons.eot?60123485');
+    src: url('../fonts/layerswitcher-icons.eot?60123485#iefix') format('embedded-opentype'),
+        url('../fonts/layerswitcher-icons.woff2?60123485') format('woff2'),
+        url('../fonts/layerswitcher-icons.woff?60123485') format('woff'),
+        url('../fonts/layerswitcher-icons.ttf?60123485') format('truetype'),
+        url('../fonts/layerswitcher-icons.svg?60123485#layerswitcher-icons') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -101,3 +101,7 @@
 .m-clean-btn:before {
   content: "\e9ac";
 }
+
+.m-layerswitcher-icons-cancel:before { 
+  content: '\e800'; 
+} 
