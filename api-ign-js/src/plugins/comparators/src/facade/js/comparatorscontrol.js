@@ -253,6 +253,13 @@ export default class ComparatorsControl extends M.Control {
             }, 500);
             return;
           }
+
+          if (c.id === 'transparency') {
+            setTimeout(() => {
+              this.map_.getLayers().forEach(l => !l.isBase && l.setVisible(false));
+            }, 1000);
+          }
+
           const control = c.controlCreate(c.controlParam);
           // eslint-disable-next-line no-param-reassign
           c.control = control;
