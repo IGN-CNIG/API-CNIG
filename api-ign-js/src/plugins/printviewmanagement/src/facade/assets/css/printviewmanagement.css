@@ -478,6 +478,10 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
     text-align: center;
   }
 
+  #m-georefimage-dpi{
+    width: 40px;
+  }
+
   .georefimage-jgwKeppview {
     display: flex;
     justify-content: center;
