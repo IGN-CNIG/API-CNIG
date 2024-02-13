@@ -402,23 +402,24 @@ class Map extends Base {
       return;
     }
 
-    this.controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
+    const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
+    if (!controlAttributions) { return; }
     let addAttribution = null;
 
     if (typeof attribuccion === 'string') {
       addAttribution = {};
       addAttribution.attribuccion = attribuccion;
-    } else if (attribuccion && this.controlAttributions) {
+    } else if (attribuccion && controlAttributions) {
       addAttribution = attribuccion;
     }
 
     addAttribution.id = window.crypto.randomUUID
       ? window.crypto.randomUUID() : new Date().getTime();
 
-    this.controlAttributions.addAttributions(addAttribution);
+    controlAttributions.addAttributions(addAttribution);
 
     if (_addMapAttribution) {
-      this._attributionsMap.push(attribuccion);
+      this._attributionsMap.push(addAttribution);
     }
   }
 
@@ -3300,7 +3301,9 @@ class Map extends Base {
    */
   evtRemoveAttributions_() {
     this.on(EventType.REMOVED_LAYER, (layersEvt) => {
-      if (!layersEvt || !this.controlAttributions) {
+      const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
+
+      if (!layersEvt || !controlAttributions) {
         return;
       }
 
@@ -3316,9 +3319,11 @@ class Map extends Base {
         }
         if (/<[a-z][\s\S]*>/i.test(attribution)) {
           // eslint-disable-next-line no-underscore-dangle
-          const removeAttr = this.controlAttributions
+          const removeAttr = controlAttributions
             .collectionsAttributions_.filter(attr => attr.attribuccion === attribution);
-          this.removeAttribution(removeAttr[0].id);
+          if (removeAttr.length > 0) {
+            this.removeAttribution(removeAttr[0].id);
+          }
         } else if (attribution) {
           this.removeAttribution(attribution.id);
         }

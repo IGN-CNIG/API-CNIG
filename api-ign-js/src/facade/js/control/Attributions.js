@@ -126,7 +126,11 @@ class Attributions extends ControlBase {
       this.accessibilityTab(html);
       this.map_.getLayers().forEach(({ attribution }) => {
         if (attribution) {
-          this.addAttributions(attribution);
+          if (typeof attribution === 'string') {
+            this.addHTMLContent(attribution);
+          } else {
+            this.addAttributions(attribution);
+          }
         }
       });
       success(html);
