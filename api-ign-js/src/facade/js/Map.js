@@ -430,7 +430,6 @@ class Map extends Base {
    * @api
    */
   removeAttribution(id) {
-    console.log('1.-.-', id);
     if (id) {
       const attributions = this.controlAttributions.getAttributions();
       let filterAttributions = attributions.filter(attribution => attribution.id !== id);
@@ -3301,7 +3300,7 @@ class Map extends Base {
    */
   evtRemoveAttributions_() {
     this.on(EventType.REMOVED_LAYER, (layersEvt) => {
-      if (!layersEvt) {
+      if (!layersEvt || !this.controlAttributions) {
         return;
       }
 
