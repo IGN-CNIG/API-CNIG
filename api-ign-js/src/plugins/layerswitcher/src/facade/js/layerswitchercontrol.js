@@ -740,7 +740,7 @@ export default class LayerswitcherControl extends M.Control {
             },
           });
 
-          M.dialog.info(config, getValue('configure_layer'));
+          M.dialog.info(config, getValue('configure_layer'), this.order);
           this.focusModal('.m-title span');
           setTimeout(() => {
             const selector = '#m-layerswitcher-style button';
@@ -789,7 +789,7 @@ export default class LayerswitcherControl extends M.Control {
         this.map_.setBbox(extent);
       }
     } else {
-      M.dialog.info(getValue('exception.extent'), getValue('info'));
+      M.dialog.info(getValue('exception.extent'), getValue('info'), this.order);
     }
   }
 
@@ -1304,7 +1304,7 @@ export default class LayerswitcherControl extends M.Control {
                       }
                       this.showResults(wfsDatas);
                     } catch (error) {
-                      M.dialog.error(getValue('exception.capabilities'));
+                      M.dialog.error(getValue('exception.capabilities'), undefined, this.order);
                       this.removeLoading();
                     }
                   } else {
@@ -1314,7 +1314,7 @@ export default class LayerswitcherControl extends M.Control {
                           if (responseIsOGC) {
                             this.printOGCModal(url);
                           } else {
-                            M.dialog.error(getValue('exception.ogcfeatures'));
+                            M.dialog.error(getValue('exception.ogcfeatures'), undefined, this.order);
                             this.removeLoading();
                           }
                         });
@@ -1343,12 +1343,12 @@ export default class LayerswitcherControl extends M.Control {
                     M.proxy(this.statusProxy);
                   }
                 }).catch((eerror) => {
-                  M.dialog.error(getValue('exception.capabilities'));
+                  M.dialog.error(getValue('exception.capabilities'), undefined, this.order);
                   this.removeLoading();
                 });
               }
             }).catch((err) => {
-              M.dialog.error(getValue('exception.capabilities'));
+              M.dialog.error(getValue('exception.capabilities'), undefined, this.order);
               this.removeLoading();
             });
           }
@@ -1361,13 +1361,13 @@ export default class LayerswitcherControl extends M.Control {
           } else if (!this.http && !this.https) {
             errorMsg = getValue('exception.no_http_https');
           }
-          M.dialog.error(errorMsg);
+          M.dialog.error(errorMsg, undefined, this.order);
         }
       } else {
-        M.dialog.error(getValue('exception.valid_url'));
+        M.dialog.error(getValue('exception.valid_url'), undefined, this.order);
       }
     } else {
-      M.dialog.error(getValue('exception.empty'));
+      M.dialog.error(getValue('exception.empty'), undefined, this.order);
     }
   }
 
@@ -1397,7 +1397,7 @@ export default class LayerswitcherControl extends M.Control {
         },
       },
     });
-    M.dialog.info(addServices, getValue('load_ext_services'));
+    M.dialog.info(addServices, getValue('load_ext_services'), this.order);
 
     setTimeout(() => {
       // Se modifica texto bt cerrar modal
@@ -1921,7 +1921,7 @@ export default class LayerswitcherControl extends M.Control {
     const elmSel = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-all .m-layerswitcher-icons-check-seleccionado');
     const elmSelWFS = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-wfs .m-layerswitcher-icons-check-seleccionado');
     if (elmSel.length === 0 && elmSelWFS.length === 0) {
-      M.dialog.error(getValue('exception.select_layer'));
+      M.dialog.error(getValue('exception.select_layer'), undefined, this.order);
     } else {
       for (let i = 0; i < elmSel.length; i += 1) {
         for (let j = 0; j < this.capabilities.length; j += 1) {
@@ -2250,7 +2250,7 @@ export default class LayerswitcherControl extends M.Control {
         );
       }).catch((err) => {
         urlOGC = '';
-        M.dialog.error(getValue('exception.error_ogc'));
+        M.dialog.error(getValue('exception.error_ogc'), undefined, this.order);
       });
       M.proxy(this.statusProxy);
     }
@@ -2329,7 +2329,7 @@ export default class LayerswitcherControl extends M.Control {
 
     btnAddLayer.addEventListener('click', () => {
       if (selectValue === getValue('select_service')) {
-        M.dialog.error(getValue('no_results'));
+        M.dialog.error(getValue('no_results'), undefined, this.order);
       } else {
         properties = this.getProperties(selectValue, summary);
 
@@ -2342,7 +2342,7 @@ export default class LayerswitcherControl extends M.Control {
 
     btnCheck.addEventListener('click', () => {
       if (selectValue === getValue('select_service')) {
-        M.dialog.error(getValue('no_results'));
+        M.dialog.error(getValue('no_results'), undefined, this.order);
       } else {
         properties = this.getProperties(selectValue, summary);
         this.getNumberFeaturesOGCAPIFeaturesLayer(properties).then((numberFeatures) => {
@@ -2419,8 +2419,8 @@ export default class LayerswitcherControl extends M.Control {
           },
         });
         const msg = `${getValue('custom_query_btn')}`;
-        M.dialog.remove(ogcModalTemplate);
-        M.dialog.info(customQueryTemplate, msg);
+        M.dialog.remove(ogcModalTemplate, undefined, this.order);
+        M.dialog.info(customQueryTemplate, msg, this.order);
         const btnApplyFilters = document.createElement('button');
         const btnBack = document.createElement('button');
         setTimeout(() => {
@@ -2495,7 +2495,7 @@ export default class LayerswitcherControl extends M.Control {
           );
         });
       }).catch((err) => {
-        M.dialog.error(getValue('no_results'));
+        M.dialog.error(getValue('no_results'), undefined, this.order);
       });
       M.proxy(this.statusProxy);
     });
@@ -2746,7 +2746,7 @@ export default class LayerswitcherControl extends M.Control {
       this.renderCODSIResults(results);
       this.renderCODSIPagination(pageNumber, total);
     }).catch((err) => {
-      M.dialog.error(getValue('exception.codsi'));
+      M.dialog.error(getValue('exception.codsi'), undefined, this.order);
     });
     M.proxy(this.statusProxy);
   }
