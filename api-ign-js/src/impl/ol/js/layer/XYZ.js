@@ -44,8 +44,6 @@ class XYZ extends Layer {
    * - tileGridMaxZoom: Zoom máximo de la tesela en forma de rejilla.
    * - displayInLayerSwitcher: Mostrar en el selector de capas.
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
-   * - opacity: Opacidad de la capa.
-   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.

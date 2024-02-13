@@ -37,12 +37,12 @@ class OSM extends LayerBase {
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - isBase: Indica si la capa es base.
+   * -opacity: Opacidad de capa, por defecto 1.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán
    * a la implementación de la capa.
    * - visibility: Define si la capa es visible o no.
    * - animated: Activa la animación para capas base o parámetros animados.
    * - displayInLayerSwitcher: Define si la capa se mostrará en el selector de capas.
-   * - opacity: Opacidad de capa, por defecto 1.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import SourceOSM from 'ol/source/OSM';
