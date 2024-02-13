@@ -74,6 +74,7 @@ class OGCAPIFeatures extends Vector {
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
+   * - opacity: Opacidad de capa, por defecto 1.
    * @param {Object} vendorOpts Opciones para la biblioteca base.
    * -cql: Declaración CQL para filtrar las características
    * (Sólo disponible para servicios en PostgreSQL).
