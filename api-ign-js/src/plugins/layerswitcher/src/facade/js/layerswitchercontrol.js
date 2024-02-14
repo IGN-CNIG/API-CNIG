@@ -1198,8 +1198,12 @@ export default class LayerswitcherControl extends M.Control {
           const json = url.indexOf('.json') >= 0;
           if (pbf || json) {
             let metadata = url;
+            let orderxyz = '{z}/{x}/{y}.pbf';
             if (pbf) {
-              metadata = url.replace('{z}/{x}/{y}.pbf', 'metadata.json');
+              if (url.indexOf('{z}/{x}/{y}') === -1) {
+                orderxyz = '{z}/{y}/{x}.pbf';
+              }
+              metadata = url.replace(orderxyz, 'metadata.json');
             }
             M.proxy(this.useProxy);
             M.remote.get(metadata).then((meta) => {
@@ -1210,7 +1214,7 @@ export default class LayerswitcherControl extends M.Control {
                 let url2;
                 if (!M.utils.isNullOrEmpty(parse) && parse.json) {
                   parse = JSON.parse(parse.json);
-                  url2 = url.substring(0, url.lastIndexOf('/') + 1).concat('{z}/{x}/{y}.pbf');
+                  url2 = url.substring(0, url.lastIndexOf('/') + 1).concat(orderxyz);
                 } else {
                   parse = {};
                 }
