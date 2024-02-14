@@ -1993,6 +1993,7 @@ export default class LayerswitcherControl extends M.Control {
             const obj = {
               url,
               legend: name,
+              extact: true,
             };
             if (M.utils.isUndefined(name)) {
               obj.name = namespace;
@@ -2149,6 +2150,7 @@ export default class LayerswitcherControl extends M.Control {
         }));
       } else if (type === 'geojson') {
         this.map_.addLayers(new M.layer.GeoJSON({
+          extract: true,
           name,
           legend,
           url,
@@ -2178,6 +2180,7 @@ export default class LayerswitcherControl extends M.Control {
           legend,
           url,
           projection: matrixSet,
+          extract: true,
         };
         if (!M.utils.isNullOrEmpty(layersSelected)) {
           obj.layers = layersSelected;
@@ -2193,6 +2196,7 @@ export default class LayerswitcherControl extends M.Control {
           name,
           legend,
           url,
+          extract: true,
         };
         if (!M.utils.isNullOrEmpty(layersSelected)) {
           obj.layers = layersSelected;
@@ -2545,6 +2549,7 @@ export default class LayerswitcherControl extends M.Control {
     properties.name = selectValue;
     properties.legend = selectValueText;
     properties.limit = limitValue;
+    properties.extract = true;
 
     if (this.useAttributions_) {
       properties.attribution = {
