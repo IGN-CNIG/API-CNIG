@@ -131,10 +131,10 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
   - tooltip: Valor a usar para mostrar en el tooltip del control, por defecto Transparencia / Transparency.
 
 - **lyrcompareParams**: Parámetros opcionales del plugin lyrcompare, en el caso de no querer cargar este control su valor será "false".
-  - defaultLyrA (numérico): Capa cargada al inicio en posición 1. Valores de 1 al número de capas disponibles. Defecto, 1.
-  - defaultLyrB (numérico): Capa cargada al inicio en posición 2. Valores de 1 al número de capas disponibles. Defecto, 2.
-  - defaultLyrC (numérico): Capa cargada al inicio en posición 3. Valores de 1 al número de capas disponibles. Defecto, 3.
-  - defaultLyrD (numérico): Capa cargada al inicio en posición 4. Valores de 1 al número de capas disponibles. Defecto, 4.
+  - defaultLyrA (numérico): Capa cargada al inicio en posición 1. Valores de 0 al número de capas disponibles. Defecto, 0.
+  - defaultLyrB (numérico): Capa cargada al inicio en posición 2. Valores de 0 al número de capas disponibles. Defecto, 1.
+  - defaultLyrC (numérico): Capa cargada al inicio en posición 3. Valores de 0 al número de capas disponibles. Defecto, 2.
+  - defaultLyrD (numérico): Capa cargada al inicio en posición 4. Valores de 0 al número de capas disponibles. Defecto, 3.
   - opacityVal: Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
   - staticDivision: Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón (valor 0), por el punto medio del lienzo de cartografía (valor 1) o por el punto medio del lienzo de cartografía con líneas arrastrables (valor 2). Por defecto toma el valor 1.
   - tooltip: Valor a usar para mostrar en el tooltip del control, por defecto Comparador de capas / Layer Comparison.
@@ -190,10 +190,10 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
   },
   lyrcompareParams: {
     staticDivision: 2,
-    defaultLyrA: 3,
-    defaultLyrB: 2,
-    defaultLyrC: 1,
-    defaultLyrD: 0,
+    defaultLyrA: 0,
+    defaultLyrB: 1,
+    defaultLyrC: 2,
+    defaultLyrD: 3,
     opacityVal: 100,
     tooltip: 'tooltipLyrCompare',
     defaultCompareViz: 2,
@@ -416,10 +416,10 @@ Ejemplo de constructor:
   },
   lyrcompareParams: {
     staticDivision: 1,
-    defaultLyrA: 1,
-    defaultLyrB: 2,
-    defaultLyrC: 3,
-    defaultLyrD: 0,
+    defaultLyrA: 0,
+    defaultLyrB: 1,
+    defaultLyrC: 2,
+    defaultLyrD: 3,
     opacityVal: 100,
     tooltip: 'tooltipLyrCompare',
     defaultCompareViz: 1,
