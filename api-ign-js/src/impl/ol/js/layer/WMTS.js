@@ -110,7 +110,7 @@ class WMTS extends LayerBase {
     /**
      * CrossOrigin. Atributo crossOrigin para las imágenes cargadas
      */
-    this.crossOrigin = options.crossOrigin || 'anonymous';
+    this.crossOrigin = (options.crossOrigin === null || options.crossOrigin === false) ? undefined : 'anonymous';
 
     this.maxExtent = options.maxExtent || null;
   }
