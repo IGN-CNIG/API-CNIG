@@ -393,42 +393,4 @@ class GenericVector extends Vector {
   }
 }
 
-/**
- * Parámetros predeterminados.
- * @const
- * @type {Object}
- * @public
- * @api
- */
-GenericVector.DEFAULT_PARAMS = {
-  fill: {
-    color: 'rgba(255, 255, 255, 0.4)',
-    opacity: 0.4,
-  },
-  stroke: {
-    color: 'orange',
-    width: 1.5,
-  },
-};
-
-/**
- * Estilos predeterminados.
- * @const
- * @type {Object}
- * @public
- * @api
- */
-GenericVector.DEFAULT_OPTIONS_STYLE = {
-  point: {
-    ...GenericVector.DEFAULT_PARAMS,
-    radius: 5,
-  },
-  line: {
-    ...GenericVector.DEFAULT_PARAMS,
-  },
-  polygon: {
-    ...GenericVector.DEFAULT_PARAMS,
-  },
-};
-
 export default GenericVector;

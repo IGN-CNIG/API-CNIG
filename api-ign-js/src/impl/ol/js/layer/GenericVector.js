@@ -70,16 +70,7 @@ class GenericVector extends Vector {
 
     this.sldBody = options.sldBody;
 
-    /**
-     * WMS styles. Estilos de la capa.
-     */
-    this.styles = this.options.styles || '';
-
-    this.style = vendorOptions.getStyle === undefined ? null : vendorOptions.getStyle().name;
-
-    if (this.style !== 'createDefaultStyle' && vendorOptions.getStyle) {
-      this.style = vendorOptions.getStyle();
-    }
+    this.style = this.options.style || null;
 
     /**
      * WFS cql: Opcional: instrucción CQL para filtrar.
@@ -109,6 +100,15 @@ class GenericVector extends Vector {
     this.map = map;
 
     this.facadeVector_ = this.facadeLayer_;
+
+    if (!this.style) {
+      if (this.ol3Layer.getStyle) {
+        this.styleOl = this.ol3Layer.getStyle();
+        // eslint-disable-next-line no-underscore-dangle
+        this.facadeVector_.style_ = this.styleOl;
+        this.ol3Layer.setStyle(this.styleOl);
+      }
+    }
 
     if (!isNullOrEmpty(this.visibility)) {
       this.ol3Layer.setVisible(this.visibility);
@@ -172,15 +172,9 @@ class GenericVector extends Vector {
       this.loaded_ = true;
       this.facadeLayer_.addFeatures(features);
       this.fire(EventType.LOAD, [this.features_]);
-      if (this.style !== 'createDefaultStyle') {
-        this.ol3Layer.setStyle(this.style);
-      }
     } else if (source.loading && source.getState() === 'ready') {
       // ? Capas sin features cargados
       this.loaded_ = true;
-      if (this.style !== 'createDefaultStyle') {
-        this.ol3Layer.setStyle(this.style);
-      }
     } else {
       // ? Features todavía no han sido cargados
       this.fnAddFeatures_ = this.addFeaturesToFacade.bind(this);
@@ -200,9 +194,6 @@ class GenericVector extends Vector {
           this.facadeLayer_.addFeatures(features);
           this.deactivate();
           this.fire(EventType.LOAD, [this.features_]);
-          if (this.style !== 'createDefaultStyle') {
-            this.ol3Layer.setStyle(this.style);
-          }
         }
       } else if (source.getState() === 'error') {
         this.deactivate();
