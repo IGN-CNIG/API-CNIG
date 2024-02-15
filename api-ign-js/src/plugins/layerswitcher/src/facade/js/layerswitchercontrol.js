@@ -2190,7 +2190,7 @@ export default class LayerswitcherControl extends M.Control {
         });
         const nameLayers = document.querySelector('#m-layerswitcher-layer-name');
         if (!M.utils.isNullOrEmpty(nameLayers) && nameLayers.value.indexOf('layer_') === -1) {
-          layersSelected = nameLayers.trim().value.split(',');
+          layersSelected = nameLayers.value.split(',');
         }
         const obj = {
           name,
