@@ -53,6 +53,7 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].beautytoc = pluginsLanguage.beautytoc.esBeautytoc;
     configuration.translations[lang].buffer = pluginsLanguage.buffer.esBuffer;
     configuration.translations[lang].calendar = pluginsLanguage.calendar.esCalendar;
+    configuration.translations[lang].comparators = pluginsLanguage.comparators.esComparators;
     configuration.translations[lang].comparepanel = pluginsLanguage.comparepanel.esComparepanel;
     configuration.translations[lang].contactlink = pluginsLanguage.contactlink.esContactlink;
     configuration.translations[lang].fulltoc = pluginsLanguage.fulltoc.esFulltoc;
@@ -70,6 +71,7 @@ export const getTranslation = (lang) => {
       .esInfocoordinates;
     configuration.translations[lang].information = pluginsLanguage.information.esInformation;
     configuration.translations[lang].lyrcompare = pluginsLanguage.lyrcompare.esLyrcompare;
+    configuration.translations[lang].layerswitcher = pluginsLanguage.layerswitcher.esLayerswitcher;
     configuration.translations[lang].measurebar = pluginsLanguage.measurebar.esMeasurebar;
     configuration.translations[lang].mirrorpanel = pluginsLanguage.mirrorpanel.esMirrorpanel;
     configuration.translations[lang].mousesrs = pluginsLanguage.mousesrs.esMousesrs;
@@ -77,6 +79,8 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].predefinedzoom = pluginsLanguage.predefinedzoom
       .esPredefinedzoom;
     configuration.translations[lang].printermap = pluginsLanguage.printermap.esPrintermap;
+    configuration.translations[lang].printviewmanagement =
+      pluginsLanguage.printviewmanagement.esPrintviewmanagement;
     configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
       .esQueryattributes;
     // configuration.translations[lang].querydatabase = pluginsLanguage
@@ -100,12 +104,14 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].viewmanagement =
       pluginsLanguage.viewmanagement.esViewmanagement;
     configuration.translations[lang].locator = pluginsLanguage.locator.esLocator;
+    configuration.translations[lang].locatorscn = pluginsLanguage.locatorscn.esLocatorscn;
   } else if (lang === 'en') {
     configuration.translations[lang].attributions = pluginsLanguage.attributions.enAttributions;
     configuration.translations[lang].backimglayer = pluginsLanguage.backimglayer.enBackimglayer;
     configuration.translations[lang].beautytoc = pluginsLanguage.beautytoc.enBeautytoc;
     configuration.translations[lang].buffer = pluginsLanguage.buffer.enBuffer;
     configuration.translations[lang].calendar = pluginsLanguage.calendar.enCalendar;
+    configuration.translations[lang].comparators = pluginsLanguage.comparators.enComparators;
     configuration.translations[lang].comparepanel = pluginsLanguage.comparepanel.enComparepanel;
     configuration.translations[lang].contactlink = pluginsLanguage.contactlink.enContactlink;
     configuration.translations[lang].fulltoc = pluginsLanguage.fulltoc.enFulltoc;
@@ -123,6 +129,7 @@ export const getTranslation = (lang) => {
       .enInfocoordinates;
     configuration.translations[lang].information = pluginsLanguage.information.enInformation;
     configuration.translations[lang].lyrcompare = pluginsLanguage.lyrcompare.enLyrcompare;
+    configuration.translations[lang].layerswitcher = pluginsLanguage.layerswitcher.enLayerswitcher;
     configuration.translations[lang].measurebar = pluginsLanguage.measurebar.enMeasurebar;
     configuration.translations[lang].mirrorpanel = pluginsLanguage.mirrorpanel.enMirrorpanel;
     configuration.translations[lang].mousesrs = pluginsLanguage.mousesrs.enMousesrs;
@@ -130,6 +137,8 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].predefinedzoom = pluginsLanguage.predefinedzoom
       .enPredefinedzoom;
     configuration.translations[lang].printermap = pluginsLanguage.printermap.enPrintermap;
+    configuration.translations[lang].printviewmanagement =
+      pluginsLanguage.printviewmanagement.enPrintviewmanagement;
     configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
       .enQueryattributes;
     // configuration.translations[lang].querydatabase = pluginsLanguage
@@ -153,6 +162,7 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].viewmanagement =
       pluginsLanguage.viewmanagement.enViewmanagement;
     configuration.translations[lang].locator = pluginsLanguage.locator.enLocator;
+    configuration.translations[lang].locatorscn = pluginsLanguage.locatorscn.enLocatorscn;
   }
   return configuration.translations[lang];
 };

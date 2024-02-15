@@ -39,7 +39,8 @@ class OGCAPIFeatures extends Vector {
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
-   * -bbox: Filtro para mostrar los resultados en un bbox específico.
+   * - bbox: Filtro para mostrar los resultados en un bbox específico.
+   * - opacity: Opacidad de capa, por defecto 1.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * -cql: Declaración CQL para filtrar las características
    * (Sólo disponible para servicios en PostgreSQL).
@@ -105,7 +106,7 @@ class OGCAPIFeatures extends Vector {
    */
   addTo(map) {
     super.addTo(map);
-    this.updateSource_();
+    // this.updateSource_();
     map.getImpl().on(EventType.CHANGE, () => this.refresh());
   }
 
@@ -254,23 +255,6 @@ class OGCAPIFeatures extends Vector {
         }
       }
     }
-  }
-
-  /**
-   * Este método devuelve la extensión de todas los objetos geográficos
-   * o discrimina por el filtro.
-   *
-   * @function
-   * @param {boolean} skipFilter Indica si se salta el filtro.
-   * @param {M.Filter} filter Filtro para ejecutar.
-   * @return {Array<number>} Alcance de los objetos geográficos.
-   * @api stable
-   */
-  getFeaturesExtent(skipFilter, filter) {
-    const codeProj = this.map.getProjection().code;
-    const features = this.getFeatures(skipFilter, filter);
-    const extent = ImplUtils.getFeaturesExtent(features, codeProj);
-    return extent;
   }
 
   /**

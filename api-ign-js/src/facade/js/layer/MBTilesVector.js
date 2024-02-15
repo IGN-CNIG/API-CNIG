@@ -56,6 +56,9 @@ class MBTilesVector extends Vector {
    * - opacity: Opacidad de capa, por defecto 1.
    * - style: Define el estilo de la capa.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - predefinedStyles: Estilos predefinidos para la capa.
+   * - minZoom. Zoom mínimo aplicable a la capa.
+   * - maxZoom. Zoom máximo aplicable a la capa.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVectorTile from 'ol/source/VectorTile';
@@ -72,13 +75,19 @@ class MBTilesVector extends Vector {
   constructor(userParameters = {}, options = {}, vendorOptions = {}) {
     const parameters = parameter.layer(userParameters, LayerType.MBTilesVector);
 
+    const optionsVar = options;
+
+    if (typeof userParameters !== 'string') {
+      optionsVar.maxExtent = userParameters.maxExtent;
+    }
+
     /**
      * Implementación.
      * @public
      * @implements {M.impl.layer.MBTilesVector}
      * @type {M.impl.layer.MBTilesVector}
      */
-    const impl = new MBTilesVectorImpl(parameters, options, vendorOptions);
+    const impl = new MBTilesVectorImpl(parameters, optionsVar, vendorOptions);
     super(parameters, options, vendorOptions, impl);
     if (isUndefined(MBTilesVectorImpl)) {
       Exception(getValue('exception').mbtilesvector_method);
@@ -89,71 +98,6 @@ class MBTilesVector extends Vector {
      * por defecto falso.
      */
     this.extract = parameters.extract;
-  }
-
-  /**
-   * Devuelve el tipo de capa, en este caso MBTilesVector.
-   *
-   * @function
-   * @getter
-   * @returns {String} Tipo de capa, MBTilesVector.
-   * @api
-   */
-  get type() {
-    return LayerType.MBTilesVector;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo de capa.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.MBTilesVector)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.MBTilesVector).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
-  }
-
-  /**
-   * Este método obtiene la extensión máxima de esta capa:
-   * 1. Comprueba si el usuario especificó el parámetro "maxExtent".
-   * 2. Obtiene el valor del parámetro "userMaxExtent" del mapa.
-   * 3. Obtiene la extensión máxima de la proyección del mapa.
-   *
-   * @function
-   * @returns {Mx.Extent} Extensión máxima de la capa
-   * @public
-   * @api
-   */
-  getMaxExtent() {
-    let maxExtent = this.userMaxExtent; // 1
-    if (isNullOrEmpty(maxExtent)) {
-      maxExtent = this.map_.userMaxExtent; // 2
-      if (isNullOrEmpty(maxExtent)) {
-        maxExtent = this.map_.getProjection().getExtent(); // 3
-      }
-    }
-    return maxExtent;
-  }
-
-  /**
-   * Este método es la versión asíncrona de "getMaxExtent" que obtiene
-   * la extensión máxima de esta capa:
-   * 1. Comprueba si el usuario especificó el parámetro "maxExtent".
-   * 2. Obtiene el valor del parámetro "userMaxExtent" del mapa.
-   * 3. Obtiene la extensión máxima de la proyección del mapa.
-   *
-   * @function
-   * @returns {Object} Extensión máxima de la capa.
-   * @public
-   * @api
-   */
-  calculateMaxExtent() {
-    return new Promise(resolve => resolve(this.getMaxExtent()));
   }
 
   /**
@@ -269,6 +213,7 @@ class MBTilesVector extends Vector {
       equals = equals && (this.name === obj.name);
       equals = equals && (this.options === obj.options);
       equals = equals && (this.extract === obj.extract);
+      equals = equals && (this.predefinedStyles === obj.predefinedStyles);
     }
     return equals;
   }

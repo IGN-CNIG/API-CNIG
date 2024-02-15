@@ -96,7 +96,7 @@ export default class MeasureBar extends M.Plugin {
      * @private
      * @type {string}
      */
-    this.tooltip_ = options.tooltip || getValue('tooltip');
+    this.tooltip_ = options.tooltip || getValue('text.tooltip');
 
     /**
      * Plugin parameters

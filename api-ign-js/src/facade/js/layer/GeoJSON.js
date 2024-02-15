@@ -50,6 +50,7 @@ class GeoJSON extends LayerVector {
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - opacity: Opacidad de capa, por defecto 1.
    * - style: Define el estilo de la capa.
+   * - predefinedStyles: Estilos predefinidos para la capa.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -63,17 +64,26 @@ class GeoJSON extends LayerVector {
    * </code></pre>
    * @api
    */
-  constructor(parameters, options = {}, vendorOptions) {
+  constructor(parameters = {}, options = {}, vendorOptions) {
+    const optionsVar = options;
+
+    if (typeof parameters !== 'string') {
+      optionsVar.maxExtent = parameters.maxExtent;
+    }
+
     /**
      * Implementación
      * @public
      * @implements {M.impl.layer.GeoJSON}
      * @type {M.impl.layer.GeoJSON}
      */
-    const impl = new GeoJSONImpl(parameters, options, vendorOptions);
+    const impl = new GeoJSONImpl(parameters, optionsVar, vendorOptions);
+
+    const opts = parameters;
+    opts.type = GeoJSONType;
 
     // Llama al contructor del que se extiende la clase
-    super(parameters, options, undefined, impl);
+    super(opts, optionsVar, undefined, impl);
 
     // Comprueba si la implementación puede crear capas GeoJSON
     if (isUndefined(GeoJSONImpl)) {
@@ -140,33 +150,6 @@ class GeoJSON extends LayerVector {
      * GeoJSON options: Opciones que se mandan a la implementación.
      */
     this.options = options;
-  }
-
-  /**
-   * Devuelve el tipo de capa, en este caso GeoJSON.
-   *
-   * @function
-   * @getter
-   * @return {String} Tipo de capa, GeoJSON.
-   * @api
-   */
-  get type() {
-    return GeoJSONType;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo de capa.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== GeoJSONType)) {
-      Exception('El tipo de capa debe ser \''.concat(GeoJSONType).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
   }
 
   /**
@@ -242,6 +225,7 @@ class GeoJSON extends LayerVector {
     if (obj instanceof GeoJSON) {
       equals = this.name === obj.name;
       equals = equals && (this.extract === obj.extract);
+      // equals = equals && (this.predefinedStyles === obj.predefinedStyles);
     }
 
     return equals;

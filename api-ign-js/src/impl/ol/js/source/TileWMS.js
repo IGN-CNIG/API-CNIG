@@ -17,7 +17,7 @@ class TileWMS extends OLSourceTileWMS {
    * - attributions: Atribuciones.
    * - attributionsCollapsible: Las atribuciones son plegables.
    * - cacheSize: Tamaño inicial de caché de teselas.
-   * - crossOrigin: El atributo "crossOrigin" para imágenes cargadas.
+   * - crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * - interpolate: Valores interpolados al volver a muestrear.
    * - params: Parámetros de solicitud de WMS. Se requiere al menos un parámetro LAYERS.
    * - gutter: El tamaño en píxeles alrededor de los mosaicos de

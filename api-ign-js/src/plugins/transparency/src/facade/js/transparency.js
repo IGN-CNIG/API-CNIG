@@ -155,7 +155,6 @@ export default class Transparency extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-
     const values = {
       layers: this.layers,
       radius: this.radius,

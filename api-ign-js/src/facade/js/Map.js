@@ -46,6 +46,8 @@ import WMS from './layer/WMS';
 import WMTS from './layer/WMTS';
 import MVT from './layer/MVT';
 import OGCAPIFeatures from './layer/OGCAPIFeatures';
+import GenericRaster from './layer/GenericRaster';
+import GenericVector from './layer/GenericVector';
 import Panel from './ui/Panel';
 import * as Position from './ui/position';
 import GeoJSON from './layer/GeoJSON';
@@ -55,6 +57,7 @@ import MBTilesVector from './layer/MBTilesVector';
 import XYZ from './layer/XYZ';
 import TMS from './layer/TMS';
 import OSM from './layer/OSM';
+import Attributions from './control/Attributions';
 
 /**
  * @classdesc
@@ -77,15 +80,18 @@ class Map extends Base {
    * @param { string | Mx.parameters.Map } userParameters Parámetros.
    * @param { Mx.parameters.MapOptions } options Opciones personalizadas para la implementación
    * proporcionado por el usuario.
+   * @property {object} viewVendorOptions Parámetros para la vista del mapa de la librería base.
    * @api
    */
-  constructor(userParameters, options = {}) {
+  constructor(userParameters, options = {}, viewVendorOptions = {}) {
     // parses parameters to build the new map
     const params = new Parameters(userParameters);
 
+    const opts = { viewExtent: params.viewExtent, ...options };
+
     // calls the super constructor
     super();
-    const impl = new MapImpl(params.container, this, options);
+    const impl = new MapImpl(params.container, this, opts, viewVendorOptions);
     // impl.setFacadeMap(this);
     this.setImpl(impl);
 
@@ -183,6 +189,13 @@ class Map extends Base {
      */
     this.collectionCapabilities = [];
 
+    // Attribution Map
+    // + El evento se añade aquí antes de llamar a addLayers
+    this.evtSetAttributions_();
+    this.evtRemoveAttributions_();
+    this.controlAttributions = null; // Contiene el control de atribuciones
+    this._attributionsMap = [];
+
     // adds class to the container
     params.container.classList.add('m-mapea-container');
 
@@ -258,9 +271,9 @@ class Map extends Base {
       this.addControls(params.controls);
     }
 
-    // default WMTS
+    // default TMS
     if (isNullOrEmpty(params.layers) && !isArray(params.layers)) {
-      this.addTMS(M.config.tms.base);
+      this.addQuickLayers(M.config.tms.base);
     }
 
     // center
@@ -273,6 +286,13 @@ class Map extends Base {
       this.setZoom(params.zoom);
     } else if (isNullOrEmpty(params.bbox)) {
       this.setZoom(0);
+    }
+
+    // zoomConstrains
+    if (!isNullOrEmpty(params.zoomConstrains)) {
+      this.setZoomConstrains(params.zoomConstrains);
+    } else {
+      this.setZoomConstrains(true);
     }
 
     // minZoom
@@ -314,6 +334,126 @@ class Map extends Base {
   }
 
   /**
+   *  Método que crea el control de atribuciones.
+   *
+   * @function
+   * @param {Object} options Parámetros del control.
+   * @api
+   */
+  createAttribution(options = {}) {
+    // Comprobar si existe el control
+    if (this.getControls().some(({ name }) => name === 'attributions')) {
+      return;
+    }
+    const {
+      tooltip,
+      position,
+      scale,
+      collectionsAttributions = [],
+      order,
+    } = options;
+    const atribucionControl = new Attributions({
+      map: this,
+      scale,
+      collectionsAttributions: collectionsAttributions.map((l) => {
+        if (typeof l !== 'string') {
+          const attr = l;
+          attr.id = window.crypto.randomUUID
+            ? window.crypto.randomUUID() : new Date().getTime();
+          return attr;
+        }
+        return l;
+      }),
+      order,
+    });
+    const panel = new Panel(Attributions.NAME, {
+      collapsible: true,
+      position: Position[position] || Position.BR,
+      className: 'm-attributions',
+      collapsedButtonClass: 'g-cartografia-comentarios',
+      tooltip: tooltip || getValue('attributions').tooltip,
+      order,
+    });
+    this.addPanels(panel);
+    panel.addControls(atribucionControl);
+    this.getImpl().addControls([atribucionControl]);
+    this.controlAttributions = atribucionControl;
+
+    if (collectionsAttributions) {
+      this._attributionsMap = [...this._attributionsMap, ...collectionsAttributions];
+    }
+  }
+
+  /**
+   *  Método para añadir atribuciones al control de atribuciones.
+   *
+   * @function
+   * @param {attribuccion} attribuccion Atribución.
+   * @api
+   */
+  addAttribution(attribuccion, _addMapAttribution = true) {
+    try {
+      if (Object.keys(attribuccion).length === 0) {
+        return;
+      }
+    } catch (error) {
+      // eslint-disable-next-line
+      console.error('El tipo tiene que ser object');
+      return;
+    }
+
+    const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
+    if (!controlAttributions) { return; }
+    let addAttribution = null;
+
+    if (typeof attribuccion === 'string') {
+      addAttribution = {};
+      addAttribution.attribuccion = attribuccion;
+    } else if (attribuccion && controlAttributions) {
+      addAttribution = attribuccion;
+    }
+
+    addAttribution.id = window.crypto.randomUUID
+      ? window.crypto.randomUUID() : new Date().getTime();
+
+    controlAttributions.addAttributions(addAttribution);
+
+    if (_addMapAttribution) {
+      this._attributionsMap.push(addAttribution);
+    }
+  }
+
+  /**
+   *  Método para eliminar atribuciones al control de atribuciones.
+   *
+   * @function
+   * @param {String} id Nombre de la capa o id de la atribución.
+   * @api
+   */
+  removeAttribution(id) {
+    if (id) {
+      const attributions = this.controlAttributions.getAttributions();
+      let filterAttributions = attributions.filter(attribution => attribution.id !== id);
+      filterAttributions = filterAttributions.filter(attribution => attribution.name !== id);
+
+      this.controlAttributions.setAttributions(filterAttributions);
+    }
+  }
+
+  /**
+   * Método que devuelve las attribuciones del Mapa.
+   * @function
+   * @returns {Boolean} Verdadero devuelve todas las attribuciones.
+   * @api
+   */
+  getAttributions(allAttributions) {
+    if (allAttributions) {
+      return this.controlAttributions.getAttributions();
+    }
+    return this._attributionsMap;
+  }
+
+  /**
    * Este método obtiene las capas agregadas al mapa.
    *
    * @function
@@ -341,7 +481,8 @@ class Map extends Base {
     }
 
     // gets the layers
-    const layers = this.getImpl().getLayers(filters).sort(Map.LAYER_SORT);
+    const layers = this.getImpl().getLayers(filters)
+      .sort((layer1, layer2) => Map.LAYER_SORT(layer1, layer2, this));
 
     return layers;
   }
@@ -373,7 +514,7 @@ class Map extends Base {
       Exception(getValue('exception').getbaselayers_method);
     }
 
-    return this.getImpl().getBaseLayers().sort(Map.LAYER_SORT);
+    return this.getImpl().getBaseLayers();
   }
 
   /**
@@ -465,13 +606,19 @@ class Map extends Base {
                 layer = new XYZ(parameterVariable);
                 break;
               case 'TMS':
-                layer = new TMS(parameterVariable);
+                layer = new TMS(parameterVariable, { crossOrigin: parameterVariable.crossOrigin });
                 break;
               case 'OSM':
                 layer = new OSM(layerParam);
                 break;
               case 'OGCAPIFeatures':
                 layer = new OGCAPIFeatures(layerParam, { style: parameterVariable.style });
+                break;
+              case 'GenericRaster':
+                layer = new GenericRaster(layerParam);
+                break;
+              case 'GenericVector':
+                layer = new GenericVector(layerParam);
                 break;
               default:
                 Dialog.error(getValue('dialog').invalid_type_layer);
@@ -505,7 +652,6 @@ class Map extends Base {
 
       // adds the layers
       this.getImpl().addLayers(layers.filter(element => element !== null));
-      this.fire(EventType.ADDED_LAYER, [layers]);
     }
     return this;
   }
@@ -918,6 +1064,31 @@ class Map extends Base {
       this.fire(EventType.ADDED_WFS, [wfsLayers]);
     }
     return this;
+  }
+
+  /**
+   * Este método agrega las capas de GeoJSON al mapa.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Colección u objeto de capa.
+   */
+  addUnknowLayers_(layersParamVar) {
+    let layersParam = layersParamVar;
+
+    // parses parameters to Array
+    if (!isArray(layersParam)) {
+      layersParam = [layersParam];
+    }
+
+    const unknowLayers = [];
+
+    layersParam.forEach((layerParam) => {
+      if (isObject(layerParam) && layerParam.name !== '__draw__') {
+        unknowLayers.push(layerParam);
+      }
+    });
+
+    this.fire(EventType.ADDED_LAYER, [unknowLayers]);
   }
 
   /**
@@ -1803,6 +1974,14 @@ class Map extends Base {
             case GetFeatureInfo.NAME:
               control = new GetFeatureInfo(true);
               break;
+            case Attributions.NAME:
+              if (controlParam.length === 2) {
+                this.createAttribution({ collectionsAttributions: [controlParam[1]] });
+              } else {
+                this.createAttribution();
+              }
+
+              return;
             case Rotate.NAME:
               control = new Rotate();
               panel = new Panel(Rotate.name, {
@@ -2059,16 +2238,21 @@ class Map extends Base {
    *
    * @public
    * @function
+   * @param {Boolean} exact Permite devolver el zoom exacto del mapa en caso de que se permita
+   * niveles de zoom intermedios, Por defecto es false.
    * @returns {Number} Devuelve el zoom actual.
    * @api
    */
-  getZoom() {
+  getZoom(exact = false) {
     // checks if the implementation can get the zoom
     if (isUndefined(MapImpl.prototype.getZoom)) {
       Exception(getValue('exception').getzoom_method);
     }
 
-    const zoom = this.getImpl().getZoom();
+    let zoom = this.getImpl().getZoom();
+    if (!exact) {
+      zoom = Math.floor(zoom);
+    }
 
     return zoom;
   }
@@ -2215,6 +2399,49 @@ class Map extends Base {
     const center = this.getImpl().getCenter();
 
     return center;
+  }
+
+  /**
+   * Este método establece el estado de zoomConstrains
+   * instancia del mapa.
+   *
+   * @public
+   * @function
+   * @param {Boolean} zoomConstrains Nuevo valor.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @api
+   */
+  setZoomConstrains(zoomConstrains) {
+    // checks if the param is null or empty
+    if (isNullOrEmpty(zoomConstrains)) {
+      Exception(getValue('exception').no_zoomConstrains);
+    }
+
+    if (isUndefined(MapImpl.prototype.setZoomConstrains)) {
+      Exception(getValue('exception').setZoomConstrains_method);
+    }
+
+    this.getImpl().setZoomConstrains(zoomConstrains);
+    return this;
+  }
+
+  /**
+   * Este método obtiene el estado actual de
+   * zoomConstrains de la instancia del mapa.
+   *
+   * @public
+   * @function
+   * @returns {Boolean} Valor actual.
+   * @api
+   */
+  getZoomConstrains() {
+    if (isUndefined(MapImpl.prototype.setZoomConstrains)) {
+      Exception(getValue('exception').setZoomConstrains_method);
+    }
+
+    const zoomConstrains = this.getImpl().getZoomConstrains();
+
+    return zoomConstrains;
   }
 
   /**
@@ -3033,6 +3260,79 @@ class Map extends Base {
   }
 
   /**
+   * Método para añadir las atribuciones de las capas.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   *
+   * @public
+   * @function
+   * @api
+   */
+  evtSetAttributions_() {
+    // getAttributions
+    this.on(EventType.ADDED_LAYER, (layersEvt) => {
+      const control = this.getControls().some(c => c.name === 'attributions');
+      if (!control) { return; }
+
+      let layers = layersEvt;
+      if (!Array.isArray(layers)) {
+        layers = [layers];
+      }
+      layers.forEach((layer) => {
+        if (layer.attribution && layers.name !== '__draw__') {
+          const attribuccion = layer.attribution;
+
+          if (typeof attribuccion !== 'string' && !attribuccion.name) {
+            attribuccion.name = layer.name;
+          }
+
+          this.addAttribution(attribuccion, false);
+        }
+      });
+    });
+  }
+
+  /**
+   * Método para eliminar las atribuciones de las capas.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   *
+   * @public
+   * @function
+   * @api
+   */
+  evtRemoveAttributions_() {
+    this.on(EventType.REMOVED_LAYER, (layersEvt) => {
+      const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
+
+      if (!layersEvt || !controlAttributions) {
+        return;
+      }
+
+      let layers = layersEvt;
+
+      if (!Array.isArray(layersEvt)) {
+        layers = [layersEvt];
+      }
+
+      layers.forEach(({ attribution, name }) => {
+        if (name === '__draw__') {
+          return;
+        }
+        if (/<[a-z][\s\S]*>/i.test(attribution)) {
+          // eslint-disable-next-line no-underscore-dangle
+          const removeAttr = controlAttributions
+            .collectionsAttributions_.filter(attr => attr.attribuccion === attribution);
+          if (removeAttr.length > 0) {
+            this.removeAttribution(removeAttr[0].id);
+          }
+        } else if (attribution) {
+          this.removeAttribution(attribution.id);
+        }
+      });
+    });
+  }
+
+
+  /**
    * Esta función actualiza el estado de la instancia del mapa.
    *
    * @function
@@ -3067,12 +3367,19 @@ class Map extends Base {
    * @param {M.layer} layer2 Otra Capa.
    * @api
    */
-  static LAYER_SORT(layer1, layer2) {
+  static LAYER_SORT(layer1, layer2, thisClass) {
     if (!isNullOrEmpty(layer1) && !isNullOrEmpty(layer2)) {
       const z1 = layer1.getZIndex();
       const z2 = layer2.getZIndex();
-
-      return (z1 - z2);
+      const zIndex = (z1 - z2);
+      if (zIndex === 0 && !isUndefined(thisClass)) {
+        // eslint-disable-next-line no-underscore-dangle
+        const i1 = thisClass.getImpl().layers_.findIndex(element => element.name === layer1.name);
+        // eslint-disable-next-line no-underscore-dangle
+        const i2 = thisClass.getImpl().layers_.findIndex(element => element.name === layer2.name);
+        return i1 - i2;
+      }
+      return zIndex;
     }
 
     // equals

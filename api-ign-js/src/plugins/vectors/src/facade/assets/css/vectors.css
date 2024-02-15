@@ -381,7 +381,7 @@ div.m-vector-layer-actions .active-tool {
 }
 
 /*PERFIL TOPOGRAFICO*/
-.ol-control.ol-profil {
+.ol-control-vector.ol-profil {
     position: absolute;
     text-align: right;
     overflow: hidden;
@@ -391,28 +391,28 @@ div.m-vector-layer-actions .active-tool {
 }
 
 @media only screen and (max-width: 1670px) {
-    .ol-control.ol-profil {
+    .ol-control-vector.ol-profil {
         top: 43%;
         left: 65%;
     }
 }
 
 @media only screen and (max-width: 1228px) {
-    .ol-control.ol-profil {
+    .ol-control-vector.ol-profil {
         top: 30%;
         left: 57%;
     }
 }
 
 @media only screen and (max-width: 1000px) {
-    .ol-control.ol-profil {
+    .ol-control-vector.ol-profil {
         top: 30%;
         left: 30%;
     }
 }
 
 @media only screen and (max-width: 660px) {
-    .ol-control.ol-profil {
+    .ol-control-vector.ol-profil {
         top: 30%;
         left: 20%;
     }
@@ -428,13 +428,13 @@ div.m-vector-layer-actions .active-tool {
     font-size: 0.8em;
 }
 
-.ol-control.ol-profil .ol-inner {
+.ol-control-vector.ol-profil .ol-inner {
     display: block;
     background-color: hsl(0deg 0% 100%);
     margin: 2px 2px;
 }
 
-.ol-control.ol-profil.ol-collapsed .ol-inner {
+.ol-control-vector.ol-profil.ol-collapsed .ol-inner {
     display: none;
 }
 
@@ -490,11 +490,12 @@ div.m-vector-layer-actions .active-tool {
     top: 0px;
     display: block !important;
     color: #000000;
-    margin-top: 3px;
+    margin-top: 5px;
     margin-right: 8px;
     border: none;
     background-color: transparent;
     cursor: move;
+    width: fit-content;
 }
 
 .ol-profil button.profile-download-button:hover, .ol-profil button.profile-move-button:hover {

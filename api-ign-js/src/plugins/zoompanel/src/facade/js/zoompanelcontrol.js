@@ -82,6 +82,15 @@ export default class ZoomPanelControl extends M.Control {
         this.registerViewEvents_();
       });
 
+      document.addEventListener('keydown', (evt) => {
+        if (evt.key === 'Escape') {
+          const elem = document.querySelector('.m-panel.m-zoompanel.opened');
+          if (elem !== null) {
+            elem.querySelector('button.m-panel-btn').click();
+          }
+        }
+      });
+
       success(html);
     });
   }

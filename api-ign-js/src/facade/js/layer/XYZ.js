@@ -3,7 +3,7 @@
  */
 import XYZImpl from 'impl/layer/XYZ';
 import LayerBase from './Layer';
-import { isNullOrEmpty, isUndefined } from '../util/Utils';
+import { isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
@@ -25,6 +25,7 @@ import { getValue } from '../i18n/language';
  * @property {Number} maxZoom Limitar el zoom máximo.
  * @property {Number} tileGridMaxZoom Zoom máximo de la tesela en forma de rejilla.
  * @property {Object} options Opciones de capa XYZ.
+ * @property {Boolean} isbase Define si la capa es base.
  *
  * @api
  * @extends {M.layer}
@@ -38,17 +39,19 @@ class XYZ extends LayerBase {
    * @param {string|Mx.parameters.XYZ} userParameters Parámetros para la construcción de la capa.
    * - url: URL del servicio XYZ.
    * - name: Identificador de la capa.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
    * - projection: La proyección destino de la capa.
    * - visibility: Indica si la capa estará por defecto visible o no.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - type: Tipo de la capa.
-   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
-   * - opacity: Opacidad de la capa.
-   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
+   * - isBase: Indica si la capa es base.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
    * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
+   * - crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import XYZSource from 'ol/source/XYZ';
@@ -75,7 +78,14 @@ class XYZ extends LayerBase {
      * @implements {M.impl.layer.XYZ}
      * @type {M.impl.layer.XYZ}
      */
-    const impl = new XYZImpl(userParameters, options, vendorOptions);
+
+    const optionsVar = options;
+
+    if (typeof userParameters !== 'string') {
+      optionsVar.maxExtent = userParameters.maxExtent;
+    }
+
+    const impl = new XYZImpl(userParameters, optionsVar, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
     /**
@@ -112,33 +122,6 @@ class XYZ extends LayerBase {
      * XYZ options: Opciones de la capa.
      */
     this.options = options;
-  }
-
-  /**
-   * Devuelve el tipo de capa.
-   *
-   * @function
-   * @getter
-   * @return {M.LayerType.XYZ} Devuelve XYZ.
-   * @api
-   */
-  get type() {
-    return LayerType.XYZ;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.XYZ)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.XYZ).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
   }
 
   /**

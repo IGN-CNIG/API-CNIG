@@ -63,10 +63,11 @@ class KML extends MObject {
    * @api
    */
   getLoaderFn(callback) {
-    return ((extent, resolution, projection, scaleLabel, segregacion) => {
-      this.loadInternal_(projection, scaleLabel, segregacion).then((response) => {
-        callback(response);
-      });
+    return ((extent, resolution, projection, scaleLabel, segregacion, removeFolderChildren) => {
+      this.loadInternal_(projection, scaleLabel, segregacion, removeFolderChildren)
+        .then((response) => {
+          callback(response);
+        });
     });
   }
 
@@ -78,11 +79,12 @@ class KML extends MObject {
    * @param {ol.proj.Projection} projection Proyección.
    * @param {Number} scaleLabel Escala de la etiqueta.
    * @param {Array} layers Listado de nombres de carpetas para filtrar KML.
+   * @param {boolean} removeFolderChildren Especifica si mostrar o no los hijos de las carpetas.
    * @returns {Promise} Promesa con la obtención de los objetos geográficos.
    * @public
    * @api
    */
-  loadInternal_(projection, scaleLabel, layers) {
+  loadInternal_(projection, scaleLabel, layers, removeFolderChildren) {
     return new Promise((success, fail) => {
       getRemote(this.url_).then((response) => {
         const parser = new DOMParser();
@@ -90,23 +92,38 @@ class KML extends MObject {
         let transformXMLtoText = false;
         if (!isUndefined(layers)) {
           const folders = xmlDoc.getElementsByTagName('Folder');
-          let count = 0;
-          Array.from(folders).forEach((folder) => {
-            const childs = folder.childNodes;
-            let name = '';
-            Array.from(childs).forEach((child) => {
-              if (child.tagName === 'name') {
-                name = child.innerHTML;
-              }
+          let count = -1;
+          const foldersArray = [...folders].map(folder => folder.cloneNode(true));
+
+          if (removeFolderChildren) {
+            foldersArray.map((folder) => {
+              let folderElement;
+              do {
+                folderElement = folder.querySelector(':scope > Folder');
+                if (folderElement) {
+                  folder.removeChild(folderElement);
+                }
+              } while (folderElement);
+              return folder;
             });
-            if (isNullOrEmpty(name)) {
-              name = `Layer__${count}`;
-            }
-            if (!layers.includes(name)) {
-              folder.parentNode.removeChild(folder);
-            }
+          }
+
+          Array.from(folders).forEach((folder) => { folder.parentNode.removeChild(folder); });
+
+          const filteredFolders = foldersArray.filter((folder) => {
+            const nameElement = folder.querySelector(':scope > name');
             count += 1;
+            if (nameElement) {
+              return layers.includes(nameElement.textContent.trim());
+            }
+            return layers.includes(`Layer__${count}`);
           });
+
+          const documentElement = xmlDoc.querySelector('kml > Document');
+          filteredFolders.forEach((folderElement) => {
+            documentElement.appendChild(folderElement);
+          });
+
           transformXMLtoText = true;
         }
         if (!isUndefined(scaleLabel)) {

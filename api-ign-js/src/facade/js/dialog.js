@@ -4,7 +4,7 @@
  */
 import 'assets/css/dialog';
 import dialogTemplate from 'templates/dialog';
-import { isNullOrEmpty } from './util/Utils';
+import { isNullOrEmpty, isUndefined, transfomContent } from './util/Utils';
 import { compileSync as compileTemplate } from './util/Template';
 import { getValue } from './i18n/language';
 
@@ -43,15 +43,22 @@ export const remove = () => {
  * @param {String} title Título del modal.
  * @param {String} severity Tipo de modal.
  * @param {Number} order "tabindex" de los elementos del modal, por defecto 300.
+ * @param {Object} configuration Configuración para el dialog.
  * @api
  */
-export const show = (message, title, severity, order = 300) => {
+export const show = (message, title, severity, order = 300, configuration = {}) => {
   const vars = {
     message,
     title,
     severity,
     order,
   };
+
+  if (configuration.intelligence === true ||
+    (!isUndefined(configuration.intelligence) && (configuration.intelligence.activate === true))) {
+    vars.message = transfomContent(message, configuration.intelligence.sizes);
+  }
+
   const html = compileTemplate(dialogTemplate, {
     vars,
   });
@@ -75,14 +82,15 @@ export const show = (message, title, severity, order = 300) => {
  * @param {String} message Mensaje que se mostrará.
  * @param {String} titleParam Título del dialogo.
  * @param {Number} order "tabIndex" de los elementos del HTML.
+ * @param {Object} configuration Configuración para el dialog.
  * @api
  */
-export const info = (message, titleParam, order) => {
+export const info = (message, titleParam, order, configuration = {}) => {
   let title = titleParam;
   if (isNullOrEmpty(title)) {
     title = getValue('dialog').info;
   }
-  show(message, title, 'info', order);
+  show(message, title, 'info', order, configuration);
 };
 
 /**
@@ -93,14 +101,15 @@ export const info = (message, titleParam, order) => {
  * @param {String} message Mensaje que se mostrará.
  * @param {String} title Título del dialogo.
  * @param {Number} order "tabIndex" de los elementos del HTML.
+ * @param {Object} configuration Configuración para el dialog.
  * @api
  */
-export const error = (message, titleParam, order) => {
+export const error = (message, titleParam, order, configuration = {}) => {
   let title = titleParam;
   if (isNullOrEmpty(title)) {
     title = getValue('dialog').error;
   }
-  show(message, title, 'error', order);
+  show(message, title, 'error', order, configuration);
 };
 
 /**
@@ -111,14 +120,15 @@ export const error = (message, titleParam, order) => {
  * @param {String} message Mensaje que se mostrará.
  * @param {String} title Título del dialogo.
  * @param {Number} order "tabIndex" de los elementos del HTML.
+ * @param {Object} configuration Configuración para el dialog
  * @api
  */
-export const success = (message, titleParam, order) => {
+export const success = (message, titleParam, order, configuration = {}) => {
   let title = titleParam;
   if (isNullOrEmpty(title)) {
     title = getValue('dialog').success;
   }
-  show(message, title, 'success', order);
+  show(message, title, 'success', order, configuration);
 };
 
 /**

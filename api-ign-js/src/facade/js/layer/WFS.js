@@ -63,6 +63,7 @@ class WFS extends Vector {
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - opacity: Opacidad de capa, por defecto 1.
+   * - predefinedStyles: Estilos predefinidos para la capa.
    * @param {M.WFSImpl} impl Implementación por defecto.
    * @param {Object} vendorOpts Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
@@ -77,12 +78,23 @@ class WFS extends Vector {
    * </code></pre>
    * @api
    */
-  constructor(userParams, options = {}, vendorOpts = {}, impl = new WFSImpl(options, vendorOpts)) {
+  constructor(userParams = {}, options = {}, vendorOpts = {}, implParam) {
     // This layer is of parameters.
     const parameters = parameter.layer(userParams, LayerType.WFS);
 
+    const optionsVar = options;
+
+    if (typeof userParams !== 'string') {
+      optionsVar.maxExtent = userParams.maxExtent;
+    }
+
+    let impl = implParam;
+    if (!implParam) {
+      impl = new WFSImpl(optionsVar, vendorOpts);
+    }
+
     // calls the super constructor
-    super(parameters, options, undefined, impl);
+    super(parameters, optionsVar, undefined, impl);
 
     // checks if the implementation can create WFS layers.
     if (isUndefined(WFSImpl)) {
@@ -139,30 +151,6 @@ class WFS extends Vector {
      * options: Opciones WFS.
      */
     this.options = options;
-  }
-
-  /**
-   * Devuelve el tipo de capa, WFS.
-   * @function
-   * @return {M.LayerType.WFS} Devuelve WFS.
-   * @api
-   */
-  get type() {
-    return LayerType.WFS;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) && !isNullOrEmpty(newType) &&
-      (newType !== LayerType.WFS)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.WFS).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
   }
 
   /**
@@ -393,6 +381,7 @@ class WFS extends Vector {
       equals = equals && (this.cql === obj.cql);
       equals = equals && (this.version === obj.version);
       equals = equals && (this.extract === obj.extract);
+      equals = equals && (this.predefinedStyles === obj.predefinedStyles);
     }
 
     return equals;

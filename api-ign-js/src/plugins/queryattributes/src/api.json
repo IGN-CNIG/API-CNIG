@@ -43,7 +43,7 @@
     "name": "queryattributes",
     "description": "Búsqueda con filtros",
     "text": "Permite realizar búsquedas y aplicar diferentes filtros. Da la posibilidad de poder exportar la consulta",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "date": "Abril, 2020",
     "author": "",
     "org": "Guadaltel",

@@ -163,7 +163,7 @@ export default class StyleManagerControl extends M.Control {
   subscribeAddedLayer(htmlSelect) {
     this.facadeMap_.on(M.evt.ADDED_LAYER, (layers) => {
       if (Array.isArray(layers)) {
-        layers.filter(layer => (layer instanceof M.layer.Vector && layer
+        layers.filter(layer => ((layer instanceof M.layer.Vector && layer.type !== 'Generic') && layer
           instanceof M.layer.MBTilesVector === false && layer.name !== 'selectLayer')).forEach(layer => this.addLayerOption(htmlSelect, layer.name));
       } else if (layers instanceof M.layer.Vector) {
         const layer = { ...layers };

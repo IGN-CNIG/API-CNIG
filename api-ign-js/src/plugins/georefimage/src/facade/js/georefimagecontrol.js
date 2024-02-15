@@ -190,6 +190,8 @@ export default class GeorefimageControl extends M.Control {
    * @api stabletrue
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('exception.georefimage_obsolete'));
     const promise = new Promise((success, fail) => {
       this.getCapabilities().then((capabilitiesParam) => {
         const capabilities = capabilitiesParam;

@@ -12,6 +12,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'selectionzoom.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`selectionzoom-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),

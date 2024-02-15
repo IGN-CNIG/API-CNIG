@@ -859,8 +859,7 @@ span.m-incicarto-3d-measure:hover {
 }
 
 .m-transparency-select_arrow {
-  position: absolute;
-  top: 8px;
+  position: relative;
   right: 20px;
   pointer-events: none;
   border-style: solid;
@@ -1010,9 +1009,6 @@ span.m-incicarto-3d-measure:hover {
 }
 
 .m-plugin-incicarto-html div.m-transparency-select_arrow {
-  position: absolute;
-  top: 154px;
-  right: 62px;
   pointer-events: none;
   border-style: solid;
   border-width: 8px 5px 0px 5px;

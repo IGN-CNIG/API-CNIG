@@ -45,6 +45,7 @@ export default class MouseSRS extends M.Plugin {
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
 
+    this.epsgFormat = options.epsgFormat === true;
     /**
      * Shown coordinates SRS
      *
@@ -88,6 +89,11 @@ export default class MouseSRS extends M.Plugin {
      * @type {boolean}
      */
     this.activeZ = options.activeZ || false;
+
+    /**
+     * Draggable dialog
+     */
+    this.draggableDialog = options.draggableDialog === undefined ? true : options.draggableDialog;
 
     /**
      * URL to the help for the icon
@@ -144,6 +150,8 @@ export default class MouseSRS extends M.Plugin {
       this.activeZ,
       this.helpUrl,
       this.order,
+      this.draggableDialog,
+      this.epsgFormat,
     );
     this.controls_.push(this.control_);
     this.map_ = map;
@@ -245,6 +253,9 @@ export default class MouseSRS extends M.Plugin {
     } else {
       cadena += `*${this.utmDecimalDigits}`;
     }
+
+    cadena += `*${this.activeZ}*${this.helpUrl}*${this.draggableDialog}*${this.epsgFormat}`;
+
     return cadena;
   }
   /**

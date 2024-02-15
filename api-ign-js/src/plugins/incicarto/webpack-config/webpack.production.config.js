@@ -12,6 +12,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'incicarto.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`incicarto-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),

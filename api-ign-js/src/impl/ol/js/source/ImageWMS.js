@@ -15,7 +15,7 @@ class ImageWMS extends OLSourceImageWMS {
    * @extends {ol.source.Image}
    * @param {olx.source.ImageWMSOptions=} optOptions Opciones:
    * - attributions: Atribuciones
-   * - crossOrigin: El atributo "crossOrigin" para imágenes cargadas.
+   * - crossOrigin: atributo crossOrigin para las imágenes cargadas.
    * Tenga en cuenta que debe proporcionar un valor "crossOrigin" si desea acceder a
    * los datos de píxeles con el renderizador de Canvas.
    * - hidpi: Utilice el valor ol/Map#pixelRatio cuando solicite la

@@ -1,7 +1,7 @@
 /**
  * @module M/impl/format/KML
  */
-import { decodeHtml } from 'M/util/Utils';
+import { decodeHtml, isNullOrEmpty } from 'M/util/Utils';
 import OLFormatKML from 'ol/format/KML';
 import IconAnchorUnits from 'ol/style/IconAnchorUnits';
 import OLStyleIcon from 'ol/style/Icon';
@@ -28,7 +28,6 @@ class KML extends OLFormatKML {
    * - defaultStyle: Estilo por defecto. El estilo por defecto es el mismo que
    * el de Google Earth.
    * - writeStyles: Escribir estilos en el KML. Por defecto es verdadero.
-   * - crossOrigin: Atributo para imágenes cargadas. Por defecto es 'anonymous'.
    * - iconUrlFunction: Función que toma una URL como cadena y devuelve una URL
    * como cadena.
    * -label: Define si se muestra la etiqueta o no.Por defecto mostrará la etiqueta.
@@ -36,7 +35,7 @@ class KML extends OLFormatKML {
    * @api
    */
   constructor(optOptions = {}) {
-    super({ showPointNames: optOptions.label });
+    super({ showPointNames: optOptions.label, extractStyles: optOptions.extractStyles });
 
     /**
      * "Popup".
@@ -65,17 +64,21 @@ class KML extends OLFormatKML {
   readCustomFeatures(textResponse, options) {
     const features = this.readFeatures(textResponse, options);
     const featuresModified = features.map((feature) => {
-      let styles = feature.getStyle()(feature);
-      if (!Array.isArray(styles)) {
-        styles = [styles];
-      }
-      styles.forEach((style) => {
-        if (style.getImage() instanceof OLStyleIcon) {
-          const image = style.getImage();
-          image.getImage().removeAttribute('crossorigin');
-          style.setImage(image);
+      const hasStyle = feature.getStyle();
+      if (!isNullOrEmpty(hasStyle)) {
+        let styles = hasStyle(feature);
+        if (!Array.isArray(styles)) {
+          styles = [styles];
         }
-      });
+        styles.forEach((style) => {
+          if (style.getImage() instanceof OLStyleIcon) {
+            const image = style.getImage();
+            // error de CORS Impresión
+            // image.getImage().removeAttribute('crossorigin');
+            style.setImage(image);
+          }
+        });
+      }
       feature.set('name', decodeHtml(feature.get('name')));
       return feature;
     });

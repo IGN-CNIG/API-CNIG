@@ -4,6 +4,7 @@
  * @example import utils from 'M/utils';
  */
 import { get as remoteGet } from 'M/util/Remote';
+import { getValue } from 'M/i18n/language';
 import chroma from 'chroma-js';
 import Draggabilly from 'draggabilly';
 import * as dynamicImage from 'assets/img/dynamic_legend';
@@ -1434,6 +1435,28 @@ export const draggabillyPlugin = (panel, handleEl) => {
 };
 
 /**
+ * Esta función proporciona movimiento a un dialog.
+ *
+ * @function
+ * @param {string} element Selector del elemento a mover
+ * @param {string} handleEl Selemento del elemento iniciador del movimiento
+ * @api
+ */
+export const draggabillyElement = (elem, handleEl) => {
+  setTimeout(() => {
+    const element = document.querySelector(elem);
+    if (element !== null) {
+      const draggable = new Draggabilly(element, {
+        containment: 'body',
+        handle: handleEl,
+      });
+
+      draggable.enable();
+    }
+  }, 50);
+};
+
+/**
  * Esta función devuelve las coordenadas de un elemento HTML
  * que se encuentra en el mapa (ol-overlay-container).
  *
@@ -1445,8 +1468,149 @@ export const draggabillyPlugin = (panel, handleEl) => {
 export const returnPositionHtmlElement = (className, map) => {
   const element = document.querySelector(`.${className}`);
   const bounding = element.getBoundingClientRect();
-  const position = [bounding.left + (bounding.width / 2), bounding.top + (bounding.height / 2)];
-  return map.getMapImpl().getCoordinateFromPixel(position);
+  // const position = [bounding.left + (bounding.width / 2), bounding.top + (bounding.height / 2)];
+  // return map.getMapImpl().getCoordinateFromPixel(position);
+  // ---
+  const container = map.getMapImpl().getViewport().getBoundingClientRect();
+  // eslint-disable-next-line no-mixed-operators
+  const pixelX = bounding.left - container.left + bounding.width / 2;
+  // eslint-disable-next-line no-mixed-operators
+  const pixelY = bounding.top - container.top + bounding.height / 2;
+
+  const position = map.getMapImpl().getCoordinateFromPixel([pixelX, pixelY]);
+
+  return position;
+};
+
+/**
+ * Esta función devuelve una captura de pantalla del mapa
+ * @function
+ * @param {M.Map} map
+ * @param {HTMLCanvasElement} canva
+ * @api
+ * @returns {String} Imagen en base64
+ */
+export const getImageMap = (map, type = 'image/jpeg', canva) => {
+  const canvas = canva || map.getMapImpl().getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer')[0];
+  let img = null;
+  if (canvas) {
+    try {
+      img = canvas.toDataURL(type);
+    } catch (e) {
+      throw e;
+    }
+  }
+  return img;
+};
+
+/**
+ * Esta función copia una imagen en el portapapeles
+ * @function
+ * @param {HTMLCanvasElement} canvas
+ * @api
+ */
+export const copyImageClipBoard = (map, canva) => {
+  const canvas = canva || map.getMapImpl().getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer')[0];
+  if (canvas) {
+    try {
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const item = new window.ClipboardItem({ 'image/png': blob });
+          window.navigator.clipboard.write([item]).then(() => {
+            // eslint-disable-next-line no-console
+            console.log('Image copied to clipboard');
+          }).catch((err) => {
+            // eslint-disable-next-line no-console
+            console.error('Error copying image to clipboard:', err);
+          });
+        }
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+};
+
+/**
+ * Esta función detecta en un texto los enlaces.
+ * @returns {Array<String>} Matriz de enlaces.
+ * @function
+ * @api
+ */
+export const findUrls = (content) => {
+  const regexURL = /(^|\s)(https?:\/\/[^\s<>"']+)/g;
+  const urls = content.match(regexURL);
+  return urls || [];
+};
+
+/**
+ * Esta función transforma los enlaces a etiquetas HTML.
+ * @param {String} text Texto para realizar la transformación.
+ * @param {Object} pSizes Objeto con los tamaños definidos para cada tipo de contenido.
+ * @function
+ * @returns {String} Resultado de la transformación
+ * @api
+ */
+export const transfomContent = (text, pSizes = {}) => {
+  let content = text;
+  const urls = findUrls(content);
+  urls.forEach((url) => {
+    const lastCharacter = url.slice(-1);
+    const validCharacters = /^[a-zA-Z0-9]+$/;
+    let aux = '';
+    // eslint-disable-next-line no-param-reassign
+    url = url.trim();
+    if (!validCharacters.test(lastCharacter)) {
+      aux = lastCharacter;
+      // eslint-disable-next-line no-param-reassign
+      url = url.slice(0, -1);
+    }
+
+    const sizes = {
+      images: pSizes.images || ['120px', '75px'],
+      videos: pSizes.videos || ['500px', '300px'],
+      documents: pSizes.documents || ['500px', '300px'],
+      audios: pSizes.audios || ['250px', '40px'],
+    };
+
+    const regexImg = /\.(jpg||jpeg|png|gif|svg)$/i;
+    const regexDocument = /\.(pdf||txt|json|geojson)$/i;
+    const regexVideo = /\.(mp4|mov|3gp)$/i;
+    const regexAudio = /\.(mp3|ogg|ogv|wav)$/i;
+    if (regexImg.test(url)) {
+      content = content.replace(`${url}${aux}`, `</br><img src='${url}' style='max-width: ${sizes.images[0]}; max-height: ${sizes.images[1]};'/></br>${aux}`);
+    } else if (regexDocument.test(url)) {
+      content = content.replace(`${url}${aux}`, `</br><iframe src='${url}' width='${sizes.documents[0]}' height='${sizes.documents[1]}'></iframe></br>${aux}`);
+    } else if (regexVideo.test(url)) {
+      content = content.replace(`${url}${aux}`, `</br><video style='max-width: ${sizes.videos[0]}; max-height: ${sizes.videos[1]}' controls><source src='${url}'>
+        <p>${getValue('exception').browser_video}</p></video></br>${aux}`);
+    } else if (regexAudio.test(url)) {
+      content = content.replace(`${url}${aux}`, `</br><audio style='max-width: ${sizes.audios[0]}; max-height: ${sizes.audios[1]}'controls><source src='${url}'>${getValue('exception').browser_audio}</audio></br>${aux}`);
+    } else {
+      content = content.replace(`${url}${aux}`, `<a href=${url}>${url}</a>${aux}`);
+    }
+  });
+  return content;
+};
+
+/**
+ * Esta función ordena el bbox dependiendo del sistema de referencia.
+ * @param {Object} bbox Bbox.
+ * @param {String} epsg EPSG del bbox.
+ * @function
+ * @returns {Array} bbox.
+ * @api
+ */
+export const ObjectToArrayExtent = (bbox, epsg) => {
+  const { def } = M.impl.ol.js.projections.getSupportedProjs()
+    .filter(proj => proj.codes.includes(epsg))[0];
+
+  const typeCoordinates = def.includes('+proj=longlat');
+
+  if (typeCoordinates) {
+    return [bbox.y.min, bbox.x.min, bbox.y.max, bbox.x.max];
+  }
+  return [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
 };
 
 /**

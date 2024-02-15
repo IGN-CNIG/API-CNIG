@@ -108,7 +108,7 @@ export default class BackImgLayer extends M.Plugin {
      * @public
      * @type {String}
      */
-    this.layers = options.layers || 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true';
+    this.layers = options.layers || 'QUICK*BASE_MapaBase_IGNBaseTodo_WMTS';
 
     /**
      * @private
@@ -162,6 +162,8 @@ export default class BackImgLayer extends M.Plugin {
      *@type { Number }
      */
     this.order = options.order >= -1 ? options.order : null;
+
+    this.visible = options.visible !== undefined ? options.visible : true;
   }
 
   /**
@@ -189,19 +191,20 @@ export default class BackImgLayer extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new BackImgLayerControl(
+    this.controls_.push(new BackImgLayerControl({
       map,
-      this.layerOpts,
-      this.layerId,
-      this.layerVisibility,
-      this.ids,
-      this.titles,
-      this.previews,
-      this.layers,
-      this.columnsNumber,
-      this.empty,
-      this.order,
-    ));
+      visible: this.visible,
+      layerOpts: this.layerOpts,
+      layerId: this.layerId,
+      layerVisibility: this.layerVisibility,
+      ids: this.ids,
+      titles: this.titles,
+      previews: this.previews,
+      layers: this.layers,
+      columnsNumber: this.columnsNumber,
+      empty: this.empty,
+      order: this.order,
+    }));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('BackImgLayer', {
       collapsible: this.collapsible,

@@ -170,8 +170,10 @@ export default class InformationControl extends M.impl.Control {
   buildUrl_(dialogParam, evt) {
     this.evt = evt;
     const olMap = this.facadeMap_.getMapImpl();
-    const wmsInfoURLS = this.buildWMSInfoURL(this.facadeMap_.getWMS());
-    const wmtsInfoURLS = this.buildWMTSInfoURL(this.facadeMap_.getWMTS());
+    const [urlsWMTS, urlsWMS] = this.buildGenericInfoURL();
+    const wmsInfoURLS = this.buildWMSInfoURL([...this.facadeMap_.getWMS(), ...urlsWMS]);
+    const wmtsInfoURLS = this.buildWMTSInfoURL([...this.facadeMap_.getWMTS(), ...urlsWMTS]);
+
     const layerNamesUrls = [...wmtsInfoURLS, ...wmsInfoURLS]
       .filter(layer => !M.utils.isNullOrEmpty(layer));
     if (layerNamesUrls.length > 0) {
@@ -230,6 +232,21 @@ export default class InformationControl extends M.impl.Control {
       }
       return param;
     });
+  }
+
+  buildGenericInfoURL() {
+    const layersGeneric = this.facadeMap_.getLayers().filter(layer => layer.type === 'GenericRaster');
+    const urlsWMTS = [];
+    const urlsWMS = [];
+    layersGeneric.forEach((layer) => {
+      if (layer.getImpl().getOL3Layer().getSource() instanceof ol.source.WMTS) {
+        urlsWMTS.push(layer);
+      } else if (layer.getImpl().getOL3Layer().getSource() instanceof ol.source.TileWMS
+      || layer.getImpl().getOL3Layer().getSource() instanceof ol.source.ImageWMS) {
+        urlsWMS.push(layer);
+      }
+    });
+    return [urlsWMTS, urlsWMS];
   }
 
   /**

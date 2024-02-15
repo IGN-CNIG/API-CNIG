@@ -61,6 +61,8 @@ import FormatWMS from './format/WMS';
  * Por defecto falso.
  * @property {ol.Map} map_ Implementación del mapa.
  * @property {Object} Z_INDEX_BASELAYER Objeto con los valores de los z-index.
+ * @property {Number} currentZoom Almacena el zoom del mapa.
+ * @property {Object} objectView Almacena las propiedades indicadas por el usuario para la vista.
  *
  * @api
  * @extends {M.Object}
@@ -84,10 +86,10 @@ class Map extends MObject {
    * en su defecto, en el centro (center)
    * establecido del mapa.
    * - resolutions: Array con las resoluciones asociadas a cada nivel de zoom del mapa.
-   *
+   * @param {object} viewVendorOptions Parámetros para la vista del mapa de la librería base.
    * @api
    */
-  constructor(div, facadeMap, options = {}) {
+  constructor(div, facadeMap, options = {}, viewVendorOptions) {
     super();
     /**
      * Fachada del mapa a implementar.
@@ -183,28 +185,41 @@ class Map extends MObject {
      */
     this.currentZoom = null;
 
-    // gets the renderer
-    // let renderer = ol.renderer.Type.CANVAS;
-    // if (!isNullOrEmpty(this.options_.renderer)) {
-    //   renderer = this.options_.renderer;
-    // }
+    /**
+     * Extent restringido de navegación para el mapa.
+     * @api
+     * @type {Mx.Extent}
+     */
+    this.viewExtent = options.viewExtent;
+
+    /**
+     * Almacena las propiedades indicadas por el usuario para la vista.
+     * @api
+     * @type {Object}
+     */
+    this.objectView = viewVendorOptions;
+
+    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
+      this.objectView.extent = this.viewExtent;
+    }
 
     /**
      * Implementación del mapa.
      * @private
      * @type {ol.Map}
      */
+    const view = new View(this.objectView);
+
     this.map_ = new OLMap({
       controls: [],
       target: div.id,
       // renderer,
-      view: new View(),
+      view,
     });
 
     this.registerEvents_();
 
-
-    this.map_.getView().setConstrainResolution(true);
+    // this.map_.getView().setConstrainResolution(false);
     this.facadeMap_.on(EventType.COMPLETED, () => {
       this.map_.updateSize();
     });
@@ -265,7 +280,7 @@ class Map extends MObject {
    * @api
    */
   getBaseLayers() {
-    return this.getLayers().filter(layer => layer.transparent !== true);
+    return this.layers_.filter(layer => layer.transparent === false);
   }
 
   /**
@@ -315,6 +330,8 @@ class Map extends MObject {
         this.facadeMap_.addTMS(layer);
       } else if (!LayerType.know(layer.type)) {
         this.addUnknowLayers_([layer]);
+        // eslint-disable-next-line no-underscore-dangle
+        this.facadeMap_.addUnknowLayers_(layer);
       }
     });
 
@@ -529,6 +546,10 @@ class Map extends MObject {
               if (!isNullOrEmpty(filterLayer.legend)) {
                 layerMatched = (layerMatched && (filterLayer.legend === wmsLayer.legend));
               }
+              // isBase
+              if (!isNullOrEmpty(filterLayer.isBase)) {
+                layerMatched = (layerMatched && (filterLayer.isBase === wmsLayer.isBase));
+              }
               // transparent
               if (!isNullOrEmpty(filterLayer.transparent)) {
                 layerMatched = (layerMatched && (filterLayer.transparent === wmsLayer.transparent));
@@ -582,7 +603,7 @@ class Map extends MObject {
 
           /* if the layer is a base layer then
           sets its visibility */
-          if (layer.transparent !== true) {
+          if (layer.transparent === false) {
             layer.setVisible(!existsBaseLayer);
             existsBaseLayer = true;
             layer.setZIndex(Map.Z_INDEX_BASELAYER);
@@ -1037,7 +1058,7 @@ class Map extends MObject {
           this.layers_.push(layer);
           /* if the layer is a base layer then
                  sets its visibility */
-          if (layer.transparent !== true) {
+          if (layer.transparent === false) {
             layer.setVisible(!existsBaseLayer);
             existsBaseLayer = true;
             if (layer.isVisible()) {
@@ -1162,7 +1183,7 @@ class Map extends MObject {
           this.layers_.push(layer);
           addedLayers.push(layer);
 
-          if (layer.transparent !== true) {
+          if (layer.transparent === false) {
             layer.setVisible(!existsBaseLayer);
             existsBaseLayer = true;
             layer.setZIndex(Map.Z_INDEX_BASELAYER);
@@ -1389,7 +1410,7 @@ class Map extends MObject {
 
         /* if the layer is a base layer then
         sets its visibility */
-        if (layer.transparent !== true) {
+        if (layer.transparent === false) {
           layer.setVisible(!existsBaseLayer);
           existsBaseLayer = true;
           if (layer.isVisible()) {
@@ -1429,7 +1450,7 @@ class Map extends MObject {
       if (includes(this.layers_, layer)) {
         this.layers_ = this.layers_.filter(layer2 => !layer2.equals(layer));
         layer.getImpl().destroy();
-        if (layer.transparent !== true) {
+        if (layer.transparent === false) {
           // it was base layer so sets the visibility of the first one
           const baseLayers = this.facadeMap_.getBaseLayers();
           if (baseLayers.length > 0) {
@@ -1611,15 +1632,15 @@ class Map extends MObject {
     layers.forEach((layer) => {
       // checks if layer is XYZ and was added to the map
       if (layer.type === LayerType.XYZ) {
-        if (!includes(this.layers_, layer) && layer.transparent === true) {
+        if (!includes(this.layers_, layer)) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
-          const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.XYZ];
-          layer.setZIndex(zIndex);
-        } else {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(0);
+          if (layer.transparent === true) {
+            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.XYZ];
+            layer.setZIndex(zIndex);
+          } else {
+            layer.setZIndex(0);
+          }
         }
       }
     });
@@ -1712,15 +1733,15 @@ class Map extends MObject {
     layers.forEach((layer) => {
       // checks if layer is TMS and was added to the map
       if (layer.type === LayerType.TMS) {
-        if (!includes(this.layers_, layer) && layer.transparent === true) {
+        if (!includes(this.layers_, layer)) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
-          const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.TMS];
-          layer.setZIndex(zIndex);
-        } else {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(0);
+          if (layer.transparent === true) {
+            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.TMS];
+            layer.setZIndex(zIndex);
+          } else {
+            layer.setZIndex(0);
+          }
         }
       }
     });
@@ -2183,6 +2204,39 @@ class Map extends MObject {
     return center;
   }
 
+
+  /**
+   * Este método establece el estado de zoomConstrains
+   * instancia del mapa.
+   *
+   * @function
+   * @param {Boolean} zoomConstrains Nuevo valor.
+   * @returns {Map} Mapa.
+   * @public
+   * @api
+   */
+  setZoomConstrains(zoomConstrains) {
+    if (isNullOrEmpty(zoomConstrains)) {
+      Exception(getValue('exception').no_zoomConstrains);
+    }
+    this.getMapImpl().getView().setConstrainResolution(zoomConstrains);
+    return this;
+  }
+
+  /**
+   * Este método obtiene el estado actual de
+   * zoomConstrains de la instancia del mapa.
+   *
+   * @function
+   * @returns {Boolean} Valor actual.
+   * @public
+   * @api
+   */
+  getZoomConstrains() {
+    const olConstrainResolution = this.getMapImpl().getView().getConstrainResolution();
+    return olConstrainResolution;
+  }
+
   /**
    * Este método obtiene las resoluciones actuales
    * para la instancia del mapa.
@@ -2230,13 +2284,17 @@ class Map extends MObject {
     const maxZoom = olMap.getView().getMaxZoom();
     const size = olMap.getSize();
 
-    const newView = new View({ projection });
+    let newView = new View({ ...this.objectView, projection });
+    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
+      newView = new View({ ...this.objectView, projection, extent: this.viewExtent });
+    }
+
     newView.setProperties(oldViewProperties);
     newView.setResolutions(resolutions);
     newView.setUserZoom(oldZoom);
     newView.setMinZoom(minZoom);
     newView.setMaxZoom(maxZoom);
-    newView.setConstrainResolution(true);
+    // newView.setConstrainResolution(false);
     // calculates the new resolution
     let newResolution;
     if (!isNullOrEmpty(oldZoom)) {
@@ -2355,7 +2413,11 @@ class Map extends MObject {
     const maxZoom = olMap.getView().getMaxZoom();
 
     // sets the new view
-    const newView = new View({ projection: olProjection });
+    let newView = new View({ ...this.objectView, projection: olProjection });
+    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
+      newView = new View({ ...this.objectView, projection: olProjection, extent: this.viewExtent });
+    }
+
     newView.setProperties(oldViewProperties);
     if (!isNullOrEmpty(resolutions)) {
       newView.setResolutions(resolutions);
@@ -2366,7 +2428,7 @@ class Map extends MObject {
     newView.setUserZoom(userZoom);
     newView.setMinZoom(minZoom);
     newView.setMaxZoom(maxZoom);
-    newView.setConstrainResolution(true);
+    // newView.setConstrainResolution(false);
     olMap.setView(newView);
 
     // updates min, max resolutions of all WMS layers
@@ -2754,5 +2816,7 @@ Map.Z_INDEX[LayerType.MBTilesVector] = 40;
 Map.Z_INDEX[LayerType.XYZ] = 40;
 Map.Z_INDEX[LayerType.TMS] = 40;
 Map.Z_INDEX[LayerType.OGCAPIFeatures] = 40;
+Map.Z_INDEX[LayerType.GenericVector] = 40;
+Map.Z_INDEX[LayerType.GenericRaster] = 40;
 
 export default Map;

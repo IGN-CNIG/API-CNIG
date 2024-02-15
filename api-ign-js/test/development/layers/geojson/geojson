@@ -1,0 +1,30 @@
+/* eslint-disable camelcase */
+import GeoJSON from 'M/layer/GeoJSON';
+
+export const geojson_001 = new GeoJSON({
+  name: 'Municipios',
+  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Municipios&maxFeatures=50&outputFormat=application/json',
+  // extract: true,
+  // infoEventType: 'hover',
+  // isBase: true,
+  // transparent: false,
+  maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
+  // attribution: {
+  //   name: 'Name Prueba GeoJSON',
+  //   description: 'Description Prueba',
+  //   url: 'https://www.ign.es',
+  //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+  //   contentType: 'kml',
+  // },
+});
+// {
+//   minZoom: 5,
+//   maxZoom: 10,
+// },
+
+
+export const geojson_002 = new GeoJSON({
+  name: 'jsonejemplo',
+  url: 'http://www.ign.es/resources/geodesia/GNSS/SPTR_geo.json',
+  extract: false,
+});

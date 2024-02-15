@@ -5,7 +5,7 @@ import PopupImpl from 'impl/Popup';
 
 import 'assets/css/popup';
 import popupTemplate from 'templates/popup';
-import { isNullOrEmpty, returnPositionHtmlElement } from './util/Utils';
+import { isNullOrEmpty, isUndefined, returnPositionHtmlElement, transfomContent } from './util/Utils';
 import Base from './Base';
 import { compileSync as compileTemplate } from './util/Template';
 import * as EventType from './event/eventtype';
@@ -42,6 +42,11 @@ class Tab {
      * @type {String}
      */
     this.content = options.content;
+
+    if (options.intelligence === true ||
+      (!isUndefined(options.intelligence) && (options.intelligence.activate === true))) {
+      this.content = transfomContent(this.content, options.intelligence.sizes);
+    }
 
     /**
      * Eventos.

@@ -10,6 +10,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'ignsearchlocator.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`ignsearchlocator-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),

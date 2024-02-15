@@ -44,12 +44,11 @@ class XYZ extends Layer {
    * - tileGridMaxZoom: Zoom máximo de la tesela en forma de rejilla.
    * - displayInLayerSwitcher: Mostrar en el selector de capas.
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
-   * - opacity: Opacidad de la capa.
-   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
+   * - crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import XYZSource from 'ol/source/XYZ';
@@ -100,13 +99,13 @@ class XYZ extends Layer {
      * XYZ minZoom.
      * Zoom mínimo aplicable a la capa.
      */
-    this.minZoom = userParameters.minZoom || Number.NEGATIVE_INFINITY;
+    this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
 
     /**
      * XYZ maxZoom.
      * Zoom máximo aplicable a la capa.
      */
-    this.maxZoom = userParameters.maxZoom || Number.POSITIVE_INFINITY;
+    this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
      * XYZ tileGridMaxZoom.
@@ -119,6 +118,11 @@ class XYZ extends Layer {
      * Mostrar en el selector de capas.
      */
     this.displayInLayerSwitcher = userParameters.displayInLayerSwitcher !== false;
+
+    /**
+     * CrossOrigin: Atributo crossOrigin para las imágenes cargadas.
+     */
+    this.crossOrigin = (options.crossOrigin === null || options.crossOrigin === false) ? undefined : 'anonymous';
   }
 
   /**
@@ -165,13 +169,14 @@ class XYZ extends Layer {
       visible: this.visibility,
       opacity: this.opacity_,
       zIndex: this.zIndex_,
-      extent,
+      extent: this.userMaxExtent || extent,
     }, this.vendorOptions_, true));
     this.map.getMapImpl().addLayer(this.ol3Layer);
     const source = new XYZSource({
       projection: this.map.getProjection().code,
       url: this.url,
       tileSize: this.getTileSize(),
+      crossOrigin: this.crossOrigin,
     });
     this.ol3Layer.setSource(source);
     if (this.tileGridMaxZoom !== undefined && this.tileGridMaxZoom > 0) {
