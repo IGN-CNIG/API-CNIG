@@ -105,5 +105,6 @@
   "center": "Center",
   "addAllLayers": "Add all services",
   "previous": "Previous",
-  "next": "Next"
+  "next": "Next",
+  "separatedby": "Separated by ','"
 }

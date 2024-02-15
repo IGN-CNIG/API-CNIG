@@ -105,5 +105,6 @@
   "center": "Centro",
   "addAllLayers": "Añadir todos los servicios",
   "previous": "Anterior",
-  "next": "Siguiente"
+  "next": "Siguiente",
+  "separatedby": "Separadas por ','"
 }

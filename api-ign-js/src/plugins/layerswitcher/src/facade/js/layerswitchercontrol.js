@@ -1212,9 +1212,11 @@ export default class LayerswitcherControl extends M.Control {
               } else {
                 let parse = JSON.parse(meta.text);
                 let url2;
-                if (!M.utils.isNullOrEmpty(parse) && parse.json) {
-                  parse = JSON.parse(parse.json);
-                  url2 = url.substring(0, url.lastIndexOf('/') + 1).concat(orderxyz);
+                if (!M.utils.isNullOrEmpty(parse)) {
+                  if (!M.utils.isNullOrEmpty(parse.json)) {
+                    parse = JSON.parse(parse.json);
+                  }
+                  url2 = metadata.substring(0, metadata.lastIndexOf('/') + 1).concat(orderxyz);
                 } else {
                   parse = {};
                 }
@@ -2109,6 +2111,7 @@ export default class LayerswitcherControl extends M.Control {
       parseToHtml: false,
       vars: {
         type,
+        isMVT: type === 'mvt',
         layers,
         translations: {
           add_btn: getValue('add_btn'),
@@ -2118,6 +2121,7 @@ export default class LayerswitcherControl extends M.Control {
           layers: getValue('layers'),
           addAllLayers: getValue('addAllLayers'),
           add_service: getValue('add_service'),
+          separatedby: getValue('separatedby'),
         },
       },
     });
@@ -2137,7 +2141,12 @@ export default class LayerswitcherControl extends M.Control {
     const btnAddLayer = document.querySelector('#m-layerswitcher-layer-button');
     btnAddLayer.addEventListener('click', () => {
       const randomNumber = Math.floor(Math.random() * 9000) + 1000;
-      const name = document.querySelector('#m-layerswitcher-layer-name').value || `layer_${randomNumber}`;
+      let name = document.querySelector('#m-layerswitcher-layer-name');
+      if (M.utils.isNullOrEmpty(name)) {
+        name = `layer_${randomNumber}`;
+      } else {
+        name = name.value || `layer_${randomNumber}`;
+      }
       const legend = document.querySelector('#m-layerswitcher-layer-legend').value || `layer_${randomNumber}`;
       let matrixSet = document.querySelector('#m-layerswitcher-layer-matrixset');
       if (!M.utils.isNullOrEmpty(matrixSet)) {
@@ -2175,10 +2184,14 @@ export default class LayerswitcherControl extends M.Control {
         }));
       } else if (type === 'mvt') {
         const elmSel = document.querySelectorAll('#m-layerswitcher-addservices-results .m-layerswitcher-icons-check-seleccionado');
-        const layersSelected = [];
+        let layersSelected = [];
         elmSel.forEach((elm) => {
           layersSelected.push(elm.id);
         });
+        const nameLayers = document.querySelector('#m-layerswitcher-layer-name');
+        if (!M.utils.isNullOrEmpty(nameLayers) && nameLayers.value.indexOf('layer_') === -1) {
+          layersSelected = nameLayers.trim().value.split(',');
+        }
         const obj = {
           name,
           legend,

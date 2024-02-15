@@ -66,8 +66,15 @@
         {{/gt}}
     {{/eq}}
     <div class="m-layerswitcher-layer-fields">
-        <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-name">{{translations.name}}</label>
-        <input tabindex="0" type="text" id="m-layerswitcher-layer-name" />
+        {{#if isMVT}}
+            {{#eq layers.length 0}}
+                <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-name">{{translations.layers}}</label>
+                <input tabindex="0" type="text" id="m-layerswitcher-layer-name" placeholder="{{translations.separatedby}}" />
+            {{/eq}}
+        {{else}}
+            <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-name">{{translations.layers}}</label>
+            <input tabindex="0" type="text" id="m-layerswitcher-layer-name" />
+        {{/if}}
     </div>
     <div class="m-layerswitcher-layer-fields">
         <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-legend">{{translations.legend}}</label>
