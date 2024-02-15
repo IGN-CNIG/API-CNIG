@@ -46,23 +46,21 @@
 - Se adaptan los controles backimglayers y getfeatureinfo y los plugins layerswitcher e information para aceptar capas GenericRaster/GenericVector
 - KML se añade nuevo paráemtro removeFolderChildren para decidir si mostrar los hijos de las carpetas
 - Se añade a la clase utilidades los métodos getImageMap (para capturar el canvas del mapa) y copyImageClipBoard (para copiar una imagen al portapapeles)
-- Plugin comparators: se cambia estilo para que se vea correctamente en móvil
 - Plugin printviewmanagement: Se añade evento para cerrar con esc.
 - Plugin modal: Se añade evento para cerrar con esc.
-- Plugin layerswitcher: Modificación de estilo para que se visualice bien en Firefox.
 - Se soluciona problema de estilos y funcionalidad de texto en geometrydraw.
 - Se soluciona problema de estilos en el perfil topográfipo del plugin vector.
 - Se documenta en el JSDoc los parámetros minZoom y maxZoom en las capas MBTiles y MBTilesVector.
 - Se soluciona problema del collectorCapabilities al usar addAllLayers.
 - Se cambia enlace servicio de capa base
 - Se soluciona error de visualización del mapa con proyección por defecto 3857.
-- Se controla que se puedan añadir varias veces la misma capa de tipo XYZ y TMS.
+- Se controla que no se puedan añadir varias veces la misma capa de tipo XYZ y TMS.
 - Plugin sharemap: Permite compartir capa OGCAPIFetures
 - Se actualiza listado de servicios disponibles en https://componentes.cnig.es/api-core/api/actions/services
 - Se crea método ObjectToArrayExtent Utils
 - Se configura capas bases con quicklayers (capa base y capas de backgroundlayers)
 - Se añade nuevo parámetro a la clase mapa "viewVendorOptions" para indicar propiedades de la vista del mapa de la librería base
-- Las capas MBTiles, WMS, WMTS, TMS y XYZ tendrán el parámetro crossOrigin con valor 'anonymous'
+- Las capas MBTiles, WMS, WMTS, TMS y XYZ tendrán el parámetro crossOrigin con valor 'anonymous' por defecto
 - Se añade atribución a las capas rápidas: Base_IGNBaseTodo_TMS, BASE_IGNBaseOrto_TMS y BASE_PNOA_MA_TMS
 
 
