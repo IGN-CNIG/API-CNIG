@@ -435,7 +435,7 @@ div.m-area.m-bottom.m-left>div.m-plugin-locatorscn.m-panel.opened>button.m-panel
         font-size: 12px;
     }
 
-    #div-contenedor-locatorscn>#m-ignsearch-panel>#m-ignsearchlocatorscn-clean-button{
+    #div-contenedor-locatorscn>#m-ignsearch-panel>#m-ignsearchlocatorscn-clean-button {
         font-size: 12px;
     }
 
@@ -453,28 +453,29 @@ div.m-area.m-bottom.m-left>div.m-plugin-locatorscn.m-panel.opened>button.m-panel
 
 .m-plugin-locatorscn-tc {
     left: calc(55.80vw - 210px) !important;
-    position: relative;
-} 
+    position: absolute !important;
+}
 
 .m-plugin-locatorscn-tc-withpanel {
     left: calc(51.55vw - 210px) !important;
-    position: relative;
-} 
+    position: absolute !important;
+}
 
 @media only screen and (max-width: 600px) {
+
     /* .m-panel.m-plugin-locatorscn.opened.no-collapsible {
         left: calc(50vw - 210px) !important;
         position: initial !important;
     }  */
     .m-plugin-locatorscn-tc {
         left: calc(76.7vw - 210px) !important;
-        position: relative;
-    } 
+        position: absolute !important;
+    }
 
     .m-plugin-locatorscn-tc-withpanel {
         left: calc(66.65vw - 210px) !important;
-        position: relative;
-    } 
+        position: absolute !important;
+    }
 }
 
 .m-hidden {
@@ -498,6 +499,6 @@ div.m-area.m-bottom.m-left>div.m-plugin-locatorscn.m-panel.opened>button.m-panel
     color: #333;
 }
 
-.m-ignsearchlocatorscn-standard > div > span {
+.m-ignsearchlocatorscn-standard>div>span {
     color: #666;
 }
