@@ -86,10 +86,13 @@ export default class BackImgLayerControl extends M.Control {
             aux = M.getQuickLayers(urlLayer.replace('QUICK*', ''));
           }
           let mapeaLayer;
-          if (M.utils.isNullOrEmpty(aux)) {
+          if (!M.utils.isNullOrEmpty(aux)) {
             mapeaLayer = aux;
+            if (typeof mapeaLayer === 'string') {
+              mapeaLayer = new M.layer.WMTS(mapeaLayer);
+            }
           } else {
-            mapeaLayer = new M.layer.WMTS(aux);
+            mapeaLayer = new M.layer.WMTS(urlLayer);
           }
           return mapeaLayer;
         });
