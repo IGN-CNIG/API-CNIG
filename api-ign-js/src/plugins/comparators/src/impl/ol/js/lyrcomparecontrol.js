@@ -31,10 +31,6 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    * @api stable
    */
   effectSelectedCurtain(lyrA, lyrB, lyrC, lyrD, opacityVal, staticDivision, comparisonMode) {
-    if (lyrA === null && lyrB === null) {
-      return;
-    }
-
     lyrA.setVisible(true);
     lyrB.setVisible(true);
     this.transparentInteraction_ = new LyrcompareInteraction({

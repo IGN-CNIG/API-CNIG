@@ -8,8 +8,6 @@ import { getValue } from './i18n/language';
 import MirrorpanelControl from './mirrorpanelcontrol';
 import LyrCompareControl from './lyrcomparecontrol';
 import TransparencyControl from './transparencycontrol';
-import WindowSyncControl from './windowsynccontrol';
-
 import { transformToStringLayers, checkLayers, getNameString } from './utils';
 
 export default class ComparatorsControl extends M.Control {
@@ -111,9 +109,6 @@ export default class ComparatorsControl extends M.Control {
       this.transparencyParams.enabledKeyFunctions = this.options.enabledKeyFunctions || false;
     }
 
-    this.windowsyncParams = M.utils.isUndefined(this.options.windowsyncParams) ?
-      true : this.options.windowsyncParams;
-
     this.control = null;
   }
 
@@ -180,18 +175,6 @@ export default class ComparatorsControl extends M.Control {
         this.map_,
       ],
       controlCreate: param => new TransparencyControl(...param),
-      control: null,
-      active: false,
-    },
-    {
-      id: 'windowsync',
-      buttonsID: 'windowsync-btn',
-      controlParam: [
-        this.windowsyncParams,
-        this.layersPlugin,
-        this.map_,
-      ],
-      controlCreate: param => new WindowSyncControl(...param),
       control: null,
       active: false,
     },
