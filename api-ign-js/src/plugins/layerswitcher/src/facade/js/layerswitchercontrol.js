@@ -1502,6 +1502,7 @@ export default class LayerswitcherControl extends M.Control {
     const ogcContainer = document.querySelector(OGC_CONTAINER);
     const addServicesResults = document.querySelector(ADDSERVICES_RESULTS);
     const addServicesSuggestions = document.querySelector(ADDSERVICES_SUGGESTIONS);
+    document.querySelector(LAYERS_CONTAINER).innerHTML = '';
 
     if (codsi !== null) {
       codsi.style.display = 'none';
@@ -1584,6 +1585,8 @@ export default class LayerswitcherControl extends M.Control {
     if (codsi !== null) {
       codsi.style.display = 'none';
     }
+
+    document.querySelector(ADDSERVICES_RESULTS).innerHTML = '';
   }
 
   // Filtra los resultados
@@ -2122,11 +2125,13 @@ export default class LayerswitcherControl extends M.Control {
           addAllLayers: getValue('addAllLayers'),
           add_service: getValue('add_service'),
           separatedby: getValue('separatedby'),
+          placeHolderLegend: getValue('placeHolderLegend'),
         },
       },
     });
 
     document.querySelector(LAYERS_CONTAINER).outerHTML = modal;
+
     if (type === 'mvt' || type === 'kml') {
       const selAll = document.querySelector('#m-layerswitcher-addservices-selectall');
       if (!M.utils.isNullOrEmpty(selAll)) {
@@ -2983,8 +2988,10 @@ export default class LayerswitcherControl extends M.Control {
 
   showCODSI() {
     document.querySelector(ADDSERVICES_RESULTS).innerHTML = '';
+    document.querySelector(LAYERS_CONTAINER).innerHTML = '';
     document.querySelector(CODSI).style.display = 'block';
     document.querySelector(ADDSERVICES_SUGGESTIONS).style.display = 'none';
+
     if (document.querySelector('#m-layerswitcher-ogcCContainer') !== null) {
       document.querySelector('#m-layerswitcher-ogcCContainer').style.display = 'none';
     }

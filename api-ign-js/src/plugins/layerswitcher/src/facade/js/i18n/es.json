@@ -106,5 +106,6 @@
   "addAllLayers": "Añadir todos los servicios",
   "previous": "Anterior",
   "next": "Siguiente",
-  "separatedby": "Separadas por ','"
+  "separatedby": "Identificador separados por comas ','",
+  "placeHolderLegend": "Texto que se muestra en el selector"
 }
