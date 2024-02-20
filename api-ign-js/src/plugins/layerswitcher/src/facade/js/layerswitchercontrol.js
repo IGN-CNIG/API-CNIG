@@ -2090,7 +2090,7 @@ export default class LayerswitcherControl extends M.Control {
     const url = evt.target.getAttribute('data-link');
     try {
       const group = evt.target.parentElement.parentElement.parentElement;
-      const nameGroup = group.querySelector('span.m-layerswitcher-suggestion-caret').innerText;
+      const nameGroup = group.querySelector('.m-layerswitcher-suggestion-caret').innerText;
       this.filterName = nameGroup;
       if (group.localName === 'tbody') {
         this.filterName = 'none';
