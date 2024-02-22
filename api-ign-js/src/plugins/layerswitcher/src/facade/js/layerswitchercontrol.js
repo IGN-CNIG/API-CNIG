@@ -145,6 +145,9 @@ export default class LayerswitcherControl extends M.Control {
 
     this.select_codsi = 1; // Seleccionado por defecto
 
+    // Mostrar tipo
+    this.displayLabel = options.displayLabel;
+
     // order
     this.order = options.order;
 
@@ -271,6 +274,7 @@ export default class LayerswitcherControl extends M.Control {
             isInformation: this.isInformation,
             isStyle: this.isStyle,
             isDelete: this.isDelete,
+            displayLabel: !this.displayLabel,
           });
         });
       }
