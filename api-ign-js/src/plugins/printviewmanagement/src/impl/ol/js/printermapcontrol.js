@@ -459,8 +459,6 @@ export default class PrinterMapControl extends M.impl.Control {
                 // eslint-disable-next-line no-param-reassign
                 newStyle += `{${a},"version":"2"`;
               }
-            } else {
-              newStyle = '';
             }
           }
         }
