@@ -526,7 +526,8 @@ export default class ComparatorsControl extends M.Control {
   removeLayers_() {
     this.layersPlugin.forEach((l) => {
       const layerName = getNameString(l);
-      const filter = this.map_.getLayers().filter(({ name }) => name === layerName);
+      const filter = this.map_.getLayers()
+        .filter(({ name, isBase }) => name === layerName && isBase === false);
       this.map_.removeLayers(filter);
     });
   }

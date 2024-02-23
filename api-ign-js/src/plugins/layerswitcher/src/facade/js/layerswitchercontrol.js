@@ -145,6 +145,9 @@ export default class LayerswitcherControl extends M.Control {
 
     this.select_codsi = 1; // Seleccionado por defecto
 
+    // Mostrar tipo
+    this.displayLabel = options.displayLabel;
+
     // order
     this.order = options.order;
 
@@ -271,6 +274,7 @@ export default class LayerswitcherControl extends M.Control {
             isInformation: this.isInformation,
             isStyle: this.isStyle,
             isDelete: this.isDelete,
+            displayLabel: !this.displayLabel,
           });
         });
       }
@@ -1502,6 +1506,7 @@ export default class LayerswitcherControl extends M.Control {
     const ogcContainer = document.querySelector(OGC_CONTAINER);
     const addServicesResults = document.querySelector(ADDSERVICES_RESULTS);
     const addServicesSuggestions = document.querySelector(ADDSERVICES_SUGGESTIONS);
+    document.querySelector(LAYERS_CONTAINER).innerHTML = '';
 
     if (codsi !== null) {
       codsi.style.display = 'none';
@@ -1584,6 +1589,8 @@ export default class LayerswitcherControl extends M.Control {
     if (codsi !== null) {
       codsi.style.display = 'none';
     }
+
+    document.querySelector(ADDSERVICES_RESULTS).innerHTML = '';
   }
 
   // Filtra los resultados
@@ -2087,7 +2094,7 @@ export default class LayerswitcherControl extends M.Control {
     const url = evt.target.getAttribute('data-link');
     try {
       const group = evt.target.parentElement.parentElement.parentElement;
-      const nameGroup = group.querySelector('span.m-layerswitcher-suggestion-caret').innerText;
+      const nameGroup = group.querySelector('.m-layerswitcher-suggestion-caret').innerText;
       this.filterName = nameGroup;
       if (group.localName === 'tbody') {
         this.filterName = 'none';
@@ -2122,11 +2129,13 @@ export default class LayerswitcherControl extends M.Control {
           addAllLayers: getValue('addAllLayers'),
           add_service: getValue('add_service'),
           separatedby: getValue('separatedby'),
+          placeHolderLegend: getValue('placeHolderLegend'),
         },
       },
     });
 
     document.querySelector(LAYERS_CONTAINER).outerHTML = modal;
+
     if (type === 'mvt' || type === 'kml') {
       const selAll = document.querySelector('#m-layerswitcher-addservices-selectall');
       if (!M.utils.isNullOrEmpty(selAll)) {
@@ -2983,8 +2992,10 @@ export default class LayerswitcherControl extends M.Control {
 
   showCODSI() {
     document.querySelector(ADDSERVICES_RESULTS).innerHTML = '';
+    document.querySelector(LAYERS_CONTAINER).innerHTML = '';
     document.querySelector(CODSI).style.display = 'block';
     document.querySelector(ADDSERVICES_SUGGESTIONS).style.display = 'none';
+
     if (document.querySelector('#m-layerswitcher-ogcCContainer') !== null) {
       document.querySelector('#m-layerswitcher-ogcCContainer').style.display = 'none';
     }

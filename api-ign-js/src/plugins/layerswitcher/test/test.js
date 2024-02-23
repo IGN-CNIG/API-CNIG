@@ -203,6 +203,7 @@ const mp1 = new Layerswitcher({
   http: true,
   showCatalog: true,
   useProxy: true,
+  displayLabel: true
 });
 map.addPlugin(mp1);
 
@@ -354,20 +355,20 @@ const capaXYZ = new M.layer.XYZ({
   projection: 'EPSG:3857',
 });
 
-const generic_001 = new M.layer.Generic({}, {}, new ol.layer.Image({
-  source: new ol.source.ImageWMS({
-    url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
-    params: { LAYERS: 'tematicos:Municipios' },
-  }),
-}));
+// const generic_001 = new M.layer.Generic({}, {}, new ol.layer.Image({
+//   source: new ol.source.ImageWMS({
+//     url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
+//     params: { LAYERS: 'tematicos:Municipios' },
+//   }),
+// }));
 
-const generic_002 = new M.layer.Generic({}, {}, new ol.layer.Vector({
-  source: new ol.source.Vector({
-    format: new ol.format.GeoJSON(),
-    url: 'https://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
-    strategy: ol.loadingstrategy.bbox,
-  }),
-}));
+// const generic_002 = new M.layer.Generic({}, {}, new ol.layer.Vector({
+//   source: new ol.source.Vector({
+//     format: new ol.format.GeoJSON(),
+//     url: 'https://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
+//     strategy: ol.loadingstrategy.bbox,
+//   }),
+// }));
 
 
 

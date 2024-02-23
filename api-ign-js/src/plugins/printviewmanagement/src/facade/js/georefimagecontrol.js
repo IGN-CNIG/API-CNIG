@@ -190,25 +190,33 @@ export default class GeorefimageControl extends M.Control {
    * @param {String} url - Mapfish GET request url
    * @param {Function} callback - function that removes loading icon class.
    */
-  getStatus(url, callback) {
+  getStatus(url, callback, queueEl) {
     M.proxy(this.useProxy);
     const newUrl = `${url}?timestamp=${new Date().getTime()}`;
     M.remote.get(newUrl).then((response) => {
+      if (response.code === 404) {
+        throw new Error('Error 404');
+      }
+
       const statusJson = response.text ? JSON.parse(response.text) : 'error';
       const { status } = statusJson;
       if (status === 'finished') {
-        callback();
+        callback(queueEl);
       } else if (status === 'error' || status === 'cancelled') {
-        callback();
+        callback(queueEl);
         if (statusJson.error.toLowerCase().indexOf('network is unreachable') > -1 || statusJson.error.toLowerCase().indexOf('illegalargument') > -1) {
           M.toast.error(getValue('exception.teselaError'), 6000);
         } else {
           M.toast.error(getValue('exception.printError'), 6000);
         }
       } else {
-        setTimeout(() => this.getStatus(url, callback), 1000);
+        setTimeout(() => this.getStatus(url, callback, queueEl), 1000);
       }
-    }).catch((err) => {});
+    }).catch((err) => {
+      callback(queueEl);
+      queueEl.remove();
+      M.dialog.error(getValue('exception.error_download_image'));
+    });
     M.proxy(this.statusProxy);
   }
 
@@ -433,7 +441,8 @@ export default class GeorefimageControl extends M.Control {
         const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
         this.getStatus(
           statusURL,
-          () => removeLoadQueueElement(queueEl),
+          e => removeLoadQueueElement(e),
+          queueEl,
         );
 
         // if (response.error !== true) { // withoud proxy, response.error === true

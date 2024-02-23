@@ -223,10 +223,14 @@ export default class PrinterMapControl extends M.Control {
     * @param {String} url - Mapfish GET request url
     * @param {Function} callback - function that removes loading icon class.
     */
-  getStatus(url, callback) {
+  getStatus(url, callback, queueEl) {
     M.proxy(this.useProxy);
     const param = new Date().getTime();
     M.remote.get(`${url}?timestamp=${param}`).then((response) => {
+      if (response.code === 404) {
+        throw new Error('Error 404');
+      }
+
       const statusJson = JSON.parse(response.text);
       const { status } = statusJson;
       if (status === 'finished') {
@@ -246,6 +250,12 @@ export default class PrinterMapControl extends M.Control {
         M.proxy(this.statusProxy);
         setTimeout(() => this.getStatus(url, callback), 1000);
       }
+    }).catch((err) => {
+      // eslint-disable-next-line no-console
+      console.log(err, 'method getStatus');
+      callback(queueEl);
+      queueEl.remove();
+      M.dialog.error(getValue('exception.error_download_image'));
     });
   }
 
@@ -472,7 +482,7 @@ export default class PrinterMapControl extends M.Control {
         const responseStatusURL = response.text && JSON.parse(response.text);
         const ref = responseStatusURL.ref;
         const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
-        this.getStatus(statusURL, () => removeLoadQueueElement(queueEl));
+        this.getStatus(statusURL, () => removeLoadQueueElement(queueEl), queueEl);
 
         // if (response.error !== true) { // withoud proxy, response.error === true
         let downloadUrl;

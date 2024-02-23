@@ -212,6 +212,9 @@ export default class Layerswitcher extends M.Plugin {
     // Servicios precargados
     this.precharged = options.precharged || PRECHARGED;
 
+    // Servicios precargados
+    this.displayLabel = !M.utils.isUndefined(options.displayLabel) ? options.displayLabel : false;
+
     //  Metadatos
     this.metadata_ = api.metadata;
 
@@ -284,6 +287,7 @@ export default class Layerswitcher extends M.Plugin {
         useProxy: this.useProxy,
         statusProxy: this.statusProxy,
         useAttributions: this.useAttributions,
+        displayLabel: this.displayLabel,
       });
     this.control_ = control;
 
@@ -317,7 +321,7 @@ export default class Layerswitcher extends M.Plugin {
 
   // Devuelve la cadena API-REST del plugin
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${this.isMoveLayers}*${this.modeSelectLayers}*${this.tools}*${this.http}*${this.https}*${this.showCatalog}*${this.useProxy}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${this.isMoveLayers}*${this.modeSelectLayers}*${this.tools}*${this.http}*${this.https}*${this.showCatalog}*${this.useProxy}*${this.displayLabel}`;
   }
 
   // Devuelve la cadena API-REST del plugin en base64
