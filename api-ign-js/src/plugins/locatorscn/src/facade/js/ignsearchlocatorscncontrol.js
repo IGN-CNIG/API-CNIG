@@ -736,7 +736,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
    * @param {number} zoom - Zoom
    * @api
    */
-  zoomInLocation(service, type, zoom) {
+  zoomInLocation(service, type, zoom, properties) {
     if (this.html_) {
       this.resultsList = this.html_.querySelector('#m-ignsearchlocatorscn-results-list');
     }
@@ -752,6 +752,14 @@ export default class IGNSearchLocatorscnControl extends M.Control {
         this.map.setBbox(extent);
         this.fire('ignsearchlocatorscn:entityFound', [extent]);
       }
+
+      setTimeout(() => {
+        // // show popup for streets
+        M.config.MOVE_MAP_EXTRACT = true;
+        const coordinates = [properties.lng, properties.lat];
+        const perfectResult = properties.state;
+        this.showSearchPopUp(properties, coordinates, perfectResult);
+      }, 300);
     }
   }
 
@@ -787,7 +795,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
 
     this.clickedElementLayer.on(M.evt.LOAD, () => {
       this.clickedElementLayer.addFeatures(mFeature);
-      this.zoomInLocation('g', type, this.zoom);
+      this.zoomInLocation('g', type, this.zoom, properties);
     });
     this.map.addLayers(this.clickedElementLayer);
     if (type === 'Point') {
@@ -813,16 +821,6 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     if (!this.resultVisibility) {
       this.clickedElementLayer.setStyle(this.simple);
     }
-    // // show popup for streets
-    M.config.MOVE_MAP_EXTRACT = false;
-    // if (properties.type === 'callejero' || properties.type === 'portal') {
-    const coordinates = [properties.lng, properties.lat];
-    const perfectResult = properties.state;
-    this.showSearchPopUp(properties, coordinates, perfectResult);
-    // } else if (this.popup !== undefined) {
-    //   this.map.removePopup(this.popup);
-    // }
-    M.config.MOVE_MAP_EXTRACT = true;
   }
 
   /**
@@ -871,7 +869,6 @@ export default class IGNSearchLocatorscnControl extends M.Control {
   ) {
     const featureTabOpts = { content: '', title: '' };
     const addendum = addressData.native.properties.addendum[this.addendumField];
-
     const addendumKeys = Object.keys(addendum);
     addendumKeys.sort();
     const addendumElements = addendumKeys.filter((str) => {
@@ -901,8 +898,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     });
 
     featureTabOpts.content = tab.innerHTML;
-
-    const myPopUp = new M.Popup({ panMapIfOutOfView: !e.fake });
+    const myPopUp = new M.Popup({});
     myPopUp.addTab(featureTabOpts);
     this.map.addPopup(myPopUp, [
       mapcoords[0],
@@ -917,6 +913,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     } else if (hasOffset && this.pointStyle === 'pinMorado') {
       this.popup.getImpl().setOffset([1, -20]);
     }
+
     this.lat = mapcoords[1];
     this.lng = mapcoords[0];
   }
