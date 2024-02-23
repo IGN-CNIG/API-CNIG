@@ -811,16 +811,18 @@ export default class IGNSearchLocatorControl extends M.Control {
     }
 
     // // show popup for streets
-    M.config.MOVE_MAP_EXTRACT = false;
+    // M.config.MOVE_MAP_EXTRACT = false;
     if (properties.type === 'callejero' || properties.type === 'portal') {
       const fullAddress = this.createFullAddress(properties);
       const coordinates = [properties.lat, properties.lng];
       const perfectResult = properties.state;
-      this.showSearchPopUp(fullAddress, coordinates, perfectResult);
+      setTimeout(() => {
+        this.showSearchPopUp(fullAddress, coordinates, perfectResult);
+      }, 300);
     } else if (this.popup !== undefined) {
       this.map.removePopup(this.popup);
     }
-    M.config.MOVE_MAP_EXTRACT = true;
+    // M.config.MOVE_MAP_EXTRACT = true;
   }
 
   /**
