@@ -155,7 +155,11 @@ export default class PrintViewManagement extends M.Plugin {
       this.printermap = false;
     }
 
-    this.serverUrl = options.serverUrl || 'https://componentes.cnig.es/geoprint';
+    let serverUrl = options.serverUrl;
+    if (serverUrl && serverUrl.endsWith('/geoprint/')) {
+      serverUrl = serverUrl.replace('/geoprint/', '/geoprint');
+    }
+    this.serverUrl = serverUrl || 'https://componentes.cnig.es/geoprint';
 
     this.printStatusUrl = options.printStatusUrl || 'https://componentes.cnig.es/geoprint/print/status';
 
