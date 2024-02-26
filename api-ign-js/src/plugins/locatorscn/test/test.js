@@ -15,25 +15,17 @@ const map = M.map({
 window.map = map;
 
 const mp = new Locatorscn({
-  order: 1,
-  position: 'TC',
-  collapsed: true,
+  position: 'TL',
   collapsible: true,
-  tooltip: 'Plugin Localizador',
-  zoom: 5,
-  useProxy: false,
+  collapsed: true,
+  zoom: 16,
   pointStyle: 'pinMorado',
-  isDraggable: true,
-
-  searchOptions: {
-    addendum: 'scne',
+    searchOptions: {
+    addendum: 'iderioja',
     size: 15,
     layers: 'address,street,venue',
-    // sources: 'calrj',
     radius: 200,
-    // urlAutocomplete: '',
-    // urlReverse: '',
-  }
+  },
 });
 
 map.addPlugin(mp);
