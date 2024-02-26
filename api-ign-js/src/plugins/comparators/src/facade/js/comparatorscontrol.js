@@ -8,7 +8,8 @@ import { getValue } from './i18n/language';
 import MirrorpanelControl from './mirrorpanelcontrol';
 import LyrCompareControl from './lyrcomparecontrol';
 import TransparencyControl from './transparencycontrol';
-import { transformToStringLayers, checkLayers, getNameString } from './utils';
+
+import { transformToStringLayers, checkLayers, getNameString, formatearID } from './utils';
 
 export default class ComparatorsControl extends M.Control {
   /**
@@ -279,8 +280,9 @@ export default class ComparatorsControl extends M.Control {
   defaultLayers_() {
     if (!this.controls ||
       (!this.controls[0].active && !this.controls[1].active && !this.controls[2].active)) {
+      const layerDefault = this.layerDefault;
       setTimeout(() => {
-        this.map_.addLayers(this.layerDefault);
+        this.map_.addLayers(layerDefault);
       }, 500);
     }
     // else if (this.layerDefault.length !== 0) {
@@ -316,7 +318,7 @@ export default class ComparatorsControl extends M.Control {
           const layersStringDefault = [];
 
           otherLayers.forEach((l) => {
-            if (l.displayInLayerSwitcher) {
+            if (l.displayInLayerSwitcher && l.transparent) {
               layersStringDefault.push(transformToStringLayers(l, this.map_, false));
             }
           });
@@ -347,16 +349,17 @@ export default class ComparatorsControl extends M.Control {
     this.addZindex_(activeLayerComparators);
     if (otherLayers.length === 0) return;
     otherLayers.forEach((l, i) => {
-      if (l.displayInLayerSwitcher) {
+      if (l.displayInLayerSwitcher && l.transparent) {
         const stringLayer = transformToStringLayers(l, this.map_, false);
         this.layersPlugin.push(stringLayer); // Evitamos poner las mismas
         // mapjsB, mapjsC, mapjsD
         // ${id === 'mapLASelect' && otherLayers.length - 1 === i ? 'selected' : ''}
         ['mapLASelect', 'mapLBSelect', 'mapLCSelect', 'mapLDSelect'].forEach((id) => {
           const select = document.querySelector(`#${id}`);
+          const idName = formatearID(l.name).replaceAll('.', '');
           select.innerHTML += `<option 
           ${id === 'mapLASelect' ? 'disabled' : ''} 
-          id="${(id === 'mapLASelect') ? `l_${l.name}_external_mapLASelect` : `l_${l.name}_external`}" 
+          id="${(id === 'mapLASelect') ? `l_${idName}_external_mapLASelect` : `l_${idName}_external`}" 
           class="externalLayers"
           value="${stringLayer}">${l.legend}</option>`;
         });
@@ -372,7 +375,7 @@ export default class ComparatorsControl extends M.Control {
     if (otherLayers.length === 0) return;
 
     otherLayers.forEach((l, i) => {
-      if (l.displayInLayerSwitcher) {
+      if (l.displayInLayerSwitcher && l.transparent) {
         const stringLayer = transformToStringLayers(l, this.map_, false);
         this.layersPlugin.push(stringLayer);
         if (selectes !== undefined && control !== undefined) {
@@ -434,9 +437,10 @@ export default class ComparatorsControl extends M.Control {
     this.map_.on(M.evt.REMOVED_LAYER, (layer) => {
       if (!(layer instanceof Array)) { return; }
       layer.forEach((l) => {
-        if (document.getElementById(`l_${l.name}_external`)) {
+        const idName = formatearID(l.name).replaceAll('.', '');
+        if (document.getElementById(`l_${idName}_external`)) {
           document.querySelectorAll('.externalLayers').forEach((el) => {
-            if (el.id.includes(layer[0].name)) {
+            if (el.id.includes(idName)) {
               el.remove();
             }
           });
@@ -526,8 +530,7 @@ export default class ComparatorsControl extends M.Control {
   removeLayers_() {
     this.layersPlugin.forEach((l) => {
       const layerName = getNameString(l);
-      const filter = this.map_.getLayers()
-        .filter(({ name, isBase }) => name === layerName && isBase === false);
+      const filter = this.map_.getLayers().filter(({ name }) => name === layerName);
       this.map_.removeLayers(filter);
     });
   }
