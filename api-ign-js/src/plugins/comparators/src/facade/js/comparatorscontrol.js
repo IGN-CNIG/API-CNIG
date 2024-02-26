@@ -522,7 +522,6 @@ export default class ComparatorsControl extends M.Control {
     this.mirrorpanelParams = null;
     this.lyrcompareParams = null;
     this.transparencyParams = null;
-    this.windowsyncParams = null;
     this.html = null;
     this.map_ = null;
     this.controls = null;
