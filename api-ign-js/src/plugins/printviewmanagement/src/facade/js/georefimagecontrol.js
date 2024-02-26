@@ -338,9 +338,13 @@ export default class GeorefimageControl extends M.Control {
       this.template_.querySelector('.georefimage-jgwKeppview').remove();
     }
 
-    this.template_.innerHTML += `
-      <h3 id="m-georefimage-projection" class="m-georefimage-projection">Sistema de Referencia de la vista ${this.projectionFormat_}</h3>
-    `;
+    const format = document.createElement('h3');
+    format.id = 'm-georefimage-projection';
+    format.classList.add('m-georefimage-projection');
+    format.title = 'EPSG';
+    format.innerText = this.projectionFormat_;
+
+    this.template_.appendChild(format);
   }
 
   /**
@@ -839,7 +843,7 @@ export default class GeorefimageControl extends M.Control {
     const elementDpi = document.querySelector(ID_DPI);
 
     // PARAMS
-    const dpi = elementDpi.value;
+    const dpi = M.utils.isNullOrEmpty(elementDpi) ? 120 : elementDpi.value;
     const code = this.map_.getProjection().code;
     const addWLD = this.elementWld_.checked;
 
