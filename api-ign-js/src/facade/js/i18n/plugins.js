@@ -206,6 +206,10 @@ import enLocator from '../../../plugins/locator/src/facade/js/i18n/en';
 import esLocatorscn from '../../../plugins/locatorscn/src/facade/js/i18n/es';
 import enLocatorscn from '../../../plugins/locatorscn/src/facade/js/i18n/en';
 
+// Printviewmanagement
+import esPrintviewmanagement from '../../../plugins/printviewmanagement/src/facade/js/i18n/es';
+import enPrintviewmanagement from '../../../plugins/printviewmanagement/src/facade/js/i18n/en';
+
 /**
  * Este objeto devuelve un objeto JSON dinámico que contiene
  * los plugins disponibles que soportan traducciones.
@@ -408,6 +412,10 @@ const pluginsLanguage = {
   locatorscn: {
     esLocatorscn,
     enLocatorscn,
+  },
+  printviewmanagement: {
+    esPrintviewmanagement,
+    enPrintviewmanagement,
   },
 };
 
