@@ -79,8 +79,6 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].predefinedzoom = pluginsLanguage.predefinedzoom
       .esPredefinedzoom;
     configuration.translations[lang].printermap = pluginsLanguage.printermap.esPrintermap;
-    configuration.translations[lang].printviewmanagement =
-      pluginsLanguage.printviewmanagement.esPrintviewmanagement;
     configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
       .esQueryattributes;
     // configuration.translations[lang].querydatabase = pluginsLanguage
@@ -137,10 +135,6 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].predefinedzoom = pluginsLanguage.predefinedzoom
       .enPredefinedzoom;
     configuration.translations[lang].printermap = pluginsLanguage.printermap.enPrintermap;
-    configuration.translations[lang].printviewmanagement =
-      pluginsLanguage.printviewmanagement.enPrintviewmanagement;
-    configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
-      .enQueryattributes;
     // configuration.translations[lang].querydatabase = pluginsLanguage
     // .querydatabase.enQuerydatabase;
     configuration.translations[lang].rescale = pluginsLanguage.rescale.enRescale;

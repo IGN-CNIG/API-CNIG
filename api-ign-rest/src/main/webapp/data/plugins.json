@@ -482,16 +482,5 @@
     "image": "img/api-logo.png",
     "description": "Plugin que muestra una historia en forma de carrusel. Esta compuesta por diferentes steps en los cuales se ejecurán animaciones preconfiguradas.",
     "obsolete": false
-  },
-  {
-    "name": "printviewmanagement",
-    "plugin": "[printviewmanagement]",
-    "version": "v1.0",
-    "url_es": "printviewmanagement.jsp?language=es",
-    "url_en": "printviewmanagement.jsp?language=en",
-    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/printviewmanagement",
-    "image": "img/api-logo.png",
-    "description": "Plugin que permite utilizar diferentes herramientas de impresión.",
-    "obsolete": false
   }
 ]
