@@ -126,10 +126,6 @@ import enPredefinedzoom from '../../../plugins/predefinedzoom/src/facade/js/i18n
 import esPrintermap from '../../../plugins/printermap/src/facade/js/i18n/es';
 import enPrintermap from '../../../plugins/printermap/src/facade/js/i18n/en';
 
-// Printviewmanagement
-import esPrintviewmanagement from '../../../plugins/printviewmanagement/src/facade/js/i18n/es';
-import enPrintviewmanagement from '../../../plugins/printviewmanagement/src/facade/js/i18n/en';
-
 // Queryattributes
 import esQueryattributes from '../../../plugins/queryattributes/src/facade/js/i18n/es';
 import enQueryattributes from '../../../plugins/queryattributes/src/facade/js/i18n/en';
@@ -330,10 +326,6 @@ const pluginsLanguage = {
   printermap: {
     esPrintermap,
     enPrintermap,
-  },
-  printviewmanagement: {
-    esPrintviewmanagement,
-    enPrintviewmanagement,
   },
   queryattributes: {
     esQueryattributes,
