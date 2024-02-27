@@ -313,3 +313,6 @@ export const transformToLayers = (layers, index) => {
   return transform;
 };
 
+export const formatearID = (str) => {
+  return str.replace(/[^\w$]/g, '');
+};
