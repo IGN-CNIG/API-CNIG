@@ -139,6 +139,8 @@ export const getTranslation = (lang) => {
     // .querydatabase.enQuerydatabase;
     configuration.translations[lang].rescale = pluginsLanguage.rescale.enRescale;
     configuration.translations[lang].selectiondraw = pluginsLanguage.selectiondraw.enSelectiondraw;
+    configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
+      .enQueryattributes;
     configuration.translations[lang].selectionzoom = pluginsLanguage.selectionzoom.enSelectionzoom;
     configuration.translations[lang].sharemap = pluginsLanguage.sharemap.enSharemap;
     configuration.translations[lang].stylemanager = pluginsLanguage.stylemanager.enStylemanager;
