@@ -62,6 +62,7 @@
 - Se añade nuevo parámetro a la clase mapa "viewVendorOptions" para indicar propiedades de la vista del mapa de la librería base
 - Las capas MBTiles, WMS, WMTS, TMS y XYZ tendrán el parámetro crossOrigin con valor 'anonymous' por defecto
 - Se añade atribución a las capas rápidas: Base_IGNBaseTodo_TMS, BASE_IGNBaseOrto_TMS y BASE_PNOA_MA_TMS
+- Se soluciona error de obtención de capabilities de WMTS
 
 
 

@@ -449,7 +449,7 @@ class WMTS extends LayerBase {
     if (isNullOrEmpty(this.capabilitiesOptionsPromise)) {
       const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
         return cap.url === this.url;
-      });
+      }) || {};
 
       if (capabilitiesInfo.capabilities) {
         this.capabilitiesOptionsPromise = capabilitiesInfo.capabilities;
