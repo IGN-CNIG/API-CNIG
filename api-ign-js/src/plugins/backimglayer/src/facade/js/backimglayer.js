@@ -201,7 +201,7 @@ export default class BackImgLayer extends M.Plugin {
       titles: this.titles,
       previews: this.previews,
       layers: this.layers,
-      columnsNumber: this.columnsNumber,
+      numColumns: this.columnsNumber,
       empty: this.empty,
       order: this.order,
     }));
