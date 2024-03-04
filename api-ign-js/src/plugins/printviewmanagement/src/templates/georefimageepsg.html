@@ -1,0 +1,8 @@
+<section class="m-georefimageepsg-container">
+  <label for="m-georefimageepsg-select" class="m-georefimageepsg-label">{{translations.selectLayer}}</label>
+  <select id="m-georefimageepsg-select" title="{{translations.selectLayer}}">
+    {{#each layers}}
+      <option value='{{name}}'>{{legend}}</option>
+    {{/each}}
+  </select>
+</section>
