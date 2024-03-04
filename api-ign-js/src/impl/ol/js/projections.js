@@ -409,6 +409,24 @@ const proj3395 = {
 };
 
 /**
+ * EPSG:4328 WGS84 geocéntricas
+ * Sistema de coordenadas cartesiano, geocéntrico con ejes X,Y,Z.
+ * Su orientación sería el plano XY como plano ecuatorial, el eje X positivo en al intersección con el meridiano principal.
+ * El eje Z es paralelo al eje de rotación medio de la tierra y positivo hacia el polo Norte.
+ * @type {Object}
+ * @public
+ * @api
+ */
+const proj4328 = {
+  def: '+proj=geocent +datum=WGS84 +units=m +no_defs +type=crs',
+  extent: [-Infinity, -Infinity, Infinity, Infinity],
+  codes: ['EPSG:4328', 'urn:ogc:def:crs:EPSG::4328', 'https://www.opengis.net/def/crs/EPSG/0/4328'],
+  units: 'm',
+  datum: 'WGS 84',
+  proj: 'XYZ (geocéntricas)',
+};
+
+/**
  * Lista con las proyecciones anteriores
  * @type {Array<Object>}
  * @public
