@@ -215,12 +215,19 @@ export default class VectorsControl extends M.Control {
         layer.name !== undefined && layer.displayInLayerSwitcher === true;
     });
 
-    const layers = [];
+    let layers = [];
     filtered.forEach((layer) => {
       if (!(layer.type.toLowerCase() === 'kml' && layer.name.toLowerCase() === 'attributions')) {
         const newLayer = layer;
         const geometry = !M.utils.isNullOrEmpty(layer.geometry) ?
           layer.geometry : layer.getGeometryType();
+
+        if (geometry === null) {
+          this.impl_.waitLayerLoadedAsync(layer).then(() => {
+            this.renderLayers();
+          });
+        }
+
         if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('point') > -1) {
           newLayer.point = true;
         } else if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('polygon') > -1) {
@@ -236,6 +243,7 @@ export default class VectorsControl extends M.Control {
 
           newLayer.visible = layer.isVisible();
           layers.push(newLayer);
+          layers = this.reorderLayers(layers);
         }
       }
     });
@@ -759,7 +767,7 @@ export default class VectorsControl extends M.Control {
 
   addNewLayer(geom) {
     const layerName = `temp_${new Date().getTime()}`;
-    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
+    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: true });
     layer.geometry = geom;
     this.map.addLayers(layer);
     layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
@@ -1318,8 +1326,8 @@ export default class VectorsControl extends M.Control {
     const selector = `#m-vector-list li[name="${this.drawLayer.name}"] div.m-vector-layer-actions-container`;
     document.querySelector(selector).appendChild(this.drawingTools);
     document.querySelector('div.m-vector-layer-actions-container #drawingtools button').style.display = 'block';
-    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
-      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control-vector') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control-vector').remove();
     }
 
     this.emphasizeSelectedFeature();
@@ -1335,8 +1343,8 @@ export default class VectorsControl extends M.Control {
   onModify() {
     this.emphasizeSelectedFeature();
     this.showFeatureInfo();
-    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
-      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control-vector') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control-vector').remove();
     }
   }
 
@@ -1461,8 +1469,8 @@ export default class VectorsControl extends M.Control {
     this.isEditionActive = false;
     this.deactivateSelection();
     this.deactivateDrawing();
-    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
-      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control-vector') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control-vector').remove();
     }
 
     const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
@@ -1501,8 +1509,8 @@ export default class VectorsControl extends M.Control {
     this.isDrawingActive = false;
     this.deactivateSelection();
     this.deactivateDrawing();
-    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
-      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control-vector') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control-vector').remove();
     }
 
     const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
@@ -1794,9 +1802,16 @@ export default class VectorsControl extends M.Control {
     this.getImpl().removeEditInteraction();
   }
 
+  //  Esta función ordena todas las capas por zindex
+  reorderLayers(layers) {
+    const result = layers.sort((layer1, layer2) => layer1.getZIndex() -
+        layer2.getZIndex()).reverse();
+    return result;
+  }
+
   getProfile() {
-    if (document.querySelector('.ol-profil.ol-unselectable.ol-control') !== null) {
-      document.querySelector('.ol-profil.ol-unselectable.ol-control').remove();
+    if (document.querySelector('.ol-profil.ol-unselectable.ol-control-vector') !== null) {
+      document.querySelector('.ol-profil.ol-unselectable.ol-control-vector').remove();
     }
 
     this.getImpl().calculateProfile(this.feature);

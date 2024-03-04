@@ -1,6 +1,6 @@
 {
   "name": "StoryMap",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "keywords": [
     "map",
@@ -33,7 +33,6 @@
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
-    "file-loader": "^1.1.11",
     "handlebars": "^4.0.11",
     "html-loader": "^0.5.5",
     "mini-css-extract-plugin": "^0.4.1",

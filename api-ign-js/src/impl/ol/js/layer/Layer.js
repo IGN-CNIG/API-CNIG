@@ -24,6 +24,7 @@ class LayerBase extends MObject {
    * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Pasa los "vendorOptions" heredados a la clase
    * MObject (M/Object).
    *
@@ -87,6 +88,8 @@ class LayerBase extends MObject {
      * Layer maxZoom. Zoom máximo aplicable a la capa.
      */
     this.maxZoom = this.options.maxZoom || Number.POSITIVE_INFINITY;
+
+    this.userMaxExtent = options.maxExtent;
   }
 
   /**
@@ -334,6 +337,30 @@ class LayerBase extends MObject {
   }
 
   /**
+   * Este método establece la máxima extensión de la capa.
+   *
+   * @function
+   * @param {Mx.Extent} maxExtent Máxima extensión.
+   * @public
+   * @api
+   */
+  setMaxExtent(maxExtent) {
+    this.ol3Layer.setExtent(maxExtent);
+  }
+
+  /**
+   * Este método devuelve la máxima extensión de la capa.
+   *
+   * @function
+   * @param {Mx.Extent} maxExtent Máxima extensión.
+   * @public
+   * @api
+   */
+  getMaxExtent() {
+    this.ol3Layer.getExtent();
+  }
+
+  /**
    * Este método establece la url de la leyenda.
    *
    * @function
@@ -354,7 +381,7 @@ class LayerBase extends MObject {
    * @api stable
    */
   getNumZoomLevels() {
-    return 20; // 20 zoom levels by default
+    return this.numZoomLevels || 20; // 20 zoom levels by default
   }
 
   /**

@@ -7,6 +7,7 @@ import ControlImpl from 'impl/control/Control';
 import WMS from 'M/layer/WMS';
 import WMTS from 'M/layer/WMTS';
 import TMS from 'M/layer/TMS';
+import { getQuickLayers } from '../mapea';
 import ControlBase from './Control';
 import { compileSync as compileTemplate } from '../util/Template';
 import { LOAD, ADDED_TO_MAP } from '../event/eventtype';
@@ -60,12 +61,22 @@ class BackgroundLayers extends ControlBase {
         id: layer.id,
         title: layer.title,
         layers: layer.layers.map((subLayer) => {
-          if (/WMTS.*/.test(subLayer)) {
-            return new WMTS(subLayer);
-          } else if (/TMS.*/.test(subLayer)) {
-            return new TMS(subLayer);
+          let l = subLayer;
+          if (typeof subLayer === 'string') {
+            if (/QUICK.*/.test(subLayer)) {
+              l = getQuickLayers(subLayer.replace('QUICK*', ''));
+            }
+            if (typeof l === 'string') {
+              if (/WMTS.*/.test(l)) {
+                l = new WMTS(l);
+              } else if (/TMS.*/.test(l)) {
+                l = new TMS(l);
+              } else {
+                l = new WMS(l);
+              }
+            }
           }
-          return new WMS(subLayer);
+          return l;
         }),
       };
     });
@@ -171,9 +182,9 @@ class BackgroundLayers extends ControlBase {
     const buttons = document.querySelectorAll('.m-plugin-baselayer .m-panel-controls #div-contenedor button');
     buttons.forEach((e) => {
       // eslint-disable-next-line no-unused-expressions
-      (e.classList.contains('m-background-unique-btn'))
-        ? e.style.display = (change) ? 'block' : 'none'
-        : e.style.display = (change) ? 'none' : 'block';
+      (e.classList.contains('m-background-unique-btn')) ?
+      // eslint-disable-next-line space-infix-ops
+        e.style.display = (change) ? 'block' : 'none': e.style.display = (change) ? 'none' : 'block';
     });
   }
 

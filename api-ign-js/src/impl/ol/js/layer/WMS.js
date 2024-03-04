@@ -72,6 +72,7 @@ class WMS extends LayerBase {
    * - ratio: determina el tamaño de las solicitudes de las imágenes.1 significa que tienen el *
    * tamaño de la ventana, 2 significa que tienen el doble del tamaño de la ventana,
    * y así sucesivamente.Debe ser 1 o superior.Por defecto es 1.
+   * - crossOrigin: atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileWMS from 'ol/source/TileWMS';
@@ -206,8 +207,15 @@ class WMS extends LayerBase {
      */
     this.ratio = options.ratio || 1;
     if (options.ratio < 1) {
+      // eslint-disable-next-line no-console
       console.error('El ratio debe ser 1 o superior');
     }
+
+    /**
+     * CrossOrigin. Atributo crossOrigin para las imágenes cargadas.
+     */
+
+    this.crossOrigin = (options.crossOrigin === null || options.crossOrigin === false) ? undefined : 'anonymous';
   }
 
   /**
@@ -219,28 +227,26 @@ class WMS extends LayerBase {
    */
   setVisible(visibility) {
     this.visibility = visibility;
-    if (this.inRange() === true) {
-      // if this layer is base then it hides all base layers
-      if ((visibility === true) && (this.transparent !== true)) {
-        // hides all base layers
-        this.map.getBaseLayers()
-          .filter(layer => !layer.equals(this) && layer.isVisible())
-          .forEach(layer => layer.setVisible(false));
+    // if this layer is base then it hides all base layers
+    if ((visibility === true) && (this.transparent !== true)) {
+      // hides all base layers
+      this.map.getBaseLayers()
+        .filter(layer => !layer.equals(this.facadeLayer_) && layer.isVisible())
+        .forEach(layer => layer.setVisible(false));
 
-        // set this layer visible
-        if (!isNullOrEmpty(this.ol3Layer)) {
-          this.ol3Layer.setVisible(visibility);
-        }
-
-        // updates resolutions and keep the zoom
-        const oldZoom = this.map.getZoom();
-        this.map.getImpl().updateResolutionsFromBaseLayer();
-        if (!isNullOrEmpty(oldZoom)) {
-          this.map.setZoom(oldZoom);
-        }
-      } else if (!isNullOrEmpty(this.ol3Layer)) {
+      // set this layer visible
+      if (!isNullOrEmpty(this.ol3Layer)) {
         this.ol3Layer.setVisible(visibility);
       }
+
+      // updates resolutions and keep the zoom
+      const oldZoom = this.map.getZoom();
+      this.map.getImpl().updateResolutionsFromBaseLayer();
+      if (!isNullOrEmpty(oldZoom)) {
+        this.map.setZoom(oldZoom);
+      }
+    } else if (!isNullOrEmpty(this.ol3Layer)) {
+      this.ol3Layer.setVisible(visibility);
     }
   }
 
@@ -332,7 +338,7 @@ class WMS extends LayerBase {
    */
   addSingleLayer_(capabilities) {
     const selff = this;
-    let extent;
+    let extent = this.facadeLayer_.userMaxExtent;
 
     if (capabilities) {
       const capabilitiesLayer = capabilities.capabilities.Capability.Layer.Layer;
@@ -342,7 +348,10 @@ class WMS extends LayerBase {
       }
       this.addCapabilitiesMetadata(capabilitiesLayer);
 
-      extent = this.facadeLayer_.calculateMaxExtentWithCapabilities(capabilities);
+      if (isNullOrEmpty(extent)) {
+        extent = this.facadeLayer_.calculateMaxExtentWithCapabilities(capabilities);
+        this.facadeLayer_.maxExtent_ = extent;
+      }
     }
 
     const minResolution = this.options.minResolution;
@@ -504,6 +513,7 @@ class WMS extends LayerBase {
           new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) }) :
           false;
         olSource = new TileWMS({
+          crossOrigin: this.crossOrigin, // crossOrigin inicial
           url: this.url,
           params: layerParams,
           tileGrid,
@@ -515,6 +525,7 @@ class WMS extends LayerBase {
         });
       } else {
         olSource = new ImageWMS({
+          crossOrigin: this.crossOrigin, // crossOrigin inicial
           url: this.url,
           params: layerParams,
           // resolutions,
@@ -539,12 +550,21 @@ class WMS extends LayerBase {
    */
   addAllLayers_() {
     this.getCapabilities().then((getCapabilities) => {
+      if (this.useCapabilities) {
+        const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
+          return cap.url === this.url;
+        }) || { capabilities: false };
+
+        capabilitiesInfo.capabilites = getCapabilities;
+      }
+
       getCapabilities.getLayers().forEach((layer) => {
         const wmsLayer = new FacadeWMS({
           url: this.url,
           name: layer.name,
           version: layer.version,
           tiled: this.tiled,
+          useCapabilities: this.useCapabilities,
         }, this.vendorOptions_);
         this.layers.push(wmsLayer);
       });
@@ -703,7 +723,7 @@ class WMS extends LayerBase {
   getCapabilities() {
     const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
       return cap.url === this.url;
-    });
+    }) || { capabilities: false };
 
     if (capabilitiesInfo.capabilities) {
       this.getCapabilitiesPromise = capabilitiesInfo.capabilities;
@@ -781,7 +801,8 @@ class WMS extends LayerBase {
    */
   getExtentFromCapabilities(capabilities) {
     const name = this.facadeLayer_.name;
-    return capabilities.getLayerExtent(name);
+    const extent = capabilities.getLayerExtent(name) ? capabilities.getLayerExtent(name) : [];
+    return extent;
   }
 
   /**

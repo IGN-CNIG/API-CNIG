@@ -25,6 +25,11 @@ import esCalendar from '../../../plugins/calendar/src/facade/js/i18n/es';
 import enCalendar from '../../../plugins/calendar/src/facade/js/i18n/en';
 
 
+// Comparators
+import esComparators from '../../../plugins/comparators/src/facade/js/i18n/es';
+import enComparators from '../../../plugins/comparators/src/facade/js/i18n/en';
+
+
 // Comparepanel
 import esComparepanel from '../../../plugins/comparepanel/src/facade/js/i18n/es';
 import enComparepanel from '../../../plugins/comparepanel/src/facade/js/i18n/en';
@@ -88,6 +93,10 @@ import enInformation from '../../../plugins/information/src/facade/js/i18n/en';
 // Lyrcompare
 import esLyrcompare from '../../../plugins/lyrcompare/src/facade/js/i18n/es';
 import enLyrcompare from '../../../plugins/lyrcompare/src/facade/js/i18n/en';
+
+// Layerswitcher
+import esLayerswitcher from '../../../plugins/layerswitcher/src/facade/js/i18n/es';
+import enLayerswitcher from '../../../plugins/layerswitcher/src/facade/js/i18n/en';
 
 // Measurebar
 import esMeasurebar from '../../../plugins/measurebar/src/facade/js/i18n/es';
@@ -193,6 +202,10 @@ import enViewmanagement from '../../../plugins/viewmanagement/src/facade/js/i18n
 import esLocator from '../../../plugins/locator/src/facade/js/i18n/es';
 import enLocator from '../../../plugins/locator/src/facade/js/i18n/en';
 
+// Locatorscn
+import esLocatorscn from '../../../plugins/locatorscn/src/facade/js/i18n/es';
+import enLocatorscn from '../../../plugins/locatorscn/src/facade/js/i18n/en';
+
 /**
  * Este objeto devuelve un objeto JSON dinámico que contiene
  * los plugins disponibles que soportan traducciones.
@@ -221,6 +234,10 @@ const pluginsLanguage = {
   calendar: {
     esCalendar,
     enCalendar,
+  },
+  comparators: {
+    esComparators,
+    enComparators,
   },
   comparepanel: {
     esComparepanel,
@@ -277,6 +294,10 @@ const pluginsLanguage = {
   lyrcompare: {
     esLyrcompare,
     enLyrcompare,
+  },
+  layerswitcher: {
+    esLayerswitcher,
+    enLayerswitcher,
   },
   measurebar: {
     esMeasurebar,
@@ -383,6 +404,10 @@ const pluginsLanguage = {
   locator: {
     esLocator,
     enLocator,
+  },
+  locatorscn: {
+    esLocatorscn,
+    enLocatorscn,
   },
 };
 

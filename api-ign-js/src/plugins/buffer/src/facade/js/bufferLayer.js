@@ -18,7 +18,7 @@ export default class BufferLayer extends M.Layer {
   constructor(layer) {
     const impl = new BufferLayerImpl(layer);
 
-    super({}, impl);
+    super({ type: M.layer.type.GeoJSON }, impl);
 
     // checks if the implementation can create KML layers
     if (M.utils.isUndefined(BufferLayerImpl)) {
@@ -26,8 +26,6 @@ export default class BufferLayer extends M.Layer {
     }
 
     this.layer = layer;
-
-    this.type = M.layer.type.GeoJSON;
   }
 
   /**

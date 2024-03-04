@@ -155,27 +155,28 @@ public class EmailWS {
 		   JSONArray jsonArray = body.getJSONArray("features");
 		   JSONObject jsonFeature = jsonArray.getJSONObject(0);
 		   JSONObject properties = jsonFeature.getJSONObject("properties");
-		   String shareURL = properties.getString("URL") + properties.getString("paramsURL");
-			 String localURL = properties.getString("localURL");
-			 if(!localURL.equals("")){
-				 localURL = localURL + properties.getString("paramsURL");
-			 }
+		   String shareURL = properties.getString("URL");
+		   String apiURL = properties.getString("API_URL");
 		   Map<String, Object> data = new HashMap<String, Object>();
 		   data.put("subject", asunto);
 		   data.put("destinatary", destinatario);
 		   data.put("sendername", properties.getString("emailName"));
 		   data.put("senderemail", properties.getString("emailUser"));
 		   data.put("errDescription", properties.getString("errDescripcion"));
+		   data.put("apiURL", apiURL);
+		   if(properties.getString("URL").equals("")) {
+			data.put("shareURL", "");
+			data.put("contentURL", "");
+		   } else {
+			data.put("shareURL", shareURL);
+			data.put("contentURL", "URL Visualizador: ");
+		   }
 		   //data.put("sendergeometry", cuerpo);
-		   data.put("shareURL", shareURL);
-			 data.put("localURL", localURL);
 		   String bodyData = getTemplate(data);
 		   BodyPart adjunto = new MimeBodyPart();
 		   properties.remove("URL");
-			 properties.remove("localURL");
-		   properties.remove("paramsURL");
-		   properties.put("url", shareURL);
-			 properties.put("url", localURL);
+		   properties.remove("API_URL");
+		   properties.put("url", shareURL); // ?¿
 		   jsonFeature.put("properties", properties);
 		   jsonArray.put(0, jsonFeature);
 		   body.put("features", jsonArray);

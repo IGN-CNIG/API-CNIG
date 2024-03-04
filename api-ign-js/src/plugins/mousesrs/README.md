@@ -20,6 +20,15 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
  <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/mousesrs/mousesrs.ol.min.js"></script>
 ```
 
+# Uso del histórico de versiones
+
+Existe un histórico de versiones de todos los plugins de API-CNIG en [api-ign-legacy](https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-legacy/plugins) para hacer uso de versiones anteriores.
+Ejemplo:
+```html
+ <link href="https://componentes.cnig.es/api-core/plugins/mousesrs/mousesrs-1.0.0.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/mousesrs/mousesrs-1.0.0.ol.min.js"></script>
+```
+
 
 # Parámetros
 
@@ -29,15 +38,17 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **srs**. Código EPSG del SRS sobre el que se mostrarán las coordenadas del ratón. Por defecto: EPSG:4326
 - **label**. Nombre del SRS sobre el que se mostrarán las coordenadas del ratón. Por defecto: WGS84
 - **precision**. Precisión de las coordenadas. Por defecto: 4
+- **epsgFormat**. Indica si el EPSG aparezca formateado, por ejemplo si el valor del label es "EPSG:4326" el formato será "WGS 84 EPSG:4326 - LONGITUD, LATITUD ". Por defecto, false.
 - **geoDecimalDigits**. Cifras decimales para proyecciones geográficas.
 - **utmDecimalDigits**. Cifras decimales para proyecciones UTM.
 - **activeZ**. Activar visualización valor z. Por defecto: false
 - **helpUrl**. URL a la ayuda para el icono.
+- **draggableDialog**. Permite mover el dialog por la pantalla. Por defecto: true.
 
 # API-REST
 
 ```javascript
-URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*activeZ*helpUrl
+URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*activeZ*helpUrl*draggableDialog*epsgFormat
 ```
 
 <table>
@@ -86,13 +97,18 @@ URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*a
     <td>URL del icono para la ayuda</td>
     <td>Base64 ✔️  | Separador ✔️ </td>
   </tr>
+  <tr>
+    <td>epsgFormat</td>
+    <td>Formatear EPSG</td>
+    <td>Base64 ✔️  | Separador ✔️ </td>
+  </tr>
 </table>
 
 
 ### Ejemplo de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*4
+https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*4*true
 ```
 
 ### Ejemplo de uso API-REST en base64
@@ -126,6 +142,7 @@ const mp = new M.plugin.MouseSRS({
   srs: 'EPSG:4326',
   label: 'WGS84',
   precision: 4,
+  epsgFormat: true,
 });
 ```
 

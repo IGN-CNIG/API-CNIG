@@ -39,6 +39,9 @@ class KML extends Vector {
    * - opacity. Opacidad de capa, por defecto 1.
    * - scaleLabel. Escala de la etiqueta.
    * - layers. Permite filtrar el fichero KML por nombre de carpetas.
+   * - removeFolderChildren: Permite no mostrar las
+   * carpetas descendientes de las carpetas filtradas. Por defecto: true.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -82,6 +85,11 @@ class KML extends Vector {
     this.label_ = options.label;
 
     /**
+     * KML extractStyles_. Extraer estilos del KML. Por defecto es verdadero.
+     */
+    this.extractStyles_ = options.extractStyles;
+
+    /**
      * KML Visibility. Define si la capa es visible o no. Verdadero por defecto.
      */
     this.visibility = options.visibility == null ? true : options.visibility;
@@ -95,6 +103,12 @@ class KML extends Vector {
      * KML layers. Permite filtrar el fichero KML por nombre de carpetas.
      */
     this.layers = options.layers;
+
+    /**
+     * KML removeFolderChildren. Permite no mostrar las
+     * carpetas descendientes de las carpetas filtradas.
+     */
+    this.removeFolderChildren = options.removeFolderChildren;
   }
 
   /**
@@ -137,9 +151,13 @@ class KML extends Vector {
     map.on(EventType.CHANGE_PROJ, this.setProjection_.bind(this), this);
     this.formater_ = new FormatKML({
       label: this.label_,
+      extractStyles: this.extractStyles_,
     });
     this.loader_ = new LoaderKML(this.map, this.url, this.formater_);
-    this.ol3Layer = new OLLayerVector(extend({}, this.vendorOptions_, true));
+    this.ol3Layer = new OLLayerVector(extend({
+      extent: this.maxExtent_,
+      opacity: this.opacity_,
+    }, this.vendorOptions_, true));
     this.updateSource_();
     // sets its visibility if it is in range
     // if (this.options.visibility !== false) {
@@ -150,6 +168,8 @@ class KML extends Vector {
       this.setZIndex(this.zIndex_);
     }
     const olMap = this.map.getMapImpl();
+    this.ol3Layer.setMaxZoom(this.maxZoom);
+    this.ol3Layer.setMinZoom(this.minZoom);
     olMap.addLayer(this.ol3Layer);
   }
 
@@ -227,6 +247,7 @@ class KML extends Vector {
             this.facadeVector_.clear();
             this.facadeVector_.addFeatures(response.features);
             this.fire(EventType.LOAD, [response.features]);
+            this.loaded_ = true;
             if (!isNullOrEmpty(screenOverlay)) {
               const screenOverLayImg = ImplUtils.addOverlayImage(screenOverlay, this.map);
               this.setScreenOverlayImg(screenOverLayImg);
@@ -290,23 +311,6 @@ class KML extends Vector {
 
   /**
    * Este método devuelve la extensión de todos los objetos geográficos, se le puede
-   * pasar un filtro.
-   *
-   * @function
-   * @param {boolean} skipFilter Indica si se utilizará el filtro de tipo "skip".
-   * @param {M.Filter} filter Filtro que se ejecutará.
-   * @return {Array<number>} Extensión de los objetos geográficos.
-   * @api stable
-   */
-  getFeaturesExtent(skipFilter, filter) {
-    const codeProj = this.map.getProjection().code;
-    const features = this.getFeatures(skipFilter, filter);
-    const extent = ImplUtils.getFeaturesExtent(features, codeProj);
-    return extent;
-  }
-
-  /**
-   * Este método devuelve la extensión de todos los objetos geográficos, se le puede
    * pasar un filtro. Este método es asincrono.
    *
    * @function
@@ -346,7 +350,10 @@ class KML extends Vector {
       this.loadFeaturesPromise_ = new Promise((resolve) => {
         this.loader_.getLoaderFn((features) => {
           resolve(features);
-        })(null, null, getProj(this.map.getProjection().code), this.scaleLabel, this.layers);
+        })(
+          null, null, getProj(this.map.getProjection().code),
+          this.scaleLabel, this.layers, this.removeFolderChildren,
+        );
       });
     }
     return this.loadFeaturesPromise_;

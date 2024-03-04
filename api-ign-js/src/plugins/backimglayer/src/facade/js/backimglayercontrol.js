@@ -25,10 +25,19 @@ export default class BackImgLayerControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(
-    map, layerOpts, idLayer, visible, ids, titles, previews, layers,
-    numColumns, empty, order,
-  ) {
+  constructor({
+    map,
+    visible,
+    layerOpts,
+    layerId: idLayer,
+    ids,
+    titles,
+    previews,
+    layers,
+    numColumns,
+    empty,
+    order,
+  }) {
     const impl = new M.impl.Control();
     let numColumnsV;
     super(impl, 'BackImgLayer');
@@ -72,7 +81,19 @@ export default class BackImgLayerControl extends M.Control {
         let backgroundLayers = baseLayer.split('sumar');
 
         backgroundLayers = backgroundLayers.map((urlLayer) => {
-          const mapeaLayer = new M.layer.WMTS(urlLayer);
+          let aux = null;
+          if (/QUICK.*/.test(urlLayer)) {
+            aux = M.getQuickLayers(urlLayer.replace('QUICK*', ''));
+          }
+          let mapeaLayer;
+          if (!M.utils.isNullOrEmpty(aux)) {
+            mapeaLayer = aux;
+            if (typeof mapeaLayer === 'string') {
+              mapeaLayer = new M.layer.WMTS(mapeaLayer);
+            }
+          } else {
+            mapeaLayer = new M.layer.WMTS(urlLayer);
+          }
           return mapeaLayer;
         });
 
@@ -138,6 +159,7 @@ export default class BackImgLayerControl extends M.Control {
             },
           }, this.layers[this.activeLayer], this.activeLayer);
         }
+
         if (visible === false) {
           this.map.removeLayers(this.map.getBaseLayers());
           this.html.querySelector('.activeBackimglayerDiv').classList.remove('activeBackimglayerDiv');

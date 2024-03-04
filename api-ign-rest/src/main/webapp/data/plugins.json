@@ -8,7 +8,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/attributions",
     "image": "img/api-logo.png",
     "description": "Plugin que permite mostrar información de atribuciones sobre las capas que se visualizan en el mapa.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "backimglayer",
@@ -41,7 +41,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/comparepanel",
     "image": "img/api-logo.png",
     "description": "Plugin con todos los comparadores",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "contactlink",
@@ -63,7 +63,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/fulltoc",
     "image": "img/api-logo.png",
     "description": "Permite gestionar y cargar wms y wmts y configurar opacidad, estilos, visibilidad y consulta de metadatos, además de facilitar la carga de servicios preconfigurados.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "geometrydraw",
@@ -85,7 +85,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/georefimage",
     "image": "img/api-logo.png",
     "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "georefimage2",
@@ -96,7 +96,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/georefimage2",
     "image": "img/api-logo.png",
     "description": "Plugin que permite la descarga de la imagen georeferenciada que se muestra en pantalla, de los servicios Ráster y de PNOA de forma directa.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "ignsearchlocator",
@@ -143,6 +143,17 @@
     "obsolete": false
   },
   {
+    "name": "layerswitcher",
+    "plugin": "[layerswitcher]",
+    "version": "v1.0",
+    "url_es": "layerswitcher.jsp?language=es",
+    "url_en": "layerswitcher.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/layerswitcher",
+    "image": "img/api-logo.png",
+    "description": "Permite gestionar y cargar servicios, configurar opacidad, estilos, visibilidad y consulta de metadatos, además de facilitar la carga de servicios preconfigurados.",
+    "obsolete": false
+  },
+    {
     "name": "incicarto",
     "plugin": "[incicarto]",
     "version": "v1.0",
@@ -165,6 +176,17 @@
     "obsolete": false
   },
   {
+    "name": "locatorscn",
+    "plugin": "[locatorscn]",
+    "version": "v1.0",
+    "url_es": "locatorscn.jsp?language=es",
+    "url_en": "locatorscn.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/locatorscn",
+    "image": "img/api-logo.png",
+    "description": "Plugin que ofrece diferentes herramientas de localización.",
+    "obsolete": false
+  },
+  {
     "name": "lyrcompare",
     "plugin": "[lyrcompare]",
     "version": "v1.0",
@@ -173,6 +195,17 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/lyrcompare",
     "image": "img/api-logo.png",
     "description": "Plugin que permite comparar varias capas sobre una cartografía base.",
+    "obsolete": true
+  },
+  {
+    "name": "comparators",
+    "plugin": "[comparators]",
+    "version": "v1.0",
+    "url_es": "comparators.jsp?language=es",
+    "url_en": "comparators.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/comparators",
+    "image": "img/api-logo.png",
+    "description": "Herramienta de comparación.",
     "obsolete": false
   },
   {
@@ -195,7 +228,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/mirrorpanel",
     "image": "img/api-logo.png",
     "description": "Plugin que permite comparar varias capas dividiendo la pantalla en varias partes.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "mousesrs",
@@ -206,6 +239,17 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/mousesrs",
     "image": "img/api-logo.png",
     "description": "Muestra las coordenadas de ratón.",
+    "obsolete": false
+  },
+  {
+    "name": "modal",
+    "plugin": "[modal]",
+    "version": "v1.0",
+    "url_es": "modal.jsp?language=es",
+    "url_en": "modal.jsp?language=en",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/modal",
+    "image": "img/api-logo.png",
+    "description": "Muestra un modal con un contenido html.",
     "obsolete": false
   },
   {
@@ -228,7 +272,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/popup",
     "image": "img/api-logo.png",
     "description": "Muestra un popup con un contenido html.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "predefinedzoom",
@@ -250,7 +294,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/printermap",
     "image": "img/api-logo.png",
     "description": "Plugin de impresión a través del servicio Geoprint.",
-    "obsolete": false
+    "obsolete": true
   },
   {
   "name": "queryattributes",
@@ -327,7 +371,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/toc",
     "image": "img/api-logo.png",
     "description": "Muestra un árbol de contenidos con las capas disponibles para mostrar.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "topographicprofile",
@@ -360,7 +404,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/transparency",
     "image": "img/api-logo.png",
     "description": "Herramienta de comparación de tipo lupa.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "vectors",

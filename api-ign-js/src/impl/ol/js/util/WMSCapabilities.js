@@ -200,7 +200,6 @@ class GetCapabilities {
         }
         /* eslint-disable no-empty */
       } catch (err) {}
-
       layers.push(new WMS({
         url: this.serviceUrl_,
         name: layer.Name,

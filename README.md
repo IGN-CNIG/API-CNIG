@@ -15,20 +15,13 @@ La arquitectura de API CNIG está compuesta por los siguientes componentes:
 - [api-ign-parent](/api-ign-parent) Módulo padre que hace uso de maven para compilar y generar el war final de api-core.
 - [api-ign-proxy](/api-ign-proxy) Proxy para realizar peticiones POST por si el [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) no está habilitado.
 - [api-ign-rest](/api-ign-rest) Servicio Web con API RESTful que genera el código JS necesario para generar un visor con la configuración especificada por parámetros.
+- [api-ign-database](/api-ign-database) Módulo de conexión a la base de datos (PostgreSQL). Realizando diferentes peticiones GET se puede obtener diferentes servicios.
 
 ## Plugins
 
 El API CNIG se puede extender en base al desarrollo de plugins.
 
-Por defecto vienen incorporados los siguientes plugins:
-
-- [attributions](/api-ign-js/src/plugins/attributions/README.md) Plugin para establecer atribuciones al mapa (archivo preconfigurado) y a la capas (vía servicios).
-- [ignsearch](/api-ign-js/src/plugins/ignsearch/README.md) Plugin de búsqueda sobre servicio de búsquedas del IGN, permitiendo búsquedas de calles, topónimos y referencias catastrales. Permite incorporar opción de geocodificación inversa.
-- [mousesrs](/api-ign-js/src/plugins/mousesrs/README.md) Plugin que permite mostrar información sobre coordenadas y sistema de referencia.
-- [sharemap](/api-ign-js/src/plugins/sharemap/README.md) Plugin que permite compartir la visión actual del mapa.
-- [toc](/api-ign-js/src/plugins/toc/README.md) Plugin que muestra un TOC sencillo con las capas del mapa (WMS,WMTS) que no están como capas base.
-- [xylcocator](/api-ign-js/src/plugins/xylocator/README.md) Plugin que permite centrar el mapa en unas coodenadas dadas en un sistema de referencia determinado.
-- [zoomextent](/api-ign-js/src/plugins/zoomextent/README.md) Plugin que permite realizar un zoom con recuadro sobre el mapa.
+Podemos consultar el listado de plugins que por defecto vienen incorporados [aquí](https://github.com/IGN-CNIG/API-CNIG/wiki/2.3.-Plugins).
 
 
 ## Navegadores soportados

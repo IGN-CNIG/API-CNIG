@@ -258,9 +258,9 @@
                         padding-left: 30px !important;
                         ">
 
-                            <p>URL API-REST</p>
-                            <p><a href="${shareURL}" target="_blank" rel="noopener noreferrer">${shareURL}</a></p>
-                            <p><a href="${localURL}" target="_blank" rel="noopener noreferrer">${localURL}</a></p>
+                            <p>URLs</p>
+                            <p>${contentURL} <a href="${shareURL}" target="_blank" rel="noopener noreferrer">${shareURL}</a></p>
+                            <p>URL API-REST: <a href="${apiURL}" target="_blank" rel="noopener noreferrer">${apiURL}</a></p>
                         </td>
                     </tr>
 

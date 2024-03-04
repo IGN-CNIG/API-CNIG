@@ -12,6 +12,7 @@ module.exports = {
   mode: 'production',
   entry: {
     'georefimage.ol.min': path.resolve(__dirname, '..', 'src', 'index.js'),
+    [`georefimage-${pjson.version}.ol.min`]: path.resolve(__dirname, '..', 'src', 'index.js'),
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist'),

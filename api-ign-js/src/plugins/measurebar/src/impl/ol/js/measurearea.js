@@ -29,6 +29,14 @@ export default class MeasureArea extends MeasureImpl {
      * @type {string}
      */
     this.helpMsgContinue_ = HELP_KEEP_MESSAGE;
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape') {
+        const elem = document.querySelector('.m-panel.m-panel-measurebar.opened');
+        if (elem !== null) {
+          elem.querySelector('button.m-panel-btn').click();
+        }
+      }
+    });
   }
 
   /**

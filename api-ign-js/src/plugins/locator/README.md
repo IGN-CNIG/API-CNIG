@@ -8,7 +8,6 @@
 Plugin que permite utilizar diferentes herramientas para la localización:
 - Servicio REST geocoder-directo: permite la búsqueda de direcciones postales, topónimos, puntos de interés, entidades de población, unidades administrativas, referencias catastrales (servicio SOAP de la Dirección General de Catastro) y solamente para su visualización los códigos postales.
 - Servicio REST geocoder-inverso: Obtener dirección en un punto del mapa.
-- El servicio Comunication Pool Servlet: permite buscar topónimos de orografía del Nomenclátor Geográfico Básico de España.
 - Localizar coordenadas en varios SRS.
 - Buscar por polígono y parcela.
 - Buscar por catastro.
@@ -27,6 +26,15 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 ```html
  <link href="https://componentes.cnig.es/api-core/plugins/locator/locator.ol.min.css" rel="stylesheet" />
  <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/locator/locator.ol.min.js"></script>
+```
+
+# Uso del histórico de versiones
+
+Existe un histórico de versiones de todos los plugins de API-CNIG en [api-ign-legacy](https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-legacy/plugins) para hacer uso de versiones anteriores.
+Ejemplo:
+```html
+ <link href="https://componentes.cnig.es/api-core/plugins/locator/locator-1.0.0.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/locator/locator-1.0.0.ol.min.js"></script>
 ```
 
 # Parámetros
@@ -94,30 +102,19 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   ```
   (Válido sólo para la creación del plugin por JS y API-REST en base64).
 - **byPlaceAddressPostal**: Indica si el control IGNSearchLocator se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
-  - **servicesToSearch**: Servicio que se consulta: 
-    - 'g': Consulta Geocoder (por defecto).
-    - 'n': Consulta Comunication Pool Servlet.
-    - 'gn': Consulta Geocoder y Comunication Pool Servlet.
-  - **maxResults**: Número de resultados en la consulta. Por defecto: 10 (para cada servicio).
-  - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Admite combinación de 'municipio,poblacion,toponimo,callejero,carretera,portal,provincia'.
+  - **maxResults**: Número de resultados en la consulta. Por defecto: 20 (para cada servicio).
+  - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Admite combinación de 'municipio, poblacion, toponimo, callejero, carretera, portal, provincia, ngbe, expendeduria, comunidad autónoma'. Por defecto: ''.
   - **countryCode**: Código por defecto del país en la petición a geocoder. Por defecto: 'es'. 
   - **reverse**: Valor booleano que indica si la funcionalidad obtener dirección en un punto del mapa está activada (true/false). Por defecto: true.
   - **resultVisibility**: Indica si se muestra o no la geometría del elemento localizado (true/false). Por defecto: true.
   - **urlCandidates**: Url del servicio candidates de geocoder. Por defecto: 'http://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp'.
   - **urlFind**: Url del servicio find de geocoder. Por defecto: 'http://www.cartociudad.es/geocoder/api/geocoder/findJsonp'.
   - **urlReverse**: Url del servicio geocoding inverso. Por defecto: 'http://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode'.
-  - **urlPrefix**: Prefijo del servicio Comunication Pool Servlet. Por defecto: 'http://www.idee.es/'.
-  - **urlAssistant**: Url del servicio SearchAssitant de Nomenclátor. Por defecto: 'https://www.idee.es/communicationsPoolServlet/SearchAssistant'.
-  - **urlDispatcher**: Url del servicio Dispatcher de Nomenclátor. Por defecto: 'https://www.idee.es/communicationsPoolServlet/Dispatcher'.
-  - **searchPosition**: Orden de resultados de las dos búsquedas. Por defecto: 'geocoder,nomenclator'.
-  - **locationID**: Búsqueda inicial en el servicio nomenclátor por ID, muestra el resultado y se realiza un zoom a la posición. Por defecto: ''.
   - **geocoderCoords**: Búsqueda inicial por longitud, latitud, mediante el uso del Servicio REST geocoder-inverso. Se sitúa en la posición indicada al iniciar la extensión. Por defecto: [].
   - **requestStreet**: URL del findJSON de un resultado de búsqueda, para que aparezca cargado al inicio. Por defecto: ''.
-  - **nomenclatorSearchType**: se muestra la lista de elementos que aporta el servicio Comunication Pool Servlet (CPS). Los elementos comentados, son aquellos que son aportados por el propio servicio REST geocoder. Si se quiere hacer uso solo del CPS se pueden descomentar, o comentar los que se quieran filtrar.
   
   ```javascript
   byPlaceAddressPostal: {
-    servicesToSearch: 'gn',
     maxResults: 10,
     noProcess: 'municipio, poblacion',
     countryCode: 'es',
@@ -126,11 +123,6 @@ El constructor se inicializa con un JSON con los siguientes atributos:
     urlCandidates: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/candidatesJsonp',
     urlFind: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/findJsonp',
     urlReverse: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/geocoder/api/geocoder/reverseGeocode',
-    urlPrefix: 'http://www.idee.es/',
-    urlAssistant: 'https://www.idee.es/communicationsPoolServlet/SearchAssistant',
-    urlDispatcher: 'https://www.idee.es/communicationsPoolServlet/Dispatcher',
-    searchPosition: 'geocoder,nomenclator',
-    locationID: 'ES.IGN.NGBE.2805347',
     requestStreet: 'https://www.cartociudad.es/geocoder/api/geocoder/findJsonp?q=Sevilla&type=provincia&tip_via=null&id=41&portal=null&extension=null',
     geocoderCoords: [-5.741757, 41.512058]
   }
@@ -281,71 +273,10 @@ const mp = new M.plugin.Locator({
   byParcelCadastre: false,
   byCoordinates: true,
   byPlaceAddressPostal: {
-    servicesToSearch: 'g',
     maxResults: 5,
     noProcess: 'municipio, poblacion',
     reverse: false,
-    searchPosition: 'geocoder,nomenclator',
     geocoderCoords: [-5.741757, 41.512058],
-    nomenclatorSearchType: [
-     'Estado',
-     //'Comunidad autónoma',
-     //'Ciudad con estatuto de autonomía',
-     //'Provincia',
-     //'Municipio',
-     //'EATIM',
-     'Isla administrativa',
-     'Comarca administrativa',
-     'Jurisdicción',
-     //'Capital de Estado',
-     //'Capital de comunidad autónoma y ciudad con estatuto de autonomía',
-     //'Capital de provincia',
-     //'Capital de municipio',
-     //'Capital de EATIM',
-     //'Entidad colectiva',
-     //'Entidad menor de población',
-     //'Distrito municipal',
-     //'Barrio',
-     //'Entidad singular',
-     //'Construcción/instalación abierta',
-     //'Edificación',
-     'Vértice Geodésico',
-     //'Hitos de demarcación territorial',
-     //'Hitos en vías de comunicación',
-     'Alineación montañosa',
-     'Montaña',
-     'Paso de montaña',
-     'Llanura',
-     'Depresión',
-     'Vertientes',
-     'Comarca geográfica',
-     'Paraje',
-     'Elemento puntual del paisaje',
-     'Saliente costero',
-     'Playa',
-     'Isla',
-     'Otro relieve costero',
-      //'Parque Nacional y Natural',
-     //'Espacio protegido restante',
-     //'Aeropuerto',
-     //'Aeródromo',
-     //'Pista de aviación y helipuerto',
-     //'Puerto de Estado',
-     //'Instalación portuaria',
-     //'Carretera',
-     //'Camino y vía pecuaria',
-     //'Vía urbana',
-     //'Ferrocarril',
-     'Curso natural de agua',
-     'Masa de agua',
-     'Curso artificial de agua',
-     //'Embalse',
-     'Hidrónimo puntual',
-     'Glaciares',
-     'Mar',
-     'Entrante costero y estrecho marítimo',
-     'Relieve submarino',
-  ]
   },
   isDraggable: false,
 });

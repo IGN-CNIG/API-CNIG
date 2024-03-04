@@ -225,7 +225,8 @@ class MBTilesVector extends Vector {
                   }
                 }
               });
-
+              this.ol3Layer.setMaxZoom(this.maxZoom);
+              this.ol3Layer.setMinZoom(this.minZoom);
               this.map.getMapImpl().addLayer(this.ol3Layer);
             });
           });
@@ -254,7 +255,8 @@ class MBTilesVector extends Vector {
           }
         }
       });
-
+      this.ol3Layer.setMaxZoom(this.maxZoom);
+      this.ol3Layer.setMinZoom(this.minZoom);
       this.map.getMapImpl().addLayer(this.ol3Layer);
     }
   }
@@ -444,18 +446,6 @@ class MBTilesVector extends Vector {
    */
   setFacadeObj(obj) {
     this.facadeLayer_ = obj;
-  }
-
-  /**
-   * Este método establece la máxima extensión de la capa.
-   *
-   * @function
-   * @param {Mx.Extent} maxExtent Máxima extensión.
-   * @public
-   * @api
-   */
-  setMaxExtent(maxExtent) {
-    this.ol3Layer.setExtent(maxExtent);
   }
 
   /**

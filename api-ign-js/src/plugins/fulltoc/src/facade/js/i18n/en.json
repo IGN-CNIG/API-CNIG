@@ -11,7 +11,8 @@
     "select_layer": "You must select at least one layer",
     "no_results": "No layers found in this service",
     "codsi": "An error occurred while consulting the CODSI catalog",
-    "codsi_no_results": "There are no results for your search"
+    "codsi_no_results": "There are no results for your search",
+    "fulltoc_obsolete": "Message to the developer: M.plugin.FullTOC has been deprecated, please use M.plugin.Layerswitcher instead"
   },
   "tooltip": "Layers",
   "info": "Information",

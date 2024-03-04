@@ -32,6 +32,7 @@ class OSM extends Layer {
    * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import SourceOSM from 'ol/source/OSM';
@@ -94,7 +95,7 @@ class OSM extends Layer {
     this.visibility = visibility;
     if (this.inRange() === true) {
       // if this layer is base then it hides all base layers
-      if ((visibility === true) && (this.transparent !== true)) {
+      if ((visibility === true) && (this.transparent === false)) {
         // hides all base layers
         this.map.getBaseLayers().forEach((layer) => {
           if (!layer.equals(this) && layer.isVisible()) {
@@ -131,8 +132,12 @@ class OSM extends Layer {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
-    this.ol3Layer = new OLLayerTile(extend({}, this.vendorOptions_, true));
+    this.ol3Layer =
+        new OLLayerTile(extend({ visible: this.visibility }, this.vendorOptions_, true));
     this.updateSource_();
+    if (this.opacity_) {
+      this.setOpacity(this.opacity_);
+    }
     this.map.getMapImpl().addLayer(this.ol3Layer);
 
     this.map.getImpl().getMapImpl().getControls().getArray()
@@ -141,7 +146,7 @@ class OSM extends Layer {
           this.hasAttributtion = true;
         }
       }, this);
-    if (!this.hasAttributtion) {
+    if (!this.hasAttributtion && !this.facadeLayer_.attribution) {
       this.map.getMapImpl().addControl(new OLControlAttribution({
         className: 'ol-attribution ol-unselectable ol-control ol-collapsed m-attribution',
         collapsible: true,
@@ -167,6 +172,10 @@ class OSM extends Layer {
     if (this.resolutions_ !== null) {
       this.setResolutions(this.resolutions_);
     }
+
+    this.ol3Layer.setMaxZoom(this.maxZoom);
+    this.ol3Layer.setMinZoom(this.minZoom);
+
     // activates animation for base layers or animated parameters
     const animated = ((this.transparent === false) || (this.options.animated === true));
     this.ol3Layer.set('animated', animated);
@@ -207,7 +216,9 @@ class OSM extends Layer {
     }
     if (!isNullOrEmpty(this.ol3Layer) && isNullOrEmpty(this.vendorOptions_.source)) {
       const extent = this.facadeLayer_.getMaxExtent();
-      const newSource = new SourceOSM({});
+      const newSource = new SourceOSM({
+        url: this.url,
+      });
       this.ol3Layer.setSource(newSource);
       this.ol3Layer.setExtent(extent);
     }

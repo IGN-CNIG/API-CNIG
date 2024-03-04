@@ -379,7 +379,7 @@ export default class VectorsControl extends M.impl.Control {
       return f.getGeometry() !== null;
     });
 
-    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
+    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: true });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
     layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
@@ -464,7 +464,7 @@ export default class VectorsControl extends M.impl.Control {
     }
 
     features = this.featuresToFacade(features);
-    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
+    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: true });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
     layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
@@ -842,7 +842,7 @@ export default class VectorsControl extends M.impl.Control {
     });
 
     features = this.featuresToFacade(features);
-    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
+    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: true });
     layer.addFeatures(features);
     this.facadeMap_.addLayers(layer);
     layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
@@ -874,14 +874,14 @@ export default class VectorsControl extends M.impl.Control {
     });
 
     if (lines.length > 0) {
-      const layer = new M.layer.Vector({ name: `${layerName}_lines`, legend: `${layerName}_lines`, extract: false });
+      const layer = new M.layer.Vector({ name: `${layerName}_lines`, legend: `${layerName}_lines`, extract: true });
       layer.addFeatures(lines);
       this.facadeMap_.addLayers(layer);
       layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
     }
 
     if (others.length > 0) {
-      const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
+      const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: true });
       layer.addFeatures(others);
       this.facadeMap_.addLayers(layer);
       layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
@@ -921,14 +921,14 @@ export default class VectorsControl extends M.impl.Control {
     });
 
     lines = this.featuresToFacade(lines);
-    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
+    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: true });
     layer.addFeatures(lines);
     this.facadeMap_.addLayers(layer);
     layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
 
     if (points.length > 0) {
       points = this.featuresToFacade(points);
-      const layer2 = new M.layer.Vector({ name: `${layerName}_points`, legend: `${layerName}_points`, extract: false });
+      const layer2 = new M.layer.Vector({ name: `${layerName}_points`, legend: `${layerName}_points`, extract: true });
       layer2.addFeatures(points);
       this.facadeMap_.addLayers(layer2);
       layer2.setZIndex(layer2.getZIndex() + PLUS_ZINDEX);
@@ -1665,7 +1665,7 @@ export default class VectorsControl extends M.impl.Control {
           const extent = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
           const wfsURL = `${url}service=WFS&version=2.0.0&request=GetFeature&typename=${name}&` +
             `outputFormat=${encodeURIComponent(GML_FORMAT)}&srsName=${srs}&bbox=${extent.join(',')},${srs}`;
-          const layer = new M.layer.Vector({ name, legend, extract: false });
+          const layer = new M.layer.Vector({ name, legend, extract: true });
           M.remote.get(wfsURL).then((response) => {
             if (!cancelFlag) {
               const responseWFS = response.text.replace(/wfs:member/gi, 'gml:featureMember');
@@ -1813,5 +1813,23 @@ export default class VectorsControl extends M.impl.Control {
       layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
       this.facadeControl.renderLayers();
     }
+  }
+
+  waitLayerLoadedAsync(layer) {
+    return new Promise((resolve) => {
+      const geometry = !M.utils.isNullOrEmpty(layer.geometry) ?
+        layer.geometry : layer.getGeometryType();
+
+      if (geometry === null) {
+        setTimeout(() => {
+          this.waitLayerLoadedAsync(layer).then(() => {
+            resolve();
+          });
+        }, 200);
+      } else {
+        layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);
+        resolve();
+      }
+    });
   }
 }

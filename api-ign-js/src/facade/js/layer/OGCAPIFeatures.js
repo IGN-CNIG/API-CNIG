@@ -9,7 +9,6 @@ import Vector from './Vector';
 import * as LayerType from './Type';
 import * as parameter from '../parameter/parameter';
 import { getValue } from '../i18n/language';
-import Generic from '../style/Generic';
 
 /**
  * @classdesc
@@ -67,6 +66,7 @@ class OGCAPIFeatures extends Vector {
    * - geometry: Tipo de geometría: POINT(Punto), MPOINT(Multiples puntos),
    * LINE(línea), MLINE(Multiples línes), POLYGON(Polígono), or MPOLYGON(Multiples polígonos).
    * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - predefinedStyles: Estilos predefinidos para la capa.
@@ -74,6 +74,7 @@ class OGCAPIFeatures extends Vector {
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
+   * - opacity: Opacidad de capa, por defecto 1.
    * @param {Object} vendorOpts Opciones para la biblioteca base.
    * -cql: Declaración CQL para filtrar las características
    * (Sólo disponible para servicios en PostgreSQL).
@@ -90,16 +91,21 @@ class OGCAPIFeatures extends Vector {
     // This layer is of parameters.
     const parameters = parameter.layer(userParams, LayerType.OGCAPIFeatures);
 
+    const optionsVar = opt;
+
+    if (typeof userParams !== 'string') {
+      optionsVar.maxExtent = userParams.maxExtent;
+    }
     /**
      * Implementación
      * @public
      * @implements {M.impl.layer.OGCAPIFeatures}
      * @type {M.impl.layer.OGCAPIFeatures}
      */
-    const impl = new OGCAPIFeaturesImpl(opt, vendorOpts);
+    const impl = new OGCAPIFeaturesImpl(optionsVar, vendorOpts);
 
     // Llama al contructor del que se extiende la clase
-    super(parameters, opt, undefined, impl);
+    super(parameters, optionsVar, undefined, impl);
 
     // Comprueba si la implementación puede crear capas OGCAPIFeatures
     if (isUndefined(OGCAPIFeaturesImpl)) {
@@ -159,17 +165,6 @@ class OGCAPIFeatures extends Vector {
     this.extract = parameters.extract;
 
     /**
-     * OGCAPIFeatures predefinedStyles: Estilos predefinidos para la capa.
-     */
-    this.predefinedStyles =
-      isUndefined(opt.predefinedStyles) ? [] : opt.predefinedStyles;
-    if (isUndefined(opt.style)) {
-      this.predefinedStyles.unshift(new Generic(OGCAPIFeatures.DEFAULT_OPTS_STYLE));
-    } else {
-      this.predefinedStyles.unshift(opt.style);
-    }
-
-    /**
      * OGCAPIFeatures cql: Declaración CQL para filtrar las características
      * (Sólo disponible para servicios en PostgreSQL).
      */
@@ -195,30 +190,6 @@ class OGCAPIFeatures extends Vector {
      * OGCAPIFeatures opt: Opciones.
      */
     this.opt = opt;
-  }
-
-  /**
-   * Devuelve el tipo de capa, OGCAPIFeatures.
-   * @function
-   * @return {M.LayerType.OGCAPIFeatures} Devuelve OGCAPIFeatures.
-   * @api
-   */
-  get type() {
-    return LayerType.OGCAPIFeatures;
-  }
-
-  /**
-   * Sobrescribe el tipo de capa.
-   *
-   * @function
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) && !isNullOrEmpty(newType) &&
-      (newType !== LayerType.OGCAPIFeatures)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.OGCAPIFeatures).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
   }
 
   /**

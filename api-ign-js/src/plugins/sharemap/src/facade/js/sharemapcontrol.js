@@ -588,6 +588,10 @@ export default class ShareMapControl extends M.Control {
       param = this.getGeoJSON(layer);
     } else if (layer.type === 'Vector') {
       param = this.getVector(layer);
+    } else if (layer.type === 'MVT') {
+      param = this.getMVT(layer);
+    } else if (layer.type === 'OGCAPIFeatures') {
+      param = this.getOGCAPIFeatures(layer);
     }
     return param;
   }
@@ -616,6 +620,17 @@ export default class ShareMapControl extends M.Control {
   }
 
   /**
+   * This method gets the ogcApiFeatures url parameter
+   *
+   * @public
+   * @function
+   */
+  getOGCAPIFeatures(layer) {
+    const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
+    return `OGCAPIFeatures*${layer.legend || layer.name}*${layer.url}*${layer.name}*${layer.limit || ''}*${layer.bbox || ''}*${layer.id || ''}*${layer.offset || ''}*${layer.format || ''}*${style}*${layer.extract || ''}`;
+  }
+
+  /**
    * This method gets the geojson url parameter
    *
    * @public
@@ -632,6 +647,16 @@ export default class ShareMapControl extends M.Control {
     source = window.btoa(unescape(encodeURIComponent(JSON.stringify(source))));
     const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
     return `GeoJSON*${layer.name}*${source}**${style}`;
+  }
+
+  /**
+   * This method gets the mvt url parameter
+   *
+   * @public
+   * @function
+   */
+  getMVT(layer) {
+    return `MVT*${layer.url}*${layer.name}*${layer.getProjection()}`;
   }
 
   /**
@@ -671,6 +696,49 @@ export default class ShareMapControl extends M.Control {
     }
     return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${this.normalizeString(legend)}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
   }
+
+  // TO-DO
+  // getGeneric(layer) {
+  //   const ol3 = layer.getImpl().getOL3Layer();
+  //   const ol3Source = ol3.getSource();
+  //   const typeSource = layer.getImpl().getSourceType();
+  //   const typeLayer = layer.getImpl().getLayerType();
+  //   const typeFormat = layer.getImpl().getFormatType ? layer.getImpl().getFormatType() : false;
+
+  //   const properties = ol3.getProperties();
+  //   delete properties.source;
+
+
+  //   const vendorOptions = `
+  //     new ol.layer.${typeLayer}({
+  //        source: new ol.source.${typeSource}({
+  //         ${ol3Source.getParams ? `params:${JSON.stringify(ol3Source.getParams())},` : ''}
+  //         url: ${ol3Source.getUrl ? ol3Source.getUrl() : ol3Source.getUrls()[0]},
+  //         ${ol3Source.getLayer ? `layer: ${ol3Source.getLayer()},` : ''}
+  //         ${ol3Source.getMatrixSet ? `matrixSet: ${ol3Source.getMatrixSet()},` : ''}
+  //         ${ol3Source.getFormat ? `format: ${JSON.stringify(ol3Source.getFormat())},` : ''}
+  //         ${ol3Source.getProjection ? `projection: ${ol3Source.getProjection()},` : ''}
+  //         ${ol3Source.getTileGrid ? `tileGrid: ${ol3Source.getTileGrid()},` : ''}
+  //         ${ol3Source.getStyle ? `style: ${ol3Source.getStyle()},` : ''}
+  //         ${typeFormat ? `format: new ${typeFormat}(),` : ''}
+  //        }),
+  //        properties: ${JSON.stringify(properties)},
+  //     })
+  //   `;
+
+  //   const {
+  //     name = '',
+  //     legend = '',
+  //     transparent,
+  //     minZoom,
+  //     maxZoom,
+  //     displayInLayerSwitcher = true,
+  //     visibility = true,
+  //   } = layer;
+
+  //   return `Generic*${M.utils.encodeBase64(vendorOptions)}*${name}*${legend}
+  // *${transparent}*${minZoom}*${maxZoom}*${displayInLayerSwitcher}*${visibility}`;
+  // }
 
   /**
    * This method gets the plugins url parameter

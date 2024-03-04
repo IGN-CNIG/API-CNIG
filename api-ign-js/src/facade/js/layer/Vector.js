@@ -3,6 +3,7 @@
  */
 import VectorImpl from 'impl/layer/Vector';
 import { geojsonTo4326 } from 'impl/util/Utils';
+import projAPI from 'impl/projections';
 import { isUndefined, isArray, isNullOrEmpty, isString, modifySVG } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
@@ -23,6 +24,7 @@ import Generic from '../style/Generic';
  * @extends {M.Layer}
  * @property {Number} minZoom Zoom mínimo.
  * @property {Number} maxZoom Zoom máximo.
+ * @property {Array} predefinedStyles Estilos prefefinidos.
  *
  * @api
  * @extends {M.layer}
@@ -35,9 +37,6 @@ class Vector extends LayerBase {
    * @constructor
    * @param {Mx.parameters.Layer} userParameters Parámetros para la construcción de la capa.
    * - name: Nombre de la capa en la leyenda.
-   * - url: Url del fichero o servicio que genera el vector.
-   * - minZoom: Zoom mínimo aplicable a la capa.
-   * - maxZoom: Zoom máximo aplicable a la capa.
    * - type: Tipo de la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
@@ -49,6 +48,7 @@ class Vector extends LayerBase {
    * - visibility. Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
+   * - predefinedStyles: Estilos predefinidos para la capa.
    * @param {Object} implParam Valores de la implementación por defecto.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
@@ -64,9 +64,19 @@ class Vector extends LayerBase {
    * @api
    */
   constructor(parameters = {}, options = {}, vendorOptions = {}, implParam) {
+    const optns = parameters;
+    optns.type = !parameters.type ? LayerType.Vector : parameters.type;
+
+    const optionsVars = options;
+
+    if (typeof parameters !== 'string') {
+      optionsVars.maxExtent = (parameters.maxExtent) ? parameters.maxExtent : options.maxExtent;
+      optns.maxExtent = optionsVars.maxExtent;
+    }
+
     // calls the super constructor
-    const impl = implParam || new VectorImpl(options, vendorOptions);
-    super(parameters, impl);
+    const impl = implParam || new VectorImpl(optionsVars, vendorOptions);
+    super(optns, impl);
 
     // checks if the implementation can create Vector
     if (isUndefined(VectorImpl)) {
@@ -90,44 +100,39 @@ class Vector extends LayerBase {
     /**
      * Vector minzoom. Zoom mínimo.
      */
-    this.minZoom = parameters.minZoom;
+    this.minZoom = optns.minZoom;
 
     /**
      * Vector maxzoom. Zoom máximo.
      */
-    this.maxZoom = parameters.maxZoom;
+    this.maxZoom = optns.maxZoom;
+
+    /**
+     * infoEventType. Tipo de evento para mostrar la info de una feature.
+     */
+    this.infoEventType = optns.infoEventType || 'click';
+
+    /**
+     * predefinedStyles: Estilos predefinidos para la capa.
+     */
+    this.predefinedStyles =
+      isUndefined(options.predefinedStyles) ? [] : options.predefinedStyles;
+
+    const defaultOptionsStyle = !isUndefined(this.constructor.DEFAULT_OPTS_STYLE) ?
+      this.constructor.DEFAULT_OPTS_STYLE : this.constructor.DEFAULT_OPTIONS_STYLE;
+
+    if (isUndefined(options.style) && defaultOptionsStyle) {
+      this.predefinedStyles.unshift(new Generic(defaultOptionsStyle));
+    } else if (isUndefined(options.style)) {
+      this.predefinedStyles.unshift(new Generic(Vector.DEFAULT_OPTIONS_STYLE));
+    } else {
+      this.predefinedStyles.unshift(options.style);
+    }
 
     this.setStyle(options.style);
 
     impl.on(EventType.LOAD, features => this.fire(EventType.LOAD, [features]));
   }
-
-
-  /**
-   * Devuelve el tipo de capa, Vector.
-   *
-   * @function
-   * @return {M.LayerType.Vector} Tipo de capa Vector.
-   * @api
-   */
-  get type() {
-    return LayerType.Vector;
-  }
-
-  /**
-   * Sobrescribe el tipo de la capa.
-   *
-   * @function
-   * @param {String} newType Nuevo tipo de capa.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.Vector)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.Vector).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
-  }
-
 
   /**
    * Este método devuelve el valor de la propiedad filter, esta
@@ -491,7 +496,18 @@ class Vector extends LayerBase {
   toGeoJSON() {
     const code = this.map_.getProjection().code;
     const featuresAsJSON = this.getFeatures().map(feature => feature.getGeoJSON());
-    return { type: 'FeatureCollection', features: geojsonTo4326(featuresAsJSON, code) };
+    const projection = projAPI.getSupportedProjs()
+      .filter(proj => proj.codes.includes('EPSG:4326'))[0];
+    return {
+      type: 'FeatureCollection',
+      crs: {
+        type: 'name',
+        properties: {
+          name: projection.codes[projection.codes.length - 2],
+        },
+      },
+      features: geojsonTo4326(featuresAsJSON, code),
+    };
   }
 }
 

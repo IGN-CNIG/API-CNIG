@@ -46,6 +46,7 @@ class MVT extends Vector {
    * - visibility. Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    *  <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -141,7 +142,8 @@ class MVT extends Vector {
       });
     }
 
-    const extent = this.facadeVector_.getMaxExtent();
+    const extent = this.maxExtent_ || this.facadeVector_.getMaxExtent();
+
     const source = new OLSourceVectorTile({
       format: this.formater_,
       url: this.url,
@@ -156,6 +158,8 @@ class MVT extends Vector {
       source,
       extent,
     }, this.vendorOptions_, true));
+    this.ol3Layer.setMaxZoom(this.maxZoom);
+    this.ol3Layer.setMinZoom(this.minZoom);
 
     this.setOpacity(this.opacity_);
     this.setVisible(this.visibility_);
@@ -332,6 +336,18 @@ class MVT extends Vector {
       this.loaded_ = true;
       this.facadeVector_.fire(EventType.LOAD);
     }
+  }
+
+  /**
+   * Devuelve la proyeccion de la capa.
+   *
+   * @public
+   * @function
+   * @returns {String} SRS de la capa.
+   * @api stable
+   */
+  getProjection() {
+    return this.projection_;
   }
 
   /**

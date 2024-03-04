@@ -79,20 +79,40 @@
             <option value="false" selected="selected">false</option>
         </select>
         <label for="inputByParcelCadastre">byParcelCadastre</label>
-        <select name="byParcelCadastre" id="inputByParcelCadastre">
-            <option value="true" selected="selected">true</option>
-            <option value="false">false</option>
-        </select>
+        <textarea name="byParcelCadastre" id="inputByParcelCadastre" rows="4">{
+"cadastreWMS": "http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_RCCOOR",
+"CMC_url": "http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/ConsultaMunicipioCodigos",
+"DNPPP_url": "http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/Consulta_DNPPP_Codigos",
+"CPMRC_url": "http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC"
+}</textarea>
         <label for="inputByCoordinates">byCoordinates</label>
-        <select name="byCoordinates" id="inputByCoordinates">
-            <option value="true" selected="selected">true</option>
-            <option value="false">false</option>
-        </select>
+        <textarea name="byCoordinates" id="inputByCoordinates" rows="4">{
+"projections": [
+{
+    "title": "ETRS89 geographic (4258) dd",
+    "code": "EPSG:4258",
+    "units": "d"
+},
+{
+    "title": "ETRS89 geographic (4258) dms",
+    "code": "EPSG:4258",
+    "units": "dms"
+}
+],
+"help": "https://www.google.com/"
+}</textarea>
         <label for="inputByPlaceAddressPostal">byPlaceAddressPostal</label>
-        <select name="byPlaceAddressPostal" id="inputByPlaceAddressPostal">
-            <option value="true" selected="selected">true</option>
-            <option value="false">false</option>
-        </select>
+        <textarea name="byPlaceAddressPostal" id="inputByPlaceAddressPostal" rows="4">{
+ "maxResults": 20,
+ "noProcess": "poblacion",
+ "countryCode": "es",
+ "reverse": false,
+ "resultVisibility": true,
+ "urlCandidates": "http://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp",
+ "urlFind": "http://www.cartociudad.es/geocoder/api/geocoder/findJsonp",
+ "urlReverse": "http://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode",
+ "requestStreet": "https://www.cartociudad.es/geocoder/api/geocoder/findJsonp?q=Sevilla&type=provincia&tip_via=null&id=41&portal=null&extension=null"
+}</textarea>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
     <div id="mapjs" class="m-container"></div>
@@ -122,23 +142,6 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let posicion, collapsed = true,
-            collapsible = true,
-            tooltip, zoomL,
-            pointStyle, isdraggable, byParcelCadastre, byCoordinates,
-            byPlaceAddressPostal;
-        crearPlugin({
-            position: posicion,
-            collapsed: collapsed,
-            collapsible: collapsible,
-            tooltip: tooltip,
-            zoom: zoomL,
-            pointStyle: pointStyle,
-            isDraggable: isdraggable,
-            byParcelCadastre: byParcelCadastre,
-            byCoordinates: byCoordinates,
-            byPlaceAddressPostal: byPlaceAddressPostal
-        });
         const selectPosicion = document.getElementById("selectPosicion");
         const selectCollapsed = document.getElementById("selectCollapsed");
         const selectCollapsible = document.getElementById("selectCollapsible");
@@ -162,7 +165,21 @@
         selectCoordinates.addEventListener('change', cambiarTest);
         selectPlace.addEventListener('change', cambiarTest);
 
+        
+        crearPlugin(getOptions());
+
         function cambiarTest() {
+            const objeto = getOptions();
+            map.removePlugins(mp);
+            crearPlugin(objeto);
+        }
+
+        function crearPlugin(propiedades) {
+            mp = new M.plugin.Locator(propiedades);
+            map.addPlugin(mp);
+        }
+
+        function getOptions() {
             let objeto = {};
             objeto.position = selectPosicion.options[selectPosicion.selectedIndex].value;
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
@@ -172,17 +189,12 @@
             inputZoom.value !== "" ? objeto.zoom = inputZoom.value : objeto.zoom = "16";
             objeto.pointStyle = selectPointStyle.options[selectPointStyle.selectedIndex].value;
             objeto.isDraggable = (selectDraggable.options[selectDraggable.selectedIndex].value == 'true');
-            objeto.byParcelCadastre = (selectParcel.options[selectParcel.selectedIndex].value == 'true');
-            objeto.byCoordinates = (selectCoordinates.options[selectCoordinates.selectedIndex].value == 'true');
-            objeto.byPlaceAddressPostal = (selectPlace.options[selectPlace.selectedIndex].value == 'true');
-            map.removePlugins(mp);
-            crearPlugin(objeto);
+            objeto.byParcelCadastre = JSON.parse(selectParcel.value);
+            objeto.byCoordinates = JSON.parse(selectCoordinates.value);
+            objeto.byPlaceAddressPostal = JSON.parse(selectPlace.value);
+            return objeto;
         }
 
-        function crearPlugin(propiedades) {
-            mp = new M.plugin.Locator(propiedades);
-            map.addPlugin(mp);
-        }
         let mp2 = new M.plugin.ShareMap({
             baseUrl: window.location.href.substring(0, window.location.href.indexOf('api-core')) + "api-core/",
             position: "TR",

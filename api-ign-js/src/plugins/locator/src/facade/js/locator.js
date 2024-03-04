@@ -259,8 +259,7 @@ export default class Locator extends M.Plugin {
    */
   getIGNSearchLocator() {
     return {
-      servicesToSearch: '',
-      maxResults: 10,
+      maxResults: 20,
       noProcess: '',
       countryCode: '',
       reverse: true,
@@ -268,10 +267,6 @@ export default class Locator extends M.Plugin {
       urlCandidates: '',
       urlFind: '',
       urlReverse: '',
-      urlPrefix: '',
-      urlAssistant: '',
-      urlDispatcher: '',
-      searchPosition: '',
     };
   }
 

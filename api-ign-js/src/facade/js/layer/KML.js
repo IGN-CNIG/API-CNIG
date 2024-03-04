@@ -38,6 +38,8 @@ class KML extends LayerVector {
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * - label: Define si se muestra la etiqueta o no. Por defecto mostrará la etiqueta.
    * - layers: Permite filtrar el fichero KML por nombre de carpetas.
+   * - removeFolderChildren: Permite no mostrar las
+   * carpetas descendientes de las carpetas filtradas. Por defecto: true.
    * @param {Mx.parameters.LayerOptions} options Parámetros que se pasarán a la implementación.
    * - visibility: Define si la capa es visible o no.
    * - style: Define el estilo de la capa.
@@ -46,6 +48,8 @@ class KML extends LayerVector {
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
    * - scaleLabel. Escala de la etiqueta.
+   * - extractStyles: Extraer estilos del KML.Por defecto es verdadero.
+   * - predefinedStyles: Estilos predefinidos para la capa.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -59,12 +63,20 @@ class KML extends LayerVector {
    * </code></pre>
    * @api
    */
-  constructor(userParameters, options = {}, vendorOptions = {}) {
+  constructor(userParameters = {}, options = {}, vendorOptions = {}) {
     const parameters = parameter.layer(userParameters, LayerType.KML);
     const optionsVar = options;
+
     optionsVar.label = parameters.label;
     optionsVar.visibility = parameters.visibility;
     optionsVar.layers = userParameters.layers || undefined;
+    optionsVar.removeFolderChildren = isUndefined(userParameters.removeFolderChildren) ?
+      true :
+      userParameters.removeFolderChildren;
+
+    if (typeof userParameters !== 'string') {
+      optionsVar.maxExtent = userParameters.maxExtent;
+    }
 
     /**
      * Implementación de la capa.
@@ -108,32 +120,13 @@ class KML extends LayerVector {
      * @type {Array<String>}
      */
     this.layers = optionsVar.layers;
-  }
 
-  /**
-   * Devuelve el tipo de capa, KML.
-   * @function
-   * @getter
-   * @returns {M.LayerType.KML} Tipo de capa.
-   * @api
-   */
-  get type() {
-    return LayerType.KML;
-  }
-
-  /**
-   * Sobrescribe el tipo de la capa.
-   *
-   * @function
-   * @setter
-   * @param {String} newType Nuevo tipo.
-   * @api
-   */
-  set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.KML)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.KML).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
-    }
+    /**
+     * KML removeFolderChildren: Permite no mostrar las
+     * carpetas descendientes de las carpetas filtradas.
+     * @type {Array<String>}
+     */
+    this.removeFolderChildren = optionsVar.removeFolderChildren;
   }
 
   /**
@@ -209,6 +202,7 @@ class KML extends LayerVector {
       equals = (this.url === obj.url);
       equals = equals && (this.name === obj.name);
       equals = equals && (this.extract === obj.extract);
+      equals = equals && (this.predefinedStyles === obj.predefinedStyles);
     }
 
     return equals;

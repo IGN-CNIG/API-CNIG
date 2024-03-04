@@ -273,6 +273,8 @@ export default class PrinterMapControl extends M.Control {
    * @api stabletrue
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('exception.printermap_obsolete'));
     const promise = new Promise((success, fail) => {
       this.getCapabilities().then((capabilitiesParam) => {
         const capabilities = capabilitiesParam;
@@ -563,6 +565,14 @@ export default class PrinterMapControl extends M.Control {
 
     this.queueContainer_ = this.element_.querySelector('.queue > ul.queue-container');
     M.utils.enableTouchScroll(this.queueContainer_);
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape') {
+        const elem = document.querySelector('.m-panel.m-printermap.opened');
+        if (elem !== null) {
+          elem.querySelector('button.m-panel-btn').click();
+        }
+      }
+    });
   }
 
   /**

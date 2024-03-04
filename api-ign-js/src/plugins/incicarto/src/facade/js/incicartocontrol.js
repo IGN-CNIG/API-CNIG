@@ -29,6 +29,19 @@ const POINTS = [1, 15];
 const LINES = [10, 15];
 const LINE_POINTS = [1, 15, 20, 15];
 
+const HOSTNAME = ['mapea-lite.desarrollo.guadaltel.es', 'componentes.cnig.es']
+const PATH_NAME = 'api-core'
+const CONTROLS = [
+  'scale',
+  'scaleline',
+  'panzoombar',
+  'panzoom',
+  'location',
+  'getfeatureinfo',
+  'rotate',
+  'backgroundlayers'
+]
+
 export default class IncicartoControl extends M.Control {
   /**
    * @classdesc
@@ -307,6 +320,7 @@ export default class IncicartoControl extends M.Control {
           let maxZIndex = Math.max(...(layers.map((l) => {
             return l.getZIndex();
           })));
+
           from.querySelectorAll('li.m-incicarto-layer').forEach((elem) => {
             const name = elem.getAttribute('name');
             const url = elem.getAttribute('url');
@@ -322,6 +336,15 @@ export default class IncicartoControl extends M.Control {
         },
       });
     }
+  }
+
+  getMaxZIndex() {
+    const filterLayers = this.map_.getLayers().filter((layer) => layer.name !== '__draw__');
+
+    const maxZIndex = Math.max(...(filterLayers.map((l) => {
+      return l.getZIndex();
+    })));
+    return maxZIndex
   }
 
   /**
@@ -514,7 +537,7 @@ export default class IncicartoControl extends M.Control {
         document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
       });
 
-      document.getElementById('fileUpload').onchange = function() {
+      document.getElementById('fileUpload').onchange = function () {
         let fileName = 'Adjuntar fichero &hellip;';
         if (this.files) {
           if (this.files.length > 1) {
@@ -583,7 +606,7 @@ export default class IncicartoControl extends M.Control {
         }
       });
 
-      document.getElementById('fileUpload').onchange = function() {
+      document.getElementById('fileUpload').onchange = function () {
         let fileName = 'Adjuntar fichero &hellip;';
         if (this.files) {
           if (this.files.length > 1) {
@@ -633,13 +656,15 @@ export default class IncicartoControl extends M.Control {
    * @returns
    */
   validateIncidenciaMessageInModalAdvanced() {
-    const themeMetadataContainer = document.querySelector("#theme-select");
+    // NO OBTENIA EL PRIMER VALOR, SE DEJA COMENTADO
+    // const themeMetadataContainer = document.querySelector("#theme-select");
     const errorMetadataContainer = document.querySelector("#error-select");
     const productMetadataContainer = document.querySelector("#product-select");
-    if (this.errThemes.mandatory === true && themeMetadataContainer.selectedIndex === 0) {
-      this.showMessageInModalAdvanced("Clasifique el error con un tema", "nakmessage");
-      return false;
-    } else if (this.errTypes.mandatory === true && errorMetadataContainer.selectedIndex === 0) {
+    // if (this.errThemes.mandatory === true && themeMetadataContainer.selectedIndex === 0) {
+    //   this.showMessageInModalAdvanced("Clasifique el error con un tema", "nakmessage");
+    //   return false;
+    // } else 
+    if (this.errTypes.mandatory === true && errorMetadataContainer.selectedIndex === 0) {
       this.showMessageInModalAdvanced("Clasifique el error con un tipo", "nakmessage");
       return false;
     } else if (this.errProducts.mandatory === true && productMetadataContainer.selectedIndex === 0) {
@@ -661,65 +686,52 @@ export default class IncicartoControl extends M.Control {
     let themeMetadataContainer = document.querySelector("#theme-select");
     let errorMetadataContainer = document.querySelector("#error-select");
     let productMetadataContainer = document.querySelector("#product-select");
-    let emailName = document.querySelector("#person-notify").value;
-    let emailUser = document.querySelector("#email-notify").value;
 
     if (this.validateIncidenciaMessageInModalAdvanced() === false) {
       return false;
     };
 
-    let theme = themeMetadataContainer.selectedOptions[0].innerText;
     let error = errorMetadataContainer.options[errorMetadataContainer.selectedIndex].value;
     let product = productMetadataContainer.options[productMetadataContainer.selectedIndex].value;
-    let errDescription = document.querySelector("#err-description").value;
-    const { x, y } = this.map_.getCenter();
-    const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
+    let theme = themeMetadataContainer.selectedOptions[0].innerText;
 
-    let email_subject = 'Incidencia Cartografía - ' + theme;
+    const currentDate = new Date();
+
+    // Obtener los componentes de la fecha
+    const year = currentDate.getFullYear();
+    const month = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
+    const day = `${currentDate.getDate().toString().padStart(2, '0')}`;
+    const hours = `${currentDate.getHours().toString().padStart(2, '0')}`;
+    const mins = `${currentDate.getMinutes().toString().padStart(2, '0')}`;
+    const segs = `${currentDate.getSeconds().toString().padStart(2, '0')}`;
+
+    // Formatear la fecha según el formato AAAA/MM/DD hh:mm:ss
+    const dateFormat = `${year}/${month}/${day} ${hours}:${mins}:${segs}`;
+
+    let email_subject = 'Incidencia Cartografía - ' + theme + ' - ' + dateFormat;
+
+    const propiedades_incidencia = this.createContentEmail(email_subject, theme, destinatary);
 
     this.geometryIncidenceJSON = JSON.parse(this.geometryIncidence);
-
-    let url = window.location.href;
-    let localURL = '';
-    if (url.startsWith('file:///')) {
-      const index = url.lastIndexOf('/');
-      localURL = `file://${url.substring(index)}`;
-    }
-
-    if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
-      // API-REST
-      url = M.config.MAPEA_URL;
-    }
-
-    let propiedades_incidencia = {
-      "email_subject": email_subject,
-      "theme": theme,
-      "destinatary": destinatary,
-      "emailName": emailName,
-      "emailUser": emailUser,
-      "errDescripcion": errDescription,
-      "URL": url,
-      "localURL": localURL,
-      "paramsURL": encodeURI(shareURL),
-    }
-
     if (this.geometryIncidenceJSON.features.length > 0) {
       this.geometryIncidenceJSON.features[0].properties = propiedades_incidencia;
     }
 
     let email_body = {
-      "description": errDescription,
+      "description": propiedades_incidencia.errDescripcion,
       "theme": theme,
       "error": error,
       "product": product,
       "features": this.geometryIncidenceJSON.features
     };
+
     let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
     emailForm.action = `${M.config.MAPEA_URL}api/email`;
     document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
     document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
     document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
-    document.querySelector("#m-plugin-incicarto-email-shareURL").value = shareURL;
+    document.querySelector("#m-plugin-incicarto-email-shareURL").value = propiedades_incidencia.URL;
+    document.querySelector("#m-plugin-incicarto-email-apiURL").value = propiedades_incidencia.API_URL;
     document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
     let inputFile = document.querySelector('#fileUpload');
     if (inputFile && inputFile.files.length > 0) {
@@ -732,6 +744,281 @@ export default class IncicartoControl extends M.Control {
     return true;
   }
 
+  createContentEmail(email_subject, theme, destinatary = this.themes.find(item => item.idTheme == theme).emailTheme) {
+    let emailName = document.querySelector("#person-notify").value;
+    let emailUser = document.querySelector("#email-notify").value;
+    let errDescription = document.querySelector("#err-description").value;
+
+    let url = window.location.href;
+    let api_url = M.config.MAPEA_URL;
+    let onlyURL = false;
+
+    const { x, y } = this.map_.getCenter();
+    const center = `center=${x},${y}`;
+    const zoom = `&zoom=${this.map_.getZoom()}`;
+    const srs = `&srs=${this.map_.getProjection().code}`;
+    const layers = `&layers=${this.getLayersInLayerswitcher().toString()}`;
+    const controls = (this.getControlsFormat()) ? `&controls=${this.getControlsFormat()}` : '';
+    const plugin = (this.getPlugins()) ? `&${this.getPlugins()}` : '';
+
+    // File 
+    // URL del visor - centro, zoom, srs, todas las capas.
+    // URL de la API - centro, zoom, srs, todas las capas.
+    if (url.startsWith('file:///')) {
+      const index = url.lastIndexOf('/');
+      url = `file://${url.substring(index)}`;
+    }
+
+
+    // API
+    // M.config.MAP_VIWER_LAYERS
+    // URL de la API - centro, zoom, srs, todas las capas, plugin y controles
+    if (HOSTNAME.includes(window.location.hostname) && window.location.pathname.includes(PATH_NAME)) {
+      onlyURL = true;
+      url = url.split('?')[0];
+      api_url += `?${center}${zoom}${srs}${layers}${controls}${plugin}`;
+    } else {
+      // Visor
+      // URL del visor - centro, zoom, srs, todas las capas.
+      // URL de la API - centro, zoom, srs, todas las capas.
+      url = url.split('?')[0];
+      url += `?${center}${zoom}${srs}${layers}`;
+      api_url += `?${center}${zoom}${srs}${layers}`;
+    }
+
+    if (url.indexOf('.jsp') > -1) {
+      url = ''
+      onlyURL = true;
+    }
+
+    return {
+      "email_subject": email_subject,
+      "theme": theme,
+      "destinatary": destinatary,
+      "emailName": emailName,
+      "emailUser": emailUser,
+      "errDescripcion": errDescription,
+      "URL": (onlyURL) ? '' : encodeURI(url),
+      "API_URL": encodeURI(api_url),
+    }
+
+  }
+
+
+  /**
+   * This method gets the externs layers parameters
+   *
+   * @public
+   * @function
+   */
+  getLayersInLayerswitcher() {
+    const layers = this.map_.getLayers().filter((layer) => {
+      return (layer.displayInLayerSwitcher === true && layer.transparent === true) || layer.transparent === false;
+    });
+
+    return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
+  }
+
+
+  /**
+   * This function gets the url param from layer
+   *
+   * @public
+   * @function
+   */
+  layerToParam(layer) {
+    let param;
+    if (layer.name === 'osm') {
+      param = layer.name;
+    } else if (/mapbox/.test(layer.name)) {
+      param = `MAPBOX.${layer.name}`;
+    } else if (layer.type === 'WMS') {
+      param = this.getWMS(layer);
+    } else if (layer.type === 'WMTS') {
+      param = this.getWMTS(layer);
+    } else if (layer.type === 'KML') {
+      param = this.getKML(layer);
+    } else if (layer.type === 'WFS') {
+      param = this.getWFS(layer);
+    } else if (layer.type === 'GeoJSON') {
+      param = this.getGeoJSON(layer);
+    } else if (layer.type === 'Vector') {
+      param = this.getVector(layer);
+    } else if (layer.type === 'TMS') {
+      param = this.getTMS(layer);
+    }
+    return param;
+  }
+
+
+  normalizeString(text) {
+    let newText = text.replace(/,/g, '');
+    newText = newText.replace(/\*/g, '');
+    return newText;
+  }
+
+  /**
+   * This method gets the geojson url parameter
+   *
+   * @public
+   * @function
+   */
+  getVector(layer) {
+    let source = Object.assign(layer.toGeoJSON());
+    source.crs = {
+      properties: {
+        name: 'EPSG:4326',
+      },
+      type: 'name',
+    };
+    source = window.btoa(unescape(encodeURIComponent(JSON.stringify(source))));
+    const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
+    return `GeoJSON*${layer.name}*${source}**${style}`;
+  }
+
+
+  /**
+   * This method gets the wms url parameter
+   *
+   * @public
+   * @function
+   */
+  getWMS(layer) {
+    return `WMS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.name}*${layer.transparent}*${layer.tiled}*${layer.userMaxExtent || ''}*${layer.version}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+  }
+
+  /**
+ * This method gets the TMS url parameter
+ *
+ * @public
+ * @function
+ */
+  getTMS(layer) {
+    return `TMS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.isVisible()}*${layer.transparent}*${layer.tileGridMaxZoom}*${layer.displayInLayerSwitcher}${layer.legend}`;
+  }
+
+  /**
+   * This method gets the wfs url parameter
+   *
+   * @public
+   * @function
+   */
+  getWFS(layer) {
+    const style = layer.getStyle().serialize();
+    return `WFS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.namespace}:${layer.name}:*${layer.geometry || ''}*${layer.ids || ''}*${layer.cql || ''}*${style || ''}`;
+  }
+
+  /**
+   * This method gets the wmts url parameter
+   *
+   * @public
+   * @function
+   */
+  getWMTS(layer) {
+    const { code } = this.map_.getProjection();
+    let legend = null;
+    try {
+      legend = layer.getLegend();
+    } catch (err) {
+      legend = layer.legend;
+    }
+    return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${this.normalizeString(legend)}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+  }
+
+  /**
+   * This methods gets the kml url parameters
+   *
+   * @public
+   * @function
+   */
+  getKML(layer) {
+    return `KML*${layer.name}*${layer.url}*${layer.extract}*${layer.label}*${layer.isVisible()}`;
+  }
+
+  /**
+   * This method gets the geojson url parameter
+   *
+   * @public
+   * @function
+   */
+  getGeoJSON(layer) {
+    const source = !M.utils.isUndefined(layer.source) ?
+      layer.serialize() : encodeURIComponent(layer.url);
+    const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
+    return `GeoJSON*${layer.name}*${source}*${layer.extract}*${style}`;
+  }
+
+
+  /**
+   * This method gets the plugins url parameter
+   */
+  getPlugins() {
+    return this.map_.getPlugins().map((plugin) => {
+      let newCurrent = '';
+      // if (M.utils.isFunction(plugin.getAPIRestBase64)) {
+      //   newCurrent = plugin.getAPIRestBase64();
+      // } else 
+      if (M.utils.isFunction(plugin.getAPIRest)) {
+        newCurrent = plugin.getAPIRest();
+      }
+      return newCurrent;
+    }).join('&');
+  }
+
+  getControlsFormat() {
+    const controls = this.getControls()
+
+    let newControls = controls.filter((c) => {
+      return c !== undefined && c.indexOf('backgroundlayers') === -1;
+    }).join(',');
+
+    if (newControls.endsWith(',')) {
+      newControls = newControls.slice(0, -1);
+    }
+
+    if (newControls.indexOf('scale') === -1 || (newControls.indexOf('scale') === newControls.indexOf('scaleline'))) {
+      // newControls = newControls.concat(',scale*true');
+    }
+    return newControls;
+  }
+
+  /**
+   * This methods gets the controls url parameters
+   *
+   * @public
+   * @function
+   */
+  getControls() {
+    const controls = this.map_.getControls().map(control => control.name);
+
+    const allowedControls = CONTROLS;
+    const resolvedControls = controls.filter(control => allowedControls.includes(control))
+      .filter(c => c !== 'backgroundlayers');
+    if (resolvedControls.includes('mouse')) {
+      const mouseControl = this.map_.getControls().find(c => c.name === 'mouse');
+      const { showProj } = mouseControl.getImpl();
+      const index = resolvedControls.indexOf('mouse');
+      resolvedControls[index] = showProj === true ? 'mouse*true' : 'mouse';
+    }
+    if (resolvedControls.includes('scale')) {
+      const scaleControl = this.map_.getControls().find(c => c.name === 'scale');
+      const { exactScale } = scaleControl.getImpl();
+      const index = resolvedControls.indexOf('scale');
+      resolvedControls[index] = exactScale === true ? 'scale*true' : 'scale';
+    }
+    const backgroundlayers = this.map_.getControls().filter(c => c.name === 'backgroundlayers')[0];
+    let backgroundlayersAPI;
+    if (!M.utils.isNullOrEmpty(backgroundlayers)) {
+      const { visible, activeLayer } = backgroundlayers;
+      if (typeof visible === 'boolean' && typeof activeLayer === 'number') {
+        backgroundlayersAPI = `backgroundlayers*${activeLayer}*${visible}`;
+      } else {
+        backgroundlayersAPI = 'backgroundlayers';
+      }
+    }
+    resolvedControls.push(backgroundlayersAPI);
+    return resolvedControls;
+  }
 
   /**
    * Compone el mensaje para el correo enviado por el interfaz Modal Simple y lo envía por pasarela de Fomento
@@ -745,38 +1032,26 @@ export default class IncicartoControl extends M.Control {
     } else {
       document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = true;
       this.showMessageInModalAdvanced(getValue('sending_email'), "okmessage");
-      let theme = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
-      let destinatary = this.themes.find(item => item.idTheme == theme).emailTheme;
-      theme = themeMetadataContainer.selectedOptions[0].innerText;
-      let email_subject = this.prefixSubject + theme;
-      let emailName = document.querySelector("#person-notify").value;
-      let emailUser = document.querySelector("#email-notify").value;
-      let errDescription = document.querySelector("#err-description").value;
 
-      const { x, y } = this.map_.getCenter();
-      const shareURL = `?center=${x},${y}&zoom=${this.map_.getZoom()}`;
-      const url = window.location.href;
-      let localURL = '';
-      if (url.startsWith('file:///')) {
-        const index = url.lastIndexOf('/');
-        localURL = `file://${url.substring(index)}`;
-      }
+      const themeID = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
+      const themeValue = themeMetadataContainer.selectedOptions[0].innerText;
 
-      // if (url.indexOf('visor') === -1 || url.indexOf('dev.html') > -1 || url.indexOf('.jsp') > -1) {
-      //   url = M.config.MAPEA_URL;
-      // }
+      const currentDate = new Date();
 
-      let propiedades_incidencia = {
-        "email_subject": email_subject,
-        "theme": theme,
-        "destinatary": destinatary,
-        "emailName": emailName,
-        "emailUser": emailUser,
-        "errDescripcion": errDescription,
-        "URL": url,
-        "localURL": localURL,
-        "paramsURL": encodeURI(shareURL),
-      }
+      // Obtener los componentes de la fecha
+      const year = currentDate.getFullYear();
+      const month = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
+      const day = `${currentDate.getDate().toString().padStart(2, '0')}`;
+      const hours = `${currentDate.getHours().toString().padStart(2, '0')}`;
+      const mins = `${currentDate.getMinutes().toString().padStart(2, '0')}`;
+      const segs = `${currentDate.getSeconds().toString().padStart(2, '0')}`;
+
+      // Formatear la fecha según el formato AAAA/MM/DD hh:mm:ss
+      const dateFormat = `${year}/${month}/${day} ${hours}:${mins}:${segs}`;
+
+      let email_subject = this.prefixSubject + themeValue + ' - ' + dateFormat;
+
+      const propiedades_incidencia = this.createContentEmail(email_subject, themeID);
 
       if (this.geometryIncidenceJSON.features.length > 0) {
         this.geometryIncidenceJSON.features[0].properties = propiedades_incidencia;
@@ -786,12 +1061,13 @@ export default class IncicartoControl extends M.Control {
       // ----------------------------------------------------------------------------------------------------------
       let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
       document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
-      document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
-      document.querySelector("#m-plugin-incicarto-email-sendername").value = emailName;
-      document.querySelector("#m-plugin-incicarto-email-senderemail").value = emailUser;
-      document.querySelector("#m-plugin-incicarto-email-errDescription").value = errDescription;
+      document.querySelector("#m-plugin-incicarto-email-mailto").value = propiedades_incidencia.destinatary;
+      document.querySelector("#m-plugin-incicarto-email-sendername").value = propiedades_incidencia.emailName;
+      document.querySelector("#m-plugin-incicarto-email-senderemail").value = propiedades_incidencia.emailUser;
+      document.querySelector("#m-plugin-incicarto-email-apiURL").value = propiedades_incidencia.API_URL;
+      document.querySelector("#m-plugin-incicarto-email-errDescription").value = propiedades_incidencia.errDescripcion;
       document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
-      document.querySelector("#m-plugin-incicarto-email-shareURL").value = shareURL;
+      document.querySelector("#m-plugin-incicarto-email-shareURL").value = propiedades_incidencia.URL;
       document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(this.geometryIncidenceJSON, null, '\t');
       let inputFile = document.querySelector('#fileUpload');
       if (inputFile.files.length > 0) {
@@ -799,11 +1075,17 @@ export default class IncicartoControl extends M.Control {
         inputFileForm.files = inputFile.files;
       }
 
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", `${M.config.MAPEA_URL}api/email`);
-      xhr.onload = callback;
-      const formData = new FormData(emailForm);
-      xhr.send(formData);
+      try {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", `${M.config.MAPEA_URL}api/email`);
+        xhr.onload = callback;
+        const formData = new FormData(emailForm);
+        xhr.send(formData);
+      } catch (error) {
+        console.error(error);
+        this.showMessageInModalAdvanced(getValue('error_sending_email'), "nakmessage");
+      }
+
     }
   }
 
@@ -974,6 +1256,7 @@ export default class IncicartoControl extends M.Control {
     const layerName = `incidencia_${new Date().getTime()}`;
     const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
     layer.geometry = geom;
+    layer.setZIndex(this.getMaxZIndex() + 1);
     this.map.addLayers(layer);
     setTimeout(() => {
       document.querySelector(`li[name="${layerName}"] span.m-incicarto-layer-add`).click();

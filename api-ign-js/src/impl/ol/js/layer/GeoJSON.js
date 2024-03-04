@@ -41,6 +41,7 @@ class GeoJSON extends Vector {
    * - opacity. Opacidad de capa, por defecto 1.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - style. Define el estilo de la capa.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -209,23 +210,6 @@ class GeoJSON extends Vector {
         this.facadeVector_.addFeatures(features);
       });
     }
-  }
-
-  /**
-   * Este método devuelve la extensión de todos los objetos geográficos, se
-   * le puede pasar un filtro.
-   *
-   * @function
-   * @param {boolean} skipFilter Indica si se filtra por el filtro "skip".
-   * @param {M.Filter} filter Filtro.
-   * @return {Array<number>} Extensión de los objetos geográficos.
-   * @api stable
-   */
-  getFeaturesExtent(skipFilter, filter) {
-    const codeProj = this.map.getProjection().code;
-    const features = this.getFeatures(skipFilter, filter);
-    const extent = ImplUtils.getFeaturesExtent(features, codeProj);
-    return extent;
   }
 
   /**

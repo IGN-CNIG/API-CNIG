@@ -21,6 +21,7 @@ import OLLayerTile from 'ol/layer/Tile';
 import { isArray } from 'M/util/Utils';
 import { optionsFromCapabilities } from 'patches';
 import LayerBase from './Layer';
+import getLayerExtent from '../util/wmtscapabilities';
 /**
  * @classdesc
  * WMTS (Web Map Tile Service) es un estándar OGC para servir información geográfica
@@ -51,7 +52,9 @@ class WMTS extends LayerBase {
    * - format: Formato.
    * - visibility: Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - crossOrigin: Atributo crossOrigin para las imágenes cargadas
    * - opacity: Opacidad de capa, por defecto 1.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import { default as OLSourceWMTS } from 'ol/source/WMTS';
@@ -103,6 +106,13 @@ class WMTS extends LayerBase {
      * WMS useCapabilities. Indica si se usa el getCapabilities.
      */
     this.useCapabilities = options.useCapabilities !== false;
+
+    /**
+     * CrossOrigin. Atributo crossOrigin para las imágenes cargadas
+     */
+    this.crossOrigin = (options.crossOrigin === null || options.crossOrigin === false) ? undefined : 'anonymous';
+
+    this.maxExtent = options.maxExtent || null;
   }
 
   /**
@@ -131,6 +141,7 @@ class WMTS extends LayerBase {
 
       this.capabilitiesOptionsPromise
         .then((capabilities) => {
+          this.getWGS84BoundingBoxCapabilities_(capabilities);
           // filter current layer capabilities
           const capabilitiesOptions = this.getFilterCapabilities_(capabilities);
           // adds layer from capabilities
@@ -139,6 +150,33 @@ class WMTS extends LayerBase {
     } else {
       this.addLayerNotCapabilities_();
     }
+  }
+
+  /**
+   * Este devuelve el WGS84BoundingBox de las capabilities.
+   * @param {Object} capabilities Capabilities de la capa.
+   * @returns  {Object} WGS84BoundingBox de las capabilities.
+   */
+  getWGS84BoundingBoxCapabilities_(capabilities) {
+    const contents = capabilities.Contents;
+    const defaultExtent = this.map.getMaxExtent();
+
+    if (!isNull(contents)) {
+      this.maxExtent = getLayerExtent(contents, this.name, this.map.getProjection().code, defaultExtent);
+    }
+    return this.maxExtent;
+  }
+
+
+  /**
+   * Devuelve la extensión máxima de la capa.
+   * @returns {Array} Extensión máxima.
+   */
+  getMaxExtent() {
+    if (!this.maxExtent) {
+      this.maxExtent = this.map.getMaxExtent();
+    }
+    return this.maxExtent;
   }
 
   /**
@@ -162,6 +200,7 @@ class WMTS extends LayerBase {
         const format = capabilities.getFormat(this.name);
 
         const newSource = new OLSourceWMTS({
+          crossOrigin: this.crossOrigin,
           url: this.url,
           layer: this.name,
           matrixSet,
@@ -188,31 +227,28 @@ class WMTS extends LayerBase {
    */
   setVisible(visibility) {
     this.visibility = visibility;
-    if (this.inRange() === true) {
-      // if this layer is base then it hides all base layers
-      if ((visibility === true) && (this.transparent !== true)) {
-        // hides all base layers
-        this.map.getBaseLayers()
-          .filter(layer => !layer.equals(this) && layer.isVisible())
-          .forEach(layer => layer.setVisible(false));
+    // if this layer is base then it hides all base layers
+    if ((visibility === true) && (this.isBase === true)) {
+      // hides all base layers
+      this.map.getBaseLayers()
+        .filter(layer => !layer.equals(this.facadeLayer_) && layer.isVisible())
+        .forEach(layer => layer.setVisible(false));
 
-        // set this layer visible
-        if (!isNullOrEmpty(this.ol3Layer)) {
-          this.ol3Layer.setVisible(visibility);
-        }
-
-        // updates resolutions and keep the bbox
-        const oldBbox = this.map.getBbox();
-        this.map.getImpl().updateResolutionsFromBaseLayer();
-        if (!isNullOrEmpty(oldBbox)) {
-          this.map.setBbox(oldBbox);
-        }
-      } else if (!isNullOrEmpty(this.ol3Layer)) {
+      // set this layer visible
+      if (!isNullOrEmpty(this.ol3Layer)) {
         this.ol3Layer.setVisible(visibility);
       }
+
+      // updates resolutions and keep the zoom
+      const oldZoom = this.map.getZoom();
+      this.map.getImpl().updateResolutionsFromBaseLayer();
+      if (!isNullOrEmpty(oldZoom)) {
+        this.map.setZoom(oldZoom);
+      }
+    } else if (!isNullOrEmpty(this.ol3Layer)) {
+      this.ol3Layer.setVisible(visibility);
     }
   }
-
   /**
    * Este método agrega esta capa como capa única.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -236,6 +272,7 @@ class WMTS extends LayerBase {
         //   matrixIds,
         // }),
         extent,
+        crossOrigin: this.crossOrigin,
       }, true));
 
       this.facadeLayer_.setFormat(capabilitiesOptionsVariable.format);
@@ -244,6 +281,8 @@ class WMTS extends LayerBase {
         source: wmtsSource,
         minResolution,
         maxResolution,
+        extent: this.userMaxExtent,
+        opacity: this.opacity_,
       }, this.vendorOptions_, true));
 
       // keeps z-index values before ol resets
@@ -312,6 +351,7 @@ class WMTS extends LayerBase {
         source: wmtsSource,
         minResolution,
         maxResolution,
+        extent: this.userMaxExtent,
       }, this.vendorOptions_, true));
 
       // keeps z-index values before ol resets
@@ -409,7 +449,7 @@ class WMTS extends LayerBase {
     if (isNullOrEmpty(this.capabilitiesOptionsPromise)) {
       const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
         return cap.url === this.url;
-      });
+      }) || {};
 
       if (capabilitiesInfo.capabilities) {
         this.capabilitiesOptionsPromise = capabilitiesInfo.capabilities;
@@ -438,7 +478,13 @@ class WMTS extends LayerBase {
         const getCapabilitiesUrl = getWMTSGetCapabilitiesUrl(this.url);
         const parser = new OLFormatWMTSCapabilities();
         getRemote(getCapabilitiesUrl).then((response) => {
-          const getCapabilitiesDocument = response.xml;
+          let getCapabilitiesDocument = response.xml;
+          const elementTag = getCapabilitiesDocument.getElementsByTagName('ows:Style');
+          if (elementTag.length > 0) {
+            const xmlToString = new XMLSerializer().serializeToString(getCapabilitiesDocument);
+            const text = xmlToString.replaceAll('ows:Style', 'Style');
+            getCapabilitiesDocument = new DOMParser().parseFromString(text, 'text/xml');
+          }
           const parsedCapabilities = parser.read(getCapabilitiesDocument);
           try {
             parsedCapabilities.Contents.Layer.forEach((l) => {

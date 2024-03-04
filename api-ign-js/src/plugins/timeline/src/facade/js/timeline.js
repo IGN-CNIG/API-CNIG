@@ -179,6 +179,13 @@ export default class Timeline extends M.Plugin {
        throw new Error ('Add correct typesTimeline, (absoluteSimple', 'absolute', 'relative)');
     }
 
+    this.intervals = this.intervals.filter(({layer}) => {
+      if (typeof layer === 'string') {
+        return !layer.includes('GenericRaster') || !layer.includes('GenericVector');
+      }
+      return layer.type !== 'GenericRaster' || layer.type !== 'GenericVector';
+    });
+
     this.control_ = new TimelineControl({
       intervals: this.intervals,
       animation: this.animation,

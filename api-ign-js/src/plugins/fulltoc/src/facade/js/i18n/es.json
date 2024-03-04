@@ -11,7 +11,8 @@
     "select_layer": "Debes seleccionar al menos una capa",
     "no_results": "No se han encontrado capas en este servicio",
     "codsi": "Ha ocurrido un error al consultar el catálogo CODSI",
-    "codsi_no_results": "No hay resultados para su búsqueda"
+    "codsi_no_results": "No hay resultados para su búsqueda",
+    "fulltoc_obsolete": "Mensaje para el desarrollador: M.plugin.FullTOC ha quedado obsoleto, utilice en su lugar M.plugin.Layerswitcher"
   },
   "tooltip": "Capas",
   "info": "Información",
