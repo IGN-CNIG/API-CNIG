@@ -33,6 +33,17 @@ export default class HelpControl extends M.Control {
     this.extendInitialExtraContents = options.extendInitialExtraContents;
 
     this.initialExtraContents = options.initialExtraContents;
+    if (!M.utils.isArray(this.initialExtraContents)) {
+      try {
+        this.initialExtraContents = this.initialExtraContents[M.language.getLang()];
+      } catch (e) {
+        try {
+          this.initialExtraContents = this.initialExtraContents.es;
+        } catch (ex) {
+          this.initialExtraContents = Object.keys(this.initialExtraContents)[0];
+        }
+      }
+    }
 
     this.defaultInitialContents = [
       { title: 'API-CNIG', content: `<div><h2>API-CNIG</h2><div><p style='text-align: center'>${getValue('welcome0')}: <a href='https://plataforma.idee.es/cnig-api' target='_blank'>https://plataforma.idee.es/cnig-api</a></p><p>${getValue('welcome1')}</p><h4>${getValue('welcome2')}</h4><p>${getValue('welcome3')}: <a href="https://github.com/IGN-CNIG/API-CNIG" target="_blank">https://github.com/IGN-CNIG/API-CNIG</a></p><h4>${getValue('welcome4')}</h4><p>${getValue('welcome5')}: <a href="http://componentes.cnig.es/api-core/test.html" target="_blank">http://componentes.cnig.es/api-core/test.html</a></p><h4>Wiki API-CNIG</h4><p>${getValue('welcome6')}: <a href="https://github.com/IGN-CNIG/API-CNIG/wiki" target="_blank">https://github.com/IGN-CNIG/API-CNIG/wiki</a></p><h4>${getValue('welcome7')}</h4><p>${getValue('welcome8')}: <a href="https://plataforma.idee.es/resources/GaleriaEjemplos_APICNIG/" target="_blank">https://plataforma.idee.es/resources/GaleriaEjemplos_APICNIG/</a></p><h4>${getValue('welcome9')}</h4><p>${getValue('welcome10')}: <a href="https://plataforma.idee.es/cnig-api" target="_blank">https://plataforma.idee.es/cnig-api</a></p></div>` },
@@ -43,6 +54,17 @@ export default class HelpControl extends M.Control {
     }
 
     this.finalExtraContents = options.finalExtraContents;
+    if (!M.utils.isArray(this.finalExtraContents)) {
+      try {
+        this.finalExtraContents = this.finalExtraContents[M.language.getLang()];
+      } catch (e) {
+        try {
+          this.finalExtraContents = this.finalExtraContents.es;
+        } catch (ex) {
+          this.finalExtraContents = Object.keys(this.finalExtraContents)[0];
+        }
+      }
+    }
 
     this.orderExtra = options.orderExtra;
 

@@ -18,7 +18,7 @@ import Help from 'facade/help';
       - Si no se desea mostrar la introducción por defecto se usará el parámetro extendInitialExtraContents a false
       - Si se desea extender la información que se muestra ANTES de la ayuda de los plugins/controles usar el parámetro initialExtraContents.
         - extendInitialExtraContents tiene que tener valor true
-        - initialExtraContents: [...]
+        - initialExtraContents: [...] o si se quiere indicar varios idiomas {es: [...]}
         - initialExtraContents tendrá el formato: 
           { title: '...', content: '...', subContents : [{ title: '...', content: '...'}]}
           - El subContents es opcional
@@ -33,14 +33,23 @@ import Help from 'facade/help';
   - Otras funcionalidades
       - Imprimir en PDF la ayuda
 
+  Notas:
+    - Con el tema de los idiomas:
+      - La ayuda de los plugins se mostrará con el idioma que tenga el visualizador
+      - El contenido extra por defecto igual
+      - El contenido extra definido por el usuario:
+        - Si el usuario indicó en el objeto el idioma que tiene el visualizar se mostrará
+        - En caso contrario se obtendrá el idioma español
+        - En caso de que no lo tenga especificado se mostrará el primero especificado por el usuario
+    - El buscador requiere más tiempo, ya que en Iberpix está con REACT, no sería copiar y pegar la función. Además busca hasta en el contenido.
 */
 
 // Probar idiomas
 // M.language.setLang('en');
 // Añadir buscador
 // Locator tendría 3 subapartados
-// Parametrizar título
-// Probar idomas con las ayudas
+
+M.language.setLang('en');
 
 const map = M.map({
   container: 'mapjs',
@@ -49,16 +58,49 @@ const map = M.map({
 
 const mp = new Help({
   position: 'TL', // TR, BR, TL, BL
-  tooltip: 'Mi ayuda',
-  header: {
-    images: [
-      'https://www.gravatar.com/avatar/586252adace7084ee98aa8977fe5cc2b?rating=PG&size=128&default=wavatar',
-      'https://www.gravatar.com/avatar/75df827b1b67c5f04f1715dd01016735?rating=PG&size=64x64&default=wavatar',
-    ],
-    title: 'Título definido por el usuario'
-  },
-  extendInitialExtraContents: true,
-  initialExtraContents: [
+  // tooltip: 'Mi ayuda',
+  // header: {
+  //   images: [
+  //     'https://www.gravatar.com/avatar/586252adace7084ee98aa8977fe5cc2b?rating=PG&size=128&default=wavatar',
+  //     'https://www.gravatar.com/avatar/75df827b1b67c5f04f1715dd01016735?rating=PG&size=64x64&default=wavatar',
+  //   ],
+  //   title: 'Título definido por el usuario'
+  // },
+  // extendInitialExtraContents: true,
+  // initialExtraContents: {es: [
+  //   { title: 'Índice 1', content: '<div><h2>Título 1</h2><div><p>Contenido 1</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
+  //     subContents : [
+  //       { title: 'Índice 2', content: '<div><h2>Título 2</h2><div><p>Contenido 2</p></div></div>'},
+  //     ]
+  //   },
+  //   { title: 'Índice 3', content: '<div><h2>Título 3</h2><div><p>Contenido 3</p></div></div>'},
+  //   { title: 'Índice 4', content: '<div><h2>Título 4</h2><div><p>Contenido 4</p></div></div>',
+  //     subContents : [
+  //       { title: 'Índice 5', content: '<div><h2>Título 5</h2><div><p>Contenido 5</p></div></div>',
+  //         subContents : [{ title: 'Índice 6', content: '<div><h2>Título 6</h2><div><p>Contenido 6</p></div></div>',
+  //       subContents : [{ title: 'Índice 6 esp', content: '<div><h2>Título 6 esp</h2><div><p>Contenido 6 esp</p></div></div>' }], },
+  //     ]
+  //       },
+  //     ]
+  //   },
+  // ], en: [
+  //   { title: 'Index 1', content: '<div><h2>Title 1</h2><div><p>Content 1</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
+  //     subContents : [
+  //       { title: 'Index 2', content: '<div><h2>Title 2</h2><div><p>Content 2</p></div></div>'},
+  //     ]
+  //   },
+  //   { title: 'Index 3', content: '<div><h2>Title 3</h2><div><p>Content 3</p></div></div>'},
+  //   { title: 'Index 4', content: '<div><h2>Title 4</h2><div><p>Content 4</p></div></div>',
+  //     subContents : [
+  //       { title: 'Index 5', content: '<div><h2>Title 5</h2><div><p>Content 5</p></div></div>',
+  //         subContents : [{ title: 'Index 6', content: '<div><h2>Title 6</h2><div><p>Content 6</p></div></div>',
+  //       subContents : [{ title: 'Index 6 esp', content: '<div><h2>Title 6 esp</h2><div><p>Content 6 esp</p></div></div>' }], },
+  //     ]
+  //       },
+  //     ]
+  //   },
+  // ]},
+    initialExtraContents: [
     { title: 'Índice 1', content: '<div><h2>Título 1</h2><div><p>Contenido 1</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
       subContents : [
         { title: 'Índice 2', content: '<div><h2>Título 2</h2><div><p>Contenido 2</p></div></div>'},
@@ -75,7 +117,7 @@ const mp = new Help({
       ]
     },
   ],
-  finalExtraContents: [
+  finalExtraContents: { es: [
     { title: 'Índice 7', content: '<div><h2>Título 7</h2><div><p>Contenido 7</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
       subContents : [
         { title: 'Índice 8', content: '<div><h2>Título 8</h2><div><p>Contenido 8</p></div></div>'},
@@ -90,7 +132,38 @@ const mp = new Help({
         },
       ]
     },
-  ],
+  ], en: [
+    { title: 'Index 7', content: '<div><h2>Title 7</h2><div><p>Content 7</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
+      subContents : [
+        { title: 'Index 8', content: '<div><h2>Title 8</h2><div><p>Content 8</p></div></div>'},
+      ]
+    },
+    { title: 'Index 9', content: '<div><h2>Title 9</h2><div><p>Content 9</p></div></div>'},
+    { title: 'Index 10', content: '<div><h2>Title 10</h2><div><p>Content 10</p></div></div>',
+      subContents : [
+        { title: 'Index 11', content: '<div><h2>Title 11</h2><div><p>Content 11</p></div></div>',
+          subContents : [{ title: 'Index 12', content: '<div><h2>Title 10</h2><div><p>Content 12</p></div></div>' },
+      ]
+        },
+      ]
+    },
+  ]},
+  // finalExtraContents: [
+  //   { title: 'Índice 7', content: '<div><h2>Título 7</h2><div><p>Contenido 7</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
+  //     subContents : [
+  //       { title: 'Índice 8', content: '<div><h2>Título 8</h2><div><p>Contenido 8</p></div></div>'},
+  //     ]
+  //   },
+  //   { title: 'Índice 9', content: '<div><h2>Título 9</h2><div><p>Contenido 9</p></div></div>'},
+  //   { title: 'Índice 10', content: '<div><h2>Título 10</h2><div><p>Contenido 10</p></div></div>',
+  //     subContents : [
+  //       { title: 'Índice 11', content: '<div><h2>Título 11</h2><div><p>Contenido 11</p></div></div>',
+  //         subContents : [{ title: 'Índice 12', content: '<div><h2>Título 10</h2><div><p>Contenido 12</p></div></div>' },
+  //     ]
+  //       },
+  //     ]
+  //   },
+  // ],
 });
 
 map.addPlugin(mp); 
