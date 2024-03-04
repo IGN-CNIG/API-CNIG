@@ -47,13 +47,23 @@ export default class Help extends M.Plugin {
      */
     this.position_ = options.position || 'TR';
 
+    const header = options.header || {};
+
     /**
      * Imágenes para la cabecera
      *
      * @private
      * @type {Array}
      */
-    this.headerImages_ = options.header.images || [`${M.config.MAPEA_URL}img/logo_ge.svg`, `${M.config.MAPEA_URL}img/ign.svg`];
+    this.headerImages_ = header.images ? header.images : [`${M.config.MAPEA_URL}img/logo_ge.svg`, `${M.config.MAPEA_URL}img/ign.svg`];
+
+    /**
+     * Título
+     *
+     * @private
+     * @type {String}
+     */
+    this.headerTitle_ = header.title ? header.title : getValue('long_title');
 
     /**
      * Tooltip
@@ -95,14 +105,6 @@ export default class Help extends M.Plugin {
      * @type {Array}
      */
     this.finalExtraContents = options.finalExtraContents || [];
-
-    /**
-     * Título
-     *
-     * @private
-     * @type {String}
-     */
-    this.headerTitle_ = options.header.title || getValue('long_title');
 
     /**
      * Metadata api.json

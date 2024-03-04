@@ -2,29 +2,37 @@ import Help from 'facade/help';
 
 /*
   Necesidades:
-  - Se podrá posicionar en TL, TR, BL y BR
-  - Se podrá parametrizar el diseño de la cabecera:
-    - Imágenes
-    - Título
+  - Parámetros básicos
+    - Position: por defecto TR
+    - Nota: collapsed, collapsible e isDraggable: no están implementados porque no tiene panel
+    - Collapsible: no tendrá efecto ya que no tiene panel
+    - Tooltip: por defecto Ayuda
+  - Parámetros del plugin
+    - Cabecera: puede recibir título e imágenes.
       header: {
-        images: ['url1', 'url2'], => Por defecto: [`${M.config.MAPEA_URL}img/logo_ge.svg`, `${M.config.MAPEA_URL}img/ign.svg`]
-        title: 'Texto' => Por defecto: Ayuda API-CNIG
+        images: [...], Por defecto: [`${M.config.MAPEA_URL}img/logo_ge.svg`, `${M.config.MAPEA_URL}img/ign.svg`]
+        title: '...' Por defecto: Ayuda API-CNIG
       }
-  - Formato del contenido de ayuda
-    Contenido inicial extra. Parámetro initialExtraContents
-      + Es un array de contenidos
-        + Formato 1 { title: 'text', content: 'text' }
-        + Formato 2 { title: 'text', content: 'text', subContents: [{ title: 'text', content: 'text' }, ...] }
-    Contenido inicial por defecto
-      + Se muestra por defecto
-      + en caso de no querer mostrarla indicar el parámetro extendInitialExtraContents a false
-      + En caso de que se muestre junto al contenido inicial se mostrará en última posición
-    Herramientas
-      PLugins y controles
-    Contenido final extra
-      + Es un array de contenidos
-        + Formato 1 { title: 'text', content: 'text' }
-        + Formato 2 { title: 'text', content: 'text', subContents: [{ title: 'text', content: 'text' }, ...] }
+    - Ayuda para mostrar (inicial):
+      - Por defecto mostrará una introducción de la API-CNIG y la ayuda de los plugins que dispongan de ello
+      - Si no se desea mostrar la introducción por defecto se usará el parámetro extendInitialExtraContents a false
+      - Si se desea extender la información que se muestra ANTES de la ayuda de los plugins/controles usar el parámetro initialExtraContents.
+        - extendInitialExtraContents tiene que tener valor true
+        - initialExtraContents: [...]
+        - initialExtraContents tendrá el formato: 
+          { title: '...', content: '...', subContents : [{ title: '...', content: '...'}]}
+          - El subContents es opcional
+          - Formato recomendable para content es:
+            <div><h2>Titulo</h2><div>HTML</div></div>
+          - La información por defecto de la API se añadirá después de la indicada por el usuario
+    - Ayuda plugins y controles
+      - Siempre lo muestra
+    - Ayuda para mostrar (final):
+      - Independiente de los parámetros extendInitialExtraContents e initialExtraContents
+      - Es igual que initialExtraContents pero llamándose finalExtraContents
+  - Otras funcionalidades
+      - Imprimir en PDF la ayuda
+
 */
 
 // Probar idiomas
@@ -33,8 +41,6 @@ import Help from 'facade/help';
 // Locator tendría 3 subapartados
 // Parametrizar título
 // Probar idomas con las ayudas
-// imprimir PDF
-// Definir número de niveles
 
 const map = M.map({
   container: 'mapjs',
@@ -42,44 +48,49 @@ const map = M.map({
 
 
 const mp = new Help({
+  position: 'TL', // TR, BR, TL, BL
+  tooltip: 'Mi ayuda',
   header: {
     images: [
-    'https://www.gravatar.com/avatar/586252adace7084ee98aa8977fe5cc2b?rating=PG&size=128&default=wavatar',
-    'https://www.gravatar.com/avatar/75df827b1b67c5f04f1715dd01016735?rating=PG&size=64x64&default=wavatar',
+      'https://www.gravatar.com/avatar/586252adace7084ee98aa8977fe5cc2b?rating=PG&size=128&default=wavatar',
+      'https://www.gravatar.com/avatar/75df827b1b67c5f04f1715dd01016735?rating=PG&size=64x64&default=wavatar',
     ],
     title: 'Título definido por el usuario'
   },
-  position: 'TL',
-  extendInitialExtraContents: false,
+  extendInitialExtraContents: true,
   initialExtraContents: [
-    { title: 'Título 1 - índice', content: '<div><h2>Título 1 - título</h2><div><p>Título 1 - Contenido</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="500" height="600"></div></div>',
+    { title: 'Índice 1', content: '<div><h2>Título 1</h2><div><p>Contenido 1</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
       subContents : [
-        { title: 'Título 2 - sub - indice', content: '<div><h2>Título 2 - sub - título</h2><div><p>Título 2 - sub - Contenido</p></div></div>'},
+        { title: 'Índice 2', content: '<div><h2>Título 2</h2><div><p>Contenido 2</p></div></div>'},
       ]
     },
-    { title: 'Título 3 - índice', content: '<div><h2>Título 3 - título</h2><div><p>Título 3 - Contenido</p></div></div>'},
-    { title: 'Título 4 - índice', content: '<div><h2>Título 4 - título</h2><div><p>Título 4 - Contenido</p></div></div>',
+    { title: 'Índice 3', content: '<div><h2>Título 3</h2><div><p>Contenido 3</p></div></div>'},
+    { title: 'Índice 4', content: '<div><h2>Título 4</h2><div><p>Contenido 4</p></div></div>',
       subContents : [
-        { title: 'Título 5 - sub - indice', content: '<div><h2>Título 5 - sub - título</h2><div><p>Título 5 - sub - Contenido</p></div></div>',
-          subContents : [{ title: 'Título 55 - sub - indice', content: '<div><h2>Título 55 - sub - título</h2><div><p>Título 55 - sub - Contenido</p></div></div>' },
+        { title: 'Índice 5', content: '<div><h2>Título 5</h2><div><p>Contenido 5</p></div></div>',
+          subContents : [{ title: 'Índice 6', content: '<div><h2>Título 6</h2><div><p>Contenido 6</p></div></div>',
+        subContents : [{ title: 'Índice 6 esp', content: '<div><h2>Título 6 esp</h2><div><p>Contenido 6 esp</p></div></div>' }], },
       ]
         },
       ]
     },
   ],
   finalExtraContents: [
-    { title: 'Título 6 - índice', content: '<div><h2>Título 6 - título</h2><div><p>Título 6 - Contenido</p></div></div>',
+    { title: 'Índice 7', content: '<div><h2>Título 7</h2><div><p>Contenido 7</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
       subContents : [
-        { title: 'Título 7 - sub - indice', content: '<div><h2>Título 7 - sub - título</h2><div><p>Título 7 - sub - Contenido</p></div></div>' },
+        { title: 'Índice 8', content: '<div><h2>Título 8</h2><div><p>Contenido 8</p></div></div>'},
       ]
     },
-    { title: 'Título 8 - índice', content: '<div><h2>Título 8 - título</h2><div><p>Título 8 - Contenido</p></div></div>'},
-    { title: 'Título 9 - índice', content: '<div><h2>Título 9 - título</h2><div><p>Título 9 - Contenido</p></div></div>',
+    { title: 'Índice 9', content: '<div><h2>Título 9</h2><div><p>Contenido 9</p></div></div>'},
+    { title: 'Índice 10', content: '<div><h2>Título 10</h2><div><p>Contenido 10</p></div></div>',
       subContents : [
-        { title: 'Título 10 - sub - indice', content: '<div><h2>Título 10 - sub - título</h2><div><p>Título 10 - sub - Contenido</p></div></div>' },
+        { title: 'Índice 11', content: '<div><h2>Título 11</h2><div><p>Contenido 11</p></div></div>',
+          subContents : [{ title: 'Índice 12', content: '<div><h2>Título 10</h2><div><p>Contenido 12</p></div></div>' },
+      ]
+        },
       ]
     },
-  ]
+  ],
 });
 
 map.addPlugin(mp); 

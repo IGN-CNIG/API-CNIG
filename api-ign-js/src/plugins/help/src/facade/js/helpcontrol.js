@@ -86,7 +86,7 @@ export default class HelpControl extends M.Control {
    * @api
    */
   showHelp() {
-    let allContents = this.initialExtraContents;
+    let allContents = [...this.initialExtraContents];
     allContents.push({
       title: getValue('tools'),
       content: '<div><h2>Herramientas</h2><div><p>Apartado para texto de herramientas</p></div></div>',
@@ -95,30 +95,6 @@ export default class HelpControl extends M.Control {
     allContents = [...allContents, ...this.finalExtraContents];
 
     const list = `<ol>${this.generateExtraContent(allContents)}</ol>`;
-
-    // this.generateExtraContent(this.finalExtraContents);
-
-
-    // this.generateInitialContents();
-
-    // this.subCount = 0;
-    // this.count += 1;
-
-    // this.nameIndex.push({
-    //   name: `${this.count}. ${getValue('tools')}`,
-    //   id: getValue('tools'),
-    //   sub: '',
-    //   isSub: false,
-    // });
-    // this.helpsContent.
-    // push(M.utils.stringToHtml('<div><h2>Herramientas</h2><div><p>Apartado
-    // para texto de herramientas</p></div></div>'));
-
-    // this.getHelpsPluginsControls();
-
-    // this.subCount = 0;
-
-    // this.generateFinalContents();
 
     Promise.all(this.helpsContent).then((resultsHelps) => {
       const html = M.template.compileSync(helps, {
@@ -139,19 +115,19 @@ export default class HelpControl extends M.Control {
       windowHelp.document.open();
       windowHelp.document.write(html);
 
-      const listContent = windowHelp.document.querySelector('#m-help-index > div');
-      listContent.appendChild(M.utils.stringToHtml(list));
-
-      const contents = windowHelp.document.querySelector('#m-help-contents');
-      resultsHelps.forEach((element, index) => {
-        const divContainer = document.createElement('div');
-        divContainer.classList.add('m-help-hidden');
-        divContainer.id = `help-element-${index}`;
-        divContainer.appendChild(element);
-        contents.appendChild(divContainer);
-      });
       windowHelp.document.close();
       windowHelp.addEventListener('load', () => {
+        const listContent = windowHelp.document.querySelector('#m-help-index > div');
+        listContent.appendChild(M.utils.stringToHtml(list));
+
+        const contents = windowHelp.document.querySelector('#m-help-contents');
+        resultsHelps.forEach((element, index) => {
+          const divContainer = document.createElement('div');
+          divContainer.classList.add('m-help-hidden');
+          divContainer.id = `help-element-${index}`;
+          divContainer.appendChild(element);
+          contents.appendChild(divContainer);
+        });
         windowHelp.document.querySelector('#m-help-index > div > ol > li > span').click();
       });
 
@@ -186,12 +162,12 @@ export default class HelpControl extends M.Control {
       let subContentHTML = '<ol>';
       subContentsArray.forEach(({ title, content, subContents }) => {
         count += 1;
-        subContentHTML += `<li><span onclick="showContent('help-element-${count}', event)">${title}${generateSubContent(subContents)}</span></li>`;
         if (M.utils.isString(content)) {
           this.helpsContent.push(M.utils.stringToHtml(content));
         } else {
           this.helpsContent.push(content);
         }
+        subContentHTML += `<li><span onclick="showContent('help-element-${count}', event)">${title}${generateSubContent(subContents)}</span></li>`;
       });
       subContentHTML += '</ol>';
       return subContentHTML;
