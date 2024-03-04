@@ -1,0 +1,11 @@
+- Recomendable que todos los plugins tengan una carpeta images que se llame icon.svg con el icono del plugin.
+- Parámetro header para la plantilla de ayuda - cabecera - que puede contener 
+  - images: array con URLs de imágenes
+- Parámetro extendInitialExtraContents para contenido que se añadirá antes del listado de los plugins y controles. Es un array que contiene
+  - Objetos que contiene title y content
+  - Array de objetos
+-  Parámetro extendInitialExtraContents para extender el contenido inicial con el de por defecto de la API. Valores true/false
+- Parámetro finalExtraContents para contenido que se añadirá después del listado de los plugins y controles. Es un array que contiene
+  - Objetos que contiene title y content
+  - Array de objetos
+- Permite 1 nivel de anidamiento

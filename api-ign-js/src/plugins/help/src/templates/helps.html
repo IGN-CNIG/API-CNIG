@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{translations.header}}</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Muli,sans-serif;
+    }
+
+    #m-help-header {
+      height: 50px;
+      background-color: #364b5f;
+      display: flex;
+      align-items: center;
+    }
+
+    #m-help-header > img {
+      max-height: 50px;
+      margin-left: 0.2rem;
+    }
+
+    #m-help-header > h1 {
+      margin: 0 auto;
+      color: white;
+    }
+
+    #m-help-section {
+      display: flex;
+      height: calc(100vh - 50px);
+    }
+
+    #m-help-index {
+      width: 20%;
+      float: left;
+      box-shadow: 0 1px 5px 0 rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.12);
+      overflow-y: auto;
+    }
+
+    #m-help-index > div > h4 {
+      text-align: center;
+    }
+
+    #m-help-content {
+      width: 80%;
+      float: right;
+      margin: 15px;
+    }
+
+    .m-help-hidden {
+      display: none;
+    }
+
+    .m-help-show {
+      display: block;
+    }
+
+    .m-help-active {
+      background-color: rgba(63, 81, 181, 0.12);
+    }
+
+    h2 {
+      text-align: center;
+      color: #fff;
+      background-color: #364b5f;
+      padding: 8px 10px;
+    }
+
+    h2 > img {
+      vertical-align: bottom
+    }
+
+    #m-help-index > div > div {
+      cursor: pointer;
+    }
+
+    #m-help-index > div > div:hover {
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    .m-help-subtitle {
+      margin-left: 10px;
+    }
+
+    #m-help-download {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+    }
+
+    #m-help-download > img {
+      width: 90%;
+      height: 90%;
+    }
+
+    ol {
+      counter-reset: item;
+      list-style: none;
+    }
+
+    li:before {
+      content: counters(item, ".") " ";
+      counter-increment: item;
+    }
+  </style>
+
+  <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script> 
+
+  <script>
+    const showContent = (idContent, e) => {
+      console.log('ayuda');
+      const hidden = document.getElementsByClassName('m-help-show');
+      if(hidden.length >= 1){
+        hidden[0].classList.add('m-help-hidden');
+        hidden[0].classList.remove('m-help-show');
+        const active = document.getElementsByClassName('m-help-active');
+        if(active.length >= 1){
+          active[0].classList.remove('m-help-active');
+        }
+      }
+      const show = document.getElementById(idContent);
+      show.classList.add('m-help-show');
+      show.classList.remove('m-help-hidden');
+      e.stopPropagation();
+      e.target.classList.add('m-help-active');
+    }
+
+    const downloadPDF = () => {
+      window.printJS('m-help-content', 'html')
+    }
+  </script>
+</head>
+<body>
+    <header id="m-help-header">
+      {{#each headerImages}}
+        <img src="{{this}}">
+      {{/each}}
+      <h1>{{translations.title}}</h1>
+      <button id='m-help-download' onclick="downloadPDF()" title="{{translations.tooltip}}">
+        <img src="https://mapea-lite.desarrollo.guadaltel.es/api-core/img/file-pdf.svg">
+      </button>
+    </header>
+    <section id="m-help-section">
+      <div id="m-help-index">
+        <div>
+          <h4>{{translations.index}}</h4>
+        </div>
+      </div>
+      <div id="m-help-content">
+        <div id="m-help-contents">
+          <div>
+            <div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</body>
+</html>
