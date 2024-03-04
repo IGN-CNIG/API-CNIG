@@ -413,6 +413,7 @@ const proj3395 = {
  * Sistema de coordenadas cartesiano, geocéntrico con ejes X,Y,Z.
  * Su orientación sería el plano XY como plano ecuatorial, el eje X positivo en al intersección con el meridiano principal.
  * El eje Z es paralelo al eje de rotación medio de la tierra y positivo hacia el polo Norte.
+ * El eje Y completa el triedro.
  * @type {Object}
  * @public
  * @api
@@ -423,6 +424,25 @@ const proj4328 = {
   codes: ['EPSG:4328', 'urn:ogc:def:crs:EPSG::4328', 'https://www.opengis.net/def/crs/EPSG/0/4328'],
   units: 'm',
   datum: 'WGS 84',
+  proj: 'XYZ (geocéntricas)',
+};
+
+/**
+ * EPSG:4346 ETRS89 geocéntricas
+ * Sistema de coordenadas cartesiano, geocéntrico con ejes X,Y,Z.
+ * Su orientación sería el plano XY como plano ecuatorial, el eje X positivo en al intersección con el meridiano principal.
+ * El eje Z es paralelo al eje de rotación medio de la tierra y positivo hacia el polo Norte.
+ * El eje Y completa el triedro.
+ * @type {Object}
+ * @public
+ * @api
+ */
+const proj4346 = {
+  def: '+proj=geocent +ellps=GRS80 +units=m +no_defs +type=crs',
+  extent: [-Infinity, -Infinity, Infinity, Infinity],
+  codes: ['EPSG:4346', 'urn:ogc:def:crs:EPSG::4346', 'https://www.opengis.net/def/crs/EPSG/0/4346'],
+  units: 'm',
+  datum: 'GRS80 (ETRS89)',
   proj: 'XYZ (geocéntricas)',
 };
 
@@ -454,6 +474,8 @@ const projections = [
   proj4082,
   proj4083,
   proj3395,
+  proj4328,
+  proj4346,
 ];
 
 /**
