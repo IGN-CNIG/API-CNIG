@@ -52,11 +52,11 @@
       margin: 15px;
     }
 
-    .m-help-hidden {
+    .m-help-hidden, .m-help-hidden-index {
       display: none;
     }
 
-    .m-help-show {
+    .m-help-show, .m-help-show-index {
       display: block;
     }
 
@@ -102,13 +102,22 @@
       content: counters(item, ".") " ";
       counter-increment: item;
     }
+
+    #m-help-toggle {
+      background-color: #364860;
+      border: 2px solid white;
+      height: 28px;
+      position: fixed;
+      float: left;
+      color: white;
+      left: 21%;
+    }
   </style>
 
   <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script> 
 
   <script>
     const showContent = (idContent, e) => {
-      console.log('ayuda');
       const hidden = document.getElementsByClassName('m-help-show');
       if(hidden.length >= 1){
         hidden[0].classList.add('m-help-hidden');
@@ -126,7 +135,24 @@
     }
 
     const downloadPDF = () => {
-      window.printJS('m-help-content', 'html')
+      window.printJS('m-help-contents', 'html')
+    }
+
+    const changeStatusIndex = () => {
+      const mIndex = document.getElementById('m-help-index');
+      const mContainer = document.getElementById('m-help-content');
+      const mToggle = document.getElementById('m-help-toggle');
+      if (mIndex.classList.contains('m-help-show-index')) {
+        mIndex.classList.remove('m-help-show-index');
+        mIndex.classList.add('m-help-hidden-index');
+        mContainer.style.width = '100%';
+        mToggle.style.left = '0';
+      } else {
+        mIndex.classList.add('m-help-show-index');
+        mIndex.classList.remove('m-help-hidden-index');
+        mContainer.style.width = '80%';
+        mToggle.style.left = '21%';
+      }
     }
   </script>
 </head>
@@ -141,12 +167,15 @@
       </button>
     </header>
     <section id="m-help-section">
-      <div id="m-help-index">
+      <div id="m-help-index" class="m-help-show-index">
         <div>
           <h4>{{translations.index}}</h4>
         </div>
       </div>
       <div id="m-help-content">
+        <div id="m-help-toggle" onclick="changeStatusIndex()">
+          <svg fill="currentColor" height="28px" width="28px" viewBox="0 0 24 24" style="display: inline-block; vertical-align: middle;"><path d="M14.414 5.586c-.78-.781-2.048-.781-2.828 0l-6.415 6.414 6.415 6.414c.39.391.902.586 1.414.586s1.024-.195 1.414-.586c.781-.781.781-2.047 0-2.828l-3.585-3.586 3.585-3.586c.781-.781.781-2.047 0-2.828z"></path></svg>  
+        </div>
         <div id="m-help-contents">
           <div>
             <div>

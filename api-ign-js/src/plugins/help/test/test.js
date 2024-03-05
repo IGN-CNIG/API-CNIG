@@ -44,9 +44,10 @@ import Help from 'facade/help';
     - Por rest sin base64 sólo se podrá indicar los parámetros position, tooltip y extendInitialExtraContents, usando base64 todos los parámetros
 */
 
-// Probar idiomas
+
 // M.language.setLang('en');
 // Añadir buscador
+// Añadir ocultar
 // Locator tendría 3 subapartados
 // Revisar el compartir este plugin
 
