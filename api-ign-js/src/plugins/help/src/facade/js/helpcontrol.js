@@ -48,7 +48,7 @@ export default class HelpControl extends M.Control {
     }
 
     this.defaultInitialContents = [
-      { title: 'API-CNIG', content: `<div><h2>API-CNIG</h2><div><p style='text-align: center'>${getValue('welcome0')}: <a href='https://plataforma.idee.es/cnig-api' target='_blank'>https://plataforma.idee.es/cnig-api</a></p><p>${getValue('welcome1')}</p><h4>${getValue('welcome2')}</h4><p>${getValue('welcome3')}: <a href="https://github.com/IGN-CNIG/API-CNIG" target="_blank">https://github.com/IGN-CNIG/API-CNIG</a></p><h4>${getValue('welcome4')}</h4><p>${getValue('welcome5')}: <a href="http://componentes.cnig.es/api-core/test.html" target="_blank">http://componentes.cnig.es/api-core/test.html</a></p><h4>Wiki API-CNIG</h4><p>${getValue('welcome6')}: <a href="https://github.com/IGN-CNIG/API-CNIG/wiki" target="_blank">https://github.com/IGN-CNIG/API-CNIG/wiki</a></p><h4>${getValue('welcome7')}</h4><p>${getValue('welcome8')}: <a href="https://plataforma.idee.es/resources/GaleriaEjemplos_APICNIG/" target="_blank">https://plataforma.idee.es/resources/GaleriaEjemplos_APICNIG/</a></p><h4>${getValue('welcome9')}</h4><p>${getValue('welcome10')}: <a href="https://plataforma.idee.es/cnig-api" target="_blank">https://plataforma.idee.es/cnig-api</a></p></div>` },
+      { title: 'API-CNIG', content: `<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">API-CNIG</h2><div><p style='text-align: center'>${getValue('welcome0')}: <a href='https://plataforma.idee.es/cnig-api' target='_blank'>https://plataforma.idee.es/cnig-api</a></p><p>${getValue('welcome1')}</p><h4>${getValue('welcome2')}</h4><p>${getValue('welcome3')}: <a href="https://github.com/IGN-CNIG/API-CNIG" target="_blank">https://github.com/IGN-CNIG/API-CNIG</a></p><h4>${getValue('welcome4')}</h4><p>${getValue('welcome5')}: <a href="http://componentes.cnig.es/api-core/test.html" target="_blank">http://componentes.cnig.es/api-core/test.html</a></p><h4>Wiki API-CNIG</h4><p>${getValue('welcome6')}: <a href="https://github.com/IGN-CNIG/API-CNIG/wiki" target="_blank">https://github.com/IGN-CNIG/API-CNIG/wiki</a></p><h4>${getValue('welcome7')}</h4><p>${getValue('welcome8')}: <a href="https://plataforma.idee.es/resources/GaleriaEjemplos_APICNIG/" target="_blank">https://plataforma.idee.es/resources/GaleriaEjemplos_APICNIG/</a></p><h4>${getValue('welcome9')}</h4><p>${getValue('welcome10')}: <a href="https://plataforma.idee.es/cnig-api" target="_blank">https://plataforma.idee.es/cnig-api</a></p></div>` },
     ];
 
     if (this.extendInitialExtraContents) {
@@ -106,7 +106,7 @@ export default class HelpControl extends M.Control {
     let allContents = [...this.initialExtraContents];
     allContents.push({
       title: getValue('tools'),
-      content: `<div><h2>${getValue('tools')}</h2><div><p>${getValue('tools1')}</p></div></div>`,
+      content: `<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">${getValue('tools')}</h2><div><p>${getValue('tools1')}</p></div></div>`,
       subContents: this.getHelpsPluginsControls(),
     });
     allContents = [...allContents, ...this.finalExtraContents];
