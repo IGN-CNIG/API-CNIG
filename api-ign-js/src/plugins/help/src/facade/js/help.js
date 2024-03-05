@@ -87,13 +87,13 @@ export default class Help extends M.Plugin {
      * @private
      * @type {Array}
      */
-    this.initialExtraContents = options.initialExtraContents || [];
+    this.initialExtraContents_ = options.initialExtraContents || [];
 
     /**
-     * Contenido inicial por defecto
+     * Define si se extiende el contenido inicial o no
      *
      * @private
-     * @type {Array}
+     * @type {Boolean}
      */
     this.extendInitialExtraContents = M.utils.isUndefined(options.extendInitialExtraContents) ?
       true : options.extendInitialExtraContents;
@@ -104,7 +104,7 @@ export default class Help extends M.Plugin {
      * @private
      * @type {Array}
      */
-    this.finalExtraContents = options.finalExtraContents || [];
+    this.finalExtraContents_ = options.finalExtraContents || [];
 
     /**
      * Metadata api.json
@@ -114,13 +114,13 @@ export default class Help extends M.Plugin {
     this.metadata_ = api.metadata;
 
     /**
-     *@private
-     *@type {Number}
+     * @private
+     * @type {Number}
      */
     this.order = options.order >= -1 ? options.order : null;
 
     /**
-     * Parámetros
+     * Parámetros del plugin
      * @public
      * @type {object}
      */
@@ -154,8 +154,8 @@ export default class Help extends M.Plugin {
     this.ctrl = new HelpControl({
       tooltip: this.tooltip_,
       order: this.order,
-      initialExtraContents: this.initialExtraContents,
-      finalExtraContents: this.finalExtraContents,
+      initialExtraContents: this.initialExtraContents_,
+      finalExtraContents: this.finalExtraContents_,
       extendInitialExtraContents: this.extendInitialExtraContents,
       headerImages: this.headerImages_,
       headerTitle: this.headerTitle_,
@@ -202,7 +202,7 @@ export default class Help extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    const cadena = `${this.name_}=${this.position_}*${this.tooltip_}`;
+    const cadena = `${this.name_}=${this.position_}*${this.tooltip_}*${this.extendInitialExtraContents_}`;
     return cadena;
   }
 

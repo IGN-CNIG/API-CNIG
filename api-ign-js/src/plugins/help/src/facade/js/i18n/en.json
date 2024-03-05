@@ -20,5 +20,6 @@
   "welcome9": "Training Resources",
   "welcome10": "Link to training resources",
   "help1": "This tool allows you to create an HTML page on the fly with the help of plugins and controls that have implemented the 'getHelp' method to obtain help from each of them.",
-  "help2": "It also allows you to display extra content added by the user to the help."
+  "help2": "It also allows you to display extra content added by the user to the help.",
+  "tools1": "The API-CNIG has a series of controls and extensions that allow the user to interact with the map."
 }

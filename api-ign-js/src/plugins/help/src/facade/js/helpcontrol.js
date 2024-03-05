@@ -26,6 +26,8 @@ export default class HelpControl extends M.Control {
     // Opciones
     this.headerImages = options.headerImages;
 
+    this.headerTitle = options.headerTitle;
+
     this.tooltip = options.tooltip;
 
     this.order = options.order;
@@ -66,14 +68,7 @@ export default class HelpControl extends M.Control {
       }
     }
 
-    this.orderExtra = options.orderExtra;
-
-    this.headerTitle = options.headerTitle;
-
-    this.nameIndex = [];
     this.helpsContent = [];
-
-    this.currentIndex = 0;
   }
 
   /**
@@ -111,7 +106,7 @@ export default class HelpControl extends M.Control {
     let allContents = [...this.initialExtraContents];
     allContents.push({
       title: getValue('tools'),
-      content: '<div><h2>Herramientas</h2><div><p>Apartado para texto de herramientas</p></div></div>',
+      content: `<div><h2>${getValue('tools')}</h2><div><p>${getValue('tools1')}</p></div></div>`,
       subContents: this.getHelpsPluginsControls(),
     });
     allContents = [...allContents, ...this.finalExtraContents];
@@ -123,7 +118,7 @@ export default class HelpControl extends M.Control {
         parseToHtml: false,
         vars: {
           headerImages: this.headerImages,
-          namePlugins: this.nameIndex,
+          downloadPDFimg: `${M.config.MAPEA_URL}img/file-pdf.svg`,
           translations: {
             header: getValue('short_title'),
             title: this.headerTitle,
@@ -153,7 +148,6 @@ export default class HelpControl extends M.Control {
         windowHelp.document.querySelector('#m-help-index > div > ol > li > span').click();
       });
 
-      this.nameIndex = [];
       this.helpsContent = [];
     });
   }

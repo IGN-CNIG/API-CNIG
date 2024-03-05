@@ -107,17 +107,13 @@
       height: 90%;
     }
 
-    /* ol:first-of-type {
-      padding: 15px;
-    } */
-
-    ol {
+    #m-help-index ol {
       counter-reset: item;
       list-style: none;
       padding-left: 10px;
     }
 
-    li:before {
+    #m-help-index li:before {
       content: counters(item, ".") " ";
       counter-increment: item;
     }
@@ -156,7 +152,7 @@
       {{/each}}
       <h1>{{translations.title}}</h1>
       <button id='m-help-download' onclick="downloadPDF()" title="{{translations.tooltip}}">
-        <img src="https://mapea-lite.desarrollo.guadaltel.es/api-core/img/file-pdf.svg">
+        <img src="{{downloadPDFimg}}">
       </button>
     </header>
     <section id="m-help-section">

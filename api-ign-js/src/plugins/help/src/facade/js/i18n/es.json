@@ -19,5 +19,6 @@
   "welcome8": "Enlace a la galería de ejemplos",
   "welcome9": "Recursos Formativos",
   "help1": "Esta herramienta permite crear al vuelo una página HTML con la ayuda de los plugins y controles que tengan implementado el método 'getHelp' para obtener la ayuda de cada uno de ellos.",
-  "help2": "Además permite mostrar a la ayuda contenido extra que añada el usuario."
+  "help2": "Además permite mostrar a la ayuda contenido extra que añada el usuario.",
+  "tools1": "La API-CNIG cuenta cuenta con una serie de controles y extensiones que permiten al usuario interactuar con el mapa."
 }
