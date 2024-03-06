@@ -1,0 +1,35 @@
+<div class="m-vectorsmanagement-edition-container">
+    <div id="editionBtns">
+        <button id="edit" class="vectorsmanagement-icon-editar2" title="{{translations.editgeometria}}"></button>
+        <button id="holedrawing" class="vectorsmanagement-icon-scissors" title="{{translations.hole}}"></button>
+        <button id="rotatedrawing" class="vectorsmanagement-icon-resize-full-alt" title="{{translations.rotation}}"></button>
+        <button id="scaledrawing" class="vectorsmanagement-icon-tamano" title="{{translations.scale}}"></button>
+        <button id="movedrawing" class="vectorsmanagement-icon-mover" title="{{translations.move}}"></button>
+        <button id="editattribute" class="vectorsmanagement-icon-table" title="{{translations.attributes}}"></button>
+        <button id="cleanAll" class="vectorsmanagement-icon-papelera" title="{{translations.clean}}"></button>
+    </div>
+    <div id="edition-container" class="closed">
+        <div>
+            <div id="featureInfo" class="closed"></div>
+            <button id="m-vectorsmanagement-deletegeom-btn">{{translations.delete}}</button>
+        </div>
+    </div>
+    <div id="edition-attributes-container" class="closed">
+        <p class="popup-title" style="margin: 0; cursor: move;">{{translations.title_attribute_table}}</p>
+        <button class="m-panel-btn vectorsmanagement-icon-cancelar"></button>
+        <div>
+            <button id="add-attribute-btn">{{translations.newcolumn}}</button>
+            <div id="m-vectorsmanagement-attribute-table-container"></div>
+        </div>
+    </div>
+    <div id="clear-layer-modal" class="closed">
+        <p class="popup-title">{{translations.title_clear_geometries}}</p>
+        <div style="padding: 0 10px;">
+            <p>{{translations.clear_geometries_msg}}</p>
+        </div>
+        <div id="clean-modal-btns">
+            <button id="confirm-clear-btn">{{translations.confirm}}</button>
+            <button id="cancel-clear-btn">{{translations.cancel}}</button>
+        </div>
+    </div>
+</div>
