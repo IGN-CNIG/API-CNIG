@@ -184,7 +184,7 @@ export default class HelpControl extends M.Control {
         } else {
           this.helpsContent.push(content);
         }
-        subContentHTML += `<li><span onclick="showContent('help-element-${count}', event)">${title}${generateSubContent(subContents)}</span></li>`;
+        subContentHTML += `<li><span onclick="showContent('help-element-${count}', event)">${title}</span>${generateSubContent(subContents)}</li>`;
       });
       subContentHTML += '</ol>';
       return subContentHTML;
