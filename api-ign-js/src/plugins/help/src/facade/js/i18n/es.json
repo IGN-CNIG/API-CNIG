@@ -7,7 +7,6 @@
   "short_title": "Ayuda API-CNIG",
   "long_title": "Ayuda API-CNIG",
   "tools": "Herramientas",
-  "index": "Índice de contenidos",
   "welcome0": "Visualizador realizado con la API-CNIG",
   "welcome1": "API CNIG es una herramienta que permite integrar de una forma muy sencilla un visualizador de mapas interactivo en cualquier página web y configurarlo consumiendo ficheros WMC, servicios WMS, servicios WFS, ficheros KML, etc. Además, provee la capacidad de añadir una gran cantidad de herramientas y controles.",
   "welcome2": "Código API-CNIG",
@@ -20,5 +19,7 @@
   "welcome9": "Recursos Formativos",
   "help1": "Esta herramienta permite crear al vuelo una página HTML con la ayuda de los plugins y controles que tengan implementado el método 'getHelp' para obtener la ayuda de cada uno de ellos.",
   "help2": "Además permite mostrar a la ayuda contenido extra que añada el usuario.",
-  "tools1": "La API-CNIG cuenta cuenta con una serie de controles y extensiones que permiten al usuario interactuar con el mapa."
+  "tools1": "La API-CNIG cuenta cuenta con una serie de controles y extensiones que permiten al usuario interactuar con el mapa.",
+  "write": "Escribe aquí",
+  "search": "Buscar"
 }

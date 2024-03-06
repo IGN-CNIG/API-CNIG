@@ -123,8 +123,9 @@ export default class HelpControl extends M.Control {
             header: getValue('short_title'),
             title: this.headerTitle,
             tools: getValue('tools'),
-            index: getValue('index'),
             help: getValue('help'),
+            write: getValue('write'),
+            search: getValue('search'),
           },
         },
       });
@@ -134,7 +135,7 @@ export default class HelpControl extends M.Control {
 
       windowHelp.document.close();
       windowHelp.addEventListener('load', () => {
-        const listContent = windowHelp.document.querySelector('#m-help-index > div');
+        const listContent = windowHelp.document.querySelector('#m-help-index > div:nth-child(2)');
         listContent.appendChild(M.utils.stringToHtml(list));
 
         const contents = windowHelp.document.querySelector('#m-help-contents');

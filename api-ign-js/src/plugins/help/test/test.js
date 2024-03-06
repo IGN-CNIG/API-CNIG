@@ -31,7 +31,9 @@ import Help from 'facade/help';
       - Es igual que initialExtraContents pero llamándose finalExtraContents
   - Otras funcionalidades
       - Imprimir en PDF la ayuda
-
+      - El buscar solo filtra la lista, no el contenido
+      - Cuando búsca no es case sensitive
+      - Si tiene anidación muestra el árbol
   Notas:
     - Con el tema de los idiomas:
       - La ayuda de los plugins se mostrará con el idioma que tenga el visualizador
