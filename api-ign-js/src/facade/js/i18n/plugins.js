@@ -126,6 +126,10 @@ import enPredefinedzoom from '../../../plugins/predefinedzoom/src/facade/js/i18n
 import esPrintermap from '../../../plugins/printermap/src/facade/js/i18n/es';
 import enPrintermap from '../../../plugins/printermap/src/facade/js/i18n/en';
 
+// Printviewmanagement
+import esPrintviewmanagement from '../../../plugins/printviewmanagement/src/facade/js/i18n/es';
+import enPrintviewmanagement from '../../../plugins/printviewmanagement/src/facade/js/i18n/en';
+
 // Queryattributes
 import esQueryattributes from '../../../plugins/queryattributes/src/facade/js/i18n/es';
 import enQueryattributes from '../../../plugins/queryattributes/src/facade/js/i18n/en';
@@ -205,6 +209,10 @@ import enLocator from '../../../plugins/locator/src/facade/js/i18n/en';
 // Locatorscn
 import esLocatorscn from '../../../plugins/locatorscn/src/facade/js/i18n/es';
 import enLocatorscn from '../../../plugins/locatorscn/src/facade/js/i18n/en';
+
+// Vectorsmanagement
+import esVectorsmanagement from '../../../plugins/vectorsmanagement/src/facade/js/i18n/es';
+import enVectorsmanagement from '../../../plugins/vectorsmanagement/src/facade/js/i18n/en';
 
 /**
  * Este objeto devuelve un objeto JSON dinámico que contiene
@@ -327,7 +335,7 @@ const pluginsLanguage = {
     esPrintermap,
     enPrintermap,
   },
-  queryattributes: {
+    queryattributes: {
     esQueryattributes,
     enQueryattributes,
   },
@@ -408,6 +416,10 @@ const pluginsLanguage = {
   locatorscn: {
     esLocatorscn,
     enLocatorscn,
+  },
+  vectorsmanagement: {
+    esVectorsmanagement,
+    enVectorsmanagement,
   },
 };
 

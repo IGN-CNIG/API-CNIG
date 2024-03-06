@@ -79,6 +79,8 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].predefinedzoom = pluginsLanguage.predefinedzoom
       .esPredefinedzoom;
     configuration.translations[lang].printermap = pluginsLanguage.printermap.esPrintermap;
+    configuration.translations[lang].printviewmanagement =
+      pluginsLanguage.printviewmanagement.esPrintviewmanagement;
     configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
       .esQueryattributes;
     // configuration.translations[lang].querydatabase = pluginsLanguage
@@ -103,6 +105,8 @@ export const getTranslation = (lang) => {
       pluginsLanguage.viewmanagement.esViewmanagement;
     configuration.translations[lang].locator = pluginsLanguage.locator.esLocator;
     configuration.translations[lang].locatorscn = pluginsLanguage.locatorscn.esLocatorscn;
+    configuration.translations[lang].vectorsmanagement =
+      pluginsLanguage.vectorsmanagement.esVectorsmanagement;
   } else if (lang === 'en') {
     configuration.translations[lang].attributions = pluginsLanguage.attributions.enAttributions;
     configuration.translations[lang].backimglayer = pluginsLanguage.backimglayer.enBackimglayer;
@@ -135,11 +139,11 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].predefinedzoom = pluginsLanguage.predefinedzoom
       .enPredefinedzoom;
     configuration.translations[lang].printermap = pluginsLanguage.printermap.enPrintermap;
-    // configuration.translations[lang].querydatabase = pluginsLanguage
+        // configuration.translations[lang].querydatabase = pluginsLanguage
     // .querydatabase.enQuerydatabase;
     configuration.translations[lang].rescale = pluginsLanguage.rescale.enRescale;
     configuration.translations[lang].selectiondraw = pluginsLanguage.selectiondraw.enSelectiondraw;
-    configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
+configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
       .enQueryattributes;
     configuration.translations[lang].selectionzoom = pluginsLanguage.selectionzoom.enSelectionzoom;
     configuration.translations[lang].sharemap = pluginsLanguage.sharemap.enSharemap;
@@ -159,6 +163,8 @@ export const getTranslation = (lang) => {
       pluginsLanguage.viewmanagement.enViewmanagement;
     configuration.translations[lang].locator = pluginsLanguage.locator.enLocator;
     configuration.translations[lang].locatorscn = pluginsLanguage.locatorscn.enLocatorscn;
+    configuration.translations[lang].vectorsmanagement =
+      pluginsLanguage.vectorsmanagement.enVectorsmanagement;
   }
   return configuration.translations[lang];
 };
