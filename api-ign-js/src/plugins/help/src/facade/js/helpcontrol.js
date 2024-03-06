@@ -27,6 +27,17 @@ export default class HelpControl extends M.Control {
     this.headerImages = options.headerImages;
 
     this.headerTitle = options.headerTitle;
+    if (!M.utils.isString(this.headerTitle)) {
+      const optionstTitle = { ...this.headerTitle };
+      this.headerTitle = this.headerTitle[M.language.getLang()];
+      if (M.utils.isUndefined(this.headerTitle)) {
+        const es = 'es';
+        this.headerTitle = optionstTitle[es];
+        if (M.utils.isUndefined(this.headerTitle)) {
+          this.headerTitle = optionstTitle[Object.keys(optionstTitle)[0]];
+        }
+      }
+    }
 
     this.tooltip = options.tooltip;
 
@@ -36,13 +47,13 @@ export default class HelpControl extends M.Control {
 
     this.initialExtraContents = options.initialExtraContents;
     if (!M.utils.isArray(this.initialExtraContents)) {
-      try {
-        this.initialExtraContents = this.initialExtraContents[M.language.getLang()];
-      } catch (e) {
-        try {
-          this.initialExtraContents = this.initialExtraContents.es;
-        } catch (ex) {
-          this.initialExtraContents = Object.keys(this.initialExtraContents)[0];
+      const optionsInitial = { ...this.initialExtraContents };
+      this.initialExtraContents = this.initialExtraContents[M.language.getLang()];
+      if (M.utils.isUndefined(this.initialExtraContents)) {
+        const es = 'es';
+        this.initialExtraContents = optionsInitial[es];
+        if (M.utils.isUndefined(this.initialExtraContents)) {
+          this.initialExtraContents = Object.keys(optionsInitial)[0];
         }
       }
     }
@@ -57,13 +68,13 @@ export default class HelpControl extends M.Control {
 
     this.finalExtraContents = options.finalExtraContents;
     if (!M.utils.isArray(this.finalExtraContents)) {
-      try {
-        this.finalExtraContents = this.finalExtraContents[M.language.getLang()];
-      } catch (e) {
-        try {
-          this.finalExtraContents = this.finalExtraContents.es;
-        } catch (ex) {
-          this.finalExtraContents = Object.keys(this.finalExtraContents)[0];
+      const optionsFinal = { ...this.finalExtraContents };
+      this.finalExtraContents = this.finalExtraContents[M.language.getLang()];
+      if (M.utils.isUndefined(this.finalExtraContents)) {
+        const es = 'es';
+        this.finalExtraContents = optionsFinal[es];
+        if (M.utils.isUndefined(this.finalExtraContents)) {
+          this.finalExtraContents = Object.keys(optionsFinal)[0];
         }
       }
     }
