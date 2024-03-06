@@ -400,8 +400,8 @@ const proj4083 = {
  * @api
  */
 const proj3395 = {
-  def: '+proj=merc +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
-  extent: [-20026376.39, 15496570.74, 20026376.39, 18764656.23],
+  def: '+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs',
+  extent: [-20037508.34, -15496570.74, 20037508.34, 18764656.23],
   codes: ['EPSG:3395', 'urn:ogc:def:crs:EPSG::3395', 'http://www.opengis.net/gml/srs/epsg.xml#3395'],
   units: 'm',
   datum: 'WGS 84',
