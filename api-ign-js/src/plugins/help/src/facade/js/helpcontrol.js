@@ -111,7 +111,7 @@ export default class HelpControl extends M.Control {
     });
     allContents = [...allContents, ...this.finalExtraContents];
 
-    const list = `<ol>${this.generateExtraContent(allContents)}</ol>`;
+    const list = `<ol>${this.generateContent(allContents)}</ol>`;
 
     Promise.all(this.helpsContent).then((resultsHelps) => {
       const html = M.template.compileSync(helps, {
@@ -171,7 +171,14 @@ export default class HelpControl extends M.Control {
     return result;
   }
 
-  generateExtraContent(array) {
+  /**
+   * Genera el contenido para la página de ayuda
+   *
+   * @public
+   * @function
+   * @api
+  */
+  generateContent(array) {
     let count = -1;
     const generateSubContent = (subContentsArray) => {
       if (!subContentsArray || subContentsArray.length === 0) return '';

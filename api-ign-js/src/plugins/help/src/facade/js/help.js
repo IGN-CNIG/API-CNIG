@@ -47,6 +47,14 @@ export default class Help extends M.Plugin {
      */
     this.position_ = options.position || 'TR';
 
+    /**
+     * Tooltip
+     *
+     * @private
+     * @type {string}
+     */
+    this.tooltip_ = options.tooltip || getValue('tooltip');
+
     const header = options.header || {};
 
     /**
@@ -64,14 +72,6 @@ export default class Help extends M.Plugin {
      * @type {String}
      */
     this.headerTitle_ = header.title ? header.title : getValue('long_title');
-
-    /**
-     * Tooltip
-     *
-     * @private
-     * @type {string}
-     */
-    this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
      * Nombre
@@ -231,8 +231,8 @@ export default class Help extends M.Plugin {
         const html = M.template.compileSync(myhelp, {
           vars: {
             translations: {
-              text1: getValue('help1'),
-              text2: getValue('help2'),
+              help1: getValue('textHelp.help1'),
+              help2: getValue('textHelp.help2'),
             },
           },
         });

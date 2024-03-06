@@ -5,7 +5,9 @@
 
 # Descripción
 
-Obtiene la ayuda de cada plugin (si la tiene disponible) y la muestra en una página HTML.
+Obtiene la ayuda de cada herramienta (plugins y controles), si la tiene disponible), y la muestra en una página HTML.
+Además permite mostrar contenido extra indicado por el usuario antes y/o después de la ayuda de las herramientas.
+También permite descargar la ayuda en formato PDF.
 
 # Dependencias
 
@@ -40,11 +42,26 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
 - **tooltip**: Tooltip que se muestra sobre el plugin (Se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Ayuda'.
+- **header**: Objeto para indicar:
+  - **images**: Array de URLs de imágenes para mostrar en la cabecera. Por defecto:
+    ['https://componentes.cnig.es/api-core/img/logo_ge.svg', 'https://componentes.cnig.es/api-core/img/ign.svg']
+  - **title**: Título para mostrar en la cabecera. Por defecto: 'Ayuda API-CNIG'.
+- **initialExtraContents**: Contenido extra para mostrar antes de la ayuda de las herramientas. Permite un array de objetos con el siguiente formato:
+  [{title: 'Texto', content: 'HTML en formato texto'}].
+  El objeto también puede contener subcontenido que consiste en un array de objetos. Ejemplo:
+    [{title: 'Texto', content: 'HTML en formato texto', subContents: [{title: 'Texto 2', content: 'HTML en formato texto 2'}]}]
+  En caso de desear implementar varios idiomas el parámetro initialExtraContents permitirá recibir un objeto con los diferentes idiomas. Ejemplo:
+    { es: [{ title: 'Texto en español', content: 'HTML en formato texto en español' }],
+      en: [{ title: 'Texto en inglés', content: 'HTML en formato texto en inglés' }]
+    }
+  Nota: mostará el idioma del visualizador.
+- **finalExtraContents**: funciona igual que initialExtraContents.
+- **extendInitialExtraContents**: Booleano que permite extender el contenido inicial con información definida de la API-CNIG. Por defecto: true.
 
 # API-REST
 
 ```javascript
-URL_API?help=position*tooltip*
+URL_API?help=position*tooltip*extendInitialExtraContents
 ```
 
 <table>
@@ -63,13 +80,33 @@ URL_API?help=position*tooltip*
     <td>Texto informativo</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
+  <tr>
+    <td>header</td>
+    <td>Cabecera para la página de ayuda</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+    <tr>
+    <td>initialExtraContents</td>
+    <td>Contido para añadir antes de la ayuda de las herramientas</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>finalExtraContents</td>
+    <td>Contido para añadir después de la ayuda de las herramientas</td>
+    <td>Base64 ✔️ | Separador ❌</td>
+  </tr>
+  <tr>
+    <td>extendInitialExtraContents</td>
+    <td>Permite extender el parámetro initialExtraContents con información definida de la API-CNIG.</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
 </table>
 
 
 ### Ejemplo de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core/?help=TR*Obtener%20ayuda
+https://componentes.cnig.es/api-core/?help=TR*Obtener%20ayuda*true
 ```
 
 ### Ejemplo de uso API-REST en base64

@@ -48,12 +48,10 @@ import Help from 'facade/help';
 
 
 // M.language.setLang('en');
-// Añadir buscador
-// Añadir ocultar
 // Locator tendría 3 subapartados
 // Revisar el compartir este plugin
 
-M.language.setLang('en');
+// M.language.setLang('en');
 
 const map = M.map({
   container: 'mapjs',
