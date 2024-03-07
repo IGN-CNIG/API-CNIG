@@ -139,11 +139,11 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].predefinedzoom = pluginsLanguage.predefinedzoom
       .enPredefinedzoom;
     configuration.translations[lang].printermap = pluginsLanguage.printermap.enPrintermap;
-        // configuration.translations[lang].querydatabase = pluginsLanguage
+    // configuration.translations[lang].querydatabase = pluginsLanguage
     // .querydatabase.enQuerydatabase;
     configuration.translations[lang].rescale = pluginsLanguage.rescale.enRescale;
     configuration.translations[lang].selectiondraw = pluginsLanguage.selectiondraw.enSelectiondraw;
-configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
+    configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
       .enQueryattributes;
     configuration.translations[lang].selectionzoom = pluginsLanguage.selectionzoom.enSelectionzoom;
     configuration.translations[lang].sharemap = pluginsLanguage.sharemap.enSharemap;

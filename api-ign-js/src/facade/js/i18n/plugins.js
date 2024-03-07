@@ -331,11 +331,15 @@ const pluginsLanguage = {
     esPredefinedzoom,
     enPredefinedzoom,
   },
+  printviewmanagement: {
+    esPrintviewmanagement,
+    enPrintviewmanagement,
+  },
   printermap: {
     esPrintermap,
     enPrintermap,
   },
-    queryattributes: {
+  queryattributes: {
     esQueryattributes,
     enQueryattributes,
   },
