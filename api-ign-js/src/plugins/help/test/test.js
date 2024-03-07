@@ -47,7 +47,7 @@ import Help from 'facade/help';
 */
 
 
-M.language.setLang('en');
+// M.language.setLang('en');
 // Locator tendría 3 subapartados
 // Revisar el compartir este plugin
 
