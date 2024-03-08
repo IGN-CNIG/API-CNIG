@@ -175,7 +175,8 @@ export default class HelpControl extends M.Control {
   */
   getHelpsPluginsControls() {
     const plugins = this.map.getPlugins();
-    const controls = this.map.getControls();
+    const controls =
+      this.map.getControls().filter((control) => { return control.name.include(this.controls); });
     const pluginsAndControls = [...plugins, ...controls];
     const result = [];
     pluginsAndControls.forEach((element) => {
