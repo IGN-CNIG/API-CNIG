@@ -16,6 +16,7 @@
     <link href="plugins/help/help.ol.min.css" rel="stylesheet" />
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     <link href="plugins/measurebar/measurebar.ol.min.css" rel="stylesheet" />
+    <link href="plugins/information/information.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
@@ -135,6 +136,7 @@
     <script type="text/javascript" src="plugins/help/help.ol.min.js"></script>
     <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
     <script type="text/javascript" src="plugins/measurebar/measurebar.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/information/information.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -172,6 +174,9 @@
 
         let mp4 = new M.plugin.MeasureBar({});
         map.addPlugin(mp4)
+
+        let mp5 = new M.plugin.Information({});
+        map.addPlugin(mp5)
 
         const selectPosition = document.getElementById("selectPosition");
         const selectExtend = document.getElementById("selectExtend");
