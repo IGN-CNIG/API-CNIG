@@ -152,7 +152,7 @@ export default class Help extends M.Plugin {
    */
   addTo(map) {
     M.remote.get(`${M.config.MAPEA_URL}api/actions/controls`).then((response) => {
-      const controls = res.text.replace('[','').replace(']','').replaceAll('"','').split(',');
+      const controls = response.text.replace('[', '').replace(']', '').replaceAll('"', '').split(',');
       this.ctrl = new HelpControl({
         tooltip: this.tooltip_,
         order: this.order,
