@@ -39,6 +39,8 @@ export default class HelpControl extends M.Control {
       }
     }
 
+    this.controls = options.controls;
+
     this.tooltip = options.tooltip;
 
     this.order = options.order;
@@ -117,7 +119,7 @@ export default class HelpControl extends M.Control {
     let allContents = [...this.initialExtraContents];
     allContents.push({
       title: getValue('tools'),
-      content: `<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">${getValue('tools')}</h2><div><p>${getValue('tools1')}</p></div></div>`,
+      content: `<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">${getValue('tools')}</h2><div><p>${getValue('tools1')}</p><p>${getValue('tools2')}</p><p>${getValue('tools3')}</p><p>${getValue('tools4')}</p></div></div>`,
       subContents: this.getHelpsPluginsControls(),
     });
     allContents = [...allContents, ...this.finalExtraContents];
@@ -173,8 +175,10 @@ export default class HelpControl extends M.Control {
   */
   getHelpsPluginsControls() {
     const plugins = this.map.getPlugins();
+    const controls = this.map.getControls();
+    const pluginsAndControls = [...plugins, ...controls];
     const result = [];
-    plugins.forEach((element) => {
+    pluginsAndControls.forEach((element) => {
       if (!M.utils.isUndefined(element.getHelp)) {
         result.push(element.getHelp());
       }

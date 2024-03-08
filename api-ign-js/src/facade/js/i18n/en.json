@@ -1,4 +1,9 @@
 {
+  "panzoom": {
+    "textHelp": {
+      "text1": "Allows you to zoom in with the '+' button and zoom out with the '-' button on the map."
+    }
+  },
   "location": {
     "title": "Get current location"
   },

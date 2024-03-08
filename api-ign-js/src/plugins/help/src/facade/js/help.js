@@ -151,26 +151,30 @@ export default class Help extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.ctrl = new HelpControl({
-      tooltip: this.tooltip_,
-      order: this.order,
-      initialExtraContents: this.initialExtraContents_,
-      finalExtraContents: this.finalExtraContents_,
-      extendInitialExtraContents: this.extendInitialExtraContents,
-      headerImages: this.headerImages_,
-      headerTitle: this.headerTitle_,
+    M.remote.get(`${M.config.MAPEA_URL}api/actions/controls`).then((response) => {
+      const controls = response.text.split(',');
+      this.ctrl = new HelpControl({
+        tooltip: this.tooltip_,
+        order: this.order,
+        initialExtraContents: this.initialExtraContents_,
+        finalExtraContents: this.finalExtraContents_,
+        extendInitialExtraContents: this.extendInitialExtraContents,
+        headerImages: this.headerImages_,
+        headerTitle: this.headerTitle_,
+        controls,
+      });
+      this.controls_.push(this.ctrl);
+      this.map_ = map;
+      this.panel_ = new M.ui.Panel('Help', {
+        className: 'm-plugin-help',
+        position: M.ui.position[this.position_],
+        tooltip: this.tooltip_,
+        collapsedButtonClass: 'm-help-icons-query-support',
+        order: this.order,
+      });
+      this.panel_.addControls(this.controls_);
+      map.addPanels(this.panel_);
     });
-    this.controls_.push(this.ctrl);
-    this.map_ = map;
-    this.panel_ = new M.ui.Panel('Help', {
-      className: 'm-plugin-help',
-      position: M.ui.position[this.position_],
-      tooltip: this.tooltip_,
-      collapsedButtonClass: 'm-help-icons-query-support',
-      order: this.order,
-    });
-    this.panel_.addControls(this.controls_);
-    map.addPanels(this.panel_);
   }
 
   /**

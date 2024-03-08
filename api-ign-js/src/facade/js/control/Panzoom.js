@@ -2,6 +2,7 @@
  * @module M/control/Panzoom
  */
 import panzoomTemplate from 'templates/panzoom';
+import myhelp from 'templates/panzoomhelp';
 import PanzoomImpl from 'impl/control/Panzoom';
 import ControlBase from './Control';
 import { isUndefined } from '../util/Utils';
@@ -74,6 +75,30 @@ class Panzoom extends ControlBase {
   equals(obj) {
     const equals = (obj instanceof Panzoom);
     return equals;
+  }
+
+  /**
+   * Obtiene la ayuda del control
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getHelp() {
+    return {
+      title: Panzoom.NAME,
+      content: new Promise((success) => {
+        const html = M.template.compileSync(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}assets/images/`,
+            translations: {
+              help1: getValue('textHelp.help1'),
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 }
 

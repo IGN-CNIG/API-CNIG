@@ -1,4 +1,9 @@
 {
+  "panzoom": {
+    "textHelp": {
+      "text1": "Permite aumentar zoom con el botón '+' y disminuir zoom con el botón '-' en el mapa."
+    }
+  },
   "location": {
     "error": "El control ubicación no acepta http. Debe usar https.",
     "title": "Obtener ubicación actual"

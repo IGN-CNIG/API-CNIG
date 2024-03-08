@@ -14,6 +14,7 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
     <link href="plugins/help/help.ol.min.css" rel="stylesheet" />
+    <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
@@ -131,6 +132,7 @@
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
     <script type="text/javascript" src="plugins/help/help.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -152,6 +154,7 @@
             maxZoom: 20,
             minZoom: 2,
             center: [-467062.8225, 4783459.6216],
+	    controls: ['panzoom']
         });
 
         let mp = null;
@@ -161,6 +164,9 @@
             position: "TR",
         });
         map.addPlugin(mp2);
+
+        let mp3 = new M.plugin.BackImgLayer({});
+        map.addPlugin(mp3)
 
         const selectPosition = document.getElementById("selectPosition");
         const selectExtend = document.getElementById("selectExtend");

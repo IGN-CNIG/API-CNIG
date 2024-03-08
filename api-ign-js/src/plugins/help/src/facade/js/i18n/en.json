@@ -22,7 +22,10 @@
   "welcome8": "Link to gallery of examples",
   "welcome9": "Training Resources",
   "welcome10": "Link to training resources",
-  "tools1": "The API-CNIG has a series of controls and extensions that allow the user to interact with the map.",
+  "tools1": "The API-CNIG has a series of tools that allow you to interact with the information offered in the viewer:",
+  "tools2": "Controls are the tools that the map includes and that allow you to work with it. For example, we can have a control that draws the scale on the map, another that offers a selection of base layers for the background of the map, another that shows the coordinates of the cursor, etc.",
+  "tools3": "Plugins or extensions are functionalities that offer specific utilities that, unlike basic controls, are usually used in specific scenarios, so they are separated from the core or main core of the API so as not to penalize downloading. who doesn't need them.",
+  "tools4": "For example, those controls that, although offering different atomic functionalities, work as a group on the same vector layer would be grouped in the same plugin. In this way, the management of the information and the common elements that they share are optimized. .",
   "write": "Write here",
   "search": "Search"
 }
