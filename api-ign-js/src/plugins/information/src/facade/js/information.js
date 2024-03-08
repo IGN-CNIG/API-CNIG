@@ -4,6 +4,7 @@
 import '../assets/css/information';
 import '../assets/css/fonts';
 import api from '../../api';
+import myhelp from '../../templates/myhelp';
 import InformationControl from './informationcontrol';
 import { getValue } from './i18n/language';
 
@@ -211,6 +212,30 @@ export default class Information extends M.Plugin {
    */
   getAPIRestBase64() {
     return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
+  }
+
+  /**
+   * Obtiene la ayuda del plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getHelp() {
+    return {
+      title: this.name,
+      content: new Promise((success) => {
+        const html = M.template.compileSync(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}plugins/information/images/`,
+            translations: {
+              help1: getValue('textHelp.help1'),
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 
   /**
