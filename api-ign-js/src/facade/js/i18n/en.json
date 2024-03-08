@@ -13,7 +13,11 @@
   "scale": {
     "title": "Scale",
     "scale": "Scale",
-    "level": "Zoom level"
+    "level": "Zoom level",
+    "textHelp": {
+      "text1": "Information panel showing the zoom level and approximate scale of the current view.",
+      "text2": "The zoom level is the corresponding one for the EPSG coordinate system: 3857 WGS84 / Pseudo-Mercator."
+    }
   },
   "attributions": {
     "attribution": "attribution",
