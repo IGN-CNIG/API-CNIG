@@ -85,14 +85,15 @@ class Panzoom extends ControlBase {
    * @api
    */
   getHelp() {
+    const textHelp = getValue('panzoom').textHelp;
     return {
       title: Panzoom.NAME,
       content: new Promise((success) => {
-        const html = M.template.compileSync(myhelp, {
+        const html = compileTemplate(myhelp, {
           vars: {
-            urlImages: `${M.config.MAPEA_URL}assets/images/`,
+            urlImages: `${M.config.MAPEA_URL}assets/images`,
             translations: {
-              help1: getValue('textHelp.help1'),
+              help1: textHelp.text1,
             },
           },
         });
