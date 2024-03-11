@@ -237,11 +237,11 @@ export default class MeasureBar extends M.Plugin {
    */
   getHelp() {
     return {
-      title: this.name_,
+      title: this.name,
       content: new Promise((success) => {
         const html = M.template.compileSync(myhelp, {
           vars: {
-            urlImages: `${M.config.MAPEA_URL}plugins/backimglayer/images/`,
+            urlImages: `${M.config.MAPEA_URL}plugins/measurebar/images/`,
             translations: {
               help1: getValue('textHelp.help1'),
               help2: getValue('textHelp.help2'),
@@ -255,6 +255,7 @@ export default class MeasureBar extends M.Plugin {
               help10: getValue('textHelp.help10'),
               help11: getValue('textHelp.help11'),
               help12: getValue('textHelp.help12'),
+              help13: getValue('textHelp.help13'),
             },
           },
         });
