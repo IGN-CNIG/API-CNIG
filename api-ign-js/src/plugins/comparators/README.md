@@ -112,6 +112,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'mirrorpanelParams': Comparador de espejo.
   - 'lyrcompareParams': Comparador de paneles móviles.
   - 'transparecyParams': Comparador de zona o puntual.
+  - 'windowsyncParams': Comparador en ventana. 
   - 'none': no arranca ninguno de los comparadores.
 
 - **enabledKeyFunctions**:  
@@ -163,6 +164,11 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
     - 7: tres mapas en proporción 2-1-1.
     - 8: un mapa arriba y dos abajo.
     - 9: dos mapas arriba y uno abajo.
+
+- **windowsyncParams**: Parámetro opcionales del plugin windowsync, en caso de no querer cargar este control su valor será "false".
+  - controls: (Array de Strings) Define que controles tendrán los mapas.
+  - plugins: (Array de Objetos) Define los plugins que tendrán los mapas. Es necesario tener el script del plugin en el html principal.
+
 ## Ejemplo
 
 Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue la siguiente estructura:
@@ -300,6 +306,17 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
     modeVizTypes: [0, 1, 2, 3, 5], // 0 - 9
     tooltip: 'tooltipMirror',
   },
+    windowsyncParams: {
+    controls: ['scale'],
+    plugins: [
+      {
+        name: 'Layerswitcher',
+        param: {
+          position: 'TL',
+        },
+      },
+    ],
+  },
 });
 
    map.addPlugin(mp);
@@ -308,7 +325,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
 # API-REST
 
 ```javascript
-URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!listLayers*!defaultCompareMode*!enabledKeyFunctions*!transparencyParams*!lyrcompareParams*!mirrorpanelParams
+URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!listLayers*!defaultCompareMode*!enabledKeyFunctions*!transparencyParams*!lyrcompareParams*!mirrorpanelParams*!windowsyncParams
 ```
 
 <table>
@@ -372,12 +389,17 @@ URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!list
         <td>Parámetros opcionales del plugin mirrorpanel.</td>
         <td>Base64 ✔️ | Separador ❌</td>
     </tr>
+    <tr>
+        <td>windowsyncParams</td>
+        <td>Parámetros opcionales del plugin windowsync.</td>
+        <td>Base64 ✔️ | Separador ❌</td>
+    </tr>
 </table>
 
 
 ### Ejemplos de uso API-REST
 ```
-https://componentes.cnig.es/api-core?comparators=TR*false*true*comparador*true**mirror*true*10*true*true*true
+https://componentes.cnig.es/api-core?comparators=TR*false*true*comparador*true**mirror*true*10*true*true*true*true
 
 ```
 No funciona ```https://componentes.cnig.es/api-core?comparators``` es necesario espeficiar alguno de los siguientes parámetros: transparencyParams, lyrcompareParams, mirrorpanelParams.
@@ -435,6 +457,9 @@ Ejemplo de constructor:
     defaultCompareViz: 2,
     modeVizTypes: [0, 2],
     tooltip: 'tooltipMirror',
+  },
+  windowsyncParams: {
+    controls: ['scale'],
   },
 }
 ```

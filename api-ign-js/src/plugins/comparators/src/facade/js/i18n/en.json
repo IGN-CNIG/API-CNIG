@@ -59,5 +59,8 @@
   "inputTransparentRadius": "Modify the opacity of the radius",
   "selectTransparentRadius":"Layer selector, the radius opacity will be applied",
   "tooltip_void": "Single map view",
-  "selectLayers": "Layers selected"
+  "selectLayers": "Layers selected",
+  "openWindow": "Open new sale",
+  "closeAll": "Close all windows",
+  "tooltipWindSync": "Synchronous layer comparator"
 }

@@ -56,5 +56,8 @@
   "inputTransparentRadius": "Modifica la opacidad del radio",
   "selectTransparentRadius":"Selector de capas, se le aplicará la opacidad del radio",
   "tooltip_void": "Vista de un solo mapa",
-  "selectLayers": "Selector de capas"
+  "selectLayers": "Selector de capas",
+  "openWindow": "Abrir nueva venta",
+  "closeAll": "Cerrar todas las ventanas",
+  "tooltipWindSync": "Comparador de capas síncrono"
 }
