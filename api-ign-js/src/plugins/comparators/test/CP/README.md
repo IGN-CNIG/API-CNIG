@@ -7,42 +7,39 @@
     * [X] Se comprueba en el navegador chrome y firefox.
 
 * CP-002 - Parámetro controls y plugins.
-    * [ ] Se comprueba que se carga con todos los plugins.
-        - [] viewmanagement.
+    * [X] Se comprueba que se carga con todos los plugins.
+        - [X] viewmanagement.
         - [] timeline.
-        - [] stylemanager.
-        - [] queryattributes.
-        - [] popup.
-        - [] overviewmap.
-        - [] mousesrs.
-        - [] modal.
-        - [] locator.
-        - [] information.
-        - [] infocoordinates.
-        - [] incicarto.
-        - [] contactlink.
-        - [] layerswitcher.
-        - [] backimglayer.
-        - [] sharemap.
-    * [ ] Se comprueba que se carga con todos los controles.
-        - [] backgroundlayers.
-        - [] getfeatureinfo.
-        - [] location. 
-        - [] panzoom.
-        - [] panzoombar.
-        - [] rotate.
-        - [] scale.
-        - [] scaleline.
-        - [] attributions.
-    * [ ] Se comprueba que se carga todos los controles y plugins.
-    * [ ] Se comprueba que funcionan todos correctamente.
-    * [ ] Se comprueba en el navegador chrome y firefox.
+        - [X] stylemanager.
+        - [X] queryattributes.
+        - [X] modal.
+        - [X] overviewmap.
+        - [X] mousesrs.
+        - [X] locator.
+        - [X] information.
+        - [X] infocoordinates.
+        - [X] incicarto.
+        - [X] contactlink.
+        - [X] layerswitcher.
+        - [X] backimglayer.
+        - [X] sharemap.
+    * [X] Se comprueba que se carga con todos los controles.
+        - [X] backgroundlayers.
+        - [X] getfeatureinfo.
+        - [X] location. 
+        - [X] panzoom.
+        - [X] panzoombar.
+        - [X] rotate.
+        - [X] scale.
+        - [X] scaleline.
+        - [X] attributions.
+    * [FALTA TIMELINE] Se comprueba que funcionan todos correctamente.
 
 * CP-003 - Capas.
-    * [ ] Se comprueba que se puede compartir todos los tipos de capas Raster.
+    * [X] Se comprueba que se puede compartir todos los tipos de capas Raster.
     * [ ] Se comprueba que se puede compartir todos los tipos de capas Vectoriales.
-    * [ ] Se comprueba que se puede compartir todos los tipos de capas.
-    * [ ] Se comprueba en el navegador chrome y firefox.
+
+* CP-004 - Manejo de errores.
 
 **Pruebas API REST - windowsyn**
 

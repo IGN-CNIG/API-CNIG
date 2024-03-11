@@ -1,3 +1,4 @@
+import { handlerErrorTileLoadFunction } from './errorhandling';
 
 
 export const dicAccesibilityButton = {
@@ -343,7 +344,7 @@ function getKML(layer) {
  */
 function getGeoJSON(layer) {
   const source = !M.utils.isUndefined(layer.source) ?
-    layer.serialize() : encodeURIComponent(layer.url);
+    layer.serialize() : layer.url;
   const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
   return `GeoJSON*${layer.name}*${source}*${layer.extract}*${style}`;
 }
@@ -426,16 +427,55 @@ function getWMTS(layer, map) {
   return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${normalizeString(legend)}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
 }
 
+function getXYZ(layer) {
+  return `XYZ*${normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.isVisible()}*${layer.transparent}*${layer.displayInLayerSwitcher}*${normalizeString(layer.legend || '')}`;
+}
+
+function getTMS(layer) {
+  return `TMS*${normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.isVisible()}*${layer.transparent}*${layer.tileGridMaxZoom}*${layer.displayInLayerSwitcher}*${normalizeString(layer.legend || '')}`;
+}
+
+
+function getOSM(layer) {
+  return `OSM*${normalizeString(layer.legend || layer.name)}*${normalizeString(layer.legend || '')}*${layer.url}*${layer.isVisible()}*${layer.transparent}`;
+}
+
+function getMBTiles(layer) {
+  if (layer.url === undefined) {
+    handlerErrorTileLoadFunction(layer);
+    return '';
+  }
+  return `MBTiles*${normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.name}*${layer.transparent}*${layer.isVisible()}*${layer.getOpacity()}*${layer.maxZoom}*${layer.userMaxExtent || ''}`;
+}
+
+function getMBTilesVector(layer) {
+  if (layer.url === undefined) {
+    handlerErrorTileLoadFunction(layer);
+    return '';
+  }
+
+  const style = layer.getStyle().serialize();
+  return `MBTiles*${normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.name}*${layer.isVisible()}**${style}*${layer.extract}`;
+}
+
 function layerToParam(layer, map) {
   let param;
-  if (layer.name === 'osm') {
-    param = layer.name;
+  if (layer.name === 'osm' || layer.type === 'OSM') {
+    param = layer.transparent === true ? getOSM(layer) : 'OSM';
   } else if (/mapbox/.test(layer.name)) {
     param = `MAPBOX.${layer.name}`;
   } else if (layer.type === 'WMS') {
     param = getWMS(layer);
   } else if (layer.type === 'WMTS') {
     param = getWMTS(layer, map);
+  } else if (layer.type === 'XYZ') {
+    param = getXYZ(layer);
+  } else if (layer.type === 'MBTilesVector') {
+    param = getMBTilesVector(layer);
+  } else if (layer.type === 'MBTiles') {
+    param = getMBTiles(layer);
+  } else if (layer.type === 'TMS') {
+    param = getTMS(layer);
   } else if (layer.type === 'KML') {
     param = getKML(layer);
   } else if (layer.type === 'WFS') {
@@ -465,7 +505,7 @@ export function getLayers(map) {
       res = res && false;
     }
 
-    if (layer.displayInLayerSwitcher === false && layer.transparent === true) {
+    if (layer.transparent === false) {
       res = res && false;
     }
 
@@ -473,4 +513,17 @@ export function getLayers(map) {
   });
 
   return layers.map(layer => layerToParam(layer, map)).filter(param => param != null);
+}
+
+/**
+   * This method gets the layers parameters
+   *
+   * @public
+   * @function
+   */
+export function getBaseLayers(map) {
+  return map.getBaseLayers()
+    .map(layer => layerToParam(layer, map))
+    .filter(param => param != null)
+    .reverse();
 }

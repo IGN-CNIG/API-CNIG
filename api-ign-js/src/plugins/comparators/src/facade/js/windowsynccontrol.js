@@ -4,7 +4,8 @@
 import template from 'templates/windowsync';
 import WindowSyncImplControl from 'impl/windowsynccontrol';
 import { getValue } from './i18n/language';
-import { getLayers } from './utils';
+import { getBaseLayers, getLayers } from './utils';
+import { handlerErrorPluginWindowSync, handlerErrorURLWindowSync } from './errorhandling';
 
 const MAPEA_LITE_URL = 'https://mapea-lite.desarrollo.guadaltel.es/api-core/';
 const COMPONENTES_URL = 'https://componentes.cnig.es/api-core/';
@@ -143,6 +144,8 @@ export default class WindowSyncControl extends M.Control {
     const scripts = this.pluginScript.join(' ');
     const plugins = this.generatePlugins() || '';
     const layers = JSON.stringify([...this.layers, ...getLayers(this.map_)]);
+    const baseLayers = JSON.stringify(getBaseLayers(this.map_));
+    console.log(layers);
 
     const contenidoHTML = `
        <!DOCTYPE html>
@@ -168,6 +171,7 @@ export default class WindowSyncControl extends M.Control {
              container: 'map',
              center: ${center},
              zoom: ${zoom},
+             layers: ${baseLayers},
              projection: '${projection}',
              ${controls ? `controls:${controls}` : ''}
            });
@@ -198,10 +202,14 @@ export default class WindowSyncControl extends M.Control {
     if (this.plugins === undefined) {
       return '';
     }
-
     const plugins = this.plugins.map(({ name, params = {} }) => {
       this.handlePluginScrips(name);
-      return `newMap.addPlugin(new M.plugin.${name}(${JSON.stringify(params)}));`;
+      try {
+        return `newMap.addPlugin(new M.plugin.${name}(${JSON.stringify(params)}));`;
+      } catch (error) {
+        handlerErrorPluginWindowSync(error, name);
+        return '';
+      }
     }, this);
     return plugins.join(' ');
   }
@@ -218,14 +226,7 @@ export default class WindowSyncControl extends M.Control {
     const style = this.getScriptAndLink('link').some(s => s.includes(`${name.toLowerCase()}.ol.min.css`));
     const script = this.getScriptAndLink('script').some(s => s.includes(`${name.toLowerCase()}.ol.min.js`));
 
-    if (!style) {
-      M.toast.error(`Falta por incluir el link del plugin ${name}`, null, 6000);
-    }
-
-
-    if (!script) {
-      M.toast.error(`Falta por incluir el script del plugin ${name}`, null, 6000);
-    }
+    handlerErrorURLWindowSync(style, script, name);
   }
 
   /**

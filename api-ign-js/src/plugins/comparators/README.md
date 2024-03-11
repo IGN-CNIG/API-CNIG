@@ -311,7 +311,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
     plugins: [
       {
         name: 'Layerswitcher',
-        param: {
+        params: {
           position: 'TL',
         },
       },
