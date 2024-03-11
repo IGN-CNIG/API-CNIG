@@ -434,7 +434,6 @@ export default class AnalysisControl extends M.Control {
    */
   deactivate() {
     this.template.remove();
-    this.getImpl().removeSelectInteraction();
     this.removeModalEvents();
   }
 

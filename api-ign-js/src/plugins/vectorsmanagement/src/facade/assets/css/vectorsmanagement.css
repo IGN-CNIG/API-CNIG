@@ -529,15 +529,15 @@ table#attribute-table>tr>th>button {
 
 @font-face {
     font-family: 'vectorsmanagement';
-    src: url('../fonts/vectorsmanagement.eot?56479285');
-    src: url('../fonts/vectorsmanagement.eot?56479285#iefix') format('embedded-opentype'),
-         url('../fonts/vectorsmanagement.woff2?56479285') format('woff2'),
-         url('../fonts/vectorsmanagement.woff?56479285') format('woff'),
-         url('../fonts/vectorsmanagement.ttf?56479285') format('truetype'),
-         url('../fonts/vectorsmanagement.svg?56479285#vectorsmanagement') format('svg');
+    src: url('../fonts/vectorsmanagement.eot?5338693');
+    src: url('../fonts/vectorsmanagement.eot?5338693#iefix') format('embedded-opentype'),
+         url('../fonts/vectorsmanagement.woff2?5338693') format('woff2'),
+         url('../fonts/vectorsmanagement.woff?5338693') format('woff'),
+         url('../fonts/vectorsmanagement.ttf?5338693') format('truetype'),
+         url('../fonts/vectorsmanagement.svg?5338693#vectorsmanagement') format('svg');
     font-weight: normal;
     font-style: normal;
-}
+  }
 
 .m-areas>div.m-area>div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control>button,
 .m-areas>div.m-area>div.m-panel.m-plugin-vectorsmanagement.collapsed>button.m-panel-btn,
@@ -607,6 +607,8 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
 .vectorsmanagement-icon-poligono:before { content: '\e806'; }
 .vectorsmanagement-icon-pin:before { content: '\e807'; }
 .vectorsmanagement-icon-vectors:before { content: '\e819'; }
+.vectorsmanagement-icon-profile:before { content: '\e81b'; }
+.vectorsmanagement-icon-hole:before { content: '\e81c'; }
 .vectorsmanagement-icon-pin-located:before { content: '\e900'; }
 .vectorsmanagement-icon-cancelar:before { content: '\e905'; }
 .vectorsmanagement-icon-aceptar:before { content: '\e908'; }
@@ -620,7 +622,7 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
 .vectorsmanagement-icon-seleccionar:before { content: '\e931'; }
 .vectorsmanagement-icon-mas:before { content: '\e935'; }
 .vectorsmanagement-icon-medir-area:before { content: '\e936'; }
-.vectorsmanagement-icon-analysis:before { content: '\e938'; }
+.vectorsmanagement-icon-analisis:before { content: '\e938'; }
 .vectorsmanagement-icon-papelera:before { content: '\e93e'; }
 .vectorsmanagement-icon-subir:before { content: '\e95e'; }
 .vectorsmanagement-icon-tamano:before { content: '\e95f'; }
