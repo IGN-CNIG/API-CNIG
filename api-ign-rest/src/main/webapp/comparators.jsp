@@ -112,7 +112,7 @@
                             <option value="true" selected="selected">true</option>
                             <option value="false">false</option>
                         </select>
-                     
+
                         <label for="defaultCompareMode">Selector de modo por defecto</label>
                         <select name="defaultCompareMode" id="defaultCompareMode">
                             <option value="none" selected="selected">none</option>
@@ -138,43 +138,53 @@
                         <label for="transparencyParams_radius">Introducir radio del control transparencyParams</label>
                         <input type="text" id="transparencyParams_radius" value="50">
 
-                        <label for="transparencyParams_maxRadius">Introducir radio máximo del control transparencyParams</label>
+                        <label for="transparencyParams_maxRadius">Introducir radio máximo del control
+                            transparencyParams</label>
                         <input type="text" id="transparencyParams_maxRadius" value="100">
 
-                        <label for="transparencyParams_minRadius">Introducir radio mínimo del control transparencyParams</label>
+                        <label for="transparencyParams_minRadius">Introducir radio mínimo del control
+                            transparencyParams</label>
                         <input type="text" id="transparencyParams_minRadius" value="10">
 
 
                         <label for="transparencyParams_tooltip">Introducir tooltip control transparencyParams</label>
                         <input type="text" id="transparencyParams_tooltip" value="tooltipTransparency">
 
-                        
-                        <label for="lyrcompareParams_staticDivision">Introducir staticDivision del control lyrcompareParams</label>
+
+                        <label for="lyrcompareParams_staticDivision">Introducir staticDivision del control
+                            lyrcompareParams</label>
                         <input type="text" id="lyrcompareParams_staticDivision" value="2">
 
-                        <label for="lyrcompareParams_defaultLyrA">Introducir defaultLyrA del control lyrcompareParams</label>
+                        <label for="lyrcompareParams_defaultLyrA">Introducir defaultLyrA del control
+                            lyrcompareParams</label>
                         <input type="text" id="lyrcompareParams_defaultLyrA" value="3">
 
-                        <label for="lyrcompareParams_defaultLyrB">Introducir defaultLyrB del control lyrcompareParams</label>
+                        <label for="lyrcompareParams_defaultLyrB">Introducir defaultLyrB del control
+                            lyrcompareParams</label>
                         <input type="text" id="lyrcompareParams_defaultLyrB" value="2">
 
-                        <label for="lyrcompareParams_defaultLyrC">Introducir defaultLyrC del control lyrcompareParams</label>
+                        <label for="lyrcompareParams_defaultLyrC">Introducir defaultLyrC del control
+                            lyrcompareParams</label>
                         <input type="text" id="lyrcompareParams_defaultLyrC" value="1">
 
-                        <label for="lyrcompareParams_defaultLyrD">Introducir defaultLyrD del control lyrcompareParams</label>
+                        <label for="lyrcompareParams_defaultLyrD">Introducir defaultLyrD del control
+                            lyrcompareParams</label>
                         <input type="text" id="lyrcompareParams_defaultLyrD" value="0">
 
-                        <label for="lyrcompareParams_opacityVal">Introducir opacityVal del control lyrcompareParams</label>
+                        <label for="lyrcompareParams_opacityVal">Introducir opacityVal del control
+                            lyrcompareParams</label>
                         <input type="text" id="lyrcompareParams_opacityVal" value="100">
 
                         <label for="lyrcompareParams_tooltip">Introducir tooltip del control lyrcompareParams</label>
                         <input type="text" id="lyrcompareParams_tooltip" value="tooltipLyrCompare">
 
-                        <label for="lyrcompareParams_defaultCompareViz">Introducir defaultCompareViz del control lyrcompareParams</label>
+                        <label for="lyrcompareParams_defaultCompareViz">Introducir defaultCompareViz del control
+                            lyrcompareParams</label>
                         <input type="text" id="lyrcompareParams_defaultCompareViz" value="2">
 
-                        
-                        <label for="mirrorpanelParams_showCursors">Introducir showCursors del control mirrorpanelParams</label>
+
+                        <label for="mirrorpanelParams_showCursors">Introducir showCursors del control
+                            mirrorpanelParams</label>
                         <select name="mirrorpanelParams_showCursors" id="mirrorpanelParams_showCursors">
                             <option value=""></option>
                             <option value="true" selected="selected">true</option>
@@ -182,31 +192,45 @@
                         </select>
 
 
-                        <label for="mirrorpanelParams_principalMap">Introducir principalMap del control mirrorpanelParams</label>
+                        <label for="mirrorpanelParams_principalMap">Introducir principalMap del control
+                            mirrorpanelParams</label>
                         <select name="mirrorpanelParams_principalMap" id="mirrorpanelParams_principalMap">
                             <option value=""></option>
                             <option value="true" selected="selected">true</option>
                             <option value="false">false</option>
                         </select>
 
-                        <label for="mirrorpanelParams_enabledDisplayInLayerSwitcher">Introducir enabledDisplayInLayerSwitcher del control mirrorpanelParams</label>
-                        <select name="mirrorpanelParams_enabledDisplayInLayerSwitcher" id="mirrorpanelParams_enabledDisplayInLayerSwitcher">
+                        <label for="mirrorpanelParams_enabledDisplayInLayerSwitcher">Introducir
+                            enabledDisplayInLayerSwitcher del control mirrorpanelParams</label>
+                        <select name="mirrorpanelParams_enabledDisplayInLayerSwitcher"
+                            id="mirrorpanelParams_enabledDisplayInLayerSwitcher">
                             <option value=""></option>
                             <option value="true" selected="selected">true</option>
                             <option value="false">false</option>
                         </select>
 
-                        <label for="mirrorpanelParams_defaultCompareViz">Introducir defaultCompareViz del control mirrorpanelParams</label>
+                        <label for="mirrorpanelParams_defaultCompareViz">Introducir defaultCompareViz del control
+                            mirrorpanelParams</label>
                         <input type="text" id="mirrorpanelParams_defaultCompareViz" value="2">
 
-                        <label for="mirrorpanelParams_modeVizTypes">Introducir modeVizTypes del control mirrorpanelParams</label>
+                        <label for="mirrorpanelParams_modeVizTypes">Introducir modeVizTypes del control
+                            mirrorpanelParams</label>
                         <input type="text" id="mirrorpanelParams_modeVizTypes" value="[0, 1, 2, 3, 5]">
 
                         <label for="mirrorpanelParams_tooltip">Introducir tooltip del control mirrorpanelParams</label>
                         <input type="text" id="mirrorpanelParams_tooltip" value="tooltipMirror">
 
-                        <label for="mirrorpanelParams_enabledControlsPlugins">Introducir enabledControlsPlugins del control mirrorpanelParams</label>
+                        <label for="mirrorpanelParams_enabledControlsPlugins">Introducir enabledControlsPlugins del
+                            control mirrorpanelParams</label>
                         <input type="text" id="mirrorpanelParams_enabledControlsPlugins" value="{}">
+
+                        <label for="windowsyncParams_controls">Introducir controls del
+                            control windowsyncParams</label>
+                        <input type="text" id="windowsyncParams_controls" value="[]">
+
+                        <label for="windowsyncParams_plugins">Introducir plugins del
+                            control windowsyncParams</label>
+                        <input type="text" id="windowsyncParams_plugins" value="[]">
 
                         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
                     </div>
@@ -301,6 +325,8 @@
                                 const selectMirrorpanelParams_modeVizTypes = document.getElementById("mirrorpanelParams_modeVizTypes");
                                 const selectMirrorpanelParams_tooltip = document.getElementById("mirrorpanelParams_tooltip");
                                 const selectMirrorpanelParams_enabledControlsPlugins = document.getElementById("mirrorpanelParams_enabledControlsPlugins");
+                                const selectwindowsyncParams_controls = document.getElementById("windowsyncParams_controls");
+                                const selectwindowsyncParams_plugins = document.getElementById("windowsyncParams_plugins");
                                 const selectDraggableParams = document.getElementById("selectDraggable");
                                 const tooltipComparatorParams = document.getElementById("tooltipComparator");
 
@@ -331,9 +357,11 @@
                                 selectMirrorpanelParams_modeVizTypes.addEventListener('change', cambiarTest);
                                 selectMirrorpanelParams_tooltip.addEventListener('change', cambiarTest);
                                 selectMirrorpanelParams_enabledControlsPlugins.addEventListener('change', cambiarTest);
+                                selectwindowsyncParams_controls.addEventListener('change', cambiarTest);
+                                selectwindowsyncParams_plugins.addEventListener('change', cambiarTest);
                                 selectDraggableParams.addEventListener('change', cambiarTest);
                                 tooltipComparatorParams.addEventListener('change', cambiarTest);
-                               
+
                                 /* Creación por defecto */
                                 crearPlugin({
                                     position: 'TR',
@@ -380,9 +408,20 @@
                                         modeVizTypes: [0, 1, 2, 3, 5], // 0 - 9
                                         tooltip: 'tooltipMirror',
                                     },
+                                    windowsyncParams: {
+                                        controls: ['scale'],
+                                        plugins: [
+                                            {
+                                                name: 'Layerswitcher',
+                                                param: {
+                                                    position: 'TL',
+                                                },
+                                            },
+                                        ],
+                                    },
                                 });
-                                
-                                
+
+
                                 function cambiarTest() {
                                     const posicionValor = selectPosicion.options[selectPosicion.selectedIndex].value;
                                     const collapsedValor = selectCollapsed.options[selectCollapsed.selectedIndex].value === 'true';
@@ -410,6 +449,8 @@
                                     const mirrorpanelParams_modeVizTypesValor = JSON.parse(selectMirrorpanelParams_modeVizTypes.value);
                                     const mirrorpanelParams_tooltipValor = selectMirrorpanelParams_tooltip.value;
                                     const mirrorpanelParams_enabledControlsPluginsValor = JSON.parse(selectMirrorpanelParams_enabledControlsPlugins.value);
+                                    const windowsyncParams_controlsValor = JSON.parse(selectwindowsyncParams_controls.value);
+                                    const windowsyncParams_pluginsValor = JSON.parse(selectwindowsyncParams_plugins.value);
                                     const draggableValor = selectDraggableParams.options[selectDraggableParams.selectedIndex].value === 'true';
                                     const tooltipComparatorValor = tooltipComparatorParams.value;
 
@@ -417,41 +458,45 @@
                                     map.removePlugins(mp);
                                     setTimeout(() => {
                                         crearPlugin({
-                                    position: posicionValor,
-                                    collapsed: collapsedValor,
-                                    collapsible: collapsibleValor,
-                                    defaultCompareMode: defaultCompareModeValor, // mirror - curtain - spyeye - none
-                                    listLayers: listLayersValor,
-                                    tooltip: tooltipComparatorValor,
-                                    isDraggable: draggableValor,
-                                    enabledKeyFunctions: enabledKeyFunctionsValor,
-                                    lyrsMirrorMinZindex: lyrsMirrorMinZindexValor,
-                                    transparencyParams: {
-                                        radius: transparencyParams_radiusValor,
-                                        maxRadius: transparencyParams_maxRadiusValor,
-                                        minRadius: transparencyParams_minRadiusValor,
-                                        tooltip: transparencyParams_tooltipValor,
-                                    },
-                                    lyrcompareParams: {
-                                        staticDivision: lyrcompareParams_staticDivisionValor,
-                                        defaultLyrA: lyrcompareParams_defaultLyrAValor,
-                                        defaultLyrB: lyrcompareParams_defaultLyrBValor,
-                                        defaultLyrC: lyrcompareParams_defaultLyrCValor,
-                                        defaultLyrD: lyrcompareParams_defaultLyrDValor,
-                                        opacityVal: lyrcompareParams_opacityValValor,
-                                        tooltip: lyrcompareParams_tooltipValor,
-                                        defaultCompareViz: lyrcompareParams_defaultCompareVizValor,
-                                    },
-                                    mirrorpanelParams: {
-                                        showCursors: mirrorpanelParams_showCursorsValor,
-                                        principalMap: mirrorpanelParams_principalMapValor,
-                                        enabledControlsPlugins: mirrorpanelParams_enabledControlsPluginsValor,
-                                        enabledDisplayInLayerSwitcher: mirrorpanelParams_enabledDisplayInLayerSwitcherValor,
-                                        defaultCompareViz: mirrorpanelParams_defaultCompareVizValor,
-                                        modeVizTypes: mirrorpanelParams_modeVizTypesValor,
-                                        tooltip: mirrorpanelParams_tooltipValor,
-                                    },
-                                });
+                                            position: posicionValor,
+                                            collapsed: collapsedValor,
+                                            collapsible: collapsibleValor,
+                                            defaultCompareMode: defaultCompareModeValor, // mirror - curtain - spyeye - none
+                                            listLayers: listLayersValor,
+                                            tooltip: tooltipComparatorValor,
+                                            isDraggable: draggableValor,
+                                            enabledKeyFunctions: enabledKeyFunctionsValor,
+                                            lyrsMirrorMinZindex: lyrsMirrorMinZindexValor,
+                                            transparencyParams: {
+                                                radius: transparencyParams_radiusValor,
+                                                maxRadius: transparencyParams_maxRadiusValor,
+                                                minRadius: transparencyParams_minRadiusValor,
+                                                tooltip: transparencyParams_tooltipValor,
+                                            },
+                                            lyrcompareParams: {
+                                                staticDivision: lyrcompareParams_staticDivisionValor,
+                                                defaultLyrA: lyrcompareParams_defaultLyrAValor,
+                                                defaultLyrB: lyrcompareParams_defaultLyrBValor,
+                                                defaultLyrC: lyrcompareParams_defaultLyrCValor,
+                                                defaultLyrD: lyrcompareParams_defaultLyrDValor,
+                                                opacityVal: lyrcompareParams_opacityValValor,
+                                                tooltip: lyrcompareParams_tooltipValor,
+                                                defaultCompareViz: lyrcompareParams_defaultCompareVizValor,
+                                            },
+                                            mirrorpanelParams: {
+                                                showCursors: mirrorpanelParams_showCursorsValor,
+                                                principalMap: mirrorpanelParams_principalMapValor,
+                                                enabledControlsPlugins: mirrorpanelParams_enabledControlsPluginsValor,
+                                                enabledDisplayInLayerSwitcher: mirrorpanelParams_enabledDisplayInLayerSwitcherValor,
+                                                defaultCompareViz: mirrorpanelParams_defaultCompareVizValor,
+                                                modeVizTypes: mirrorpanelParams_modeVizTypesValor,
+                                                tooltip: mirrorpanelParams_tooltipValor,
+                                            },
+                                            windowsyncParams: {
+                                                controls: windowsyncParams_controlsValor,
+                                                plugins: windowsyncParams_pluginsValor,
+                                            },
+                                        });
                                     }, 1000);
                                 }
 
