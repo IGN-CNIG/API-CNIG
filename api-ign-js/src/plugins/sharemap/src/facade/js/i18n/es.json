@@ -2,6 +2,13 @@
   "exception": {
     "impl": "La implementación no puede crear controles de Attribution."
   },
+  "textHelp": {
+    "help1": "Permite compartir la vista de mapa con las capas de información cargadas a través de un enlace Web. También proporciona el código HTML por si se quiere embeber el visualizador en otro portal Web.",
+    "help2": "1. Haga clic en “Copiar” para copiar el enlace al portapapeles. Puede pegarlo en un navegador, correo electrónico o mensaje.",
+    "help3": "2. Abre las diferentes redes sociales, que tenga ya instaladas en su dispositivo y genera la publicación para compartir la vista.",
+    "help4": "3. Genera el código HTML necesario para incrustar en una página web la vista actual.",
+    "help5": "Pulse 'Aceptar' para cerrar el panel."
+  },
   "title": "Compartir URL",
   "text": "HTML embebido",
   "copy": "Copiar",

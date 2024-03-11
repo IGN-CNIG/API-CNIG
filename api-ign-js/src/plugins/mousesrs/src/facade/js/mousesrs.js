@@ -5,6 +5,7 @@ import '../assets/css/fonts';
 import '../assets/css/mousesrs';
 import MouseSRSControl from './mousesrscontrol';
 import { getValue } from './i18n/language';
+import myhelp from '../../templates/myhelp';
 
 import es from './i18n/es';
 import en from './i18n/en';
@@ -267,5 +268,34 @@ export default class MouseSRS extends M.Plugin {
    */
   getAPIRestBase64() {
     return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
+  }
+
+  /**
+   * Obtiene la ayuda del plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getHelp() {
+    return {
+      title: this.name,
+      content: new Promise((success) => {
+        const html = M.template.compileSync(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}plugins/mousesrs/images/`,
+            translations: {
+              help1: getValue('textHelp.help1'),
+              help2: getValue('textHelp.help2'),
+              help3: getValue('textHelp.help3'),
+              help4: getValue('textHelp.help4'),
+              help5: getValue('textHelp.help5'),
+              help6: getValue('textHelp.help6'),
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 }

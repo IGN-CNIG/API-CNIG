@@ -2,5 +2,10 @@
   "exception": {
     "impl": "The implementation used cannot create OverviewMapControl."
   },
+  "textHelp": {
+    "help1": "Shows a general view with a box that corresponds to the area where we are in the main view.",
+    "help2": "The situation map box is synchronized with the main view. Allows you to scroll the main view, moving the box from the situation map.",
+    "help3": "To hide the location map again, click the 'Minimize' button."
+  },
   "tooltip": "Overview Map"
 }

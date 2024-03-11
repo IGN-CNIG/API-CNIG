@@ -17,6 +17,11 @@
     <link href="plugins/backimglayer/backimglayer.ol.min.css" rel="stylesheet" />
     <link href="plugins/measurebar/measurebar.ol.min.css" rel="stylesheet" />
     <link href="plugins/information/information.ol.min.css" rel="stylesheet" />
+    <link href="plugins/infocoordinates/infocoordinates.ol.min.css" rel="stylesheet" />
+    <link href="plugins/mousesrs/mousesrs.ol.min.css" rel="stylesheet" />
+    <link href="plugins/overviewmap/overviewmap.ol.min.css" rel="stylesheet" />
+    <link href="plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
+    <link href="plugins/selectionzoom/selectionzoom.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
@@ -137,6 +142,11 @@
     <script type="text/javascript" src="plugins/backimglayer/backimglayer.ol.min.js"></script>
     <script type="text/javascript" src="plugins/measurebar/measurebar.ol.min.js"></script>
     <script type="text/javascript" src="plugins/information/information.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/infocoordinates/infocoordinates.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/mousesrs/mousesrs.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/overviewmap/overviewmap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/contactlink/contactlink.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/selectionzoom/selectionzoom.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -170,13 +180,28 @@
         map.addPlugin(mp2);
 
         let mp3 = new M.plugin.BackImgLayer({});
-        map.addPlugin(mp3)
+        map.addPlugin(mp3);
 
         let mp4 = new M.plugin.MeasureBar({});
-        map.addPlugin(mp4)
+        map.addPlugin(mp4);
 
         let mp5 = new M.plugin.Information({});
-        map.addPlugin(mp5)
+        map.addPlugin(mp5);
+
+        let mp6 = new M.plugin.Infocoordinates({});
+        map.addPlugin(mp6);
+
+        let mp7 = new M.plugin.MouseSRS({});
+        map.addPlugin(mp7);
+
+        let mp8 = new M.plugin.OverviewMap({});
+        map.addPlugin(mp8);
+
+        let mp9 = new M.plugin.ContactLink({});
+        map.addPlugin(mp9);
+
+        let mp10 = new M.plugin.SelectionZoom({});
+        map.addPlugin(mp10);
 
         const selectPosition = document.getElementById("selectPosition");
         const selectExtend = document.getElementById("selectExtend");
