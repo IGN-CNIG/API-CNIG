@@ -110,7 +110,7 @@ class WMTS extends LayerBase {
     /**
      * CrossOrigin. Atributo crossOrigin para las imágenes cargadas
      */
-    this.crossOrigin = options.crossOrigin || null;
+    this.crossOrigin = (options.crossOrigin === null || options.crossOrigin === false) ? undefined : 'anonymous';
 
     this.maxExtent = options.maxExtent || null;
   }
@@ -239,11 +239,11 @@ class WMTS extends LayerBase {
         this.ol3Layer.setVisible(visibility);
       }
 
-      // updates resolutions and keep the bbox
-      const oldBbox = this.map.getBbox();
+      // updates resolutions and keep the zoom
+      const oldZoom = this.map.getZoom();
       this.map.getImpl().updateResolutionsFromBaseLayer();
-      if (!isNullOrEmpty(oldBbox)) {
-        this.map.setBbox(oldBbox);
+      if (!isNullOrEmpty(oldZoom)) {
+        this.map.setZoom(oldZoom);
       }
     } else if (!isNullOrEmpty(this.ol3Layer)) {
       this.ol3Layer.setVisible(visibility);
@@ -449,7 +449,7 @@ class WMTS extends LayerBase {
     if (isNullOrEmpty(this.capabilitiesOptionsPromise)) {
       const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
         return cap.url === this.url;
-      });
+      }) || {};
 
       if (capabilitiesInfo.capabilities) {
         this.capabilitiesOptionsPromise = capabilitiesInfo.capabilities;

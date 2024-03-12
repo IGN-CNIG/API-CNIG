@@ -241,6 +241,10 @@
                "url":"${mapea.url}assets/svg/mtn/DepoAguaSuelo.svg"
             },
             {
+               "file":"donunt.svg",
+               "url":"${mapea.url}assets/svg/mtn/donut.svg"
+            },
+            {
                "file":"DepositoGeneral.svg",
                "url":"${mapea.url}assets/svg/mtn/DepositoGeneral.svg"
             },

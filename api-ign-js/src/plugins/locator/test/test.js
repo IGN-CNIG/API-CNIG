@@ -57,5 +57,13 @@ const mp = new Locator({
 
 map.addPlugin(mp);
 
+map.addPlugin(new M.plugin.Vectors({
+  position: 'TL'
+}));
+
+map.addPlugin(new M.plugin.Layerswitcher({
+  position: 'TR'
+}));
+
 window.map = map;
 window.mp = mp;

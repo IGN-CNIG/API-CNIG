@@ -1,4 +1,9 @@
 {
+  "panzoom": {
+    "textHelp": {
+      "text1": "Permite aumentar zoom con el botón '+' y disminuir zoom con el botón '-' en el mapa."
+    }
+  },
   "location": {
     "error": "El control ubicación no acepta http. Debe usar https.",
     "title": "Obtener ubicación actual"
@@ -9,7 +14,11 @@
   "scale": {
     "title": "Escala",
     "scale": "Escala",
-    "level": "Nivel de zoom"
+    "level": "Nivel de zoom",
+    "textHelp": {
+      "text1": "Panel informativo que muestra el nivel de zoom y la escala aproximada de la vista actual.",
+      "text2": "El nivel de zoom es el correspondiente para para el sistema de coordenadas EPSG: 3857 WGS84 / Pseudo-Mercator."
+    }
   },
   "attributions": {
     "attribution": "atribución",

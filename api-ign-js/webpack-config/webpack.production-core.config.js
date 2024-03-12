@@ -123,6 +123,14 @@ module.exports = {
     new CopywebpackPlugin({
       patterns: [
         {
+          from: 'src/facade/assets/images',
+          to: 'assets/images',
+        }
+      ],
+    }),
+    new CopywebpackPlugin({
+      patterns: [
+        {
           from: 'src/facade/assets/img',
           to: 'assets/img',
         }

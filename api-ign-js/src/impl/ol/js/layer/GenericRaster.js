@@ -438,7 +438,7 @@ class GenericRaster extends LayerBase {
    * @api stable
    */
   getMaxExtent() {
-    return this.ol3Layer.getExtent();
+    return this.ol3Layer.getExtent() || this.ol3Layer.getSource().getImageExtent();
   }
 
   /**

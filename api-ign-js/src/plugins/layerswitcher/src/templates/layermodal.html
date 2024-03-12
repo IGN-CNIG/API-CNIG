@@ -17,7 +17,7 @@
             <div id="m-layerswitcher-addservices-results">
                 <div class="m-layerswitcher-table-results">
                     <div class="m-layerswitcher-table-container">
-                        <table>
+                        <table id="m-layerswitcher-all">
                             <thead>
                                 <tr>
                                     <th><button tabindex="0" aria-label="{{translations.addAllLayers}}" id="m-layerswitcher-addservices-selectall" class="m-layerswitcher-icons-check"></button></th>
@@ -44,7 +44,7 @@
             <div id="m-layerswitcher-addservices-results">
                 <div class="m-layerswitcher-table-results">
                     <div class="m-layerswitcher-table-container">
-                        <table>
+                        <table id="m-layerswitcher-all">
                             <thead>
                                 <tr tabindex="0">
                                     <th><button tabindex="0" aria-label="{{translations.addAllLayers}}" id="m-layerswitcher-addservices-selectall" class="m-layerswitcher-icons-check"></button></th>
@@ -66,12 +66,19 @@
         {{/gt}}
     {{/eq}}
     <div class="m-layerswitcher-layer-fields">
-        <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-name">{{translations.name}}</label>
-        <input tabindex="0" type="text" id="m-layerswitcher-layer-name" />
+        {{#if isMVT}}
+            {{#eq layers.length 0}}
+                <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-name">{{translations.name}}</label>
+                <input tabindex="0" type="text" id="m-layerswitcher-layer-name" placeholder="{{translations.separatedby}}" />
+            {{/eq}}
+        {{else}}
+            <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-name">{{translations.name}}</label>
+            <input tabindex="0" type="text" id="m-layerswitcher-layer-name" />
+        {{/if}}
     </div>
     <div class="m-layerswitcher-layer-fields">
         <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-legend">{{translations.legend}}</label>
-        <input tabindex="0" type="text" id="m-layerswitcher-layer-legend" />
+        <input tabindex="0" type="text" id="m-layerswitcher-layer-legend" placeholder="{{translations.placeHolderLegend}}"/>
     </div>
     {{#eq type 'osm'}}
         <div class="m-layerswitcher-layer-fields">
@@ -92,10 +99,10 @@
         </div>
     {{/eq}}
     {{#eq type 'mvt'}}
-        <div class="m-layerswitcher-layer-fields">
+        <!--<div class="m-layerswitcher-layer-fields">
             <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
             <input tabindex="0" type="text" id="m-layerswitcher-layer-matrixset" />
-        </div>
+        </div>-->
     {{/eq}}
     <div class="button">
         <button tabindex="0" class="m-layerswitcher-common-btn" id="m-layerswitcher-layer-button"> {{translations.add_btn}}</button>

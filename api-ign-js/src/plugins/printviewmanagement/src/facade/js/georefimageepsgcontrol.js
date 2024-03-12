@@ -161,28 +161,33 @@ export default class GeorefImageEpsgControl extends M.Control {
     const ID_IMG_EPSG = '#m-georefimageepsg-select';
 
     // get value select option id m-georefimageepsg-select
-    const value = this.template_.querySelector(ID_IMG_EPSG).value;
+    const value = this.template_.querySelector(ID_IMG_EPSG).selectedIndex;
     const {
       url, name, format, EPSG: epsg, version,
-    } = this.layers_.filter(({ name: layerName }) => layerName === value)[0];
-
+    } = this.layers_[value];
 
     // Bbox Mapa
     const mapBbox = this.map_.getBbox();
     // Size
     const size = this.map_.getMapImpl().getSize();
 
+    // Ext WLD
+    let extWLD = [];
+
     if (epsg) {
       const projection = epsg;
       let ext = false;
       if (DEFAULT_EPSG === projection) {
         ext = M.utils.ObjectToArrayExtent(mapBbox, DEFAULT_EPSG);
+        extWLD = ext;
       } else if (version === '1.1.1' || version === '1.1.0') {
         const transformBbox = [mapBbox.x.min, mapBbox.y.min, mapBbox.x.max, mapBbox.y.max];
         ext = ol.proj.transformExtent(transformBbox, DEFAULT_EPSG, projection);
+        extWLD = ext;
       } else {
         const transformBbox = M.utils.ObjectToArrayExtent(mapBbox, DEFAULT_EPSG);
         ext = ol.proj.transformExtent(transformBbox, DEFAULT_EPSG, projection);
+        extWLD = ext;
         ext = this.transformExtentOL(ext, projection);
       }
 
@@ -190,7 +195,7 @@ export default class GeorefImageEpsgControl extends M.Control {
 
       const urlLayer =
         this.generateURLLayer_(url, projection, size, extString, format, name, version);
-      this.downloadPrint(urlLayer, ext);
+      this.downloadPrint(urlLayer, extWLD, true);
     } else {
       const projection = this.getUTMZoneProjection();
 
@@ -202,7 +207,7 @@ export default class GeorefImageEpsgControl extends M.Control {
       ext[3] = ext[1] + (f * size[1]);
 
       const urlLayer = this.generateURLLayer_(url, projection, size, ext, format, name, version);
-      this.downloadPrint(urlLayer, ext);
+      this.downloadPrint(urlLayer, ext, false);
     }
   }
 
@@ -251,7 +256,7 @@ export default class GeorefImageEpsgControl extends M.Control {
     * @function
     * @api stable
     */
-  downloadPrint(url, bbox) {
+  downloadPrint(url, bbox, epsgUser) {
     const FILE_EXTENSION_GEO = '.wld'; // .jgw
     const FILE_EXTENSION_IMG = '.jpg';
     const TYPE_SAVE = '.zip';
@@ -270,7 +275,7 @@ export default class GeorefImageEpsgControl extends M.Control {
           const files = [{
             name: titulo.concat(FILE_EXTENSION_GEO),
             // EPSG:3857 -> bbox
-            data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize()),
+            data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize(), epsgUser),
             base64: false,
           },
           {

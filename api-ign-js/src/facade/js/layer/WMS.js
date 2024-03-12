@@ -51,6 +51,7 @@ class WMS extends LayerBase {
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
+   * - opacity: Opacidad de capa, por defecto 1.
    * - visibility: Indica la visibilidad de la capa.
    * - singleTile: Indica si la tesela es única o no.
    * - numZoomLevels: Número de niveles de zoom.

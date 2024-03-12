@@ -9,22 +9,22 @@ const backgroundlayersOpts = [{
   id: 'mapa',
   title: 'Callejero',
   layers: [
-    'TMS*IGNBaseTodo*https://tms-ign-base.idee.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17',
+    'QUICK*Base_IGNBaseTodo_TMS',
   ],
 },
 {
   id: 'imagen',
   title: 'Imagen',
   layers: [
-    'TMS*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19',
+    'QUICK*BASE_PNOA_MA_TMS',
   ],
 },
 {
   id: 'hibrido',
   title: 'H&iacute;brido',
   layers: [
-    'TMS*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19',
-    'TMS*IGNBaseOrto*https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png*true*false*17',
+    'QUICK*BASE_PNOA_MA_TMS',
+    'QUICK*BASE_IGNBaseOrto_TMS',
   ],
 },
 ];

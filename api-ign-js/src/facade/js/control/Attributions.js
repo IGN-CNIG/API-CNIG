@@ -72,11 +72,26 @@ class Attributions extends ControlBase {
     this.tooltip_ = options.tooltip || getValue('attributions').tooltip;
     this.collectionsAttributions_ = options.collectionsAttributions || [];
 
+    this.collectionsAttributions_ = this.collectionsAttributions_.map((attr) => {
+      if (typeof attr === 'string') {
+        return this.transformString(attr);
+      }
+      return attr;
+    });
+
     /**
      * Order: Orden que tendrá con respecto al
      * resto de plugins y controles por pantalla.
      */
     this.order = options.order;
+  }
+
+  transformString(attrString) {
+    return {
+      attribuccion: attrString,
+      id: window.crypto.randomUUID
+        ? window.crypto.randomUUID() : new Date().getTime(),
+    };
   }
 
   /**
@@ -111,7 +126,11 @@ class Attributions extends ControlBase {
       this.accessibilityTab(html);
       this.map_.getLayers().forEach(({ attribution }) => {
         if (attribution) {
-          this.addAttributions(attribution);
+          if (typeof attribution === 'string') {
+            this.addHTMLContent(attribution);
+          } else {
+            this.addAttributions(attribution);
+          }
         }
       });
       success(html);
@@ -169,19 +188,25 @@ class Attributions extends ControlBase {
 
 
   /**
-    * Este método muestra las atribuciones de la capa.
-    *
-    * @function
-    * @public
-    * @api
-    */
+   * Este método muestra las atribuciones de la capa.
+   *
+   * @function
+   * @public
+   * @api
+   */
   changeAttributions() {
     this.clearContent();
     const layers = this.collectionsAttributions_;
 
     layers.forEach((layer) => {
       if (typeof layer === 'string') {
-        this.addHTMLContent(layer);
+        // ? Change value by reference
+        // eslint-disable-next-line no-param-reassign
+        layer = this.transformString(layer);
+      }
+
+      if (/<[a-z][\s\S]*>/i.test(layer.attribuccion)) {
+        this.addHTMLContent(layer.attribuccion);
         return;
       }
 
@@ -192,7 +217,7 @@ class Attributions extends ControlBase {
       let mapAttributions = [];
       let defaultMapAttributions = false;
 
-      if (this.checkDefaultAttribution(layer)) {
+      if (this.checkDefaultAttribution(layer) && isNullOrEmpty(layer.name)) {
         defaultMapAttributions = this.defaultAttribution(layer, zoom, mapAttributions);
       }
 
@@ -268,12 +293,12 @@ class Attributions extends ControlBase {
   }
 
   /**
-    * Este método añade el contenido de texto a la vista de atribuciones.
-    *
-    * @function
-    * @public
-    * @param {Array} attributions Atribuciones.
-    */
+   * Este método añade el contenido de texto a la vista de atribuciones.
+   *
+   * @function
+   * @public
+   * @param {Array} attributions Atribuciones.
+   */
   addContent(attributions) {
     const html = this.html_;
     const id = attributions[0].name || '';
@@ -317,11 +342,11 @@ class Attributions extends ControlBase {
   }
 
   /**
-    * Este método elimina el contenido de texto de la vista de atribuciones.
-    *
-    * @function
-    * @public
-    */
+   * Este método elimina el contenido de texto de la vista de atribuciones.
+   *
+   * @function
+   * @public
+   */
   clearContent() {
     if (!isNullOrEmpty(this.html_)) {
       const html = this.html_;
@@ -330,12 +355,12 @@ class Attributions extends ControlBase {
   }
 
   /**
-    * Este método cambia la visibilidad de la vista de atribuciones.
-    * @function
-    * @public
-    * @param {Boolean} visibility Visibilidad.
-    * @api
-    */
+   * Este método cambia la visibilidad de la vista de atribuciones.
+   * @function
+   * @public
+   * @param {Boolean} visibility Visibilidad.
+   * @api
+   */
   setVisible(visibility) {
     const html = this.html_;
     html.style.display = visibility === false ? 'none' : '';
@@ -343,11 +368,11 @@ class Attributions extends ControlBase {
 
   /**
    * Este método devuelve la atribución de objetos que intersectan con el bbox.
-    * @function
-    * @public
-    * @param {Array} featuresAttributions Atribuciones.
-    * @api
-    */
+   * @function
+   * @public
+   * @param {Array} featuresAttributions Atribuciones.
+   * @api
+   */
   getMapAttributions(featuresAttributions) {
     this.updateBBoxFeature();
     const interFilter = INTERSECT(this.bboxFeature_);
@@ -369,8 +394,12 @@ class Attributions extends ControlBase {
    * @api
    */
   addAttributions(attribuccionParams) {
-    if (typeof attribuccionParams === 'string') {
-      this.addHTMLContent(attribuccionParams);
+    if (this.collectionsAttributions_.some(({ id }) => attribuccionParams === id)) {
+      return;
+    }
+
+    if (/<[a-z][\s\S]*>/i.test(attribuccionParams.attribuccion)) {
+      this.addHTMLContent(attribuccionParams.attribuccion);
       this.collectionsAttributions_.push(attribuccionParams);
     } else if (attribuccionParams.collectionsAttributions) {
       attribuccionParams.collectionsAttributions.forEach((collectionAttribution) => {
@@ -396,9 +425,9 @@ class Attributions extends ControlBase {
 
   /**
    * Este método actualiza el bbox con sus features.
-    * @function
-    * @public
-    */
+   * @function
+   * @public
+   */
   updateBBoxFeature() {
     const { x, y } = this.map_.getBbox();
     this.bboxFeature_ = new Feature('bbox_feature', {
@@ -421,10 +450,10 @@ class Attributions extends ControlBase {
 
   /**
    * Este método cierra el panel si la pantalla es pequeña.
-    * @function
-    * @public
-    * @param {Event} e Evento.
-    */
+   * @function
+   * @public
+   * @param {Event} e Evento.
+   */
   setCollapsiblePanel(e) {
     if (this.getPanel() && this.getPanel().getTemplatePanel()) {
       if (e.target.innerWidth < 769) {
@@ -452,9 +481,9 @@ class Attributions extends ControlBase {
   }
 
   /**
-     * @function
-     * @public
-     */
+   * @function
+   * @public
+   */
   onMoveEnd(callback) {
     this.impl_.registerEvent('moveend', this.map_, e => callback(e));
   }

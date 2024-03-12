@@ -206,6 +206,10 @@ import enLocator from '../../../plugins/locator/src/facade/js/i18n/en';
 import esLocatorscn from '../../../plugins/locatorscn/src/facade/js/i18n/es';
 import enLocatorscn from '../../../plugins/locatorscn/src/facade/js/i18n/en';
 
+// Vectorsmanagement
+import esVectorsmanagement from '../../../plugins/vectorsmanagement/src/facade/js/i18n/es';
+import enVectorsmanagement from '../../../plugins/vectorsmanagement/src/facade/js/i18n/en';
+
 /**
  * Este objeto devuelve un objeto JSON dinámico que contiene
  * los plugins disponibles que soportan traducciones.
@@ -319,13 +323,13 @@ const pluginsLanguage = {
     esPredefinedzoom,
     enPredefinedzoom,
   },
-  printermap: {
-    esPrintermap,
-    enPrintermap,
-  },
   printviewmanagement: {
     esPrintviewmanagement,
     enPrintviewmanagement,
+  },
+  printermap: {
+    esPrintermap,
+    enPrintermap,
   },
   queryattributes: {
     esQueryattributes,
@@ -408,6 +412,10 @@ const pluginsLanguage = {
   locatorscn: {
     esLocatorscn,
     enLocatorscn,
+  },
+  vectorsmanagement: {
+    esVectorsmanagement,
+    enVectorsmanagement,
   },
 };
 

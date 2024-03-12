@@ -145,6 +145,9 @@ export default class LayerswitcherControl extends M.Control {
 
     this.select_codsi = 1; // Seleccionado por defecto
 
+    // Mostrar tipo
+    this.displayLabel = options.displayLabel;
+
     // order
     this.order = options.order;
 
@@ -271,6 +274,7 @@ export default class LayerswitcherControl extends M.Control {
             isInformation: this.isInformation,
             isStyle: this.isStyle,
             isDelete: this.isDelete,
+            displayLabel: !this.displayLabel,
           });
         });
       }
@@ -394,7 +398,7 @@ export default class LayerswitcherControl extends M.Control {
     const selectLayer = evt.target.getAttribute('data-select-type');
     if (evt.target.id === 'm-layerswitcher-hsalllayers') {
       this.showHideAllLayers();
-    } else if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'MBTilesVector' || layerType === 'MBTiles'))) &&
+    } else if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles'))) &&
       !M.utils.isNullOrEmpty(layerType)) {
       let layer = this.findLayer(evt);
       if (layer.length > 0) {
@@ -436,7 +440,17 @@ export default class LayerswitcherControl extends M.Control {
               });
             } else if (legendUrl.indexOf('assets/img/legend-default.png') >= 0) {
               this.errorLegendLayer(layer).then((newLegend) => {
-                if (newLegend !== '') {
+                if (newLegend === 'error legend') {
+                  const img = legend.querySelector('img');
+                  const messageError = document.createElement('p');
+                  const icon = document.createElement('span');
+                  icon.classList.add('m-layerswitcher-icons-cancel');
+                  messageError.classList.add('m-layerswitcher-legend-error');
+                  messageError.appendChild(icon);
+                  const text = document.createTextNode(getValue('legend_error'));
+                  messageError.appendChild(text);
+                  img.parentNode.insertBefore(messageError, img);
+                } else if (newLegend !== '') {
                   legend.querySelector('img').src = newLegend;
                 } else {
                   legend.querySelector('img').src = legendUrl;
@@ -447,6 +461,11 @@ export default class LayerswitcherControl extends M.Control {
             }
             legend.style.display = 'block';
           } else {
+            const img = legend.querySelector('img');
+            const p = img.parentElement.querySelector('p');
+            if (!M.utils.isNullOrEmpty(p)) {
+              p.remove();
+            }
             legend.style.display = 'none';
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
@@ -740,7 +759,7 @@ export default class LayerswitcherControl extends M.Control {
             },
           });
 
-          M.dialog.info(config, getValue('configure_layer'));
+          M.dialog.info(config, getValue('configure_layer'), this.order);
           this.focusModal('.m-title span');
           setTimeout(() => {
             const selector = '#m-layerswitcher-style button';
@@ -789,7 +808,7 @@ export default class LayerswitcherControl extends M.Control {
         this.map_.setBbox(extent);
       }
     } else {
-      M.dialog.info(getValue('exception.extent'), getValue('info'));
+      M.dialog.info(getValue('exception.extent'), getValue('info'), this.order);
     }
   }
 
@@ -933,7 +952,7 @@ export default class LayerswitcherControl extends M.Control {
     const layerURL = evt.target.getAttribute('data-layer-url') || undefined;
     const layerType = evt.target.getAttribute('data-layer-type');
     let result = [];
-    if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'MBTilesVector' || layerType === 'MBTiles'))) &&
+    if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles'))) &&
       !M.utils.isNullOrEmpty(layerType)) {
       result = this.overlayLayers.filter((l) => {
         return l.name === layerName && (l.url === layerURL ||
@@ -968,6 +987,8 @@ export default class LayerswitcherControl extends M.Control {
           success(legend);
         });
         M.proxy(this.statusProxy);
+      } else {
+        success('error legend');
       }
     });
   }
@@ -1181,8 +1202,12 @@ export default class LayerswitcherControl extends M.Control {
           const json = url.indexOf('.json') >= 0;
           if (pbf || json) {
             let metadata = url;
+            let orderxyz = '{z}/{x}/{y}.pbf';
             if (pbf) {
-              metadata = url.replace('{z}/{x}/{y}.pbf', 'metadata.json');
+              if (url.indexOf('{z}/{x}/{y}') === -1) {
+                orderxyz = '{z}/{y}/{x}.pbf';
+              }
+              metadata = url.replace(orderxyz, 'metadata.json');
             }
             M.proxy(this.useProxy);
             M.remote.get(metadata).then((meta) => {
@@ -1191,12 +1216,16 @@ export default class LayerswitcherControl extends M.Control {
               } else {
                 let parse = JSON.parse(meta.text);
                 let url2;
-                if (parse.json) {
-                  parse = JSON.parse(parse.json);
-                  url2 = url.substring(0, url.lastIndexOf('/') + 1).concat('{z}/{x}/{y}.pbf');
+                if (!M.utils.isNullOrEmpty(parse)) {
+                  if (!M.utils.isNullOrEmpty(parse.json)) {
+                    parse = JSON.parse(parse.json);
+                  }
+                  url2 = metadata.substring(0, metadata.lastIndexOf('/') + 1).concat(orderxyz);
+                } else {
+                  parse = {};
                 }
                 let layers = parse.vector_layers || [];
-                let urlLayer = parse.tileurl || parse.tiles || url2;
+                let urlLayer = parse.tileurl || parse.tiles || url2 || url;
                 if (M.utils.isString(urlLayer)) {
                   urlLayer = [urlLayer];
                 }
@@ -1304,7 +1333,7 @@ export default class LayerswitcherControl extends M.Control {
                       }
                       this.showResults(wfsDatas);
                     } catch (error) {
-                      M.dialog.error(getValue('exception.capabilities'));
+                      M.dialog.error(getValue('exception.capabilities'), undefined, this.order);
                       this.removeLoading();
                     }
                   } else {
@@ -1314,7 +1343,7 @@ export default class LayerswitcherControl extends M.Control {
                           if (responseIsOGC) {
                             this.printOGCModal(url);
                           } else {
-                            M.dialog.error(getValue('exception.ogcfeatures'));
+                            M.dialog.error(getValue('exception.ogcfeatures'), undefined, this.order);
                             this.removeLoading();
                           }
                         });
@@ -1343,12 +1372,12 @@ export default class LayerswitcherControl extends M.Control {
                     M.proxy(this.statusProxy);
                   }
                 }).catch((eerror) => {
-                  M.dialog.error(getValue('exception.capabilities'));
+                  M.dialog.error(getValue('exception.capabilities'), undefined, this.order);
                   this.removeLoading();
                 });
               }
             }).catch((err) => {
-              M.dialog.error(getValue('exception.capabilities'));
+              M.dialog.error(getValue('exception.capabilities'), undefined, this.order);
               this.removeLoading();
             });
           }
@@ -1361,13 +1390,13 @@ export default class LayerswitcherControl extends M.Control {
           } else if (!this.http && !this.https) {
             errorMsg = getValue('exception.no_http_https');
           }
-          M.dialog.error(errorMsg);
+          M.dialog.error(errorMsg, undefined, this.order);
         }
       } else {
-        M.dialog.error(getValue('exception.valid_url'));
+        M.dialog.error(getValue('exception.valid_url'), undefined, this.order);
       }
     } else {
-      M.dialog.error(getValue('exception.empty'));
+      M.dialog.error(getValue('exception.empty'), undefined, this.order);
     }
   }
 
@@ -1397,7 +1426,7 @@ export default class LayerswitcherControl extends M.Control {
         },
       },
     });
-    M.dialog.info(addServices, getValue('load_ext_services'));
+    M.dialog.info(addServices, getValue('load_ext_services'), this.order);
 
     setTimeout(() => {
       // Se modifica texto bt cerrar modal
@@ -1477,6 +1506,7 @@ export default class LayerswitcherControl extends M.Control {
     const ogcContainer = document.querySelector(OGC_CONTAINER);
     const addServicesResults = document.querySelector(ADDSERVICES_RESULTS);
     const addServicesSuggestions = document.querySelector(ADDSERVICES_SUGGESTIONS);
+    document.querySelector(LAYERS_CONTAINER).innerHTML = '';
 
     if (codsi !== null) {
       codsi.style.display = 'none';
@@ -1559,6 +1589,8 @@ export default class LayerswitcherControl extends M.Control {
     if (codsi !== null) {
       codsi.style.display = 'none';
     }
+
+    document.querySelector(ADDSERVICES_RESULTS).innerHTML = '';
   }
 
   // Filtra los resultados
@@ -1921,7 +1953,7 @@ export default class LayerswitcherControl extends M.Control {
     const elmSel = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-all .m-layerswitcher-icons-check-seleccionado');
     const elmSelWFS = document.querySelectorAll('#m-layerswitcher-addservices-results #m-layerswitcher-wfs .m-layerswitcher-icons-check-seleccionado');
     if (elmSel.length === 0 && elmSelWFS.length === 0) {
-      M.dialog.error(getValue('exception.select_layer'));
+      M.dialog.error(getValue('exception.select_layer'), undefined, this.order);
     } else {
       for (let i = 0; i < elmSel.length; i += 1) {
         for (let j = 0; j < this.capabilities.length; j += 1) {
@@ -1974,6 +2006,7 @@ export default class LayerswitcherControl extends M.Control {
             const obj = {
               url,
               legend: name,
+              extact: true,
             };
             if (M.utils.isUndefined(name)) {
               obj.name = namespace;
@@ -2061,7 +2094,7 @@ export default class LayerswitcherControl extends M.Control {
     const url = evt.target.getAttribute('data-link');
     try {
       const group = evt.target.parentElement.parentElement.parentElement;
-      const nameGroup = group.querySelector('span.m-layerswitcher-suggestion-caret').innerText;
+      const nameGroup = group.querySelector('.m-layerswitcher-suggestion-caret').innerText;
       this.filterName = nameGroup;
       if (group.localName === 'tbody') {
         this.filterName = 'none';
@@ -2085,6 +2118,7 @@ export default class LayerswitcherControl extends M.Control {
       parseToHtml: false,
       vars: {
         type,
+        isMVT: type === 'mvt',
         layers,
         translations: {
           add_btn: getValue('add_btn'),
@@ -2094,11 +2128,14 @@ export default class LayerswitcherControl extends M.Control {
           layers: getValue('layers'),
           addAllLayers: getValue('addAllLayers'),
           add_service: getValue('add_service'),
+          separatedby: getValue('separatedby'),
+          placeHolderLegend: getValue('placeHolderLegend'),
         },
       },
     });
 
     document.querySelector(LAYERS_CONTAINER).outerHTML = modal;
+
     if (type === 'mvt' || type === 'kml') {
       const selAll = document.querySelector('#m-layerswitcher-addservices-selectall');
       if (!M.utils.isNullOrEmpty(selAll)) {
@@ -2113,7 +2150,12 @@ export default class LayerswitcherControl extends M.Control {
     const btnAddLayer = document.querySelector('#m-layerswitcher-layer-button');
     btnAddLayer.addEventListener('click', () => {
       const randomNumber = Math.floor(Math.random() * 9000) + 1000;
-      const name = document.querySelector('#m-layerswitcher-layer-name').value || `layer_${randomNumber}`;
+      let name = document.querySelector('#m-layerswitcher-layer-name');
+      if (M.utils.isNullOrEmpty(name)) {
+        name = `layer_${randomNumber}`;
+      } else {
+        name = name.value || `layer_${randomNumber}`;
+      }
       const legend = document.querySelector('#m-layerswitcher-layer-legend').value || `layer_${randomNumber}`;
       let matrixSet = document.querySelector('#m-layerswitcher-layer-matrixset');
       if (!M.utils.isNullOrEmpty(matrixSet)) {
@@ -2130,6 +2172,7 @@ export default class LayerswitcherControl extends M.Control {
         }));
       } else if (type === 'geojson') {
         this.map_.addLayers(new M.layer.GeoJSON({
+          extract: true,
           name,
           legend,
           url,
@@ -2150,15 +2193,20 @@ export default class LayerswitcherControl extends M.Control {
         }));
       } else if (type === 'mvt') {
         const elmSel = document.querySelectorAll('#m-layerswitcher-addservices-results .m-layerswitcher-icons-check-seleccionado');
-        const layersSelected = [];
+        let layersSelected = [];
         elmSel.forEach((elm) => {
           layersSelected.push(elm.id);
         });
+        const nameLayers = document.querySelector('#m-layerswitcher-layer-name');
+        if (!M.utils.isNullOrEmpty(nameLayers) && nameLayers.value.indexOf('layer_') === -1) {
+          layersSelected = nameLayers.value.split(',');
+        }
         const obj = {
           name,
           legend,
           url,
           projection: matrixSet,
+          extract: true,
         };
         if (!M.utils.isNullOrEmpty(layersSelected)) {
           obj.layers = layersSelected;
@@ -2174,6 +2222,7 @@ export default class LayerswitcherControl extends M.Control {
           name,
           legend,
           url,
+          extract: true,
         };
         if (!M.utils.isNullOrEmpty(layersSelected)) {
           obj.layers = layersSelected;
@@ -2256,7 +2305,7 @@ export default class LayerswitcherControl extends M.Control {
         );
       }).catch((err) => {
         urlOGC = '';
-        M.dialog.error(getValue('exception.error_ogc'));
+        M.dialog.error(getValue('exception.error_ogc'), undefined, this.order);
       });
       M.proxy(this.statusProxy);
     }
@@ -2335,7 +2384,7 @@ export default class LayerswitcherControl extends M.Control {
 
     btnAddLayer.addEventListener('click', () => {
       if (selectValue === getValue('select_service')) {
-        M.dialog.error(getValue('no_results'));
+        M.dialog.error(getValue('no_results'), undefined, this.order);
       } else {
         properties = this.getProperties(selectValue, summary);
 
@@ -2348,7 +2397,7 @@ export default class LayerswitcherControl extends M.Control {
 
     btnCheck.addEventListener('click', () => {
       if (selectValue === getValue('select_service')) {
-        M.dialog.error(getValue('no_results'));
+        M.dialog.error(getValue('no_results'), undefined, this.order);
       } else {
         properties = this.getProperties(selectValue, summary);
         this.getNumberFeaturesOGCAPIFeaturesLayer(properties).then((numberFeatures) => {
@@ -2425,8 +2474,8 @@ export default class LayerswitcherControl extends M.Control {
           },
         });
         const msg = `${getValue('custom_query_btn')}`;
-        M.dialog.remove(ogcModalTemplate);
-        M.dialog.info(customQueryTemplate, msg);
+        M.dialog.remove(ogcModalTemplate, undefined, this.order);
+        M.dialog.info(customQueryTemplate, msg, this.order);
         const btnApplyFilters = document.createElement('button');
         const btnBack = document.createElement('button');
         setTimeout(() => {
@@ -2505,7 +2554,7 @@ export default class LayerswitcherControl extends M.Control {
           );
         });
       }).catch((err) => {
-        M.dialog.error(getValue('no_results'));
+        M.dialog.error(getValue('no_results'), undefined, this.order);
       });
       M.proxy(this.statusProxy);
     });
@@ -2536,6 +2585,7 @@ export default class LayerswitcherControl extends M.Control {
     properties.name = selectValue;
     properties.legend = selectValueText;
     properties.limit = limitValue;
+    properties.extract = true;
 
     if (this.useAttributions_) {
       properties.attribution = {
@@ -2756,7 +2806,7 @@ export default class LayerswitcherControl extends M.Control {
       this.renderCODSIResults(results);
       this.renderCODSIPagination(pageNumber, total);
     }).catch((err) => {
-      M.dialog.error(getValue('exception.codsi'));
+      M.dialog.error(getValue('exception.codsi'), undefined, this.order);
     });
     M.proxy(this.statusProxy);
   }
@@ -2952,8 +3002,10 @@ export default class LayerswitcherControl extends M.Control {
 
   showCODSI() {
     document.querySelector(ADDSERVICES_RESULTS).innerHTML = '';
+    document.querySelector(LAYERS_CONTAINER).innerHTML = '';
     document.querySelector(CODSI).style.display = 'block';
     document.querySelector(ADDSERVICES_SUGGESTIONS).style.display = 'none';
+
     if (document.querySelector('#m-layerswitcher-ogcCContainer') !== null) {
       document.querySelector('#m-layerswitcher-ogcCContainer').style.display = 'none';
     }

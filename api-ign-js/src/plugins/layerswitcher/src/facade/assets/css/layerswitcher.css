@@ -475,6 +475,17 @@ div.m-layerswitcher-legend>img {
     overflow-x: auto !important;
 }
 
+.m-layerswitcher-legend-error {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.m-layerswitcher-icons-cancel{
+    color: red;
+    font-size: 15px;
+    margin-right: 4px;
+}
+
 /* anadir capas */
 .m-layerswitcher-addservice {
     cursor: pointer;

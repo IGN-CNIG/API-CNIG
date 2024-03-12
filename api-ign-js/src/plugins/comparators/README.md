@@ -65,11 +65,11 @@ Ejemplo:
   <img src="./src/facade/assets/comparadoresv2.png" height="256" />
 </p>
 
-**Comparador de espejo / Mirror**: permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.
+**Comparador de espejo / mirrorpanelParams**: permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.
 
-**Comparador de cortina / Curtain**: permite comparar varias capas sobre una cartografía base. La extensión de las capas sobre lienzo vienen definidas por la posición del ratón o por el punto medio del lienzo.
+**Comparador de cortina / lyrcompareParams**: permite comparar varias capas sobre una cartografía base. La extensión de las capas sobre lienzo vienen definidas por la posición del ratón o por el punto medio del lienzo.
 
-**Comparador zonal / Spyeye**: reducción de la capa comparativa a una zona circular para contratarla con el mapa de fondo.
+**Comparador zonal / transparecyParams**: reducción de la capa comparativa a una zona circular para contratarla con el mapa de fondo.
 
 ## Parámetros
 
@@ -109,15 +109,16 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 ]
 ```
 - **defaultCompareMode**: Indica el modo de comparación que se arranca por defecto.
-  - 'mirror': Comparador de espejo.
-  - 'curtain': Comparador de paneles móviles.
-  - 'spyeye': Comparador de zona o puntual.
+  - 'mirrorpanelParams': Comparador de espejo.
+  - 'lyrcompareParams': Comparador de paneles móviles.
+  - 'transparecyParams': Comparador de zona o puntual.
+  - 'windowsyncParams': Comparador en ventana. 
   - 'none': no arranca ninguno de los comparadores.
 
 - **enabledKeyFunctions**:  
 Comparación en modo espejo:
 Si es true, se pueden usar las combinaciones de teclas Ctrl + Shift + [F1-F8] para cambiar entre los distintos modos de visualización. Con la tecla Escape se destruye el plugin.  <br>
-Comparación en modo spyeye:
+Comparación en modo transparecyParams:
 Ctrl + Shift + Enter: Alterna el estado de congelación.  
 Ctrl + Shift + Flecha hacia arriba: Aumenta el radio, si el radio alcanza el valor máximo de 200, no ocurre ningún cambio.  
 Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valor mínimo de 32, no ocurre ningún cambio.  
@@ -131,10 +132,10 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
   - tooltip: Valor a usar para mostrar en el tooltip del control, por defecto Transparencia / Transparency.
 
 - **lyrcompareParams**: Parámetros opcionales del plugin lyrcompare, en el caso de no querer cargar este control su valor será "false".
-  - defaultLyrA (numérico): Capa cargada al inicio en posición 1. Valores de 1 al número de capas disponibles. Defecto, 1.
-  - defaultLyrB (numérico): Capa cargada al inicio en posición 2. Valores de 1 al número de capas disponibles. Defecto, 2.
-  - defaultLyrC (numérico): Capa cargada al inicio en posición 3. Valores de 1 al número de capas disponibles. Defecto, 3.
-  - defaultLyrD (numérico): Capa cargada al inicio en posición 4. Valores de 1 al número de capas disponibles. Defecto, 4.
+  - defaultLyrA (numérico): Capa cargada al inicio en posición 1. Valores de 0 al número de capas disponibles. Defecto, 0.
+  - defaultLyrB (numérico): Capa cargada al inicio en posición 2. Valores de 0 al número de capas disponibles. Defecto, 1.
+  - defaultLyrC (numérico): Capa cargada al inicio en posición 3. Valores de 0 al número de capas disponibles. Defecto, 2.
+  - defaultLyrD (numérico): Capa cargada al inicio en posición 4. Valores de 0 al número de capas disponibles. Defecto, 3.
   - opacityVal: Define el valor de la opacidad que se aplicará a las capas que se muestran sobre la cartografía base. Rango 0 a 100.
   - staticDivision: Permite definir si al arrancar la herramienta dividirá las capas por la posición del ratón (valor 0), por el punto medio del lienzo de cartografía (valor 1) o por el punto medio del lienzo de cartografía con líneas arrastrables (valor 2). Por defecto toma el valor 1.
   - tooltip: Valor a usar para mostrar en el tooltip del control, por defecto Comparador de capas / Layer Comparison.
@@ -163,6 +164,11 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
     - 7: tres mapas en proporción 2-1-1.
     - 8: un mapa arriba y dos abajo.
     - 9: dos mapas arriba y uno abajo.
+
+- **windowsyncParams**: Parámetro opcionales del plugin windowsync, en caso de no querer cargar este control su valor será "false".
+  - controls: (Array de Strings) Define que controles tendrán los mapas.
+  - plugins: (Array de Objetos) Define los plugins que tendrán los mapas. Es necesario tener el script del plugin en el html principal.
+
 ## Ejemplo
 
 Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue la siguiente estructura:
@@ -173,7 +179,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
   enabledDisplayInLayerSwitcher: true,
   collapsed: false,
   collapsible: true,
-  defaultCompareMode: 'mirror', // mirror - curtain - spyeye - none
+  defaultCompareMode: 'mirrorpanelParams', // mirrorpanelParams - lyrcompareParams - transparecyParams - none
   order: 4,
   listLayers: [
     'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
@@ -190,10 +196,10 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
   },
   lyrcompareParams: {
     staticDivision: 2,
-    defaultLyrA: 3,
-    defaultLyrB: 2,
-    defaultLyrC: 1,
-    defaultLyrD: 0,
+    defaultLyrA: 0,
+    defaultLyrB: 1,
+    defaultLyrC: 2,
+    defaultLyrD: 3,
     opacityVal: 100,
     tooltip: 'tooltipLyrCompare',
     defaultCompareViz: 2,
@@ -300,6 +306,17 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
     modeVizTypes: [0, 1, 2, 3, 5], // 0 - 9
     tooltip: 'tooltipMirror',
   },
+    windowsyncParams: {
+    controls: ['scale'],
+    plugins: [
+      {
+        name: 'Layerswitcher',
+        params: {
+          position: 'TL',
+        },
+      },
+    ],
+  },
 });
 
    map.addPlugin(mp);
@@ -308,7 +325,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
 # API-REST
 
 ```javascript
-URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!listLayers*!defaultCompareMode*!enabledKeyFunctions*!transparencyParams*!lyrcompareParams*!mirrorpanelParams
+URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!listLayers*!defaultCompareMode*!enabledKeyFunctions*!transparencyParams*!lyrcompareParams*!mirrorpanelParams*!windowsyncParams
 ```
 
 <table>
@@ -349,7 +366,7 @@ URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!list
     </tr>
      <tr>
         <td>defaultCompareMode</td>
-        <td>Indica el modo de comparación que se arranca por defecto. (mirror - curtain - spyeye - none)</td>
+        <td>Indica el modo de comparación que se arranca por defecto. (mirrorpanelParams - lyrcompareParams - transparecyParams - none)</td>
         <td>Base64 ✔️ | Separador ✔️</td>
     </tr>
     <tr>
@@ -372,12 +389,17 @@ URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!list
         <td>Parámetros opcionales del plugin mirrorpanel.</td>
         <td>Base64 ✔️ | Separador ❌</td>
     </tr>
+    <tr>
+        <td>windowsyncParams</td>
+        <td>Parámetros opcionales del plugin windowsync.</td>
+        <td>Base64 ✔️ | Separador ❌</td>
+    </tr>
 </table>
 
 
 ### Ejemplos de uso API-REST
 ```
-https://componentes.cnig.es/api-core?comparators=TR*false*true*comparador*true**mirror*true*10*true*true*true
+https://componentes.cnig.es/api-core?comparators=TR*false*true*comparador*true**mirror*true*10*true*true*true*true
 
 ```
 No funciona ```https://componentes.cnig.es/api-core?comparators``` es necesario espeficiar alguno de los siguientes parámetros: transparencyParams, lyrcompareParams, mirrorpanelParams.
@@ -416,10 +438,10 @@ Ejemplo de constructor:
   },
   lyrcompareParams: {
     staticDivision: 1,
-    defaultLyrA: 1,
-    defaultLyrB: 2,
-    defaultLyrC: 3,
-    defaultLyrD: 0,
+    defaultLyrA: 0,
+    defaultLyrB: 1,
+    defaultLyrC: 2,
+    defaultLyrD: 3,
     opacityVal: 100,
     tooltip: 'tooltipLyrCompare',
     defaultCompareViz: 1,
@@ -435,6 +457,9 @@ Ejemplo de constructor:
     defaultCompareViz: 2,
     modeVizTypes: [0, 2],
     tooltip: 'tooltipMirror',
+  },
+  windowsyncParams: {
+    controls: ['scale'],
   },
 }
 ```

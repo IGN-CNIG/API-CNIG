@@ -767,7 +767,7 @@ export default class VectorsControl extends M.Control {
 
   addNewLayer(geom) {
     const layerName = `temp_${new Date().getTime()}`;
-    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: false });
+    const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: true });
     layer.geometry = geom;
     this.map.addLayers(layer);
     layer.setZIndex(layer.getZIndex() + PLUS_ZINDEX);

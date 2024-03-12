@@ -26,8 +26,17 @@ export default class BackImgLayerControl extends M.Control {
    * @api stable
    */
   constructor({
-    map, visible, layerOpts, layerId: idLayer, ids, titles, previews, layers,
-    numColumns, empty, order,
+    map,
+    visible,
+    layerOpts,
+    layerId: idLayer,
+    ids,
+    titles,
+    previews,
+    layers,
+    numColumns,
+    empty,
+    order,
   }) {
     const impl = new M.impl.Control();
     let numColumnsV;
@@ -72,7 +81,19 @@ export default class BackImgLayerControl extends M.Control {
         let backgroundLayers = baseLayer.split('sumar');
 
         backgroundLayers = backgroundLayers.map((urlLayer) => {
-          const mapeaLayer = new M.layer.WMTS(urlLayer);
+          let aux = null;
+          if (/QUICK.*/.test(urlLayer)) {
+            aux = M.getQuickLayers(urlLayer.replace('QUICK*', ''));
+          }
+          let mapeaLayer;
+          if (!M.utils.isNullOrEmpty(aux)) {
+            mapeaLayer = aux;
+            if (typeof mapeaLayer === 'string') {
+              mapeaLayer = new M.layer.WMTS(mapeaLayer);
+            }
+          } else {
+            mapeaLayer = new M.layer.WMTS(urlLayer);
+          }
           return mapeaLayer;
         });
 

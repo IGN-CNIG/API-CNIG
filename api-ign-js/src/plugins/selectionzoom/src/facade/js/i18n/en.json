@@ -4,5 +4,8 @@
     "parameterizationDeprecated": "Warning M.plugin.selectionzoom: The parameter definition set in the plugin has been deprecated. Review the new definition: https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/selectionzoom",
     "formatBBoxAndZoom": "No value specified for the bbox or zoom parameters."
   },
+  "textHelp": {
+    "help1": "Allows you to quickly move the map to the predefined views: Peninsula, Canary Islands, Balearic Islands, Ceuta or Melilla."
+  },
   "tooltip": "Default views"
 }

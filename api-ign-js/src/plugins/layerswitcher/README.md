@@ -62,6 +62,7 @@ El listado de capas aparece al pulsar sobre el botón añadir (Listado de alguna
   - 'delete': permite eliminar la capa del mapa.
   Por defecto añade todas las herramientas.
 - **useProxy**: Determina si se desea que las peticiones de red que se realizan en la extensión se realicen con el proxy o no. Por defecto: true.
+- **displayLabel**: Muestra la etiqueta del tipo del servicio si tiene valor true, en caso de tener valor false no la mostrará. Por defecto: false.
 
 # API-REST
 
@@ -141,6 +142,11 @@ https://componentes.cnig.es/api-core/?layerswitcher=position*collapsed*collapsib
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
+  <tr>
+    <td>displayLabel</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
 </table>
 
 ### Ejemplo de uso 
@@ -191,6 +197,7 @@ const mp = new M.plugin.Layerswitcher({
   https: true,
   http: true,
   showCatalog: false,
+  displayLabel: true,
 });
 
 map.addPlugin(mp);

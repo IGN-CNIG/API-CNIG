@@ -91,6 +91,7 @@
   "results_1_singular":"Se ha encontrado ",
   "results_2_singular":" feature",
   "legend": "Leyenda",
+  "legend_error": "Error en la leyenda",
   "data_layer": "Datos para la capa",
   "n_obj_geo": "Número de objetos geográficos",
   "extension": "Extensión",
@@ -104,5 +105,7 @@
   "center": "Centro",
   "addAllLayers": "Añadir todos los servicios",
   "previous": "Anterior",
-  "next": "Siguiente"
+  "next": "Siguiente",
+  "separatedby": "Identificador separados por comas ','",
+  "placeHolderLegend": "Texto que se muestra en el selector"
 }

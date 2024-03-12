@@ -38,7 +38,7 @@
   "map": "Mapa",
   "pnoa": "Imagen (PNOA)",
   "screen": "Imagen Pantalla",
-  "fixeddescription": "This document has no legal validity",
+  "fixeddescription": "Este documento no tiene validez legal",
   "description": "Descripción",
   "layout": "Plantilla",
   "credits": "Print generated through api-core",

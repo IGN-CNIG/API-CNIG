@@ -58,7 +58,6 @@ class MVT extends Vector {
    * - maxZoom. Zoom máximo aplicable a la capa.
    * - visibility. Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
-   * - opacity. Opacidad de capa, por defecto 1.
    * @param {Object} implParam Valores de la implementación por defecto,
    * se pasa un objeto implementación MVT.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:

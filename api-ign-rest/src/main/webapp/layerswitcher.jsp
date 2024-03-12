@@ -100,6 +100,11 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
+        <label for="selectDisplay">displayLabel</label>
+        <select name="displayValue" id="selectDisplay">
+            <option value=true>true</option>
+            <option value=false>false</option>
+        </select>
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
 
@@ -172,6 +177,7 @@
         const selectHttps = document.getElementById("isHttps");
         const selectShowCatalog = document.getElementById("isShowCatalog");
         const selectProxy = document.getElementById("selectProxy");
+        const selectDisplay = document.getElementById("selectDisplay");
 
         const botonEliminar = document.getElementById("botonEliminar");
 
@@ -188,6 +194,7 @@
         selectHttps.addEventListener('change', cambiarTest);
         selectShowCatalog.addEventListener('change', cambiarTest);
         selectProxy.addEventListener('change', cambiarTest);
+        selectDisplay.addEventListener('change', cambiarTest);
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
@@ -208,6 +215,7 @@
             objeto.https = (selectHttps.options[selectHttps.selectedIndex].value == 'true');
             objeto.showCatalog = (selectShowCatalog.options[selectShowCatalog.selectedIndex].value == 'true');
             objeto.useProxy = (selectProxy.options[selectProxy.selectedIndex].value == 'true');
+            objeto.displayLabel = (selectDisplay.options[selectDisplay.selectedIndex].value == 'true');
             if (mp !== null) {
                 map.removePlugins(mp);
             }

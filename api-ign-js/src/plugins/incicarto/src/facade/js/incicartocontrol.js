@@ -537,7 +537,7 @@ export default class IncicartoControl extends M.Control {
         document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
       });
 
-      document.getElementById('fileUpload').onchange = function() {
+      document.getElementById('fileUpload').onchange = function () {
         let fileName = 'Adjuntar fichero &hellip;';
         if (this.files) {
           if (this.files.length > 1) {
@@ -606,7 +606,7 @@ export default class IncicartoControl extends M.Control {
         }
       });
 
-      document.getElementById('fileUpload').onchange = function() {
+      document.getElementById('fileUpload').onchange = function () {
         let fileName = 'Adjuntar fichero &hellip;';
         if (this.files) {
           if (this.files.length > 1) {
@@ -813,7 +813,7 @@ export default class IncicartoControl extends M.Control {
    */
   getLayersInLayerswitcher() {
     const layers = this.map_.getLayers().filter((layer) => {
-      return layer.displayInLayerSwitcher === true && layer.transparent === true;
+      return (layer.displayInLayerSwitcher === true && layer.transparent === true) || layer.transparent === false;
     });
 
     return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
@@ -844,6 +844,8 @@ export default class IncicartoControl extends M.Control {
       param = this.getGeoJSON(layer);
     } else if (layer.type === 'Vector') {
       param = this.getVector(layer);
+    } else if (layer.type === 'TMS') {
+      param = this.getTMS(layer);
     }
     return param;
   }
@@ -883,6 +885,16 @@ export default class IncicartoControl extends M.Control {
    */
   getWMS(layer) {
     return `WMS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.name}*${layer.transparent}*${layer.tiled}*${layer.userMaxExtent || ''}*${layer.version}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+  }
+
+  /**
+ * This method gets the TMS url parameter
+ *
+ * @public
+ * @function
+ */
+  getTMS(layer) {
+    return `TMS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.isVisible()}*${layer.transparent}*${layer.tileGridMaxZoom}*${layer.displayInLayerSwitcher}${layer.legend}`;
   }
 
   /**
