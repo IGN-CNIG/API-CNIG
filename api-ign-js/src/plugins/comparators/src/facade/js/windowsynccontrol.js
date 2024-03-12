@@ -63,6 +63,9 @@ export default class WindowSyncControl extends M.Control {
 
     this.pluginScript = this.getScriptAndLink('script');
     this.linksStyle = this.getScriptAndLink('link');
+
+    this.activate = this.activate.bind(this);
+    this.closeWindows = this.closeWindows.bind(this);
   }
 
   /**
@@ -97,11 +100,11 @@ export default class WindowSyncControl extends M.Control {
         const btnOpenWindow = t.querySelector('#new_windowsync');
         const btnCloseWindow = t.querySelector('#deleteAll_windowsync');
         if (btnOpenWindow) {
-          btnOpenWindow.addEventListener('click', this.activate.bind(this));
+          btnOpenWindow.addEventListener('click', this.activate);
         }
 
         if (btnCloseWindow) {
-          btnCloseWindow.addEventListener('click', this.closeWindows.bind(this));
+          btnCloseWindow.addEventListener('click', this.closeWindows);
         }
       });
   }
@@ -118,19 +121,31 @@ export default class WindowSyncControl extends M.Control {
     const newWindow = window.open(`${window.location.href}`, '_blank', 'width=800,height=800');
     this.generateNewMap(newWindow);
 
-    setTimeout(() => {
-      const id = window.crypto.randomUUID();
-      newWindow.ID_MAP = id;
+    const intervalID = setInterval(() => {
+      if (newWindow.NEW_API_MAP !== undefined) {
+        this.addEventMap(newWindow);
+        clearInterval(intervalID);
+      }
+    }, 500);
+  }
 
-      this.mapsWindows_.push({
-        id,
-        map: newWindow.NEW_API_MAP,
-        window: newWindow,
-      });
+  addEventMap(nWindow) {
+    const newWindow = nWindow;
+    const maps = this.mapsWindows_;
 
-      this.implControl_.removeEventListeners(this.mapsWindows_);
-      this.implControl_.handleMoveMap(this.mapsWindows_);
-    }, 1000);
+    const id = window.crypto.randomUUID();
+    newWindow.ID_MAP = id;
+
+    maps.push({
+      id,
+      map: newWindow.NEW_API_MAP,
+      window: newWindow,
+    });
+
+    newWindow.NEW_API_MAP.on(M.evt.COMPLETED, () => {
+      this.implControl_.removeEventListeners(maps);
+      this.implControl_.handleMoveMap(maps);
+    });
   }
 
 
@@ -211,7 +226,7 @@ export default class WindowSyncControl extends M.Control {
     }
 
     if (!script) {
-      this.script.push(`<script type="text/javascript" src="plugins/${name}/${name}.ol.min.js"></script>`);
+      this.pluginScript.push(`<script type="text/javascript" src="plugins/${name}/${name}.ol.min.js"></script>`);
     }
   }
 
@@ -232,11 +247,13 @@ export default class WindowSyncControl extends M.Control {
   }
 
   closeWindows() {
+    const baseMap = this.mapsWindows_[0];
     this.mapsWindows_.forEach(({ window }, i) => {
       if (i !== 0) {
         window.close();
       }
     });
+    this.mapsWindows_ = [baseMap];
   }
 
   handlePluginScrips(name) {
