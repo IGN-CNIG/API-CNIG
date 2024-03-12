@@ -224,7 +224,14 @@
     }
 
     const downloadPDF = () => {
-      window.printJS('m-help-contents', 'html')
+      const elements = document.querySelectorAll('.m-help-magnifyOn');
+      elements.forEach((e) => {
+        e.parentElement.style.display = 'none'
+      });
+      window.printJS('m-help-contents', 'html');
+      elements.forEach((e) => {
+        e.parentElement.style.display = 'block';
+      });
     }
 
     const changeStatusIndex = () => {
@@ -249,7 +256,7 @@
     }
 
     const filterResults = (e) => {
-      if (e.keyCode === 13 || e.type === click){
+      if (e.keyCode === 13 || e.type === 'click'){
         const text = document.getElementById('m-help-input').value;
         const ol = document.querySelector('#m-help-index > div:nth-child(2) > ol');
         const lis = ol.getElementsByTagName('li');
