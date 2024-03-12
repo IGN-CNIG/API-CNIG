@@ -54,6 +54,7 @@
                     <link href="plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
                     <link href="plugins/predefinedzoom/predefinedzoom.ol.min.css" rel="stylesheet" />
                     <link href="plugins/stylemanager/stylemanager.ol.min.css" rel="stylesheet" />
+                    <link href="plugins/layerswitcher/layerswitcher.ol.min.css" rel="stylesheet" />
 
                     </link>
                     <style type="text/css">
@@ -281,7 +282,8 @@
                     <script type="text/javascript" src="plugins/attributions/attributions.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/predefinedzoom/predefinedzoom.ol.min.js"></script>
                     <script type="text/javascript" src="plugins/stylemanager/stylemanager.ol.min.js"></script>
-
+                    <script type="text/javascript" src="plugins/layerswitcher/layerswitcher.ol.min.js"></script>
+                    
                     <% String[] jsfiles=PluginsManager.getJSFiles(adaptedParams); for (int i=0; i < jsfiles.length; i++)
                         { String jsfile=jsfiles[i]; %>
                         <script type="text/javascript" src="plugins/<%=jsfile%>"></script>
