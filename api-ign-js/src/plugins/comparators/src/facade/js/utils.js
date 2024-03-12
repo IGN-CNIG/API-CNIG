@@ -489,7 +489,7 @@ function layerToParam(layer, map) {
   } else if (layer.type === 'OGCAPIFeatures') {
     param = getOGCAPIFeatures(layer);
   } else if (layer.type === 'GenericRaster' || layer.type === 'GenericVector') {
-    handlerErrorGenericLayer(layer);
+    handlerErrorGenericLayer();
     return '';
   }
   return param;

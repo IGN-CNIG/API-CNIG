@@ -5,7 +5,15 @@
     "mirrorDefaultCompareViz": "El parámetro modeVizTypes no contiene el valor de defaultCompareViz",
     "mirrorModeVizTypes": "modeVizTypes no tiene un valor válido",
     "fourLayers": "El modo de visualización seleccionado requiere tres capas",
-    "notLayers": "El modo de visualización seleccionado requiere una capa"
+    "notLayers": "El modo de visualización seleccionado requiere una capa",
+    "errorPlugin": "Error al cargar el plugin",
+    "errorObjectLayer": "no se puede cargar las capas como objeto",
+    "errorLinkUrl": "Falta por incluir el link del plugin",
+    "errorScriptUrl": "Falta por incluir el script del plugin",
+    "errorScriptOrLinkUrl": "Falta por incluir el script o link de un plugin",
+    "errorURL": "no se puede compartir porque no tiene URL",
+    "errorUrlMBTiles": "La capa de tipo MBTiles o MBTilesVector no tiene tiene URL y no se puede compartir",
+    "errorGeneric": "La capa de tipo GenericRaster y GenericVector no se puede compartir"
   },
   "nolayertext": "No hay capas de comparación",
   "title": "Panel de Comparadores",

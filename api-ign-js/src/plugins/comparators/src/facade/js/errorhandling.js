@@ -1,11 +1,13 @@
+import { getValue } from './i18n/language';
+
 export const handlerErrorPluginWindowSync = (err, name) => {
   if (err.message.includes('Converting circular structure to JSON')) {
     if (name === 'Timeline' || name === 'BackImgLayer') {
-      M.toast.error(`Error al cargar el plugin ${name} - no se puede cargar las capas como objeto`, null, 6000);
+      M.toast.error(`${getValue('exception.errorPlugin')} ${name} - ${getValue('exception.errorObjectLayer')}`, null, 6000);
     } else if (name) {
-      M.toast.error(`Error al cargar el plugin ${name}`, null, 6000);
+      M.toast.error(`${getValue('exception.errorPlugin')} ${name}`, null, 6000);
     } else {
-      M.toast.error('Error al cargar un plugin', null, 6000);
+      M.toast.error(getValue('exception.errorPlugin'), null, 6000);
     }
 
     // eslint-disable-next-line no-console
@@ -15,34 +17,34 @@ export const handlerErrorPluginWindowSync = (err, name) => {
 
 export const handlerErrorURLWindowSync = (style, script, name) => {
   if (!style && name) {
-    M.toast.error(`Falta por incluir el link del plugin ${name}`, null, 6000);
+    M.toast.error(`${getValue('exception.errorLinkUrl')} ${name}`, null, 6000);
     // eslint-disable-next-line no-console
-    console.error(`Falta por incluir el link del plugin ${name}`);
+    console.error(`${getValue('exception.errorLinkUrl')} ${name}`);
   }
 
 
   if (!script && name) {
-    M.toast.error(`Falta por incluir el script del plugin ${name}`, null, 6000);
+    M.toast.error(`${getValue('exception.errorScriptUrl')} ${name}`, null, 6000);
     // eslint-disable-next-line no-console
-    console.error(`Falta por incluir el link del plugin ${name}`);
+    console.error(`${getValue('exception.errorScriptUrl')} ${name}`);
   }
 
   if (!name && !script && !style) {
-    M.toast.error('Falta por incluir el script o link de un plugin', null, 6000);
+    M.toast.error(getValue('exception.errorScriptOrLinkUrl'), null, 6000);
     // eslint-disable-next-line no-console
-    console.error('Falta por incluir el script o link de un plugin');
+    console.error(getValue('exception.errorScriptOrLinkUrl'));
   }
 };
 
 
 export const handlerErrorTileLoadFunction = ({ name }) => {
   if (name) {
-    M.toast.error(`La capa ${name} no se puede compartir porque no tiene URL`, null, 6000);
+    M.toast.error(`${name} ${getValue('exception.errorURL')}`, null, 6000);
   } else {
-    M.toast.error('La capa de tipo MBTiles no tiene tiene URL y no se puede compartir', null, 6000);
+    M.toast.error(getValue('exception.errorUrlMBTiles'), null, 6000);
   }
 };
 
-export const handlerErrorGenericLayer = ({ type }) => {
-  M.toast.error(`La capa de tipo ${type} no se puede compartir`, null, 6000);
+export const handlerErrorGenericLayer = () => {
+  M.toast.error(getValue('exception.errorGeneric'), null, 6000);
 };
