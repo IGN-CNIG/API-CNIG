@@ -132,6 +132,8 @@ export default class HelpControl extends M.Control {
         vars: {
           headerImages: this.headerImages,
           downloadPDFimg: `${M.config.MAPEA_URL}img/file-pdf.svg`,
+          zoom1: `${M.config.MAPEA_URL}img/magnify_on.svg`,
+          zoom2: `${M.config.MAPEA_URL}img/magnify_off.svg`,
           translations: {
             header: getValue('short_title'),
             title: this.headerTitle,
@@ -160,6 +162,7 @@ export default class HelpControl extends M.Control {
           contents.appendChild(divContainer);
         });
         windowHelp.document.querySelector('#m-help-index > div > ol > li > span').click();
+        windowHelp.addZoomAction();
       });
 
       this.helpsContent = [];
