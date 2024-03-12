@@ -241,95 +241,60 @@ map.addPlugin(mpLayerswitcher);
 // }, {});
 // map.addLayers(ocupacionSuelo);
 
-const mp2 = new M.plugin.Popup({});
-map.addPlugin(mp2);
-
 const mp = new Comparators({
-  position: 'TR',
+  position: 'TL',
   collapsed: false,
   collapsible: true,
   isDraggable: true,
+  tooltip: 'Plugin Comparators',
+  defaultCompareMode: 'mirror',
   listLayers: [
-    // new M.layer.WMS({
-    //   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-    //   name: 'AU.AdministrativeUnit',
-    //   legend: 'Unidades Administrativas',
-    //   tiled: false,
-    //   visibility: false,
-    // }, {}),
-
-    // new M.layer.WMS({
-    //   url: 'https://www.ign.es/wms/pnoa-historico?',
-    //   name: 'OLISTAT',
-    //   legend: 'OLISTAT (1997-1998)',
-    //   maxZoom: 20,
-    //   minZoom: 6,
-    //   visibility: true,
-    //   tiled: false,
-    // }, {}),
-
-    // new M.layer.WMS({
-    //   url: 'https://servicios.idee.es/wms-inspire/hidrografia',
-    //   name: 'HY.Network',
-    //   legend: 'Red hidrográfica',
-    //   tiled: false,
-    // }),
+    'WMS*Landsat 5 TM 1996. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1996_321-543*true',
+    'WMS*Landsat 5 TM 1996. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1996_432*true',
+    'WMS*Landsat 5 TM 1991. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1991_321-543*true',
+    'WMS*Landsat 5 TM 1991. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1991_432*true',
+    'WMS*Landsat 5 TM 1986. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1986_321-543*true',
   ],
   enabledKeyFunctions: true,
   lyrsMirrorMinZindex: 10,
-  enabledDisplayInLayerSwitcher: true,
   transparencyParams: {
-    radius: 50,
+    radius: 100,
     maxRadius: 100,
     minRadius: 10,
     tooltip: 'tooltipTransparency',
   },
   lyrcompareParams: {
-    staticDivision: 2,
-    defaultLyrA: 0,
-    defaultLyrB: 1,
-    defaultLyrC: 2,
-    defaultLyrD: 3,
+    staticDivision: 1,
+    defaultLyrA: 1,
+    defaultLyrB: 2,
+    defaultLyrC: 3,
+    defaultLyrD: 0,
     opacityVal: 100,
     tooltip: 'tooltipLyrCompare',
-    // defaultCompareViz: 2,
+    defaultCompareViz: 1,
   },
   mirrorpanelParams: {
     showCursors: true,
     principalMap: true,
     enabledControlsPlugins: {
       map2: {
-        ShareMap: {}, // Opciones por defecto
-      },
-      map3: {
-        controls: ['scale'],
-        Layerswitcher: {
+        constrols: ['scale'],
+        FullTOC: {
           position: 'TL',
         },
       },
-      map4: {
-        Layerswitcher: {
-          position: 'TL',
-        },
-        // BackImgLayer: {
-        //   position: 'TR',
-        //   collapsed: true,
-        //   collapsible: true,
-        //   tooltip: 'Capas de fondo',
-        //   layerVisibility: true,
-        //   columnsNumber: 0,
-        //   empty: true,
-        //   ids: 'mapa,hibrido',
-        //   titles: 'Mapa,Hibrido',
-        //   previews: 'https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqmapa.png,https://componentes.cnig.es/api-core/plugins/backimglayer/images/svqhibrid.png',
-        //   layers: 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true',
-        // },
-      },
-
     },
-    // defaultCompareViz: 1,
-    modeVizTypes: [0, 4], // 0 - 9
+    enabledDisplayInLayerSwitcher: true,
+    defaultCompareViz: 2,
+    modeVizTypes: [0, 2],
     tooltip: 'tooltipMirror',
+  },
+  windowsyncParams: {
+    controls: [
+      'scale',
+      'backgroundlayers',
+      'panzoombar',
+    ],
   },
 });
 
