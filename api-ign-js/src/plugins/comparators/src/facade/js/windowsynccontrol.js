@@ -131,23 +131,34 @@ export default class WindowSyncControl extends M.Control {
 
   addEventMap(nWindow) {
     const newWindow = nWindow;
-    const maps = this.mapsWindows_;
 
     const id = window.crypto.randomUUID();
     newWindow.ID_MAP = id;
 
-    maps.push({
+    this.mapsWindows_.push({
       id,
       map: newWindow.NEW_API_MAP,
       window: newWindow,
     });
 
+    this.handerCloseWindow(newWindow, id);
+
     newWindow.NEW_API_MAP.on(M.evt.COMPLETED, () => {
-      this.implControl_.removeEventListeners(maps);
-      this.implControl_.handleMoveMap(maps);
+      this.implControl_.removeEventListeners(this.mapsWindows_);
+      this.implControl_.handleMoveMap(this.mapsWindows_);
     });
   }
 
+  handerCloseWindow(newWindow, id) {
+    const timer = setInterval(() => {
+      if (newWindow.closed) {
+        clearInterval(timer);
+        // ? Se elimina por el indice para no perder la referencia
+        const index = this.mapsWindows_.findIndex(obj => obj.id === id);
+        this.mapsWindows_.splice(index, 1);
+      }
+    }, 1000);
+  }
 
   generateNewMap(newWindow) {
     const centerMap = this.map_.getCenter();
