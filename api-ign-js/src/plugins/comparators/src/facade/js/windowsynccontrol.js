@@ -140,8 +140,6 @@ export default class WindowSyncControl extends M.Control {
     const projection = `${this.map_.getProjection().code}*${this.map_.getProjection().units}`;
     const zoom = this.map_.getZoom();
     const controls = JSON.stringify(this.controls);
-    const styles = this.linksStyle.join(' ');
-    const scripts = this.pluginScript.join(' ');
     const plugins = this.generatePlugins() || '';
     const layers = JSON.stringify([...this.layers, ...getLayers(this.map_)]);
     const baseLayers = JSON.stringify(getBaseLayers(this.map_));
@@ -151,7 +149,7 @@ export default class WindowSyncControl extends M.Control {
        <html>
        <head>
            <title>Nueva Ventana</title>
-           ${styles}
+           ${this.linksStyle.join(' ')}
            <style rel="stylesheet">
            html,
            body {
@@ -164,7 +162,7 @@ export default class WindowSyncControl extends M.Control {
        </head>
        <body>
            <div id="map"></div>
-           ${scripts}
+           ${this.pluginScript.join(' ')}
            <script>
            const newMap = M.map({
              container: 'map',
@@ -207,6 +205,16 @@ export default class WindowSyncControl extends M.Control {
     return [...document.querySelectorAll(`${type}[${attr}*=".ol.min"]`)];
   }
 
+  pluginScriptAndLinkAPI(style, script, name) {
+    if (!style) {
+      this.linksStyle.push(`<link type="text/css" rel="stylesheet" href="plugins/${name}/${name}.ol.min.css">`);
+    }
+
+    if (!script) {
+      this.script.push(`<script type="text/javascript" src="plugins/${name}/${name}.ol.min.js"></script>`);
+    }
+  }
+
   generatePlugins() {
     if (this.plugins === undefined) {
       return '';
@@ -235,7 +243,12 @@ export default class WindowSyncControl extends M.Control {
     const style = this.getScriptAndLink('link').some(s => s.includes(`${name.toLowerCase()}.ol.min.css`));
     const script = this.getScriptAndLink('script').some(s => s.includes(`${name.toLowerCase()}.ol.min.js`));
 
-    handlerErrorURLWindowSync(style, script, name);
+    const currentUrl = window.location.href;
+    if (currentUrl.includes('comparators') && (currentUrl.includes(MAPEA_LITE_URL) || currentUrl.includes(COMPONENTES_URL))) {
+      this.pluginScriptAndLinkAPI(style, script, name.toLowerCase());
+    } else {
+      handlerErrorURLWindowSync(style, script, name);
+    }
   }
 
   /**
