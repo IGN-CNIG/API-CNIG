@@ -145,7 +145,6 @@ export default class WindowSyncControl extends M.Control {
     const plugins = this.generatePlugins() || '';
     const layers = JSON.stringify([...this.layers, ...getLayers(this.map_)]);
     const baseLayers = JSON.stringify(getBaseLayers(this.map_));
-    console.log(layers);
 
     const contenidoHTML = `
        <!DOCTYPE html>

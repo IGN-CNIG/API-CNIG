@@ -42,3 +42,7 @@ export const handlerErrorTileLoadFunction = ({ name }) => {
     M.toast.error('La capa de tipo MBTiles no tiene tiene URL y no se puede compartir', null, 6000);
   }
 };
+
+export const handlerErrorGenericLayer = ({ type }) => {
+  M.toast.error(`La capa de tipo ${type} no se puede compartir`, null, 6000);
+};

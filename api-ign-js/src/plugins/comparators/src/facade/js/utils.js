@@ -1,4 +1,4 @@
-import { handlerErrorTileLoadFunction } from './errorhandling';
+import { handlerErrorGenericLayer, handlerErrorTileLoadFunction } from './errorhandling';
 
 
 export const dicAccesibilityButton = {
@@ -455,7 +455,7 @@ function getMBTilesVector(layer) {
   }
 
   const style = layer.getStyle().serialize();
-  return `MBTiles*${normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.name}*${layer.isVisible()}**${style}*${layer.extract}`;
+  return `MBTilesVector*${normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.name}*${layer.isVisible()}**${style}*${layer.extract}`;
 }
 
 function layerToParam(layer, map) {
@@ -488,6 +488,9 @@ function layerToParam(layer, map) {
     param = getMVT(layer);
   } else if (layer.type === 'OGCAPIFeatures') {
     param = getOGCAPIFeatures(layer);
+  } else if (layer.type === 'GenericRaster' || layer.type === 'GenericVector') {
+    handlerErrorGenericLayer(layer);
+    return '';
   }
   return param;
 }

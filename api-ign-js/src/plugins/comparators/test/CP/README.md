@@ -37,9 +37,7 @@
 
 * CP-003 - Capas.
     * [X] Se comprueba que se puede compartir todos los tipos de capas Raster.
-    * [ ] Se comprueba que se puede compartir todos los tipos de capas Vectoriales.
-
-* CP-004 - Manejo de errores.
+    * [X] Se comprueba que se puede compartir todos los tipos de capas Vectoriales.
 
 **Pruebas API REST - windowsyn**
 
