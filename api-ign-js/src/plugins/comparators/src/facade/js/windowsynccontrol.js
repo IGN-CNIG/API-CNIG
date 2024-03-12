@@ -193,8 +193,18 @@ export default class WindowSyncControl extends M.Control {
    */
   getScriptAndLink(type) {
     const attr = type === 'link' ? 'href' : 'src';
-    const elements = [...document.querySelectorAll(`${type}[${attr}*="${MAPEA_LITE_URL}"], ${type}[${attr}*="${COMPONENTES_URL}"]`)];
+    let elements = [...document.querySelectorAll(`${type}[${attr}*="${MAPEA_LITE_URL}"], ${type}[${attr}*="${COMPONENTES_URL}"]`)];
+    if (elements.length === 0) {
+      elements = this.getAPIRestScriptAndLink(type, attr);
+    }
     return elements.map(l => l.outerHTML);
+  }
+
+  getAPIRestScriptAndLink(type, attr) {
+    if (type === 'script') {
+      return [...document.querySelectorAll(`${type}[${attr}*=".ol.min"]`), document.querySelector('script[src="js/configuration.js"]')];
+    }
+    return [...document.querySelectorAll(`${type}[${attr}*=".ol.min"]`)];
   }
 
   generatePlugins() {
