@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Comparators from 'facade/comparators';
 
 M.language.setLang('es');
