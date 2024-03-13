@@ -266,7 +266,7 @@ export const transformToStringLayers = (layer, map, remove = true) => {
     } = layer;
     if (remove) { map.removeWMS(name); }
     return `WMS*${legend}*${url}*${name}*true*${options.format || 'image/png'}*${useCapabilities}*${version}`;
-  } else if (layer.type === 'WMTS') {
+  } if (layer.type === 'WMTS') {
     const {
       url, name, legend, matrixSet, options,
       useCapabilities,

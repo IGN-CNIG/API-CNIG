@@ -741,7 +741,7 @@ export default class InfocoordinatesControl extends M.Control {
 
   descargarArchivo(contenidoEnBlob, nombreArchivo) {
     const reader = new FileReader();
-    reader.onload = function (event) {
+    reader.onload = (event) => {
       const save = document.createElement('a');
       save.href = event.target.result;
       save.target = '_blank';

@@ -198,7 +198,8 @@ export default class Analysiscontrol extends M.impl.Control {
       geographic: {
         coordinates: ol.proj.transform(
           feature.getGeometry().coordinates,
-          this.facadeMap_.getProjection().code, WGS84,
+          this.facadeMap_.getProjection().code,
+          WGS84,
         ),
         projection: WGS84,
       },

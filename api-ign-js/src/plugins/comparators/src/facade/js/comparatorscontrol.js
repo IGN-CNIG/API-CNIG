@@ -10,7 +10,12 @@ import LyrCompareControl from './lyrcomparecontrol';
 import TransparencyControl from './transparencycontrol';
 import WindowSyncControl from './windowsynccontrol';
 
-import { transformToStringLayers, checkLayers, getNameString, formatearID } from './utils';
+import {
+  transformToStringLayers,
+  checkLayers,
+  getNameString,
+  formatearID,
+} from './utils';
 
 export default class ComparatorsControl extends M.Control {
   /**
