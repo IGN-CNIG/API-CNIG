@@ -11,6 +11,7 @@ import OLGeomMultiPolygon from 'ol/geom/MultiPolygon';
 import OLFeature from 'ol/Feature';
 import FormatGeoJSON from '../format/GeoJSON';
 import ImplUtils from '../util/Utils';
+import projAPI from '../projections';
 /**
  * @module M/impl/Feature
  */
@@ -29,10 +30,13 @@ class Feature {
    * @param {Object} style Estilo de los objetos geográficos.
    * @api stable
    */
-  constructor(id, geojson, style) {
+  constructor(id, geojson, style, { projEPSG }) {
     const geojsonVariable = geojson;
     this.facadeFeature_ = null;
-    this.formatter_ = new FormatGeoJSON();
+    this.formatter_ = new FormatGeoJSON({
+      dataProjection: projEPSG,
+      featureProjection: projEPSG,
+    });
     if (!isNullOrEmpty(geojson)) {
       if (isNullOrEmpty(geojson.type)) {
         geojsonVariable.type = 'Feature';
@@ -132,10 +136,28 @@ class Feature {
    * @return {M.Feature} Retorna "M.Feature" modificado.
    * @api stable
    */
-  static olFeature2Facade(olFeature, canBeModified) {
+  static olFeature2Facade(olFeature, canBeModified, code) {
     let facadeFeature = null;
     if (!isNullOrEmpty(olFeature)) {
-      facadeFeature = new FacadeFeature();
+      const projection = projAPI.getSupportedProjs()
+        .filter(proj => proj.codes.includes(code))[0];
+
+      facadeFeature = new FacadeFeature(olFeature.getId(), {
+        crs: {
+          type: 'name',
+          properties: {
+            name: projection.codes[projection.codes.length - 2],
+          },
+        },
+        geometry: {
+          coordinates: olFeature.getGeometry().getCoordinates(),
+          type: olFeature.getGeometry().getType(),
+        },
+        properties: olFeature.getProperties(),
+      });
+      // TODO ↑ Pasar a la facade el estilo
+      // ? feature.getImpl().getOLFeature().setStyle(olFeature.getStyle())
+
       facadeFeature.getImpl().setOLFeature(olFeature, canBeModified);
     }
     return facadeFeature;

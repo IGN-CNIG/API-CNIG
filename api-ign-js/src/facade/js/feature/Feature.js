@@ -2,6 +2,7 @@
  * @module M/Feature
  */
 import FeatureImpl from 'impl/feature/Feature';
+import projAPI from 'impl/projections';
 import Base from '../Base';
 import { isNullOrEmpty } from '../util/Utils';
 import GeoJSON from '../format/GeoJSON';
@@ -28,12 +29,16 @@ class Feature extends Base {
    * @api
    */
   constructor(id, geojson, style) {
+    const crs = geojson.crs ? geojson.crs.properties.name : 'urn:ogc:def:crs:OGC:1.3:CRS84';
+    const projEPSG = projAPI.getSupportedProjs()
+      .filter(proj => proj.codes.includes(crs))[0].codes[0];
+
     /**
      * Implementación de objetos geográficos.
      * @public
      * @type {M.impl.Feature}
      */
-    const impl = new FeatureImpl(id, geojson, style);
+    const impl = new FeatureImpl(id, geojson, style, { crs, projEPSG });
 
     super(impl);
 
@@ -49,7 +54,10 @@ class Feature extends Base {
      * @private
      * @type {M.format.GeoJSON}
      */
-    this.formatGeoJSON_ = new GeoJSON();
+    this.formatGeoJSON_ = new GeoJSON({
+      dataProjection: projEPSG,
+      featureProjection: projEPSG,
+    });
 
     /**
      * Añade estilo al objeto geográfico.

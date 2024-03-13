@@ -495,7 +495,12 @@ class Vector extends LayerBase {
    */
   toGeoJSON() {
     const code = this.map_.getProjection().code;
-    const featuresAsJSON = this.getFeatures().map(feature => feature.getGeoJSON());
+    const featuresAsJSON = this.getFeatures().map((feature) => {
+      const geoJson = feature.getGeoJSON();
+      delete geoJson.crs;
+      return geoJson;
+    });
+
     const projection = projAPI.getSupportedProjs()
       .filter(proj => proj.codes.includes('EPSG:4326'))[0];
     return {

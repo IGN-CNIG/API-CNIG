@@ -59,7 +59,7 @@
         M.language.setLang(urlParams.get('language') || 'es');
         const map = M.map({
             container: 'mapjs',
-            controls: ['attributions*Contenido del control'],
+            controls: ['attributions*<p>Contenido del control</p>'],
             zoom: 5,
             maxZoom: 20,
             minZoom: 4,
