@@ -61,10 +61,6 @@ Ejemplo:
 
 ## Modos de comparación
 
-<p align="center">
-  <img src="./src/facade/assets/comparadoresv2.png" height="256" />
-</p>
-
 **Comparador de espejo / mirrorpanelParams**: permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.
 
 **Comparador de cortina / lyrcompareParams**: permite comparar varias capas sobre una cartografía base. La extensión de las capas sobre lienzo vienen definidas por la posición del ratón o por el punto medio del lienzo.
