@@ -30,7 +30,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/buffer",
     "image": "img/api-logo.png",
     "description": "Cálculo de áreas de influencia sobre geometrías que se van dibujando sobre la vista.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "comparepanel",
@@ -74,7 +74,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/geometrydraw",
     "image": "img/api-logo.png",
     "description": "Permite el dibujo y edición de geometrías sobre un mapa, así como su carga y descarga.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "georefimage",
@@ -338,7 +338,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/selectiondraw",
     "image": "img/api-logo.png",
     "description": "Permite dibujar geometrías y obtenerlas al terminar.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "selectionzoom",
@@ -393,7 +393,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/topographicprofile",
     "image": "img/api-logo.png",
     "description": "Permite consultar el perfil topográfico de una línea al dibujarla.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "timeline",
@@ -426,7 +426,7 @@
     "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/vectors",
     "image": "img/api-logo.png",
     "description": "Plugin que permite el dibujo y edición de geometrías sobre un mapa, así como su descarga.",
-    "obsolete": false
+    "obsolete": true
   },
   {
     "name": "viewhistory",
