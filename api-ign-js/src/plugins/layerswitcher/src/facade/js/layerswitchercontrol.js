@@ -1349,23 +1349,28 @@ export default class LayerswitcherControl extends M.Control {
                         });
                       } else {
                         M.proxy(this.useProxy);
-                        M.remote.get(url).then((response3) => {
-                          // GEOJSON
-                          if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
-                            this.printLayerModal(url, 'geojson');
-                          } else if (response3.text.indexOf('<kml ') >= 0) {
-                            const parser = new DOMParser();
-                            const xmlDoc = parser.parseFromString(response3.text, 'text/xml');
-                            const folders = xmlDoc.getElementsByTagName('Folder');
-                            let cont = -1;
-                            const names = Array.from(folders).map((folder) => {
-                              cont += 1;
-                              const name = folder.name || `Layer__${cont}`;
-                              return { name };
-                            });
-                            this.printLayerModal(url, 'kml', names);
-                          }
-                        });
+                        const extension = url.includes('.') ? url.substring(url.lastIndexOf('.') + 1, url.length) : '';
+                        if (['zip', 'gpx', 'gml'].includes(extension)) {
+                          this.openFileFromUrl(url, extension);
+                        } else {
+                          M.remote.get(url).then((response3) => {
+                            // GEOJSON
+                            if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
+                              this.printLayerModal(url, 'geojson');
+                            } else if (response3.text.indexOf('<kml ') >= 0) {
+                              const parser = new DOMParser();
+                              const xmlDoc = parser.parseFromString(response3.text, 'text/xml');
+                              const folders = xmlDoc.getElementsByTagName('Folder');
+                              let cont = -1;
+                              const names = Array.from(folders).map((folder) => {
+                                cont += 1;
+                                const name = folder.name || `Layer__${cont}`;
+                                return { name };
+                              });
+                              this.printLayerModal(url, 'kml', names);
+                            }
+                          });
+                        }
                         M.proxy(this.statusProxy);
                       }
                     });
@@ -1472,25 +1477,16 @@ export default class LayerswitcherControl extends M.Control {
     // const fileUrlBtn = document.querySelector('#m-layerswitcher-addservices-fileurl-btn');
     const searchInput = document.querySelector(SEARCH_INPUT);
 
-    searchBtn.addEventListener('click', e => this.readUrl(e));
-    // fileUrlBtn.addEventListener('click', () => this.openFileFromUrl());
+    searchBtn.addEventListener('click', (e) => {
+      this.filterName = undefined;
+      this.readCapabilities(e);
+    });
     searchInput.addEventListener('keydown', (e) => {
       if (e.keyCode === 13) {
-        this.readUrl(e);
+        this.filterName = undefined;
+        this.readCapabilities(e);
       }
     });
-  }
-
-  readUrl(event) {
-    const searchInput = document.querySelector(SEARCH_INPUT);
-    const url = searchInput.value.trim().split('?')[0];
-    const extension = url.includes('.') ? url.substring(url.lastIndexOf('.') + 1, url.length) : '';
-    if (['zip', 'kml', 'gpx', 'geojson', 'gml', 'json'].includes(extension)) {
-      this.openFileFromUrl();
-    } else {
-      this.filterName = undefined;
-      this.readCapabilities(event);
-    }
   }
 
   addEventFileUpload() {
@@ -1505,12 +1501,9 @@ export default class LayerswitcherControl extends M.Control {
     buttonClose.click();
   }
 
-  openFileFromUrl() {
-    const input = document.querySelector('#m-layerswitcher-addservices-search-input');
-    const url = input.value.trim();
+  openFileFromUrl(url, extension) {
     if (M.utils.isUrl(url)) {
       const fileName = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'));
-      const extension = url.substring(url.lastIndexOf('.') + 1, url.length);
       if (['zip', 'kml', 'gpx', 'geojson', 'gml', 'json'].includes(extension) > -1) {
         if (extension === 'zip') {
           this.downloadShp(url, fileName);
@@ -1523,7 +1516,6 @@ export default class LayerswitcherControl extends M.Control {
           });
         }
       } else {
-        input.value = '';
         M.dialog.error(getValue('exception.url_not_valid'));
       }
     }

@@ -2121,9 +2121,8 @@ export const loadFeaturesFromSource = (map, source, layerName, fileExt) => {
  * @param {M.map} map
  * @param {Object} file fichero del que se obtienen los features
  * @function
- * @api
  */
-export const loadFileLayer = (map, file) => {
+const loadFileLayer = (map, file) => {
   // eslint-disable-next-line no-bitwise
   const fileExt = file.name.slice((file.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
   const layerName = file.name.split('.').slice(0, -1).join('.');
