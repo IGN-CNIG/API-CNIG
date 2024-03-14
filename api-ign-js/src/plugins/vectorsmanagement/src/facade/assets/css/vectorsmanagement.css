@@ -628,6 +628,11 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
     width: 40px;
 }
 
+#analysisBtns {
+    text-align: center;
+    margin-top: 10px;
+}
+
 .vectorsmanagement-icon-font:before { content: '\e800'; }
 .vectorsmanagement-icon-layers:before { content: '\e801'; }
 .vectorsmanagement-icon-linea:before { content: '\e803'; }
