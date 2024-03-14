@@ -30,7 +30,7 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   constructor({
-    map, selection, addlayer, analysis, creation, download, edition, help, style,
+    map, selection, addlayer, analysis, creation, download, edition, help, style, isDraggable,
   }) {
     const impl = new M.impl.Control();
     super(impl, 'VectorsManagement');
@@ -48,6 +48,9 @@ export default class VectorsManagementControl extends M.Control {
       return { value: l.name, text: l.legend || l.name };
     });
     this.selectedLayer = null;
+
+    // Determina si el plugin es draggable o no
+    this.isDraggable_ = isDraggable;
   }
 
   /**
@@ -107,6 +110,10 @@ export default class VectorsManagementControl extends M.Control {
 
       this.map.on(M.evt.ADDED_LAYER, this.refreshLayers.bind(this));
       this.map.on(M.evt.REMOVED_LAYER, this.refreshLayers.bind(this));
+
+      if (this.isDraggable_) {
+        M.utils.draggabillyPlugin(this.getPanel(), '#m-vectorsmanagement-titulo');
+      }
 
       success(html);
     });

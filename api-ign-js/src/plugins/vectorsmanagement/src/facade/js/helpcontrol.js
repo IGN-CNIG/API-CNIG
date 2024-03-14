@@ -49,47 +49,59 @@ export default class HelpControl extends M.Control {
     this.template = M.template.compileSync(template, {
       vars: {
         translations: {
-          title: getValue('help_template.title'),
-          addlayer_title: getValue('help_template.addlayer_title'),
-          addlayer_content: getValue('help_template.addlayer_content'),
-          selection_title: getValue('help_template.selection_title'),
-          selection_content: getValue('help_template.selection_content'),
-          creation_title: getValue('help_template.creation_title'),
-          creation_content: getValue('help_template.creation_content'),
-          edition_title: getValue('help_template.edition_title'),
-          edition_content: getValue('help_template.edition_content'),
-          style_title: getValue('help_template.style_title'),
-          style_content: getValue('help_template.style_content'),
-          analysis_title: getValue('help_template.analysis_title'),
-          analysis_content: getValue('help_template.analysis_content'),
-          download_title: getValue('help_template.download_title'),
-          download_content: getValue('help_template.download_content'),
+          addlayer_title: getValue('help_template').addlayer_title,
+          addlayer_content: getValue('help_template').addlayer_content,
+          selection_title: getValue('help_template').selection_title,
+          selection_content: getValue('help_template').selection_content,
+          creation_title: getValue('help_template').creation_title,
+          creation_content: getValue('help_template').creation_content,
+          edition_title: getValue('help_template').edition_title,
+          edition_content: getValue('help_template').edition_content,
+          edition_content_1: getValue('help_template').edition_content_1,
+          edition_content_1_1: getValue('help_template').edition_content_1_1,
+          edition_content_2: getValue('help_template').edition_content_2,
+          edition_content_2_1: getValue('help_template').edition_content_2_1,
+          edition_content_3: getValue('help_template').edition_content_3,
+          edition_content_3_1: getValue('help_template').edition_content_3_1,
+          edition_content_4: getValue('help_template').edition_content_4,
+          edition_content_4_1: getValue('help_template').edition_content_4_1,
+          edition_content_5: getValue('help_template').edition_content_5,
+          edition_content_5_1: getValue('help_template').edition_content_5_1,
+          edition_content_6: getValue('help_template').edition_content_6,
+          edition_content_6_1: getValue('help_template').edition_content_6_1,
+          edition_content_7: getValue('help_template').edition_content_7,
+          edition_content_7_1: getValue('help_template').edition_content_7_1,
+          style_title: getValue('help_template').style_title,
+          style_content: getValue('help_template').style_content,
+          analysis_title: getValue('help_template').analysis_title,
+          analysis_content: getValue('help_template').analysis_content,
+          analysis_content_1: getValue('help_template').analysis_content_1,
+          analysis_content_1_1: getValue('help_template').analysis_content_1_1,
+          analysis_content_2: getValue('help_template').analysis_content_2,
+          analysis_content_2_1: getValue('help_template').analysis_content_2_1,
+          download_title: getValue('help_template').download_title,
+          download_content: getValue('help_template').download_content,
+          creation_content_1: getValue('help_template').creation_content_1,
+          creation_content_1_1: getValue('help_template').creation_content_1_1,
+          creation_content_2: getValue('help_template').creation_content_2,
+          creation_content_2_1: getValue('help_template').creation_content_2_1,
+          creation_content_3: getValue('help_template').creation_content_3,
+          creation_content_3_1: getValue('help_template').creation_content_3_1,
+          creation_content_4: getValue('help_template').creation_content_4,
+          creation_content_4_1: getValue('help_template').creation_content_4_1,
+          creation_content_5: getValue('help_template').creation_content_5,
+          creation_content_5_1: getValue('help_template').creation_content_5_1,
+          creation_content_6: getValue('help_template').creation_content_6,
+          creation_content_6_1: getValue('help_template').creation_content_6_1,
         },
       },
     });
-    this.template.querySelector('#help-title').innerHTML = getValue('help_template.title');
-    this.template.querySelector('#addlayer-title').innerHTML = getValue('help_template.addlayer_title');
-    this.template.querySelector('#addlayer-content').innerHTML = getValue('help_template.addlayer_content');
-    this.template.querySelector('#selection-title').innerHTML = getValue('help_template.selection_title');
-    this.template.querySelector('#selection-content').innerHTML = getValue('help_template.selection_content');
-    this.template.querySelector('#creation-title').innerHTML = getValue('help_template.creation_title');
-    this.template.querySelector('#creation-content').innerHTML = getValue('help_template.creation_content');
-    this.template.querySelector('#edition-title').innerHTML = getValue('help_template.edition_title');
-    this.template.querySelector('#edition-content').innerHTML = getValue('help_template.edition_content');
-    this.template.querySelector('#style-title').innerHTML = getValue('help_template.style_title');
-    this.template.querySelector('#style-content').innerHTML = getValue('help_template.style_content');
-    this.template.querySelector('#analysis-title').innerHTML = getValue('help_template.analysis_title');
-    this.template.querySelector('#analysis-content').innerHTML = getValue('help_template.analysis_content');
-    this.template.querySelector('#download-title').innerHTML = getValue('help_template.download_title');
-    this.template.querySelector('#download-content').innerHTML = getValue('help_template.download_content');
     if (!this.closeEventActive_) {
       document.addEventListener('keydown', this.closeEvent.bind(this));
       this.closeEventActive_ = true;
     }
-    this.template.querySelector('.m-panel-btn').addEventListener('click', this.deactivate.bind(this));
-    html.querySelector('#m-vectorsmanagement-controls').appendChild(this.template);
-
-    // document.body.appendChild(this.template);
+    M.dialog.info(M.utils.htmlToString(this.template), getValue('help_template').title);
+    document.querySelector('.m-button button').addEventListener('click', this.deactivate.bind(this));
   }
 
 

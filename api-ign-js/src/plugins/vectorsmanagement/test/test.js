@@ -9,24 +9,77 @@ const map = M.map({
   zoom: 6,
 });
 
-map.addLayers(new M.layer.Vector({
-  name: 'vector_a',
-  legend: 'Vector A',
-}, {displayInLayerSwitcher: true}));
+map.addPlugin(new M.plugin.Layerswitcher());
+
+// map.addLayers(new M.layer.Vector({
+//   name: 'vector_a',
+//   legend: 'Capa Vector',
+// }, {displayInLayerSwitcher: true}));
+
+map.addLayers(new M.layer.WFS({
+  url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?",
+  namespace: "tematicos",
+  name: "Provincias",
+  legend: "Capa WFS",
+  geometry: 'MPOLYGON',
+}));
+
+// map.addLayers(new M.layer.GeoJSON({
+//   name: "Provincias",
+//   legend: "Capa GeoJSON",
+//   url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application/json"
+// }));
+
+// map.addLayers(new M.layer.KML({
+//   url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
+//   name: "capaKML",
+//   legend: "Capa KML",
+//   extract: true
+// }));
+
+// map.addLayers(new M.layer.MVT({
+//   url: 'https://vts.larioja.org/rioja/{z}/{x}/{y}.pbf',
+//   name: 'MVT',
+//   // legend: 'Capa MVT',
+//   projection: 'EPSG:3857',
+// }));
+
+// map.addLayers(new M.layer.OGCAPIFeatures({
+//   url: 'https://api-features.idee.es/collections/',
+//   name: 'hidrografia/Falls',
+//   legend: 'Capa OGCAPIFeatures',
+//   limit: 20  
+// }));
+
+// window.fetch('./countries.mbtiles').then((response) => {
+//   const mbtilesvector = new M.layer.MBTilesVector({
+//     name: 'mbtiles_vector',
+//     legend: 'Capa MBTilesVector L',
+//     source: response,
+//   });
+//   map.addLayers(mbtilesvector);
+// }).catch((e) => {
+//   throw e;
+// });
+
 
 const mp = new VectorsManagement({
-  position: 'TR',
-  collapsed: true,
-  collapsible: true,
+  position: 'TL',
+  tooltip: 'Gestionar mis vectores',
+  // isDraggable => falta implementar
+  // useProxy => falta implementar
+  collapsed: false,
+  collapsible: false,
   // Herramientas
-  selection: true,
-  addlayer: true,
-  creation: true,
-  edition: true,
-  style: true,
-  analysis: true,
-  download: true,
-  help: true,
+  // selection: false,
+  // addlayer: false,
+  // creation: false,
+  // edition: false,
+  // style: false,
+  // analysis: false,
+  // download: false,
+  // help: false,
+  isDraggable: true
 });
 
 map.addPlugin(mp);

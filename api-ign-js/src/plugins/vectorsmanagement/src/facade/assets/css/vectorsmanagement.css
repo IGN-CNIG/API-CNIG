@@ -106,6 +106,13 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
 
 #m-selectionlayer {
     margin: auto 10px;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #6c6c6c;
+    font-family: Muli,sans-serif;
+    font-size: 13px;
 }
 
 .m-vectorsmanagement-selection-layer>div,

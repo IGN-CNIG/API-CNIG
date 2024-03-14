@@ -280,7 +280,7 @@ export default class StyleControl extends M.Control {
             style = new M.style.Line(options.line);
             break;
           case 'Polygon':
-          case 'Multipolygon':
+          case 'MultiPolygon':
             style = new M.style.Polygon(options.polygon);
             break;
           default:

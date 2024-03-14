@@ -4,6 +4,8 @@
 import '../assets/css/vectorsmanagement';
 import VectorsManagementControl from './vectorsmanagementcontrol';
 
+import { getValue } from './i18n/language';
+
 import es from './i18n/es';
 import en from './i18n/en';
 
@@ -135,6 +137,12 @@ export default class VectorsManagement extends M.Plugin {
      * Indicates if the style control is active (true/false)
      */
     this.style = this.selection && (options.style !== undefined ? options.style : true);
+
+    // Tooltip
+    this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    // Determina si el plugin es draggable o no
+    this.isDraggable = !M.utils.isUndefined(options.isDraggable) ? options.isDraggable : false;
   }
 
   /**
@@ -172,6 +180,7 @@ export default class VectorsManagement extends M.Plugin {
       edition: this.edition,
       help: this.help,
       style: this.style,
+      isDraggable: this.isDraggable,
     }));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('VectorsManagement', {
