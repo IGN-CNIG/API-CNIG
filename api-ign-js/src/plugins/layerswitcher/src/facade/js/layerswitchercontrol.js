@@ -1364,7 +1364,7 @@ export default class LayerswitcherControl extends M.Control {
                               let cont = -1;
                               const names = Array.from(folders).map((folder) => {
                                 cont += 1;
-                                const name = folder.name || `Layer__${cont}`;
+                                const name = folder.querySelector(':scope > name') ? folder.querySelector(':scope > name').textContent.trim() : `Layer__${cont}`;
                                 return { name };
                               });
                               this.printLayerModal(url, 'kml', names);

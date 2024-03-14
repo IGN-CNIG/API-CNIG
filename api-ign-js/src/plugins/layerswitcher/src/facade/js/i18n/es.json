@@ -107,6 +107,6 @@
   "previous": "Anterior",
   "next": "Siguiente",
   "separatedby": "Identificador separados por comas ','",
-  "placeHolderLegend": "Texto que se muestra en el selector",
+  "placeHolderLegend": "Texto que se muestra en el TOC",
   "upload_file": "Subir fichero"
 }
