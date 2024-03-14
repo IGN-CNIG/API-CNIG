@@ -28,7 +28,7 @@ class Feature extends Base {
    * @param {Object} style Estilo de los objetos geográficos.
    * @api
    */
-  constructor(id, geojson, style) {
+  constructor(id, geojson = {}, style) {
     const crs = geojson.crs ? geojson.crs.properties.name : 'urn:ogc:def:crs:OGC:1.3:CRS84';
     const projEPSG = projAPI.getSupportedProjs()
       .filter(proj => proj.codes.includes(crs))[0].codes[0];

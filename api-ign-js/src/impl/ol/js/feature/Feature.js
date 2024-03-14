@@ -136,7 +136,7 @@ class Feature {
    * @return {M.Feature} Retorna "M.Feature" modificado.
    * @api stable
    */
-  static olFeature2Facade(olFeature, canBeModified, code) {
+  static olFeature2Facade(olFeature, canBeModified, code = 'EPSG:4326') {
     let facadeFeature = null;
     if (!isNullOrEmpty(olFeature)) {
       const projection = projAPI.getSupportedProjs()
