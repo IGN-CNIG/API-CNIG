@@ -104,7 +104,7 @@ export default class VectorsManagement extends M.Plugin {
      *
      * Indicates if the creation control is active (true/false)
      */
-    this.creation = this.selection && (options.creation !== undefined ? options.creation : true);
+    this.creation = options.creation !== undefined ? options.creation : true;
 
     /**
      * @private
@@ -112,7 +112,7 @@ export default class VectorsManagement extends M.Plugin {
      *
      * Indicates if the download control is active (true/false)
      */
-    this.download = this.selection && (options.download !== undefined ? options.download : true);
+    this.download = options.download !== undefined ? options.download : true;
 
     /**
      * @private
@@ -136,7 +136,7 @@ export default class VectorsManagement extends M.Plugin {
      *
      * Indicates if the style control is active (true/false)
      */
-    this.style = this.selection && (options.style !== undefined ? options.style : true);
+    this.style = options.style !== undefined ? options.style : true;
 
     // Tooltip
     this.tooltip_ = options.tooltip || getValue('tooltip');

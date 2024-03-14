@@ -117,7 +117,8 @@ export default class DownloadControl extends M.Control {
     if (features.length > 0) {
       const featuresGeoJson = [];
       features.forEach((f) => {
-        if (f.getStyle().get('label') === undefined) {
+        const style = f.getStyle();
+        if (!style || style.get('label') === undefined) {
           featuresGeoJson.push(f.getGeoJSON());
         }
       });

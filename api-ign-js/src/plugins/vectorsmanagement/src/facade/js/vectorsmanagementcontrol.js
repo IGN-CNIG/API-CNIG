@@ -377,7 +377,11 @@ export default class VectorsManagementControl extends M.Control {
    * @returns {String} selection
    */
   getSelection() {
-    return this.selectionControl.getSelection();
+    let selection = 'layer';
+    if (this.selectionControl) {
+      selection = this.selectionControl.getSelection();
+    }
+    return selection;
   }
 
   /**
@@ -389,7 +393,11 @@ export default class VectorsManagementControl extends M.Control {
    * @returns {Array} features
    */
   getSelectedFeatures() {
-    return this.selectionControl.getSelectedFeatures();
+    let selectedFeatures = [];
+    if (this.selectionControl) {
+      selectedFeatures = this.selectionControl.getSelectedFeatures();
+    }
+    return selectedFeatures;
   }
 
   /**
@@ -401,7 +409,11 @@ export default class VectorsManagementControl extends M.Control {
    * @returns {Array} features
    */
   getSelectedOLFeatures() {
-    return this.selectionControl.getSelectedOLFeatures();
+    let olFeatures = [];
+    if (this.selectionControl) {
+      olFeatures = this.selectionControl.getSelectedOLFeatures();
+    }
+    return olFeatures;
   }
 
   /**
@@ -412,7 +424,9 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   removeSelectedFeatures() {
-    this.selectionControl.removeSelectedFeatures();
+    if (this.selectionControl) {
+      this.selectionControl.removeSelectedFeatures();
+    }
   }
 
   /**
@@ -424,7 +438,9 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   addFeatureToSelection(feature) {
-    this.selectionControl.addFeatureToSelection(feature);
+    if (this.selectionControl) {
+      this.selectionControl.addFeatureToSelection(feature);
+    }
   }
 
   /**
@@ -435,9 +451,11 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   hideSelectionLayer() {
-    const controlBtn = this.html.querySelector('#m-vectorsmanagement-selection');
-    if (controlBtn.classList.contains('activated')) {
-      this.selectionControl.hideSelectionLayer();
+    if (this.selectionControl) {
+      const controlBtn = this.html.querySelector('#m-vectorsmanagement-selection');
+      if (controlBtn.classList.contains('activated')) {
+        this.selectionControl.hideSelectionLayer();
+      }
     }
   }
 
@@ -449,9 +467,11 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   showSelectionLayer() {
-    const controlBtn = this.html.querySelector('#m-vectorsmanagement-selection');
-    if (controlBtn.classList.contains('activated')) {
-      this.selectionControl.showSelectedLayer();
+    if (this.selectionControl) {
+      const controlBtn = this.html.querySelector('#m-vectorsmanagement-selection');
+      if (controlBtn.classList.contains('activated')) {
+        this.selectionControl.showSelectedLayer();
+      }
     }
   }
 
