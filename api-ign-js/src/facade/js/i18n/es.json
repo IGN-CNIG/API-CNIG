@@ -185,6 +185,11 @@
     "versionError": "La capa [replace1] de tipo [replace2] no soporta la versión.",
     "sldBODYError": "La capa [replace1] de tipo [replace2] no soporta SLD_BODY",
     "styleError": "La capa [replace1] de tipo [replace2] no soporta STYLE",
-    "formatError": "La capa [replace1] de tipo [replace2] no soporta FORMAT"
+    "formatError": "La capa [replace1] de tipo [replace2] no soporta FORMAT",
+    "file_size": "El fichero seleccionado sobrepasa el máximo de 20 MB permitido.",
+    "file_load": "Error al cargar el fichero.",
+    "no_geoms": "No se han detectado geometrías en este fichero.",
+    "file_load_correct": "Error al cargar el fichero. Compruebe que se trata del fichero correcto.",
+    "file_extension": "No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX, GML y GeoJSON."
   }
 }

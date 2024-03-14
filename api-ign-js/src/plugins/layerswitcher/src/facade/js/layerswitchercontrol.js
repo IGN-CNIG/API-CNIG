@@ -1406,6 +1406,7 @@ export default class LayerswitcherControl extends M.Control {
     const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
       (precharged.services !== undefined && precharged.services.length > 0);
     const codsiActive = this.codsiActive;
+    const accept = '.kml, .zip, .gpx, .geojson, .gml, .json';
     const addServices = M.template.compileSync(addServicesTemplate, {
       jsonp: true,
       parseToHtml: false,
@@ -1413,6 +1414,7 @@ export default class LayerswitcherControl extends M.Control {
         precharged,
         hasPrecharged,
         codsiActive,
+        accept,
         translations: {
           url_service: getValue('url_service'),
           query: getValue('query'),
@@ -1423,6 +1425,7 @@ export default class LayerswitcherControl extends M.Control {
           filter_results: getValue('filter_results'),
           clean_filter: getValue('clean_filter'),
           filter_text: getValue('filter_text'),
+          upload_file: getValue('upload_file'),
         },
       },
     });
@@ -1440,6 +1443,9 @@ export default class LayerswitcherControl extends M.Control {
 
       // Eventos Buscador
       this.addEventSearch();
+
+      // Eventos carga de ficheros
+      this.addEventFileUpload();
     }, 10);
 
     this.focusModal('#m-layerswitcher-addservices-search-input');
@@ -1462,19 +1468,89 @@ export default class LayerswitcherControl extends M.Control {
 
   addEventSearch() {
     // Elements
-    const searchInput = document.querySelector(SEARCH_BTN);
-    const searchInput2 = document.querySelector(SEARCH_INPUT);
+    const searchBtn = document.querySelector(SEARCH_BTN);
+    // const fileUrlBtn = document.querySelector('#m-layerswitcher-addservices-fileurl-btn');
+    const searchInput = document.querySelector(SEARCH_INPUT);
 
-    searchInput.addEventListener('click', (e) => {
-      this.filterName = undefined;
-      this.readCapabilities(e);
-    });
-    searchInput2.addEventListener('keydown', (e) => {
+    searchBtn.addEventListener('click', e => this.readUrl(e));
+    // fileUrlBtn.addEventListener('click', () => this.openFileFromUrl());
+    searchInput.addEventListener('keydown', (e) => {
       if (e.keyCode === 13) {
-        this.filterName = undefined;
-        this.readCapabilities(e);
+        this.readUrl(e);
       }
     });
+  }
+
+  readUrl(event) {
+    const searchInput = document.querySelector(SEARCH_INPUT);
+    const url = searchInput.value.trim().split('?')[0];
+    const extension = url.includes('.') ? url.substring(url.lastIndexOf('.') + 1, url.length) : '';
+    if (['zip', 'kml', 'gpx', 'geojson', 'gml', 'json'].includes(extension)) {
+      this.openFileFromUrl();
+    } else {
+      this.filterName = undefined;
+      this.readCapabilities(event);
+    }
+  }
+
+  addEventFileUpload() {
+    const inputFile = document.querySelector('#m-layerswitcher-addservices-file-input');
+    inputFile.addEventListener('change', () => this.changeFile(inputFile));
+  }
+
+  changeFile(inputFile) {
+    M.utils.addFileToMap(this.map_, inputFile.files[0]);
+    inputFile.value = '';
+    const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
+    buttonClose.click();
+  }
+
+  openFileFromUrl() {
+    const input = document.querySelector('#m-layerswitcher-addservices-search-input');
+    const url = input.value.trim();
+    if (M.utils.isUrl(url)) {
+      const fileName = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'));
+      const extension = url.substring(url.lastIndexOf('.') + 1, url.length);
+      if (['zip', 'kml', 'gpx', 'geojson', 'gml', 'json'].includes(extension) > -1) {
+        if (extension === 'zip') {
+          this.downloadShp(url, fileName);
+        } else {
+          M.remote.get(url).then((response) => {
+            const source = response.text;
+            M.utils.loadFeaturesFromSource(this.map_, source, fileName, extension);
+            const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
+            buttonClose.click();
+          });
+        }
+      } else {
+        input.value = '';
+        M.dialog.error(getValue('exception.url_not_valid'));
+      }
+    }
+  }
+
+  downloadShp(url, fileName) {
+    window.fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          M.dialog.error(getValue('exception.url_not_valid'));
+          return null;
+        }
+        return response.blob();
+      }).then((blob) => {
+        if (blob) {
+          blob.arrayBuffer().then((buffer) => {
+            M.utils.loadFeaturesFromSource(this.map_, buffer, fileName, 'zip');
+            const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
+            buttonClose.click();
+          });
+        } else {
+          M.dialog.error(getValue('exception.url_not_valid'));
+        }
+      })
+      .catch((error) => {
+        M.dialog.error(getValue('exception.url_not_valid'));
+      });
   }
 
   addEventSuggestions() {

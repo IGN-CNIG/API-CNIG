@@ -331,6 +331,25 @@ class Map extends Base {
         this._checkCompleted();
       });
     }
+    this.addDropFileEvent();
+  }
+
+  addDropFileEvent() {
+    const container = this.getContainer().parentNode.parentNode;
+    container.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    }, false);
+
+    container.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+    }, false);
+
+    container.addEventListener('drop', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      const files = e.dataTransfer.files;
+      M.utils.addFileToMap(this, files[0]);
+    }, false);
   }
 
   /**

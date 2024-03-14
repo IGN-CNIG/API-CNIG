@@ -4,10 +4,11 @@
  * @example import utils from 'M/utils';
  */
 import { get as remoteGet } from 'M/util/Remote';
-import { getValue } from 'M/i18n/language';
 import chroma from 'chroma-js';
 import Draggabilly from 'draggabilly';
+import * as shp from 'shpjs';
 import * as dynamicImage from 'assets/img/dynamic_legend';
+import { getValue } from '../i18n/language';
 import { INCHES_PER_UNIT, DOTS_PER_INCH } from '../units';
 import * as WKT from '../geom/WKT';
 
@@ -1644,6 +1645,414 @@ export const transfomContent = (text, pSizes = {}) => {
 };
 
 /**
+ * Converts Openlayers features to Mapea features.
+ * @public
+ * @function
+ * @api
+ * @param {Array<OL.Feature>} implFeatures
+ * @returns {Array<M.Feature>}
+ */
+const featuresToFacade = (implFeatures) => {
+  return implFeatures.map((feature) => {
+    const newFeature = new M.Feature(feature.getId(), {
+      geometry: {
+        coordinates: feature.getGeometry().getCoordinates(),
+        type: feature.getGeometry().getType(),
+      },
+    });
+    return newFeature;
+  });
+};
+
+/**
+ * Loads GeoJSON layer
+ * @public
+ * @function
+ * @param {*} source2 -
+ */
+const loadGeoJSONLayer = (source, projection) => {
+  let features = new ol.format.GeoJSON()
+    .readFeatures(source, { featureProjection: projection });
+
+  features = featuresToFacade(features);
+  features = features.filter((f) => {
+    return f.getGeometry() !== null;
+  });
+
+  return features;
+};
+
+/**
+ * Loads GeoJSON layer
+ * @public
+ * @function
+ * @param {*} source-
+ */
+const loadAllInGeoJSONLayer = (sources, projection) => {
+  let features = [];
+  sources.forEach((source) => {
+    const localFeatures = loadGeoJSONLayer(source, projection);
+    if (localFeatures !== null && localFeatures !== undefined && localFeatures.length > 0) {
+      features = features.concat(localFeatures);
+    }
+  });
+  return features;
+};
+
+/**
+ * Loads KML layer
+ * @public
+ * @function
+ * @api
+ * @param {*} source -
+ * @param {*} extractStyles -
+ */
+const loadKMLLayer = (source, projection, extractStyles) => {
+  let features = new ol.format.KML({ extractStyles })
+    .readFeatures(source, { featureProjection: projection });
+  features = featuresToFacade(features);
+  return features;
+};
+
+/**
+ * Loads GPX layer.
+ * @public
+ * @function
+ * @api
+ * @param {*} source -
+ * @param {String} projection proyeccion del mapa
+ */
+const loadGPXLayer = (source, projection) => {
+  let features = [];
+  const origFeatures = new ol.format.GPX()
+    .readFeatures(source, { featureProjection: projection });
+  origFeatures.forEach((f) => {
+    if (f.getGeometry().getType() === 'MultiLineString') {
+      if (f.getGeometry().getLineStrings().length === 1) {
+        const geom = f.getGeometry().getLineStrings()[0];
+        f.setGeometry(geom);
+      }
+    }
+
+    features.push(f);
+  });
+  features = featuresToFacade(features);
+  return features;
+};
+
+/**
+ * Parsea las superficies de un GML 3.2
+ * @private
+ * @function
+ * @param {*} source-
+ */
+const parseSurfacesGml = (source) => {
+  const surfaces = [];
+  const xmlDoc = new DOMParser().parseFromString(source, 'text/xml');
+  const surfaceNodes = xmlDoc.querySelectorAll('Surface');
+  surfaceNodes.forEach((s) => {
+    surfaces.push({ surface: s, id: '', sistema: '' });
+  });
+  return surfaces;
+};
+
+/**
+ * Obtiene los nodos de los diferentes tipos de geometrias de un GML 3.2
+ * @private
+ * @function
+ * @param {*} source
+ * @returns {Array} array de geometrias
+ */
+const parseGeometriesGml = (source) => {
+  const geometries = [];
+  const xmlDoc = new DOMParser().parseFromString(source, 'text/xml');
+  const points = xmlDoc.querySelectorAll('Point');
+  const lines = xmlDoc.querySelectorAll('LineString');
+  const polygons = xmlDoc.querySelectorAll('Polygon');
+
+  points.forEach((p) => {
+    geometries.push({
+      surface: p,
+      id: '',
+      sistema: '',
+      type: 'Point',
+    });
+  });
+
+  lines.forEach((l) => {
+    geometries.push({
+      surface: l,
+      id: '',
+      sistema: '',
+      type: 'LineString',
+    });
+  });
+
+  polygons.forEach((p) => {
+    geometries.push({
+      surface: p,
+      id: '',
+      sistema: '',
+      type: 'Polygon',
+    });
+  });
+  return geometries;
+};
+
+/**
+ * Obtiene el sistema de referencia de un GML 3.2
+ * @private
+ * @function
+ * @param {*} superficies
+ * @returns {Array} array de superficies
+ */
+const getEPSGFromGML32 = (superficies) => {
+  superficies.map((superficie) => {
+    const superficieAux = superficie;
+    let coordSystem = superficie.surface.getAttribute('srsName');
+    if (coordSystem.indexOf('EPSG::326') > -1) {
+      const projectionNumber = parseInt(coordSystem.substring(coordSystem.indexOf('::') + 2, coordSystem.length), 10) - 6800;
+      coordSystem = `EPSG::${projectionNumber}`;
+    } else if (coordSystem.indexOf('::') === -1) {
+      if (coordSystem.indexOf('opengis.net/def/crs')) {
+        const projectionType = coordSystem.indexOf('258') === -1 ? coordSystem.indexOf('326') : coordSystem.indexOf('258');
+        coordSystem = `EPSG::${coordSystem.substring(projectionType, coordSystem.length)}`;
+      }
+    } else {
+      coordSystem = coordSystem.substring(coordSystem.indexOf('EPSG'), coordSystem.length);
+    }
+    superficieAux.sistema = coordSystem.replace('::', ':');
+    return superficieAux;
+  });
+  return superficies;
+};
+
+/**
+ * Obtiene las coordenadas de una lista de vertices de un GML 3.2
+ * @private
+ * @function
+ * @param {String} posList cadena con lista e coordenadas
+ * @param {String} srs sistema de coordenadas del GML
+ * @param {String} projection proyección del mapa
+ * @returns {Array} array de coordenadas
+ */
+const parseCoordinatesGML32 = (posList, srs, projection) => {
+  const coords = [];
+  for (let i = 0; i < posList.length; i += 2) {
+    const coordsParse = [parseFloat(posList[i + 1]), parseFloat(posList[i])];
+    coords.push(ol.proj.transform(coordsParse, srs, projection));
+  }
+  return coords;
+};
+
+/**
+ * Obtiene las coordenadas de un poligono de un GML 3.2
+ * @private
+ * @function
+ * @param {*} superficies
+ * @param {String} projection proyección del mapa
+ * @returns {Array} array de coordenadas
+ */
+const getGML32PolygonCoordinates = (superficie, projection) => {
+  const exterior = superficie.surface.querySelector('exterior');
+  const interior = superficie.surface.querySelectorAll('interior');
+  const srs = superficie.sistema;
+  const coordenadas = [];
+  const coordsExterior = exterior.querySelector('posList').textContent.split(' ');
+  coordenadas.push(parseCoordinatesGML32(coordsExterior, srs, projection));
+  interior.forEach((i) => {
+    const coordsInterior = i.querySelector('posList').textContent.split(' ');
+    coordenadas.push(parseCoordinatesGML32(coordsInterior, srs, projection));
+  });
+  return coordenadas;
+};
+
+/**
+ * Obtiene las coordenadas de una linea de un GML 3.2
+ * @private
+ * @function
+ * @param {*} superficies
+ * @param {String} projection proyección del mapa
+ * @returns {Array} array de coordenadas
+ */
+const getGML32LineCoordinates = (superficie, projection) => {
+  const srs = superficie.sistema;
+  const coords = superficie.surface.querySelector('posList').textContent.split(' ');
+  const coordenadas = parseCoordinatesGML32(coords, srs, projection);
+  return coordenadas;
+};
+
+/**
+ * Obtiene las coordenadas de un punto de un GML 3.2
+ * @private
+ * @function
+ * @param {*} superficies
+ * @param {String} projection proyección del mapa
+ * @returns {Array} array de coordenadas
+ */
+const getGML32PointCoordinates = (superficie, projection) => {
+  const srs = superficie.sistema;
+  const coords = superficie.surface.querySelector('pos').textContent.split(' ');
+  const coordenadas = parseCoordinatesGML32(coords, srs, projection)[0];
+  return coordenadas;
+};
+
+/**
+ * Obtiene las coordenadas de los features de un GML 3.2
+ * @private
+ * @function
+ * @param {*} superficies
+ * @param {String} projection proyección del mapa
+ * @returns {Object}
+ */
+const getCoordinatesFromGML32 = (superficies, projection) => {
+  const geometries = [];
+  let contador = 1;
+  superficies.forEach((superficie) => {
+    let coordenadas = [];
+    const idSuperficie = superficie.id !== '' ? superficie.id : `ID_${contador}`;
+    const nombreSuperficie = superficie.id !== '' ? superficie.id : `nombre_${contador}`;
+    if (superficie.type === 'Polygon') {
+      coordenadas = getGML32PolygonCoordinates(superficie, projection);
+    } else if (superficie.type === 'LineString') {
+      coordenadas = getGML32LineCoordinates(superficie, projection);
+    } else if (superficie.type === 'Point') {
+      coordenadas = getGML32PointCoordinates(superficie, projection);
+    }
+    contador += 1;
+    geometries.push({
+      fichero: undefined,
+      tipo: superficie.type,
+      id: `${idSuperficie}`,
+      coordenadas,
+      nombre: `${nombreSuperficie}`,
+      sistema: superficie.sistema,
+    });
+  });
+  return geometries;
+};
+
+/**
+ * Parsea un GML 3.2 y obtiene sus features
+ * @private
+ * @function
+ * @param {*} source-
+ * @param {String} projection proyección del mapa
+ * @returns {Array} Features del GML
+ */
+const gmlParser = (source, projection) => {
+  const features = [];
+  let superficies = parseSurfacesGml(source);
+  if (superficies.length === 0) {
+    superficies = parseGeometriesGml(source);
+  }
+
+  superficies = getEPSGFromGML32(superficies);
+  const geometrias = getCoordinatesFromGML32(superficies, projection);
+
+  geometrias.forEach((geometria) => {
+    let geom;
+    if (geometria.tipo === 'Polygon') {
+      geom = new ol.geom.Polygon(geometria.coordenadas);
+    } else if (geometria.tipo === 'LineString') {
+      geom = new ol.geom.LineString(geometria.coordenadas);
+    } else if (geometria.tipo === 'Point') {
+      geom = new ol.geom.Point(geometria.coordenadas);
+    }
+    const newOlFeature = new ol.Feature({
+      geometry: geom,
+    });
+    newOlFeature.setId(`GML ${features.length + 1}`);
+    features.push(newOlFeature);
+  });
+
+  return features;
+};
+
+/**
+ * Obtiene los features de un GML
+ * @public
+ * @function
+ * @param {*} source -
+ * @param {String} projection proyección del mapa
+ * @returns {Array} Features del GML
+ */
+const loadGMLLayer = (source, projection) => {
+  let newSource = source;
+  let srs = projection;
+  if (newSource.indexOf('srsName="GCS_WGS_1984"') > -1) {
+    newSource = newSource.replace(/srsName="GCS_WGS_1984"/gi, 'srsName="EPSG:4326"');
+  }
+
+  if (newSource.indexOf('cp:geometry') > -1) {
+    newSource = newSource.replace(/cp:geometry/gi, 'ogr:geometryProperty');
+  }
+
+  if (newSource.indexOf('certificacion:the_geom') > -1) {
+    newSource = newSource.replace(/certificacion:the_geom/gi, 'ogr:geometryProperty');
+  }
+
+  if (newSource.split('srsName="')[1].split('"')[0].indexOf('http') > -1) {
+    try {
+      srs = `EPSG:${newSource.split('srsName="')[1].split('#')[1].split('"')[0]}`;
+    } catch (err) {
+      srs = `EPSG:${newSource.split('srsName="')[1].split('/EPSG/')[1].split('/')[1]}`;
+    }
+  } else if (newSource.split('srsName="')[1].indexOf('crs:EPSG::') > -1) {
+    srs = `EPSG:${newSource.split('srsName="')[1].split('::')[1].split('"')[0]}`;
+  } else {
+    srs = newSource.split('srsName="')[1].split('"')[0];
+  }
+
+  if (newSource.indexOf('<member>') > -1) {
+    newSource = newSource.replace(/member/gi, 'gml:featureMember');
+  } else if (newSource.indexOf('<wfs:member>') > -1) {
+    newSource = newSource.replace(/wfs:member/gi, 'gml:featureMember');
+  } else if (newSource.indexOf('<ogr:featureMember>') > -1) {
+    newSource = newSource.replace(/ogr:featureMember/gi, 'gml:featureMember');
+  }
+
+  let features = new ol.format.WFS({ gmlFormat: new ol.format.GML2() }).readFeatures(newSource, {
+    dataProjection: srs,
+    featureProjection: projection,
+  });
+
+  features = features.map((f, index) => {
+    const newF = f;
+    if (!f.getGeometry()) {
+      newF.setGeometry(f.get('geometry'));
+    }
+
+    return newF;
+  });
+
+  if (features.length === 0 || features[0].getGeometry() === undefined) {
+    features = new ol.format.WFS({ gmlFormat: new ol.format.GML3() }).readFeatures(newSource, {
+      dataProjection: srs,
+      featureProjection: projection,
+    });
+
+    features = features.map((f, index) => {
+      const newF = f;
+      if (!f.getGeometry()) {
+        newF.setGeometry(f.get('geometry'));
+      }
+      return newF;
+    });
+  }
+
+  // En el caso de que no tenga geometrías, comprobamos si es GML 3.2,
+  // si lo es tenemos que parsearlo a mano.
+  if ((features.length === 0 || features[0].getGeometry() === undefined) &&
+    newSource.indexOf('gml/3.2') > 0) {
+    features = gmlParser(newSource, projection);
+  }
+
+  features = featuresToFacade(features);
+  return features;
+};
+
+/**
  * Esta función ordena el bbox dependiendo del sistema de referencia.
  * @param {Object} bbox Bbox.
  * @param {String} epsg EPSG del bbox.
@@ -1661,6 +2070,93 @@ export const ObjectToArrayExtent = (bbox, epsg) => {
     return [bbox.y.min, bbox.x.min, bbox.y.max, bbox.x.max];
   }
   return [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
+};
+
+/**
+ * Esta función añade al mapa una capa vector con los features
+ * de un fichero
+ * @param {M.map} map
+ * @param {Object} source fichero a cargar
+ * @param {String} layerName nombre del nuevo layer
+ * @param {String} fileExt extension del fichero
+ * @function
+ * @api
+ */
+export const loadFeaturesFromSource = (map, source, layerName, fileExt) => {
+  try {
+    let features = [];
+    const projection = map.getProjection().code;
+    if (fileExt === 'zip') {
+      // In case of shp group, this unites features
+      const geojsonArray = [].concat(shp.parseZip(source));
+      features = loadAllInGeoJSONLayer(geojsonArray, projection);
+    } else if (fileExt === 'kml') {
+      features = loadKMLLayer(source, projection, false);
+    } else if (fileExt === 'gpx') {
+      features = loadGPXLayer(source, projection);
+    } else if (fileExt === 'geojson' || fileExt === 'json') {
+      features = loadGeoJSONLayer(source, projection);
+    } else if (fileExt === 'gml') {
+      features = loadGMLLayer(source, projection);
+    } else {
+      M.dialog.error(getValue('exception').file_load);
+      return;
+    }
+    if (features.length === 0) {
+      M.dialog.info(getValue('exception').no_geoms);
+    } else {
+      const layer = new M.layer.Vector({ name: layerName, legend: layerName, extract: true });
+      layer.addFeatures(features);
+      map.addLayers(layer);
+    }
+  } catch (error) {
+    console.log(error);
+    M.dialog.error(getValue('exception').file_load_correct);
+  }
+};
+
+/**
+ * Esta función añade al mapa una capa vector con los features
+ * de un fichero
+ * @param {M.map} map
+ * @param {Object} file fichero del que se obtienen los features
+ * @function
+ * @api
+ */
+export const loadFileLayer = (map, file) => {
+  // eslint-disable-next-line no-bitwise
+  const fileExt = file.name.slice((file.name.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
+  const layerName = file.name.split('.').slice(0, -1).join('.');
+  const fileReader = new window.FileReader();
+  fileReader.addEventListener('load', (e) => {
+    loadFeaturesFromSource(map, fileReader.result, layerName, fileExt);
+  });
+
+  if (fileExt === 'zip') {
+    fileReader.readAsArrayBuffer(file);
+  } else if (fileExt === 'kml' || fileExt === 'gpx' || fileExt === 'geojson' || fileExt === 'gml' || fileExt === 'json') {
+    fileReader.readAsText(file);
+  } else {
+    M.dialog.error(getValue('exception').file_extension);
+  }
+};
+
+/**
+ * Esta función añade al mapa una capa vector con los features
+ * de un fichero
+ * @param {M.map} map
+ * @param {Object} file fichero del que se obtienen los features
+ * @function
+ * @api
+ */
+export const addFileToMap = (map, file) => {
+  if (!isNullOrEmpty(file)) {
+    if (file.size > 20971520) {
+      M.dialog.info(getValue('exception').file_size);
+    } else {
+      loadFileLayer(map, file);
+    }
+  }
 };
 
 /**

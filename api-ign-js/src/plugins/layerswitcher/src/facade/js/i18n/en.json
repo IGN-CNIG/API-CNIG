@@ -107,5 +107,6 @@
   "previous": "Previous",
   "next": "Next",
   "separatedby": "Identifier separated by commas ','",
-  "placeHolderLegend": "Text displayed in selector"
+  "placeHolderLegend": "Text displayed in selector",
+  "upload_file": "Upload file"
 }

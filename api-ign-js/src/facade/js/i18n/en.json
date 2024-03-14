@@ -184,6 +184,11 @@
     "versionError": "Layer [replace1] of type [replace2] does not support the version.",
     "sldBODYError": "Layer [replace1] of type [replace2] does not support SLD_BODY.",
     "styleError": "Layer [replace1] of type [replace2] does not support STYLE.",
-    "formatError": "Layer [replace1] of type [replace2] does not support FORMAT."
+    "formatError": "Layer [replace1] of type [replace2] does not support FORMAT.",
+    "file_size": "The selected file exceeds the maximum 20 MB allowed.",
+    "file_load": "Error when loading the file.",
+    "no_geoms": "No geometries have been detected in this file.",
+    "file_load_correct": "Error when loading the file. Check that it is the right file.",
+    "file_extension": "A not allowed file extension has been inserted. The allowed ones are: KML, SHP(.zip), GPX, GML and GeoJSON."
   }
 }

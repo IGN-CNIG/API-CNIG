@@ -325,7 +325,9 @@ input[type=range].m-layerswitcher-transparency:focus {
 .m-layerswitcher-icons-zoom,
 .m-layerswitcher-icons-codsi,
 .m-layerswitcher-icons-lista,
-.m-layerswitcher-suggestion
+.m-layerswitcher-suggestion,
+.m-layerswitcher-icons-doc-text,
+.m-layerswitcher-icons-upload
 {
     background-color: #ffffff;
     border: none;
