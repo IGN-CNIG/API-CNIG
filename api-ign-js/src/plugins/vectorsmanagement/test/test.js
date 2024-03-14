@@ -24,11 +24,11 @@ map.addLayers(new M.layer.WFS({
   geometry: 'MPOLYGON',
 }));
 
-// map.addLayers(new M.layer.GeoJSON({
-//   name: "Provincias",
-//   legend: "Capa GeoJSON",
-//   url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application/json"
-// }));
+map.addLayers(new M.layer.GeoJSON({
+  name: "Municipios",
+  legend: "Capa GeoJSON",
+  url: "https://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Municipios&maxFeatures=500000&outputFormat=application%2Fjson"
+}));
 
 // map.addLayers(new M.layer.KML({
 //   url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',

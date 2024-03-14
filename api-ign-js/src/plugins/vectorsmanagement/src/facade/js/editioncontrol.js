@@ -183,7 +183,7 @@ export default class EditionControl extends M.Control {
 
     this.template.querySelector('#cancel-clear-btn').addEventListener('click', () => this.closeModalCleanGeometries(false));
 
-    this.addModalEvents();
+    // this.addModalEvents();
   }
 
   /**

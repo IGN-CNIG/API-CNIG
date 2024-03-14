@@ -104,7 +104,7 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
     width: 100%;
 }
 
-#m-selectionlayer {
+#m-selectionlayer,  #m-point-coordinates-srs, #figuresSelector {
     margin: auto 10px;
     padding: 5px;
     background-color: #fff;
@@ -113,6 +113,10 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
     color: #6c6c6c;
     font-family: Muli,sans-serif;
     font-size: 13px;
+}
+
+#m-point-coordinates-srs {
+   margin: 0px 0px 0px 5px;
 }
 
 .m-vectorsmanagement-selection-layer>div,
@@ -127,6 +131,11 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
 #m-point-coordinates-utm, #m-point-coordinates-latlon  {
     padding: 10px;
     font-size: 1.2em;
+}
+
+#m-point-coordinates label{
+    width: 78px;
+    display: inline-block;
 }
 
 .m-vectorsmanagement-style-container {
@@ -144,6 +153,10 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
     padding-bottom: 10px;
 }
 
+#m-text-draw > div {
+    margin-top: 15px;
+}
+
 .m-vectorsmanagement-coordinates-buttons {
     text-align: center;
 }
@@ -157,7 +170,6 @@ button#confirm-clear-btn, button#cancel-clear-btn,
 button#set-style-btn {
     text-align: center;
     border: none;
-    border-radius: 5px;
     padding: 8px;
     background-color: #71a7d3!important;
     color: #fff!important;
@@ -563,6 +575,14 @@ table#attribute-table>tr>th>button {
     -moz-osx-font-smoothing: grayscale;
 }
 
+.m-vectorsmanagement-previews>button:first-child {
+    margin: 0px 0px 0px 0px;
+}
+
+.m-vectorsmanagement-previews>button {
+    margin: 0px 0px 0px 4px;
+}
+
 .m-vectorsmanagement-previews>button,
 .m-vectorsmanagement-selection-layer>button,
 #creationBtns>button, #analysisBtns>button,
@@ -578,7 +598,7 @@ table#attribute-table>tr>th>button {
 
 table#attribute-table>tr>th>button,
 table#attribute-table>tr>th>button[class^="vectorsmanagement-icon-"]:before{
-    color: #757474;
+    color: white;
     font-size: 20px;
     border: none;
     background-color: transparent;
@@ -754,7 +774,6 @@ div.m-areas>div.m-area>div.m-panel-modal.opened {
 #clear-layer-modal .popup-title,
 .m-plugin-vectorsmanagement.opened #popup-box>div>div.popup-title {
     background-color: #71a7d3;
-    border-radius: 5px;
     color: white;
     padding: 7px 10px 5px 10px;
     font-weight: bold;
