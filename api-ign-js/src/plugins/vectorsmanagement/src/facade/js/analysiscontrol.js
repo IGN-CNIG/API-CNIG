@@ -345,7 +345,7 @@ export default class AnalysisControl extends M.Control {
       document.body.removeChild(this.pointTemplate);
       this.pointTemplate = null;
     });
-    this.addModalEvents();
+    // this.addModalEvents();
   }
 
   /**
