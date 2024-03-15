@@ -3,6 +3,9 @@
  */
 import EditionImplControl from '../../impl/ol/js/editioncontrol';
 import template from '../../templates/edition';
+import removeLayerTemplate from '../../templates/clearlayer';
+import editiontableTemplate from '../../templates/editiontable';
+
 import { getValue } from './i18n/language';
 
 export default class EditionControl extends M.Control {
@@ -174,16 +177,6 @@ export default class EditionControl extends M.Control {
     this.template.querySelector('#cleanAll').addEventListener('click', () => this.showModalCleanGeometries());
 
     this.template.querySelector('#m-vectorsmanagement-deletegeom-btn').addEventListener('click', () => this.deleteSingleFeature());
-
-    this.template.querySelector('#add-attribute-btn').addEventListener('click', () => this.newAttributeColumn());
-
-    this.template.querySelector('.m-panel-btn').addEventListener('click', () => this.editionBtnClick('editattribute'));
-
-    this.template.querySelector('#confirm-clear-btn').addEventListener('click', () => this.closeModalCleanGeometries(true));
-
-    this.template.querySelector('#cancel-clear-btn').addEventListener('click', () => this.closeModalCleanGeometries(false));
-
-    // this.addModalEvents();
   }
 
   /**
@@ -289,6 +282,22 @@ export default class EditionControl extends M.Control {
     }
   }
 
+  openModalEditAttribute() {
+    const templateModal = M.template.compileSync(editiontableTemplate, {
+      vars: {
+        translations: {
+          newcolumn: getValue('newcolumn'),
+        },
+      },
+    });
+
+    M.dialog.info(templateModal.innerHTML, getValue('title_attribute_table'));
+    M.utils.draggabillyElement('.m-dialog .m-modal .m-content', '.m-dialog .m-modal .m-content .m-title');
+    this.changeStyleDialog();
+    document.querySelector('#add-attribute-btn').onclick = () => this.newAttributeColumn();
+    document.querySelector('.m-dialog.info .m-modal .m-button button').onclick = () => this.activationManager('isEditAttributeActive', 'editattribute');
+  }
+
   /**
    * Hides/shows tools menu and de/activates editions.
    * @public
@@ -337,7 +346,6 @@ export default class EditionControl extends M.Control {
     } else if (this.isEditAttributeActive) {
       this.isEditAttributeActive = false;
       this.removeModalEvents();
-      this.deactivateEditAttribute();
     }
     const activeControl = this.getControlActive(this.template);
     if (activeControl) {
@@ -362,27 +370,39 @@ export default class EditionControl extends M.Control {
   }
 
   /**
-   * Remove attribute edition template and remove selected features
-   * @public
-   * @function
-   * @api
-   */
-  deactivateEditAttribute() {
-    this.template.querySelector('#edition-attributes-container').classList.add('closed');
-    const table = this.template.querySelector('#attribute-table');
-    if (table) {
-      table.parentNode.removeChild(table);
-    }
-  }
-
-  /**
    * Show window to confirm delete features
    * @public
    * @function
    * @api
    */
   showModalCleanGeometries() {
-    this.template.querySelector('#clear-layer-modal').classList.remove('closed');
+    const templateModal = M.template.compileSync(removeLayerTemplate, {
+      vars: {
+        translations: {
+          title_clear_geometries: getValue('title_clear_geometries'),
+          clear_geometries_msg: getValue('clear_geometries_msg'),
+          confirm: getValue('confirm'),
+          cancel: getValue('cancel'),
+        },
+      },
+    });
+
+    M.dialog.info(templateModal.innerHTML, getValue('title_attribute_table'));
+
+    // this.template.querySelector('#clear-layer-modal').classList.remove('closed');
+    document.querySelector('#confirm-clear-btn').onclick = () => this.closeModalCleanGeometries(true);
+    document.querySelector('#cancel-clear-btn').onclick = () => this.closeModalM();
+    this.changeStyleModalClean();
+  }
+
+  changeStyleModalClean() {
+    this.changeStyleDialog();
+    document.querySelector('.m-modal .m-content .m-message').style.borderBottom = 'none';
+    document.querySelector('.m-modal .m-content .m-button').style.display = 'none';
+  }
+
+  closeModalM() {
+    document.querySelector('.m-modal .m-content .m-button button').click();
   }
 
   /**
@@ -395,7 +415,7 @@ export default class EditionControl extends M.Control {
     if (clean) {
       this.cleanGeometries();
     }
-    this.template.querySelector('#clear-layer-modal').classList.add('closed');
+    this.closeModalM();
   }
 
   /**
@@ -706,6 +726,7 @@ export default class EditionControl extends M.Control {
       features = this.layer_.getFeatures();
     }
     if (features.length > 0) {
+      this.openModalEditAttribute();
       const attributes = features[0].getAttributes();
       if (attributes) {
         const keys = Object.keys(attributes);
@@ -713,7 +734,6 @@ export default class EditionControl extends M.Control {
       } else {
         this.createEmptyTable();
       }
-      this.template.querySelector('#edition-attributes-container').classList.remove('closed');
     } else {
       M.dialog.info(getValue('exception.emptylayer'));
     }
@@ -729,7 +749,7 @@ export default class EditionControl extends M.Control {
   createEmptyTable() {
     const table = document.createElement('table');
     table.id = 'attribute-table';
-    this.template.querySelector('#m-vectorsmanagement-attribute-table-container').appendChild(table);
+    document.querySelector('#m-vectorsmanagement-attribute-table-container').appendChild(table);
     return table;
   }
 
@@ -762,21 +782,26 @@ export default class EditionControl extends M.Control {
    * @api stable
    */
   newAttributeColumn() {
+    const $dialog = document.querySelector('.m-dialog.info');
+    $dialog.style.display = 'none';
+
     M.dialog.info(
-      `<div id="chooseAttribute">
+      `<div id="chooseAttribute" class="m-vectorsmanagement-editAttribute">
         <input autofocus type="text" id="attribute-name" style="width: 10rem;">
       </div>`,
       getValue('title_popup_attribute'),
     );
+    this.changeStyleDialog();
     const color = '#71a7d3';
     const dialog = document.querySelector('.m-dialog > div.m-modal > div.m-content');
     dialog.style.minWidth = 'auto';
     const title = document.querySelector('.m-modal .m-title');
     title.style.backgroundColor = color;
-    const btn = document.querySelector('.m-button button');
+    const btn = document.querySelectorAll('.m-button button')[1];
     const inputName = document.querySelector('div.m-modal input#attribute-name');
     btn.style.backgroundColor = color;
     btn.addEventListener('click', () => {
+      $dialog.style.display = 'block';
       this.createAttributeColumn(inputName.value);
     });
   }
@@ -791,7 +816,7 @@ export default class EditionControl extends M.Control {
    */
   createAttributeColumn(attributeName) {
     if (attributeName) {
-      const table = this.template.querySelector('#attribute-table');
+      const table = document.querySelector('#attribute-table');
       let trhead;
       if (table.firstChild) {
         trhead = table.firstChild;
@@ -933,7 +958,7 @@ export default class EditionControl extends M.Control {
     features.forEach((f) => {
       f.getImpl().getOLFeature().unset(attributeName);
     });
-    const table = this.template.querySelector('#attribute-table');
+    const table = document.querySelector('#attribute-table');
     table.parentNode.removeChild(table);
     this.createAttributeTable(Object.keys(features[0].getAttributes()), features);
   }
@@ -947,24 +972,46 @@ export default class EditionControl extends M.Control {
    * @param {Event} evt click event
    */
   renameAttribute(evt) {
+    const $dialog = document.querySelector('.m-dialog.info');
+    $dialog.style.display = 'none';
+
     M.dialog.info(
-      `<div id="chooseAttribute">
+      `<div id="chooseAttribute" class="m-vectorsmanagement-editAttribute">
         <input type="text" id="attribute-name" style="width: 10rem;">
       </div>`,
-      getValue('title_popup_attribute'),
+      getValue('title_popup_editAttribute'),
     );
+
+    this.changeStyleDialog();
+
     const color = '#71a7d3';
     const dialog = document.querySelector('.m-dialog > div.m-modal > div.m-content');
     dialog.style.minWidth = 'auto';
     const title = document.querySelector('.m-modal .m-title');
     title.style.backgroundColor = color;
-    const btn = document.querySelector('.m-button button');
+    const btn = document.querySelectorAll('.m-button button')[1];
+
     const inputName = document.querySelector('div.m-modal input#attribute-name');
     btn.style.backgroundColor = color;
     btn.addEventListener('click', () => {
+      $dialog.style.display = 'block';
       this.updateFeaturesAttributeName(evt.target.name, inputName.value);
     });
   }
+
+
+  changeStyleDialog() {
+    document.querySelectorAll('div.m-mapea-container div.m-dialog div.m-title').forEach((t) => {
+      const title = t;
+      title.style.backgroundColor = '#71a7d3';
+    });
+
+    document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+
+    const button = document.querySelector('div.m-dialog.info div.m-button > button');
+    button.style.backgroundColor = '#71a7d3';
+  }
+
 
   /**
    * Update features attribute name
@@ -991,7 +1038,7 @@ export default class EditionControl extends M.Control {
    * @param {String} newAttributeName
    */
   refreshAttributeTable(features) {
-    const table = this.template.querySelector('#attribute-table');
+    const table = document.querySelector('#attribute-table');
     table.parentNode.removeChild(table);
     this.createAttributeTable(Object.keys(features[0].getAttributes()), features);
   }

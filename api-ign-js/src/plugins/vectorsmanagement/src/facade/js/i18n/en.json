@@ -103,6 +103,7 @@
   "xtitle": "Distancia (km)",
   "title_popup_buffer": "INFLUENCE AREA",
   "title_popup_attribute": "NEW ATTRIBUTE",
+  "title_popup_editAttribute": "RENAME ATTRIBUTE",
   "unit_m": "Metres",
   "unit_km": "Kilometres",
   "editgeometria": "Edit geometry",
