@@ -101,6 +101,8 @@ export default class HelpControl extends M.Control {
       this.closeEventActive_ = true;
     }
     M.dialog.info(M.utils.htmlToString(this.template), getValue('help_template').title);
+    document.querySelector('.m-dialog.info .m-content').style.overflowX = 'auto';
+    document.querySelector('.m-dialog.info .m-content').style.maxHeight = '70vh';
     document.querySelector('.m-button button').addEventListener('click', this.deactivate.bind(this));
   }
 
