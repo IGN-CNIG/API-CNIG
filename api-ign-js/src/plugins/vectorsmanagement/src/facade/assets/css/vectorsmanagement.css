@@ -639,8 +639,8 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
     margin-top: 10px;
 }
 
-.vectorsmanagement-icon-font:before { content: '\e800'; }
-.vectorsmanagement-icon-layers:before { content: '\e801'; }
+.vectorsmanagement-icon-font:before { content: '\e801'; }
+.vectorsmanagement-icon-layers:before { content: '\e802'; }
 .vectorsmanagement-icon-linea:before { content: '\e803'; }
 .vectorsmanagement-icon-poligono:before { content: '\e806'; }
 .vectorsmanagement-icon-pin:before { content: '\e807'; }
@@ -666,7 +666,7 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
 .vectorsmanagement-icon-tamano:before { content: '\e95f'; }
 .vectorsmanagement-icon-ayuda:before { content: '\e981'; }
 .vectorsmanagement-icon-scissors:before { content: '\ea5a'; }
-.vectorsmanagement-icon-resize-full-alt:before { content: '\f0b2'; }
+.vectorsmanagement-icon-resize-full-alt:before { content: '\e800'; }
 .vectorsmanagement-icon-table:before { content: '\f0ce'; }
 
 /* Modal ayuda */
