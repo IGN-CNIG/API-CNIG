@@ -187,6 +187,19 @@ class KML extends LayerVector {
   }
 
   /**
+   * Devuelve la leyenda de la capa.
+   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   *
+   * @function
+   * @getter
+   * @return {M.layer.WMS.impl.legend} Leyenda de la capa.
+   * @api
+   */
+  get legend() {
+    return this.getImpl().legend;
+  }
+
+  /**
    * Sobrescribe la leyenda de la capa.
    * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    *
