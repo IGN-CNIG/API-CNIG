@@ -2224,7 +2224,7 @@ export default class LayerswitcherControl extends M.Control {
       } else {
         name = name.value || `layer_${randomNumber}`;
       }
-      const legend = document.querySelector('#m-layerswitcher-layer-legend').value || `layer_${randomNumber}`;
+      const legend = document.querySelector('#m-layerswitcher-layer-legend').value || name || `layer_${randomNumber}`;
       let matrixSet = document.querySelector('#m-layerswitcher-layer-matrixset');
       if (!M.utils.isNullOrEmpty(matrixSet)) {
         matrixSet = matrixSet.value || 'EPSG:3857';
