@@ -319,6 +319,15 @@ export default class LayerswitcherControl extends M.Control {
 
   // Esta función renderiza la plantilla
   render() {
+    const listLayer = document.getElementById('m-layerswitcher-content').childElementCount;
+    if (listLayer === 0) {
+      this.statusShowHideAllLayers = this.map_.getLayers().find((layer) => {
+        if (layer.isBase === false && layer.displayInLayerSwitcher) {
+          return layer.isVisible();
+        }
+        return false;
+      });
+    }
     this.getTemplateVariables(this.map_).then((templateVars) => {
       let scroll;
       if (document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers') !== null) {
