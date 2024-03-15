@@ -59,7 +59,7 @@
     "analysis_content_2": "Área de influencia",
     "analysis_content_2_1": "Permite dibujar un área de influencia de un elemento.",
     "download_title": "Descarga",
-    "download_content": "Esta herramienta permite descargar la capa completa o los elementos seleccionados en formato GeoJSON, KML y Shapefile."
+    "download_content": "Esta herramienta permite descargar la capa completa o los elementos seleccionados en formato GeoJSON, KML, GPX y Shapefile."
   },
   "tooltip": "Gestión de Vectores",
   "selection": "Seleccionar",

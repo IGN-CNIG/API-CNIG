@@ -3,6 +3,7 @@
  */
 import shpWrite from 'shp-write';
 import tokml from 'tokml';
+import togpx from 'togpx';
 import DownloadImplControl from '../../impl/ol/js/downloadcontrol';
 import template from '../../templates/download';
 import { getValue } from './i18n/language';
@@ -153,6 +154,11 @@ export default class DownloadControl extends M.Control {
         arrayContent = tokml(geojsonLayer);
         mimeType = 'vnd.google-earth.kml+xml';
         extensionFormat = 'kml';
+        break;
+      case 'gpx':
+        arrayContent = togpx(geojsonLayer);
+        mimeType = 'gpx+xml';
+        extensionFormat = 'gpx';
         break;
       case 'shp':
         const json = this.parseGeojsonForShp(geojsonLayer);
