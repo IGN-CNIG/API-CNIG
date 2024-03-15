@@ -187,6 +187,23 @@ class KML extends LayerVector {
   }
 
   /**
+   * Sobrescribe la leyenda de la capa.
+   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   *
+   * @function
+   * @setter
+   * @param {String} newLegend Nueva leyenda.
+   * @api
+   */
+  set legend(newLegend) {
+    if (isNullOrEmpty(newLegend)) {
+      this.getImpl().legend = this.name;
+    } else {
+      this.getImpl().legend = newLegend;
+    }
+  }
+
+  /**
    * Este método comprueba si un objeto es igual
    * a esta capa.
    *
