@@ -111,6 +111,9 @@ export default class Analysiscontrol extends M.impl.Control {
     } else if (feature.getGeometry().type === 'Polygon') {
       coordinates = [].concat(feature.getGeometry().coordinates[0]);
       coordinates.pop();
+    } else if (feature.getGeometry().type === 'MultiPolygon') {
+      const polygonsCoords = [].concat(...feature.getGeometry().coordinates.map(c => c[0]));
+      coordinates = polygonsCoords;
     } else {
       coordinates = [].concat(feature.getGeometry().coordinates);
     }

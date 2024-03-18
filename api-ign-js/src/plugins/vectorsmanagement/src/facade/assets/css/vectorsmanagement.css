@@ -199,6 +199,13 @@ button#confirm-clear-btn, button#cancel-clear-btn {
     border-top: solid 1px #757474;
 }
 
+.m-vectorsmanagement-text-draw {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
 #m-figuretools {
     padding: 20px;
 }
