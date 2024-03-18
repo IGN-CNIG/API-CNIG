@@ -127,6 +127,12 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   selectLayerEvent() {
+    // eslint-disable-next-line no-underscore-dangle
+    if (this.selectionControl.selectedFeatures_.length > 0) {
+      document.querySelector('#m-vectorsmanagement-selection').classList.remove('activated');
+      this.selectionControl.deactivate();
+    }
+
     this.html.querySelector('#m-vectorsmanagement-previews').classList.remove('closed');
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
