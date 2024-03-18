@@ -60,6 +60,7 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].geometrydraw = pluginsLanguage.geometrydraw.esGeometrydraw;
     configuration.translations[lang].georefimage = pluginsLanguage.georefimage.esGeorefimage;
     configuration.translations[lang].georefimage2 = pluginsLanguage.georefimage2.esGeorefimage2;
+    configuration.translations[lang].help = pluginsLanguage.help.esHelp;
     configuration.translations[lang].iberpixcompare = pluginsLanguage.iberpixcompare
       .esIberpixcompare;
     configuration.translations[lang].ignsearch = pluginsLanguage.ignsearch.esIgnsearch;
@@ -120,6 +121,7 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].geometrydraw = pluginsLanguage.geometrydraw.enGeometrydraw;
     configuration.translations[lang].georefimage = pluginsLanguage.georefimage.enGeorefimage;
     configuration.translations[lang].georefimage2 = pluginsLanguage.georefimage2.enGeorefimage2;
+    configuration.translations[lang].help = pluginsLanguage.help.enHelp;
     configuration.translations[lang].iberpixcompare = pluginsLanguage.iberpixcompare
       .enIberpixcompare;
     configuration.translations[lang].ignsearch = pluginsLanguage.ignsearch.enIgnsearch;
