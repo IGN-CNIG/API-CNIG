@@ -102,6 +102,11 @@ export default class StyleControl extends M.Control {
    */
   addEvents() {
     this.template.querySelector('#point-options').addEventListener('click', () => this.toggleContent('point'));
+    this.template.querySelector('#point-options').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        this.toggleContent('point');
+      }
+    });
     this.template.querySelector('#line-options').addEventListener('click', () => this.toggleContent('line'));
     this.template.querySelector('#polygon-options').addEventListener('click', () => this.toggleContent('polygon'));
     this.template.querySelector('#set-style-btn').addEventListener('click', () => this.applyStyle());
