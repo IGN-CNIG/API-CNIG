@@ -1935,9 +1935,18 @@ export default class LayerswitcherControl extends M.Control {
         const responseJson = JSON.parse(response.text);
         if (responseJson.collections.length > 0 && responseJson.collections[0].itemType === 'feature') {
           isOGCAPI = true;
+        } else {
+          const collections2 = `${(url.endsWith('/') ? url : `${url}/`)}collections/${responseJson.collections[0].id}/items?f=json&limit=1`;
+          return M.remote.get(collections2).then((response2) => {
+            const responseJson2 = JSON.parse(response2.text);
+            if (responseJson2.type === 'FeatureCollection') {
+              isOGCAPI = true;
+            }
+            return isOGCAPI; // Agregar un retorno aquí
+          });
         }
       }
-      return isOGCAPI;
+      return isOGCAPI; // Agregar un retorno aquí también
     }).catch(() => {
       return false;
     });
@@ -2787,7 +2796,7 @@ export default class LayerswitcherControl extends M.Control {
     let fUrl;
     /* eslint-disable no-param-reassign */
     if (!M.utils.isNullOrEmpty(layer.name)) {
-      layer.url = `${layer.url}${layer.name}/items/`;
+      layer.url = `${layer.url}${layer.name}/items`;
     }
 
     if (!M.utils.isNullOrEmpty(layer.format)) {
