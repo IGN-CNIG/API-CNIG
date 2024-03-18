@@ -147,12 +147,6 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
     margin-left: calc(50% - 30px) !important;
 }
 
-#styleOptions>div,
-#m-text-draw>div {
-    padding-left: 15px;
-    padding-bottom: 10px;
-}
-
 #m-text-draw > div {
     margin-top: 15px;
 }
@@ -809,6 +803,18 @@ th .vectorsmanagement-icon-papelera {
     text-decoration: none;
     width: 60px;
     font-weight: bold;
+}
+
+.m-vectorsmanagement-styleOptions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+.m-vectorsmanagement-styleOptions>div {
+    border: 1px solid #71a7d344;
+    padding: 5px;
 }
 
 
