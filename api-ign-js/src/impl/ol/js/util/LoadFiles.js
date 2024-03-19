@@ -11,6 +11,7 @@ import WFS from 'ol/format/WFS';
 import GML2 from 'ol/format/GML2';
 import GML3 from 'ol/format/GML3';
 import { transform } from 'ol/proj';
+import OLFeature from 'ol/Feature';
 import Feature from '../feature/Feature';
 
 class LoadFiles {
@@ -293,7 +294,7 @@ class LoadFiles {
       } else if (geometria.tipo === 'Point') {
         geom = new Point(geometria.coordenadas);
       }
-      const newOlFeature = new Feature({
+      const newOlFeature = new OLFeature({
         geometry: geom,
       });
       newOlFeature.setId(`GML ${features.length + 1}`);
