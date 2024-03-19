@@ -411,7 +411,8 @@ const proj3395 = {
 /**
  * EPSG:4328 WGS84 geocéntricas
  * Sistema de coordenadas cartesiano, geocéntrico con ejes X,Y,Z.
- * Su orientación sería el plano XY como plano ecuatorial, el eje X positivo en al intersección con el meridiano principal.
+ * Su orientación sería el plano XY como plano ecuatorial, el eje X
+ * positivo en al intersección con el meridiano principal.
  * El eje Z es paralelo al eje de rotación medio de la tierra y positivo hacia el polo Norte.
  * El eje Y completa el triedro.
  * @type {Object}
@@ -430,7 +431,8 @@ const proj4328 = {
 /**
  * EPSG:4346 ETRS89 geocéntricas
  * Sistema de coordenadas cartesiano, geocéntrico con ejes X,Y,Z.
- * Su orientación sería el plano XY como plano ecuatorial, el eje X positivo en al intersección con el meridiano principal.
+ * Su orientación sería el plano XY como plano ecuatorial, el eje X positivo
+ * en al intersección con el meridiano principal.
  * El eje Z es paralelo al eje de rotación medio de la tierra y positivo hacia el polo Norte.
  * El eje Y completa el triedro.
  * @type {Object}
