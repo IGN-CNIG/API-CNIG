@@ -1504,7 +1504,7 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   changeFile(inputFile) {
-    M.utils.addFileToMap(this.map_, inputFile.files[0]);
+    M.loadFiles.addFileToMap(this.map_, inputFile.files[0]);
     inputFile.value = '';
     const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
     buttonClose.click();
