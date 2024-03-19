@@ -200,6 +200,31 @@ export default class VectorsManagement extends M.Plugin {
     map.addPanels(this.panel_);
   }
 
+
+  /**
+   * Gets the API REST Parameters of the plugin
+   *
+   * # API-REST
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.selection}*${this.addlayer}*${this.analysis}*${this.creation}*${this.download}*${this.edition}*${this.help}*${this.style}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
+  }
+
   /**
    * This function destroys this plugin
    *
