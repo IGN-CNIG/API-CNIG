@@ -1158,6 +1158,10 @@ export default class LayerswitcherControl extends M.Control {
       document.querySelector(CODSI_BTN).style.display = 'none';
     }
 
+    if (document.getElementById('m-layerswitcher-addservices-file-input')) {
+      document.getElementById('labelFileInput').style.display = 'none';
+    }
+
     document.querySelector(LIST_BTN).style.display = 'none';
 
     this.loadingActive = true;
@@ -1171,6 +1175,10 @@ export default class LayerswitcherControl extends M.Control {
 
       if (document.querySelector(CODSI_BTN)) {
         document.querySelector(CODSI_BTN).style.display = 'inline';
+      }
+
+      if (document.getElementById('m-layerswitcher-addservices-file-input')) {
+        document.getElementById('labelFileInput').style.display = 'inline';
       }
 
       document.querySelector(LIST_BTN).style.display = 'inline';
