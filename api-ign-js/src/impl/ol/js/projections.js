@@ -51,7 +51,7 @@ const proj3857 = {
   datum: 'WGS 84',
   proj: 'Pseudo-Mercator',
   global: true,
-  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/4258',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/3857',
 };
 
 

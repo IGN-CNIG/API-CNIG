@@ -502,7 +502,7 @@ class Vector extends LayerBase {
     });
 
     // eslint-disable-next-line
-    console.warn(getValue('exception.geojson_standard_layer'));
+    console.warn(getValue('exception').geojson_standard_layer);
 
     const projection = projAPI.getSupportedProjs()
       .filter(proj => proj.codes.includes('EPSG:4326'))[0];

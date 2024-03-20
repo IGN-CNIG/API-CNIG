@@ -34,17 +34,17 @@ class Feature extends Base {
   constructor(id, geojson = {}, style, mapProjection = 'EPSG:3857', geojsonStandar = false) {
     if (geojsonStandar === false) {
       // eslint-disable-next-line
-      console.warn(getValue('exception.geojson_standard'));
+      console.warn(getValue('exception').geojson_standard);
     }
 
-    const url4326 = projAPI.getSupportedProjs().filter(proj => proj.codes.includes('EPSG:4326'))[0].coordRefSys;
-    const url3857 = projAPI.getSupportedProjs().filter(proj => proj.codes.includes('EPSG:3857'))[0].coordRefSys;
+    const url4326 = projAPI.getSupportedProjs().filter(proj => proj.codes.includes('EPSG:4326'))[0];
+    const url3857 = projAPI.getSupportedProjs().filter(proj => proj.codes.includes('EPSG:3857'))[0];
 
     const crsDefault = geojsonStandar ? url4326 : url3857;
-    const crs = geojson.coordRefSys ? geojson.coordRefSys : crsDefault;
+    const crs = geojson.coordRefSys ? geojson : crsDefault;
 
     const projEPSG = projAPI.getSupportedProjs()
-      .filter(proj => proj.codes.includes(crs))[0].coordRefSys;
+      .filter(proj => proj.coordRefSys === crs.coordRefSys)[0].codes[0];
 
     /**
      * Implementación de objetos geográficos.
