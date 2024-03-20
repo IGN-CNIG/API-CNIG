@@ -14,12 +14,21 @@ import { transform } from 'ol/proj';
 import OLFeature from 'ol/Feature';
 import Feature from '../feature/Feature';
 
+/**
+ * @classdesc
+ * Clase contiene funciones para la gestion de
+ * la carga de ficheros en el mapa
+ *
+ * @api
+ */
 class LoadFiles {
 /**
- * Loads GeoJSON layer
+ * Obtiene los features de un GeoJSON
  * @public
  * @function
- * @param {*} source2 -
+ * @param {String} source geojson source
+ * @param {String} projection proyección del mapa
+ * @returns {Array<M.Feature>} array de features
  */
   static loadGeoJSONLayer(source, projection) {
     let features = new GeoJSON()
@@ -33,10 +42,12 @@ class LoadFiles {
   }
 
   /**
- * Loads GeoJSON layer
+ * Obtiene los features de varios GeoJSON
  * @public
  * @function
- * @param {*} source-
+ * @param {Array<String>} sources Array de geojson
+ * @param {String} projection proyección del mapa
+ * @returns {Array<M.Feature>} array de features
  */
   static loadAllInGeoJSONLayer(sources, projection) {
     let features = [];
@@ -50,12 +61,13 @@ class LoadFiles {
   }
 
   /**
- * Loads GPX layer.
+ * Obtiene los features de un GPX.
  * @public
  * @function
  * @api
- * @param {*} source -
+ * @param {String} source source GPX
  * @param {String} projection proyeccion del mapa
+ * @returns {Array<M.Feature>} array de features
  */
   static loadGPXLayer(source, projection) {
     let features = [];
@@ -79,7 +91,8 @@ class LoadFiles {
  * Parsea las superficies de un GML 3.2
  * @private
  * @function
- * @param {*} source-
+ * @param {String} source source de GML32
+ * @returns {Array<Object>} array de surfaces
  */
   static parseSurfacesGml(source) {
     const surfaces = [];
@@ -95,8 +108,8 @@ class LoadFiles {
  * Obtiene los nodos de los diferentes tipos de geometrias de un GML 3.2
  * @private
  * @function
- * @param {*} source
- * @returns {Array} array de geometrias
+ * @param {String} source source GML32
+ * @returns {Array<Object>} array de geometrias
  */
   static parseGeometriesGml(source) {
     const geometries = [];
@@ -138,8 +151,8 @@ class LoadFiles {
  * Obtiene el sistema de referencia de un GML 3.2
  * @private
  * @function
- * @param {*} superficies
- * @returns {Array} array de superficies
+ * @param {Array<Object>} superficies array de elementos del GML
+ * @returns {Array<Object>} array de superficies con su srs
  */
   static getEPSGFromGML32(superficies) {
     superficies.map((superficie) => {
@@ -166,10 +179,10 @@ class LoadFiles {
  * Obtiene las coordenadas de una lista de vertices de un GML 3.2
  * @private
  * @function
- * @param {String} posList cadena con lista e coordenadas
+ * @param {String} posList cadena con lista de coordenadas
  * @param {String} srs sistema de coordenadas del GML
  * @param {String} projection proyección del mapa
- * @returns {Array} array de coordenadas
+ * @returns {Array<Float>} array de coordenadas
  */
   static parseCoordinatesGML32(posList, srs, projection) {
     const coords = [];
@@ -184,9 +197,9 @@ class LoadFiles {
  * Obtiene las coordenadas de un poligono de un GML 3.2
  * @private
  * @function
- * @param {*} superficies
+ * @param {Object} superficie elemento de tipo polígono obtenido del GML
  * @param {String} projection proyección del mapa
- * @returns {Array} array de coordenadas
+ * @returns {Array<Float>} array de coordenadas
  */
   static getGML32PolygonCoordinates(superficie, projection) {
     const exterior = superficie.surface.querySelector('exterior');
@@ -206,9 +219,9 @@ class LoadFiles {
  * Obtiene las coordenadas de una linea de un GML 3.2
  * @private
  * @function
- * @param {*} superficies
+ * @param {Object} superficie elemento de tipo linea obtenido del GML
  * @param {String} projection proyección del mapa
- * @returns {Array} array de coordenadas
+ * @returns {Array<Float>} array de coordenadas
  */
   static getGML32LineCoordinates(superficie, projection) {
     const srs = superficie.sistema;
@@ -221,9 +234,9 @@ class LoadFiles {
  * Obtiene las coordenadas de un punto de un GML 3.2
  * @private
  * @function
- * @param {*} superficies
+ * @param {Object} superficie elemento de tipo punto obtenido del GML
  * @param {String} projection proyección del mapa
- * @returns {Array} array de coordenadas
+ * @returns {Array<Float>} array de coordenadas
  */
   static getGML32PointCoordinates(superficie, projection) {
     const srs = superficie.sistema;
@@ -236,9 +249,9 @@ class LoadFiles {
  * Obtiene las coordenadas de los features de un GML 3.2
  * @private
  * @function
- * @param {*} superficies
+ * @param {Array<Object>} superficies array de elementos obtenidos del GML
  * @param {String} projection proyección del mapa
- * @returns {Object}
+ * @returns {Array<Object>} array de objetos con los datos necesarios para crear un feature
  */
   static getCoordinatesFromGML32(superficies, projection) {
     const geometries = [];
@@ -271,9 +284,9 @@ class LoadFiles {
  * Parsea un GML 3.2 y obtiene sus features
  * @private
  * @function
- * @param {*} source-
+ * @param {String} source source del GML
  * @param {String} projection proyección del mapa
- * @returns {Array} Features del GML
+ * @returns {Array<OL.Feature>} OL Features del GML
  */
   static gmlParser(source, projection) {
     const features = [];
@@ -308,9 +321,9 @@ class LoadFiles {
  * Obtiene los features de un GML
  * @public
  * @function
- * @param {*} source -
+ * @param {String} source source del GML
  * @param {String} projection proyección del mapa
- * @returns {Array} Features del GML
+ * @returns {Array<M.Feature>} Features del GML
  */
   static loadGMLLayer(source, projection) {
     let newSource = source;
@@ -388,12 +401,12 @@ class LoadFiles {
   }
 
   /**
-    * Loads KML layer
+    * Obtiene los features de un KML
     * @public
     * @function
-    * @api
-    * @param {*} source -
-    * @param {*} extractStyles -
+    * @param {String} source source del KML
+    * @param {Boolean} extractStyles indica si se extraen los estilos del KML (true/false)
+    * @returns {Array<M.Feature>} array con los features del KML
   */
   static loadKMLLayer(source, projection, extractStyles) {
     let features = new KML({ extractStyles })
@@ -403,12 +416,11 @@ class LoadFiles {
   }
 
   /**
-   * Converts Openlayers features to Mapea features.
+   * Convierte features de Openlayers en features de Mapea
    * @public
    * @function
-   * @api
    * @param {Array<OL.Feature>} implFeatures
-   * @returns {Array<M.Feature>}
+   * @returns {Array<M.Feature>} features de mapea
    */
   static featuresToFacade(implFeatures) {
     return implFeatures.map((feature) => {

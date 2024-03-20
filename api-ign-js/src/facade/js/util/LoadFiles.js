@@ -14,7 +14,7 @@ import Vector from '../layer/Vector';
 /**
  * Esta función añade al mapa una capa vector con los features
  * de un fichero
- * @param {M.map} map
+ * @param {M.map} map objeto mapa
  * @param {Object} source fichero a cargar
  * @param {String} layerName nombre del nuevo layer
  * @param {String} fileExt extension del fichero
@@ -57,7 +57,7 @@ export const loadFeaturesFromSource = (map, source, layerName, fileExt) => {
 /**
  * Esta función añade al mapa una capa vector con los features
  * de un fichero
- * @param {M.map} map
+ * @param {M.map} map objeto mapa
  * @param {Object} file fichero del que se obtienen los features
  * @function
  * @api

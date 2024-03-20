@@ -339,6 +339,12 @@ class Map extends Base {
     }
   }
 
+  /**
+   * Función que añade manejador del evento drop sobre el mapa
+   * para la carga de ficheros.
+   *
+   * @function
+   */
   addDropFileEvent() {
     const container = this.getContainer().parentNode.parentNode;
     container.addEventListener('dragover', (e) => {
