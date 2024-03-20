@@ -49,7 +49,6 @@ export const loadFeaturesFromSource = (map, source, layerName, fileExt) => {
       map.addLayers(layer);
     }
   } catch (e) {
-    console.log(e);
     Dialog.error(getValue('exception').file_load_correct);
   }
 };
