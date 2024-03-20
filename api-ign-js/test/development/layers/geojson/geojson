@@ -28,3 +28,83 @@ export const geojson_002 = new GeoJSON({
   url: 'http://www.ign.es/resources/geodesia/GNSS/SPTR_geo.json',
   extract: false,
 });
+
+const source_003 = {
+  "crs": {
+      "properties": {
+          "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+      },
+      "type": "name"
+  },
+  "features": [
+      {
+          "geometry": {
+              "coordinates": [
+                  [
+                      -5.973815917968764,
+                      37.38761749978394
+                  ],
+                  [
+                      -4.784545898437513,
+                      37.907366581454966
+                  ]
+              ],
+              "type": "LineString"
+          },
+          "id": "mapea_feature_9958312891707717",
+          "properties": {
+              "final": "100",
+              "inicio": "10"
+          },
+          "type": "Feature"
+      },
+      {
+          "geometry": {
+              "coordinates": [
+                  [
+                      -5.984802246093764,
+                      37.37015718405753
+                  ],
+                  [
+                      -4.471435546875014,
+                      36.721273880045004
+                  ]
+              ],
+              "type": "LineString"
+          },
+          "id": "mapea_feature_9655197141670062",
+          "properties": {
+              "final": "150",
+              "inicio": "15"
+          },
+          "type": "Feature"
+      },
+      {
+          "geometry": {
+              "coordinates": [
+                  [
+                      -6.0024084328844065,
+                      37.38146225526987
+                  ],
+                  [
+                      -6.2660803078844065,
+                      36.50782495921966
+                  ]
+              ],
+              "type": "LineString"
+          },
+          "id": "mapea_feature_6519584169947557",
+          "properties": {
+              "final": "100",
+              "inicio": "15"
+          },
+          "type": "Feature"
+      }
+  ],
+  "type": "FeatureCollection"
+};
+
+export const geojson_003 = new GeoJSON({
+  source: source_003,
+  extract: false
+});

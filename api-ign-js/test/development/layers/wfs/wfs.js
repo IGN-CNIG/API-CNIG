@@ -3,7 +3,7 @@ import WFS from 'M/layer/WFS';
 export const wfs_001 = new WFS({
     url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?",
     namespace: "tematicos",
-    name: "Provincias",
+    name: "provincias_pob",
     legend: "Provincias",
     geometry: 'MPOLYGON',
     // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
@@ -31,4 +31,21 @@ export const wfs_002 = new WFS({
   name: "RED_REGENTE",
   legend: "RED_REGENTE",
   geometry: 'MPOINT',
+});
+
+export const wfs_003 = new WFS({
+  name: "Municipios Indicadores",
+  url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/wfs?",
+  namespace: "tematicos",
+  name: "ind_mun_simp",  
+  geometry: 'POLYGON',
+});
+
+export const wfs_004 = new WFS({
+  name: "Campamentos",
+  url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/wfs",
+  namespace: "sepim",
+  name: "campamentos",
+  geometry: 'POINT',
+  extract: true
 });
