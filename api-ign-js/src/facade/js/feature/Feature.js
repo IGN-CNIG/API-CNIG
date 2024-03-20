@@ -25,20 +25,33 @@ class Feature extends Base {
    * @constructor
    * @param {String} id Identificador del objeto geográfico.
    * @param {Object} geojson Geojson con objetos geográficos.
-   * @param {Object} style Estilo de los objetos geográficos.
+   * @param {Object} style Estilo para el objeto geográfico.
+   * @param {String} mapProjection Sistema de referencia del mapa. Por defecto: EPSG:3857.
+   * @param {Boolean} geojsonStandar Determina si el geojson cumple con el
+   * estándar (las coordenadas se especifican en EPSG:4326). Por defecto: false.
    * @api
    */
-  constructor(id, geojson = {}, style) {
-    const crs = geojson.crs ? geojson.crs.properties.name : 'urn:ogc:def:crs:OGC:1.3:CRS84';
+  constructor(id, geojson = {}, style, mapProjection = 'EPSG:3857', geojsonStandar = false) {
+    if (geojsonStandar === false) {
+      // eslint-disable-next-line
+      console.warn(getValue('exception.geojson_standard'));
+    }
+
+    const url4326 = projAPI.getSupportedProjs().filter(proj => proj.codes.includes('EPSG:4326'))[0].coordRefSys;
+    const url3857 = projAPI.getSupportedProjs().filter(proj => proj.codes.includes('EPSG:3857'))[0].coordRefSys;
+
+    const crsDefault = geojsonStandar ? url4326 : url3857;
+    const crs = geojson.coordRefSys ? geojson.coordRefSys : crsDefault;
+
     const projEPSG = projAPI.getSupportedProjs()
-      .filter(proj => proj.codes.includes(crs))[0].codes[0];
+      .filter(proj => proj.codes.includes(crs))[0].coordRefSys;
 
     /**
      * Implementación de objetos geográficos.
      * @public
      * @type {M.impl.Feature}
      */
-    const impl = new FeatureImpl(id, geojson, style, { crs, projEPSG });
+    const impl = new FeatureImpl(id, geojson, style, { projEPSG, mapProjection });
 
     super(impl);
 
@@ -56,7 +69,7 @@ class Feature extends Base {
      */
     this.formatGeoJSON_ = new GeoJSON({
       dataProjection: projEPSG,
-      featureProjection: projEPSG,
+      featureProjection: mapProjection,
     });
 
     /**

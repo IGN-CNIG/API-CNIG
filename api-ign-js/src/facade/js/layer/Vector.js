@@ -501,6 +501,9 @@ class Vector extends LayerBase {
       return geoJson;
     });
 
+    // eslint-disable-next-line
+    console.warn(getValue('exception.geojson_standard_layer'));
+
     const projection = projAPI.getSupportedProjs()
       .filter(proj => proj.codes.includes('EPSG:4326'))[0];
     return {
@@ -508,9 +511,10 @@ class Vector extends LayerBase {
       crs: {
         type: 'name',
         properties: {
-          name: projection.codes[projection.codes.length - 2],
+          name: projection.codes[2],
         },
       },
+      coordRefSys: projection.coordRefSys,
       features: geojsonTo4326(featuresAsJSON, code),
     };
   }

@@ -35,6 +35,7 @@ class GeoJSON extends OLFormatGeoJSON {
     */
   constructor(options = {}) {
     super(options);
+    this.mapProj = options.featureProjection;
   }
 
   /**
@@ -114,15 +115,10 @@ class GeoJSON extends OLFormatGeoJSON {
     }
 
     const projection = projAPI.getSupportedProjs()
-      .filter(proj => proj.codes.includes(this.dataProjection.getCode()))[0];
+      .filter(proj => proj.codes.includes(this.mapProj))[0];
 
-    if (this.dataProjection) {
-      object.crs = {
-        type: 'name',
-        properties: {
-          name: projection.codes[projection.codes.length - 2],
-        },
-      };
+    if (this.mapProj) {
+      object.coordRefSys = projection.coordRefSys;
     }
 
     if (!isNullOrEmpty(feature.click)) {

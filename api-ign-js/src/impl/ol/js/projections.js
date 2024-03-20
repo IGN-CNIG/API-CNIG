@@ -24,6 +24,7 @@ const proj4258 = {
   metersPerUnit: 111319.49079327358,
   datum: 'GRS80 (ETRS89)',
   proj: 'long, lat',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/4258',
 };
 
 /**
@@ -50,6 +51,7 @@ const proj3857 = {
   datum: 'WGS 84',
   proj: 'Pseudo-Mercator',
   global: true,
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/4258',
 };
 
 
@@ -69,6 +71,7 @@ const proj25828 = {
   units: 'm',
   datum: 'GRS80 (ETRS89)',
   proj: 'UTM 28 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/25828',
 };
 
 /**
@@ -86,6 +89,7 @@ const proj25829 = {
   units: 'm',
   datum: 'GRS80 (ETRS89)',
   proj: 'UTM 29 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/25829',
 };
 
 /**
@@ -104,6 +108,7 @@ const proj25830 = {
   units: 'm',
   datum: 'GRS80 (ETRS89)',
   proj: 'UTM 30 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/25830',
 };
 
 /**
@@ -122,6 +127,7 @@ const proj25831 = {
   units: 'm',
   datum: 'GRS80 (ETRS89)',
   proj: 'UTM 31 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/25831',
 };
 
 /**
@@ -141,6 +147,7 @@ const proj4230 = {
   metersPerUnit: 111319.49079327358,
   datum: 'ED50',
   proj: 'long, lat',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/4230',
 };
 
 /**
@@ -160,6 +167,7 @@ const proj23028 = {
   units: 'm',
   datum: 'ED50',
   proj: 'UTM 28 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/23028',
 };
 
 /**
@@ -179,6 +187,7 @@ const proj23029 = {
   units: 'm',
   datum: 'ED50',
   proj: 'UTM 29 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/23029',
 };
 
 /**
@@ -198,6 +207,7 @@ const proj23030 = {
   units: 'm',
   datum: 'ED50',
   proj: 'UTM 30 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/23030',
 };
 
 /**
@@ -217,6 +227,7 @@ const proj23031 = {
   units: 'm',
   datum: 'ED50',
   proj: 'UTM 31 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/23031',
 };
 
 /**
@@ -237,6 +248,7 @@ const proj4326 = {
   axisOrientation: 'neu',
   datum: 'WGS 84',
   proj: 'longitud, latitud',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/4326',
 };
 
 /**
@@ -256,6 +268,7 @@ const proj32627 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'UTM 27 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/32627',
 };
 
 /**
@@ -274,6 +287,7 @@ const proj32628 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'UTM 28 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/32628',
 };
 
 /**
@@ -293,6 +307,7 @@ const proj32629 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'UTM 29 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/32629',
 };
 
 /**
@@ -312,6 +327,7 @@ const proj32630 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'UTM 30 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/32630',
 };
 
 /**
@@ -331,6 +347,7 @@ const proj32631 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'UTM 31 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/32631',
 };
 
 /**
@@ -350,6 +367,7 @@ const proj4081 = {
   metersPerUnit: 111319.49079327358,
   datum: 'REGCAN95',
   proj: 'long, lat',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/4081',
 };
 
 /**
@@ -367,6 +385,7 @@ const proj4082 = {
   units: 'm',
   datum: 'REGCAN95',
   proj: 'UTM 27 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/4082',
 };
 
 /**
@@ -385,6 +404,7 @@ const proj4083 = {
   units: 'm',
   datum: 'REGCAN95',
   proj: 'UTM 28 N',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/4083',
 };
 
 /**
@@ -406,6 +426,7 @@ const proj3395 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'World Mercator',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/3395',
 };
 
 /**
@@ -426,6 +447,7 @@ const proj4328 = {
   units: 'm',
   datum: 'WGS 84',
   proj: 'XYZ (geocéntricas)',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/4328',
 };
 
 /**
@@ -446,6 +468,7 @@ const proj4346 = {
   units: 'm',
   datum: 'GRS80 (ETRS89)',
   proj: 'XYZ (geocéntricas)',
+  coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/4346',
 };
 
 /**

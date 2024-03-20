@@ -190,6 +190,8 @@
     "file_load": "Error al cargar el fichero.",
     "no_geoms": "No se han detectado geometrías en este fichero.",
     "file_load_correct": "Error al cargar el fichero. Compruebe que se trata del fichero correcto.",
-    "file_extension": "No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX, GML y GeoJSON."
+    "file_extension": "No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX, GML y GeoJSON.",
+    "geojson_standard": "Se está utilizando un método no estándar para la creación de objetos geográficos. Se recomienda el uso de geojsonStandar = true para cumplir con el estándar. El uso de geojsonStandar = false será eliminado en futuras versiones.",
+    "geojson_standard_layer": "Se está haciendo uso del parámetro CRS y no cumple el estándar. Será eliminado en próximas versiones"
   }
 }
