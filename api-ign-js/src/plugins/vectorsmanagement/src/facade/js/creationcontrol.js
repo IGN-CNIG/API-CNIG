@@ -551,7 +551,6 @@ export default class CreationControl extends M.Control {
   updateGlobalsWithInput() {
     const textInput = document.querySelector('#m-text-draw #textContent');
     this.textContent = textInput.value === '' ? 'Texto' : textInput.value;
-    console.log(this.textContent);
   }
 
 

@@ -173,6 +173,8 @@ export default class VectorsManagementControl extends M.Control {
       if (!clickActivate) {
         this.selectionControl.active(html);
         event.target.classList.add('activated');
+        this.creationControl.deactivate();
+        document.querySelector('#m-vectorsmanagement-creation').classList.remove('activated');
       } else {
         this.selectionControl.deactivate();
         event.target.classList.remove('activated');
@@ -233,6 +235,9 @@ export default class VectorsManagementControl extends M.Control {
       if (!clickActivate) {
         this.creationControl.active(html);
         event.target.classList.add('activated');
+
+        this.selectionControl.deactivate();
+        document.querySelector('#m-vectorsmanagement-selection').classList.remove('activated');
       }
     });
   }
