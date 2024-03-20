@@ -70,5 +70,6 @@
   "selectLayers": "Layers selected",
   "openWindow": "Open new sale",
   "closeAll": "Close all windows",
-  "tooltipWindSync": "Synchronous layer comparator"
-}
+  "tooltipWindSync": "Synchronous layer comparator",
+  "selector": "None"
+  }

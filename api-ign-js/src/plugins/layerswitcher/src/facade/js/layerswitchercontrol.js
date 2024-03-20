@@ -264,6 +264,7 @@ export default class LayerswitcherControl extends M.Control {
               info_metadata: getValue('info_metadata'),
               remove_layer: getValue('remove_layer'),
               change_style: getValue('change_style'),
+              add: getValue('add'),
             },
             allVisible: !this.statusShowHideAllLayers,
             isRadio: this.modeSelectLayers === 'radio',
