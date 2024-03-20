@@ -1,6 +1,6 @@
 import Layerswitcher from 'facade/layerswitcher';
 
-// M.language.setLang('en');
+//M.language.setLang('en');
 
 const map = M.map({
   container: 'mapjs',

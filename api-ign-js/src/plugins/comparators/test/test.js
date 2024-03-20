@@ -1,6 +1,6 @@
 import Comparators from 'facade/comparators';
 
-M.language.setLang('es');
+M.language.setLang('en');
 // M.proxy(false);
 
 
