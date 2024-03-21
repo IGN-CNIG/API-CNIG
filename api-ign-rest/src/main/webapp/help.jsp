@@ -168,7 +168,7 @@
             maxZoom: 20,
             minZoom: 2,
             center: [-467062.8225, 4783459.6216],
-	        controls: ['scale']
+	        controls: ['scale', 'panzoom', 'attributions', 'backgroundlayers', 'getfeatureinfo', 'location', 'panzoombar', 'rotate', 'scaleline']
         });
 
         let mp = null;

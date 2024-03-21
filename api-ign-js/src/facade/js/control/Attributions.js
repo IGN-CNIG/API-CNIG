@@ -3,6 +3,7 @@
  */
 import 'assets/css/controls/attributions';
 import attributionsTemplate from 'templates/attributions';
+import myhelp from 'templates/attributionshelp';
 import AttributionsImpl from 'impl/control/Attributions';
 import ControlBase from './Control';
 import { compileSync as compileTemplate } from '../util/Template';
@@ -486,6 +487,31 @@ class Attributions extends ControlBase {
    */
   onMoveEnd(callback) {
     this.impl_.registerEvent('moveend', this.map_, e => callback(e));
+  }
+
+  /**
+   * Obtiene la ayuda del control
+   *
+   * @function
+   * @public
+   * @api
+  */
+  getHelp() {
+    const textHelp = getValue('attributions').textHelp;
+    return {
+      title: Attributions.NAME,
+      content: new Promise((success) => {
+        const html = compileTemplate(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}assets/images`,
+            translations: {
+              help1: textHelp.text1,
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 
   /**
