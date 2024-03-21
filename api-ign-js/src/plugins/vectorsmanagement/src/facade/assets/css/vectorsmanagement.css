@@ -760,7 +760,6 @@ th .vectorsmanagement-icon-papelera {
 
 #m-vectorsmanagement-attribute-table-container {
     max-width: 61vw;
-    max-height: calc(70vh - 100px);
     padding: 0 1vw 1vw;
 }
 
