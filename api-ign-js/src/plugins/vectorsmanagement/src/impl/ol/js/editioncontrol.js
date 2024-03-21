@@ -321,7 +321,10 @@ export default class Editioncontrol extends M.impl.Control {
    * @api
    */
   getFeatureArea() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getArea();
+    if (this.facadeControl.feature) {
+      return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getArea();
+    }
+    return null;
   }
 
   /**

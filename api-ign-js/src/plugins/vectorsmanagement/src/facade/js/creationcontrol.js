@@ -717,7 +717,9 @@ export default class CreationControl extends M.Control {
    */
   deactivate() {
     this.deactivateDrawing();
-    this.template.remove();
+    if (this.template) {
+      this.template.remove();
+    }
   }
 
   /**
