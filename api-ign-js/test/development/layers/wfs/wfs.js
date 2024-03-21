@@ -1,4 +1,5 @@
 import WFS from 'M/layer/WFS';
+import Generic from 'M/style/Generic';
 
 export const wfs_001 = new WFS({
     url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?",
@@ -6,12 +7,18 @@ export const wfs_001 = new WFS({
     name: "provincias_pob",
     legend: "Provincias",
     geometry: 'MPOLYGON',
+    // cql: 'id IN (3,5)'
     // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
+    // extract: false,
     // extract: true,
     // infoEventType: 'click',
+    // infoEventType: 'hover',
     // ids:"3,4",
+    // version: '',
+    // isBase: false,
     // isBase: true,
     // transparent: false,
+    // transparent: true,
     // attribution: {
     //   name: 'Name Prueba WFS',
     //   description: 'Description Prueba',
@@ -20,11 +27,46 @@ export const wfs_001 = new WFS({
     //   contentType: 'kml',
     // }
   },
-  // {
-  //   minZoom: 5,
-  //   maxZoom: 10
-  // }
+  {
+    // minZoom: 5,
+    // maxZoom: 10,
+    // getFeatureOutputFormat: 'application/json',
+    // getFeatureOutputFormat: 'geojson',
+    // describeFeatureTypeOutputFormat: 'geojson',
+    // visibility: false,
+    // visibility: true,
+    // displayInLayerSwitcher: false,
+    // displayInLayerSwitcher: true,
+    // opacity: 0,
+    // opacity: 0.5,
+    // opacity: 1,
+    // predefinedStyles: [],
+    // style: new Generic({
+    //   point: {
+    //     radius: 10,
+    //     fill: {
+    //       color: 'blue'
+    //     }
+    //   },
+    //   polygon: {
+    //     fill: {
+    //       color: 'red'
+    //     }
+    //   },
+    //   line: {
+    //     stroke: {
+    //       color: 'black'
+    //     }
+    //   }
+    // }),
+  },
+  {
+    // source: {},
+  }
 );
+
+// ERROR: infoEventType en hover no cierra el popup al salir
+// ERROR: No funciona opacity al 0
 
 export const wfs_002 = new WFS({
   url: "https://www.ign.es/wfs/redes-geodesicas",

@@ -7,7 +7,7 @@ const mapa = Mmap({
   center: [-443273.10081370454, 4757481.749296248],
   zoom: 6,
   // layers: ['OSM']
-  layers: [osm]
+  layers: [osm],
 });
 
 // mapa.addLayers('OSM*nombre*legend*https://a.tile.opentopomap.org/{z}/{x}/{y}.png*true*true')

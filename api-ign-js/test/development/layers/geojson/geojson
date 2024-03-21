@@ -1,14 +1,27 @@
 /* eslint-disable camelcase */
 import GeoJSON from 'M/layer/GeoJSON';
+import Generic from 'M/style/Generic';
+import { bbox as bboxStrategy } from 'ol/loadingstrategy';
+import VectorSource from 'ol/source/Vector';
 
 export const geojson_001 = new GeoJSON({
   name: 'Municipios',
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Municipios&maxFeatures=50&outputFormat=application/json',
-  // extract: true,
-  // infoEventType: 'hover',
+  // source: new VectorSource({
+  //   format: new GeoJSON(),
+  //   url: 'https://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
+  //   strategy: bboxStrategy,
+  // }),
+  extract: true,
+  // extract: false,
+  // crs: 'EPSG:3857',
+  infoEventType: 'hover',
+  // infoEventType: 'click',
+  // isBase: false,
   // isBase: true,
   // transparent: false,
-  maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
+  // transparent: true,
+  // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
   // attribution: {
   //   name: 'Name Prueba GeoJSON',
   //   description: 'Description Prueba',
@@ -16,12 +29,43 @@ export const geojson_001 = new GeoJSON({
   //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
   //   contentType: 'kml',
   // },
+  },{
+    // minZoom: 5,
+    // maxZoom: 10,
+    // predefinedStyles: [],
+    // style: new Generic({
+    //   point: {
+    //     radius: 10,
+    //     fill: {
+    //       color: 'blue'
+    //     }
+    //   },
+    //   polygon: {
+    //     fill: {
+    //       color: 'red'
+    //     }
+    //   },
+    //   line: {
+    //     stroke: {
+    //       color: 'black'
+    //     }
+    //   }
+    // }),
+    // hide: ['provincia', 'municipio'],
+    // show: ['municipio'],
+    // visibility: false,
+    // visibility: true,
+    // displayInLayerSwitcher: false,
+    // displayInLayerSwitcher: true,
+    // opacity: 0,
+    // opacity: 0.5,
+    // opacity: 1,
+  },{
+  // source:{},
 });
-// {
-//   minZoom: 5,
-//   maxZoom: 10,
-// },
 
+// ERROR: infoEventType en hover no cierra el popup al salir
+// ERROR: No funciona opacity al 0
 
 export const geojson_002 = new GeoJSON({
   name: 'jsonejemplo',

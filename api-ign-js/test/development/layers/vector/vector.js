@@ -1,11 +1,16 @@
 import Vector from 'M/layer/Vector';
 import Feature from 'M/feature/Feature';
+import Generic from 'M/style/Generic';
 
 export const vector_001 = new Vector({
     name: 'capaVectorial',
     legend: 'Capa Vector',
+    // isBase: false,
     // isBase: true,
+    // transparent: true,
     // transparent: false,
+    // infoEventType: 'click'
+    // infoEventType: 'hover',
     // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
     // attribution: {
     //   name: 'Name Prueba Vector',
@@ -15,11 +20,43 @@ export const vector_001 = new Vector({
     //   contentType: 'kml',
     // },
   },
-  // {
-  //   minZoom: 5,
-  //   maxZoom: 10
-  // }
+  {
+    // minZoom: 5,
+    // maxZoom: 10.
+    // visibility: false,
+    // visibility: true,
+    // displayInLayerSwitcher: false,
+    // displayInLayerSwitcher: true,
+    // opacity: 0,
+    // opacity: 0.5,
+    // opacity: 1,
+    // predefinedStyles: [],
+    // style: new Generic({
+    //   point: {
+    //     radius: 10,
+    //     fill: {
+    //       color: 'blue'
+    //     }
+    //   },
+    //   polygon: {
+    //     fill: {
+    //       color: 'red'
+    //     }
+    //   },
+    //   line: {
+    //     stroke: {
+    //       color: 'black'
+    //     }
+    //   }
+    // }),
+  }, 
+  {
+    // source: {},
+  },
 );
+
+// ERROR: infoEventType en hover no cierra el popup al salir
+// ERROR: No funciona opacity al 0
 
 // Creamos feature
 const polFeature = new Feature("featurePrueba001", {

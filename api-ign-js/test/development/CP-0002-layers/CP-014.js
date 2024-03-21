@@ -25,6 +25,9 @@ const mapa = Mmap({
   projection: 'EPSG:3857*m',
   center: [-443273.10081370454, 4757481.749296248],
   zoom: 6,
+  layers: [
+    mbtile_01,
+  ],
 });
 
 
@@ -124,10 +127,10 @@ const mapa = Mmap({
 // }, 5000);
 
 // [-] MBTILES
-mapa.addLayers(mbtile_01)
-console.log(mbtile_01.getMaxExtent())
-setTimeout(() => {
-    mbtile_01.setMaxExtent([-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652])
-}, 5000);
+// mapa.addLayers(mbtile_01)
+// console.log(mbtile_01.getMaxExtent())
+// setTimeout(() => {
+//     mbtile_01.setMaxExtent([-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652])
+// }, 5000);
 
 window.mapa = mapa;
