@@ -43,6 +43,50 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**. Tooltip que se muestra sobre el plugin. Por defecto: Más información.
 
+# Plantilla HMTL a mostrar en la ventana modal
+En los parámetros  **url_en** y **url_es**  se añade la URL de un HTML que se abrirá cuando se haga click sobre el botón de la extensión. Este HTML necesita de unos comentarios de código (<!-- Start Popup Content --> y <!-- End Popup Content -->), desde los cuales se obtendrá la información a mostrar.
+
+Un ejemplo de la plantilla sería el siguiente:
+
+```HTML
+
+<!-- Start Popup Content -->
+<div id="popup-box">
+    <div class="popup-section">
+        <h3>Visualizador realizado con la API-CNIG</h3>
+        <p><a href="https://plataforma.idee.es/cnig-api">https://plataforma.idee.es/cnig-api</a></p>
+        <p class="popup-title">API-CORE</p>
+        <p>API CNIG es una herramienta que permite integrar de una forma muy sencilla un visualizador de mapas
+            interactivo en cualquier página web y configurarlo consumiendo ficheros WMC, servicios WMS, servicios WFS,
+            ficheros KML, etc. Además, provee la capacidad de añadir una gran cantidad de herramientas y controles.</p>
+    </div>
+    <div class="popup-section">
+        <p class="popup-title">Código API-CNIG</p>
+        <p>Enlace al repositorio: <a href="https://github.com/IGN-CNIG/API-CNIG">https://github.com/IGN-CNIG/API-CNIG</a></p>
+    </div>
+    <div class="popup-section">
+        <p class="popup-title">Galería de plugins</p>
+        <p>Enlace a la galería de plugins: <a href="http://componentes.cnig.es/api-core/test.html">http://componentes.cnig.es/api-core/test.html</a></p>
+    </div>
+    <div class="popup-section">
+        <p class="popup-title">Wiki API-CNIG</p>
+        <p>Enlace a la Wiki de API-CNIG: <a href="https://github.com/IGN-CNIG/API-CNIG/wiki">https://github.com/IGN-CNIG/API-CNIG/wiki</a></p>
+    </div>
+    <div class="popup-section">
+        <p class="popup-title">Galería de ejemplos API-CNIG</p>
+        <p>Enlace a la galería de ejemplos: <a href="https://plataforma.idee.es/resources/GaleriaEjemplos_APICNIG/">https://plataforma.idee.es/resources/GaleriaEjemplos_APICNIG/</a></p>
+    </div>
+    <div class="popup-section">
+        <p class="popup-title">Recursos Formativos</p>
+        <p>Enlace a los recursos formativos: <a href="https://plataforma.idee.es/cnig-api">https://plataforma.idee.es/cnig-api</a></p>
+    </div>
+</div>
+<!-- End Popup Content -->
+```
+
+
+
+
 # API-REST
 
 ```javascript
