@@ -666,17 +666,17 @@ export default class EditionControl extends M.Control {
       infoContainer.classList.remove('closed');
       infoContainer.innerHTML = '';
     }
-
+    const selectControlFeature = this.managementControl_.selectionControl.feature;
     switch (this.geometry) {
       case 'Point':
       case 'MultiPoint':
-        const x = this.getImpl().getFeatureCoordinates()[0];
-        const y = this.getImpl().getFeatureCoordinates()[1];
+        const [x, y] = this.getImpl().getFeatureCoordinates(selectControlFeature);
         if (infoContainer !== null) {
           infoContainer.innerHTML = `Coordenadas<br/>
           x: ${Math.round(x * 1000) / 1000},<br/>
           y: ${Math.round(y * 1000) / 1000}`;
         }
+        this.map_.refresh();
         break;
       case 'LineString':
       case 'MultiLineString':
@@ -694,7 +694,7 @@ export default class EditionControl extends M.Control {
         break;
       case 'Polygon':
       case 'MultiPolygon':
-        let area = this.getImpl().getFeatureArea();
+        let area = this.getImpl().getFeatureArea(selectControlFeature);
         let areaUnits = `km${'2'.sup()}`;
         if (area > 10000) {
           area = Math.round((area / 1000000) * 100) / 100;
