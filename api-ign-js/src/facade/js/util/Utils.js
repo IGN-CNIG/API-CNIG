@@ -1484,11 +1484,11 @@ export const returnPositionHtmlElement = (className, map) => {
 
 /**
  * Esta funcion fusiona todos los canvas del mapa en uno solo
- * @param {M.map} map
- * @param {String} imageType
+ * @param {M.map} map objeto mapa
+ * @param {String} imageType formato de imagen resultante
  * @returns {HTMLCanvasElement} canvas resultante
  */
-export const joinCanvas = (map, imageType) => {
+const joinCanvas = (map, imageType = 'image/jpeg') => {
   const canvasList = map.getMapImpl().getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer');
   if (canvasList.length === 1) {
     return canvasList[0];
@@ -1535,8 +1535,9 @@ export const joinCanvas = (map, imageType) => {
 /**
  * Esta función devuelve una captura de pantalla del mapa
  * @function
- * @param {M.Map} map
- * @param {HTMLCanvasElement} canva
+ * @param {M.Map} map mapa del que se obtiene el canvas
+ * @param {String} type formato de la imagen resultante
+ * @param {HTMLCanvasElement} canva elemento canvas
  * @api
  * @returns {String} Imagen en base64
  */
@@ -1556,11 +1557,12 @@ export const getImageMap = (map, type = 'image/jpeg', canva) => {
 /**
  * Esta función copia una imagen en el portapapeles
  * @function
- * @param {HTMLCanvasElement} canvas
+ * @param {M.Map} map mapa del que se obtiene el canvas
+ * @param {HTMLCanvasElement} canva elemento canvas
  * @api
  */
 export const copyImageClipBoard = (map, canva) => {
-  const canvas = canva || map.getMapImpl().getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer')[0];
+  const canvas = canva || joinCanvas(map, 'image/png');
   if (canvas) {
     try {
       canvas.toBlob((blob) => {
