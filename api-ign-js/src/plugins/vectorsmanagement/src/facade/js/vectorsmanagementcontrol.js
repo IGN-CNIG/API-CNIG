@@ -72,7 +72,7 @@ export default class VectorsManagementControl extends M.Control {
           analysis: this.analysis_,
           creation: this.creation_,
           download: this.download_,
-          edition: this.edition_,
+          edition: !!(this.edition_ instanceof Object || this.edition_ === true),
           help: this.help_,
           style: this.style_,
           layer: this.layers_,

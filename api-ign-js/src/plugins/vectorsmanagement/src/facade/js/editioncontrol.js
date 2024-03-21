@@ -466,7 +466,13 @@ export default class EditionControl extends M.Control {
    * @api stable
    */
   activateEdition() {
-    this.getImpl().activateSelection();
+    // eslint-disable-next-line no-underscore-dangle
+    const snap = this.managementControl_.edition_ instanceof Object
+      // eslint-disable-next-line no-underscore-dangle
+      ? this.managementControl_.edition_
+      : { snapToPointer: true, pixelTolerance: 30 };
+
+    this.getImpl().activateSelection(snap);
   }
 
   /**
