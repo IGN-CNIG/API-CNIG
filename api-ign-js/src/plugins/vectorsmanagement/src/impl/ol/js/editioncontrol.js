@@ -300,11 +300,8 @@ export default class Editioncontrol extends M.impl.Control {
    * @function
    * @api
    */
-  getFeatureCoordinates(selectFeature) {
-    if (this.facadeControl.feature) {
-      return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getCoordinates();
-    }
-    return selectFeature.getImpl().getOLFeature().getGeometry().getCoordinates();
+  getFeatureCoordinates() {
+    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getCoordinates();
   }
 
   /**
@@ -323,11 +320,8 @@ export default class Editioncontrol extends M.impl.Control {
    * @function
    * @api
    */
-  getFeatureArea(selectFeature) {
-    if (this.facadeControl.feature) {
-      return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getArea();
-    }
-    return selectFeature.getImpl().getOLFeature().getGeometry().getArea();
+  getFeatureArea() {
+    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getArea();
   }
 
   /**
