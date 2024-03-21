@@ -3,7 +3,6 @@ const webpack = require('webpack');
 
 let pathUrl = null;
 const nameArgIndex = process.argv[process.argv.length - 1].indexOf('--name=CP-');
-console.log(nameArgIndex);
 
 if (nameArgIndex === -1) {
   pathUrl = path.resolve(__dirname, '..', 'test', 'test.js');
