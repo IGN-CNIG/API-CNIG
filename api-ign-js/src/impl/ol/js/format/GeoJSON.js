@@ -223,6 +223,8 @@ class GeoJSON extends OLFormatGeoJSON {
       } else {
         dstProj = getProj(projection.getCode());
       }
+    } else {
+      dstProj = getProj(dstProj);
     }
     const srcProj = GeoJSON.readProjectionFromObject(geojson);
     features = geojsonFeatures.map((geojsonFeature) => {
