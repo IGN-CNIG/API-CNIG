@@ -1,4 +1,5 @@
 import MVT from 'M/layer/MVT';
+window.MVT=MVT;
 import Generic from 'M/style/Generic';
 
 export const mvt_001 = new MVT({
@@ -6,7 +7,7 @@ export const mvt_001 = new MVT({
     name: 'sendero_gr',
     // projection: '',
     // mode: 'render',
-    // mode: 'feature',
+    mode: 'feature',
     // opacity: 0,
     // opacity: 0.5,
     // opacity: 1,
@@ -15,10 +16,10 @@ export const mvt_001 = new MVT({
     // layers: [],
     // visibility: true,
     // visibility: false,
-    // extract: true,
+    extract: true,
     // extract: false,
-    infoEventType: 'click',
-    // infoEventType: 'hover',
+    // infoEventType: 'click',
+    infoEventType: 'hover',
     // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
     // isBase: true,
     // isBase: false,

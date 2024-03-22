@@ -5,10 +5,12 @@ import ClusteredFeature from 'M/feature/Clustered';
 import Cluster from 'M/style/Cluster';
 import { isNullOrEmpty } from 'M/util/Utils';
 import RenderFeature from 'ol/render/Feature';
+import olFeature from 'ol/Feature';
 import { containsXY } from 'ol/extent';
 
 import AnimatedCluster from '../layer/AnimatedCluster';
 import RenderFeatureImpl from '../feature/RenderFeature';
+import FeatureImpl from '../feature/Feature';
 
 /**
  * Este método añade el evento click a los objetos geográficos.
@@ -27,6 +29,8 @@ export const getFacadeFeature = (feature, layer) => {
   }
   if (isNullOrEmpty(mFeature) && (feature instanceof RenderFeature)) {
     mFeature = RenderFeatureImpl.olFeature2Facade(feature);
+  } else if (isNullOrEmpty(mFeature) && (feature instanceof olFeature) && layer.type === 'MVT') {
+    mFeature = FeatureImpl.olFeature2Facade(feature);
   }
   return mFeature;
 };

@@ -95,7 +95,7 @@ class MVT extends Vector {
      */
     this.extract = opts.extract;
 
-    this.mode = opts.mode;
+    this.mode = opts.mode || mode.RENDER;
   }
 
   /**

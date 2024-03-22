@@ -1,11 +1,5 @@
 import { map as Mmap } from 'M/mapea';
-import { vector_001, vector_002 } from '../layers/vector/vector';
-import { wfs_001 } from '../layers/wfs/wfs';
-import { geojson_001 } from '../layers/geojson/geojson';
-import { kml_001 } from '../layers/kml/kml';
 import { mvt_001 } from '../layers/mvt/mvt';
-import { ogcAPIFeatures_001 } from '../layers/ogcApiFeatures/ogcApiFeatures';
-import { mbtileVector_001 } from '../layers/mbTilesVector/mbTilesVector';
 // import { generic_002 } from '../layers/generic/generic';
 
 
@@ -19,12 +13,12 @@ const mapa = Mmap({
 });
 
 mapa.addLayers([
-  vector_001,
+  // vector_001,
   // vector_002,
   // geojson_001,
   // wfs_001,
   // kml_001,
-  // mvt_001,
+  mvt_001,
   // ogcAPIFeatures_001,
   // mbtileVector_001
   // generic_002

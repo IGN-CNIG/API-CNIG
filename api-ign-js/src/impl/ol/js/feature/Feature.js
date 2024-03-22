@@ -139,35 +139,6 @@ class Feature {
    * @return {M.Feature} Retorna "M.Feature" modificado.
    * @api stable
    */
-  // static olFeature2Facade(olFeature, canBeModified, code = 'EPSG:4326') {
-  //   let facadeFeature = null;
-  //   if (!isNullOrEmpty(olFeature)) {
-  //     facadeFeature = new FacadeFeature();
-  //     const geometry = olFeature.getGeometry();
-  //     if (!isUndefined(geometry)) {
-  //       const projection = projAPI.getSupportedProjs()
-  // .filter(proj => proj.codes.includes(code))[0];
-  //       facadeFeature = new FacadeFeature(olFeature.getId(), {
-  //         crs: {
-  //           type: 'name',
-  //           properties: {
-  //             name: projection.codes[projection.codes.length - 2],
-  //           },
-  //         },
-  //         geometry: {
-  //           coordinates: geometry.getCoordinates(),
-  //           type: geometry.getType(),
-  //         },
-  //         properties: olFeature.getProperties(),
-  //       });
-  //     }
-  //     // TODO ↑ Pasar a la facade el estilo
-  //     // ? feature.getImpl().getOLFeature().setStyle(olFeature.getStyle())
-  //     facadeFeature.getImpl().setOLFeature(olFeature, canBeModified);
-  //   }
-  //   return facadeFeature;
-  // }
-
   static olFeature2Facade(olFeature, canBeModified) {
     let facadeFeature = null;
     if (!isNullOrEmpty(olFeature)) {
