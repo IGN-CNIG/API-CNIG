@@ -6,18 +6,20 @@ import { kml_001 } from '../layers/kml/kml';
 import { mvt_001 } from '../layers/mvt/mvt';
 import { ogcAPIFeatures_001 } from '../layers/ogcApiFeatures/ogcApiFeatures';
 import { mbtileVector_001 } from '../layers/mbTilesVector/mbTilesVector';
-import { generic_002 } from '../layers/generic/generic';
+// import { generic_002 } from '../layers/generic/generic';
 
 
 const mapa = Mmap({
   container: 'map',
-  projection: 'EPSG:3857*m',
-  center: [-443273.10081370454, 4757481.749296248],
-  zoom: 6,
+  // projection: 'EPSG:3857*m',
+  // projection: 'EPSG:4326*d',
+  // layers: ['OSM'],
+  // center: [-443273.10081370454, 4757481.749296248],
+  // zoom: 6,
 });
 
 mapa.addLayers([
-  // vector_001,
+  vector_001,
   // vector_002,
   // geojson_001,
   // wfs_001,
@@ -25,7 +27,7 @@ mapa.addLayers([
   // mvt_001,
   // ogcAPIFeatures_001,
   // mbtileVector_001
-  generic_002
+  // generic_002
 ]);
 
 // ? proyección, si no pone nada 4326 si lo pone el que ponga
