@@ -7,9 +7,6 @@ import { getValue } from './i18n/language';
 import { getBaseLayers, getLayers } from './utils';
 import { handlerErrorPluginWindowSync, handlerErrorURLWindowSync } from './errorhandling';
 
-const MAPEA_LITE_URL = 'https://mapea-lite.desarrollo.guadaltel.es/api-core/';
-const COMPONENTES_URL = 'https://componentes.cnig.es/api-core/';
-
 export default class WindowSyncControl extends M.Control {
   /**
      * @classdesc
@@ -29,7 +26,6 @@ export default class WindowSyncControl extends M.Control {
     // 2. implementation of this control
     const impl = new WindowSyncImplControl();
     super(impl, 'WindowSync');
-    impl.addTo(map);
     this.implControl_ = impl;
 
     /**
@@ -52,7 +48,7 @@ export default class WindowSyncControl extends M.Control {
 
     this.mapsWindows_ = [
       {
-        id: window.crypto.randomUUID(),
+        id: 'base',
         map,
       },
     ];
@@ -222,7 +218,7 @@ export default class WindowSyncControl extends M.Control {
    */
   getScriptAndLink(type) {
     const attr = type === 'link' ? 'href' : 'src';
-    let elements = [...document.querySelectorAll(`${type}[${attr}*="${MAPEA_LITE_URL}"], ${type}[${attr}*="${COMPONENTES_URL}"]`)];
+    let elements = [...document.querySelectorAll(`${type}[${attr}*="${M.config.MAPEA_URL}"]`)];
     if (elements.length === 0) {
       elements = this.getAPIRestScriptAndLink(type, attr);
     }
@@ -263,13 +259,13 @@ export default class WindowSyncControl extends M.Control {
   }
 
   closeWindows() {
-    const baseMap = this.mapsWindows_[0];
     this.mapsWindows_.forEach(({ window }, i) => {
       if (i !== 0) {
         window.close();
       }
     });
-    this.mapsWindows_ = [baseMap];
+
+    this.implControl_.removeEventListeners(this.mapsWindows_);
   }
 
   handlePluginScrips(name) {
@@ -277,7 +273,7 @@ export default class WindowSyncControl extends M.Control {
     const script = this.getScriptAndLink('script').some(s => s.includes(`${name.toLowerCase()}.ol.min.js`));
 
     const currentUrl = window.location.href;
-    if (currentUrl.includes('comparators') && (currentUrl.includes(MAPEA_LITE_URL) || currentUrl.includes(COMPONENTES_URL))) {
+    if (currentUrl.includes('comparators') && (currentUrl.includes(M.config.MAPEA_URL))) {
       this.pluginScriptAndLinkAPI(style, script, name.toLowerCase());
     } else {
       handlerErrorURLWindowSync(style, script, name);

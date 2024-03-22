@@ -248,13 +248,6 @@ const mp = new Comparators({
   isDraggable: true,
   tooltip: 'Plugin Comparators',
   defaultCompareMode: 'mirror',
-  listLayers: [
-    'WMS*Landsat 5 TM 1996. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1996_321-543*true',
-    'WMS*Landsat 5 TM 1996. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1996_432*true',
-    'WMS*Landsat 5 TM 1991. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1991_321-543*true',
-    'WMS*Landsat 5 TM 1991. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1991_432*true',
-    'WMS*Landsat 5 TM 1986. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT5.1986_321-543*true',
-  ],
   enabledKeyFunctions: true,
   lyrsMirrorMinZindex: 10,
   transparencyParams: {
@@ -294,6 +287,14 @@ const mp = new Comparators({
       'scale',
       'backgroundlayers',
       'panzoombar',
+    ],
+    plugins: [
+      {
+        name: 'Layerswitcher',
+        params: {
+          position: 'TL',
+        },
+      },
     ],
   },
 });
