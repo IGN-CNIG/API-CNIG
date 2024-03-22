@@ -91,7 +91,7 @@ class ScaleLine extends ControlBase {
             translations: {
               help1: textHelp.text1,
               help2: textHelp.text2,
-              help3: textHelp.text2,
+              help3: textHelp.text3,
             },
           },
         });
