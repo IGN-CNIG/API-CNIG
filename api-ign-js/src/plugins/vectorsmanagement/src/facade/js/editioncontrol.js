@@ -428,6 +428,9 @@ export default class EditionControl extends M.Control {
   cleanGeometries() {
     this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
     this.layer_.removeFeatures(this.layer_.getFeatures());
+
+    // remove buffer
+    this.managementControl_.analysisControl.removeBufferFeatures();
   }
 
   /**

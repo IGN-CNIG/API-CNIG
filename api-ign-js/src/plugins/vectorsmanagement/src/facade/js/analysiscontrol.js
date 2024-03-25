@@ -269,13 +269,15 @@ export default class AnalysisControl extends M.Control {
     const selection = this.managementControl_.getSelection();
     const bufferFeatures = [];
     let features = [];
+    const layerID = this.managementControl_.selectionControl
+      .getLayer().getImpl().getOL3Layer().ol_uid;
     if (selection === 'feature') { // buffer de los features seleccionados
       features = this.managementControl_.getSelectedFeatures();
     } else { // buffer de toda la capa
       features = this.layer_.getFeatures();
     }
     features.forEach((f) => {
-      const MFeature = this.createFeatureBuffer(f, distance);
+      const MFeature = this.createFeatureBuffer(f, distance, layerID);
       bufferFeatures.push(MFeature);
     });
     this.bufferLayer.addFeatures(bufferFeatures);
@@ -289,7 +291,7 @@ export default class AnalysisControl extends M.Control {
    * @param {Integer} distance
    * @api
    */
-  createFeatureBuffer(feature, distance) {
+  createFeatureBuffer(feature, distance, layerID) {
     const olFeature = this.getImpl().getMapeaFeatureClone(feature).getImpl().getOLFeature();
     this.getImpl().setStyle('rgba(113, 167, 211)', olFeature);
     const format = new ol.format.GeoJSON();
@@ -297,6 +299,7 @@ export default class AnalysisControl extends M.Control {
     const turfGeom = format.writeFeatureObject(olFeature);
     const buffered = buffer(turfGeom, parseInt(distance, 10), { units: 'meters' });
     olFeature.setGeometry(format.readFeature(buffered).getGeometry().transform('EPSG:4326', this.map_.getProjection().code));
+    olFeature.set('parentID', layerID);
     const MFeature = M.impl.Feature.olFeature2Facade(olFeature);
     return MFeature;
   }
@@ -423,6 +426,17 @@ export default class AnalysisControl extends M.Control {
    */
   activate() {
     super.activate();
+  }
+
+  removeBufferFeatures() {
+    if (this.bufferLayer === null) {
+      return;
+    }
+
+    const selectLayer = this.managementControl_.selectionControl.getLayer();
+    const layerID = selectLayer.getImpl().getOL3Layer().ol_uid;
+    const features = this.bufferLayer.getFeatures().filter(f => f.getImpl().getOLFeature().get('parentID') === layerID);
+    this.bufferLayer.removeFeatures(features);
   }
 
   /**
