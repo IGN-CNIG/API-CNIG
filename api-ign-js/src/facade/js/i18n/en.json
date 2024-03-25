@@ -221,8 +221,6 @@
     "file_load": "Error when loading the file.",
     "no_geoms": "No geometries have been detected in this file.",
     "file_load_correct": "Error when loading the file. Check that it is the right file.",
-    "file_extension": "A not allowed file extension has been inserted. The allowed ones are: KML, SHP(.zip), GPX, GML and GeoJSON.",
-    "geojson_standard": "A non-standard method is being used for creating geographic objects. It is recommended to use geojsonStandar = true to comply with the standard. The use of geojsonStandar = false will be removed in future versions.",
-    "geojson_standard_layer": "The CRS parameter is being used and does not comply with the standard. It will be removed in future versions."
+    "file_extension": "A not allowed file extension has been inserted. The allowed ones are: KML, SHP(.zip), GPX, GML and GeoJSON."
   }
 }

@@ -28,17 +28,13 @@ class Feature {
    * @param {String} id Identificador del objeto geográfico.
    * @param {Object} geojson GeoJSON con objetos geográficos.
    * @param {Object} style Estilo de los objetos geográficos.
-   * @param {Object} object Objecto con el sistema de referencia del objeto geográfico y del mapa.
    * @api stable
    */
-  constructor(id, geojson, style, { projEPSG, mapProjection }) {
+  constructor(id, geojson, style) {
     const geojsonVariable = geojson;
     this.facadeFeature_ = null;
 
-    this.formatter_ = new FormatGeoJSON({
-      dataProjection: projEPSG,
-      featureProjection: mapProjection,
-    });
+    this.formatter_ = new FormatGeoJSON();
 
     if (!isNullOrEmpty(geojson)) {
       if (isNullOrEmpty(geojson.type)) {

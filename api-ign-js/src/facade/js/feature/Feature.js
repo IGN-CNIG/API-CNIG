@@ -2,7 +2,6 @@
  * @module M/Feature
  */
 import FeatureImpl from 'impl/feature/Feature';
-import projAPI from 'impl/projections';
 import Base from '../Base';
 import { isNullOrEmpty } from '../util/Utils';
 import GeoJSON from '../format/GeoJSON';
@@ -26,32 +25,15 @@ class Feature extends Base {
    * @param {String} id Identificador del objeto geográfico.
    * @param {Object} geojson Geojson con objetos geográficos.
    * @param {Object} style Estilo para el objeto geográfico.
-   * @param {String} mapProjection Sistema de referencia del mapa. Por defecto: EPSG:3857.
-   * @param {Boolean} geojsonStandar Determina si el geojson cumple con el
-   * estándar (las coordenadas se especifican en EPSG:4326). Por defecto: false.
    * @api
    */
-  constructor(id, geojson = {}, style, mapProjection = 'EPSG:3857', geojsonStandar = false) {
-    if (geojsonStandar === false) {
-      // eslint-disable-next-line
-      console.warn(getValue('exception').geojson_standard);
-    }
-
-    const url4326 = projAPI.getSupportedProjs().filter(proj => proj.codes.includes('EPSG:4326'))[0];
-    const url3857 = projAPI.getSupportedProjs().filter(proj => proj.codes.includes('EPSG:3857'))[0];
-
-    const crsDefault = geojsonStandar ? url4326 : url3857;
-    const crs = geojson.coordRefSys ? geojson : crsDefault;
-
-    const projEPSG = projAPI.getSupportedProjs()
-      .filter(proj => proj.coordRefSys === crs.coordRefSys)[0].codes[0];
-
+  constructor(id, geojson, style) {
     /**
      * Implementación de objetos geográficos.
      * @public
      * @type {M.impl.Feature}
      */
-    const impl = new FeatureImpl(id, geojson, style, { projEPSG, mapProjection });
+    const impl = new FeatureImpl(id, geojson, style);
 
     super(impl);
 
@@ -67,10 +49,7 @@ class Feature extends Base {
      * @private
      * @type {M.format.GeoJSON}
      */
-    this.formatGeoJSON_ = new GeoJSON({
-      dataProjection: projEPSG,
-      featureProjection: mapProjection,
-    });
+    this.formatGeoJSON_ = new GeoJSON();
 
     /**
      * Añade estilo al objeto geográfico.

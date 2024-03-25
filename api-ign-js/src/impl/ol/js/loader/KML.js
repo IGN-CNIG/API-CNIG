@@ -7,7 +7,6 @@ import { isNullOrEmpty, isUndefined } from 'M/util/Utils';
 import FacadeFeature from 'M/feature/Feature';
 import Exception from 'M/exception/exception';
 import { getValue } from 'M/i18n/language';
-import projAPI from '../projections';
 
 /**
  * @classdesc
@@ -187,17 +186,9 @@ class KML extends MObject {
           });
 
           const screenOverlay = this.format_.getScreenOverlay();
-          const projectionCRS = projAPI.getSupportedProjs()
-            .filter(proj => proj.codes.includes(lastProjection))[0];
 
           const mFeatures = features.map((olFeature) => {
             const feature = new FacadeFeature(olFeature.getId(), {
-              crs: {
-                type: 'name',
-                properties: {
-                  name: projectionCRS.codes[projectionCRS.codes.length - 2],
-                },
-              },
               geometry: {
                 coordinates: olFeature.getGeometry().getCoordinates(),
                 type: olFeature.getGeometry().getType(),

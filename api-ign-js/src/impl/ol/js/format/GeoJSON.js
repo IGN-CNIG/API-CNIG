@@ -8,8 +8,6 @@ import { get as getProj } from 'ol/proj';
 import OLStyle from 'ol/style/Style';
 import OLStyleIcon from 'ol/style/Icon';
 
-import projAPI from '../projections';
-
 /**
   * @classdesc
   * Implementación de la clase GeoJSON. GeoJSON es un formato para codificar una variedad
@@ -114,13 +112,6 @@ class GeoJSON extends OLFormatGeoJSON {
       object.properties = null;
     }
 
-    const projection = projAPI.getSupportedProjs()
-      .filter(proj => proj.codes.includes(this.mapProj))[0];
-
-    if (this.mapProj) {
-      object.coordRefSys = projection.coordRefSys;
-    }
-
     if (!isNullOrEmpty(feature.click)) {
       object.click = feature.click;
     }
@@ -223,22 +214,11 @@ class GeoJSON extends OLFormatGeoJSON {
       } else {
         dstProj = getProj(projection.getCode());
       }
-    } else {
-      dstProj = getProj(dstProj);
     }
     const srcProj = GeoJSON.readProjectionFromObject(geojson);
     features = geojsonFeatures.map((geojsonFeature) => {
       const id = geojsonFeature.id;
-      const projectionCRS = projAPI.getSupportedProjs()
-        .filter(proj => proj.codes.includes(dstProj.getCode()))[0];
-      const crs = {
-        type: 'name',
-        properties: {
-          name: projectionCRS.codes[projectionCRS.codes.length - 2],
-        },
-      };
-
-      const feature = new Feature(id, { ...geojsonFeature, crs });
+      const feature = new Feature(id, geojsonFeature);
       const olFeature = feature.getImpl().getOLFeature();
       if (olFeature.getGeometry() !== null) {
         const newGeometry = olFeature.getGeometry().transform(srcProj, dstProj);

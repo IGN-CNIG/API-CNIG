@@ -169,7 +169,7 @@ class GenericVector extends Vector {
     // ? Capas con features ya cargados
     if (source.getFeatures().length > 0 && source.getState() === 'ready') {
       const features = source.getFeatures().map((f) => {
-        return Feature.olFeature2Facade(f, undefined, this.map.getProjection().code);
+        return Feature.olFeature2Facade(f);
       });
       this.loaded_ = true;
       this.facadeLayer_.addFeatures(features);
@@ -189,7 +189,7 @@ class GenericVector extends Vector {
     if (source.getState() === 'ready' && !this.loaded_) {
       if (source.getFeatures) {
         const features = source.getFeatures().map((f) => {
-          return Feature.olFeature2Facade(f, undefined, this.map.getProjection().code);
+          return Feature.olFeature2Facade(f);
         });
         if (features.length > 0) {
           this.loaded_ = true;
