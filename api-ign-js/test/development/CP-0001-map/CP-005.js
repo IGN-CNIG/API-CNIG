@@ -30,7 +30,6 @@ import Popup from 'M/Popup';
 // [APUNTADO A REDMINE] (Que ya fue enviado a Redmine)
 // POR PROBAR (Requiere pruebas tras arreglo)
 // IGNORAR (Creo que no son importantes)
-// ERROR NEW (Se prepara la lista de errores de funciones que hay que entregar a REDMINE)****
 //TERMINOLOGÍA
 
 //EJEMPLOS de pruebas: null, undefined, [], [null], [undefined], {}, {EJEMPLO:null}, {EJEMPLO:undefined}, {EJEMPLO:NaN}, "", "a4", 0, -1, NaN
@@ -43,7 +42,7 @@ import Popup from 'M/Popup';
 // options.viewExtent (parece que sobrescribe el valor de viewExtent del primer parámetro por ello no hay ciertas pruebas o transformaciones como el de "string")
 // SEGUNDO PARÁMETRO
 
-// ¿¿¿ELEMENTOS SOBRANTES EN TRABAJO CON PRIMER PARÁMETRO??? IGNORAR BUG? ****
+// ¿¿¿ELEMENTOS SOBRANTES EN TRABAJO CON PRIMER PARÁMETRO??? IGNORAR BUG?
 // Dentro de "api-ign-js/src/facade/js/parameter/Parameters.js", hay estas operaciones "this.wmc = parseWMC(userParameters);" y "this.getfeatureinfo = parseGetFeatureInfo(userParameters);", el resultado de esta operación se usan en "api-ign-js/src/facade/js/Map.js", pero estos de aquí nunca se usan, es decir se generan para nada.
 // El único lugar que he encontrado que use este "New Parameters" es en "api-ign-rest/src/main/java/es/cnig/mapea/parameter/parser/ParametersParser.java" pero no creo que sea lo mismo.
 // Por otro lado en "getWMS" hay referencia a WMC en descripción de esa función. También he encontrado bastantes comentarios o descripciones de funciones que usan este nombre WMC pero no parece que se refieren a él ya que terminan usando otros tipos de layers.
@@ -639,6 +638,18 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
     }
   };
 
+  const checkFunctionArguments = function (func){
+    let hasArguments = false;
+    let functString = func.toString().split('\n').splice(0,2);
+    if (functString[0]) {
+      hasArguments = functString[0].substring(functString[0].indexOf('(')+1,functString[0].indexOf(')')).trim().length != 0 || functString[0].includes('arguments.length');
+    }
+    if (!hasArguments && functString[1]) {
+      hasArguments = functString[1].includes('arguments.length') || functString[1].includes('[native code]');
+    }
+    return hasArguments;
+  }
+
   for (let i = 0; i < listOfAllFunctions.length; i++) { // Comenzar a generar botones del HTML
 
     const auxName = listOfAllFunctions[i]; // Nombre de Función
@@ -651,8 +662,7 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
       let appendTo;
       let parameterTest;
 
-      // El "getZoom" es capaz de sacar argumentos para "zoomConstrains", pero no tiene parámetros como tal que se detectan
-      if (objectWithAllFunctions[auxName].value && objectWithAllFunctions[auxName].value.length === 0 && auxName != 'getZoom') {
+      if (objectWithAllFunctions[auxName].value && !checkFunctionArguments(objectWithAllFunctions[auxName].value)) {
         // ---------------------------------FUNCIONES SIN PARÁMETROS---------------------------------
         parameterTest = () => { // singeParameterTest
           showResult(auxButton, undefined , mapa[auxName]());
@@ -700,7 +710,7 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
             } else if (auxName == 'getPlugins') {
               showResult(auxButton, "GET_Plugins", mapa[auxName]());
               auxButton.className = "warningButton";
-              console.error("IMPOSIBLE_TO_DO_TEST_IN_DEVELOPMENT"); // POR PROBAR**** SIN TERMINAR LA PRUEBA, requiere "M." que esta en Pruebas de Producción
+              console.error("IMPOSIBLE_TO_DO_TEST_IN_DEVELOPMENT"); // POR PROBAR SIN TERMINAR LA PRUEBA, requiere "M." que esta en Pruebas de Producción
             } else if (auxName == 'getRootLayers') {
               showResult(auxButton, "GET_RootLayers", mapa[auxName]());
               showResult(auxButton, "GET_RootLayers_FILTER", mapa[auxName]({name: "IGNBaseTodo"}));
@@ -731,9 +741,8 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
           // ---------------------------------FUNCIONES ADD---------------------------------
           parameterTest = () => { // addParameterTest
             if (auxName == 'addAttribution') {
-              // Posiblemente requiere añadir el control de atribuciones // Ver en wiki "addAttribution"
               showResult(auxButton, "ADD_ATTRIBUTION_FALSE", mapa[auxName]({text:"EJEMPLO1"}, false));
-              showResult(auxButton, "ADD_ATTRIBUTION_TRUE", mapa[auxName]({text:"EJEMPLO2"}, true)); // ERROR NEW****
+              showResult(auxButton, "ADD_ATTRIBUTION_TRUE", mapa[auxName]({text:"EJEMPLO2"}, true));
             } else if (auxName == 'addControls') {
               showResult(auxButton, "ADD_NULL_CONTROL", mapa[auxName]());
               showResult(auxButton, "ADD_SCALELINE", mapa[auxName]('scaleline'));
@@ -757,7 +766,7 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
             } else if (auxName == 'addPanels') {
               showResult(auxButton, "ADD_panels", mapa[auxName](new Panel('toolsExtra', {"collapsible": true,"className": 'm-tools',"collapsedButtonClass": 'g-cartografia-herramienta',"position": ".m-top.m-left"}))); // M.ui.position.TL
             } else if (auxName == 'addPlugin') {
-              // POR PROBAR**** Hay que hacer la prueba de Plugin en api-ign-js/test/production
+              // POR PROBAR Hay que hacer la prueba de Plugin en api-ign-js/test/production
               // import GeometryDraw from 'M/plugin/GeometryDraw'; // Hay que crear el test de plugin en Poduction, ya que solo se tiene acceso a este desde ahí.
               // showResult(auxButton, "ADD_PLUGIN_DRAW", mapa[auxName](new M.plugin.GeometryDraw()));
               // showResult(auxButton, "ADD_PLUGIN_DRAW", mapa[auxName](new GeometryDraw()));
@@ -791,7 +800,7 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
           parameterTest = () => { // removeParameterTest
             if (auxName == 'removeAttribution') {
               if (mapa.getControls('attributions').length > 0) {
-                const auxAttr = mapa.getAttributions(true)[0] || mapa.getAttributions()[0]; // ERROR NEW****
+                const auxAttr = mapa.getAttributions(true)[0] || mapa.getAttributions()[0];
                 showResult(auxButton, "REMOVE_ATTRIBUTION", mapa[auxName](auxAttr.id)); // Ejemplo remove con ID "bff4a6ba-e8c6-4741-94b3-04eb543aed75"
               } else {
                 auxButton.className = "warningButton";
@@ -866,9 +875,9 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
             } else if (auxName == 'setProjection') {
               showResult(auxButton, "SET_PROJECTION", mapa[auxName]('EPSG:4258*d'));
             } else if (auxName == 'setResolutions') {
-              showResult(auxButton, "SET_RESOLUTIONS", mapa[auxName]("40000,20000,10000,5000,2500,1250,625,312.5,156.25,78.125,39.0625,19.53125,9.765625,4.8828125,2.44140625")); // ERROR NEW****
+              showResult(auxButton, "SET_RESOLUTIONS", mapa[auxName]("40000,20000,10000,5000,2500,1250,625,312.5,156.25,78.125,39.0625,19.53125,9.765625,4.8828125,2.44140625"));
             } else if (auxName == 'setTicket') {
-              // showResult(auxButton, "SET_Ticket", mapa[auxName](...)); // POR PROBAR**** KEY necesario para prueba
+              // showResult(auxButton, "SET_Ticket", mapa[auxName](...)); // POR PROBAR KEY necesario para prueba
               auxButton.className = "warningButton";
               console.error("Prueba no diseñada para esta función");
             } else if (auxName == 'setZoom') {
@@ -893,6 +902,9 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
                 auxButton.className = "warningButton";
                 console.error('NO_WMS_PREPARED_TO_TEST_THIS_FUCNTION:',auxName);
               }
+            } else if (auxName == 'createAttribution') {
+              showResult(auxButton, "createAttribution_NULL", mapa[auxName]());
+              // showResult(auxButton, "createAttribution_EXAMPLE", mapa[auxName]("EJEMPLO"));
             } else if (auxName == 'drawFeatures') {
               showResult(auxButton, "drawFeatures", mapa[auxName](new Feature("feature1", {"type": "Feature","properties": {},"geometry": {"type": "Point","coordinates": [-500000,5220000]}})));
             } else if (auxName == 'drawPoints') {
@@ -951,27 +963,30 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
 
 window.listOfAllFunctions = listOfAllFunctions; // Para tener acceso a toda la lista de funciones.
 
-// POR PROBAR**** No se han probado los "Test_layers" de implementado y borrado de layers con filtros.
+// POR PROBAR**** No se han probado los "Test_layers" de implementado y borrado de layers con filtros. "setTicket" y todo relacionado a plugins.
 // NO OK**** Los elementos que lanzan showResult múltiples veces solo muestran el resultado final del último que se resolvió en su color de botón.
+// NO OK**** Se podría añadir una espera de respuestas validas de estas funciones, con posible configurado default que obtenga los resultados esperados de forma más rápida y con menos clicks manuales.
+// He detectado que no se puede saber 100% si una función tiene o no parámetros, ya que los elementos de opciones (test = true), rompe este contar devolviendo 0, por lo que "createAttribution" si tiene parámetros, pero en estos ejemplos se ha puesto como sin parámetros.
 
 // RESULTADO DE LAS PRUEBAS DE FUNCIONES, Hay que añadir esto a la bitácora para informar de su estado:
 
-// ERROR NEW**** mapa.removeAttribution(ID) No parece ser capaz de borrar todos los attributions, porque solo borra el primero enviado, de una de los dos arrays que se usan de este según el estado del control con similar nombre.
-// ERROR NEW****addAttribution puede terminar añadiendo a solo uno de los 2 arrays de estos con o sin Controls.
+// [APUNTADO A REDMINE] mapa.removeAttribution(ID) No parece ser capaz de borrar todos los attributions, porque solo borra el primero enviado, de una de los dos arrays que se usan de este según el estado del control con similar nombre.
+// [APUNTADO A REDMINE] mapa.createAttribution() terminar añadiendo atributo del layer default, pero no aparece este en el "getAttribution", mientras si se añade con "controls" si que esta.
 
-// ERROR NEW**** mapa.getEnvolvedExtent() // Si hay layers que no sean "__draw__", no devuelve nada.
+// [APUNTADO A REDMINE] mapa.getEnvolvedExtent() // Si hay layers que no sean "__draw__", no devuelve nada.
 // Porque crea un PROMISE que es enviado al "getMaxExtent" como "getMaxExtent(resolve)", // getEnvolvedExtent() { ... return new Promise((resolve) => { ... if (!isNullOrEmpty(visibleBaseLayer)) { visibleBaseLayer.getMaxExtent(resolve);
 // Pero "getMaxExtent" no usa ningún parámetro que pueda devolver valores a un callback de un PROMISE.
 
-// ERROR NEW**** Ambos "mapa.setResolutions"(coordinate.js:244) y "mapa.setProjection"(POPUP) Sufren error "Uncaught TypeError: coordinate2 is undefined"
+// [APUNTADO A REDMINE] Ambos "mapa.setResolutions"(coordinate.js:244) y "mapa.setProjection"(POPUP) Sufren error "Uncaught TypeError: coordinate2 is undefined"
 
-// ERROR NEW**** mapa.zoomToMaxExtent(true) de "ZOOM_TO_MAX_EXTENT_KEEP_USER_ZOOM" no parece hacer nada
+// IGNORAR mapa.zoomToMaxExtent(true) de "ZOOM_TO_MAX_EXTENT_KEEP_USER_ZOOM" no parece hacer nada, es posible que la configuración default de mapa causa que no se cambie nada
 
-// ERROR NEW**** mapa.getRootLayers Sufre un error al enviar filtrado {type:"TMS"}, porque espera que sea un Número en vez de String.
+// [APUNTADO A REDMINE] mapa.getRootLayers Sufre un error al enviar filtrado {type:"TMS"}, porque espera que sea un Número en vez de String.
 
-// ERROR NEW**** src/impl/ol/js/loader/WFS.js tiene "loadInternal_(url, projection) {..." que en un momento usa "response.text.indexOf", pero al ser "response.text" null falla. En concreto es por causa del error 404.
+// [APUNTADO A REDMINE]src/impl/ol/js/loader/WFS.js tiene "loadInternal_(url, projection) {..." que en un momento usa "response.text.indexOf", pero al ser "response.text" null falla. En concreto es por causa del error 404.
 
-// ERROR NEW**** getKML(*STRING*) Esta función puede recibir un string de estilo 'KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*true'
+// IGNORAR o NO OK getKML(*STRING*) Esta función puede recibir un string de estilo 'KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*true'
 // Pero más adelante hay "parameter.split(/\*/)[params.length - 2].trim()" que configura el label, pero se ordena desde el final en vez de principio, por lo que el booleano final determina con su presencia cual valor se usa la URL o Título
+// Creo que depende de que se introduzca bien esta cadena, y que el penúltimo elemento entre "*" sea "false" o "true"(en este caso cualquier cosa que no es false funciona como true), si hay algún raro error de escritura de este, pues entonces siempre se escogerá elementos no correctos
 
-// ERROR NEW**** mapa.setResolutions no devuleve ningun valor, lo he probado en un proyecto que usaba el antiguo configurado y devolvía un array, pero este no lo hace ahora.
+// IGNORAR mapa.getResolutions no devuelve ningún valor, lo he probado en un proyecto que usaba el antiguo configurado y devolvía un array, pero este no lo hace ahora. "https://componentes.cnig.es/api-core" y "https://mapea-lite.desarrollo.guadaltel.es/api-core" muestran undefined, "https://mapea4-sigc.juntadeandalucia.es/mapea" muestra array, pero es posible que anteriormente se configuro el setResolution y por eso se muestra.
