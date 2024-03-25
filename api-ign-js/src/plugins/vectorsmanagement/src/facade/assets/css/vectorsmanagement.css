@@ -104,6 +104,13 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
     width: 100%;
 }
 
+.m-vectorsmanagement-selectValues {
+    max-width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 #m-selectionlayer,  #m-point-coordinates-srs, #figuresSelector {
     margin: auto 10px;
     padding: 5px;
@@ -816,6 +823,12 @@ th .vectorsmanagement-icon-papelera {
     flex-direction: column;
     justify-content: center;
     gap: 5px;
+}
+
+.m-vectorsmanagement-editionBtns, .m-vectorsmanagement-creationBtns {
+    display: flex;
+    justify-content: center;
+    gap: 5px
 }
 
 .m-vectorsmanagement-styleOptions>div {
