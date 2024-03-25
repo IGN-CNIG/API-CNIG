@@ -249,8 +249,8 @@ class Features extends Base {
       layerImpl.unselectFeatures(features, evt.coord);
     }
 
-    // ! Tareas #6384
-    // if (this.map_.getPopup()) { this.map_.getPopup().hide(); }
+    // ! Tareas #6384/6860
+    if (this.map_.getPopup()) { this.map_.getPopup().hide(); }
     layer.fire(EventType.UNSELECT_FEATURES, [features, evt.coord]);
   }
 
