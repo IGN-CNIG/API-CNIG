@@ -1,0 +1,19 @@
+{
+  "exception": {
+    "impl": "The implementation used cannot create StereoscopicControl controls"
+  },
+  "generate_3d_view": "Stereo mode (3D)",
+  "magnify": "Magnify:",
+  "mode_3d": "Stereo mode (3D)",
+  "optimized": "Optimized",
+  "normal": "Normal",
+  "middle": "Middle",
+  "gray": "Gray",
+  "between": "Interlaced",
+  "generate_3d": "Generate 3D",
+  "photograph": "Photograph",
+  "loading": "Creating 3D map, please wait",
+  "noLayersAvailable": "No layer available to activate 3D view is currently detected",
+  "activate3d": "Enable stereo (3D)",
+  "disable3d": "Disable stereo (3D)"
+}
