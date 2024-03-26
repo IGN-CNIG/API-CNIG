@@ -84,6 +84,9 @@ module.exports = {
     new CopywebpackPlugin([{
       from: 'src/api.json',
       to: 'api.json',
+    }, {
+      from: 'TR3-pack',
+      to: 'TR3-pack',
     }]),
   ],
   devtool: 'source-map',
