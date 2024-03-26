@@ -289,6 +289,7 @@ export default class GeorefimageControl extends M.Control {
             typeServer: getValue('typeServer'),
             format: getValue('format'),
             clipBoard: getValue('clipBoard'),
+            nameTitle: getValue('title_view'),
           },
         },
       });

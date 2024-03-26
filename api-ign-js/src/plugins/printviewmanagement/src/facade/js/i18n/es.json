@@ -46,8 +46,8 @@
   "zone": "huso",
   "georefimageWld":"Fichero de georreferenciación (WLD)",
   "typeDownload": "Selecciona el tipo de descarga:",
-  "typeClient": "Desde cliente: contenido de pantalla",
-  "typeServer": "Desde servidor: contenido de servidor",
+  "typeClient": "Descarga de la vista en pantalla",
+  "typeServer": "Descarga de capas cargadas por servicios",
   "selectLayer": "Selecciona la capa a descargar",
   "clipBoard": "Copiar al portapapeles",
   "layer_wms": "WMS devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales. Permitiendo las personalización de las capas mediante estilos. ",
@@ -60,5 +60,8 @@
   "layer_wfs": "(Web Feature Service) es un estándar OGC para la descarga y transferencia de información geográfica, donde los elementos geográficos o features se transmiten en su totalidad al cliente.",
   "layer_kml": "(Keyhole Markup Language). KML es un lenguaje de marcado basado en XML para representar datos geográficos en tres dimensiones.",
   "layer_OGCAPIFeatures": "(OGC API - FEATURES) es un estándar OGC que ofrece la capacidad de crear, modificar y consultar datos espaciales en la Web y especifica requisitos y recomendaciones para las API que desean seguir una forma estándar de compartir datos de entidades.",
-  "tooltip_georefimageepsg": "Georreferenciar imagen predefinida"
+  "tooltip_georefimageepsg": "Georreferenciar imagen predefinida",
+  "title_map": "Descarga de mapa",
+  "title_view": "Descarga de imagen georreferenciada de la vista",
+  "title_list": "Descarga de imagen georreferenciada a partir de listado"
 }
