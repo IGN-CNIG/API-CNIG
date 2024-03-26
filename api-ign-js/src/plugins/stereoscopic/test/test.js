@@ -17,6 +17,7 @@ const mp = new Stereoscopic({
   collapsed: false,
   orbitControls: false,
   anaglyphActive: true,
+  maxMagnify: 2,
 });
 
 map.addPlugin(mp);

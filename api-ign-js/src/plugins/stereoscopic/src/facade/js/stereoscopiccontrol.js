@@ -16,7 +16,7 @@ export default class StereoscopicControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(orbitControls = false,  anaglyphActive = false) {
+  constructor(orbitControls = false,  anaglyphActive = false, maxMagnify = 1) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(StereoscopicImplControl)) {
       M.exception(getValue('exception.impl'));
@@ -28,6 +28,7 @@ export default class StereoscopicControl extends M.Control {
     this.orbitControls_ = orbitControls;
     this.anaglyphActive_ =  anaglyphActive;
     this.toggle = false;
+    this.maxMagnify = maxMagnify;
   }
 
   /**
@@ -182,7 +183,8 @@ export default class StereoscopicControl extends M.Control {
       if(changeZoom !== e.frameState.viewState.zoom) {
         changeZoom = e.frameState.viewState.zoom;
         if(window.toggle3D) {setTR3(true);}
-        document.querySelector('#range3d').max = TR3.setMagniValues('auto') + 1;
+        console.log(TR3.setMagniValues('auto'));
+        document.querySelector('#range3d').max = TR3.setMagniValues('auto') + ${this.maxMagnify};
         document.querySelector('#range3d').value = TR3.valuesSet.magnification;
       } else {
         if(window.toggle3D) {setTR3(false);}
