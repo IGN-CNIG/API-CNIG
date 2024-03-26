@@ -116,9 +116,6 @@ export default class StereoscopicControl extends M.Control {
 
     const url = M.config.MAPEA_URL+'plugins/stereoscopic/'
 
-    // visor = '../'; // local
-    // visor = 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/estereoscopico/plugins/stereoscopic/'; // en visor
-
     const inlineScript = document.createTextNode(` const TR3cfg = new Array();
 
     import * as THREE from '${url}TR3-pack/THREE/three.module.js';
@@ -304,6 +301,4 @@ export default class StereoscopicControl extends M.Control {
   equals(control) {
     return control instanceof StereoscopicControl;
   }
-
-  // Add your own functions
 }
