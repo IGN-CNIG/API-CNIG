@@ -4,6 +4,7 @@
 import buffer from '@turf/buffer';
 import AnalysisImplControl from '../../impl/ol/js/analysiscontrol';
 import template from '../../templates/analysis';
+import infoanalysis from '../../templates/infoanalysis';
 import pointProfileTemplate from '../../templates/pointprofile';
 import { getValue } from './i18n/language';
 
@@ -180,6 +181,8 @@ export default class AnalysisControl extends M.Control {
     } else if (active.id === 'buffer-btn') {
       this.drawBuffer();
     }
+
+    this.showFeatureInfo();
   }
 
   /**
@@ -406,6 +409,93 @@ export default class AnalysisControl extends M.Control {
     document.removeEventListener('mouseup', this.mouseupFunctionEvent);
     document.removeEventListener('mousemove', this.mousemoveFunctionEvent);
   }
+
+  /**
+   * On select, shows feature info.
+   * @public
+   * @function
+   * @api
+   */
+  showFeatureInfo() {
+    const infoContainer = document.querySelector('#analysisBtns #featureInfo');
+
+    if (infoContainer !== null) {
+      infoContainer.classList.remove('closed');
+      infoContainer.innerHTML = '';
+    }
+
+    let point = false;
+    let line = false;
+    let polygon = false;
+
+    switch (this.feature.getGeometry().type) {
+      case 'Point':
+      case 'MultiPoint':
+        const [x, y] = this.getImpl().getFeatureCoordinates();
+        if (infoContainer !== null) {
+          point = {};
+          point.x = Math.round(x * 1000) / 1000;
+          point.y = Math.round(y * 1000) / 1000;
+        }
+        break;
+      case 'LineString':
+      case 'MultiLineString':
+        let lineLength = this.getImpl().getFeatureLength();
+        let units = 'km';
+        if (lineLength > 100) {
+          lineLength = Math.round((lineLength / 1000) * 100) / 100;
+        } else {
+          lineLength = Math.round(lineLength * 100) / 100;
+          units = 'm';
+        }
+        if (infoContainer !== null) {
+          line = {};
+          line.length = lineLength;
+          line.units = units;
+        }
+        break;
+      case 'Polygon':
+      case 'MultiPolygon':
+        let area = this.getImpl().getFeatureArea();
+        let areaUnits = 'km';
+        if (area > 10000) {
+          area = Math.round((area / 1000000) * 100) / 100;
+        } else {
+          area = Math.round(area * 100) / 100;
+          areaUnits = 'm';
+        }
+        if (infoContainer !== null) {
+          polygon = {};
+          polygon.area = area;
+          polygon.areaUnits = areaUnits;
+        }
+        break;
+      default:
+        if (document.querySelector('#edition-container #featureInfo') !== null) {
+          document.querySelector('#edition-container #featureInfo').classList.add('closed');
+        }
+        break;
+    }
+
+    this.infoanalysisTemplate = M.template.compileSync(infoanalysis, {
+      vars: {
+        point,
+        line,
+        polygon,
+      },
+    });
+
+
+    this.template.querySelector('#analysisBtns #featureInfo').appendChild(this.infoanalysisTemplate);
+
+    const infoLine3D = document.querySelector('#infoAnalisis3DLine');
+    if (infoLine3D) {
+      infoLine3D.addEventListener('click', () => {
+        this.getImpl().get3DLength('#infoAnalisis3DLine');
+      });
+    }
+  }
+
 
   /**
    * This function destroys this control

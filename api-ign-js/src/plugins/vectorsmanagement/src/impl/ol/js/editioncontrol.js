@@ -301,36 +301,6 @@ export default class Editioncontrol extends M.impl.Control {
   }
 
   /**
-   * Gets coordinates of current feature.
-   * @public
-   * @function
-   * @api
-   */
-  getFeatureCoordinates() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getCoordinates();
-  }
-
-  /**
-   * Gets feature length
-   * @public
-   * @function
-   * @api
-   */
-  getFeatureLength() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getLength();
-  }
-
-  /**
-   * Gets feature area
-   * @public
-   * @function
-   * @api
-   */
-  getFeatureArea() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getArea();
-  }
-
-  /**
    * Creates polygon feature from extent.
    * @public
    * @function
