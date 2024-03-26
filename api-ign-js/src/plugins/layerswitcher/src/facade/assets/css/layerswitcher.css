@@ -686,9 +686,10 @@ div.m-layerswitcher-legend>img {
     }
 
     ul.m-layerswitcher-ullayers {
-        max-height: 100% !important;
+        max-height: 86vh !important;
         max-width: 100vw;
         min-width: 50px;
+        overflow: scroll;
     }
         
     .m-panel.m-plugin-layerswitcher .m-panel-controls .m-control.m-layerswitcher-container>div>ul {
