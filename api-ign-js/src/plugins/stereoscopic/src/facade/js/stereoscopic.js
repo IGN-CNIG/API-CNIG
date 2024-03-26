@@ -3,7 +3,6 @@
  */
 import 'assets/css/stereoscopic';
 import StereoscopicControl from './stereoscopiccontrol';
-import api from '../../api.json';
 import { getValue } from './i18n/language';
 
 export default class Stereoscopic extends M.Plugin {
@@ -55,13 +54,6 @@ export default class Stereoscopic extends M.Plugin {
      */
     this.collapsible_ = parameters.collapsible;
     if (this.collapsible_ === undefined) this.collapsible_ = true;
-
-    /**
-     * Metadata from api.json
-     * @private
-     * @type {Object}
-     */
-    this.metadata_ = api.metadata;
 
     /**
      * Activate OrbitControls
