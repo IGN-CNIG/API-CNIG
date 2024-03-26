@@ -64,5 +64,6 @@
   "title_map": "Map download",
   "title_view": "View georeferenced image download",
   "title_list": "Download georeferenced image from list",
-  "available_sources": "Available sources"
+  "available_sources": "Available sources",
+  "maintain_view": "Maintain print view with DPI = 120"
 }

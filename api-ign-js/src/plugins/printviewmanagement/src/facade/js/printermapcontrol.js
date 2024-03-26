@@ -388,6 +388,7 @@ export default class PrinterMapControl extends M.Control {
           download: getValue('download'),
           fixeddescription: getValue('fixeddescription'),
           nameTitle: getValue('title_map'),
+          maintain_view: getValue('maintain_view'),
         };
 
         const template = M.template.compileSync(printermapHTML, {
