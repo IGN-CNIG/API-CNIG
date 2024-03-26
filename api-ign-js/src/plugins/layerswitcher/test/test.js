@@ -482,15 +482,15 @@ window.capaKML = capaKML;
 // });
 // map.addWFS(capa4);
 
-// const capa5 = new M.layer.WMS({
-//   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
-//   name: 'provincias_pob',
-//   legend: 'capa5',
-//   tiled: false,
-//   transparent: true,
-// });
+const capa5 = new M.layer.WMS({
+  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
+  name: 'provincias_pob',
+  legend: 'capa5',
+  tiled: false,
+  transparent: true,
+});
 
-// map.addWMS(capa5);
+map.addWMS(capa5);
 
 
 // const mp2 = new M.plugin.TOC({

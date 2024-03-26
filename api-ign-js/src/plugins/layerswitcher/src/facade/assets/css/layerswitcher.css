@@ -145,7 +145,7 @@ ul.m-layerswitcher-ullayers {
 }
 
 .m-layerswitcher-visible-control {
-    width: 8%;
+    width: 10%;
 }
 
 .m-layerswitcher-visible-control > button {
@@ -240,7 +240,7 @@ ul.m-layerswitcher-ullayers {
 
 /* Input range */
 .m-layerswitcher-container .m-layerswitcher-tools .m-layerswitcher-opacity {
-    margin-left: 25px;
+    margin-left: 10px;
     min-width: 50%;
     max-width: 50%;
 }
