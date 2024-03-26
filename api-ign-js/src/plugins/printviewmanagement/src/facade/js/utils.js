@@ -152,8 +152,8 @@ export function formatImageBase64(base64) {
 
 // Services SIG Geoprint List
 export const LIST_SERVICES = `
-    <section>
-      <h1 style="text-align: center;">Fuentes disponibles</h1>
+    <section style='max-height: 56vh; overflow-y: auto;'>
+      <h1 style="text-align: center;">${getValue('available_sources')}</h1>
       <p><b>${getValue('layer_raster')}</b></p>
       <ul>
         <li><b>WMS: </b>${getValue('layer_wms')}</li>

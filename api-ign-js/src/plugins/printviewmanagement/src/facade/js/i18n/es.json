@@ -63,5 +63,6 @@
   "tooltip_georefimageepsg": "Georreferenciar imagen predefinida",
   "title_map": "Descarga de mapa",
   "title_view": "Descarga de imagen georreferenciada de la vista",
-  "title_list": "Descarga de imagen georreferenciada a partir de listado"
+  "title_list": "Descarga de imagen georreferenciada a partir de listado",
+  "available_sources": "Fuentes disponibles"
 }

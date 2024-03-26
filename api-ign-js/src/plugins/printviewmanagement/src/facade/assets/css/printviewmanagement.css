@@ -702,9 +702,11 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
 }
 
 .m-plugin-printviewmanagement-title-view {
-    margin: 15px 0px 15px 0px
+    margin: 15px 10px 15px 10px;
+    text-align: center;
 }
 
 .m-plugin-printviewmanagement-title-list {
-    margin: -5px 0px 0px 0px;
+    margin: -5px 10px 0px 10px;
+    text-align: center;
 }

@@ -63,5 +63,6 @@
   "tooltip_georefimageepsg": "EPSG code of the georeferenced image",
   "title_map": "Map download",
   "title_view": "View georeferenced image download",
-  "title_list": "Download georeferenced image from list"
+  "title_list": "Download georeferenced image from list",
+  "available_sources": "Available sources"
 }
