@@ -15,6 +15,21 @@
     "errorUrlMBTiles": "La capa de tipo MBTiles o MBTilesVector no tiene tiene URL y no se puede compartir",
     "errorGeneric": "La capa de tipo GenericRaster y GenericVector no se puede compartir"
   },
+  "textHelp": {
+    "help1": "La extensión de comparación permite distintas opciones para comparar mapas y capas de un visualizador.",
+    "help2": "Las opciones de comparación son personalizables, por lo que puede que no todos lso visualizadores tengan las mismas opciones.",
+    "help3": "La primera opción es la comparación en espejo.",
+    "help4": "Con esta opción se abren mapas sincronizados en una misma ventana. Desde el panel de la extensión, se pueden seleccionar cómo y cuantos cuadrantes de comparación se quieren y las capas de comparación a mostrar en cada uno de ellos.",
+    "help5": "La segunda opción es la comparación en ventanas  sincronizadas.",
+    "help6": "Esta opción es ideal para entornos con más de una pantallas, permitiendo tener una en cada monitor con mapas sincronizados entre sí. Permite abrir tantas ventanas sincronizadas se deseen y cerrar todas desde el panel de la extensión.",
+    "help7": "La tercera opción es la comparación en cortina.",
+    "help8": "Esta opción, al igual que la primera, permite elegir entre qué capas se quieren comparar en cada división del mapa y el tipo de división del mapa a comparar.",
+    "help9": "Y la cuarta opción, la comparación en lupa.",
+    "help10": "Permite comparar mediante una lupa la capa seleccionada en el panel de la extensión.",
+    "help11": "Con el comando Ctrl+Shift+Enter  se puede dejar fija la comparación y mover el mapa.",
+    "help12": "La información relevante a la extensión y su posible parametrización está documentada en",
+    "help13": "El ejemplo de uso de sus parámetros puede comprobarse en"
+  },
   "nolayertext": "No hay capas de comparación",
   "title": "Panel de Comparadores",
   "play": "Iniciar",

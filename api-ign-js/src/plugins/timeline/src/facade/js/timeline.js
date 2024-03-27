@@ -5,6 +5,7 @@ import 'assets/css/timeline';
 import TimelineControl from './timelinecontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
+import myhelp from '../../templates/myhelp';
 
 import es from './i18n/es';
 import en from './i18n/en';
@@ -303,4 +304,32 @@ export default class Timeline extends M.Plugin {
     }
     return false;
   }
+
+  /**
+   * Obtiene la ayuda del plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+    getHelp() {
+      return {
+        title: this.name,
+        content: new Promise((success) => {
+          const html = M.template.compileSync(myhelp, {
+            vars: {
+              urlImages: `${M.config.MAPEA_URL}plugins/timeline/images/`,
+              translations: {
+                help1: getValue('textHelp.help1'),
+                help2: getValue('textHelp.help2'),
+                help3: getValue('textHelp.help3'),
+                help4: getValue('textHelp.help4'),
+                help5: getValue('textHelp.help5'),
+              },
+            },
+          });
+          success(html);
+        }),
+      };
+    }
 }

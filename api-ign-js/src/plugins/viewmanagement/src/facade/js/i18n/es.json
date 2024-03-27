@@ -7,6 +7,17 @@
     "impl_predefinedzoom": "La implementación usada no puede crear controles PredefinedZoomControl.",
     "no_controls": "El plugin ViewManagement necesita activar al menos un control."
   },
+  "textHelp": {
+    "help1": "La extensión gestión de la vista, permite interactuar mediante un panel con los controles de la vista.",
+    "help2": "La extensión es personalizable, por lon que puede cambiar de un visualizador a otro.",
+    "help3": "El panel de la extensión tiene varios controles, cada uno con sus propias herramientas.",
+    "help4": "El primero de ellos es el control de vistas predefinidas, que por defecto permite volver a una vista por defecto",
+    "help5": "El control de acercar la vista por rectángulo. Habilita el dibujo de un rectángulo mediante dos puntos en el visualizador, que al terminarlo, hace zoom al mismo.",
+    "help6": "El control de histórico permite ir haca delante y hacia atrás a las distintas vistas que se han ido almacenando en el visualizador",
+    "help7": "El control de acercar/alejarse, permite mediante dos botones hacer 'zoom in' o 'zoom out' en el visualizador.",
+    "help8": "La información relevante a la extensión y su posible parametrización está documentada en",
+    "help9": "El ejemplo de uso de sus parámetros puede comprobarse en"
+  },
   "tooltip": "Gestión de la vista",
   "viewhistory": "Historial",
   "nextView": "Vista siguiente",

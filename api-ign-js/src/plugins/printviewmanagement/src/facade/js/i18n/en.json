@@ -14,6 +14,19 @@
     "support": "MBTiles and MBTilesVector layers are not supported",
     "error_download_image": "The download could not be completed at this time."
   },
+  "textHelp": {
+    "help1": "The print extension allows you to export both maps from templates and georeferenced images.",
+    "help2": "The extension is customizable, so it can change from one viewer to another.",
+    "help3": "Using the print map control, you can download a map based on a selected template, a DPI (Dots per inch, the printing resolution), and a format. It also allows you to add a title and a description." ,
+    "help4": "To obtain the map, you will have to click on the download button, which will cause the document to be generated and appear available for download.",
+    "help5": "The map is currently downloaded to EPSG:3857 (WGS84 / Pseudomercator).",
+    "help6": "Through the georeferenced image download control through the view, a georeferenced image can be obtained next to the georeference file.",
+    "help7": "The available options are: add a title to the file, select the format, obtain the georeferencing file, select the DPI (in case of using download through services) and select the type of download.",
+    "help8": "The download by view takes a snapshot of the viewer map, obtaining the layers loaded at that moment and the state of the map. The coordinate system of the download will be the coordinate system and/or projection of the map in that moment.",
+    "help9": "The download of layers loaded by services makes a call to the services themselves creating an image of their set. The coordinate system will be WGS84 / Pseudomercator (EPSG:3857).",
+    "help10": "The download control of georeferenced images by list allows you to download different WMS services with different coordinate systems and projections, indicated when building the extension.",
+    "help11": "The extension of the image of the display state at that moment is obtained, and a request is made to the service with the assigned projection"
+  },
   "tooltip": "Map printing",
   "map_printing": "Map printing",
   "nextView": "Next view",

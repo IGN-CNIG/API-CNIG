@@ -6,5 +6,12 @@
   "excepcion": "The implementation used cannot create timelineControl controls",
   "intervals_error": "The intervals were not defined correctly",
   "initValue": "Start value",
-  "endValue": "Final value"
+  "endValue": "Final value",
+  "textHelp": {
+    "help1": "The timeline extension.",
+    "help2": "The extension is customizable, so it can change from one viewer to another.",
+    "help3": "The timeline allows you to make spatial filters on layers based on a time attribute, or add a date to a layer and filter by it.",
+    "help4": "The information relevant to the extension and its possible parameterization is documented in",
+    "help5": "The example of use of its parameters can be checked in"
+  }
 }

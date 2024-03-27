@@ -14,6 +14,19 @@
     "support": "Las capas MBTiles y MBTilesVector no están soportadas.",
     "error_download_image": "No ha podido realizarse la descarga."
   },
+  "textHelp": {
+    "help1": "La extensión de imprimir permite exportar tanto mapas a partir de plantillas como imágenes georreferenciadas.",
+    "help2": "La extensión es personalizable, por lon que puede cambiar de un visualizador a otro.",
+    "help3": "Mediante el control imprimir mapa, se puede descargar un mapa a partir de una plantilla seleccionada, unos DPI (Dots per inch, la resolución de impresión), y un formato.  Además permite añadir un título y una descripción.",
+    "help4": "Para obtener el mapa, habrá que hacer click sobre el botón de descargar, lo que hará que se genere el documento y aparezca disponible para su descargar.",
+    "help5": "Actualmente, el mapa se descarga en el EPSG:3857  (WGS84 / Pseudomercator).",
+    "help6": "A través del control de descarga de imagen georreferenciada a través de la vista, se puede obtener una imagen georreferenciada junto al archivo de georreferenciación.",
+    "help7": "Las opciones disponibles son: añadir un título al archivo, seleccionar el formato, obtener el fichero de georreferenciación, seleccionar los DPI (en caso de utilizar la descarga a través de servicios) y seleccionar el tipo de descarga.",
+    "help8": "La descarga por vista, hace una captura del mapa del visualizador, obteniendo las capas cargadas en ese momento y el estado del mapa. El sistema de coordenadas de la descarga será el sistema de coordenadas y/o proyección del mapa en ese momento.",
+    "help9": "La descarga de capas cargadas por servicios, hace una llamada a los propios servicios creando una imagen de su conjunto. El sistema de coordenadas será WGS84 / Pseudomercator (EPSG:3857).",
+    "help10": "El control de descarga de imágenes georreferenciadas por lista, permite descargar distintos servicios WMS con distintos sistemas de coordenadas y proyecciones, indicados a la hora de construir la extensión.",
+    "help11": "Se obtiene la extensión de la imagen del estado del visualizador en ese momento, y se realiza una petición al servicio con la proyección asignada"
+  },
   "tooltip": "Impresión del mapa",
   "map_printing": "Impresión del mapa",
   "nextView": "Vista siguiente",

@@ -6,6 +6,7 @@ import PrintViewManagementControl from './printviewmanagementcontrol';
 import es from './i18n/es';
 import en from './i18n/en';
 import { getValue } from './i18n/language';
+import myhelp from '../../templates/myhelp';
 
 export default class PrintViewManagement extends M.Plugin {
   /**
@@ -318,5 +319,39 @@ export default class PrintViewManagement extends M.Plugin {
       return true;
     }
     return false;
+  }
+
+  /**
+   * Obtiene la ayuda del plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getHelp() {
+    return {
+      title: this.name,
+      content: new Promise((success) => {
+        const html = M.template.compileSync(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}plugins/printviewmanagement/images/`,
+            translations: {
+              help1: getValue('textHelp.help1'),
+              help2: getValue('textHelp.help2'),
+              help3: getValue('textHelp.help3'),
+              help4: getValue('textHelp.help4'),
+              help5: getValue('textHelp.help5'),
+              help6: getValue('textHelp.help6'),
+              help7: getValue('textHelp.help7'),
+              help8: getValue('textHelp.help8'),
+              help9: getValue('textHelp.help9'),
+              help10: getValue('textHelp.help10'),
+              help11: getValue('textHelp.help11'),
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 }
