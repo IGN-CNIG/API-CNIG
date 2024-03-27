@@ -12,6 +12,7 @@ import DownloadControl from './downloadcontrol';
 import EditionControl from './editioncontrol';
 import HelpControl from './helpcontrol';
 import StyleControl from './stylecontrol';
+import { changeStyleDialog } from './util';
 
 /**
  * @classdesc
@@ -30,7 +31,7 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   constructor({
-    map, selection, addlayer, analysis, creation, download, edition, help, style,
+    map, selection, addlayer, analysis, creation, download, edition, help, style, isDraggable,
   }) {
     const impl = new M.impl.Control();
     super(impl, 'VectorsManagement');
@@ -48,6 +49,9 @@ export default class VectorsManagementControl extends M.Control {
       return { value: l.name, text: l.legend || l.name };
     });
     this.selectedLayer = null;
+
+    // Determina si el plugin es draggable o no
+    this.isDraggable_ = isDraggable;
   }
 
   /**
@@ -68,7 +72,7 @@ export default class VectorsManagementControl extends M.Control {
           analysis: this.analysis_,
           creation: this.creation_,
           download: this.download_,
-          edition: this.edition_,
+          edition: !!(this.edition_ instanceof Object || this.edition_ === true),
           help: this.help_,
           style: this.style_,
           layer: this.layers_,
@@ -108,6 +112,10 @@ export default class VectorsManagementControl extends M.Control {
       this.map.on(M.evt.ADDED_LAYER, this.refreshLayers.bind(this));
       this.map.on(M.evt.REMOVED_LAYER, this.refreshLayers.bind(this));
 
+      if (this.isDraggable_) {
+        M.utils.draggabillyPlugin(this.getPanel(), '#m-vectorsmanagement-titulo');
+      }
+
       success(html);
     });
   }
@@ -120,6 +128,12 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   selectLayerEvent() {
+    // eslint-disable-next-line no-underscore-dangle
+    if (this.selectionControl.selectedFeatures_.length > 0) {
+      document.querySelector('#m-vectorsmanagement-selection').classList.remove('activated');
+      this.selectionControl.deactivate();
+    }
+
     this.html.querySelector('#m-vectorsmanagement-previews').classList.remove('closed');
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
@@ -159,6 +173,8 @@ export default class VectorsManagementControl extends M.Control {
       if (!clickActivate) {
         this.selectionControl.active(html);
         event.target.classList.add('activated');
+        this.creationControl.deactivate();
+        document.querySelector('#m-vectorsmanagement-creation').classList.remove('activated');
       } else {
         this.selectionControl.deactivate();
         event.target.classList.remove('activated');
@@ -219,6 +235,9 @@ export default class VectorsManagementControl extends M.Control {
       if (!clickActivate) {
         this.creationControl.active(html);
         event.target.classList.add('activated');
+
+        this.selectionControl.deactivate();
+        document.querySelector('#m-vectorsmanagement-selection').classList.remove('activated');
       }
     });
   }
@@ -280,6 +299,7 @@ export default class VectorsManagementControl extends M.Control {
       if (!clickActivate) {
         this.helpControl.active(html);
         event.target.classList.add('activated');
+        changeStyleDialog();
       }
     });
   }
@@ -370,7 +390,11 @@ export default class VectorsManagementControl extends M.Control {
    * @returns {String} selection
    */
   getSelection() {
-    return this.selectionControl.getSelection();
+    let selection = 'layer';
+    if (this.selectionControl) {
+      selection = this.selectionControl.getSelection();
+    }
+    return selection;
   }
 
   /**
@@ -382,7 +406,11 @@ export default class VectorsManagementControl extends M.Control {
    * @returns {Array} features
    */
   getSelectedFeatures() {
-    return this.selectionControl.getSelectedFeatures();
+    let selectedFeatures = [];
+    if (this.selectionControl) {
+      selectedFeatures = this.selectionControl.getSelectedFeatures();
+    }
+    return selectedFeatures;
   }
 
   /**
@@ -394,7 +422,11 @@ export default class VectorsManagementControl extends M.Control {
    * @returns {Array} features
    */
   getSelectedOLFeatures() {
-    return this.selectionControl.getSelectedOLFeatures();
+    let olFeatures = [];
+    if (this.selectionControl) {
+      olFeatures = this.selectionControl.getSelectedOLFeatures();
+    }
+    return olFeatures;
   }
 
   /**
@@ -405,7 +437,9 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   removeSelectedFeatures() {
-    this.selectionControl.removeSelectedFeatures();
+    if (this.selectionControl) {
+      this.selectionControl.removeSelectedFeatures();
+    }
   }
 
   /**
@@ -417,7 +451,9 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   addFeatureToSelection(feature) {
-    this.selectionControl.addFeatureToSelection(feature);
+    if (this.selectionControl) {
+      this.selectionControl.addFeatureToSelection(feature);
+    }
   }
 
   /**
@@ -428,9 +464,11 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   hideSelectionLayer() {
-    const controlBtn = this.html.querySelector('#m-vectorsmanagement-selection');
-    if (controlBtn.classList.contains('activated')) {
-      this.selectionControl.hideSelectionLayer();
+    if (this.selectionControl) {
+      const controlBtn = this.html.querySelector('#m-vectorsmanagement-selection');
+      if (controlBtn.classList.contains('activated')) {
+        this.selectionControl.hideSelectionLayer();
+      }
     }
   }
 
@@ -442,9 +480,11 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   showSelectionLayer() {
-    const controlBtn = this.html.querySelector('#m-vectorsmanagement-selection');
-    if (controlBtn.classList.contains('activated')) {
-      this.selectionControl.showSelectedLayer();
+    if (this.selectionControl) {
+      const controlBtn = this.html.querySelector('#m-vectorsmanagement-selection');
+      if (controlBtn.classList.contains('activated')) {
+        this.selectionControl.showSelectedLayer();
+      }
     }
   }
 
@@ -457,7 +497,7 @@ export default class VectorsManagementControl extends M.Control {
    */
   refreshLayers() {
     this.layers_ = this.map_.getLayers().filter(l => (l instanceof M.layer.Vector ||
-      l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
+      l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher && l.name !== 'bufferLayer').map((l) => {
       return { value: l.name, text: l.legend || l.name };
     });
     const selector = this.html.querySelector('#m-selectionlayer');

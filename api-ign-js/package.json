@@ -16,6 +16,7 @@
     "@babel/plugin-proposal-export-default-from": "^7.0.0-beta.51",
     "@babel/preset-env": "^7.0.0-beta.51",
     "babel-loader": "^8.0.0-beta.4",
+    "buffer": "^6.0.3",
     "chromedriver": "115.0.1",
     "copy-webpack-plugin": "11.0.0",
     "css-loader": "6.8.1",
@@ -58,6 +59,7 @@
     "ol-mapbox-style": "^6.3.2",
     "pako": "^1.0.11",
     "proj4": "^2.4.4",
+    "shpjs": "^3.4.3",
     "sql.js": "1.8.0"
   },
   "overrides": {

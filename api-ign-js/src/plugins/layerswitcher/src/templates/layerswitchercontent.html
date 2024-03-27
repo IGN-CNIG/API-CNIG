@@ -4,7 +4,7 @@
             <div class="m-layerswitcher-title-layer">
                 {{#if ../isEyes}}
                     <div class="m-layerswitcher-visible-control">
-                        <button aria-label="{{#if visible}}{{../translations.hide_service}}{{^}}{{../translations.show_service}}{{/if}}" tabindex="0" data-select-type="eye" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-check {{#if visible}}m-layerswitcher-icons-ver{{^}}m-layerswitcher-icons-ocultar{{/if}} {{#if outOfRange}}m-layerswitcher-outOfRange{{/if}}">
+                        <button title="{{#if visible}}{{../translations.hide_service}}{{^}}{{../translations.show_service}}{{/if}}" aria-label="{{#if visible}}{{../translations.hide_service}}{{^}}{{../translations.show_service}}{{/if}}" tabindex="0" data-select-type="eye" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-check {{#if visible}}m-layerswitcher-icons-ver{{^}}m-layerswitcher-icons-ocultar{{/if}} {{#if outOfRange}}m-layerswitcher-outOfRange{{/if}}">
                         </button>
                     </div>
                 {{/if}}
@@ -62,7 +62,7 @@
     <div>
         {{#gt overlayLayers.length 0}}
             {{#if isEyes}}
-                <button aria-label="{{#if allVisible}}{{translations.show_all_services}}{{^}}{{translations.hide_all_services}}{{/if}}" tabindex="0" id="m-layerswitcher-hsalllayers" class="m-layerswitcher-allstatus {{#if allVisible}}m-layerswitcher-icons-ver{{^}}m-layerswitcher-icons-ocultar{{/if}}"></button>
+                <button title="{{#if allVisible}}{{translations.show_all_services}}{{^}}{{translations.hide_all_services}}{{/if}}" aria-label="{{#if allVisible}}{{translations.show_all_services}}{{^}}{{translations.hide_all_services}}{{/if}}" tabindex="0" id="m-layerswitcher-hsalllayers" class="m-layerswitcher-allstatus {{#if allVisible}}m-layerswitcher-icons-ver{{^}}m-layerswitcher-icons-ocultar{{/if}}"></button>
             {{/if}}
             <ul class="m-layerswitcher-ullayers">
                 {{> layerswitcherLayer layers=overlayLayers}}

@@ -287,7 +287,9 @@ export default class SelectionControl extends M.Control {
     // this.template.remove();
     this.getImpl().removeSelectInteraction();
     this.removeSelectedFeatures();
-    this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
+    if (this.selectionLayer) {
+      this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
+    }
     this.selection_ = 'layer';
     this.managementControl_.refreshSelection();
   }

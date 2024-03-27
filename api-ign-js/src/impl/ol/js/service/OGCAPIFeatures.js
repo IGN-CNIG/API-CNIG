@@ -210,7 +210,7 @@ class OGCAPIFeatures {
     let fUrl;
 
     if (!isNullOrEmpty(this.name_)) {
-      this.url_ = `${this.url_}${this.name_}/items/`;
+      this.url_ = `${this.url_}${this.name_}/items`;
     }
     if (!isNullOrEmpty(this.format_)) {
       getFeatureParams.f = this.format_;

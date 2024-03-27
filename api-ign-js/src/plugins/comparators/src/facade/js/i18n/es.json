@@ -67,5 +67,6 @@
   "selectLayers": "Selector de capas",
   "openWindow": "Abrir nueva venta",
   "closeAll": "Cerrar todas las ventanas",
-  "tooltipWindSync": "Comparador de capas síncrono"
+  "tooltipWindSync": "Comparador de capas síncrono",
+  "selector": "Ninguna capa"
 }

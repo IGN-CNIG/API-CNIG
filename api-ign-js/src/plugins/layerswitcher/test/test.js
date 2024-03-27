@@ -1,6 +1,6 @@
 import Layerswitcher from 'facade/layerswitcher';
 
-// M.language.setLang('en');
+//M.language.setLang('en');
 
 const map = M.map({
   container: 'mapjs',
@@ -187,26 +187,6 @@ const PRECHARGED = {
   ],
 };
 
-const mp1 = new Layerswitcher({
-  collapsed: false,
-  position: 'TL',
-  tooltip: 'Capas',
-  collapsible: true,
-  isDraggable: true,
-  modeSelectLayers: 'eyes',
-  // tools: [],
-  tools: ['transparency', 'zoom', 'legend', 'information', 'style', 'delete'],
-  // tools: ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'],
-  isMoveLayers: true,
-  precharged: PRECHARGED,
-  https: true,
-  http: true,
-  showCatalog: true,
-  useProxy: true,
-  displayLabel: true
-});
-map.addPlugin(mp1);
-
 const mp2 = new M.plugin.Vectors({});
 map.addPlugin(mp2);
 
@@ -337,7 +317,8 @@ const capaWFS = new M.layer.WFS({
 const capaWMS = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit',
-  legend: 'Capa WMS l',
+  // legend: 'Capa WMS l',
+  visibility: true
 });
 
 const capaWMTS = new M.layer.WMTS({
@@ -389,7 +370,7 @@ const capaXYZ = new M.layer.XYZ({
 // map.addLayers(generic_002);
 // map.addLayers(capaOSM);
 window.capaOSM = capaOSM;
-map.addLayers(capaKML);
+// map.addLayers(capaKML);
 window.capaGeoJSON = capaGeoJSON;
 window.capaKML = capaKML;
 // map.addLayers(capaMVT);
@@ -398,8 +379,8 @@ window.capaOGCAPIFeatures = capaOGCAPIFeatures;
 // map.addLayers(capaTMS);
 // map.addLayers(capaVector);
 // capaVector.addFeatures(feature);
-map.addLayers(capaWFS);
-window.capaWFS = capaWFS;
+// map.addLayers(capaWFS);
+window.capaWMS = capaWMS;
 // map.addLayers(capaWMS);
 // map.addLayers(capaWMTS);
 // map.addLayers(capaXYZ);
@@ -522,3 +503,23 @@ window.capaKML = capaKML;
 // map.addPlugin(mp2);
 
 window.map = map;
+
+const mp1 = new Layerswitcher({
+  collapsed: false,
+  position: 'TL',
+  tooltip: 'Capas',
+  collapsible: true,
+  isDraggable: true,
+  modeSelectLayers: 'eyes',
+  // tools: [],
+  tools: ['transparency', 'zoom', 'legend', 'information', 'style', 'delete'],
+  // tools: ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'],
+  isMoveLayers: true,
+  precharged: PRECHARGED,
+  https: true,
+  http: true,
+  showCatalog: true,
+  useProxy: true,
+  displayLabel: true
+});
+map.addPlugin(mp1);

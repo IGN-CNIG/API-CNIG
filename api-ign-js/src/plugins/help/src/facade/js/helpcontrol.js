@@ -100,7 +100,7 @@ export default class HelpControl extends M.Control {
           translations: {
             tooltip: this.tooltip,
           },
-          order: this.order,
+          order: this.order || 0,
         },
       });
       html.querySelector('#m-help-button').addEventListener('click', this.showHelp.bind(this));
@@ -136,6 +136,7 @@ export default class HelpControl extends M.Control {
           zoom2: `${M.config.MAPEA_URL}img/magnify_off.svg`,
           translations: {
             header: getValue('short_title'),
+            pdf: getValue('pdf'),
             title: this.headerTitle,
             tools: getValue('tools'),
             help: getValue('help'),
@@ -158,10 +159,13 @@ export default class HelpControl extends M.Control {
           const divContainer = document.createElement('div');
           divContainer.classList.add('m-help-hidden');
           divContainer.id = `help-element-${index}`;
+          divContainer.tabIndex = index;
+          // eslint-disable-next-line no-return-assign
+          [...element.querySelectorAll('[tabindex]')].forEach(e => e.tabIndex = index);
           divContainer.appendChild(element);
           contents.appendChild(divContainer);
         });
-        windowHelp.document.querySelector('#m-help-index > div > ol > li > span').click();
+        windowHelp.document.querySelector('#m-help-index > div > ol > li > a').click();
         windowHelp.addZoomAction();
       });
 
@@ -211,7 +215,7 @@ export default class HelpControl extends M.Control {
         } else {
           this.helpsContent.push(content);
         }
-        subContentHTML += `<li><span onclick="showContent('help-element-${count}', event)">${title}</span>${generateSubContent(subContents)}</li>`;
+        subContentHTML += `<li><a class="indexLink" tabindex="${count}" href="#m-help-contents" onclick="showContent('help-element-${count}', event)">${title}</a>${generateSubContent(subContents)}</li>`;
       });
       subContentHTML += '</ol>';
       return subContentHTML;
@@ -220,7 +224,7 @@ export default class HelpControl extends M.Control {
     let extraContentHTML = '';
     array.forEach(({ title, content, subContents }) => {
       count += 1;
-      extraContentHTML += `<li><span onclick="showContent('help-element-${count}', event)">${title}</span>`;
+      extraContentHTML += `<li><a class="indexLink" tabindex="${count}" href="#m-help-contents" onclick="showContent('help-element-${count}', event)">${title}</a>`;
       this.helpsContent.push(M.utils.stringToHtml(content));
 
       if (subContents && subContents.length > 0) {

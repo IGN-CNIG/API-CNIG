@@ -60,6 +60,10 @@ import esGeorefimage2 from '../../../plugins/georefimage2/src/facade/js/i18n/es'
 import enGeorefimage2 from '../../../plugins/georefimage2/src/facade/js/i18n/en';
 
 
+// Help
+import esHelp from '../../../plugins/help/src/facade/js/i18n/es';
+import enHelp from '../../../plugins/help/src/facade/js/i18n/en';
+
 // Iberpixcompare
 import esIberpixcompare from '../../../plugins/iberpixcompare/src/facade/js/i18n/es';
 import enIberpixcompare from '../../../plugins/iberpixcompare/src/facade/js/i18n/en';
@@ -266,6 +270,10 @@ const pluginsLanguage = {
   georefimage2: {
     esGeorefimage2,
     enGeorefimage2,
+  },
+  help: {
+    esHelp,
+    enHelp,
   },
   iberpixcompare: {
     esIberpixcompare,

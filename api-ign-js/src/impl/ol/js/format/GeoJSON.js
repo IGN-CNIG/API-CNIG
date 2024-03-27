@@ -33,6 +33,7 @@ class GeoJSON extends OLFormatGeoJSON {
     */
   constructor(options = {}) {
     super(options);
+    this.mapProj = options.featureProjection;
   }
 
   /**

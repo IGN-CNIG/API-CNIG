@@ -264,6 +264,7 @@ export default class LayerswitcherControl extends M.Control {
               info_metadata: getValue('info_metadata'),
               remove_layer: getValue('remove_layer'),
               change_style: getValue('change_style'),
+              add: getValue('add'),
             },
             allVisible: !this.statusShowHideAllLayers,
             isRadio: this.modeSelectLayers === 'radio',
@@ -319,6 +320,15 @@ export default class LayerswitcherControl extends M.Control {
 
   // Esta función renderiza la plantilla
   render() {
+    const listLayer = document.getElementById('m-layerswitcher-content').childElementCount;
+    if (listLayer === 0) {
+      this.statusShowHideAllLayers = this.map_.getLayers().find((layer) => {
+        if (layer.isBase === false && layer.displayInLayerSwitcher) {
+          return layer.isVisible();
+        }
+        return false;
+      });
+    }
     this.getTemplateVariables(this.map_).then((templateVars) => {
       let scroll;
       if (document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers') !== null) {
@@ -1149,6 +1159,10 @@ export default class LayerswitcherControl extends M.Control {
       document.querySelector(CODSI_BTN).style.display = 'none';
     }
 
+    if (document.getElementById('m-layerswitcher-addservices-file-input')) {
+      document.getElementById('labelFileInput').style.display = 'none';
+    }
+
     document.querySelector(LIST_BTN).style.display = 'none';
 
     this.loadingActive = true;
@@ -1162,6 +1176,10 @@ export default class LayerswitcherControl extends M.Control {
 
       if (document.querySelector(CODSI_BTN)) {
         document.querySelector(CODSI_BTN).style.display = 'inline';
+      }
+
+      if (document.getElementById('m-layerswitcher-addservices-file-input')) {
+        document.getElementById('labelFileInput').style.display = 'inline';
       }
 
       document.querySelector(LIST_BTN).style.display = 'inline';
@@ -1349,23 +1367,28 @@ export default class LayerswitcherControl extends M.Control {
                         });
                       } else {
                         M.proxy(this.useProxy);
-                        M.remote.get(url).then((response3) => {
-                          // GEOJSON
-                          if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
-                            this.printLayerModal(url, 'geojson');
-                          } else if (response3.text.indexOf('<kml ') >= 0) {
-                            const parser = new DOMParser();
-                            const xmlDoc = parser.parseFromString(response3.text, 'text/xml');
-                            const folders = xmlDoc.getElementsByTagName('Folder');
-                            let cont = -1;
-                            const names = Array.from(folders).map((folder) => {
-                              cont += 1;
-                              const name = folder.name || `Layer__${cont}`;
-                              return { name };
-                            });
-                            this.printLayerModal(url, 'kml', names);
-                          }
-                        });
+                        const extension = url.includes('.') ? url.substring(url.lastIndexOf('.') + 1, url.length) : '';
+                        if (['zip', 'gpx', 'gml'].includes(extension)) {
+                          this.openFileFromUrl(url, extension);
+                        } else {
+                          M.remote.get(url).then((response3) => {
+                            // GEOJSON
+                            if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
+                              this.printLayerModal(url, 'geojson');
+                            } else if (response3.text.indexOf('<kml ') >= 0) {
+                              const parser = new DOMParser();
+                              const xmlDoc = parser.parseFromString(response3.text, 'text/xml');
+                              const folders = xmlDoc.getElementsByTagName('Folder');
+                              let cont = -1;
+                              const names = Array.from(folders).map((folder) => {
+                                cont += 1;
+                                const name = folder.querySelector(':scope > name') ? folder.querySelector(':scope > name').textContent.trim() : `Layer__${cont}`;
+                                return { name };
+                              });
+                              this.printLayerModal(url, 'kml', names);
+                            }
+                          });
+                        }
                         M.proxy(this.statusProxy);
                       }
                     });
@@ -1406,6 +1429,7 @@ export default class LayerswitcherControl extends M.Control {
     const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
       (precharged.services !== undefined && precharged.services.length > 0);
     const codsiActive = this.codsiActive;
+    const accept = '.kml, .zip, .gpx, .geojson, .gml, .json';
     const addServices = M.template.compileSync(addServicesTemplate, {
       jsonp: true,
       parseToHtml: false,
@@ -1413,6 +1437,7 @@ export default class LayerswitcherControl extends M.Control {
         precharged,
         hasPrecharged,
         codsiActive,
+        accept,
         translations: {
           url_service: getValue('url_service'),
           query: getValue('query'),
@@ -1423,6 +1448,7 @@ export default class LayerswitcherControl extends M.Control {
           filter_results: getValue('filter_results'),
           clean_filter: getValue('clean_filter'),
           filter_text: getValue('filter_text'),
+          upload_file: getValue('upload_file'),
         },
       },
     });
@@ -1440,6 +1466,9 @@ export default class LayerswitcherControl extends M.Control {
 
       // Eventos Buscador
       this.addEventSearch();
+
+      // Eventos carga de ficheros
+      this.addEventFileUpload();
     }, 10);
 
     this.focusModal('#m-layerswitcher-addservices-search-input');
@@ -1462,19 +1491,76 @@ export default class LayerswitcherControl extends M.Control {
 
   addEventSearch() {
     // Elements
-    const searchInput = document.querySelector(SEARCH_BTN);
-    const searchInput2 = document.querySelector(SEARCH_INPUT);
+    const searchBtn = document.querySelector(SEARCH_BTN);
+    // const fileUrlBtn = document.querySelector('#m-layerswitcher-addservices-fileurl-btn');
+    const searchInput = document.querySelector(SEARCH_INPUT);
 
-    searchInput.addEventListener('click', (e) => {
+    searchBtn.addEventListener('click', (e) => {
       this.filterName = undefined;
       this.readCapabilities(e);
     });
-    searchInput2.addEventListener('keydown', (e) => {
+    searchInput.addEventListener('keydown', (e) => {
       if (e.keyCode === 13) {
         this.filterName = undefined;
         this.readCapabilities(e);
       }
     });
+  }
+
+  addEventFileUpload() {
+    const inputFile = document.querySelector('#m-layerswitcher-addservices-file-input');
+    inputFile.addEventListener('change', () => this.changeFile(inputFile));
+  }
+
+  changeFile(inputFile) {
+    M.loadFiles.addFileToMap(this.map_, inputFile.files[0]);
+    inputFile.value = '';
+    const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
+    buttonClose.click();
+  }
+
+  openFileFromUrl(url, extension) {
+    if (M.utils.isUrl(url)) {
+      const fileName = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'));
+      if (['zip', 'kml', 'gpx', 'geojson', 'gml', 'json'].includes(extension) > -1) {
+        if (extension === 'zip') {
+          this.downloadShp(url, fileName);
+        } else {
+          M.remote.get(url).then((response) => {
+            const source = response.text;
+            M.utils.loadFeaturesFromSource(this.map_, source, fileName, extension);
+            const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
+            buttonClose.click();
+          });
+        }
+      } else {
+        M.dialog.error(getValue('exception.url_not_valid'));
+      }
+    }
+  }
+
+  downloadShp(url, fileName) {
+    window.fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          M.dialog.error(getValue('exception.url_not_valid'));
+          return null;
+        }
+        return response.blob();
+      }).then((blob) => {
+        if (blob) {
+          blob.arrayBuffer().then((buffer) => {
+            M.utils.loadFeaturesFromSource(this.map_, buffer, fileName, 'zip');
+            const buttonClose = document.querySelector('div.m-dialog.info div.m-button > button');
+            buttonClose.click();
+          });
+        } else {
+          M.dialog.error(getValue('exception.url_not_valid'));
+        }
+      })
+      .catch((error) => {
+        M.dialog.error(getValue('exception.url_not_valid'));
+      });
   }
 
   addEventSuggestions() {
@@ -1858,9 +1944,18 @@ export default class LayerswitcherControl extends M.Control {
         const responseJson = JSON.parse(response.text);
         if (responseJson.collections.length > 0 && responseJson.collections[0].itemType === 'feature') {
           isOGCAPI = true;
+        } else {
+          const collections2 = `${(url.endsWith('/') ? url : `${url}/`)}collections/${responseJson.collections[0].id}/items?f=json&limit=1`;
+          return M.remote.get(collections2).then((response2) => {
+            const responseJson2 = JSON.parse(response2.text);
+            if (responseJson2.type === 'FeatureCollection') {
+              isOGCAPI = true;
+            }
+            return isOGCAPI; // Agregar un retorno aquí
+          });
         }
       }
-      return isOGCAPI;
+      return isOGCAPI; // Agregar un retorno aquí también
     }).catch(() => {
       return false;
     });
@@ -2156,7 +2251,7 @@ export default class LayerswitcherControl extends M.Control {
       } else {
         name = name.value || `layer_${randomNumber}`;
       }
-      const legend = document.querySelector('#m-layerswitcher-layer-legend').value || `layer_${randomNumber}`;
+      const legend = document.querySelector('#m-layerswitcher-layer-legend').value || name || `layer_${randomNumber}`;
       let matrixSet = document.querySelector('#m-layerswitcher-layer-matrixset');
       if (!M.utils.isNullOrEmpty(matrixSet)) {
         matrixSet = matrixSet.value || 'EPSG:3857';
@@ -2720,7 +2815,7 @@ export default class LayerswitcherControl extends M.Control {
     let fUrl;
     /* eslint-disable no-param-reassign */
     if (!M.utils.isNullOrEmpty(layer.name)) {
-      layer.url = `${layer.url}${layer.name}/items/`;
+      layer.url = `${layer.url}${layer.name}/items`;
     }
 
     if (!M.utils.isNullOrEmpty(layer.format)) {

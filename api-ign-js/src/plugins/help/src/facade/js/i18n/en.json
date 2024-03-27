@@ -27,5 +27,6 @@
   "tools3": "Plugins or extensions are functionalities that offer specific utilities that, unlike basic controls, are usually used in specific scenarios, so they are separated from the core or main core of the API so as not to penalize downloading. who doesn't need them.",
   "tools4": "For example, those controls that, although offering different atomic functionalities, work as a group on the same vector layer would be grouped in the same plugin. In this way, the management of the information and the common elements that they share are optimized. .",
   "write": "Write here",
-  "search": "Search"
+  "search": "Search",
+  "pdf": "Download as PDF"
 }

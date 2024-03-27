@@ -61,6 +61,7 @@ module.exports = {
       fs: false,
       path: false,
       crypto: false,
+      "buffer": require.resolve("buffer/"),
     },
   },
   module: {

@@ -4,6 +4,8 @@
 import '../assets/css/vectorsmanagement';
 import VectorsManagementControl from './vectorsmanagementcontrol';
 
+import { getValue } from './i18n/language';
+
 import es from './i18n/es';
 import en from './i18n/en';
 
@@ -102,7 +104,7 @@ export default class VectorsManagement extends M.Plugin {
      *
      * Indicates if the creation control is active (true/false)
      */
-    this.creation = this.selection && (options.creation !== undefined ? options.creation : true);
+    this.creation = options.creation !== undefined ? options.creation : true;
 
     /**
      * @private
@@ -110,7 +112,7 @@ export default class VectorsManagement extends M.Plugin {
      *
      * Indicates if the download control is active (true/false)
      */
-    this.download = this.selection && (options.download !== undefined ? options.download : true);
+    this.download = options.download !== undefined ? options.download : true;
 
     /**
      * @private
@@ -134,7 +136,13 @@ export default class VectorsManagement extends M.Plugin {
      *
      * Indicates if the style control is active (true/false)
      */
-    this.style = this.selection && (options.style !== undefined ? options.style : true);
+    this.style = options.style !== undefined ? options.style : true;
+
+    // Tooltip
+    this.tooltip_ = options.tooltip || getValue('tooltip');
+
+    // Determina si el plugin es draggable o no
+    this.isDraggable = !M.utils.isUndefined(options.isDraggable) ? options.isDraggable : false;
   }
 
   /**
@@ -172,6 +180,7 @@ export default class VectorsManagement extends M.Plugin {
       edition: this.edition,
       help: this.help,
       style: this.style,
+      isDraggable: this.isDraggable,
     }));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('VectorsManagement', {
@@ -189,6 +198,31 @@ export default class VectorsManagement extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+  }
+
+
+  /**
+   * Gets the API REST Parameters of the plugin
+   *
+   * # API-REST
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRest() {
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.selection}*${this.addlayer}*${this.analysis}*${this.creation}*${this.download}*${this.edition}*${this.help}*${this.style}`;
+  }
+
+  /**
+   * Gets the API REST Parameters in base64 of the plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getAPIRestBase64() {
+    return `${this.name}=base64=${M.utils.encodeBase64(this.options)}`;
   }
 
   /**

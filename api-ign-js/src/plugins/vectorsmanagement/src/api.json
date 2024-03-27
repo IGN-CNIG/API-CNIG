@@ -20,41 +20,37 @@
       "name": "collapsible",
       "position": 2
     }, {
-      "type": "simple",
-      "name": "tooltip",
+      "type": "boolean",
+      "name": "selection",
       "position": 3
     }, {
       "type": "boolean",
-      "name": "layerVisibility",
+      "name": "addlayer",
       "position": 4
     }, {
-      "type": "number",
-      "name": "layerId",
+      "type": "boolean",
+      "name": "analysis",
       "position": 5
     }, {
-      "type": "number",
-      "name": "columnsNumber",
+      "type": "boolean",
+      "name": "creation",
       "position": 6
     }, {
       "type": "boolean",
-      "name": "empty",
+      "name": "download",
       "position": 7
     }, {
-      "type": "simple",
-      "name": "ids",
+      "type": "boolean",
+      "name": "edition",
       "position": 8
     }, {
       "type": "simple",
-      "name": "titles",
+      "name": "help",
       "position": 9
     }, {
-      "type": "simple",
-      "name": "previews",
+      "type": "boolean",
+      "name": "style",
       "position": 10
-    }, {
-      "type": "simple",
-      "name": "layers",
-      "position": 11
     }]
   }],
   "files": {

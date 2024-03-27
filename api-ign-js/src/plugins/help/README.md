@@ -139,7 +139,7 @@ const mp = new M.plugin.Help({
 
 # Accesibilidad
 
-¿Te gustaría tener la posibilidad de aumentar el tamaño de las imágenes? Cuando crees tu apartado de ayuda puedes añadir a las imágenes la clase 'm-help-magnifyOn' y aparecerá un icono en la parte superior de la imagen que activa el efecto lupa.
+¿Te gustaría tener la posibilidad de aumentar el tamaño de las imágenes? Cuando crees tu apartado de ayuda puedes añadir a las imágenes la clase 'm-help-content-magnify' y aparecerá un icono en la parte superior de la imagen que activa el efecto lupa.
 
 # 👨‍💻 Desarrollo
 

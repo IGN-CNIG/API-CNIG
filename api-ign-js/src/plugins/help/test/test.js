@@ -55,74 +55,75 @@ import Help from 'facade/help';
 
 const map = M.map({
   container: 'mapjs',
+  controls: ['scale']
 });
 
 
 const mp = new Help({
-  position: 'TL', // TR, BR, TL, BL
+  // position: 'BR', // TR, BR, TL, BL
   // tooltip: 'Mi ayuda',
   header: {
     images: [
       'https://www.gravatar.com/avatar/586252adace7084ee98aa8977fe5cc2b?rating=PG&size=128&default=wavatar',
       'https://www.gravatar.com/avatar/75df827b1b67c5f04f1715dd01016735?rating=PG&size=64x64&default=wavatar',
     ],
-    // title: 'Título definido por el usuario'
+  // title: 'Título'
     title: {
-      eu: 'Título definido por el usuario',
-      ens: 'User Defined Title',
+      esx: 'Título definido por el usuario',
+      enx: 'User Defined Title',
     }
   },
-  // extendInitialExtraContents: false,
-  initialExtraContents: {es: [
-    { title: 'Índice 1', content: '<div><h2>Título 1</h2><div><p>Contenido 1</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
-      subContents : [
-        { title: 'Índice 2', content: '<div><h2>Título 2</h2><div><p>Contenido 2</p></div></div>'},
-      ]
-    },
-    { title: 'Índice 3', content: '<div><h2>Título 3</h2><div><p>Contenido 3</p></div></div>'},
-    { title: 'Índice 4', content: '<div><h2>Título 4</h2><div><p>Contenido 4</p></div></div>',
-      subContents : [
-        { title: 'Índice 5', content: '<div><h2>Título 5</h2><div><p>Contenido 5</p></div></div>',
-          subContents : [{ title: 'Índice 6', content: '<div><h2>Título 6</h2><div><p>Contenido 6</p></div></div>',
-        subContents : [{ title: 'Índice 6 esp', content: '<div><h2>Título 6 esp</h2><div><p>Contenido 6 esp</p></div></div>' }], },
-      ]
-        },
-      ]
-    },
-  ], enss: [
-    { title: 'Index 1', content: '<div><h2>Title 1</h2><div><p>Content 1</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
-      subContents : [
-        { title: 'Index 2', content: '<div><h2>Title 2</h2><div><p>Content 2</p></div></div>'},
-      ]
-    },
-    { title: 'Index 3', content: '<div><h2>Title 3</h2><div><p>Content 3</p></div></div>'},
-    { title: 'Index 4', content: '<div><h2>Title 4</h2><div><p>Content 4</p></div></div>',
-      subContents : [
-        { title: 'Index 5', content: '<div><h2>Title 5</h2><div><p>Content 5</p></div></div>',
-          subContents : [{ title: 'Index 6', content: '<div><h2>Title 6</h2><div><p>Content 6</p></div></div>',
-        subContents : [{ title: 'Index 6 esp', content: '<div><h2>Title 6 esp</h2><div><p>Content 6 esp</p></div></div>' }], },
-      ]
-        },
-      ]
-    },
-  ]},
-  //   initialExtraContents: [
-  //   { title: 'Índice 1', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 1</h2><div><p>Contenido 1</p> <img style="margin-left: 20%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
+  extendInitialExtraContents: true,
+  // initialExtraContents: {es: [
+  //   { title: 'Índice 1', content: '<div><h2>Título 1</h2><div><p>Contenido 1</p> <img class="m-help-content-magnify" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
   //     subContents : [
-  //       { title: 'Índice 2', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 2</h2><div><p>Contenido 2</p></div></div>'},
+  //       { title: 'Índice 2', content: '<div><h2>Título 2</h2><div><p>Contenido 2</p></div></div>'},
   //     ]
   //   },
-  //   { title: 'Índice 3', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 3</h2><div><p>Contenido 3</p></div></div>'},
-  //   { title: 'Índice 4', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 4</h2><div><p>Contenido 4</p></div></div>',
+  //   { title: 'Índice 3', content: '<div><h2>Título 3</h2><div><p>Contenido 3</p></div></div>'},
+  //   { title: 'Índice 4', content: '<div><h2>Título 4</h2><div><p>Contenido 4</p></div></div>',
   //     subContents : [
-  //       { title: 'Índice 5', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 5</h2><div><p>Contenido 5</p></div></div>',
-  //         subContents : [{ title: 'Índice 6', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 6</h2><div><p>Contenido 6</p></div></div>',
-  //       subContents : [{ title: 'Índice 6 esp', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 6 esp</h2><div><p>Contenido 6 esp</p></div></div>' }], },
+  //       { title: 'Índice 5', content: '<div><h2>Título 5</h2><div><p>Contenido 5</p></div></div>',
+  //         subContents : [{ title: 'Índice 6', content: '<div><h2>Título 6</h2><div><p>Contenido 6</p></div></div>',
+  //       subContents : [{ title: 'Índice 6 esp', content: '<div><h2>Título 6 esp</h2><div><p>Contenido 6 esp</p></div></div>' }], },
   //     ]
   //       },
   //     ]
   //   },
-  // ],
+  // ], enss: [
+  //   { title: 'Index 1', content: '<div><h2>Title 1</h2><div><p>Content 1</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
+  //     subContents : [
+  //       { title: 'Index 2', content: '<div><h2>Title 2</h2><div><p>Content 2</p></div></div>'},
+  //     ]
+  //   },
+  //   { title: 'Index 3', content: '<div><h2>Title 3</h2><div><p>Content 3</p></div></div>'},
+  //   { title: 'Index 4', content: '<div><h2>Title 4</h2><div><p>Content 4</p></div></div>',
+  //     subContents : [
+  //       { title: 'Index 5', content: '<div><h2>Title 5</h2><div><p>Content 5</p></div></div>',
+  //         subContents : [{ title: 'Index 6', content: '<div><h2>Title 6</h2><div><p>Content 6</p></div></div>',
+  //       subContents : [{ title: 'Index 6 esp', content: '<div><h2>Title 6 esp</h2><div><p>Content 6 esp</p></div></div>' }], },
+  //     ]
+  //       },
+  //     ]
+  //   },
+  // ]},
+    initialExtraContents: [
+    { title: 'Índice 1', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 1</h2><div><p>Contenido 1</p> <img class="m-help-content-magnify" style="margin-left: 20%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
+      subContents : [
+        { title: 'Índice 2', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 2</h2><div><p>Contenido 2</p></div></div>'},
+      ]
+    },
+    { title: 'Índice 3', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 3</h2><div><p>Contenido 3</p></div></div>'},
+    { title: 'Índice 4', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 4</h2><div><p>Contenido 4</p></div></div>',
+      subContents : [
+        { title: 'Índice 5', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 5</h2><div><p>Contenido 5</p></div></div>',
+          subContents : [{ title: 'Índice 6', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 6</h2><div><p>Contenido 6</p></div></div>',
+        subContents : [{ title: 'Índice 6 esp', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Título 6 esp</h2><div><p>Contenido 6 esp</p></div></div>' }], },
+      ]
+        },
+      ]
+    },
+  ],
   // finalExtraContents: { es: [
   //   { title: 'Índice 7', content: '<div><h2>Título 7</h2><div><p>Contenido 7</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
   //     subContents : [

@@ -1,12 +1,12 @@
 import { map as Mmap } from 'M/mapea';
-// import { vector_001 } from '../layers/vector/vector';
+import { vector_001 } from '../layers/vector/vector';
 import { wfs_001 } from '../layers/wfs/wfs';
 import { geojson_001 } from '../layers/geojson/geojson';
-// import { kml_001 } from '../layers/kml/kml';
-// import { mvt_001 } from '../layers/mvt/mvt';
-// import { ogcAPIFeatures_001 } from '../layers/ogcApiFeatures/ogcApiFeatures';
-// import { mbtileVector_001 } from '../layers/mbTilesVector/mbTilesVector';
-// import { generic_002 } from '../layers/generic/generic';
+import { kml_001 } from '../layers/kml/kml';
+import { mvt_001 } from '../layers/mvt/mvt';
+import { ogcAPIFeatures_001 } from '../layers/ogcApiFeatures/ogcApiFeatures';
+import { mbtileVector_001 } from '../layers/mbTilesVector/mbTilesVector';
+import { generic_002 } from '../layers/generic/generic';
 
 
 const mapa = Mmap({
@@ -14,17 +14,28 @@ const mapa = Mmap({
   projection: 'EPSG:3857*m',
   center: [-443273.10081370454, 4757481.749296248],
   zoom: 6,
+  controls: ['getfeatureinfo'],
+  layers:[
+    vector_001,
+    // geojson_001,
+    // wfs_001,
+    // kml_001,
+    // mvt_001,
+    // ogcAPIFeatures_001,
+    // mbtileVector_001,
+    // generic_002,
+  ],
 });
 
 mapa.addLayers([
   // vector_001,
-  geojson_001,
-  wfs_001,
+  // geojson_001,
+  // wfs_001,
   // kml_001,
   // mvt_001,
   // ogcAPIFeatures_001,
-  // mbtileVector_001
-  // generic_002
+  // mbtileVector_001,
+  // generic_002,
 ]);
 
 window.mapa = mapa;

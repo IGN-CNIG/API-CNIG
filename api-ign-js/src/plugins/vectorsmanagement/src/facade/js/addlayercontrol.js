@@ -30,12 +30,6 @@ export default class AddLayerControl extends M.Control {
     super(impl, 'Help');
 
     this.map_ = map;
-
-    /**
-     * Index for new layer name
-     * ej. Vector_{layerIndex}
-     */
-    this.layerIndex_ = 0;
   }
 
   /**
@@ -59,7 +53,6 @@ export default class AddLayerControl extends M.Control {
    */
   layerBtnClick() {
     this.showLayerDialog();
-    this.layerIndex_ += 1;
   }
 
   /**
@@ -102,8 +95,8 @@ export default class AddLayerControl extends M.Control {
    */
   addLayer(name) {
     const newVector = new M.layer.Vector({
-      name: name || `vector_${this.layerIndex_}`,
-      legend: name || `Vector ${this.layerIndex_}`,
+      name: name || `vector_${Math.floor(Math.random() * 9000) + 1000}`,
+      legend: name || `Vector_${Math.floor(Math.random() * 9000) + 1000}`,
     });
     this.map_.addLayers(newVector);
     this.deactivate();

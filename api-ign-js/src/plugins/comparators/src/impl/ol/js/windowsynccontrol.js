@@ -11,16 +11,16 @@ export default class WindowSyncControl extends M.impl.Control {
      * @param {HTMLElement} html of the plugin
      * @api stable
      */
-  addTo(map) {
-    this.maps = [];
-  }
+  addTo(map) {}
 
   // ? API DONT EVENT ROTATE
   handleMoveMap(maps) {
-    this.addEventListeners = this.addEventListeners.bind(this);
+    this.maps = maps;
+    this.fnEventMaps = this.addEventListeners.bind(this);
+
     maps.forEach(({ map }) => {
       const mapOl = map.getMapImpl();
-      mapOl.on(['moveend', 'rotateend'], this.addEventListeners);
+      mapOl.on(['moveend', 'rotateend'], this.fnEventMaps);
     });
   }
 
@@ -28,10 +28,9 @@ export default class WindowSyncControl extends M.impl.Control {
   removeEventListeners(maps) {
     maps.forEach(({ map }) => {
       const mapOl = map.getMapImpl();
-      this.addEventListeners = this.addEventListeners.bind(this);
-      mapOl.un('moveend', this.addEventListeners);
-      mapOl.un('rotateend', this.addEventListeners);
+      mapOl.un(['moveend', 'rotateend'], this.fnEventMaps);
     });
+    this.fnEventMaps = null;
   }
 
   evtChangeMaps(map1Ol, map2) {

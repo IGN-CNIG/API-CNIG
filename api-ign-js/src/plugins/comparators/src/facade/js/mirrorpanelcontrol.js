@@ -187,6 +187,7 @@ export default class MirrorpanelControl extends M.Control {
           modViz8: getValue('modViz8'),
           modViz9: getValue('modViz9'),
           selectLayers: getValue('selectLayers'),
+          selector: getValue('selector'),
         },
       },
     };

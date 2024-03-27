@@ -1,12 +1,11 @@
 <div class="m-vectorsmanagement-style-container closed">
-    <button id="set-style-btn">{{translations.apply_style}}</button>
-    <div id="styleOptions">
+    <div id="styleOptions" class="m-vectorsmanagement-styleOptions">
         <div>
-            <div id="point-options">
+            <div id="point-options" tabindex="0" role="button" aria-controls="point-options-content">
                 {{translations.style_options_point}} 
                 <span class="g-cartografia-flecha-abajo"></span>
             </div>
-            <div class="content-row point-content closed">
+            <div id="point-options-content" class="content-row point-content closed" aria-hidden="true">
                 <div class="group-row">
                     <div class="style-col-1">
                         <label for="colorSelector-point">{{translations.styleColor}}: </label>
@@ -15,12 +14,6 @@
                     <div class="style-col-2">
                         <label for="radiusSelector-point">{{translations.radius}}: </label>
                         <input id="radiusSelector-point" type="number" value="5" min="1" max="60">
-                    </div>
-                </div>
-                <div class="group-row">
-                    <div class="style-col-0">
-                        <label id="textLabel" for="textContent-point">{{translations.creationText}}: </label>
-                        <input type="text" id="textContent-point">
                     </div>
                 </div>
                 <div class="group-row">
@@ -33,19 +26,25 @@
                             <option value="sans-serif">Sans serif</option>
                         </select>
                     </div>
-                    <div class="style-col-1">
+                    <div class="style-col-2">
                         <label id="sizeLabel" for="fontSize-point">{{translations.styleSize}}: </label>
                         <input type="number" id="fontSize-point" value="12" min="6" max="20">
+                    </div>
+                </div>
+                <div class="group-row">
+                    <div class="style-col-0">
+                        <label id="textLabel" for="textContent-point">{{translations.creationText}}: </label>
+                        <input type="text" id="textContent-point">
                     </div>
                 </div>
             </div>
         </div>
         <div>
-            <div id="line-options">
+            <div id="line-options" tabindex="0" role="button" aria-controls="line-options-content">
                 {{translations.style_options_line}} 
                 <span class="g-cartografia-flecha-abajo"></span>
             </div>
-            <div class="content-row line-content closed">
+            <div id="line-options-content" class="content-row line-content closed">
                 <div class="group-row">
                     <div class="style-col-1">
                         <label for="colorSelector-line">{{translations.styleColor}}: </label>
@@ -54,12 +53,6 @@
                     <div class="style-col-2">
                         <label for="thicknessSelector-line">{{translations.styleThickness}}: </label>
                         <input id="thicknessSelector-line" type="number" value="6" min="1" max="10">
-                    </div>
-                </div>
-                <div class="group-row">
-                    <div class="style-col-0">
-                        <label id="textLabel" for="textContent-line">{{translations.creationText}}: </label>
-                        <input type="text" id="textContent-line">
                     </div>
                 </div>
                 <div class="group-row">
@@ -77,14 +70,20 @@
                         <input type="number" id="fontSize-line" value="12" min="6" max="20">
                     </div>
                 </div>
+                <div class="group-row">
+                    <div class="style-col-0">
+                        <label id="textLabel" for="textContent-line">{{translations.creationText}}: </label>
+                        <input type="text" id="textContent-line">
+                    </div>
+                </div>
             </div>
         </div>
         <div>
-            <div id="polygon-options">
+            <div id="polygon-options" tabindex="0" role="button" aria-controls="polygon-options-content">
                 {{translations.style_options_polygon}} 
                 <span class="g-cartografia-flecha-abajo"></span>
             </div>
-            <div class="content-row polygon-content closed">
+            <div id="polygon-options-content" class="content-row polygon-content closed">
                 <div class="group-row">
                     <div class="style-col-1">
                         <label for="colorSelector-polygon">{{translations.styleColor}}: </label>
@@ -102,12 +101,6 @@
                     </div>
                 </div>
                 <div class="group-row">
-                    <div class="style-col-0">
-                        <label id="textLabel" for="textContent-polygon">{{translations.creationText}}: </label>
-                        <input type="text" id="textContent-polygon">
-                    </div>
-                </div>
-                <div class="group-row">
                     <div class="style-col-1">
                         <label id="fontLabel" for="fontFamily-polygon">{{translations.styleFont}}: </label>
                         <select id="fontFamily-polygon">
@@ -122,7 +115,14 @@
                         <input type="number" id="fontSize-polygon" value="12" min="6" max="20">
                     </div>
                 </div>
+                <div class="group-row">
+                    <div class="style-col-0">
+                        <label id="textLabel" for="textContent-polygon">{{translations.creationText}}: </label>
+                        <input type="text" id="textContent-polygon">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <button id="set-style-btn">{{translations.apply_style}}</button>
 </div>

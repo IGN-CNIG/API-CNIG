@@ -58,7 +58,7 @@ export default class Editioncontrol extends M.impl.Control {
    * @function
    * @api
    */
-  activateSelection() {
+  activateSelection(snap) {
     const olMap = this.facadeMap_.getMapImpl();
     const drawingLayer = this.facadeControl.getLayer().getImpl().getOL3Layer();
 
@@ -78,7 +78,13 @@ export default class Editioncontrol extends M.impl.Control {
 
       olMap.addInteraction(this.select);
 
-      this.edit = new ol.interaction.Modify({ features: this.select.getFeatures() });
+      const { snapToPointer = true, pixelTolerance = 30 } = snap;
+
+      this.edit = new ol.interaction.Modify({
+        features: this.select.getFeatures(),
+        snapToPointer,
+        pixelTolerance,
+      });
       this.edit.on('modifyend', (evt) => {
         this.facadeControl.onModify();
       });

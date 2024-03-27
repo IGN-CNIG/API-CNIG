@@ -44,7 +44,8 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **analysis**: Indica si se incluye la herramienta de análisis (cálculo de perfil topografico y área de influencia) (true/false). Por defecto: true. Es necesario tener añadida la herramienta de selección para poder añadir esta.
 - **creation**: Indica si se incluye la herramienta de dibujo (true/false). Por defecto: true. Es necesario tener añadida la herramienta de selección para poder añadir esta.
 - **download**: Indica si se incluye la herramienta de descarga de elementos y capas vectoriales (true/false). Por defecto: true. Es necesario tener añadida la herramienta de selección para poder añadir esta.
-- **edition**: Indica si se incluye la herramienta de edición de elementos (true/false). Por defecto: true. Es necesario tener añadida la herramienta de selección para poder añadir esta.
+- **edition**: Indica si se incluye la herramienta de edición de elementos (true/false/Object). Por defecto: true. Es necesario tener añadida la herramienta de selección para poder añadir esta.
+Por defecto tendrá los valores snapToPointer: true, pixelTolerance: 30. Para modificarlo se tiene que pasar un objeto con los nuevos valores.
 - **help**: Indica si se incluye la herramienta de ayuda (true/false). Por defecto: true.
 - **style**: Indica si se incluye la herramienta de edición de estilos (true/false). Por defecto: true. Es necesario tener añadida la herramienta de selección para poder añadir esta.
 

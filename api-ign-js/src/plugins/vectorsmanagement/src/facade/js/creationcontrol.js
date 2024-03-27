@@ -471,16 +471,19 @@ export default class CreationControl extends M.Control {
    * @param {Event} event - 'drawend' triggering event
    */
   onDraw(event) {
-    const lastFeature = this.feature;
+    // const lastFeature = this.feature;
     this.hideTextPoint();
     this.feature = M.impl.Feature.olFeature2Facade(event.feature);
     this.geometry = this.feature.getGeometry().type;
 
     if (this.geometry === 'Point' && this.isTextActive) {
       this.updateGlobalsWithInput();
+      /*
       if (lastFeature !== undefined) {
+        console.log('lastFeature !== undefined');
         this.textContent = 'Texto';
       }
+      */
       this.setTextStyle();
     } /* else {
       this.setFeatureStyle(this.feature, this.geometry);
@@ -714,7 +717,9 @@ export default class CreationControl extends M.Control {
    */
   deactivate() {
     this.deactivateDrawing();
-    this.template.remove();
+    if (this.template) {
+      this.template.remove();
+    }
   }
 
   /**

@@ -3,6 +3,7 @@
  */
 import MVTTileImpl from 'impl/layer/MVT';
 import RenderFeatureImpl from 'impl/feature/RenderFeature';
+import FeatureImpl from 'impl/feature/Feature';
 import Vector from './Vector';
 import { isUndefined, isNullOrEmpty, normalize, isString } from '../util/Utils';
 import Exception from '../exception/exception';
@@ -93,6 +94,8 @@ class MVT extends Vector {
      * por defecto falso.
      */
     this.extract = opts.extract;
+
+    this.mode = opts.mode || mode.RENDER;
   }
 
   /**
@@ -183,8 +186,14 @@ class MVT extends Vector {
    */
   getFeatures() {
     const features = this.getImpl().getFeatures();
-
-    return features.map(olFeature => RenderFeatureImpl.olFeature2Facade(olFeature));
+    return features.map((olFeature) => {
+      if (this.mode === mode.RENDER) {
+        return RenderFeatureImpl.olFeature2Facade(olFeature);
+      } else if (this.mode === mode.FEATURE) {
+        return FeatureImpl.olFeature2Facade(olFeature, undefined, this.getProjection());
+      }
+      return null;
+    });
   }
 
   /**

@@ -145,8 +145,14 @@ ul.m-layerswitcher-ullayers {
 }
 
 .m-layerswitcher-visible-control {
-    width: 7%;
+    width: 8%;
 }
+
+.m-layerswitcher-visible-control > button {
+    border: 1px solid rgba(0,0,0,.1) !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,.3);
+    cursor: pointer;
+ }
 
 .m-layerswitcher-visible-typeContent {
     width: 83%;
@@ -178,10 +184,17 @@ ul.m-layerswitcher-ullayers {
     border: none;
     background-color: #f9f9f9;
     margin: 0 16px;
-    font-size: 15px;
     color: orange !important;
-    margin: 10px 0px 0px 20px;
+    margin: 10px 0px 0px 16px;
     display: block;
+}
+
+#m-layerswitcher-hsalllayers {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+    cursor: pointer;
+    position: absolute;
+    top: 4px;
 }
 
 .m-layerswitcher-icons-ver {
@@ -325,7 +338,9 @@ input[type=range].m-layerswitcher-transparency:focus {
 .m-layerswitcher-icons-zoom,
 .m-layerswitcher-icons-codsi,
 .m-layerswitcher-icons-lista,
-.m-layerswitcher-suggestion
+.m-layerswitcher-suggestion,
+.m-layerswitcher-icons-doc-text,
+.m-layerswitcher-icons-upload
 {
     background-color: #ffffff;
     border: none;
@@ -336,7 +351,11 @@ input[type=range].m-layerswitcher-transparency:focus {
     font-size: 15px;
 }
 
-.m-layerswitcher-icons-delete:hover {
+.m-layerswitcher-icons-image:hover,
+.m-layerswitcher-icons-delete:hover,
+.m-layerswitcher-icons-target:hover,
+.m-layerswitcher-icons-info:hover,
+.m-layerswitcher-icons-style:hover {
     cursor: pointer;
     color: black;
 }

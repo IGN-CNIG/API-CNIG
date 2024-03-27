@@ -2,11 +2,20 @@ const path = require('path');
 const webpack = require('webpack');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
+let pathUrl = null;
+const nameArgIndex = process.argv[process.argv.length - 1].indexOf('--name=CP-');
+
+if (nameArgIndex === -1) {
+  pathUrl = path.resolve(__dirname, '..', 'test', 'test.js');
+} else {
+  const valueArgv = process.argv[process.argv.length - 1];
+  const name = valueArgv.replace('--name=', '');
+  pathUrl = path.resolve(__dirname, '..', 'test', 'CP', name);
+}
+
 module.exports = {
   mode: 'development',
-  entry: [
-    path.resolve(__dirname, '..', 'test', 'test.js'),
-  ],
+  entry: pathUrl,
   resolve: {
     alias: {
       templates: path.resolve(__dirname, '../src/templates'),

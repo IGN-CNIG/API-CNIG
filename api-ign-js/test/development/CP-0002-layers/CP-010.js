@@ -8,7 +8,7 @@ const mapa = Mmap({
   center: [-443273.10081370454, 4757481.749296248],
   zoom: 6,
   layers: ['OSM'],
-  controls: ['scale', 'getfeatureinfo'],
+  controls: ['panzoom', 'scale', 'getfeatureinfo'],
 });
 
 mapa.addLayers([xyz_001]);

@@ -279,7 +279,7 @@ export default class Locator extends M.Plugin {
    */
   getAPIRest() {
     return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.zoom}*${this.pointStyle}
-    *${this.isDraggableE}*${this.byParcelCadastre}*${this.byCoordinates}*${this.byPlaceAddressPostal}*${this.useProxy}`;
+    *${this.isDraggable}*${this.byParcelCadastre}*${this.byCoordinates}*${this.byPlaceAddressPostal}*${this.useProxy}`;
   }
 
   /**

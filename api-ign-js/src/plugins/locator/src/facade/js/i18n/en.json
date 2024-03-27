@@ -21,7 +21,7 @@
     "error_findjsonp": "Error in the findJSONp service request.",
     "error_candidates": "Error in the candidatesJSONp service request."
   },
-  "tooltip": "Locator",
+  "tooltip": "Find a place",
   "xylocator": "Search by coordinates",
   "geographic": "Geographic",
   "zone": "zone",

@@ -7,9 +7,6 @@ import { getValue } from './i18n/language';
 import { getBaseLayers, getLayers } from './utils';
 import { handlerErrorPluginWindowSync, handlerErrorURLWindowSync } from './errorhandling';
 
-const MAPEA_LITE_URL = 'https://mapea-lite.desarrollo.guadaltel.es/api-core/';
-const COMPONENTES_URL = 'https://componentes.cnig.es/api-core/';
-
 export default class WindowSyncControl extends M.Control {
   /**
      * @classdesc
@@ -29,7 +26,6 @@ export default class WindowSyncControl extends M.Control {
     // 2. implementation of this control
     const impl = new WindowSyncImplControl();
     super(impl, 'WindowSync');
-    impl.addTo(map);
     this.implControl_ = impl;
 
     /**
@@ -52,7 +48,7 @@ export default class WindowSyncControl extends M.Control {
 
     this.mapsWindows_ = [
       {
-        id: window.crypto.randomUUID(),
+        id: 'base',
         map,
       },
     ];
@@ -63,6 +59,9 @@ export default class WindowSyncControl extends M.Control {
 
     this.pluginScript = this.getScriptAndLink('script');
     this.linksStyle = this.getScriptAndLink('link');
+
+    this.activate = this.activate.bind(this);
+    this.closeWindows = this.closeWindows.bind(this);
   }
 
   /**
@@ -97,11 +96,11 @@ export default class WindowSyncControl extends M.Control {
         const btnOpenWindow = t.querySelector('#new_windowsync');
         const btnCloseWindow = t.querySelector('#deleteAll_windowsync');
         if (btnOpenWindow) {
-          btnOpenWindow.addEventListener('click', this.activate.bind(this));
+          btnOpenWindow.addEventListener('click', this.activate);
         }
 
         if (btnCloseWindow) {
-          btnCloseWindow.addEventListener('click', this.closeWindows.bind(this));
+          btnCloseWindow.addEventListener('click', this.closeWindows);
         }
       });
   }
@@ -118,21 +117,44 @@ export default class WindowSyncControl extends M.Control {
     const newWindow = window.open(`${window.location.href}`, '_blank', 'width=800,height=800');
     this.generateNewMap(newWindow);
 
-    setTimeout(() => {
-      const id = window.crypto.randomUUID();
-      newWindow.ID_MAP = id;
-
-      this.mapsWindows_.push({
-        id,
-        map: newWindow.NEW_API_MAP,
-        window: newWindow,
-      });
-
-      this.implControl_.removeEventListeners(this.mapsWindows_);
-      this.implControl_.handleMoveMap(this.mapsWindows_);
-    }, 1000);
+    const intervalID = setInterval(() => {
+      if (newWindow.NEW_API_MAP !== undefined) {
+        this.addEventMap(newWindow);
+        clearInterval(intervalID);
+      }
+    }, 500);
   }
 
+  addEventMap(nWindow) {
+    const newWindow = nWindow;
+
+    const id = window.crypto.randomUUID();
+    newWindow.ID_MAP = id;
+
+    this.mapsWindows_.push({
+      id,
+      map: newWindow.NEW_API_MAP,
+      window: newWindow,
+    });
+
+    this.handerCloseWindow(newWindow, id);
+
+    newWindow.NEW_API_MAP.on(M.evt.COMPLETED, () => {
+      this.implControl_.removeEventListeners(this.mapsWindows_);
+      this.implControl_.handleMoveMap(this.mapsWindows_);
+    });
+  }
+
+  handerCloseWindow(newWindow, id) {
+    const timer = setInterval(() => {
+      if (newWindow.closed) {
+        clearInterval(timer);
+        // ? Se elimina por el indice para no perder la referencia
+        const index = this.mapsWindows_.findIndex(obj => obj.id === id);
+        this.mapsWindows_.splice(index, 1);
+      }
+    }, 1000);
+  }
 
   generateNewMap(newWindow) {
     const centerMap = this.map_.getCenter();
@@ -148,6 +170,11 @@ export default class WindowSyncControl extends M.Control {
        <!DOCTYPE html>
        <html>
        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="mapea" content="yes">
+
            <title>Nueva Ventana</title>
            ${this.linksStyle.join(' ')}
            <style rel="stylesheet">
@@ -191,7 +218,7 @@ export default class WindowSyncControl extends M.Control {
    */
   getScriptAndLink(type) {
     const attr = type === 'link' ? 'href' : 'src';
-    let elements = [...document.querySelectorAll(`${type}[${attr}*="${MAPEA_LITE_URL}"], ${type}[${attr}*="${COMPONENTES_URL}"]`)];
+    let elements = [...document.querySelectorAll(`${type}[${attr}*="${M.config.MAPEA_URL}"]`)];
     if (elements.length === 0) {
       elements = this.getAPIRestScriptAndLink(type, attr);
     }
@@ -211,7 +238,7 @@ export default class WindowSyncControl extends M.Control {
     }
 
     if (!script) {
-      this.script.push(`<script type="text/javascript" src="plugins/${name}/${name}.ol.min.js"></script>`);
+      this.pluginScript.push(`<script type="text/javascript" src="plugins/${name}/${name}.ol.min.js"></script>`);
     }
   }
 
@@ -237,6 +264,8 @@ export default class WindowSyncControl extends M.Control {
         window.close();
       }
     });
+
+    this.implControl_.removeEventListeners(this.mapsWindows_);
   }
 
   handlePluginScrips(name) {
@@ -244,7 +273,7 @@ export default class WindowSyncControl extends M.Control {
     const script = this.getScriptAndLink('script').some(s => s.includes(`${name.toLowerCase()}.ol.min.js`));
 
     const currentUrl = window.location.href;
-    if (currentUrl.includes('comparators') && (currentUrl.includes(MAPEA_LITE_URL) || currentUrl.includes(COMPONENTES_URL))) {
+    if (currentUrl.includes('comparators') && (currentUrl.includes(M.config.MAPEA_URL))) {
       this.pluginScriptAndLinkAPI(style, script, name.toLowerCase());
     } else {
       handlerErrorURLWindowSync(style, script, name);

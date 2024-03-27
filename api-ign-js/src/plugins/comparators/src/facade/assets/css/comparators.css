@@ -73,15 +73,16 @@
 }
 
 .lyrcompare-button:before {
-    content: "\e902";
+    content: "\e903";
 }
 
 .transparency-button:before {
-    content: "\e900";
+    content: "\e902";
 }
 
 .windowsync-button:before {
-    content: "\ea7e";
+    content: "\e901";
+    font-size: 1.6rem;
 }
 
 /* ++++++++++++ Control MirrorPanel ++++++++++++ */
@@ -648,7 +649,7 @@
     content: "\e816";
   }
   .comparators-icon-zoom-mapa:before {
-    content: "\e817";
+    content: "\e900";
   }
   .comparators-icon-transparency:before {
     content: "\e900";

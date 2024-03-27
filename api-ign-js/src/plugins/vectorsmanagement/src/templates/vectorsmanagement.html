@@ -3,14 +3,14 @@
    <header role="heading" tabindex="0" id="m-vectorsmanagement-titulo" class="m-vectorsmanagement-titulo">{{translations.headertitle}}</header>
    <section class="m-vectorsmanagement-selection-layer">
     <!-- Selección de capa -->
-    <select tabindex="0" role="select" id="m-selectionlayer" title="{{translations.selecctionlayer}}">
+    <select tabindex="0" role="select" id="m-selectionlayer" class="m-vectorsmanagement-selectValues" title="{{translations.selecctionlayer}}">
         <option value="" selected disabled>{{translations.selectLayerDefault}}...</option>
         {{#each layer}}
             <option value="{{value}}">{{text}}</option>
         {{/each}}
     </select>
     {{#if addlayer}}
-    <button id="layerdrawing" class="vectorsmanagement-icon-layers" title="{{translations.creationLayer}}"></button>
+    <button tabindex="0" id="layerdrawing" title="{{translations.creationLayer}}" class="vectorsmanagement-icon-layers"></button>
     {{/if}}
     {{#if help}}
     <button tabindex="0" id="m-vectorsmanagement-help" title="{{translations.help}}" class="vectorsmanagement-icon-ayuda"></button>
