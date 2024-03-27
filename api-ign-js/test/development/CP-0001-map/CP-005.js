@@ -10,6 +10,7 @@ import MBTiles from 'M/layer/MBTiles';
 import MBTilesVector from 'M/layer/MBTilesVector';
 import OGCAPIFeatures from 'M/layer/OGCAPIFeatures';
 import XYZ from 'M/layer/XYZ';
+// import COG from 'M/layer/COG';
 
 
 // Para otras pruebas
@@ -30,6 +31,7 @@ import Popup from 'M/Popup';
 // [APUNTADO A REDMINE] (Que ya fue enviado a Redmine)
 // POR PROBAR (Requiere pruebas tras arreglo)
 // IGNORAR (Creo que no son importantes)
+// OL_ERROR (Apuntes de pruebas de "OL")
 //TERMINOLOGÍA
 
 //EJEMPLOS de pruebas: null, undefined, [], [null], [undefined], {}, {EJEMPLO:null}, {EJEMPLO:undefined}, {EJEMPLO:NaN}, "", "a4", 0, -1, NaN
@@ -74,7 +76,7 @@ import Popup from 'M/Popup';
 const mapa = Mmap(
 //PRIMER PARÁMETRO
   //PRUEBA DE PRIMER PARÁMETRO COMO CADENAS
-  //'map', // BUG(1) "this.viewExtent = options.viewExtent" termina como null, pero la única prueba es de undefined./*
+  // 'map', // BUG(1) "this.viewExtent = options.viewExtent" termina como null, pero la única prueba es de undefined. [APUNTADO A REDMINE]/*
   //'https://componentes.cnig.es/api-core/?container=map&controls=scale,scaleline,panzoombar,panzoom,location,getfeatureinfo,rotate,backgroundlayers&center=-118114.81174504594,4397718.761898104&zoom=6&projection=EPSG:3857*m',/* // OK ERROR, creo que no debería de funcionar en este caso
   //PRUEBA DE PRIMER PARÁMETRO COMO CADENAS
   {
@@ -105,6 +107,7 @@ const mapa = Mmap(
   // controls: ['scaleline', 'scale', 'panzoombar', 'panzoom', 'location', 'getfeatureinfo', 'rotate'], // OK
   // controls: ['attributions'], // OK
   // controls: ['attributions*EJEMPLO_DE_TEXTO_ATTRIBUTIONS'], // NO OK, deja mensaje "undefined, Gobierno de España", no parece que hay forma de usar esa string
+  // controls: ['attributions*<p>EJEMPLO_DE_TEXTO_ATTRIBUTIONS</p>'], // OK, parece que solo funciona así
   // controls: ['backgroundlayers'], // OK
   // controls: ['backgroundlayers*1*true'], // NO OK, Se supone que tiene que escoger de M.config.backgroundlayers el numero "1" del array, que es mapa imagen, pero al hacerse split con "*" termina como "backgroundlayers" default
   // controls: [undefined], // OK vacío
@@ -145,16 +148,17 @@ const mapa = Mmap(
   // viewExtent: undefined, // OK no se hizo ningún zoom
   // viewExtent: [], // OK no se hizo ningún zoom
   // viewExtent: '', // OK no se hizo ningún zoom
-  // viewExtent: ',', // OK no se hizo ningún zoom
+  // viewExtent: ',', // OK no se hizo ningún zoom window.mapa.impl_.viewExtent es [0,0]
   // viewExtent: [NaN], // OK no se hizo ningún zoom
+  // viewExtent: "1234", // BUG window.mapa.impl_.viewExtent devuelve [1234], los otros viewExtent erroneos con arrays incorrectos también lo añaden
   // SIN APUNTAR PARÁMETRO // OK no se hizo ningún zoom
   // ? 02. Caso de uso: Pruebas de viewExtent
 
 
   // ? 03. Caso de uso: Pruebas de minZoom (Requiere center sobre España para acceder a tiles existentes)
   // minZoom: 4, // OK limita sin problemas el zoom
-  // minZoom: 0, // OK Los tiles empiezan en zoom 3 por lo que no tiene effecto
-  // minZoom: 2, // OK Los tiles empiezan en zoom 3 por lo que no tiene effecto
+  // minZoom: 0, // OK Los tiles empiezan en zoom 3 por lo que no tiene efecto
+  // minZoom: 2, // OK Los tiles empiezan en zoom 3 por lo que no tiene efecto
   // minZoom: 9, // OK
   // minZoom: 99, // OK fuerza el zoom a ese nivel y no se ve nada al no haber tiles en este
   // minZoom: "4", // OK se convierte a número
@@ -167,7 +171,7 @@ const mapa = Mmap(
   // minZoom: {}, // OK ERROR El parámetro no es de un tipo soportado: object
   // minZoom: {minZoom:5}, // OK ERROR El parámetro no es de un tipo soportado: object
   // minZoom: NaN, // OK ERROR El formato del parámetro zoom no es correcto
-  // minZoom: -1, // BUG no parece que importa este valor negativo, funciona igual de bien visualmente termina como 3(tile mínimo). ¿Podría causar problemas si no se prevé, ya que se puede obtenerlo con getMinZoom()?
+  // minZoom: -1, // BUG IGNORAR(openlayer también lo aplica) no parece que importa este valor negativo, funciona igual de bien visualmente termina como 3(tile mínimo). ¿Podría causar problemas si no se prevé, ya que se puede obtenerlo con getMinZoom()?
   // SIN APUNTAR PARÁMETRO // OK
   // ? 03. Caso de uso: Pruebas de minZoom
 
@@ -180,7 +184,7 @@ const mapa = Mmap(
   // maxZoom: 0, // OK, Se pone a ZOOM 2 como mínimo y no se mueve, aunque en MinZoom no se ponía nunca en este, el mapa parece borroso
   // maxZoom: 2, // OK, No se mueve, el mapa parece borroso
   // maxZoom: 99, // NO OK, alrededor de zoom 36 y adelante, se va aumentando el error de saltos de mapas que a partir de 44 ya no es visible, los recortes tiene distintos aspectos, cuadrados o triángulos
-  // maxZoom: -1, // BUG, Se pone a ZOOM 2 como mínimo y no se mueve, aunque en MinZoom no se ponía nunca en este, el mapa parece borroso
+  // maxZoom: -1, // BUG IGNORAR(openlayer tambien lo aplica window.mapa.getMapImpl().getView().getMaxZoom()), Se pone a ZOOM 2 como mínimo y no se mueve, aunque en MinZoom no se ponía nunca en este, el mapa parece borroso
   // maxZoom: [], // OK Es ignorado por "!isNullOrEmpty(params.minZoom)" en facade/js/Map.js
   // maxZoom: {}, // OK ERROR El parámetro no es de un tipo soportado: object
   // maxZoom: null, // OK, se transformo en número 28.
@@ -264,7 +268,7 @@ const mapa = Mmap(
 
 
   // ? 10. Caso de uso: Pruebas de resolutions
-  // resolutions: [156543.03392804097,78271.51696402048,39135.75848201024,19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564,1222.99245256282,611.49622628141,305.748113140705,152.8740565703525,76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032,4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395,0.29858214173896974,0.14929107086948487,0.07464553543474244,0.03732276771737122,0.01866138385868561,0.009330691929342804,0.004665345964671402,0.002332672982335701,0.0011663364911678506,0.0005831682455839253,0.00029158412279196264,0.00014579206139598132,0.00007289603069799066,0.00003644801534899533,0.000018224007674497665,0.000009112003837248832,0.000004556001918624416,0.000002278000959312208,0.000001139000479656104,5.69500239828052e-7,2.84750119914026e-7,1.42375059957013e-7,7.11875299785065e-8,3.559376498925325e-8],  // OK
+  // resolutions: [156543.03392804097,78271.51696402048,39135.75848201024,19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564,1222.99245256282,611.49622628141,305.748113140705,152.8740565703525,76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032,4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395,0.29858214173896974,0.14929107086948487,0.07464553543474244,0.03732276771737122,0.01866138385868561,0.009330691929342804,0.004665345964671402,0.002332672982335701,0.0011663364911678506,0.0005831682455839253,0.00029158412279196264,0.00014579206139598132,0.00007289603069799066,0.00003644801534899533,0.000018224007674497665,0.000009112003837248832,0.000004556001918624416,0.000002278000959312208,0.000001139000479656104,5.69500239828052e-7,2.84750119914026e-7,1.42375059957013e-7,7.11875299785065e-8,3.559376498925325e-8], // OK
   // resolutions: [], // OK ignorado
   // resolutions: [1222.99245256282], // OK FUERZA A usar solo este zoom "0" definido como tal
   // resolutions: ["1222.99245256282"], // OK
@@ -288,7 +292,7 @@ const mapa = Mmap(
   // ? 11. Caso de uso: Pruebas de label [APUNTADO A REDMINE]
   // label: {panMapIfOutOfView: false, text:"Texto_de_Prueba_1", coord:[-143777, 4853122]}, // OK
   // label: {panMapIfOutOfView: false, text:"Texto_de_Prueba_2", coord:[0, 0]}, // OK
-  // label: {panMapIfOutOfView: true, text:"Texto_de_Prueba_3", coord:[1, 1]}, // BUG [APUNTADO A REDMINE] Parece que la animación "panIntoView", en concreto "const popPx = this.getMap().getPixelFromCoordinate(coord);" tiene condicion más adelante de "var frameState = this.frameState_; if (!frameState) {..." que se para ahí al ser null.
+  // label: {panMapIfOutOfView: true, text:"Texto_de_Prueba_3", coord:[1, 1]}, // BUG [APUNTADO A REDMINE] Parece que la animación "panIntoView", en concreto "const popPx = this.getMap().getPixelFromCoordinate(coord);" tiene condición más adelante de "var frameState = this.frameState_; if (!frameState) {..." que se para ahí al ser null.
   // SIN APUNTAR PARÁMETRO // OK
   // ? 11. Caso de uso: Pruebas de label
 
@@ -367,7 +371,7 @@ const mapa = Mmap(
 
   // ? 15. Caso de uso: Pruebas de projection
   // projection: "EPSG:3857*m", // OK
-  // projection: "EPSG:4258*d", // OK no se veía nada en el mapa por el center diseñado con la antigua proyeccion
+  // projection: "EPSG:4258*d", // OK no se veía nada en el mapa por el center diseñado con la antigua proyección
   // projection: "EPSG:25830*m", // OK
   // projection: "EPSG:3857*d", // OK no aplica la unidad indicada y termina con "m"
   // projection: "EPSG:25830*d", // OK no aplica la unidad indicada y termina con "m"
@@ -389,9 +393,8 @@ const mapa = Mmap(
 
 
   // ? 16. Caso de uso: Pruebas de kml
-
   // kml: 'KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*true', // OK se ven los puntos de ejemplo este
-  // kml: 'KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false', // OK NO VEO NADA DE ESTE LAYER por "extract:false"
+  // kml: 'KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*false', // OK, NO VEO NADA DE ESTE LAYER por "extract:false"
   // kml: new KML({url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',name: "capaKML",extract: true}), // OK, se ven los puntos de ejemplo este
   // kml: null, // OK no hace nada
   // kml: undefined, // OK no hace nada
@@ -467,17 +470,17 @@ const mapa = Mmap(
   // ? 20. Caso de uso: Pruebas de getfeatureinfo
   // center: { x: -462014, y: 4427238 }, zoom: 5, controls: ['getfeatureinfo'], layers: [new WMS({url: 'https://www.ign.es/wms-inspire/redes-geodesicas?',name: 'RED_ERGNSS',legend: 'Red de Estaciones permanentes GNSS',tiled: true,version: '1.3.0',}, {})], // Necesario para pruebas de "getfeatureinfo"
   // getfeatureinfo: 'plain', // OK
-  // getfeatureinfo: 'gml', // NO OK, no veo diferencia conparado con el plain
+  // getfeatureinfo: 'gml', // NO OK, no veo diferencia comparado con el plain
   // ? 20. Caso de uso: Pruebas de getfeatureinfo
 
-  } //*///BLOQUEO DE COMENTADO PARA PRUEBAS DE ESTE PARÁMETRO CON STRING
+} //*///BLOQUEO DE COMENTADO PARA PRUEBAS DE ESTE PARÁMETRO CON STRING
 //PRIMER PARÁMETRO
 //SEGUNDO PARÁMETRO
 //, {
   // ? 21. Caso de uso: Pruebas de viewExtent en segundo Parámetro, SIMILAR A (02)
   // viewExtent: [-2658785.5918715713, 4280473.583969865, 2037505.425969658, 5474114.217671178], // OK IGUAL FUNCIONA IGUAL QUE EL OTRO viewExtent
   // viewExtent: [-2660000, 4280000, 2040000, 5470000], // OK IGUAL
-  // viewExtent: "-2660000,4280000,2040000,5470000", // BUG, no ha funcionado, falta transformacion en este caso al ser indirecto comparado con el primer parámetro.
+  // viewExtent: "-2660000,4280000,2040000,5470000", // BUG, no ha funcionado, falta transformación en este caso al ser indirecto comparado con el primer parámetro.
   // viewExtent: [-2660000, 4500000, 2040000, 4500000], // OK IGUAL vacío mapa al incluir un rango de 0
   // viewExtent: [2040000, 4500000, -2660000 , 4000000], // OK IGUAL vacío con valores invertidos del rango
   // viewExtent: [-2660000, 4280000, 2040000, 5470000, 1, 2, 3, 4, 5, 6], // OK IGUAL no ha hecho el zoom
@@ -801,7 +804,11 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
             if (auxName == 'removeAttribution') {
               if (mapa.getControls('attributions').length > 0) {
                 const auxAttr = mapa.getAttributions(true)[0] || mapa.getAttributions()[0];
-                showResult(auxButton, "REMOVE_ATTRIBUTION", mapa[auxName](auxAttr.id)); // Ejemplo remove con ID "bff4a6ba-e8c6-4741-94b3-04eb543aed75"
+                if (auxAttr) {
+                  showResult(auxButton, "REMOVE_ATTRIBUTION", mapa[auxName](auxAttr.id)); // Ejemplo remove con ID "bff4a6ba-e8c6-4741-94b3-04eb543aed75"
+                } else {
+                  console.error('NO_ATRIBUTIONS_ADDED_TO_SAID_CONTROL');
+                }
               } else {
                 auxButton.className = "warningButton";
                 console.error('NO_ATRIBUTIONS_PRESENT');
@@ -967,6 +974,7 @@ window.listOfAllFunctions = listOfAllFunctions; // Para tener acceso a toda la l
 // NO OK**** Los elementos que lanzan showResult múltiples veces solo muestran el resultado final del último que se resolvió en su color de botón.
 // NO OK**** Se podría añadir una espera de respuestas validas de estas funciones, con posible configurado default que obtenga los resultados esperados de forma más rápida y con menos clicks manuales.
 // He detectado que no se puede saber 100% si una función tiene o no parámetros, ya que los elementos de opciones (test = true), rompe este contar devolviendo 0, por lo que "createAttribution" si tiene parámetros, pero en estos ejemplos se ha puesto como sin parámetros.
+// POR PROBAR**** Podría ser necesario, añadir los layers de cada capa como único layer al mapa con parámetros y usar las funciones otra vez del mapa para probar que funcionan con cada layer. Esto podría ser pruebas de layers y no del mapa.
 
 // RESULTADO DE LAS PRUEBAS DE FUNCIONES, Hay que añadir esto a la bitácora para informar de su estado:
 
@@ -990,3 +998,16 @@ window.listOfAllFunctions = listOfAllFunctions; // Para tener acceso a toda la l
 // Creo que depende de que se introduzca bien esta cadena, y que el penúltimo elemento entre "*" sea "false" o "true"(en este caso cualquier cosa que no es false funciona como true), si hay algún raro error de escritura de este, pues entonces siempre se escogerá elementos no correctos
 
 // IGNORAR mapa.getResolutions no devuelve ningún valor, lo he probado en un proyecto que usaba el antiguo configurado y devolvía un array, pero este no lo hace ahora. "https://componentes.cnig.es/api-core" y "https://mapea-lite.desarrollo.guadaltel.es/api-core" muestran undefined, "https://mapea4-sigc.juntadeandalucia.es/mapea" muestra array, pero es posible que anteriormente se configuro el setResolution y por eso se muestra.
+
+// [APUNTADO A REDMINE] OL_ERROR se ha comprobado que añadir atribución con controls con "controls: ['attributions*EJEMPLO_DE_TEXTO_ATTRIBUTIONS']" o "controls: ['attributions*<p>EJEMPLO_DE_TEXTO_ATTRIBUTIONS</p>']"
+// Introduce valor directamente del texto introducido al "_attributionsMap" sin el diseño de objeto atributo con ID
+
+// [APUNTADO A REDMINE] OL_ERROR El parámetro "viewExtent" del primer parámetro de mapa o el segundo también, no funciona bien, no se centra en la zona indicada. parece caer con el zoom indicado en la coordenada [0,0]
+
+// BUG IGNORAR minZoom y maxZoom no se comportan igual en ciertos casos comparado con la rama "develop", pero creo que es mejor en esta nueva versión de Openlayer o igual de confuso que en la otra pero no creo que sea efectivamente mal.
+
+// IGNORAR Se ha detectado unas etiquetas de html en KML que se ha cargado, 'KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*true' los títulos de puntos terminan con <br/>
+
+// [APUNTADO A REDMINE] OL_ERROR IGNORAR Se observa que el mapa, no tiene previsto el funcionamiento de todas sus funciones con el layer COG. Posiblemente en las pruebas de Layers, en concreto con los COGs, se incluyeran todos estos errores. Tras update de OL ha dejado de ocurrir algunos de estos por lo que asumo que se tendría que probar con test de Layer bien.
+
+// [APUNTADO A REDMINE] OL_ERROR MUY GRAVE, parece que mapa.setResolutions y mapa.setProjection se comportan de diferente manera en esta versión de API_CNIG. Me ha causado un error muy grave que requería reiniciar mi portátil. Ocurrió tras usar el aplicado de Resoluciones seguido de setProjection, voy a repasar, apuntar y reproducir este error para estar muy seguro de como se reproduce antes de seguir adelante.
