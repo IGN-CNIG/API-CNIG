@@ -17,6 +17,7 @@ const mp = new Stereoscopic({
   collapsed: false,
   orbitControls: false,
   anaglyphActive: true,
+  defaultAnaglyphActive: true,
   maxMagnify: 2,
 });
 

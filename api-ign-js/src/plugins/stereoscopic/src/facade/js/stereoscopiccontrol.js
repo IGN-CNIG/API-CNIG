@@ -17,7 +17,7 @@ export default class StereoscopicControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(orbitControls = false,  anaglyphActive = false, maxMagnify = 1) {
+  constructor(orbitControls = false,  anaglyphActive = false, maxMagnify = 1, defaultAnaglyphActive = false) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(StereoscopicImplControl)) {
       M.exception(getValue('exception.impl'));
@@ -30,6 +30,8 @@ export default class StereoscopicControl extends M.Control {
     this.anaglyphActive_ =  anaglyphActive;
     this.toggle = false;
     this.maxMagnify = maxMagnify;
+
+    this.defaultAnaglyphActive = defaultAnaglyphActive;
   }
 
   /**
@@ -63,7 +65,7 @@ export default class StereoscopicControl extends M.Control {
           },
         },
       });
-      this.addEvent(html, this.map_ );
+      this.addEvent(html, this.map_);
       success(html);
     });
   }
@@ -91,25 +93,30 @@ export default class StereoscopicControl extends M.Control {
     html.querySelector('#toggle3D').addEventListener('click', ({ target }) => {
       this.toggle = !this.toggle;
       window.toggle3D = this.toggle;
-      target.classList.toggle('toggle3D');
       document.querySelector('#anaglyph-type').classList.toggle('selectorToggle');
-      if (this.toggle === true) {
-        document.querySelector('.map canvas').style.display = 'none';
-        setTimeout(() => { // View3D Resolve Window White
-          const {x, y} = mapjs.getCenter();
-          mapjs.setCenter({ x: x + 1, y: y+1 });
-        }, 100);
-
-        target.innerHTML = target.innerHTML.replace(getValue('activate3d'), getValue('disable3d'));
-        this.enableOptionView3D('#anaglyph-type');
-        this.enableOptionView3D('#range3d');
-      } else {
-        document.querySelector('.map canvas').style.display = 'block';
-        target.innerHTML = target.innerHTML.replace(getValue('disable3d'), getValue('activate3d'));
-        this.disableOptionView3D('#anaglyph-type');
-        this.disableOptionView3D('#range3d');
-      }
+      this.handleAnaglyph(mapjs, target);
     });
+  }
+
+  handleAnaglyph(mapjs, target){
+    if (this.toggle === true) {
+      document.querySelector('.map canvas').style.display = 'none';
+      setTimeout(() => { // View3D Resolve Window White
+        const {x, y} = mapjs.getCenter();
+        mapjs.setCenter({ x: x + 1, y: y+1 });
+      }, 100);
+
+      target.innerHTML = target.innerHTML.replace(getValue('activate3d'), getValue('disable3d'));
+      this.enableOptionView3D('#anaglyph-type');
+      this.enableOptionView3D('#range3d');
+      target.classList.add('toggle3D');
+    } else {
+      document.querySelector('.map canvas').style.display = 'block';
+      target.innerHTML = target.innerHTML.replace(getValue('disable3d'), getValue('activate3d'));
+      this.disableOptionView3D('#anaglyph-type');
+      this.disableOptionView3D('#range3d');
+      target.classList.remove('toggle3D');
+    }
   }
 
 
@@ -292,7 +299,14 @@ export default class StereoscopicControl extends M.Control {
 `);
     newScript.appendChild(inlineScript);
     document.body.appendChild(newScript);
-  }
+
+    if(this.defaultAnaglyphActive) {
+      setTimeout(() => {
+        this.toggle = true;
+        this.handleAnaglyph(this.map_, document.querySelector('#toggle3D'));
+      }, 1000);
+    }
+}
 
   /**
    * This function compares controls
