@@ -5,6 +5,7 @@
 import StereoscopicImplControl from 'impl/stereoscopiccontrol';
 import template from 'templates/stereoscopic';
 import { getValue } from './i18n/language';
+import loadAllResources from './util';
 
 export default class StereoscopicControl extends M.Control {
   /**
@@ -40,6 +41,8 @@ export default class StereoscopicControl extends M.Control {
    * @api stable
    */
   createView(map) {
+    loadAllResources();
+
     this.map_ = map;
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
@@ -183,7 +186,6 @@ export default class StereoscopicControl extends M.Control {
       if(changeZoom !== e.frameState.viewState.zoom) {
         changeZoom = e.frameState.viewState.zoom;
         if(window.toggle3D) {setTR3(true);}
-        console.log(TR3.setMagniValues('auto'));
         document.querySelector('#range3d').max = TR3.setMagniValues('auto') + ${this.maxMagnify};
         document.querySelector('#range3d').value = TR3.valuesSet.magnification;
       } else {
