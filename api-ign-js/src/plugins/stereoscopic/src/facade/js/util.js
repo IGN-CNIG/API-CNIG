@@ -5,15 +5,17 @@ function loadAllResources() {
     ]);
   }
   
+  const urlAPI = M.config.MAPEA_URL+'plugins/stereoscopic/'
+
   function loadAllScripts() {
     return new Promise((resolve, reject) => {
       const scripts = [
-        "../TR3-pack/jquery/jquery-3.4.1.min.js",
-        "../TR3-pack/jquery/jquery-ui.min.js",
-        "../TR3-pack/jquery/miniColors/jquery.minicolors.min.js",
-        "../TR3-pack/TR3.min.js",
-        "../TR3-pack/TWEEN/tween.min.js",
-        "../TR3-pack/proj4js/proj4.js"
+        "TR3-pack/jquery/jquery-3.4.1.min.js",
+        "TR3-pack/jquery/jquery-ui.min.js",
+        "TR3-pack/jquery/miniColors/jquery.minicolors.min.js",
+        "TR3-pack/TR3.min.js",
+        "TR3-pack/TWEEN/tween.min.js",
+        "TR3-pack/proj4js/proj4.js"
       ];
   
       function loadScript(url) {
@@ -26,7 +28,7 @@ function loadAllResources() {
           script.onerror = () => {
             reject(new Error(`Error al cargar ${url}`));
           };
-          script.src = url;
+          script.src = urlAPI+url;
           document.head.appendChild(script);
         });
       }
@@ -44,8 +46,8 @@ function loadAllResources() {
   function loadAllStyles() {
     return new Promise((resolve, reject) => {
       const styles = [
-        "../TR3-pack/jquery/jquery-ui-1.12.1.css",
-        "../TR3-pack/jquery/miniColors/jquery.minicolors.css"
+        "TR3-pack/jquery/jquery-ui-1.12.1.css",
+        "TR3-pack/jquery/miniColors/jquery.minicolors.css"
       ];
   
       function loadStyle(url) {
@@ -59,7 +61,7 @@ function loadAllResources() {
           link.onerror = () => {
             reject(new Error(`Error al cargar ${url}`));
           };
-          link.href = url;
+          link.href = urlAPI+url;
           document.head.appendChild(link);
         });
       }
