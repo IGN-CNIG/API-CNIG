@@ -16,16 +16,22 @@
   > > https://github.com/IGN-CNIG/API-CNIG/wiki/MBTilesVector
 - Nuevo parámetro "zoomConstrains" en el constructor del mapa https://github.com/IGN-CNIG/API-CNIG/wiki/2.2.-Controles-b%C3%A1sicos-y-opciones#opciones
 - Nuevos parámetros "isBase", "maxExtent", "crossorigin", "attributions" en capas de fuentes de dato Ráster:
-  > >https://github.com/IGN-CNIG/API-CNIG/wiki/WMS
-  > >https://github.com/IGN-CNIG/API-CNIG/wiki/WMTS
-  > >https://github.com/IGN-CNIG/API-CNIG/wiki/TMS
-  > >https://github.com/IGN-CNIG/API-CNIG/wiki/XYZ
-  > >https://github.com/IGN-CNIG/API-CNIG/wiki/OSM
-  > >https://github.com/IGN-CNIG/API-CNIG/wiki/MBTiles
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/WMS
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/WMTS
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/TMS
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/XYZ
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/OSM
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/MBTiles
+- Nuevo parámetro en WMS y WMTS "usecapabilities":
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/WMS
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/WMTS
 - Nuevo parámetro en modal y popup "inteligence": https://github.com/IGN-CNIG/API-CNIG/wiki/3.-Utilidades
 - Nuevo control de atribuciones "attributions": https://github.com/IGN-CNIG/API-CNIG/wiki/2.2.-Controles-b%C3%A1sicos-y-opciones#Controles-b%C3%A1sicos
-
-
+- Nuevas capas genéricas: Capa GenericRaster y GenericVector:
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/GenericRaster
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/GenericVector
+  > > "Capa GenericRaster y GenericVector": https://github.com/IGN-CNIG/API-CNIG/wiki/5.1.-Parametrizaci%C3%B3n-API-REST
+- Capas rápidas por API-REST: https://github.com/IGN-CNIG/API-CNIG/wiki/5.1.-Parametrizaci%C3%B3n-API-REST
 
 
 15/09/2023 - Versión 4.8.0
