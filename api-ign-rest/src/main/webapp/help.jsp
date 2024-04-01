@@ -23,6 +23,18 @@
     <link href="plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
     <link href="plugins/selectionzoom/selectionzoom.ol.min.css" rel="stylesheet" />
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    <link href="plugins/modal/modal.ol.min.css" rel="stylesheet" />
+    <link href="plugins/rescale/rescale.ol.min.css" rel="stylesheet" />
+    <link href="plugins/comparators/comparators.ol.min.css" rel="stylesheet" />
+    <link href="plugins/storymap/storymap.ol.min.css" rel="stylesheet" />
+    <link href="plugins/locator/locator.ol.min.css" rel="stylesheet" />
+    <link href="plugins/layersitcher/layerswitcher.ol.min.css" rel="stylesheet" />
+    <link href="plugins/stylemanager/stylemanager.ol.min.css" rel="stylesheet" />
+    <link href="plugins/incicarto/incicarto.ol.min.css" rel="stylesheet" />
+    <link href="plugins/timeline/timeline.ol.min.css" rel="stylesheet" />
+    <link href="plugins/queryattributes/queryattributes.ol.min.css" rel="stylesheet" />
+    <link href="plugins/viewmanagement/viewmanagement.ol.min.css" rel="stylesheet" />
+    <link href="plugins/printviewmanagement/printviewmanagement.ol.min.css" rel="stylesheet" />
     </link>
     <style type="text/css">
         html,
@@ -148,6 +160,18 @@
     <script type="text/javascript" src="plugins/contactlink/contactlink.ol.min.js"></script>
     <script type="text/javascript" src="plugins/selectionzoom/selectionzoom.ol.min.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/modal/modal.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/rescale/rescale.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/comparators/comparators.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/storymap/storymap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/locator/locator.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/layerswitcher/layerswitcher.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/stylemanager/stylemanager.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/incicarto/incicarto.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/timeline/timeline.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/queryattributes/queryattributes.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/viewmanagement/viewmanagement.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/printviewmanagement/printviewmanagement.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -202,6 +226,60 @@
 
         let mp10 = new M.plugin.SelectionZoom({});
         map.addPlugin(mp10);
+
+        let mp11 = new M.plugin.Modal({});
+        map.addPlugin(mp11);
+
+        let mp12 = new M.plugin.Rescale({});
+        map.addPlugin(mp12);
+
+        let mp13 = new M.plugin.Comparators({});
+        map.addPlugin(mp13);
+
+        let mp14 = new M.plugin.StoryMap({});
+        map.addPlugin(mp14);
+
+        let mp15 = new M.plugin.Locator({});
+        map.addPlugin(mp15);
+
+        let mp16 = new M.plugin.Layerswitcher({});
+        map.addPlugin(mp16);
+
+        let mp17 = new M.plugin.StyleManager({});
+        map.addPlugin(mp17);
+
+        let mp18 = new M.plugin.Incicarto({});
+        map.addPlugin(mp18);
+
+        let mp19 = new M.plugin.Timeline({
+            position: 'TR',
+            timelineType: 'absolute',
+            intervals : [
+                {
+                id: '1',
+                init: '1918-05-12T23:39:58.767Z',
+                end: '1951-01-16T12:47:07.530Z',
+                layer: 'WMS*Eventos sísmicos*https://www.ign.es/wms-inspire/geofisica*NZ.ObservedEvent',
+                // grupo: 'GRUPO'
+                },
+            ],
+            speedDate: 2,
+            paramsDate:  'yr',
+            formatValue: 'exponential',
+            stepValue: 5,
+            sizeWidthDinamic: 'sizeWidthDinamic_medium',
+            formatMove: 'continuous'
+        });
+        map.addPlugin(mp19);
+
+        let mp20 = new M.plugin.QueryAttributes({});
+        map.addPlugin(mp20);
+
+        let mp21 = new M.plugin.ViewManagement({});
+        map.addPlugin(mp21);
+
+        let mp22 = new M.plugin.PrintViewManagement({});
+        map.addPlugin(mp22);
 
         const selectPosition = document.getElementById("selectPosition");
         const selectExtend = document.getElementById("selectExtend");
