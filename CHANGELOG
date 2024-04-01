@@ -6,8 +6,8 @@
 
 / documentación:
 - Versionado API-CNIG: https://github.com/IGN-CNIG/API-CNIG/wiki/8.-Versionado
-- Nuevos parámetro "removeFolderChildren" en fuentes de dato KML: https://github.com/IGN-CNIG/API-CNIG/wiki/KML
-- Nuevos parámetros "infoEventType", "predefinedStyles" en fuentes de dato vectorial:
+- Nuevos parámetros "removeFolderChildren", "extractStyles" en fuentes de dato KML: https://github.com/IGN-CNIG/API-CNIG/wiki/KML
+- Nuevos parámetros "infoEventType", "predefinedStyles", "maxExtent", "attributions" en fuentes de dato vectorial:
   > > https://github.com/IGN-CNIG/API-CNIG/wiki/KML
   > > https://github.com/IGN-CNIG/API-CNIG/wiki/GeoJSON
   > > https://github.com/IGN-CNIG/API-CNIG/wiki/MVT
@@ -15,7 +15,7 @@
   > > https://github.com/IGN-CNIG/API-CNIG/wiki/OGCAPIFeatures
   > > https://github.com/IGN-CNIG/API-CNIG/wiki/MBTilesVector
 - Nuevo parámetro "zoomConstrains" en el constructor del mapa https://github.com/IGN-CNIG/API-CNIG/wiki/2.2.-Controles-b%C3%A1sicos-y-opciones#opciones
-- Nuevo parámetro "isBase" en capas de fuentes de dato Ráster:
+- Nuevos parámetros "isBase", "maxExtent", "crossorigin", "attributions" en capas de fuentes de dato Ráster:
   > >https://github.com/IGN-CNIG/API-CNIG/wiki/WMS
   > >https://github.com/IGN-CNIG/API-CNIG/wiki/WMTS
   > >https://github.com/IGN-CNIG/API-CNIG/wiki/TMS
@@ -23,6 +23,7 @@
   > >https://github.com/IGN-CNIG/API-CNIG/wiki/OSM
   > >https://github.com/IGN-CNIG/API-CNIG/wiki/MBTiles
 - Nuevo parámetro en modal y popup "inteligence": https://github.com/IGN-CNIG/API-CNIG/wiki/3.-Utilidades
+- Nuevo control de atribuciones "attributions": https://github.com/IGN-CNIG/API-CNIG/wiki/2.2.-Controles-b%C3%A1sicos-y-opciones#Controles-b%C3%A1sicos
 
 
 
