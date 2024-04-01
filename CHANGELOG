@@ -6,7 +6,15 @@
 
 / documentación:
 - Versionado API-CNIG: https://github.com/IGN-CNIG/API-CNIG/wiki/8.-Versionado
-- Nuevos parámetros KML: https://github.com/IGN-CNIG/API-CNIG/wiki/KML
+- Nuevos parámetros en fuentes de dato KML: https://github.com/IGN-CNIG/API-CNIG/wiki/KML
+- Nuevo parámetro "infoEventType" en fuentes de dato vectorial (KML, GeoJSON, WFS, OGCAPI-Features, MVT, MBTiles y Vector )
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/WFS
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/KML
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/GeoJSON
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/MVT
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/Vector
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/OGCAPIFeatures
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/MBTilesVector
 
 15/09/2023 - Versión 4.8.0
 - Se activa nueva política de versionado de CORE y plugins
