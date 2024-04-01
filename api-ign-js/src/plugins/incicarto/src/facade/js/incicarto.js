@@ -269,7 +269,7 @@ export default class Incicarto extends M.Plugin {
    */
     getHelp() {
       return {
-        title: this.name,
+        title: this.name_,
         content: new Promise((success) => {
           const html = M.template.compileSync(myhelp, {
             vars: {

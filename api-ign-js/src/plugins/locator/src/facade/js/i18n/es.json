@@ -34,7 +34,9 @@
     "help10": "La segunda permite la búsqueda por referencia catastral o consultar la referencia catastral por un punto.",
     "help11": "Por ejemplo, si queremos buscar la referencia catastral '0910001QD3101S':",
     "help12": "O el caso contrario, si quisiéramos saber la referencia catastral de un punto del mapa:",
-    "help13": "Por último, el control de búsqueda de un punto, permite introducir la longitud y latitud de un punto y obtenerlo en el mapa. Por ejemplo para longitud -3,43556 y latitud 40,938274 :"
+    "help13": "Por último, el control de búsqueda de un punto, permite introducir la longitud y latitud de un punto y obtenerlo en el mapa. Por ejemplo para longitud -3,43556 y latitud 40,938274 :",
+    "help14": "La información relevante a la extensión y su posible parametrización está documentada en",
+    "help15": "El ejemplo de uso de sus parámetros puede comprobarse en"
   },
   "tooltip": "Buscar un lugar",
   "xylocator": "Buscar por coordenadas",

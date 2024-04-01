@@ -25,7 +25,9 @@
     "help8": "The download by view takes a snapshot of the viewer map, obtaining the layers loaded at that moment and the state of the map. The coordinate system of the download will be the coordinate system and/or projection of the map in that moment.",
     "help9": "The download of layers loaded by services makes a call to the services themselves creating an image of their set. The coordinate system will be WGS84 / Pseudomercator (EPSG:3857).",
     "help10": "The download control of georeferenced images by list allows you to download different WMS services with different coordinate systems and projections, indicated when building the extension.",
-    "help11": "The extension of the image of the display state at that moment is obtained, and a request is made to the service with the assigned projection"
+    "help11": "The extension of the image of the display state at that moment is obtained, and a request is made to the service with the assigned projection",
+    "help12": "The information relevant to the extension and its possible parameterization is documented in",
+    "help13": "The example of using its parameters can be checked in"
   },
   "tooltip": "Map printing",
   "map_printing": "Map printing",

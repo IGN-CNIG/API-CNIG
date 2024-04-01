@@ -45,7 +45,8 @@
     "attribution": "attribution",
     "tooltip": "Recognitions",
     "textHelp": {
-      "text1": "The base layer selector tool allows you to switch between different base layers or background layers, configured in a viewer."
+      "text1": "The base layer selector tool allows you to switch between different base layers or background layers, configured in a viewer.",
+      "text2": "With this information, attribution can be given to each layer, allowing the user to know its source."
     }
   },
   "getfeatureinfo": {

@@ -9,7 +9,7 @@
   "endValue": "Final value",
   "textHelp": {
     "help1": "The timeline extension.",
-    "help2": "The extension is customizable, so it can change from one viewer to another.",
+    "help2": "The extension is customizable, so you can switch from one viewer to another.",
     "help3": "The timeline allows you to make spatial filters on layers based on a time attribute, or add a date to a layer and filter by it.",
     "help4": "The information relevant to the extension and its possible parameterization is documented in",
     "help5": "The example of use of its parameters can be checked in"

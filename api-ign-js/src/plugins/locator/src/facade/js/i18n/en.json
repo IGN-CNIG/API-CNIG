@@ -34,7 +34,9 @@
     "help10": "The second allows searching by cadastral reference or consulting the cadastral reference by a point.",
     "help11": "For example, if we want to search for the cadastral reference '0910001QD3101S':",
     "help12": "Or the opposite case, if we wanted to know the cadastral reference of a point on the map:",
-    "help13": "Finally, the point search control allows you to enter the longitude and latitude of a point and obtain it on the map. For example, for longitude -3.43556 and latitude 40.938274:"
+    "help13": "Finally, the point search control allows you to enter the longitude and latitude of a point and obtain it on the map. For example, for longitude -3.43556 and latitude 40.938274:",
+    "help14": "The information relevant to the extension and its possible parameterization is documented in",
+    "help15": "The example of use of its parameters can be seen in"
   },
   "tooltip": "Find a place",
   "xylocator": "Search by coordinates",
