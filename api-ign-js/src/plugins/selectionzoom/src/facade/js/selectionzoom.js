@@ -333,6 +333,8 @@ export default class SelectionZoom extends M.Plugin {
             urlImages: `${M.config.MAPEA_URL}plugins/selectionzoom/images/`,
             translations: {
               help1: getValue('textHelp.help1'),
+              help2: getValue('textHelp.help2'),
+              help3: getValue('textHelp.help3'),
             },
           },
         });

@@ -256,6 +256,8 @@ export default class Infocoordinates extends M.Plugin {
               help9: getValue('textHelp.help9'),
               help10: getValue('textHelp.help10'),
               help11: getValue('textHelp.help11'),
+              help12: getValue('textHelp.help12'),
+              help13: getValue('textHelp.help13'),
             },
           },
         });

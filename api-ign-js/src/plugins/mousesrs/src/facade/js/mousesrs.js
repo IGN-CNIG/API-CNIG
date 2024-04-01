@@ -291,6 +291,8 @@ export default class MouseSRS extends M.Plugin {
               help4: getValue('textHelp.help4'),
               help5: getValue('textHelp.help5'),
               help6: getValue('textHelp.help6'),
+              help7: getValue('textHelp.help7'),
+              help8: getValue('textHelp.help8'),
             },
           },
         });

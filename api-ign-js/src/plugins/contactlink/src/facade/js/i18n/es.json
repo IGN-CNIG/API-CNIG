@@ -12,7 +12,9 @@
     "help7": "Servicio capaz de mostrar el relieve mediante anaglifos en 3D. Son necesarios unos gafas para anáglifos con colores rojo y azules.",
     "help8": "Fototeca.",
     "help9": "Visualizar, imprimir (en formato PDF) y solicitar certificados de fotogramas originales de vuelos fotogramétricos realizados sobre España.",
-    "help10": "En la parte inferior tiene un enlace directo a las redes sociales del IGN y correo electrónico de consulta consulta@cnig.es a través de las cuales puede mantenerse al día de la actualidad del IGN además de contactarnos directamente."
+    "help10": "En la parte inferior tiene un enlace directo a las redes sociales del IGN y correo electrónico de consulta consulta@cnig.es a través de las cuales puede mantenerse al día de la actualidad del IGN además de contactarnos directamente.",
+    "help11": "La información relevante a la extensión y su posible parametrización está documentada en",
+    "help12": "El ejemplo de uso de sus parámetros puede comprobarse en"
   },
   "tooltip": "Enlaces y contacto IGN",
   "title": "Enlaces y contacto",

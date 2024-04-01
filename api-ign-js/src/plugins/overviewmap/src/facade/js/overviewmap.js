@@ -227,6 +227,8 @@ export default class OverviewMap extends M.Plugin {
               help1: getValue('textHelp.help1'),
               help2: getValue('textHelp.help2'),
               help3: getValue('textHelp.help3'),
+              help4: getValue('textHelp.help4'),
+              help5: getValue('textHelp.help5'),
             },
           },
         });

@@ -234,6 +234,8 @@ export default class Information extends M.Plugin {
               help3: getValue('textHelp.help3'),
               help4: getValue('textHelp.help4'),
               help5: getValue('textHelp.help5'),
+              help6: getValue('textHelp.help6'),
+              help7: getValue('textHelp.help7'),
             },
           },
         });
