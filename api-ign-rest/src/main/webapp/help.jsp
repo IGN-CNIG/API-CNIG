@@ -28,7 +28,7 @@
     <link href="plugins/comparators/comparators.ol.min.css" rel="stylesheet" />
     <link href="plugins/storymap/storymap.ol.min.css" rel="stylesheet" />
     <link href="plugins/locator/locator.ol.min.css" rel="stylesheet" />
-    <link href="plugins/layersitcher/layerswitcher.ol.min.css" rel="stylesheet" />
+    <link href="plugins/layerswitcher/layerswitcher.ol.min.css" rel="stylesheet" />
     <link href="plugins/stylemanager/stylemanager.ol.min.css" rel="stylesheet" />
     <link href="plugins/incicarto/incicarto.ol.min.css" rel="stylesheet" />
     <link href="plugins/timeline/timeline.ol.min.css" rel="stylesheet" />
