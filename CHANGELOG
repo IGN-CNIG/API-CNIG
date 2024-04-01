@@ -7,7 +7,7 @@
 / documentación:
 - Versionado API-CNIG: https://github.com/IGN-CNIG/API-CNIG/wiki/8.-Versionado
 - Nuevos parámetro "removeFolderChildren" en fuentes de dato KML: https://github.com/IGN-CNIG/API-CNIG/wiki/KML
-- Nuevo parámetro "infoEventType" en fuentes de dato vectorial (KML, GeoJSON, WFS, OGCAPI-Features, MVT, MBTiles y Vector )
+- Nuevos parámetros "infoEventType", "predefinedStyles" en fuentes de dato vectorial (KML, GeoJSON, WFS, OGCAPI-Features, MVT, MBTiles y Vector )
   > > https://github.com/IGN-CNIG/API-CNIG/wiki/WFS
   > > https://github.com/IGN-CNIG/API-CNIG/wiki/KML
   > > https://github.com/IGN-CNIG/API-CNIG/wiki/GeoJSON
