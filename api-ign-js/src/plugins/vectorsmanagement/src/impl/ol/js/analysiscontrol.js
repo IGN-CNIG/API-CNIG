@@ -12,6 +12,19 @@ const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&
   'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
 const NO_DATA_VALUE = 'NODATA_value -9999.000';
 
+const formatNumber = (x, decimals) => {
+  const pow = 10 ** decimals;
+  let num = Math.round(x * pow) / pow;
+  num = num.toString().replace('.', ',');
+  if (decimals > 2) {
+    num = `${num.split(',')[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.')},${num.split(',')[1]}`;
+  } else {
+    num.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  return num;
+};
+
 export default class Analysiscontrol extends M.impl.Control {
   /**
   * @classdesc
@@ -40,6 +53,8 @@ export default class Analysiscontrol extends M.impl.Control {
     this.facadeMap_.getMapImpl().addLayer(this.vector_);
 
     this.distance_ = 30;
+
+    this.arrayXZY = null;
   }
 
   /**
@@ -142,7 +157,7 @@ export default class Analysiscontrol extends M.impl.Control {
       promises.push(M.remote.get(url));
     });
 
-    Promise.all(promises).then((responses) => {
+    this.arrayXZY = Promise.all(promises).then((responses) => {
       M.proxy(true);
       responses.forEach((response) => {
         let alt = 0;
@@ -178,6 +193,7 @@ export default class Analysiscontrol extends M.impl.Control {
       });
 
       this.showProfile(arrayXZY2);
+      return arrayXZY2;
     }).catch((err) => {
       M.proxy(true);
       // document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = '';
@@ -431,4 +447,89 @@ export default class Analysiscontrol extends M.impl.Control {
       }),
     });
   }
+
+  /**
+   * Gets coordinates of current feature.
+   * @public
+   * @function
+   * @api
+   */
+  getFeatureCoordinates() {
+    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getCoordinates();
+  }
+
+  /**
+     * Gets feature length
+     * @public
+     * @function
+     * @api
+     */
+  getFeatureLength() {
+    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getLength();
+  }
+
+  /**
+     * Gets feature area
+     * @public
+     * @function
+     * @api
+     */
+  getFeatureArea() {
+    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getArea();
+  }
+
+  getGeometryLength(geometry) {
+    let length = 0;
+    const codeProj = this.facadeMap_.getProjection().code;
+    const unitsProj = this.facadeMap_.getProjection().units;
+    if (codeProj === 'EPSG:3857') {
+      length = ol.sphere.getLength(geometry);
+    } else if (unitsProj === 'd') {
+      const coordinates = geometry.getCoordinates();
+      for (let i = 0, ii = coordinates.length - 1; i < ii; i += 1) {
+        length += ol.sphere.getDistance(ol.proj.transform(coordinates[i], codeProj, 'EPSG:4326'), ol.proj.transform(coordinates[i + 1], codeProj, 'EPSG:4326'));
+      }
+    } else {
+      length = geometry.getLength();
+    }
+
+    return length;
+  }
+
+  calculate3DLength(promiseArray, flatLength, elem) {
+    const $td = elem;
+    promiseArray
+      .then((points) => {
+        let length = 0;
+        for (let i = 0, ii = points.length - 1; i < ii; i += 1) {
+          const geom = new ol.geom.LineString([points[i], points[i + 1]]);
+          const distance = this.getGeometryLength(geom);
+          const elevDiff = Math.abs(points[i][2] - points[i + 1][2]);
+          length += Math.sqrt((distance * distance) + (elevDiff * elevDiff));
+        }
+
+        if (length < flatLength) {
+          length = flatLength + ((flatLength - length) / 2);
+        }
+
+        let m = `${formatNumber(length / 1000, 2)}km`;
+        if (length < 1000) {
+          m = `${formatNumber(length, 0)}m`;
+        }
+
+        $td.innerHTML = `3D: ${m}`;
+        this.facadeControl.feature.setAttribute('3dLength', length);
+      })
+      .catch((err) => {
+        $td.innerHTML = '-';
+        M.dialog.error(getValue('try_again'));
+      });
+  }
+
+  get3DLength(id) {
+    const elem = document.querySelector(`${id}`);
+    const flatLength = this.getFeatureLength();
+    this.calculate3DLength(this.arrayXZY, flatLength, elem);
+  }
 }
+

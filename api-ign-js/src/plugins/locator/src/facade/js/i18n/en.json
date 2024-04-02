@@ -21,6 +21,23 @@
     "error_findjsonp": "Error in the findJSONp service request.",
     "error_candidates": "Error in the candidatesJSONp service request."
   },
+  "textHelp": {
+    "help1": "The place search extension allows you to find places by coordinates or the other way around, coordinates and places on the map by entering text.",
+    "help2": "This extension is customizable via parameters, so the extension can change from one viewer to another.",
+    "help3": "The extension is made up of several controls:",
+    "help4": "The search control by places. It is a façade of the Cartociudad geocoder (https://www.idee.es/resources/documentos/Cartociudad/CartoCiudad_ServiciosWeb.pdf), which allows two types of searches to be carried out:" ,
+    "help5": "By text, for example, if we want to search for the main street of Pamplona:",
+    "help6": "When searching, several alternatives appear. In this case we look for the first one. When we click on option one, it takes us to the street marking the geometry:",
+    "help7": "By coordinates, activating the tool to obtain address by point on the map, the cursor will change to a pin. Clicking on a point on the map returns the information associated with that point:",
+    "help8": "The next control is the cadastre search and is made up of two tools:",
+    "help9": "The first of them allows you to search for a plot by province, municipality, polygon and plot:",
+    "help10": "The second allows searching by cadastral reference or consulting the cadastral reference by a point.",
+    "help11": "For example, if we want to search for the cadastral reference '0910001QD3101S':",
+    "help12": "Or the opposite case, if we wanted to know the cadastral reference of a point on the map:",
+    "help13": "Finally, the point search control allows you to enter the longitude and latitude of a point and obtain it on the map. For example, for longitude -3.43556 and latitude 40.938274:",
+    "help14": "The information relevant to the extension and its possible parameterization is documented in",
+    "help15": "The example of use of its parameters can be seen in"
+  },
   "tooltip": "Find a place",
   "xylocator": "Search by coordinates",
   "geographic": "Geographic",

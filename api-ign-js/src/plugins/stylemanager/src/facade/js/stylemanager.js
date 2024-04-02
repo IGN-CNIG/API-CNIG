@@ -8,6 +8,7 @@ import 'templates/categorystyles';
 import StyleManagerControl from './stylemanagerControl';
 import { ColorPickerPolyfill } from './utils/colorpicker';
 import { getValue } from './i18n/language';
+import myhelp from '../../templates/myhelp';
 
 export default class StyleManager extends M.Plugin {
   /**
@@ -144,5 +145,70 @@ export default class StyleManager extends M.Plugin {
 
   get name() {
     return 'stylemanager';
+  }
+
+  /**
+   * Obtiene la ayuda del plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getHelp() {
+    return {
+      title: this.name,
+      content: new Promise((success) => {
+        const html = M.template.compileSync(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}plugins/stylemanager/images/`,
+            translations: {
+              help1: getValue('textHelp.help1'),
+              help2: getValue('textHelp.help2'),
+              help3: getValue('textHelp.help3'),
+              help4: getValue('textHelp.help4'),
+              help5: getValue('textHelp.help5'),
+              help6: getValue('textHelp.help6'),
+              help7: getValue('textHelp.help7'),
+              help8: getValue('textHelp.help8'),
+              help9: getValue('textHelp.help9'),
+              help10: getValue('textHelp.help10'),
+              help11: getValue('textHelp.help11'),
+              help12: getValue('textHelp.help12'),
+              help13: getValue('textHelp.help13'),
+              help14: getValue('textHelp.help14'),
+              help15: getValue('textHelp.help15'),
+              help16: getValue('textHelp.help16'),
+              help17: getValue('textHelp.help17'),
+              help18: getValue('textHelp.help18'),
+              help19: getValue('textHelp.help19'),
+              help20: getValue('textHelp.help20'),
+              help21: getValue('textHelp.help21'),
+              help22: getValue('textHelp.help22'),
+              help23: getValue('textHelp.help23'),
+              help24: getValue('textHelp.help24'),
+              help25: getValue('textHelp.help25'),
+              help26: getValue('textHelp.help26'),
+              help27: getValue('textHelp.help27'),
+              help28: getValue('textHelp.help28'),
+              help29: getValue('textHelp.help29'),
+              help30: getValue('textHelp.help30'),
+              help31: getValue('textHelp.help31'),
+              help32: getValue('textHelp.help32'),
+              help33: getValue('textHelp.help33'),
+              help34: getValue('textHelp.help34'),
+              help35: getValue('textHelp.help35'),
+              help36: getValue('textHelp.help36'),
+              help37: getValue('textHelp.help37'),
+              help38: getValue('textHelp.help38'),
+              help39: getValue('textHelp.help39'),
+              help40: getValue('textHelp.help40'),
+              help41: getValue('textHelp.help41'),
+              help42: getValue('textHelp.help42'),
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 }

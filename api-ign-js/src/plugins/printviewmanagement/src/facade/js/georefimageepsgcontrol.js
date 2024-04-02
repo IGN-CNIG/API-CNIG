@@ -116,6 +116,7 @@ export default class GeorefImageEpsgControl extends M.Control {
         vars: {
           translations: {
             selectLayer: getValue('selectLayer'),
+            nameTitle: getValue('title_list'),
           },
           layers: this.layers_,
         },

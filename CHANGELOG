@@ -1,8 +1,88 @@
 29/02/2024 - Versión 4.9.0
-- Se implementa plugin Help para generar página de ayuda al vuelo de controles y plugins y de información indicada por el usuario
-- Se implementa método para obtener la ayuda de los plugins y controles en: measurebar, selectionzoom, sharemap, backimglayers, information, infocoordinates, contactlink, overviewmap, mousesrs y scale.
-- Se elimina etiqueta i de printerviewmanagement que provocaba problemas con CSS
-- Se implementa plugin VectorsManagement dejando obsoletos los plugins buffer, geometrydraw, selectiondraw, topographicprofile y vectors
+- Plugin comparators: se añade nuevo control windowsync
+- Plugin contactlink: para visor estereoscopico enviará como parámetro el centro, zoom y proyección del mapa.
+- Se incorpora plugin printviewmanagement dejando obsoleto los plugins printermap, georefimage y georefimage2.
+- Plugin storymap: se soluciona conflicto con CSS con otros plugins.
+- Plugin layerswitcher: 
+  - Se añade scroll en móviles al listar las capas.
+  - Se soluciona problema con botón añadir en móviles.
+  - Se añaden traducciones.
+  - Se añade funcionalidad de subir ficheros.
+  - Cambio de estilos en icono "ojo".
+  - Se soluciona problema al mostrar/ocultar todas las capas.
+  - Se soluciona problema con leyenda de capas KML.
+- Plugin comparators: se añaden traducciones.
+- Plugin viewmanagement: se añaden traducciones.
+- Se incorpora plugin vectorsmanagement dejando obsoleto los plugins buffer, vectors, topographicprofile, selectiondraw y geometrydraw.
+- Se incorpora plugin help para generar página de ayuda al vuelo de controles y plugins y de información indicada por el usuario.
+- Se implementa método de ayuda para mostrarla en el plugin Help en los plugins y controles:
+  - scale
+  - scaleline
+  - panzoombar
+  - panzoom
+  - location
+  - getfeatureinfo
+  - rotate
+  - backgroundlayers
+  - attributions
+  - overviewmap
+  - infocoordinates
+  - sharemap
+  - backimglayer
+  - contactlink
+  - mousesrs
+  - selectionzoom
+  - measurebar
+  - information
+  - modal
+  - rescale
+  - comparators
+  - storymap
+  - locator
+  - layerswitcher
+  - stylemanager
+  - incicarto
+  - timeline
+  - queryattributes
+  - viewmanagement
+  - printviewmanagement
+- Se soluciona problema de concatenación de consultas cuando está activado el modo hover.
+- Se soluciona problema de consultar capa vector en caso de que no tenga nombre.
+- Se soluciona problema con MVT en modo feature.
+- Se soluciona problema al obtener estilo de GenericVector.
+- Se implementa funcionalidad de arrastrar ficheros al mapa.
+- Se añaden nuevas proyecciones: EPSG:4328 y EPSG:4346
+- Se soluciona problema al cargar capas OGCAPIFeatures
+- Mejoras JSDOC
+/ documentación:
+- Versionado API-CNIG: https://github.com/IGN-CNIG/API-CNIG/wiki/8.-Versionado
+- Nuevos parámetros "removeFolderChildren", "extractStyles" en fuentes de dato KML: https://github.com/IGN-CNIG/API-CNIG/wiki/KML
+- Nuevos parámetros "infoEventType", "predefinedStyles", "maxExtent", "attributions" en fuentes de dato vectorial:
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/KML
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/GeoJSON
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/MVT
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/Vector
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/OGCAPIFeatures
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/MBTilesVector
+- Nuevo parámetro "zoomConstrains" en el constructor del mapa https://github.com/IGN-CNIG/API-CNIG/wiki/2.2.-Controles-b%C3%A1sicos-y-opciones#opciones
+- Nuevos parámetros "isBase", "maxExtent", "crossorigin", "attributions" en capas de fuentes de dato Ráster:
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/WMS
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/WMTS
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/TMS
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/XYZ
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/OSM
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/MBTiles
+- Nuevo parámetro en WMS y WMTS "usecapabilities":
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/WMS
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/WMTS
+- Nuevo parámetro en modal y popup "inteligence": https://github.com/IGN-CNIG/API-CNIG/wiki/3.-Utilidades
+- Nuevo control de atribuciones "attributions": https://github.com/IGN-CNIG/API-CNIG/wiki/2.2.-Controles-b%C3%A1sicos-y-opciones#Controles-b%C3%A1sicos
+- Nuevas capas genéricas: Capa GenericRaster y GenericVector:
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/GenericRaster
+  > > https://github.com/IGN-CNIG/API-CNIG/wiki/GenericVector
+  > > "Capa GenericRaster y GenericVector": https://github.com/IGN-CNIG/API-CNIG/wiki/5.1.-Parametrizaci%C3%B3n-API-REST
+- Capas rápidas por API-REST: https://github.com/IGN-CNIG/API-CNIG/wiki/5.1.-Parametrizaci%C3%B3n-API-REST
+
 
 15/09/2023 - Versión 4.8.0
 - Se activa nueva política de versionado de CORE y plugins

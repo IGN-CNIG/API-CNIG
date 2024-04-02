@@ -13,7 +13,9 @@
     "help8": "2. Point information. You can check the coordinates of each point by clicking on the corresponding number in the 'Coordinate Information' panel.",
     "help9": "3. Delete point. Delete the current point.",
     "help10": "4. Delete all points. Delete all points and restart the numbering.",
-    "help11": "5. Show coordinates on screen. Show or hide the coordinates of points on the map."
+    "help11": "5. Show coordinates on screen. Show or hide the coordinates of points on the map.",
+    "help12": "The information relevant to the extension and its possible parameterization is documented in",
+    "help13": "The example of use of its parameters can be checked in"
   },
   "tooltip": "Coordinates Information",
   "title": "Coordinates Information",

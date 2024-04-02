@@ -368,7 +368,7 @@ const capaXYZ = new M.layer.XYZ({
 
 // map.addLayers(generic_001);
 // map.addLayers(generic_002);
-// map.addLayers(capaOSM);
+map.addLayers(capaOSM);
 window.capaOSM = capaOSM;
 // map.addLayers(capaKML);
 window.capaGeoJSON = capaGeoJSON;
@@ -376,14 +376,14 @@ window.capaKML = capaKML;
 // map.addLayers(capaMVT);
 // map.addLayers(capaOGCAPIFeatures);
 window.capaOGCAPIFeatures = capaOGCAPIFeatures;
-// map.addLayers(capaTMS);
-// map.addLayers(capaVector);
-// capaVector.addFeatures(feature);
-// map.addLayers(capaWFS);
+map.addLayers(capaTMS);
+map.addLayers(capaVector);
+capaVector.addFeatures(feature);
+map.addLayers(capaWFS);
 window.capaWMS = capaWMS;
-// map.addLayers(capaWMS);
-// map.addLayers(capaWMTS);
-// map.addLayers(capaXYZ);
+map.addLayers(capaWMS);
+map.addLayers(capaWMTS);
+map.addLayers(capaXYZ);
 
 window.map = map;
 window.capaGeoJSON = capaGeoJSON;
@@ -450,47 +450,47 @@ window.capaKML = capaKML;
 
 // OTRAS PRUEBAS
 
-// const capa2 = new M.layer.WMS({
-//   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
-//   name: 'AU.AdministrativeUnit',
-//   legend: 'capa2',
-//   tiled: false,
-//   transparent: true,
-// }, {
-//   maxScale: 14000000,
-//   minScale: 3000000,
-// });
-// // window.capa2 = capa2;
+const capa2 = new M.layer.WMS({
+  url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
+  name: 'AU.AdministrativeUnit',
+  legend: 'capa2',
+  tiled: false,
+  transparent: true,
+}, {
+  maxScale: 14000000,
+  minScale: 3000000,
+});
+// window.capa2 = capa2;
 
-// capa2.setZIndex(99);
+capa2.setZIndex(99);
 
-// map.addWMS(capa2);
+map.addWMS(capa2);
 
-// const capa3 = new M.layer.KML({
-//   url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
-//   name: 'capa3',
-//   extract: true,
-// });
-// map.addKML(capa3);
+const capa3 = new M.layer.KML({
+  url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
+  name: 'capa3',
+  extract: true,
+});
+map.addKML(capa3);
 
-// const capa4 = new M.layer.WFS({
-//   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
-//   namespace: 'tematicos',
-//   name: 'Municipios',
-//   legend: 'capa4',
-//   geometry: 'MPOLYGON',
-// });
+const capa4 = new M.layer.WFS({
+  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
+  namespace: 'tematicos',
+  name: 'Municipios',
+  legend: 'capa4',
+  geometry: 'MPOLYGON',
+});
 // map.addWFS(capa4);
 
-// const capa5 = new M.layer.WMS({
-//   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
-//   name: 'provincias_pob',
-//   legend: 'capa5',
-//   tiled: false,
-//   transparent: true,
-// });
+const capa5 = new M.layer.WMS({
+  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
+  name: 'provincias_pob',
+  legend: 'capa5',
+  tiled: false,
+  transparent: true,
+});
 
-// map.addWMS(capa5);
+map.addWMS(capa5);
 
 
 // const mp2 = new M.plugin.TOC({

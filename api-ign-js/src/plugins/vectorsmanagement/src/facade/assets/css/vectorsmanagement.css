@@ -111,36 +111,55 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
     text-overflow: ellipsis;
 }
 
-#m-selectionlayer,  #m-point-coordinates-srs, #figuresSelector {
+#m-selectionlayer,
+#m-point-coordinates-srs,
+#figuresSelector {
     margin: auto 10px;
     padding: 5px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 4px;
     color: #6c6c6c;
-    font-family: Muli,sans-serif;
+    font-family: Muli, sans-serif;
     font-size: 13px;
 }
 
 #m-point-coordinates-srs {
-   margin: 0px 0px 0px 5px;
+    margin: 0px 0px 0px 5px;
 }
 
-.m-vectorsmanagement-selection-layer>div,
-.m-vectorsmanagement-analysis>div {
+.m-vectorsmanagement-selection-layer>div {
     margin-left: 15px;
     padding-top: 5px;
     padding-bottom: 10px;
     font-size: 1.2em;
 }
 
-.m-vectorsmanagement-style-container, #m-point-coordinates-coordinatesSystem,
-#m-point-coordinates-utm, #m-point-coordinates-latlon  {
+.m-vectorsmanagement-analysis-featureInfo table {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+.m-vectorsmanagement-analysis-featureInfo>section {
+    padding: 10px;
+}
+
+.m-vectorsmanagement-analysis-featureInfo table th,
+.m-vectorsmanagement-analysis-featureInfo table td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+.m-vectorsmanagement-style-container,
+#m-point-coordinates-coordinatesSystem,
+#m-point-coordinates-utm,
+#m-point-coordinates-latlon {
     padding: 10px;
     font-size: 1.2em;
 }
 
-#m-point-coordinates label{
+#m-point-coordinates label {
     width: 78px;
     display: inline-block;
 }
@@ -154,7 +173,7 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
     margin-left: calc(50% - 30px) !important;
 }
 
-#m-text-draw > div {
+#m-text-draw>div {
     margin-top: 15px;
 }
 
@@ -167,13 +186,14 @@ button#m-vectorsmanagement-download-btn,
 button#m-vectorsmanagement-deletegeom-btn,
 button#add-attribute-btn,
 button#vectorsmanagement-analysis-btn,
-button#confirm-clear-btn, button#cancel-clear-btn,
+button#confirm-clear-btn,
+button#cancel-clear-btn,
 button#set-style-btn {
     text-align: center;
     border: none;
     padding: 8px;
-    background-color: #71a7d3!important;
-    color: #fff!important;
+    background-color: #71a7d3 !important;
+    color: #fff !important;
     margin: 10px auto;
 }
 
@@ -191,7 +211,8 @@ button#vectorsmanagement-analysis-btn {
     display: block;
 }
 
-button#confirm-clear-btn, button#cancel-clear-btn {
+button#confirm-clear-btn,
+button#cancel-clear-btn {
     display: inline;
 }
 
@@ -199,10 +220,18 @@ button#confirm-clear-btn, button#cancel-clear-btn {
     display: flex;
 }
 
-.m-vectorsmanagement-creation-container, #m-point-coordinates, #m-text-draw, .m-vectorsmanagement-style-container,
-.m-container.m-selection.m-selection-container, .m-vectorsmanagement-analysis, #m-vectorsmanagement-download-container,
-.m-vectorsmanagement-edition-container, #edition-container, #m-vectorsmanagement-previews,
-#m-figuretools, #edition-attributes-container {
+.m-vectorsmanagement-creation-container,
+#m-point-coordinates,
+#m-text-draw,
+.m-vectorsmanagement-style-container,
+.m-container.m-selection.m-selection-container,
+.m-vectorsmanagement-analysis,
+#m-vectorsmanagement-download-container,
+.m-vectorsmanagement-edition-container,
+#edition-container,
+#m-vectorsmanagement-previews,
+#m-figuretools,
+#edition-attributes-container {
     border-top: solid 1px #757474;
 }
 
@@ -254,7 +283,7 @@ table#attribute-table>tr>th {
     font-weight: 700;
     background-color: #9dc6e8;
     color: #fff;
-    min-width: 130px!important;
+    min-width: 130px !important;
     border: 1px solid #71a7d3;
     padding: 8px;
 }
@@ -277,7 +306,8 @@ table#attribute-table>tr>th>button {
     padding: 0;
 }
 
-#point-options, #line-options,
+#point-options,
+#line-options,
 #polygon-options {
     color: #71a7d3;
     font-size: 14px;
@@ -295,7 +325,9 @@ table#attribute-table>tr>th>button {
     width: 100%;
 }
 
-.style-col-0, .style-col-1, .style-col-2 {
+.style-col-0,
+.style-col-1,
+.style-col-2 {
     padding: 0 15px;
     align-content: center;
     align-items: left;
@@ -304,13 +336,17 @@ table#attribute-table>tr>th>button {
     float: left;
 }
 
-.style-col-0 label, .style-col-0 input,
-.style-col-1 label, .style-col-1 input,
-.style-col-2 label, .style-col-2 input {
+.style-col-0 label,
+.style-col-0 input,
+.style-col-1 label,
+.style-col-1 input,
+.style-col-2 label,
+.style-col-2 input {
     vertical-align: middle;
 }
 
-.style-col-1, .style-col-2 {
+.style-col-1,
+.style-col-2 {
     width: 50%;
 }
 
@@ -322,9 +358,12 @@ table#attribute-table>tr>th>button {
     padding-left: 0 !important;
 }
 
-#radiusSelector-point, #fontSize-point,
-#thicknessSelector-line, #fontSize-line,
-#thicknessSelector-polygon, #fontSize-polygon {
+#radiusSelector-point,
+#fontSize-point,
+#thicknessSelector-line,
+#fontSize-line,
+#thicknessSelector-polygon,
+#fontSize-polygon {
     width: 40px;
 }
 
@@ -446,11 +485,13 @@ table#attribute-table>tr>th>button {
     width: fit-content;
 }
 
-.ol-profil button.profile-download-button:hover, .ol-profil button.profile-move-button:hover {
+.ol-profil button.profile-download-button:hover,
+.ol-profil button.profile-move-button:hover {
     transform: scale(1.2);
 }
 
-.ol-profil button.profile-download-button:focus, .ol-profil button.profile-move-button:focus {
+.ol-profil button.profile-download-button:focus,
+.ol-profil button.profile-move-button:focus {
     outline: none;
 }
 
@@ -532,7 +573,7 @@ table#attribute-table>tr>th>button {
 
 .ol-profil table .track-info {
     display: table-row;
-    background-color: hsla(0,0%,100%,.7);
+    background-color: hsla(0, 0%, 100%, .7);
 }
 
 .ol-profil table .point-info {
@@ -564,13 +605,13 @@ table#attribute-table>tr>th>button {
     font-family: 'vectorsmanagement';
     src: url('../fonts/vectorsmanagement.eot?5338693');
     src: url('../fonts/vectorsmanagement.eot?5338693#iefix') format('embedded-opentype'),
-         url('../fonts/vectorsmanagement.woff2?5338693') format('woff2'),
-         url('../fonts/vectorsmanagement.woff?5338693') format('woff'),
-         url('../fonts/vectorsmanagement.ttf?5338693') format('truetype'),
-         url('../fonts/vectorsmanagement.svg?5338693#vectorsmanagement') format('svg');
+        url('../fonts/vectorsmanagement.woff2?5338693') format('woff2'),
+        url('../fonts/vectorsmanagement.woff?5338693') format('woff'),
+        url('../fonts/vectorsmanagement.ttf?5338693') format('truetype'),
+        url('../fonts/vectorsmanagement.svg?5338693#vectorsmanagement') format('svg');
     font-weight: normal;
     font-style: normal;
-  }
+}
 
 .m-areas>div.m-area>div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control>button,
 .m-areas>div.m-area>div.m-panel.m-plugin-vectorsmanagement.collapsed>button.m-panel-btn,
@@ -599,7 +640,8 @@ table#attribute-table>tr>th>button {
 
 .m-vectorsmanagement-previews>button,
 .m-vectorsmanagement-selection-layer>button,
-#creationBtns>button, #analysisBtns>button,
+#creationBtns>button,
+#analysisBtns>div>button,
 #editionBtns>button,
 [class^="vectorsmanagement-icon-"]:before {
     color: #757474;
@@ -611,7 +653,7 @@ table#attribute-table>tr>th>button {
 }
 
 table#attribute-table>tr>th>button,
-table#attribute-table>tr>th>button[class^="vectorsmanagement-icon-"]:before{
+table#attribute-table>tr>th>button[class^="vectorsmanagement-icon-"]:before {
     color: rgb(44 68 88);
     font-size: 20px;
     border: none;
@@ -620,7 +662,7 @@ table#attribute-table>tr>th>button[class^="vectorsmanagement-icon-"]:before{
     width: 20px;
 }
 
-div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:before{
+div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:before {
     color: #fff;
     font-size: 20px;
     border: none;
@@ -631,7 +673,8 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
 
 .m-vectorsmanagement-previews>button.activated,
 .m-vectorsmanagement-selection-layer>button.activated,
-#creationBtns>button.activated, #analysisBtns>button.activated,
+#creationBtns>button.activated,
+#analysisBtns>div>button.activated,
 #editionBtns>button.activated,
 [class^="vectorsmanagement-icon-"].activated:before {
     color: #fff;
@@ -642,40 +685,129 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
     width: 40px;
 }
 
-#analysisBtns {
-    text-align: center;
+.m-vectorsmanagement-analysis-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-top: 10px;
+    gap: 20px;
 }
 
-.vectorsmanagement-icon-font:before { content: '\e801'; }
-.vectorsmanagement-icon-layers:before { content: '\e802'; }
-.vectorsmanagement-icon-linea:before { content: '\e803'; }
-.vectorsmanagement-icon-poligono:before { content: '\e806'; }
-.vectorsmanagement-icon-pin:before { content: '\e807'; }
-.vectorsmanagement-icon-vectors:before { content: '\e819'; }
-.vectorsmanagement-icon-profile:before { content: '\e81b'; }
-.vectorsmanagement-icon-hole:before { content: '\e81c'; }
-.vectorsmanagement-icon-pin-located:before { content: '\e900'; }
-.vectorsmanagement-icon-cancelar:before { content: '\e905'; }
-.vectorsmanagement-icon-aceptar:before { content: '\e908'; }
-.vectorsmanagement-icon-radio-vacio:before { content: '\e90b'; }
-.vectorsmanagement-icon-radio-relleno:before { content: '\e90c'; }
-.vectorsmanagement-icon-descargar:before { content: '\e90e'; }
-.vectorsmanagement-icon-editar:before { content: '\e90f'; }
-.vectorsmanagement-icon-editar2:before { content: '\e910'; }
-.vectorsmanagement-icon-estilo:before { content: '\e91c'; }
-.vectorsmanagement-icon-mover:before { content: '\e921'; }
-.vectorsmanagement-icon-seleccionar:before { content: '\e931'; }
-.vectorsmanagement-icon-mas:before { content: '\e935'; }
-.vectorsmanagement-icon-medir-area:before { content: '\e936'; }
-.vectorsmanagement-icon-analisis:before { content: '\e938'; }
-.vectorsmanagement-icon-papelera:before { content: '\e93e'; }
-.vectorsmanagement-icon-subir:before { content: '\e95e'; }
-.vectorsmanagement-icon-tamano:before { content: '\e95f'; }
-.vectorsmanagement-icon-ayuda:before { content: '\e981'; }
-.vectorsmanagement-icon-scissors:before { content: '\ea5a'; }
-.vectorsmanagement-icon-resize-full-alt:before { content: '\e800'; }
-.vectorsmanagement-icon-table:before { content: '\f0ce'; }
+.vectorsmanagement-icon-font:before {
+    content: '\e801';
+}
+
+.vectorsmanagement-icon-layers:before {
+    content: '\e802';
+}
+
+.vectorsmanagement-icon-linea:before {
+    content: '\e803';
+}
+
+.vectorsmanagement-icon-poligono:before {
+    content: '\e806';
+}
+
+.vectorsmanagement-icon-pin:before {
+    content: '\e807';
+}
+
+.vectorsmanagement-icon-vectors:before {
+    content: '\e819';
+}
+
+.vectorsmanagement-icon-profile:before {
+    content: '\e81b';
+}
+
+.vectorsmanagement-icon-hole:before {
+    content: '\e81c';
+}
+
+.vectorsmanagement-icon-pin-located:before {
+    content: '\e900';
+}
+
+.vectorsmanagement-icon-cancelar:before {
+    content: '\e905';
+}
+
+.vectorsmanagement-icon-aceptar:before {
+    content: '\e908';
+}
+
+.vectorsmanagement-icon-radio-vacio:before {
+    content: '\e90b';
+}
+
+.vectorsmanagement-icon-radio-relleno:before {
+    content: '\e90c';
+}
+
+.vectorsmanagement-icon-descargar:before {
+    content: '\e90e';
+}
+
+.vectorsmanagement-icon-editar:before {
+    content: '\e90f';
+}
+
+.vectorsmanagement-icon-editar2:before {
+    content: '\e910';
+}
+
+.vectorsmanagement-icon-estilo:before {
+    content: '\e91c';
+}
+
+.vectorsmanagement-icon-mover:before {
+    content: '\e921';
+}
+
+.vectorsmanagement-icon-seleccionar:before {
+    content: '\e931';
+}
+
+.vectorsmanagement-icon-mas:before {
+    content: '\e935';
+}
+
+.vectorsmanagement-icon-medir-area:before {
+    content: '\e936';
+}
+
+.vectorsmanagement-icon-analisis:before {
+    content: '\e938';
+}
+
+.vectorsmanagement-icon-papelera:before {
+    content: '\e93e';
+}
+
+.vectorsmanagement-icon-subir:before {
+    content: '\e95e';
+}
+
+.vectorsmanagement-icon-tamano:before {
+    content: '\e95f';
+}
+
+.vectorsmanagement-icon-ayuda:before {
+    content: '\e981';
+}
+
+.vectorsmanagement-icon-scissors:before {
+    content: '\ea5a';
+}
+
+.vectorsmanagement-icon-resize-full-alt:before {
+    content: '\e800';
+}
+
+.vectorsmanagement-icon-table:before {
+    content: '\f0ce';
+}
 
 /* Modal ayuda */
 
@@ -825,7 +957,8 @@ th .vectorsmanagement-icon-papelera {
     gap: 5px;
 }
 
-.m-vectorsmanagement-editionBtns, .m-vectorsmanagement-creationBtns {
+.m-vectorsmanagement-editionBtns,
+.m-vectorsmanagement-creationBtns {
     display: flex;
     justify-content: center;
     gap: 5px
@@ -888,7 +1021,7 @@ div#popup-box {
     .m-areas>div.m-area>div.m-panel.m-plugin-vectorsmanagement.opened div#popup-box>div.popup-section img {
         height: auto !important;
         width: -webkit-fill-available !important;
-    } 
+    }
 
     div.m-areas>div.m-area>div.m-panel.m-plugin-vectorsmanagement.opened>button.m-panel-btn {
         top: 0px !important;

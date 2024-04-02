@@ -553,9 +553,7 @@ export default class EditionControl extends M.Control {
 
     this.geometry = this.feature.getGeometry().type;
     this.emphasizeSelectedFeature();
-    if (this.isEditActive) {
-      this.showFeatureInfo();
-    }
+
     this.template.querySelector('#edition-container').classList.remove('closed');
   }
 
@@ -567,10 +565,6 @@ export default class EditionControl extends M.Control {
    */
   onModify() {
     this.refreshEmphasizedFeatures();
-    if (this.isEditActive) {
-      this.showFeatureInfo();
-    }
-
     this.map_.refresh();
   }
 
@@ -666,65 +660,6 @@ export default class EditionControl extends M.Control {
         this.managementControl_.addFeatureToSelection(feature);
       }
       this.selectionLayer.addFeatures([emphasis]);
-    }
-  }
-
-  /**
-   * On select, shows feature info.
-   * @public
-   * @function
-   * @api
-   */
-  showFeatureInfo() {
-    const infoContainer = document.querySelector('#edition-container #featureInfo');
-    if (infoContainer !== null) {
-      infoContainer.classList.remove('closed');
-      infoContainer.innerHTML = '';
-    }
-
-    switch (this.geometry) {
-      case 'Point':
-      case 'MultiPoint':
-        const [x, y] = this.getImpl().getFeatureCoordinates();
-        if (infoContainer !== null) {
-          infoContainer.innerHTML = `Coordenadas<br/>
-          x: ${Math.round(x * 1000) / 1000},<br/>
-          y: ${Math.round(y * 1000) / 1000}`;
-        }
-        break;
-      case 'LineString':
-      case 'MultiLineString':
-        let lineLength = this.getImpl().getFeatureLength();
-        let units = 'km';
-        if (lineLength > 100) {
-          lineLength = Math.round((lineLength / 1000) * 100) / 100;
-        } else {
-          lineLength = Math.round(lineLength * 100) / 100;
-          units = 'm';
-        }
-        if (infoContainer !== null) {
-          infoContainer.innerHTML = `Longitud: ${lineLength} ${units}`;
-        }
-        break;
-      case 'Polygon':
-      case 'MultiPolygon':
-        let area = this.getImpl().getFeatureArea();
-        let areaUnits = `km${'2'.sup()}`;
-        if (area > 10000) {
-          area = Math.round((area / 1000000) * 100) / 100;
-        } else {
-          area = Math.round(area * 100) / 100;
-          areaUnits = `m${'2'.sup()}`;
-        }
-        if (infoContainer !== null) {
-          infoContainer.innerHTML = `Área: ${area} ${areaUnits}`;
-        }
-        break;
-      default:
-        if (document.querySelector('#edition-container #featureInfo') !== null) {
-          document.querySelector('#edition-container #featureInfo').classList.add('closed');
-        }
-        break;
     }
   }
 

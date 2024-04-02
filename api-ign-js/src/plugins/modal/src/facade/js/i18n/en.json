@@ -1,4 +1,10 @@
 {
   "tooltip": "More information",
-  "exception_modalcontrol": "The implementation used cannot create ModalControl controls"
+  "exception_modalcontrol": "The implementation used cannot create ModalControl controls",
+  "textHelp": {
+    "help1": "The modal extension opens a window within a viewer showing information relevant to the viewer itself.",
+    "help2": "The window content is customizable, so the content can change from one viewer to another. By default, information about the CNIG-API is displayed.",
+    "help3": "The information relevant to the extension and its possible parameterization is documented in",
+    "help4": "The example of use of its parameters can be checked in"
+  }
 }

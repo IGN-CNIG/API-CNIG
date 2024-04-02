@@ -506,6 +506,7 @@ class Attributions extends ControlBase {
             urlImages: `${M.config.MAPEA_URL}assets/images`,
             translations: {
               help1: textHelp.text1,
+              help2: textHelp.text2,
             },
           },
         });

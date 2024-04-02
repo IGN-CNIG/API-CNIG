@@ -13,7 +13,9 @@
     "help8": "2. Información de un punto. Puede consultar la coordenadas de cada punto haciendo clic sobre el número correspondiente en el panel de 'Información de Coordenadas'.",
     "help9": "3. Eliminar punto. Borrar el punto actual.",
     "help10": "4. Elimina todos los puntos. Borra todos los puntos y reinicia la numeración.",
-    "help11": "5. Mostrar coordenadas en pantalla. Muestra u oculta las coordenadas de los puntos sobre el mapa."
+    "help11": "5. Mostrar coordenadas en pantalla. Muestra u oculta las coordenadas de los puntos sobre el mapa.",
+    "help12": "La información relevante a la extensión y su posible parametrización está documentada en",
+    "help13": "El ejemplo de uso de sus parámetros puede comprobarse en"
   },
   "tooltip": "Información Coordenadas",
   "title": "Información Coordenadas",

@@ -17,7 +17,9 @@
     "help10": "Haga doble clic para terminar la medición de área, y empezar otra.",
     "help11": "Con la tecla Escape se desactiva la herramienta y se borra la medición activa. Esto puede ser útil para reiniciar la herramienta si se ha cometido un error en la última medición, sin borrar el resto de mediciones ya realizadas.",
     "help12": "La herramienta se queda activa hasta que la desactive, haciendo clic de nuevo sobre el botón 'Medir área'.",
-    "help13": "Borra todas las mediciones realizadas, tanto áreas como distancias."
+    "help13": "Borra todas las mediciones realizadas, tanto áreas como distancias.",
+    "help14": "La información relevante a la extensión y su posible parametrización está documentada en",
+    "help15": "El ejemplo de uso de sus parámetros puede comprobarse en"
   },
   "text": {
     "tooltip": "Herramientas de medición",

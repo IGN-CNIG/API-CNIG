@@ -14,6 +14,21 @@
     "support": "Las capas MBTiles y MBTilesVector no están soportadas.",
     "error_download_image": "No ha podido realizarse la descarga."
   },
+  "textHelp": {
+    "help1": "La extensión de imprimir permite exportar tanto mapas a partir de plantillas como imágenes georreferenciadas.",
+    "help2": "La extensión es personalizable, por lon que puede cambiar de un visualizador a otro.",
+    "help3": "Mediante el control imprimir mapa, se puede descargar un mapa a partir de una plantilla seleccionada, unos DPI (Dots per inch, la resolución de impresión), y un formato.  Además permite añadir un título y una descripción.",
+    "help4": "Para obtener el mapa, habrá que hacer click sobre el botón de descargar, lo que hará que se genere el documento y aparezca disponible para su descargar.",
+    "help5": "Actualmente, el mapa se descarga en el EPSG:3857  (WGS84 / Pseudomercator).",
+    "help6": "A través del control de descarga de imagen georreferenciada a través de la vista, se puede obtener una imagen georreferenciada junto al archivo de georreferenciación.",
+    "help7": "Las opciones disponibles son: añadir un título al archivo, seleccionar el formato, obtener el fichero de georreferenciación, seleccionar los DPI (en caso de utilizar la descarga a través de servicios) y seleccionar el tipo de descarga.",
+    "help8": "La descarga por vista, hace una captura del mapa del visualizador, obteniendo las capas cargadas en ese momento y el estado del mapa. El sistema de coordenadas de la descarga será el sistema de coordenadas y/o proyección del mapa en ese momento.",
+    "help9": "La descarga de capas cargadas por servicios, hace una llamada a los propios servicios creando una imagen de su conjunto. El sistema de coordenadas será WGS84 / Pseudomercator (EPSG:3857).",
+    "help10": "El control de descarga de imágenes georreferenciadas por lista, permite descargar distintos servicios WMS con distintos sistemas de coordenadas y proyecciones, indicados a la hora de construir la extensión.",
+    "help11": "Se obtiene la extensión de la imagen del estado del visualizador en ese momento, y se realiza una petición al servicio con la proyección asignada",
+    "help12": "La información relevante a la extensión y su posible parametrización está documentada en",
+    "help13": "El ejemplo de uso de sus parámetros puede comprobarse en"
+  },
   "tooltip": "Impresión del mapa",
   "map_printing": "Impresión del mapa",
   "nextView": "Vista siguiente",
@@ -46,8 +61,8 @@
   "zone": "huso",
   "georefimageWld":"Fichero de georreferenciación (WLD)",
   "typeDownload": "Selecciona el tipo de descarga:",
-  "typeClient": "Desde cliente: contenido de pantalla",
-  "typeServer": "Desde servidor: contenido de servidor",
+  "typeClient": "Descarga de la vista en pantalla",
+  "typeServer": "Descarga de capas cargadas por servicios",
   "selectLayer": "Selecciona la capa a descargar",
   "clipBoard": "Copiar al portapapeles",
   "layer_wms": "WMS devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales. Permitiendo las personalización de las capas mediante estilos. ",
@@ -60,5 +75,10 @@
   "layer_wfs": "(Web Feature Service) es un estándar OGC para la descarga y transferencia de información geográfica, donde los elementos geográficos o features se transmiten en su totalidad al cliente.",
   "layer_kml": "(Keyhole Markup Language). KML es un lenguaje de marcado basado en XML para representar datos geográficos en tres dimensiones.",
   "layer_OGCAPIFeatures": "(OGC API - FEATURES) es un estándar OGC que ofrece la capacidad de crear, modificar y consultar datos espaciales en la Web y especifica requisitos y recomendaciones para las API que desean seguir una forma estándar de compartir datos de entidades.",
-  "tooltip_georefimageepsg": "Georreferenciar imagen predefinida"
+  "tooltip_georefimageepsg": "Georreferenciar imagen predefinida",
+  "title_map": "Descarga de mapa",
+  "title_view": "Descarga de imagen georreferenciada de la vista",
+  "title_list": "Descarga de imagen georreferenciada a partir de listado",
+  "available_sources": "Fuentes disponibles",
+  "maintain_view": "Se mantiene la vista de impresión con DPI = 120"
 }

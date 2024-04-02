@@ -203,6 +203,7 @@ export default class LayerswitcherControl extends M.Control {
 
         this.getImpl().registerEvent(map);
         this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
+        this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('touchstart', this.openAddServices.bind(this), false);
         this.accessibilityTab(this.template_);
 
         success(this.template_);
