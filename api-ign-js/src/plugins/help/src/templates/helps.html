@@ -278,10 +278,12 @@
     }
 
     addZoomAction = () => {
-      const lstImg = document.querySelectorAll('.m-help-content-magnify');
+      const content = document.getElementById('m-help-contents');
+      const lstImg = content.querySelectorAll('img:not(h2 img)');;
       let lstBtn, btn;
       if (lstImg && lstImg.length > 0) {
         lstImg.forEach(img => {
+          img.classList.add('m-help-content-magnify');
           lstBtn = img.parentElement.querySelectorAll('.m-help-btnMagnify');
           if (lstBtn && lstBtn.length > 0) {
             lstBtn.forEach(b => { if (b.querySelector('#m-help-magnifyOn')) { b.click() } });
