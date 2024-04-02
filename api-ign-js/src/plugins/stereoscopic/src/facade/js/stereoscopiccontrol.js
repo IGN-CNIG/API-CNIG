@@ -193,12 +193,12 @@ export default class StereoscopicControl extends M.Control {
       if(changeZoom !== e.frameState.viewState.zoom) {
         changeZoom = e.frameState.viewState.zoom;
         if(window.toggle3D) {setTR3(true);}
-        document.querySelector('#range3d').max = TR3.setMagniValues('auto') + ${this.maxMagnify};
+        document.querySelector('#range3d').max = (TR3.valuesSet.magnification + ${this.maxMagnify});
         document.querySelector('#range3d').value = TR3.valuesSet.magnification;
       } else {
         if(window.toggle3D) {setTR3(false);}
       }
-
+      document.querySelector('#maxDisabled3DView').innerHTML = 'x' + (TR3.valuesSet.magnification + ${this.maxMagnify})
     });
 
         // https://openlayers.org/en/latest/examples/tile-load-events.html
