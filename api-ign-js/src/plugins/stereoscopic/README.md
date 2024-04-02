@@ -7,11 +7,9 @@ Plugin que muestra una vista 3D, incluye vistas por anaglifos y orbitación 3D.
 - stereoscopic.ol.min.js
 - stereoscopic.ol.min.css
 
-Es necesario descargar la librería TR3: https://github.com/accima/TR3-pack
-
 ```html
- <link href="../../plugins/stereoscopic/stereoscopic.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="../../plugins/stereoscopic/stereoscopic.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/stereoscopic/stereoscopic.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/stereoscopic/stereoscopic.ol.min.js"></script>
 ```
 
 # Parámetros
@@ -26,6 +24,8 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **collapsed**. Indica si el plugin aparece por defecto colapsado o no.
 - **orbitControls**. Valor Boolean, activa "true" o desactiva (default) "false" la imagen que permite orbitar alrededor del mapa en 3D.
 - **anaglyphActive**. Valor Boolean, activa "true" o desactiva (default) "false" el efecto anaglifo por defecto cuando se carga el mapa.
+- **defaultAnaglyphActive**: Valor Boolean, define si la funcionalidad del control iniciará activada o desactivada.
+- **maxMagnify**: Escala de la magnificación, por defecto 1.
 
 
 # Ejemplo de uso
@@ -45,6 +45,8 @@ const mp = new Stereoscopic({
   collapsed: false,
   orbitControls: false,
   anaglyphActive: true
+  defaultAnaglyphActive: false,
+  maxMagnify: 2,
 });
 
 
