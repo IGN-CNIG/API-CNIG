@@ -739,7 +739,7 @@ const refreshStyle = (evt) => {
 const showStyleDialog = () => {
   const options = estilo.getOptions();
   const jsonFormateado = JSON.stringify(options, null, 2);
-  console.log(jsonFormateado);
+  console.log(options);
   info(jsonFormateado);
 };
 
@@ -883,3 +883,10 @@ const checkFunctionArguments = (func) => {
 };
 
 initTestFunctions();
+
+////////////////////
+// ERORES develop //
+///////////////////
+/*
++ applyToFeature --> Cannot read properties of null (reading 'getOptions')  //El feature no tiene estilo
+*/

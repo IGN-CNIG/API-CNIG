@@ -667,7 +667,7 @@ const refreshStyle = (evt, type) => {
 const showStyleDialog = () => {
   const options = estilo.getOptions();
   const jsonFormateado = JSON.stringify(options, null, 2);
-  console.log(jsonFormateado);
+  console.log(options);
   info(jsonFormateado);
 };
 
@@ -817,3 +817,10 @@ const init = () => {
 };
 // Esperamos para que el mapa cargue la capa y el estilo por defecto
 setTimeout(init, 1000);
+
+////////////////////
+// ERORES develop //
+///////////////////
+/*
++ applyToFeature --> Cannot read properties of null (reading 'getOptions')  //El feature no tiene estilo
+*/
