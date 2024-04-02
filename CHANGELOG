@@ -2,6 +2,7 @@
 - Plugin comparators: se añade nuevo control windowsync
 - Plugin contactlink: para visor estereoscopico enviará como parámetro el centro, zoom y proyección del mapa.
 - Se incorpora plugin printviewmanagement dejando obsoleto los plugins printermap, georefimage y georefimage2.
+- Plugin storymap: se soluciona conflicto con CSS con otros plugins.
 - Plugin layerswitcher: 
   - Se añade scroll en móviles al listar las capas.
   - Se soluciona problema con botón añadir en móviles.
