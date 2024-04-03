@@ -376,14 +376,14 @@ window.capaKML = capaKML;
 // map.addLayers(capaMVT);
 // map.addLayers(capaOGCAPIFeatures);
 window.capaOGCAPIFeatures = capaOGCAPIFeatures;
-map.addLayers(capaTMS);
-map.addLayers(capaVector);
-capaVector.addFeatures(feature);
-map.addLayers(capaWFS);
-window.capaWMS = capaWMS;
-map.addLayers(capaWMS);
-map.addLayers(capaWMTS);
-map.addLayers(capaXYZ);
+// map.addLayers(capaTMS);
+// map.addLayers(capaVector);
+// capaVector.addFeatures(feature);
+// map.addLayers(capaWFS);
+// window.capaWMS = capaWMS;
+// map.addLayers(capaWMS);
+// map.addLayers(capaWMTS);
+// map.addLayers(capaXYZ);
 
 window.map = map;
 window.capaGeoJSON = capaGeoJSON;
@@ -510,7 +510,7 @@ const mp1 = new Layerswitcher({
   tooltip: 'Capas',
   collapsible: true,
   isDraggable: true,
-  modeSelectLayers: 'eyes',
+  modeSelectLayers: 'radio',
   // tools: [],
   tools: ['transparency', 'zoom', 'legend', 'information', 'style', 'delete'],
   // tools: ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'],
@@ -520,6 +520,8 @@ const mp1 = new Layerswitcher({
   http: true,
   showCatalog: true,
   useProxy: true,
-  displayLabel: true
+  displayLabel: true,
+  addLayers: true,
+  statusLayers: false,
 });
 map.addPlugin(mp1);

@@ -92,6 +92,12 @@ export default class LayerswitcherControl extends M.Control {
     // Determina si se van a mostrar o si se van a ocultar todas las capas
     this.statusShowHideAllLayers = true;
 
+    // Añadir control añadir capas
+    this.isAddLayers = M.utils.isNullOrEmpty(options.addLayers) ? true : options.addLayers;
+
+    // Añadir control mostrar/ocultar capas
+    this.isStatusLayers = M.utils.isNullOrEmpty(options.statusLayers) ? true : options.statusLayers;
+
     // Herramientas para mostrar en las capas
     this.tools = options.tools;
 
@@ -277,6 +283,8 @@ export default class LayerswitcherControl extends M.Control {
             isStyle: this.isStyle,
             isDelete: this.isDelete,
             displayLabel: !this.displayLabel,
+            isAddLayers: !this.isAddLayers,
+            isStatusLayers: !this.isStatusLayers,
           });
         });
       }
