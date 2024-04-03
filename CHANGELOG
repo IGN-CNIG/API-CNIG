@@ -11,6 +11,7 @@
   - Cambio de estilos en icono "ojo".
   - Se soluciona problema al mostrar/ocultar todas las capas.
   - Se soluciona problema con leyenda de capas KML.
+  - Se parametriza la funcionalidad de añadir capas y mostrar/ocultar todos los servicios.
 - Plugin viewmanagement: se añaden traducciones.
 - Se incorpora plugin vectorsmanagement dejando obsoleto los plugins buffer, vectors, topographicprofile, selectiondraw y geometrydraw.
 - Se incorpora plugin help para generar página de ayuda al vuelo de controles y plugins y de información indicada por el usuario.

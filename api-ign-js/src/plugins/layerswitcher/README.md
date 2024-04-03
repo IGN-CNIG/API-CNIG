@@ -149,6 +149,16 @@ https://componentes.cnig.es/api-core/?layerswitcher=position*collapsed*collapsib
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
+  <tr>
+    <td>addLayers</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>statusLayers</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
 </table>
 
 ### Ejemplo de uso 
