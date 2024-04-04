@@ -565,7 +565,7 @@ export default class EditionControl extends M.Control {
    */
   onModify() {
     this.refreshEmphasizedFeatures();
-    this.map_.refresh();
+    this.layer_.redraw();
   }
 
   /**

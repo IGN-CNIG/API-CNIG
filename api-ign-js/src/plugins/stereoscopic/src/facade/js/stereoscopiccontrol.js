@@ -190,15 +190,20 @@ export default class StereoscopicControl extends M.Control {
 
     let changeZoom = 0;
     map.getMapImpl().on('moveend', (e) => {
-      if(changeZoom !== e.frameState.viewState.zoom) {
-        changeZoom = e.frameState.viewState.zoom;
-        if(window.toggle3D) {setTR3(true);}
-        document.querySelector('#range3d').max = (TR3.valuesSet.magnification + ${this.maxMagnify});
-        document.querySelector('#range3d').value = TR3.valuesSet.magnification;
-      } else {
-        if(window.toggle3D) {setTR3(false);}
+        if(changeZoom !== e.frameState.viewState.zoom) {
+          changeZoom = e.frameState.viewState.zoom;
+          if(window.toggle3D) {setTR3(true);}
+          document.querySelector('#range3d').max = (TR3.valuesSet.magnification + ${this.maxMagnify});
+          document.querySelector('#range3d').value = TR3.valuesSet.magnification;
+        } else {
+          if(window.toggle3D) {setTR3(false);}
+        }
+
+      const toggle3D = document.querySelector('#toggle3D');
+
+      if(toggle3D.classList.contains('toggle3D')) {
+        document.querySelector('#maxDisabled3DView').innerHTML = 'x' + (TR3.valuesSet.magnification + ${this.maxMagnify})
       }
-      document.querySelector('#maxDisabled3DView').innerHTML = 'x' + (TR3.valuesSet.magnification + ${this.maxMagnify})
     });
 
         // https://openlayers.org/en/latest/examples/tile-load-events.html

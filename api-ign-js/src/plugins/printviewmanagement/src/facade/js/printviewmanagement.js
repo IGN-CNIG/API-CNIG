@@ -240,7 +240,7 @@ export default class PrintViewManagement extends M.Plugin {
       position: M.ui.position[this.position_],
       className: 'm-plugin-printviewmanagement',
       tooltip: this.tooltip_,
-      collapsedButtonClass: 'printviewmanagement-icon-zoom-mapa',
+      collapsedButtonClass: 'printviewmanagement-icon-flecha-historial',
       order: this.order,
     });
 

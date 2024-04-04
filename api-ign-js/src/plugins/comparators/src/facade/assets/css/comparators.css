@@ -693,6 +693,12 @@
   .comparators-icon-new-tab:before {
     content: "\ea7e";
   }
+  .comparators-icon-window-restore:before {
+    content: '\f2d2'; 
+  }
+  .comparators-icon-window-close-o:before {
+    content: '\f2d4';
+  }
 
 div.m-area.m-top.m-left>div.m-plugin-comparators.m-panel>button.m-panel-btn {
     font-family: comparators !important;
@@ -1425,7 +1431,7 @@ Todo: see can i use and delete this commet */
     border: none;
     border-radius: 5px;
     color: #fff;
-    margin: 20px auto 0;
+    margin: 20px 20px 0px 20px;
     padding: 10px;
     cursor: pointer;
 }
@@ -1434,6 +1440,5 @@ Todo: see can i use and delete this commet */
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     margin-bottom: 20px;
 }

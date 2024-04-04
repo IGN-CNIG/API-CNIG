@@ -347,6 +347,10 @@ input[type=range].m-layerswitcher-transparency:focus {
     color: #6c6c6c;
 }
 
+.m-layerswitcher-icons-upload {
+    cursor: pointer;
+}
+
 .m-layerswitcher-suggestion {
     font-size: 15px;
 }

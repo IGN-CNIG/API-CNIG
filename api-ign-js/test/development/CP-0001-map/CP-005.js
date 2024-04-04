@@ -616,15 +616,20 @@ const xyz = new XYZ({
 
 
 // Guardar todos los __proto__ del Objeto "mapa", usando ... para traerse elementos de estos objetos a un objeto común con el que se trabajará
-const objectWithAllFunctions = {...Object.getOwnPropertyDescriptors(mapa.__proto__), ...Object.getOwnPropertyDescriptors(mapa.__proto__.__proto__), ...Object.getOwnPropertyDescriptors(mapa.__proto__.__proto__.__proto__)};
+const mergeObjects = (first, second) => {return {...first,...Object.getOwnPropertyDescriptors(second)}}
+let objectWithAllFunctions = {};
+for(let acumuladorObjetos = mapa ;acumuladorObjetos.__proto__ !== null;acumuladorObjetos = acumuladorObjetos.__proto__){
+  objectWithAllFunctions = mergeObjects(objectWithAllFunctions, acumuladorObjetos);
+}
 
 
 // Creado Array para manejar más adelante el objectWithAllFunctions y ordenado de este sin funciones de "constructor" y "destroy"
-const listOfAllFunctions = Object.keys(objectWithAllFunctions).sort();
-listOfAllFunctions.remove("constructor"); listOfAllFunctions.remove("destroy");
+const listAllFunctions = Object.keys(objectWithAllFunctions).sort();
+listAllFunctions.remove("constructor"); listAllFunctions.remove("destroy");
+const listOnlyShown = [];
 
 
-if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que existen funciones que se quieren probar
+if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen funciones que se quieren probar
   const eventsFuncArray = [];
   const eventsKeyArray = [];
 
@@ -654,9 +659,9 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
     return hasArguments;
   }
 
-  for (let i = 0; i < listOfAllFunctions.length; i++) { // Comenzar a generar botones del HTML
+  for (let i = 0; i < listAllFunctions.length; i++) { // Comenzar a generar botones del HTML
 
-    const auxName = listOfAllFunctions[i]; // Nombre de Función
+    const auxName = listAllFunctions[i]; // Nombre de Función
 
     if (objectWithAllFunctions[auxName].value && objectWithAllFunctions[auxName].value instanceof Function) { // Comprobar que es una función y no un objeto
 
@@ -665,6 +670,7 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
       auxButton.innerText = auxName;
       let appendTo;
       let parameterTest;
+      listOnlyShown.push(auxName);
 
       if (objectWithAllFunctions[auxName].value && !checkFunctionArguments(objectWithAllFunctions[auxName].value)) {
         // ---------------------------------FUNCIONES SIN PARÁMETROS---------------------------------
@@ -981,7 +987,8 @@ if (listOfAllFunctions && listOfAllFunctions.length > 0) { // Confirmar que exis
   }
 }
 
-window.listOfAllFunctions = listOfAllFunctions; // Para tener acceso a toda la lista de funciones.
+window.listAllFunctions = listAllFunctions; // Para tener acceso a toda la lista de funciones.
+window.listOnlyShown = listOnlyShown; // Solo las funciones mostradas en las pruebas.
 
 // POR PROBAR**** No se han probado los "Test_layers" de implementado y borrado de layers con filtros. "setTicket" y todo relacionado a plugins.
 // NO OK**** Los elementos que lanzan showResult múltiples veces solo muestran el resultado final del último que se resolvió en su color de botón.
@@ -1024,3 +1031,5 @@ window.listOfAllFunctions = listOfAllFunctions; // Para tener acceso a toda la l
 // [APUNTADO A REDMINE] OL_ERROR IGNORAR Se observa que el mapa, no tiene previsto el funcionamiento de todas sus funciones con el layer COG. Posiblemente en las pruebas de Layers, en concreto con los COGs, se incluyeran todos estos errores. Tras update de OL ha dejado de ocurrir algunos de estos por lo que asumo que se tendría que probar con test de Layer bien.
 
 // [APUNTADO A REDMINE] OL_ERROR MUY GRAVE, parece que mapa.setResolutions y mapa.setProjection se comportan de diferente manera en esta versión de API_CNIG. Me ha causado un error muy grave que requería reiniciar mi portátil. Ocurrió tras usar el aplicado de Resoluciones seguido de setProjection, voy a repasar, apuntar y reproducir este error para estar muy seguro de como se reproduce antes de seguir adelante.
+
+// [APUNTADO A REDMINE] BUG situacional, al usar "addAttribution" que muestra error "TypeError: layer is undefined" en "createVectorLayer Attributions.js:185", debido a que se añade Control de atribuciones, pero se han eliminado los layers anteriormente.

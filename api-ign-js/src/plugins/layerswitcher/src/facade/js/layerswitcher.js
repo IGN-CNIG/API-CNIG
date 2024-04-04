@@ -210,6 +210,12 @@ export default class Layerswitcher extends M.Plugin {
     // Herramientas para mostrar en las capas
     this.tools = M.utils.isUndefined(options.tools) ? ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'] : options.tools;
 
+    // Funcionalidad añadir capas
+    this.addLayers = options.addLayers;
+
+    // Funcionalidad ocultar/añadir capas
+    this.statusLayers = options.statusLayers;
+
     // Servicios precargados
     this.precharged = options.precharged || PRECHARGED;
 
@@ -278,6 +284,8 @@ export default class Layerswitcher extends M.Plugin {
         isDraggable: this.isDraggable,
         modeSelectLayers: this.modeSelectLayers,
         tools: this.tools,
+        addLayers: this.addLayers,
+        statusLayers: this.statusLayers,
         collapsed: this.collapsed_,
         isMoveLayers: this.isMoveLayers,
         precharged: this.precharged,
@@ -322,7 +330,7 @@ export default class Layerswitcher extends M.Plugin {
 
   // Devuelve la cadena API-REST del plugin
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${this.isMoveLayers}*${this.modeSelectLayers}*${this.tools}*${this.http}*${this.https}*${this.showCatalog}*${this.useProxy}*${this.displayLabel}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${this.isMoveLayers}*${this.modeSelectLayers}*${this.tools}*${this.http}*${this.https}*${this.showCatalog}*${this.useProxy}*${this.displayLabel}*${this.addLayers}*${this.statusLayers}`;
   }
 
   // Devuelve la cadena API-REST del plugin en base64
