@@ -876,7 +876,7 @@ export default class GeorefimageControl extends M.Control {
 
     const files = (addWLD) ? [{
       name: titulo.concat(FILE_EXTENSION_GEO),
-      data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize()),
+      data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize(), null, this.map_),
       base64: false,
     },
     fileIMG,
