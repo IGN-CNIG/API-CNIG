@@ -127,8 +127,9 @@ export default class WindowSyncControl extends M.Control {
 
   addEventMap(nWindow) {
     const newWindow = nWindow;
+    const randomNumber = Math.floor(Math.random() * 9000) + 1000;
 
-    const id = window.crypto.randomUUID();
+    const id = `map_${randomNumber}`;
     newWindow.ID_MAP = id;
 
     this.mapsWindows_.push({
