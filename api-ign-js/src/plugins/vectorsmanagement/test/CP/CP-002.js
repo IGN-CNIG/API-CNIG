@@ -40,4 +40,17 @@ const mp = new VectorsManagement({
 
 map.addPlugin(mp);
 
+
+const mp1 = new M.plugin.StyleManager({
+  collapsed: true,
+  collapsible: true,
+  position: 'TL',
+});
+map.addPlugin(mp1);
+
+const mp2 = new M.plugin.PrintViewManagement({});
+
+map.addPlugin(mp2);
+
+
 window.map = map;

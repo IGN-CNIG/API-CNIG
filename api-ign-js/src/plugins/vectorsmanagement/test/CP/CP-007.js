@@ -14,7 +14,6 @@ const mbtileVector = new M.layer.MBTilesVector({
   name: 'mbtilesvector',
   legend: 'Capa personalizada MBTilesVector',
   extract: true,
-
   tileLoadFunction: (z, x, y) => {
     return new Promise((resolve) => {
       fetch(`https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/${z}/${x}/${y}.pbf`).then((response) => {
