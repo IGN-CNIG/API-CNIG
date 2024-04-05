@@ -2,5 +2,12 @@
   "exception": {
     "impl": "La implementación usada no puede crear controles OverviewMapControl."
   },
+  "textHelp": {
+    "help1": "Muestra una vista general con un recuadro que corresponde a la zona donde nos encontramos en la vista principal.",
+    "help2": "El recuadro del mapa de situación está sincronizado con la vista principal. Permite desplazar la vista principal, moviendo el recuadro desde el mapa de situación.",
+    "help3": "Para ocultar de nuevo el mapa de situación haga clic en el botón 'Minimizar'.",
+    "help4": "La información relevante a la extensión y su posible parametrización está documentada en",
+    "help5": "El ejemplo de uso de sus parámetros puede comprobarse en"
+  },
   "tooltip": "Mapa de situación"
 }

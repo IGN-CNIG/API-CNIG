@@ -11,6 +11,7 @@ import OLGeomMultiPolygon from 'ol/geom/MultiPolygon';
 import OLFeature from 'ol/Feature';
 import FormatGeoJSON from '../format/GeoJSON';
 import ImplUtils from '../util/Utils';
+
 /**
  * @module M/impl/Feature
  */
@@ -32,7 +33,9 @@ class Feature {
   constructor(id, geojson, style) {
     const geojsonVariable = geojson;
     this.facadeFeature_ = null;
+
     this.formatter_ = new FormatGeoJSON();
+
     if (!isNullOrEmpty(geojson)) {
       if (isNullOrEmpty(geojson.type)) {
         geojsonVariable.type = 'Feature';
@@ -140,6 +143,7 @@ class Feature {
     }
     return facadeFeature;
   }
+
   /**
    * Este método de la clase transforma "OLRenderFeature" (Objeto geográfico de Openlayer)
    * a "M.Feature" (Objeto geográfico de API-CNIG).

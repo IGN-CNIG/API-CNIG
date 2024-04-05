@@ -18,7 +18,8 @@
     "error_no_features_wfs": "Unable to load layer features. Try again in another area.",
     "error_wfs": "Could not load WFS service",
     "wfs_zoom": "Increase the zoom in * levels if you want to add this WFS service",
-    "url_not_valid": "The entered URL is not valid"
+    "url_not_valid": "The entered URL is not valid",
+    "obsolete": "Developer message: M.plugin.Vectors has been deprecated, use the M.plugin.VectorsManagement instead"
   },
   "help_template": {
     "help": "Help",
@@ -76,7 +77,7 @@
   "query": "Consult",
   "clean": "Clean search",
   "select_service": "Select layer",
-  "select" : "Select",
+  "select": "Select",
   "loading": "Loading",
   "cancel": "Cancel",
   "reload_from_view": "Reload from the view",

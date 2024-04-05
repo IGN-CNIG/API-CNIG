@@ -145,8 +145,14 @@ ul.m-layerswitcher-ullayers {
 }
 
 .m-layerswitcher-visible-control {
-    width: 7%;
+    width: 10%;
 }
+
+.m-layerswitcher-visible-control > button {
+    border: 1px solid rgba(0,0,0,.1) !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,.3);
+    cursor: pointer;
+ }
 
 .m-layerswitcher-visible-typeContent {
     width: 83%;
@@ -178,10 +184,17 @@ ul.m-layerswitcher-ullayers {
     border: none;
     background-color: #f9f9f9;
     margin: 0 16px;
-    font-size: 15px;
     color: orange !important;
-    margin: 10px 0px 0px 20px;
+    margin: 10px 0px 0px 16px;
     display: block;
+}
+
+#m-layerswitcher-hsalllayers {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+    cursor: pointer;
+    position: absolute;
+    top: 4px;
 }
 
 .m-layerswitcher-icons-ver {
@@ -227,7 +240,7 @@ ul.m-layerswitcher-ullayers {
 
 /* Input range */
 .m-layerswitcher-container .m-layerswitcher-tools .m-layerswitcher-opacity {
-    margin-left: 25px;
+    margin-left: 10px;
     min-width: 50%;
     max-width: 50%;
 }
@@ -325,18 +338,28 @@ input[type=range].m-layerswitcher-transparency:focus {
 .m-layerswitcher-icons-zoom,
 .m-layerswitcher-icons-codsi,
 .m-layerswitcher-icons-lista,
-.m-layerswitcher-suggestion
+.m-layerswitcher-suggestion,
+.m-layerswitcher-icons-doc-text,
+.m-layerswitcher-icons-upload
 {
     background-color: #ffffff;
     border: none;
     color: #6c6c6c;
 }
 
+.m-layerswitcher-icons-upload {
+    cursor: pointer;
+}
+
 .m-layerswitcher-suggestion {
     font-size: 15px;
 }
 
-.m-layerswitcher-icons-delete:hover {
+.m-layerswitcher-icons-image:hover,
+.m-layerswitcher-icons-delete:hover,
+.m-layerswitcher-icons-target:hover,
+.m-layerswitcher-icons-info:hover,
+.m-layerswitcher-icons-style:hover {
     cursor: pointer;
     color: black;
 }
@@ -667,9 +690,10 @@ div.m-layerswitcher-legend>img {
     }
 
     ul.m-layerswitcher-ullayers {
-        max-height: 100% !important;
+        max-height: 86vh !important;
         max-width: 100vw;
         min-width: 50px;
+        overflow: scroll;
     }
         
     .m-panel.m-plugin-layerswitcher .m-panel-controls .m-control.m-layerswitcher-container>div>ul {

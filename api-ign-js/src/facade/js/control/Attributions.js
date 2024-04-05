@@ -3,6 +3,7 @@
  */
 import 'assets/css/controls/attributions';
 import attributionsTemplate from 'templates/attributions';
+import myhelp from 'templates/attributionshelp';
 import AttributionsImpl from 'impl/control/Attributions';
 import ControlBase from './Control';
 import { compileSync as compileTemplate } from '../util/Template';
@@ -69,7 +70,7 @@ class Attributions extends ControlBase {
     this.urlParam_ = options.urlParam || 'url';
     this.defaultAttribution_ = options.defaultAttribution || 'Instituto Geogr&aacute;fico Nacional';
     this.defaultURL_ = options.defaultURL || 'https://www.ign.es/';
-    this.tooltip_ = options.tooltip || getValue('attributions').tooltip;
+    this.tooltip_ = options.tooltip || getValue('attributionsControl').tooltip;
     this.collectionsAttributions_ = options.collectionsAttributions || [];
 
     this.collectionsAttributions_ = this.collectionsAttributions_.map((attr) => {
@@ -486,6 +487,32 @@ class Attributions extends ControlBase {
    */
   onMoveEnd(callback) {
     this.impl_.registerEvent('moveend', this.map_, e => callback(e));
+  }
+
+  /**
+   * Obtiene la ayuda del control
+   *
+   * @function
+   * @public
+   * @api
+  */
+  getHelp() {
+    const textHelp = getValue('attributionsControl').textHelp;
+    return {
+      title: Attributions.NAME,
+      content: new Promise((success) => {
+        const html = compileTemplate(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}assets/images`,
+            translations: {
+              help1: textHelp.text1,
+              help2: textHelp.text2,
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 
   /**

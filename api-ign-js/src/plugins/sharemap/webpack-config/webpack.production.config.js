@@ -87,6 +87,9 @@ module.exports = {
     new CopywebpackPlugin([{
       from: 'src/api.json',
       to: 'api.json',
+    }, {
+      from: 'src/facade/assets/images',
+      to: 'images',
     }]),
   ],
   devtool: 'source-map',

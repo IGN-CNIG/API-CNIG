@@ -2,6 +2,15 @@
   "exception": {
     "impl": "The implementation used cannot create InformationControl."
   },
+  "textHelp": {
+    "help1": "Provides additional information about layer elements, in the case where the service allows the query operation.",
+    "help2": "It is done by requesting information from the map service through the getFeatureInfo operation. It is also possible to request information from vector files such as .geojson or .kml",
+    "help3": "Select the tool and click on the element you want to know more information about. The layers that have information on the point will appear in the panel.",
+    "help4": "Use the arrow to display all the available information for each layer.",
+    "help5": "If there are no searchable layers, clicking on the map displays the following information message.",
+    "help6": "The information relevant to the extension and its possible parameterization is documented in",
+    "help7": "The example of use of its parameters can be checked in"
+  },
   "tooltip": "Consult layers",
   "title": "Information",
   "not_queryable": "There are no queryable layers",

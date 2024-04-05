@@ -8,7 +8,7 @@ import XYZ from 'M/layer/XYZ';
 const mapa = Mmap({
   container: 'map',
   getfeatureinfo: 'plain',
-  // controls: ['layerswitcher'],
+  controls: ['location', 'attributions'],
   projection: 'EPSG:3857*m', // CASO EPSG:4326 'EPSG:4326*d',
   // layers: ['OSM'],
 });

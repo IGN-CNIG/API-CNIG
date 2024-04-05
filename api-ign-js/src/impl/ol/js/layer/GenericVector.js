@@ -103,7 +103,9 @@ class GenericVector extends Vector {
 
     if (!this.style) {
       if (this.ol3Layer.getStyle) {
-        this.styleOl = this.ol3Layer.getStyle();
+        this.styleOl = typeof this.ol3Layer.getStyle() === 'function'
+          ? this.ol3Layer.getStyle()()
+          : this.ol3Layer.getStyle();
         // eslint-disable-next-line no-underscore-dangle
         this.facadeVector_.style_ = this.styleOl;
         this.ol3Layer.setStyle(this.styleOl);
