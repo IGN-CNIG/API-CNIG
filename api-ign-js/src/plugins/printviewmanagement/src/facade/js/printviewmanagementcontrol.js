@@ -183,19 +183,19 @@ export default class PrintViewManagementControl extends M.Control {
 
   defaultOpenControl_(html) {
     if (this.defaultOpenControl === 1 && this.printermap_) {
-      this.showDownloadButton();
+      this.showDownloadButton('printermap');
       this.deactive(html, 'printermap');
       this.printerMapControl.active(html);
     }
 
     if (this.defaultOpenControl === 2 && this.georefImage_) {
-      this.showDownloadButton();
+      this.showDownloadButton('georefImage');
       this.deactive(html, 'georefImage');
       this.georefImageControl.active(html);
     }
 
     if (this.defaultOpenControl === 3 && this.georefImageEpsg_) {
-      this.showDownloadButton();
+      this.showDownloadButton('georefImageEpsg');
       this.deactive(html, 'georefImageEpsg');
       this.georefImageEpsgControl.active(html);
     }
@@ -219,7 +219,7 @@ export default class PrintViewManagementControl extends M.Control {
       this.map_,
     );
     html.querySelector('#m-printviewmanagement-georefImageEpsg').addEventListener('click', () => {
-      this.showDownloadButton();
+      this.showDownloadButton('georefImageEpsg');
       this.deactive(html, 'georefImageEpsg');
       this.georefImageEpsgControl.active(html);
     });
@@ -231,7 +231,7 @@ export default class PrintViewManagementControl extends M.Control {
       this.statusProxy, this.useProxy,
     );
     html.querySelector('#m-printviewmanagement-printermap').addEventListener('click', () => {
-      this.showDownloadButton();
+      this.showDownloadButton('printermap');
       this.deactive(html, 'printermap');
       this.printerMapControl.active(html);
     });
@@ -243,19 +243,28 @@ export default class PrintViewManagementControl extends M.Control {
       this.statusProxy, this.useProxy,
     );
     html.querySelector('#m-printviewmanagement-georefImage').addEventListener('click', () => {
-      this.showDownloadButton();
+      this.showDownloadButton('georefImage');
       this.deactive(html, 'georefImage');
       this.georefImageControl.active(html);
     });
   }
 
-  showDownloadButton() {
+  showDownloadButton(type) {
     const ID_DOWNLOAD_BUTTON = '#m-georefimage-download-button';
     this.elementDownloadButton_ = this.html.querySelector(ID_DOWNLOAD_BUTTON);
+    const elementDownloadButtonDW = this.html.querySelector(`${ID_DOWNLOAD_BUTTON} > button`);
 
     const display = this.elementDownloadButton_.style.display;
     if (display === 'none') {
       this.elementDownloadButton_.style.display = 'flex';
+    }
+
+    if (type === 'printermap') {
+      elementDownloadButtonDW.title = getValue('downMap');
+      elementDownloadButtonDW.innerHTML = getValue('downMap');
+    } else {
+      elementDownloadButtonDW.title = getValue('downImg');
+      elementDownloadButtonDW.innerHTML = getValue('downImg');
     }
   }
 

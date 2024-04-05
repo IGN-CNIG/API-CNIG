@@ -3,6 +3,8 @@
 - Plugin contactlink: para visor estereoscopico enviará como parámetro el centro, zoom y proyección del mapa.
 - Se incorpora plugin printviewmanagement dejando obsoleto los plugins printermap, georefimage y georefimage2.
 - Plugin storymap: se soluciona conflicto con CSS con otros plugins.
+- Plugin incicarto: se controla nuevo error por parte del servidor por superar límite de tamaño en ficheros.
+- Plugin stylemanager: se controla cuando se elimina una capa del mapa para que se actualice el selector.
 - Plugin layerswitcher: 
   - Se añade scroll en móviles al listar las capas.
   - Se soluciona problema con botón añadir en móviles.
