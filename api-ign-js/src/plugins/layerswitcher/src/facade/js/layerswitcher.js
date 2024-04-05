@@ -7,6 +7,7 @@ import '../assets/css/fonts';
 import LayerswitcherControl from './layerswitchercontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
+import myhelp from '../../templates/myhelp';
 
 import es from './i18n/es';
 import en from './i18n/en';
@@ -209,6 +210,12 @@ export default class Layerswitcher extends M.Plugin {
     // Herramientas para mostrar en las capas
     this.tools = M.utils.isUndefined(options.tools) ? ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'] : options.tools;
 
+    // Funcionalidad añadir capas
+    this.addLayers = options.addLayers;
+
+    // Funcionalidad ocultar/añadir capas
+    this.statusLayers = options.statusLayers;
+
     // Servicios precargados
     this.precharged = options.precharged || PRECHARGED;
 
@@ -277,6 +284,8 @@ export default class Layerswitcher extends M.Plugin {
         isDraggable: this.isDraggable,
         modeSelectLayers: this.modeSelectLayers,
         tools: this.tools,
+        addLayers: this.addLayers,
+        statusLayers: this.statusLayers,
         collapsed: this.collapsed_,
         isMoveLayers: this.isMoveLayers,
         precharged: this.precharged,
@@ -321,7 +330,7 @@ export default class Layerswitcher extends M.Plugin {
 
   // Devuelve la cadena API-REST del plugin
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${this.isMoveLayers}*${this.modeSelectLayers}*${this.tools}*${this.http}*${this.https}*${this.showCatalog}*${this.useProxy}*${this.displayLabel}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${this.isMoveLayers}*${this.modeSelectLayers}*${this.tools}*${this.http}*${this.https}*${this.showCatalog}*${this.useProxy}*${this.displayLabel}*${this.addLayers}*${this.statusLayers}`;
   }
 
   // Devuelve la cadena API-REST del plugin en base64
@@ -350,5 +359,48 @@ export default class Layerswitcher extends M.Plugin {
       return true;
     }
     return false;
+  }
+
+  /**
+   * Obtiene la ayuda del plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getHelp() {
+    return {
+      title: this.name,
+      content: new Promise((success) => {
+        const html = M.template.compileSync(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}plugins/layerswitcher/images/`,
+            translations: {
+              help1: getValue('textHelp.help1'),
+              help2: getValue('textHelp.help2'),
+              help3: getValue('textHelp.help3'),
+              help4: getValue('textHelp.help4'),
+              help5: getValue('textHelp.help5'),
+              help6: getValue('textHelp.help6'),
+              help7: getValue('textHelp.help7'),
+              help8: getValue('textHelp.help8'),
+              help9: getValue('textHelp.help9'),
+              help10: getValue('textHelp.help10'),
+              help11: getValue('textHelp.help11'),
+              help12: getValue('textHelp.help12'),
+              help13: getValue('textHelp.help13'),
+              help14: getValue('textHelp.help14'),
+              help15: getValue('textHelp.help15'),
+              help16: getValue('textHelp.help16'),
+              help17: getValue('textHelp.help17'),
+              help18: getValue('textHelp.help18'),
+              help19: getValue('textHelp.help19'),
+              help20: getValue('textHelp.help20'),
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 }

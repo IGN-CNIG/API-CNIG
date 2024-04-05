@@ -170,6 +170,13 @@ export default class StyleManagerControl extends M.Control {
         this.addLayerOption(htmlSelect, layer);
       }
     });
+    this.facadeMap_.on(M.evt.REMOVED_LAYER, (layers) => {
+      let l = layers;
+      if (!Array.isArray(layers)) {
+        l = [layers];
+      }
+      l.forEach((layer) => { this.removeLayerOption(htmlSelect, layer.name); });
+    });
   }
 
   /**
@@ -193,6 +200,13 @@ export default class StyleManagerControl extends M.Control {
         htmlOption.innerText = name;
         htmlSelect.add(htmlOption);
       }
+    }
+  }
+
+  removeLayerOption(htmlSelect, name) {
+    if (this.isNotAdded(name, htmlSelect) === false) {
+      const htmlOption = Array.from(htmlSelect.options).find(option => option.getAttribute('name') === name);
+      htmlOption.remove();
     }
   }
 

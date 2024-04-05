@@ -21,6 +21,19 @@
     "error_email": "The email could not be sent.",
     "error_email_size": "The size of the attached file is too large. The maximum file size allowed for emails is 25Mb."
   },
+  "textHelp": {
+    "help1": "The InciCarto extension allows you to send a digitized or uploaded geographic object to the viewer in an email.",
+    "help2": "The extension is customizable, so it can change from one viewer to another.",
+    "help3": "In the initial panel of the extension, an explanation of its use is made: a point/line/surface is digitized or a vector file is uploaded and click to start the process of sending the incident." ,
+    "help4": "In the simple case of the extension, you can choose a topic (associated with a destination email) and the user can fill in their name, their email for follow-up, a description and attach a file." ,
+    "help5": "In the advanced case, you can choose a topic, the type of error, the producer and the recipients.",
+    "help6": "At the user level you can fill in the name, the email to which follow-up notifications are sent and the description.",
+    "help7": "In addition, you can attach a file to the email.",
+    "help8": "Clicking the send email button sends an email to the selected recipient email address.",
+    "help9": "When you click the send email button, the recipient receives an email with the content of the incident filled out by the user, a geojson with the digitized layer and the attached file in case the user has uploaded one. ",
+    "help10": "The information relevant to the extension and its possible parameterization is documented in",
+    "help11": "The example of use of its parameters can be checked in"
+  },
   "tooltip": "Report error in cartography",
   "change_name": "Change name",
   "close": "Close",

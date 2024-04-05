@@ -63,6 +63,8 @@ El listado de capas aparece al pulsar sobre el botón añadir (Listado de alguna
   Por defecto añade todas las herramientas.
 - **useProxy**: Determina si se desea que las peticiones de red que se realizan en la extensión se realicen con el proxy o no. Por defecto: true.
 - **displayLabel**: Muestra la etiqueta del tipo del servicio si tiene valor true, en caso de tener valor false no la mostrará. Por defecto: false.
+- **addLayers**: Permite añadir la funcionalidad de añadir capas. Por defecto: true.
+- **statusLayers**: Permite añadir la funcionalidad de mostrar/ocultar todas las capas. Por defecto: true.
 
 # API-REST
 
@@ -144,6 +146,16 @@ https://componentes.cnig.es/api-core/?layerswitcher=position*collapsed*collapsib
   </tr>
   <tr>
     <td>displayLabel</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>addLayers</td>
+    <td>true/false</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
+  <tr>
+    <td>statusLayers</td>
     <td>true/false</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>

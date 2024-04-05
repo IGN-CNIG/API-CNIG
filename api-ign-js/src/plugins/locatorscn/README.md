@@ -6,10 +6,10 @@
 # Descripción
 
 Plugin que permite utilizar diferentes herramientas para la localización:
-- Servicio REST pelias-directo: permite la búsqueda de direcciones postales, topónimos, puntos de interés, entidades de población, unidades administrativas, referencias catastrales (servicio SOAP de la Dirección General de Catastro) y solamente para su visualización los códigos postales.
+- Servicio REST pelias-directo: permite la búsqueda de direcciones postales, topónimos y puntos de interés.
 - Servicio REST pelias-inverso: Obtener dirección en un punto del mapa.
 
-Esta extensión es una fachada del servicio pelias y del comunicationpullserver. En la siguiente dirección se puede encontrar toda la información sobre la api pelias:
+Esta extensión es una fachada del servicio pelias. En la siguiente dirección se puede encontrar toda la información sobre la api pelias:
 https://github.com/pelias/api
 
 # Dependencias
@@ -57,9 +57,9 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - **size**: Numero de resultados maximos para la búsqueda por texto. Por defecto: 10.
   - **layers**: Capas para pasar en la petición a pelias. Por defecto: 'address,street,venue'.
   - **sources**: Fuentes para pasar en la petición a pelias. Por defecto: ''.
-  - **radius**: Radio maximo para hacer la búsqueda inversa. Por defecto: 100.
-  - **urlAutocomplete**: URL del servicio de autocomplete de pelias. Por defecto: 'https://geocoder.larioja.org/v1/autocomplete'.
-  - **urlReverse**: URL del servicio de reverse de pelias. Por defecto: 'https://geocoder.larioja.org/v1/reverse'.
+  - **radius**: Radio maximo para hacer la búsqueda inversa. Por defecto: 100 (en kilómetros).
+  - **urlAutocomplete**: URL del servicio de autocomplete de pelias. Por defecto: 'https://geolocalizador.idee.es/v1/autocomplete'.
+  - **urlReverse**: URL del servicio de reverse de pelias. Por defecto: 'https://geolocalizador.idee.es/v1/reverse'.
 
   ```javascript
   searchOptions: {

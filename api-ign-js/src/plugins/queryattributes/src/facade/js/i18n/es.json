@@ -3,6 +3,12 @@
     "impl": "La implementación usada no puede crear controles QueryAttributesControl.",
     "no_data": "No hay datos para exportar."
   },
+  "textHelp": {
+    "help1": "La extensión tabla de atributos permite visualizar los datos temáticos de una fuente de datos espacial.",
+    "help2": "Además, permite hacer búsquedas en un atributo por un valor introducido por el usuario, búsquedas por vista, por área, limpiar los filtros y exportar los datos.",
+    "help3": "La información relevante a la extensión y su posible parametrización está documentada en",
+    "help4": "El ejemplo de uso de sus parámetros puede comprobarse en"
+  },
   "tooltip": "Tabla de atributos",
   "values": "Valores",
   "attribute_table": "Tabla de atributos",

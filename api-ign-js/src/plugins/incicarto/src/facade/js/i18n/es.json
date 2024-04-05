@@ -21,6 +21,19 @@
     "error_email": "No se ha podido realizar el envío del email.",
     "error_email_size": "El tamaño del fichero adjunto es demasiado grande. El tamaño máximo de ficheros permitido para correos electrónicos es 25Mb."
   },
+  "textHelp": {
+    "help1": "La extensión InciCarto permite mandar un objeto geográfico digitalizado o cargado al visualizador en un correo electrónico.",
+    "help2": "La extensión es personalizable, por lon que puede cambiar de un visualizador a otro.",
+    "help3": "En el panel inicial de la extensión, se realiza una explicación de su uso: se digitaliza un punto/línea/superficie  o se sube un archivo vectorial y se hace click para iniciar con el proceso de mandar la incidencia.",
+    "help4": "En el caso simple de la extensión, se puede elegir un tema (asociado a un correo electrónico de destino) y el usuario puede rellenar su nombre, su correo electrónico para un seguimiento, una descripción y adjuntar un archivo.",
+    "help5": "En el caso avanzado, se puede elegir un tema, el tipo de error, el productor y los destinatarios.",
+    "help6": "A nivel usuario se puede rellenar el nombre, el correo electrónico al que realizar las notificaciones de seguimiento y la descripción.",
+    "help7": "Además, se puede adjuntar un archivo al correo.",
+    "help8": "Dándole al botón de enviar e-mail, se manda un correo al correo seleccionado en destinatarios.",
+    "help9": "Al darle al botón de enviar correo electrónico, llega al destinatario un correo con el contenido de la incidencia rellenado por el usuario, un geojson con la capa digitalizada y el archivo adjunto ene l caso que el usuario haya subido uno.",
+    "help10": "La información relevante a la extensión y su posible parametrización está documentada en",
+    "help11": "El ejemplo de uso de sus parámetros puede comprobarse en"
+  },
   "tooltip": "Notificar incidencia en cartografía",
   "change_name": "Cambiar nombre",
   "close": "Cerrar",

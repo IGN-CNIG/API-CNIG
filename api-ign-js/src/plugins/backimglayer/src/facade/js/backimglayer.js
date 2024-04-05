@@ -4,6 +4,7 @@
 // import '/assets/css/backimglayer';
 import '../assets/css/backimglayer';
 import api from '../../api';
+import myhelp from '../../templates/myhelp';
 import BackImgLayerControl from './backimglayercontrol';
 import { getValue } from './i18n/language';
 
@@ -355,6 +356,41 @@ export default class BackImgLayer extends M.Plugin {
     (change)
       ? document.querySelectorAll('.m-panel.m-plugin-backimglayer').forEach(e => e.classList.add('changeStyleResponsive'))
       : document.querySelectorAll('.m-panel.m-plugin-backimglayer').forEach(e => e.classList.remove('changeStyleResponsive'));
+  }
+
+  /**
+   * Obtiene la ayuda del plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getHelp() {
+    return {
+      title: this.name,
+      content: new Promise((success) => {
+        const html = M.template.compileSync(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}plugins/backimglayer/images/`,
+            translations: {
+              help1: getValue('textHelp.help1'),
+              help2: getValue('textHelp.help2'),
+              help3: getValue('textHelp.help3'),
+              help4: getValue('textHelp.help4'),
+              help5: getValue('textHelp.help5'),
+              help6: getValue('textHelp.help6'),
+              help7: getValue('textHelp.help7'),
+              help8: getValue('textHelp.help8'),
+              help9: getValue('textHelp.help9'),
+              help10: getValue('textHelp.help10'),
+              help11: getValue('textHelp.help11'),
+              help12: getValue('textHelp.help12'),
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 }
 

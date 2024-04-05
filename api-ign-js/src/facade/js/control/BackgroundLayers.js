@@ -2,6 +2,7 @@
  * @module M/control/BackgroundLayers
  */
 import template from 'templates/backgroundlayers';
+import myhelp from 'templates/backgroundlayershelp';
 import 'assets/css/controls/backgroundlayers';
 import ControlImpl from 'impl/control/Control';
 import WMS from 'M/layer/WMS';
@@ -11,6 +12,7 @@ import { getQuickLayers } from '../mapea';
 import ControlBase from './Control';
 import { compileSync as compileTemplate } from '../util/Template';
 import { LOAD, ADDED_TO_MAP } from '../event/eventtype';
+import { getValue } from '../i18n/language';
 
 /**
  * Esta constante indica el número máximo de capas base que tendrá el control.
@@ -270,6 +272,31 @@ class BackgroundLayers extends ControlBase {
     html.querySelectorAll('button.m-background-group-btn')
       .forEach((b, i) => b.addEventListener('click', e => this.showBaseLayer(e, this.layers[i], i)));
     html.querySelector('#m-baselayerselector-unique-btn').addEventListener('click', e => this.showBaseLayer(e));
+  }
+
+  /**
+   * Obtiene la ayuda del control
+   *
+   * @function
+   * @public
+   * @api
+  */
+  getHelp() {
+    const textHelp = getValue('backgroundlayers').textHelp;
+    return {
+      title: BackgroundLayers.NAME,
+      content: new Promise((success) => {
+        const html = compileTemplate(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}assets/images`,
+            translations: {
+              help1: textHelp.text1,
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 }
 

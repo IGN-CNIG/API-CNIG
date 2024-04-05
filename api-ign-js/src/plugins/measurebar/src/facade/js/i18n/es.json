@@ -4,6 +4,23 @@
     "impl_clear": "La implementación usada no puede crear controles MeasureClear.",
     "impl_area": "La implementación usada no puede crear controles MeasureArea"
   },
+  "textHelp": {
+    "help1": "Mide longitudes y superficies sobre el mapa.",
+    "help2": "1. Medir distancias.",
+    "help3": "2. Medir área.",
+    "help4": "3. Borrar Medidas.",
+    "help5": "Haga clic sobre la herramienta para seleccionarla y luego sobre el mapa para dibujar la distancia que quiere medir. A medida que se va dibujando se va actualizando la longitud total.",
+    "help6": "Haga doble clic para terminar la medición de distancia, y empezar otra.",
+    "help7": "Con la tecla Escape se desactiva la herramienta y se borra la medición activa. Esto puede ser útil para reiniciar la herramienta si se ha cometido un error en la última medición, sin borrar el resto de mediciones ya realizadas.",
+    "help8": "La herramienta se queda activa hasta que la desactive, haciendo clic de nuevo sobre el botón 'Medir distancias'.",
+    "help9": "Haga clic sobre la herramienta para seleccionarla y luego sobre el mapa para dibujar el área que quiere medir. A medida que se va dibujando se va actualizando la superficie medida.",
+    "help10": "Haga doble clic para terminar la medición de área, y empezar otra.",
+    "help11": "Con la tecla Escape se desactiva la herramienta y se borra la medición activa. Esto puede ser útil para reiniciar la herramienta si se ha cometido un error en la última medición, sin borrar el resto de mediciones ya realizadas.",
+    "help12": "La herramienta se queda activa hasta que la desactive, haciendo clic de nuevo sobre el botón 'Medir área'.",
+    "help13": "Borra todas las mediciones realizadas, tanto áreas como distancias.",
+    "help14": "La información relevante a la extensión y su posible parametrización está documentada en",
+    "help15": "El ejemplo de uso de sus parámetros puede comprobarse en"
+  },
   "text": {
     "tooltip": "Herramientas de medición",
     "keep_drawing": "Click para continuar dibujando la línea",

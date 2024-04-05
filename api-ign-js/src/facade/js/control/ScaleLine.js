@@ -4,6 +4,7 @@
 import 'assets/css/controls/scale';
 import ScaleLineImpl from 'impl/control/ScaleLine';
 import scalelineTemplate from 'templates/scaleline';
+import myhelp from 'templates/scalelinehelp';
 import ControlBase from './Control';
 import { isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
@@ -70,6 +71,33 @@ class ScaleLine extends ControlBase {
    */
   createView(map) {
     return compileTemplate(scalelineTemplate);
+  }
+
+  /**
+   * Obtiene la ayuda del control
+   *
+   * @function
+   * @public
+   * @api
+  */
+  getHelp() {
+    const textHelp = getValue('scaleline').textHelp;
+    return {
+      title: ScaleLine.NAME,
+      content: new Promise((success) => {
+        const html = compileTemplate(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}assets/images`,
+            translations: {
+              help1: textHelp.text1,
+              help2: textHelp.text2,
+              help3: textHelp.text3,
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 
   /**
