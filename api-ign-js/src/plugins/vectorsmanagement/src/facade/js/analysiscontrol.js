@@ -70,6 +70,7 @@ export default class AnalysisControl extends M.Control {
           analysisProfile: getValue('analysisProfile'),
           analysisBuffer: getValue('analysisBuffer'),
           calculate: getValue('calculate'),
+          getGeoJSON: getValue('getGeoJSON'),
         },
       },
     });
@@ -115,6 +116,15 @@ export default class AnalysisControl extends M.Control {
     this.template.querySelector('#topographic-profile-btn').addEventListener('click', evt => this.analysisBtnClick(evt.target.id));
     this.template.querySelector('#buffer-btn').addEventListener('click', evt => this.analysisBtnClick(evt.target.id));
     this.template.querySelector('#vectorsmanagement-analysis-btn').addEventListener('click', this.calculateAnalysis.bind(this));
+    this.template.querySelector('#vectorsmanagement-btnToGeojson').addEventListener('click', () => {
+      const controlSelected = this.managementControl_.selectionControl;
+      // eslint-disable-next-line no-underscore-dangle
+      const selectFeatures = controlSelected.selection_ === 'layer' ? this.layer_.getFeatures() : controlSelected.getSelectedFeatures();
+      const featuresArea = this.impl_.getAreaGeoJSON(selectFeatures);
+      const pre = JSON.stringify(featuresArea.length === 1
+        ? featuresArea[0] : featuresArea, null, 2);
+      M.dialog.info(`<pre class="vectorsmanagement-dialogCode"><code>${pre}</code></pre>`, 'GeoJSON');
+    });
   }
 
   /**
