@@ -603,16 +603,17 @@ table#attribute-table>tr>th>button {
 
 @font-face {
     font-family: 'vectorsmanagement';
-    src: url('../fonts/vectorsmanagement.eot?5338693');
-    src: url('../fonts/vectorsmanagement.eot?5338693#iefix') format('embedded-opentype'),
-        url('../fonts/vectorsmanagement.woff2?5338693') format('woff2'),
-        url('../fonts/vectorsmanagement.woff?5338693') format('woff'),
-        url('../fonts/vectorsmanagement.ttf?5338693') format('truetype'),
-        url('../fonts/vectorsmanagement.svg?5338693#vectorsmanagement') format('svg');
+    src:  url('../fonts/vectorsmanagement.eot?66977');
+    src:  url('../fonts/vectorsmanagement.eot?66977#iefix') format('embedded-opentype'),
+      url('../fonts/vectorsmanagement.ttf?66977') format('truetype'),
+      url('../fonts/vectorsmanagement.woff?66977') format('woff'),
+      url('../fonts/vectorsmanagement.svg?66977#vectorsmanagement') format('svg');
     font-weight: normal;
     font-style: normal;
-}
-
+    font-display: block;
+  }
+  
+  
 .m-areas>div.m-area>div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control>button,
 .m-areas>div.m-area>div.m-panel.m-plugin-vectorsmanagement.collapsed>button.m-panel-btn,
 [class^="vectorsmanagement-"],
@@ -807,6 +808,29 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
 
 .vectorsmanagement-icon-table:before {
     content: '\f0ce';
+}
+
+.vectorsmanagement-icon-square:before {
+    content: "\e901";
+    font-size: 22px;
+    font-weight: bold;
+    top: 3px;
+    position: relative;
+  }
+
+.vectorsmanagement-geojson {
+    cursor: pointer;
+}
+
+
+.vectorsmanagement-geojson:hover:before {
+    color: #71a7d3 !important;
+    transition: 0.3s;
+}
+
+.vectorsmanagement-dialogCode {
+    overflow: auto; 
+    max-height: 50vh;
 }
 
 /* Modal ayuda */

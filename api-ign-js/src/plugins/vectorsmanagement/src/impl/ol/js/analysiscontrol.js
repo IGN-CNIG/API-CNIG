@@ -537,5 +537,25 @@ export default class Analysiscontrol extends M.impl.Control {
     this.calculateProfile(feature, false);
     this.calculate3DLength(this.arrayXZY, flatLength, elem);
   }
+
+  getAreaGeoJSON(features) {
+    const geoFormat = new M.impl.format.GeoJSON();
+    const src = this.facadeMap_.getProjection().code;
+    return features.map((featureFacade) => {
+      const feature = featureFacade.getImpl().getOLFeature();
+
+      const area = ol.sphere.getArea(feature.getGeometry());
+      feature.getGeometry().transform(src, 'EPSG:3857');
+      const featureJSON = geoFormat.writeFeatureObject(feature);
+      featureJSON.properties = {
+        area: {
+          km: area / (10 ** 6),
+          m: area,
+        },
+      };
+
+      return featureJSON;
+    });
+  }
 }
 

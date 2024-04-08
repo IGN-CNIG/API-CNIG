@@ -93,6 +93,7 @@
   "apply_style": "Aplicar",
   "analysisProfile": "Perfil topográfico",
   "analysisBuffer": "Área de influencia",
+  "getGeoJSON": "Ver GeoJSON",
   "draw": "Dibujar",
   "createdLayer": "Creada capa",
   "zmin": "Alt. min",

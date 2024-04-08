@@ -93,6 +93,7 @@
   "apply_style": "Apply",
   "analysisProfile": "Topographic profile",
   "analysisBuffer": "Buffer",
+  "getGeoJSON": "Get GeoJSON",
   "draw": "Draw",
   "createdLayer": "Created layer",
   "zmin": "Alt. min",
