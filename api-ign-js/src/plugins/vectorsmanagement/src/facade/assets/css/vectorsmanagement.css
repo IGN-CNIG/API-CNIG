@@ -325,9 +325,9 @@ table#attribute-table>tr>th>button {
     width: 100%;
 }
 
-.style-col-0,
-.style-col-1,
-.style-col-2 {
+.vector-style-col-0,
+.vector-style-col-1,
+.vector-style-col-2 {
     padding: 0 15px;
     align-content: center;
     align-items: left;
@@ -336,25 +336,25 @@ table#attribute-table>tr>th>button {
     float: left;
 }
 
-.style-col-0 label,
-.style-col-0 input,
-.style-col-1 label,
-.style-col-1 input,
-.style-col-2 label,
-.style-col-2 input {
+.vector-style-col-0 label,
+.vector-style-col-0 input,
+.vector-style-col-1 label,
+.vector-style-col-1 input,
+.vector-style-col-2 label,
+.vector-style-col-2 input {
     vertical-align: middle;
 }
 
-.style-col-1,
-.style-col-2 {
+.vector-style-col-1,
+.vector-style-col-2 {
     width: 50%;
 }
 
-.style-col-1 {
+.vector-style-col-1 {
     padding-right: 10px !important;
 }
 
-.style-col-2 {
+.vector-style-col-2 {
     padding-left: 0 !important;
 }
 
