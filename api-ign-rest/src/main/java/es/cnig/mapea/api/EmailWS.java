@@ -146,6 +146,7 @@ public class EmailWS {
 
 	   Session session = Session.getDefaultInstance(props);
 	   MimeMessage message = new MimeMessage(session);
+	   message.addHeader("Access-Control-Allow-Origin", "*");
 	   Transport transport = null;
 	   try {
 		   message.setFrom(new InternetAddress(remitente));
