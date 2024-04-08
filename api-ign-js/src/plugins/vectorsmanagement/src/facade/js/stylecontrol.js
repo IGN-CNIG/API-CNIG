@@ -309,7 +309,6 @@ export default class StyleControl extends M.Control {
     const options = {
       stroke: {},
       fill: {},
-      label: {},
     };
     const colorInput = this.template.querySelector(`#colorSelector-${type}`);
     const widthInput = this.template.querySelector(`#thicknessSelector-${type}`);
@@ -333,6 +332,7 @@ export default class StyleControl extends M.Control {
       options.fill.opacity = opacityInput.value;
     }
     if (textInput && textInput.value) {
+      options.label = {};
       options.label.text = textInput.value;
       if (fontInput && fontSizeInput) {
         options.label.font = `${fontSizeInput.value}px ${fontInput.value}`;

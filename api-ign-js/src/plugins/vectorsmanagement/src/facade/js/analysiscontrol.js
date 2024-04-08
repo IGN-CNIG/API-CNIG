@@ -77,6 +77,12 @@ export default class AnalysisControl extends M.Control {
     html.querySelector('#m-vectorsmanagement-controls').appendChild(this.template);
     this.initializeLayers();
     this.addEvents();
+
+    // eslint-disable-next-line no-underscore-dangle
+    const feature = this.managementControl_.selectionControl.selectedFeatures_[0];
+    if (feature) {
+      this.showFeatureInfo(feature);
+    }
   }
 
   /**
@@ -159,6 +165,7 @@ export default class AnalysisControl extends M.Control {
    * @api
    */
   onSelect(e) {
+    console.log('onSelect + +', e);
     const MFeatures = this.layer_.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
@@ -181,8 +188,6 @@ export default class AnalysisControl extends M.Control {
     } else if (active.id === 'buffer-btn') {
       this.drawBuffer();
     }
-
-    this.showFeatureInfo();
   }
 
   /**
@@ -416,7 +421,7 @@ export default class AnalysisControl extends M.Control {
    * @function
    * @api
    */
-  showFeatureInfo() {
+  showFeatureInfo(feature) {
     const infoContainer = document.querySelector('#analysisBtns #featureInfo');
 
     if (infoContainer !== null) {
@@ -428,10 +433,10 @@ export default class AnalysisControl extends M.Control {
     let line = false;
     let polygon = false;
 
-    switch (this.feature.getGeometry().type) {
+    switch (feature.getGeometry().type) {
       case 'Point':
       case 'MultiPoint':
-        const [x, y] = this.getImpl().getFeatureCoordinates();
+        const [x, y] = this.getImpl().getFeatureCoordinates(feature);
         if (infoContainer !== null) {
           point = {};
           point.x = Math.round(x * 1000) / 1000;
@@ -440,7 +445,7 @@ export default class AnalysisControl extends M.Control {
         break;
       case 'LineString':
       case 'MultiLineString':
-        let lineLength = this.getImpl().getFeatureLength();
+        let lineLength = this.getImpl().getFeatureLength(feature);
         let units = 'km';
         if (lineLength > 100) {
           lineLength = Math.round((lineLength / 1000) * 100) / 100;
@@ -456,7 +461,7 @@ export default class AnalysisControl extends M.Control {
         break;
       case 'Polygon':
       case 'MultiPolygon':
-        let area = this.getImpl().getFeatureArea();
+        let area = this.getImpl().getFeatureArea(feature);
         let areaUnits = 'km';
         if (area > 10000) {
           area = Math.round((area / 1000000) * 100) / 100;
@@ -491,7 +496,7 @@ export default class AnalysisControl extends M.Control {
     const infoLine3D = document.querySelector('#infoAnalisis3DLine');
     if (infoLine3D) {
       infoLine3D.addEventListener('click', () => {
-        this.getImpl().get3DLength('#infoAnalisis3DLine');
+        this.getImpl().get3DLength('#infoAnalisis3DLine', feature);
       });
     }
   }

@@ -6,6 +6,8 @@ import selectlayer from 'templates/selectlayer';
 import BindingController from './bindingcontroller';
 import { getValue } from './i18n/language';
 
+const LAYERS_PREVENT_PLUGINS = ['bufferLayer'];
+
 export default class StyleManagerControl extends M.Control {
   /**
    * @classdesc
@@ -165,10 +167,19 @@ export default class StyleManagerControl extends M.Control {
       if (Array.isArray(layers)) {
         layers.filter(layer => ((layer instanceof M.layer.Vector && layer.type !== 'Generic') && layer
           instanceof M.layer.MBTilesVector === false && layer.name !== 'selectLayer')).forEach(layer => this.addLayerOption(htmlSelect, layer.name));
-      } else if (layers instanceof M.layer.Vector) {
+      } else if (layers instanceof M.layer.Vector
+        && !LAYERS_PREVENT_PLUGINS.includes(layers.name)
+      ) {
         const layer = { ...layers };
         this.addLayerOption(htmlSelect, layer);
       }
+    });
+    this.facadeMap_.on(M.evt.REMOVED_LAYER, (layers) => {
+      let l = layers;
+      if (!Array.isArray(layers)) {
+        l = [layers];
+      }
+      l.forEach((layer) => { this.removeLayerOption(htmlSelect, layer.name); });
     });
   }
 
@@ -193,6 +204,13 @@ export default class StyleManagerControl extends M.Control {
         htmlOption.innerText = name;
         htmlSelect.add(htmlOption);
       }
+    }
+  }
+
+  removeLayerOption(htmlSelect, name) {
+    if (this.isNotAdded(name, htmlSelect) === false) {
+      const htmlOption = Array.from(htmlSelect.options).find(option => option.getAttribute('name') === name);
+      htmlOption.remove();
     }
   }
 

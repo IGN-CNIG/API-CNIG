@@ -58,8 +58,8 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - **layers**: Capas para pasar en la petición a pelias. Por defecto: 'address,street,venue'.
   - **sources**: Fuentes para pasar en la petición a pelias. Por defecto: ''.
   - **radius**: Radio maximo para hacer la búsqueda inversa. Por defecto: 100 (en kilómetros).
-  - **urlAutocomplete**: URL del servicio de autocomplete de pelias. Por defecto: 'https://geocoder.larioja.org/v1/autocomplete'.
-  - **urlReverse**: URL del servicio de reverse de pelias. Por defecto: 'https://geocoder.larioja.org/v1/reverse'.
+  - **urlAutocomplete**: URL del servicio de autocomplete de pelias. Por defecto: 'https://geolocalizador.idee.es/v1/autocomplete'.
+  - **urlReverse**: URL del servicio de reverse de pelias. Por defecto: 'https://geolocalizador.idee.es/v1/reverse'.
 
   ```javascript
   searchOptions: {

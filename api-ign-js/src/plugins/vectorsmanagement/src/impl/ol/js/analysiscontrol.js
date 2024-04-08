@@ -117,7 +117,7 @@ export default class Analysiscontrol extends M.impl.Control {
    * @api
    * @param {M.Feature} feature
    */
-  calculateProfile(feature) {
+  calculateProfile(feature, show = true) {
     let coordinates = [];
     if (feature.getGeometry().type === 'MultiLineString') {
       feature.getGeometry().coordinates.forEach((path) => {
@@ -157,6 +157,9 @@ export default class Analysiscontrol extends M.impl.Control {
       promises.push(M.remote.get(url));
     });
 
+
+    const codeProj = this.facadeMap_.getProjection().code;
+
     this.arrayXZY = Promise.all(promises).then((responses) => {
       M.proxy(true);
       responses.forEach((response) => {
@@ -185,14 +188,17 @@ export default class Analysiscontrol extends M.impl.Control {
       });
 
       let arrayXZY2 = arrayXZY.map((coord) => {
-        return ol.proj.transform(coord, 'EPSG:4326', this.facadeMap_.getProjection().code);
+        return ol.proj.transform(coord, 'EPSG:4326', codeProj);
       });
 
       arrayXZY2 = arrayXZY2.filter((item) => {
         return item[2] > 0;
       });
 
-      this.showProfile(arrayXZY2);
+      if (show) {
+        this.showProfile(arrayXZY2);
+      }
+
       return arrayXZY2;
     }).catch((err) => {
       M.proxy(true);
@@ -454,8 +460,8 @@ export default class Analysiscontrol extends M.impl.Control {
    * @function
    * @api
    */
-  getFeatureCoordinates() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getCoordinates();
+  getFeatureCoordinates(feature) {
+    return feature.getImpl().getOLFeature().getGeometry().getCoordinates();
   }
 
   /**
@@ -464,8 +470,8 @@ export default class Analysiscontrol extends M.impl.Control {
      * @function
      * @api
      */
-  getFeatureLength() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getLength();
+  getFeatureLength(feature) {
+    return feature.getImpl().getOLFeature().getGeometry().getLength();
   }
 
   /**
@@ -474,8 +480,8 @@ export default class Analysiscontrol extends M.impl.Control {
      * @function
      * @api
      */
-  getFeatureArea() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getArea();
+  getFeatureArea(feature) {
+    return feature.getImpl().getOLFeature().getGeometry().getArea();
   }
 
   getGeometryLength(geometry) {
@@ -500,6 +506,7 @@ export default class Analysiscontrol extends M.impl.Control {
     const $td = elem;
     promiseArray
       .then((points) => {
+        console.log(points);
         let length = 0;
         for (let i = 0, ii = points.length - 1; i < ii; i += 1) {
           const geom = new ol.geom.LineString([points[i], points[i + 1]]);
@@ -518,7 +525,6 @@ export default class Analysiscontrol extends M.impl.Control {
         }
 
         $td.innerHTML = `3D: ${m}`;
-        this.facadeControl.feature.setAttribute('3dLength', length);
       })
       .catch((err) => {
         $td.innerHTML = '-';
@@ -526,9 +532,10 @@ export default class Analysiscontrol extends M.impl.Control {
       });
   }
 
-  get3DLength(id) {
+  get3DLength(id, feature) {
     const elem = document.querySelector(`${id}`);
-    const flatLength = this.getFeatureLength();
+    const flatLength = this.getFeatureLength(feature);
+    this.calculateProfile(feature, false);
     this.calculate3DLength(this.arrayXZY, flatLength, elem);
   }
 }

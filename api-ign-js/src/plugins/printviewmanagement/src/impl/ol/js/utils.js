@@ -15,3 +15,7 @@ export const transformExt = (box, code, currProj) => {
 export const transform = (box, code, currProj) => {
   return ol.proj.transform(box, code, currProj);
 };
+
+export const pixelToCoordinateTransform = (map) => {
+  return map.getMapImpl().pixelToCoordinateTransform_; // eslint-disable-line
+};

@@ -1,3 +1,6 @@
+
+import { getValue } from './i18n/language';
+import { pixelToCoordinateTransform } from '../../impl/ol/js/utils';
 // eslint-disable-next-line import/first
 import JsZip from 'jszip';
 // eslint-disable-next-line import/first
@@ -74,27 +77,35 @@ export function removeQueueElements(html) {
 }
 
 // Generate wld file
-export function createWLD(bbox, dpi, size, epsgUser) {
-  const epsgWLD = epsgUser;
-  const rotateX = 0;
-  const rotateY = 0;
+export function createWLD(bbox, dpi, size, epsgUser, map) {
+  const rotationMap = map.getMapImpl().getView().getRotation();
+  let px;
+  if (rotationMap !== 0) {
+    const result = pixelToCoordinateTransform(map); // eslint-disable-line
+    px = result.join('\n');
+  } else {
+    const epsgWLD = epsgUser;
+    const rotateX = 0;
+    const rotateY = 0;
 
-  if (epsgWLD) {
-    const sizePixelX = ((bbox[2] - bbox[0]) / size[0]);
-    const sizePixelY = ((bbox[3] - bbox[1]) / size[1]) * -1;
-    const upperLeftX = bbox[0] + (sizePixelX / 2);
-    const upperLeftY = bbox[3] + (sizePixelY / 2);
+    if (epsgWLD) {
+      const sizePixelX = ((bbox[2] - bbox[0]) / size[0]);
+      const sizePixelY = ((bbox[3] - bbox[1]) / size[1]) * -1;
+      const upperLeftX = bbox[0] + (sizePixelX / 2);
+      const upperLeftY = bbox[3] + (sizePixelY / 2);
 
-    return sizePixelX.toString().concat('\n', rotateX.toString(), '\n', rotateY.toString(), '\n', sizePixelY.toString(), '\n', upperLeftX.toString(), '\n', upperLeftY.toString());
+      px = sizePixelX.toString().concat('\n', rotateX.toString(), '\n', rotateY.toString(), '\n', sizePixelY.toString(), '\n', upperLeftX.toString(), '\n', upperLeftY.toString());
+    } else {
+      const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
+      const GiroA = (0).toString();
+      const GiroB = (0).toString();
+      const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / dpi)).toString();
+      const Cx = (bbox[0] + (Px / 2)).toString();
+      const Cy = (bbox[3] + (Py / 2)).toString();
+      px = Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy);
+    }
   }
-
-  const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
-  const GiroA = (0).toString();
-  const GiroB = (0).toString();
-  const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / dpi)).toString();
-  const Cx = (bbox[0] + (Px / 2)).toString();
-  const Cy = (bbox[3] + (Py / 2)).toString();
-  return Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy);
+  return px;
 }
 
 

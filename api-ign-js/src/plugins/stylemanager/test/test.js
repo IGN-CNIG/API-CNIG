@@ -1087,7 +1087,7 @@ const wfs2 = new M.layer.WFS({
   legend: "Campamentos",
   geometry: 'Point',
 });
-map.addWFS(wfs2);
+// map.addWFS(wfs2);
 window.wfs2 = wfs2;
 
 const wfs3 = new M.layer.WFS({
@@ -1111,8 +1111,8 @@ const estiloflow = new M.style.FlowLine({
   offset0: 0,
   offset1: 0,
 });
-lines.setStyle(estiloflow);
-// map.addLayers([lines]);
+// lines.setStyle(estiloflow);
+map.addLayers([lines]);
 
 window.lines = lines;
 map.addPlugin(mp);

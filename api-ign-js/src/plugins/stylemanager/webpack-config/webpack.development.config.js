@@ -74,10 +74,11 @@ module.exports = {
     // https: true,
     hot: true,
     open: true,
-    port: 6123,
-    open: 'test/dev.html',
-    static: {
-      directory: path.join(__dirname, '/../'),
+    // port: 6123,
+    host:'0.0.0.0',
+    openPage: 'test/dev.html',
+    watchOptions: {
+      poll: 1000,
     },
   },
   watchOptions: {
