@@ -39,8 +39,8 @@ export default class StyleManagerControl extends M.Control {
    */
   createView(map) {
     this.facadeMap_ = map;
-    const layers = map.getWFS().concat(map.getMVT().concat(map.getKML().concat(map.getLayers().filter(layer => layer.type === 'GeoJSON')))).filter((layer) => {
-      return layer.name !== 'selectLayer';
+    const layers = map.getWFS().concat(map.getMVT().concat(map.getKML().concat(map.getLayers().filter(layer => layer.type === 'GeoJSON' || layer.type === 'Vector')))).filter((layer) => {
+      return layer.name !== 'selectLayer' && layer.name !== '__draw__';
     });
     return new Promise((success, fail) => {
       const html = M.template.compileSync(stylemanager, {
@@ -254,8 +254,8 @@ export default class StyleManagerControl extends M.Control {
    * @api stable
    */
   getLayerByName(layerName) {
-    const layers = this.facadeMap_.getWFS().concat(this.facadeMap_.getMVT().concat(this.facadeMap_.getKML().concat(this.facadeMap_.getLayers().filter(layer => layer.type === 'GeoJSON')))).filter((layer) => {
-      return layer.name !== 'selectLayer';
+    const layers = this.facadeMap_.getWFS().concat(this.facadeMap_.getMVT().concat(this.facadeMap_.getKML().concat(this.facadeMap_.getLayers().filter(layer => layer.type === 'GeoJSON' || layer.type === 'Vector')))).filter((layer) => {
+      return layer.name !== 'selectLayer' && layer.name !== '__draw__';
     });
     return layers.find(layer => layer.name === layerName);
   }
@@ -280,7 +280,11 @@ export default class StyleManagerControl extends M.Control {
     if (this.layer_ instanceof M.layer.Vector) {
       this.clearStyle();
       const style = this.bindinController_.getStyle();
-      this.layer_.setStyle(style);
+      if (this.layer_.type === 'Vector') {
+        this.layer_.setStyle(style, true);
+      } else {
+        this.layer_.setStyle(style);
+      }
     } else {
       M.dialog.info(getValue('exception.chooseLayer'), getValue('exception.choLayer'));
     }
