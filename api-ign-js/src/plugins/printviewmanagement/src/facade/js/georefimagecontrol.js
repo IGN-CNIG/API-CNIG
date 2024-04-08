@@ -469,6 +469,9 @@ export default class GeorefimageControl extends M.Control {
           queueEl.addEventListener('keydown', this.downloadPrint.bind(this));
         } else {
           queueEl.remove();
+          if (document.querySelector('#m-georefimage-queue-container').childNodes.length === 0) {
+            document.querySelector('.m-printviewmanagement-queue').style.display = 'none';
+          }
           M.dialog.error(getValue('exception').printError);
         }
       });
