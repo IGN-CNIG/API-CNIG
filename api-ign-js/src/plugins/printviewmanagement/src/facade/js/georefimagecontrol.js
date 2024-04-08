@@ -441,35 +441,36 @@ export default class GeorefimageControl extends M.Control {
       M.proxy(this.useProxy);
       M.remote.post(printUrl, printData).then((responseParam) => {
         let response = responseParam;
-        const responseStatusURL = response.text && JSON.parse(response.text);
-        const ref = responseStatusURL.ref;
-        const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
-        this.getStatus(
-          statusURL,
-          e => removeLoadQueueElement(e),
-          queueEl,
-        );
+        if (response.error !== true && response.text.indexOf('</error>') === -1) { // withoud proxy, response.error === true
+          let downloadUrl;
+          const responseStatusURL = response.text && JSON.parse(response.text);
+          const ref = responseStatusURL.ref;
+          const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
+          this.getStatus(
+            statusURL,
+            e => removeLoadQueueElement(e),
+            queueEl,
+          );
 
-        // if (response.error !== true) { // withoud proxy, response.error === true
-        let downloadUrl;
-        try {
-          response = JSON.parse(response.text);
-          if (this.serverUrl_.endsWith('/geoprint')) {
-            const url = this.serverUrl_.substring(0, this.serverUrl_.lastIndexOf('/geoprint'));
-            downloadUrl = M.utils.concatUrlPaths([url, response.downloadURL]);
-          } else {
-            downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
+          try {
+            response = JSON.parse(response.text);
+            if (this.serverUrl_.endsWith('/geoprint')) {
+              const url = this.serverUrl_.substring(0, this.serverUrl_.lastIndexOf('/geoprint'));
+              downloadUrl = M.utils.concatUrlPaths([url, response.downloadURL]);
+            } else {
+              downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
+            }
+            this.documentRead_.src = downloadUrl;
+          } catch (err) {
+            M.exception(err);
           }
-          this.documentRead_.src = downloadUrl;
-        } catch (err) {
-          M.exception(err);
+          queueEl.setAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME, downloadUrl);
+          queueEl.addEventListener('click', this.downloadPrint.bind(this));
+          queueEl.addEventListener('keydown', this.downloadPrint.bind(this));
+        } else {
+          queueEl.remove();
+          M.dialog.error(getValue('exception').printError);
         }
-        queueEl.setAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME, downloadUrl);
-        queueEl.addEventListener('click', this.downloadPrint.bind(this));
-        queueEl.addEventListener('keydown', this.downloadPrint.bind(this));
-        // } else {
-        //   M.dialog.error('Se ha producido un error en la impresión.');
-        // }
       });
 
       M.proxy(this.statusProxy);
