@@ -400,11 +400,13 @@ const showTestSections = () => {
 const setStyle = (type) => {
   estilo = styles[type].funcion();
   window.layer.setStyle(estilo);
+  window.estilo = estilo;
 };
 
 const setStyleWithParam = (type, param) => {
   estilo = styles[type].funcion(param);
   window.layer.setStyle(estilo);
+  window.estilo = estilo;
 };
 
 const refreshStyleOptions = (type) => {
@@ -503,15 +505,18 @@ const addTestFunctions = () => {
   listOfAllFunctions.remove('destroy');
   listOfAllFunctions.remove('equals');
   listOfAllFunctions.remove('setImpl');
-  listOfAllFunctions.remove('loadCanvasImages_'); // se llama internamente con updateCanvas
+  listOfAllFunctions.remove('loadCanvasImages_');listOfAllFunctions.remove('loadCanvasImage'); // se llama internamente con updateCanvas
   listOfAllFunctions.remove('drawGeometryToCanvas'); // se llama internamente con updateCanvas
-  if (styleType !== 'composite') {
+  /* if (styleType !== 'composite') {
     // listOfAllFunctions.remove('add');
     listOfAllFunctions.remove('unapplySoft');
     listOfAllFunctions.remove('updateInternal_');
-  }
+  } */
+  const listOnlyShown = [];
   // Confirmar que existen funciones que se quieren probar
   if (listOfAllFunctions && listOfAllFunctions.length > 0) {
+    const eventsFuncArray = [];
+    const eventsKeyArray = [];
     // Comenzar a generar botones del HTML
     for (let i = 0; i < listOfAllFunctions.length; i++) {
       const auxName = listOfAllFunctions[i]; // Nombre de Función
@@ -522,6 +527,7 @@ const addTestFunctions = () => {
         auxButton.innerText = auxName;
         let appendTo;
         let parameterTest;
+        listOnlyShown.push(auxName);
 
         if (objectWithAllFunctions[auxName].value && !checkFunctionArguments(objectWithAllFunctions[auxName].value)) {
           // ---------------------------------FUNCIONES SIN PARÁMETROS-----------------------------
@@ -540,7 +546,7 @@ const addTestFunctions = () => {
               } else if (auxName == 'getRange') {
                 showResult(auxButton, '2-4', estilo[auxName](2, 4));
               } else {
-                console.error('NOT_PREPARED_FUNCTION_TEST_FOR_OTHER:',auxName);
+                console.error('NOT_PREPARED_FUNCTION_TEST_FOR_GET:',auxName);
               }
             };
             appendTo = getWithParam;
@@ -566,6 +572,8 @@ const addTestFunctions = () => {
                   return radio;
                 }
                 showResult(auxButton, 'function', estilo[auxName](miFuncionProporcional));
+              } else if (auxName === 'setStyle') {
+                showResult(auxButton, 'setStyle', estilo[auxName](estilo.style_));
               } else if (auxName === 'setCategories') {
                 const categories = {};
                 showResult(auxButton, 'empty_object', estilo[auxName](categories));
@@ -615,22 +623,81 @@ const addTestFunctions = () => {
                 ];
                 showResult(auxButton, null, estilo[auxName](rangos));
               } else {
-                console.error('NOT_PREPARED_FUNCTION_TEST_FOR_OTHER:',auxName);
+                console.error('NOT_PREPARED_FUNCTION_TEST_FOR_SET:',auxName);
               }
             };
             appendTo = setParam;
           } else {
             // ---------------------------------OTRAS FUNCIONES---------------------------------
             parameterTest = () => { // otherParameterTest
-              if (auxName === 'apply' || auxName === 'applyInternal') {
+              if (auxName === 'add') {
+                showResult(auxButton, 'add', estilo[auxName](styles[styleType]))
+              } else if (auxName === 'apply' || auxName === 'applyInternal') {
                 showResult(auxButton, null, estilo[auxName](window.layer));
               } else if (auxName == 'applyToFeature') {
                 const feature = window.layer.getFeatures()[0];
                 showResult(auxButton, null, estilo[auxName](feature));
+              } else if (auxName == 'calculateStyle_') {
+                const feature = window.layer.getFeatures()[0];
+                let style = estilo.style_;
+                if (style == null || style == undefined) {
+                  style = feature.getStyle() ? feature.getStyle() : this.layer_.getStyle();
+                }
+                showResult(auxButton, null, estilo[auxName](feature,{
+                  minRadius: estilo.minRadius_,
+                  maxRadius: estilo.maxRadius_,
+                  minValue: estilo.minValue_,
+                  maxValue: estilo.maxValue_,
+                }, style));
               } else if (auxName == 'refresh') {
                 showResult(auxButton, null, estilo[auxName]());
+              } else if (auxName === 'remove') {
+                showResult(auxButton, 'remove', estilo[auxName](styles[styleType]));
               } else if (auxName === 'unapply' || auxName === 'unapplyInternal') {
                 showResult(auxButton, null, estilo[auxName](window.layer));
+              } else if (auxName == 'fire') {
+                showResult(auxButton, 'FIRE_CLICK_EVENT', estilo[auxName]('click', {pixel:[0, 0]}));
+              } else if (auxName == 'on') {
+                const onDate = new Date().getTime();
+                const funcEvent = () => {console.log('ON_FUNCTION:', onDate)}
+                eventsFuncArray.push(funcEvent);
+                showResult(auxButton, 'ON_CLICK_'+onDate, estilo[auxName]('click', funcEvent));
+              } else if (auxName == 'once') {
+                const onDate = new Date().getTime();
+                eventsKeyArray.push(showResult(auxButton, 'ONCE_CLICK_'+onDate, estilo[auxName]('click', () => {console.log('ONCE_FUNCTION:', onDate)})));
+              } else if (auxName == 'un') {
+                if (eventsFuncArray.length > 0) {
+                  eventsFuncArray.forEach(f => {showResult(auxButton, 'UN', estilo[auxName]('click', f));});
+                  eventsFuncArray.splice(0);
+                } else {
+                  auxButton.className = 'warningButton';
+                  console.error('NO_ON_EVENTS_PRESENT_TO_CLEAR:', auxName);
+                }
+              } else if (auxName == 'unByKey') {
+                if (eventsKeyArray.length > 0) {
+                  eventsKeyArray.forEach(k => {showResult(auxButton, 'UNBYKEY', estilo[auxName]('click', k));});
+                  eventsKeyArray.splice(0);
+                } else {
+                  auxButton.className = 'warningButton';
+                  console.error('NO_ONCE_EVENTS_PRESENT_TO_CLEAR:', auxName);
+                }
+              } else if (auxName === 'unapplySoft') {
+                showResult(auxButton, 'unapplySoft', estilo[auxName](undefined));
+              } else if (auxName === 'updateInternal_') {
+                if(estilo.layer_){
+                  showResult(auxButton, 'updateInternal_', estilo[auxName](estilo.layer_));
+                } else {
+                  auxButton.className = 'warningButton';
+                  console.error('NO_LAYER_PRESENT_FOR UPDATE:');
+                }
+              } else if (auxName === 'updateRange') {
+                showResult(auxButton, 'updateRange', estilo[auxName](1, 3, new Generic({
+                  point: {
+                    stroke: {color: '#5789aa',},
+                    fill: {color: '#99ccff',},
+                    radius: 20,
+                  },
+                })));
               } else {
                 console.error('NOT_PREPARED_FUNCTION_TEST_FOR_OTHER:',auxName);
               }
@@ -655,25 +722,46 @@ const addTestFunctions = () => {
   }
   
   window.listOfAllFunctions = listOfAllFunctions; // Para tener acceso a toda la lista de funciones.
+  window.listOnlyShown = listOnlyShown; // Solo las funciones mostradas en las pruebas.
 };
 
 
-////////////////////
-// ERORES develop //
-///////////////////
+/////////////////////
+// ERRORES develop //
+/////////////////////
+
+// "TypeError: layer is null" en "remove Composite.js:93" NO ES ERROR si no se ha dejado tiempo al layer a cargar antes de lanzar la función responsable.
+
 /*
+Coropletas y Categorico
+  + set --> this.getImpl(...).updateFacadeOptions is not a function
+
 Estilo Coropletas
-  + setQuantification --> no funciona pasandole array de rangos, funcion que devuelve rangos ni con funciones de Quantification
+  + setQuantification --> no funciona pasandole array de rangos, función que devuelve rangos ni con funciones de Quantification
 
 Proporcional
   + set --> this.getImpl(...).updateFacadeOptions is not a function
   + update_ --> Cannot read properties of null (reading 'getStyle')
-  + setAttributeName, setMaxRadius, setMinRadius, setProportionaFunction, apply, applyInternal, refresh  --> fallan por el error en el update_
+  + setAttributeName, setMaxRadius, setMinRadius, setProportionaFunction, apply, applyInternal, refresh  --> fallan por el error en el update
+  + setStyle --> "TypeError: this.layer_ is null" en "update_ Proportional.js:226"
+
+Mapa de calor
+  + clone --> "Uncaught El nombre de atributo no puede ser nulo. Especifique cadena o función" en "_loop CP-004.js:649", ocurre porque el contructor del "/src/facade/js/style/Heatmap.js" espera que el parámetro de atributo sea string o función, pero en este caso es un objeto "(attribute && !(isString(attribute) || isFunction(attribute)))".
+              Tras algunas pruebas se ha podido ver que aquí en la misma prueba se añade "numero" en el "PESO" del heatmap stile que se supone que es desde 0 a 1.
+              Ya que el clonado es por parte de "style" posiblemente no haya forma desde ahí de solucionarlo, pero se podría en el heatmap constructor probar si es objeto y sacar de este el "attribute.weight" al "attribute".
 
 Cluster
   + setRanges --> Cannot set properties of null (setting 'style')
+  + set --> "TypeError: clusterSource.getSource is not a function" en "deactivateChangeEvent Cluster.js:617". No ocurre siempre, hay que probar cambiar a Composición y probar el set ahí.
+  + updateRange --> "TypeError: this.layer_ is null" en "updateRange Cluster.js:195"
 
 Linea de flujo
   + applyToFeature --> Cannot read properties of null (reading 'getOptions')
   + set --> Cannot read properties of null (reading 'getOptions') //El estilo no tiene opciones
+  + set --> También hay error "TypeError: feature.getStyle() is null" en "applyToFeature Feature.js:47"
+
+Composición
+  + setRanges --> Error "TypeError: feature.getStyle() is null" en "applyToFeature Feature.js:47"
+  + set --> "TypeError: clusterSource.getSource is not a function" en "deactivateChangeEvent Cluster.js:617". No ocurre siempre, hay que probar cambiar a Cluster y probar el set ahí.
+  + updateRange --> "TypeError: this.layer_ is null" en "updateRange Cluster.js:195"
 */
