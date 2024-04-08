@@ -29,8 +29,8 @@ tituloCapa.innerText = capaPrueba.name;
 const popupDePruebas = window.document.getElementById('popup_de_test');
 const abrirPopup = window.document.getElementById('abrir_test');
 const cerrarPopup = window.document.getElementById('cerrar_test');
-abrirPopup.addEventListener('click', () => {popupDePruebas.className = "active"});
-cerrarPopup.addEventListener('click', () => {popupDePruebas.className = "notactive"});
+abrirPopup.addEventListener('click', () => {popupDePruebas.className = 'active'});
+cerrarPopup.addEventListener('click', () => {popupDePruebas.className = 'notactive'});
 
 const noParam = window.document.getElementsByClassName('noParameters')[0];
 const getWithParam = window.document.getElementsByClassName('getWithParameters')[0];
@@ -40,15 +40,15 @@ const setParam = window.document.getElementsByClassName('setFunctions')[0];
 const otherParam = window.document.getElementsByClassName('otherFunctions')[0];
 
 // Guardar todos los __proto__ del Objeto "capaPrueba", usando ... para traerse elementos de estos objetos a un objeto común con el que se trabajará
-const mergeObjects = (first, second) => {return {...first,...Object.getOwnPropertyDescriptors(second)}}
+const mergeObjects = (first, second) => {return {...first, ...Object.getOwnPropertyDescriptors(second)}}
 let objectWithAllFunctions = {};
-for(let acumuladorObjetos = capaPrueba ;acumuladorObjetos.__proto__ !== null;acumuladorObjetos = acumuladorObjetos.__proto__){
+for(let acumuladorObjetos = capaPrueba ;acumuladorObjetos.__proto__ !== null;acumuladorObjetos = acumuladorObjetos.__proto__) {
   objectWithAllFunctions = mergeObjects(objectWithAllFunctions, acumuladorObjetos);
 }
 
 // Creado Array para manejar más adelante el objectWithAllFunctions y ordenado de este sin funciones de "constructor" y "destroy"
 const listAllFunctions = Object.keys(objectWithAllFunctions).sort();
-listAllFunctions.remove("constructor"); listAllFunctions.remove("destroy");
+listAllFunctions.remove('constructor'); listAllFunctions.remove('destroy');
 const listOnlyShown = [];
 
 if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen funciones que se quieren probar
@@ -60,7 +60,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
     let complete = button.innerText + (format? '_' + format : '');
     if (result instanceof Promise) {
       const resultArray = [];
-      result.then((success) => {console.log("PROMISE_SUCCESS:" + complete, success);resultArray.push(success);button.className = 'okButton';}, (error)=> {console.log("PROMISE_ERROR_THEN:" + complete, error);resultArray.push(error);button.className = 'errorButton';}).catch((error)=> {console.log("PROMISE_ERROR_CATCH:" + complete, error);resultArray.push(error);button.className = 'errorButton';})
+      result.then((success) => {console.log('PROMISE_SUCCESS:' + complete, success);resultArray.push(success);button.className = 'okButton';}, (error)=> {console.log('PROMISE_ERROR_THEN:' + complete, error);resultArray.push(error);button.className = 'errorButton';}).catch((error)=> {console.log('PROMISE_ERROR_CATCH:' + complete, error);resultArray.push(error);button.className = 'errorButton';});
       return resultArray;
     } else {
       button.className = 'okButton';
@@ -69,11 +69,11 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
     }
   };
 
-  const checkFunctionArguments = function (func){
+  const checkFunctionArguments = function (func) {
     let hasArguments = false;
-    let functString = func.toString().split('\n').splice(0,2);
+    let functString = func.toString().split('\n').splice(0, 2);
     if (functString[0]) {
-      hasArguments = functString[0].substring(functString[0].indexOf('(')+1,functString[0].indexOf(')')).trim().length != 0 || functString[0].includes('arguments.length');
+      hasArguments = functString[0].substring(functString[0].indexOf('(')+1, functString[0].indexOf(')')).trim().length != 0 || functString[0].includes('arguments.length');
     }
     if (!hasArguments && functString[1]) {
       hasArguments = functString[1].includes('arguments.length') || functString[1].includes('[native code]');
@@ -99,7 +99,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
         // FUNCIÓNES ÚNICAS
         // wms_001 ==> "_updateNoCache", "getCapabilities", "getNoCacheName" y "getNoCacheUrl"
         parameterTest = () => { // singeParameterTest
-          showResult(auxButton, undefined , capaPrueba[auxName]());
+          showResult(auxButton, undefined, capaPrueba[auxName]());
         };
         appendTo = noParam;
       } else {
@@ -107,9 +107,9 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
           // ---------------------------------FUNCIONES GET---------------------------------
           parameterTest = () => { // getParameterTest
             if (auxName == 'getFeatureInfoUrl') { // ONLY USED IN "wmts_001"
-              showResult(auxButton, "GET_getFeatureInfoUrl", capaPrueba[auxName]([-394825,4657802], 6,'text/plain'));
+              showResult(auxButton, 'GET_getFeatureInfoUrl', capaPrueba[auxName]([-394825, 4657802], 6, 'text/plain'));
             } else if (auxName == 'getTileColTileRow') { // ONLY USED IN "wmts_001"
-              showResult(auxButton, "GET_getTileColTileRow", capaPrueba[auxName]([-394825,4657802], 6));
+              showResult(auxButton, 'GET_getTileColTileRow', capaPrueba[auxName]([-394825, 4657802], 6));
             } else {
               console.error('NOT_PREPARED_FUNCTION_TEST_FOR_GET:', auxName);
             }
@@ -121,7 +121,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
             if (auxName == '*NOT_DEFINED*') {
               // showResult(auxButton, "ADD_", capaPrueba[auxName]());
             } else {
-              console.error('NOT_PREPARED_FUNCTION_TEST_FOR_ADD:',auxName);
+              console.error('NOT_PREPARED_FUNCTION_TEST_FOR_ADD:', auxName);
             }
           };
           appendTo = addParam;
@@ -131,7 +131,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
             if (auxName == '*NOT_DEFINED*') {
               // showResult(auxButton, "ADD_", capaPrueba[auxName]());
             } else {
-              console.error('NOT_PREPARED_FUNCTION_TEST_FOR_REMOVE:',auxName);
+              console.error('NOT_PREPARED_FUNCTION_TEST_FOR_REMOVE:', auxName);
             }
           };
           appendTo = removeParam;
@@ -139,41 +139,41 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
           // ---------------------------------FUNCIONES SET---------------------------------
           parameterTest = () => { // setParameterTest
             if (auxName == 'setFormat') { // ONLY USED IN "wmts_001"
-              showResult(auxButton, "SET_setFormat", capaPrueba[auxName]('text/html'));
+              showResult(auxButton, 'SET_setFormat', capaPrueba[auxName]('text/html'));
             } else if (auxName == 'setImpl') {
-              showResult(auxButton, "SET_setImpl", capaPrueba[auxName](capaPrueba.getImpl()));
+              showResult(auxButton, 'SET_setImpl', capaPrueba[auxName](capaPrueba.getImpl()));
             } else if (auxName == 'setLayerGroup') {
-              showResult(auxButton, "SET_setLayerGroup", capaPrueba[auxName](["OSM","OSM"]));
+              showResult(auxButton, 'SET_setLayerGroup', capaPrueba[auxName](['OSM', 'OSM']));
             } else if (auxName == 'setLegend') {
-              showResult(auxButton, "SET_setLegend", capaPrueba[auxName]("PRUEBA_TEXTO_LEYENDA"));
+              showResult(auxButton, 'SET_setLegend', capaPrueba[auxName]('PRUEBA_TEXTO_LEYENDA'));
             } else if (auxName == 'setLegendURL') {
-              showResult(auxButton, "SET_setLegendURL", capaPrueba[auxName]("TEST_BASE64_URL_REPLACEMENT"));
+              showResult(auxButton, 'SET_setLegendURL', capaPrueba[auxName]('TEST_BASE64_URL_REPLACEMENT'));
             } else if (auxName == 'setMap') {
-              showResult(auxButton, "SET_setMap", capaPrueba[auxName](capaPrueba.map_));
+              showResult(auxButton, 'SET_setMap', capaPrueba[auxName](capaPrueba.map_));
             } else if (auxName == 'setMaxExtent') {
-              showResult(auxButton, "SET_setMaxExtent", capaPrueba[auxName]([-306651,4417678,-232910,4491775]));//Leaves only line from "addFeatures"
+              showResult(auxButton, 'SET_setMaxExtent', capaPrueba[auxName]([-306651, 4417678, -232910, 4491775]));//Leaves only line from "addFeatures"
             } else if (auxName == 'setMaxZoom') {
-              showResult(auxButton, "SET_setMaxZoom", capaPrueba[auxName](7));
+              showResult(auxButton, 'SET_setMaxZoom', capaPrueba[auxName](7));
             } else if (auxName == 'setMinZoom') {
-              showResult(auxButton, "SET_setMinZoom", capaPrueba[auxName](5));
+              showResult(auxButton, 'SET_setMinZoom', capaPrueba[auxName](5));
             } else if (auxName == 'setOpacity') {
               if (capaPrueba.getOpacity() == 1) {
-                showResult(auxButton, "SET_setOpacity_0.5", capaPrueba[auxName](0.5));
+                showResult(auxButton, 'SET_setOpacity_0.5', capaPrueba[auxName](0.5));
               } else if (capaPrueba.getOpacity() == 0.5) {
-                showResult(auxButton, "SET_setOpacity_0", capaPrueba[auxName](0));
+                showResult(auxButton, 'SET_setOpacity_0', capaPrueba[auxName](0));
               } else {
-                showResult(auxButton, "SET_setOpacity_1", capaPrueba[auxName](1));
+                showResult(auxButton, 'SET_setOpacity_1', capaPrueba[auxName](1));
               }
             } else if (auxName == 'setVisible') {
               if (capaPrueba.isVisible()) {
-                showResult(auxButton, "SET_setVisible_false", capaPrueba[auxName](false));
+                showResult(auxButton, 'SET_setVisible_false', capaPrueba[auxName](false));
               } else {
-                showResult(auxButton, "SET_setVisible_true", capaPrueba[auxName](true));
+                showResult(auxButton, 'SET_setVisible_true', capaPrueba[auxName](true));
               }
             } else if (auxName == 'setZIndex') {
-              showResult(auxButton, "SET_setZIndex", capaPrueba[auxName](101));
-            } else {              
-              console.error('NOT_PREPARED_FUNCTION_TEST_FOR_SET:',auxName);
+              showResult(auxButton, 'SET_setZIndex', capaPrueba[auxName](101));
+            } else {
+              console.error('NOT_PREPARED_FUNCTION_TEST_FOR_SET:', auxName);
             }
           };
           appendTo = setParam;
@@ -183,44 +183,45 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
             if (auxName == 'calculateMaxExtentWithCapabilities') { // ONLY USED IN "wms_001"
               capaPrueba.getCapabilities().then((capabilities) => {
                 if (capabilities) {
-                  showResult(auxButton, "calculateMaxExtentWithCapabilities", capaPrueba[auxName](capabilities));
+                  showResult(auxButton, 'calculateMaxExtentWithCapabilities', capaPrueba[auxName](capabilities));
                 } else {
+                  auxButton.className = 'warningButton';
                   console.error('NO_CAPABILITIES_PRESENT');
                 }
               });
             } else if (auxName == 'equals') {
-              showResult(auxButton, "equals_capaPrueba", capaPrueba[auxName](capaPrueba));
-              showResult(auxButton, "equals_EMPTY_OBJ", capaPrueba[auxName]({}));
+              showResult(auxButton, 'equals_capaPrueba', capaPrueba[auxName](capaPrueba));
+              showResult(auxButton, 'equals_EMPTY_OBJ', capaPrueba[auxName]({}));
             } else if (auxName == 'fire') {
-              showResult(auxButton, "FIRE_CLICK_EVENT", capaPrueba[auxName]('click', {pixel:[0, 0]}));
+              showResult(auxButton, 'FIRE_CLICK_EVENT', capaPrueba[auxName]('click', {pixel:[0, 0]}));
             } else if (auxName == 'on') {
-              const onDate = new Date();
-              const funcEvent = () => {console.log("ON_FUNCTION:",onDate.getTime())}
+              const onDate = new Date().getTime();
+              const funcEvent = () => {console.log('ON_FUNCTION:', onDate)}
               eventsFuncArray.push(funcEvent);
-              showResult(auxButton, "ON_CLICK_"+onDate.getTime(), capaPrueba[auxName]('click',funcEvent));
+              showResult(auxButton, 'ON_CLICK_'+onDate, capaPrueba[auxName]('click', funcEvent));
             } else if (auxName == 'once') {
-              const onDate = new Date();
-              eventsKeyArray.push(showResult(auxButton, "ONCE_CLICK_"+onDate.getTime(), capaPrueba[auxName]('click', () => {console.log("ONCE_FUNCTION:",onDate.getTime())})));
+              const onDate = new Date().getTime();
+              eventsKeyArray.push(showResult(auxButton, 'ONCE_CLICK_'+onDate, capaPrueba[auxName]('click', () => {console.log('ONCE_FUNCTION:', onDate)})));
             } else if (auxName == 'un') {
               if (eventsFuncArray.length > 0) {
-                eventsFuncArray.forEach(f => {showResult(auxButton, "UN", capaPrueba[auxName]('click', f));});
+                eventsFuncArray.forEach(f => {showResult(auxButton, 'UN', capaPrueba[auxName]('click', f));});
                 eventsFuncArray.splice(0);
               } else {
-                auxButton.className = "warningButton";
-                console.error('NO_ON_EVENTS_PRESENT_TO_CLEAR:',auxName);
+                auxButton.className = 'warningButton';
+                console.error('NO_ON_EVENTS_PRESENT_TO_CLEAR:', auxName);
               }
             } else if (auxName == 'unByKey') {
               if (eventsKeyArray.length > 0) {
-                eventsKeyArray.forEach(k => {showResult(auxButton, "UNBYKEY", capaPrueba[auxName]('click', k));});
+                eventsKeyArray.forEach(k => {showResult(auxButton, 'UNBYKEY', capaPrueba[auxName]('click', k));});
                 eventsKeyArray.splice(0);
               } else {
-                auxButton.className = "warningButton";
-                console.error('NO_ONCE_EVENTS_PRESENT_TO_CLEAR:',auxName);
+                auxButton.className = 'warningButton';
+                console.error('NO_ONCE_EVENTS_PRESENT_TO_CLEAR:', auxName);
               }
             } else if (auxName == 'updateMinMaxResolution') { // ONLY USED IN "wms_001"
-              showResult(auxButton, "updateMinMaxResolution", capaPrueba[auxName](mapa.getProjection())); // "minResolution" y "maxResolution" tienen que estar en este layer
+              showResult(auxButton, 'updateMinMaxResolution', capaPrueba[auxName](mapa.getProjection())); // "minResolution" y "maxResolution" tienen que estar en este layer
             } else {
-              console.error('NOT_PREPARED_FUNCTION_TEST_FOR_OTHER:',auxName);
+              console.error('NOT_PREPARED_FUNCTION_TEST_FOR_OTHER:', auxName);
             }
           };
           appendTo = otherParam;
@@ -237,7 +238,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
           throw error;
         }
       });
-      appendTo.append(auxButton)
+      appendTo.append(auxButton);
     }
   }
 }
