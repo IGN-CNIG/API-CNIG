@@ -200,7 +200,7 @@ export default class AnalysisControl extends M.Control {
     const selectedFeatures = this.managementControl_.getSelectedFeatures();
     if (selectedFeatures.length > 0) {
       if (selectedFeatures.length > 1) {
-        M.dialog.info(getValue('topographic_one_element'));
+        M.dialog.info(getValue('exception.topographic_one_element'));
       } else {
         this.feature = selectedFeatures[0];
         if (this.feature.getGeometry().type !== 'Point') {
