@@ -133,7 +133,7 @@
 
     #m-help-input {
       margin-right: 5px;
-      padding: 5px 10px !important;
+      padding: 5px 5px !important;
       height: 20px;
     }
 
@@ -145,7 +145,7 @@
       color: white;
       background-color: rgb(54, 75, 95);
       margin-left: 10px;
-      padding: 7px 15px;
+      padding: 7px 6px;
       border: 2px solid #364b5f;
       font-weight: 700;
       font-size: 12px;
@@ -398,6 +398,22 @@
       y = y - window.pageYOffset;
       return { x: x, y: y };
     }
+
+    increaseFont = () => {
+      const ind = document.querySelector('#m-help-index > div:nth-child(2)');
+      const cont = document.querySelector('#m-help-contents');
+      const size = ind.style.fontSize ? parseInt(ind.style.fontSize.replace(/[a-zA-Z]+$/, '')) : 16;
+      ind.style.fontSize = `${size + 4}px`;
+      cont.style.fontSize = `${size + 4}px`;
+    }
+
+    reduceFont = () => {
+      const ind = document.querySelector('#m-help-index > div:nth-child(2)');
+      const cont = document.querySelector('#m-help-contents');
+      const size = ind.style.fontSize ? parseInt(ind.style.fontSize.replace(/[a-zA-Z]+$/, '')) : 16;
+      ind.style.fontSize = `${size - 4}px`;
+      cont.style.fontSize = `${size - 4}px`;
+    }
   </script>
 </head>
 
@@ -416,6 +432,8 @@
       <div>
         <input type="text" onkeydown="filterResults(event)" placeholder="{{translations.write}}..." id="m-help-input" />
         <button class="m-help-btn" onclick="filterResults(event)">{{translations.search}}</button>
+        <button class="m-help-btn" onclick="increaseFont(event)">A+</button>
+        <button class="m-help-btn" onclick="reduceFont(event)">A-</button>
       </div>
       <div></div>
     </div>
