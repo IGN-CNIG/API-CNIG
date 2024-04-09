@@ -492,7 +492,7 @@ export default class GeorefimageControl extends M.Control {
 
     try {
       const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
-      queueEl.addEventListener('click', evt => this.downloadPrint(evt, base64image));
+      queueEl.addEventListener('click', evt => this.downloadPrint(evt, base64image, 'client'));
     } catch (exceptionVar) {
       queueEl.parentElement.remove();
       M.toast.error('Error CrossOrigin', null, 6000);
@@ -838,7 +838,8 @@ export default class GeorefimageControl extends M.Control {
    * @function
    * @api stable
    */
-  downloadPrint(evt, imgBase64) {
+  downloadPrint(evt, imgBase64, type = 'server') {
+    console.log('downloadPrint', type);
     if (evt.key !== undefined && evt.key !== 'Enter' && evt.key !== ' ') {
       return;
     }
@@ -880,7 +881,7 @@ export default class GeorefimageControl extends M.Control {
 
     const files = (addWLD) ? [{
       name: titulo.concat(FILE_EXTENSION_GEO),
-      data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize(), null, this.map_),
+      data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize(), null, this.map_, type),
       base64: false,
     },
     fileIMG,
