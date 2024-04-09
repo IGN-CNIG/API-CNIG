@@ -15,5 +15,6 @@
   "loading": "Creating 3D map, please wait",
   "noLayersAvailable": "No layer available to activate 3D view is currently detected",
   "activate3d": "Enable stereo (3D)",
-  "disable3d": "Disable stereo (3D)"
+  "disable3d": "Disable stereo (3D)",
+  "linkGlass": "Link glasses"
 }

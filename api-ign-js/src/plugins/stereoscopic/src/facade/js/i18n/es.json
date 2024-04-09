@@ -15,5 +15,6 @@
   "loading": "Creando mapa 3D, por favor espere",
   "noLayersAvailable":"Actualmente no se detecta capa disponible para activar la vista 3D",
   "activate3d": "Activar estéreo (3D)",
-  "disable3d": "Desactivar estéreo (3D)"
+  "disable3d": "Desactivar estéreo (3D)",
+  "linkGlass": "Gafa de anaglifo"
 }

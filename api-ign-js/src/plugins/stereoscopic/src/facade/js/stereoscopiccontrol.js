@@ -62,6 +62,7 @@ export default class StereoscopicControl extends M.Control {
             anaglyph_active: this.anaglyphActive_,
             orbitControls: this.orbitControls_,
             activate3d: getValue('activate3d'),
+            linkGlass: getValue('linkGlass'),
           },
         },
       });
