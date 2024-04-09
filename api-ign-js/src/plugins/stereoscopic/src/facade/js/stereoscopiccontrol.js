@@ -200,10 +200,6 @@ export default class StereoscopicControl extends M.Control {
         }
 
       const toggle3D = document.querySelector('#toggle3D');
-
-      if(toggle3D.classList.contains('toggle3D')) {
-        document.querySelector('#maxDisabled3DView').innerHTML = 'x' + (TR3.valuesSet.magnification + ${this.maxMagnify})
-      }
     });
 
         // https://openlayers.org/en/latest/examples/tile-load-events.html
