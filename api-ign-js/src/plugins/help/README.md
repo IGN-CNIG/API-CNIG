@@ -134,8 +134,41 @@ https://componentes.cnig.es/api-core/?help=base64=ewogIHBvc2l0aW9uOiAiVFIiLAogIH
 const mp = new M.plugin.Help({
   position: 'BL',
   tooltip: 'Obtener ayuda',
+  images: [
+    'https://www.ign.es/iberpix/static/media/logo.72e2e78b.png',
+  ],
+  title: 'Título definido por el usuario',
+  extendInitialExtraContents: true,
+  initialExtraContents: [
+    { title: 'Apartado 1', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Mi primer apartado</h2><div><p>Contenido extra definido por el usuario</p></div></div>',
+    }
+  ],
+  finalExtraContents: [
+    { title: 'Apartado final', content: '<div><h2 style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;">Apartado final</h2><div><p>Contenido extra definido por el usuario</p></div></div>',
+    }
+  ]
 });
 ```
+
+# Configuración
+
+## Estilo de título
+
+Las herramientas disponen de un estilo en el título para que aparezca más destacado que el contenido.
+Si se desea indicar en el contenido extra que añada el usuario se debe añadir la siguiente regla css en el elemento del título, normalmente en la etiqueta h2:
+
+  style="text-align: center; color: #fff; background-color: #364b5f; padding: 8px 10px;"
+
+## Más ajustes de impresión
+
+Cuando pulsamos en el botón para descargar el contenido en PDF podemos realizar más ajustes antes de generar el documento. Para ello, en la ventana que se abre al pulsar el botón, podemos acceder a "Más ajustes".
+
+|![Más ajustes](./src/facade/assets/images/print.png)|
+
+## Tamaño de imágenes
+
+Se recomienda no utilizar imágenes que pesen más de 1,5 MB.
+
 
 # 👨‍💻 Desarrollo
 
