@@ -205,7 +205,7 @@ export default class StereoscopicControl extends M.Control {
           if(${this.isMaxMagnify}) {
             const obj = ${JSON.stringify(this.maxMagnify)};
             const max = getZoomMaxMagnify(obj, changeZoom);
-            document.querySelector('#range3d').max = (TR3.valuesSet.magnification * max);
+            document.querySelector('#range3d').max = (TR3.valuesSet.magnification + max);
             document.querySelector('#range3d').value = TR3.valuesSet.magnification;
           } else {
             document.querySelector('#range3d').max = (TR3.valuesSet.magnification + 1);
