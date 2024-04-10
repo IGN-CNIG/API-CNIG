@@ -281,15 +281,11 @@
 
     addZoomAction = () => {
       const content = document.getElementById('m-help-contents');
-      const lstImg = content.querySelectorAll('img:not(h2 img)');;
+      const lstImg = content.querySelectorAll('img:not(h2 img)');
       let lstBtn, btn;
       if (lstImg && lstImg.length > 0) {
         lstImg.forEach(img => {
           img.classList.add('m-help-content-magnify');
-          lstBtn = img.parentElement.querySelectorAll('.m-help-btnMagnify');
-          if (lstBtn && lstBtn.length > 0) {
-            lstBtn.forEach(b => { if (b.querySelector('#m-help-magnifyOn')) { b.click() } });
-          } else {
             btn = document.createElement('button');
             btn.className = 'm-help-btnMagnify';
             const icon = document.createElement('img');
@@ -298,8 +294,10 @@
             icon.id = 'h-help-magnifyOff';
             btn.appendChild(icon);
             btn.addEventListener('click', this.applyZoom);
-            img.parentElement.insertBefore(btn, img);
-          }
+            const div = document.createElement('div');
+            img.parentElement.insertBefore(div, img);
+            div.appendChild(btn);
+            div.appendChild(img);
         });
       }
     }
