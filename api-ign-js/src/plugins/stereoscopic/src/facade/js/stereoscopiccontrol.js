@@ -17,7 +17,7 @@ export default class StereoscopicControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(orbitControls = false,  anaglyphActive = false, maxMagnify = 1, defaultAnaglyphActive = false) {
+  constructor(orbitControls = false,  anaglyphActive = false, maxMagnify = {}, defaultAnaglyphActive = false) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(StereoscopicImplControl)) {
       M.exception(getValue('exception.impl'));
@@ -29,6 +29,7 @@ export default class StereoscopicControl extends M.Control {
     this.orbitControls_ = orbitControls;
     this.anaglyphActive_ =  anaglyphActive;
     this.toggle = false;
+    this.isMaxMagnify = Object.keys(maxMagnify).length !== 0;
     this.maxMagnify = maxMagnify;
 
     this.defaultAnaglyphActive = defaultAnaglyphActive;
@@ -120,8 +121,6 @@ export default class StereoscopicControl extends M.Control {
     }
   }
 
-
-
   addScript() {
     const newScript = document.createElement('script');
     newScript.type = 'module';
@@ -162,6 +161,15 @@ export default class StereoscopicControl extends M.Control {
         cheapMode: false	//Activa el modo ahorro de rendimiento
     }
 
+    function getZoomMaxMagnify(objeto, zoom) {
+      for (const clave in objeto) {
+        if(Number(clave) >= zoom) {
+          return objeto[clave];
+        }
+      }
+      return 1;
+    }
+
     TR3.setOpts(opts);
 
     $("#tools").dialog({ position: { my: "right top", at: "right top", of: window }, width: 215 });
@@ -194,8 +202,16 @@ export default class StereoscopicControl extends M.Control {
         if(changeZoom !== e.frameState.viewState.zoom) {
           changeZoom = e.frameState.viewState.zoom;
           if(window.toggle3D) {setTR3(true);}
-          document.querySelector('#range3d').max = (TR3.valuesSet.magnification + ${this.maxMagnify});
-          document.querySelector('#range3d').value = TR3.valuesSet.magnification;
+          if(${this.isMaxMagnify}) {
+            const obj = ${JSON.stringify(this.maxMagnify)};
+            const max = getZoomMaxMagnify(obj, changeZoom);
+            document.querySelector('#range3d').max = (TR3.valuesSet.magnification * max);
+            document.querySelector('#range3d').value = TR3.valuesSet.magnification;
+          } else {
+            document.querySelector('#range3d').max = (TR3.valuesSet.magnification + 1);
+            document.querySelector('#range3d').value = TR3.valuesSet.magnification;
+          }
+
         } else {
           if(window.toggle3D) {setTR3(false);}
         }
