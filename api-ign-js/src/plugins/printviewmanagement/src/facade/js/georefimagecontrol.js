@@ -839,7 +839,6 @@ export default class GeorefimageControl extends M.Control {
    * @api stable
    */
   downloadPrint(evt, imgBase64, type = 'server') {
-    console.log('downloadPrint', type);
     if (evt.key !== undefined && evt.key !== 'Enter' && evt.key !== ' ') {
       return;
     }
