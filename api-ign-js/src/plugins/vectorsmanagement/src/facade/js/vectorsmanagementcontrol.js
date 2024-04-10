@@ -138,6 +138,11 @@ export default class VectorsManagementControl extends M.Control {
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
     this.selectedLayer = this.map.getLayers().filter(l => l.name === selectedLayerName)[0];
+
+    if (this.selectedLayer.type === 'MVT' || this.selectedLayer.type === 'MBTilesVector') {
+      M.toast.warning(getValue('exception.typeLayer'), null, 6000);
+    }
+
     if (this.selection_) {
       this.selectionControl.setLayer(this.selectedLayer);
     }

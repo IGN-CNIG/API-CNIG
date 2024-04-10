@@ -12,7 +12,8 @@
     "ficherosel": "No se ha seleccionado formato de descarga.",
     "query_profile": "No se han podido consultar los datos de altitud para esta entidad.",
     "featuresel": "No se han seleccionado elementos",
-    "topographic_one_element": "El perfil topografico solo se puede realizar para un único elemento"
+    "topographic_one_element": "El perfil topografico solo se puede realizar para un único elemento",
+    "typeLayer": "Las capas de tipo MVT y MBTilesVector no son editables"
   },
   "help_template": {
     "title": "Ayuda",

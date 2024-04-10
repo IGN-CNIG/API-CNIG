@@ -12,7 +12,8 @@
     "ficherosel": "Download format has not been selected.",
     "query_profile": "The altitude data for this entity could not be queried.",
     "featuresel": "No elements have been selected",
-    "topographic_one_element": "The topographic profile can only be made for a single element"
+    "topographic_one_element": "The topographic profile can only be made for a single element",
+    "typeLayer": "Layers of type MVT and MBTilesVector are not editable"
   },
   "help_template": {
     "title": "Help",
