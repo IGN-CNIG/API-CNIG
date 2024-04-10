@@ -481,7 +481,7 @@ export default class PrinterMapControl extends M.Control {
       M.proxy(this.useProxy);
       M.remote.post(url, printData).then((responseParam) => {
         let response = responseParam;
-        if (response.error !== true && response.text.indexOf('</error>') === -1) { // withoud proxy, response.error === true
+        if (/* response.error !== true && */response.text.indexOf('</error>') === -1) { // withoud proxy, response.error === true
           const responseStatusURL = response.text && JSON.parse(response.text);
           const ref = responseStatusURL.ref;
           const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
