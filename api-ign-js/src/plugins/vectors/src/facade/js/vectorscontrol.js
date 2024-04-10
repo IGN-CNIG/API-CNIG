@@ -174,8 +174,6 @@ export default class VectorsControl extends M.Control {
    * @api stable
    */
   createView(map) {
-    // eslint-disable-next-line
-    console.warn(getValue('exception.obsolete'));
     this.map = map;
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {

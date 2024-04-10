@@ -3,12 +3,10 @@
  */
 import 'assets/css/controls/getfeatureinfo';
 import GetFeatureInfoImpl from 'impl/control/GetFeatureInfo';
-import myhelp from 'templates/getfeatureinfohelp';
 import ControlBase from './Control';
 import { isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
-import { compileSync as compileTemplate } from '../util/Template';
 
 /**
  * @classdesc
@@ -66,31 +64,6 @@ class GetFeatureInfo extends ControlBase {
    */
   getActivationButton(element) {
     return null;
-  }
-
-  /**
-   * Obtiene la ayuda del control
-   *
-   * @function
-   * @public
-   * @api
-  */
-  getHelp() {
-    const textHelp = getValue('getfeatureinfo').textHelp;
-    return {
-      title: GetFeatureInfo.NAME,
-      content: new Promise((success) => {
-        const html = compileTemplate(myhelp, {
-          vars: {
-            urlImages: `${M.config.MAPEA_URL}assets/images`,
-            translations: {
-              help1: textHelp.text1,
-            },
-          },
-        });
-        success(html);
-      }),
-    };
   }
 
   /**

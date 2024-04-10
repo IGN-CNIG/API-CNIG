@@ -8,7 +8,6 @@ import { getValue } from './i18n/language';
 import MirrorpanelControl from './mirrorpanelcontrol';
 import LyrCompareControl from './lyrcomparecontrol';
 import TransparencyControl from './transparencycontrol';
-import WindowSyncControl from './windowsynccontrol';
 
 import { transformToStringLayers, checkLayers, getNameString, formatearID } from './utils';
 
@@ -111,9 +110,6 @@ export default class ComparatorsControl extends M.Control {
       this.transparencyParams.enabledKeyFunctions = this.options.enabledKeyFunctions || false;
     }
 
-    this.windowsyncParams = M.utils.isUndefined(this.options.windowsyncParams) ?
-      true : this.options.windowsyncParams;
-
     this.control = null;
   }
 
@@ -142,7 +138,7 @@ export default class ComparatorsControl extends M.Control {
         .map(l => transformToStringLayers(l, this.map_)));
       this.addLayersEventsMap_();
       this.removeLayersEventMap_();
-      this.defaultLayers_(this.layerDefault);
+      this.defaultLayers_();
     }
 
     // Gestor de los diferentes controles
@@ -183,18 +179,6 @@ export default class ComparatorsControl extends M.Control {
       control: null,
       active: false,
     },
-    {
-      id: 'windowsync',
-      buttonsID: 'windowsync-btn',
-      controlParam: [
-        this.windowsyncParams,
-        this.layersPlugin,
-        this.map_,
-      ],
-      controlCreate: param => new WindowSyncControl(...param),
-      control: null,
-      active: false,
-    },
     ];
 
 
@@ -204,14 +188,12 @@ export default class ComparatorsControl extends M.Control {
         mirrorpanelParams_tooltip: this.mirrorpanelParams.tooltip || getValue('tooltipMirrorpanel'),
         lyrcompareParams_tooltip: this.lyrcompareParams.tooltip || getValue('tooltipLyr'),
         transparencyParams_tooltip: this.transparencyParams.tooltip || getValue('tooltipTransparency'),
-        windowsyncParams_tooltip: this.windowsyncParams.tooltip || getValue('tooltipWindSync'),
       };
       this.html = M.template.compileSync(template, {
         vars: {
           mirrorpanelParams: this.mirrorpanelParams,
           lyrcompareParams: this.lyrcompareParams,
           transparencyParams: this.transparencyParams,
-          windowsyncParams: this.windowsyncParams,
           translations,
         },
       });
@@ -540,7 +522,6 @@ export default class ComparatorsControl extends M.Control {
     this.mirrorpanelParams = null;
     this.lyrcompareParams = null;
     this.transparencyParams = null;
-    this.windowsyncParams = null;
     this.html = null;
     this.map_ = null;
     this.controls = null;
@@ -560,7 +541,6 @@ export default class ComparatorsControl extends M.Control {
       mirrorpanelParams: 'mirrorpanel',
       lyrcompareParams: 'lyrcompare',
       transparecyParams: 'transparency',
-      windowsyncParams: 'windowsync',
     };
 
     this.controls.forEach((c) => {

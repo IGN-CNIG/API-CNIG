@@ -6,7 +6,6 @@ import 'assets/css/fonts';
 import QueryAttributesControl from './queryattributescontrol';
 import api from '../../api';
 import { getValue } from './i18n/language';
-import myhelp from '../../templates/myhelp';
 
 import es from './i18n/es';
 import en from './i18n/en';
@@ -245,32 +244,5 @@ export default class QueryAttributes extends M.Plugin {
    */
   get name() {
     return 'queryattributes';
-  }
-
-  /**
-   * Obtiene la ayuda del plugin
-   *
-   * @function
-   * @public
-   * @api
-   */
-  getHelp() {
-    return {
-      title: this.name,
-      content: new Promise((success) => {
-        const html = M.template.compileSync(myhelp, {
-          vars: {
-            urlImages: `${M.config.MAPEA_URL}plugins/queryattributes/images/`,
-            translations: {
-              help1: getValue('textHelp.help1'),
-              help2: getValue('textHelp.help2'),
-              help3: getValue('textHelp.help3'),
-              help4: getValue('textHelp.help4'),
-            },
-          },
-        });
-        success(html);
-      }),
-    };
   }
 }

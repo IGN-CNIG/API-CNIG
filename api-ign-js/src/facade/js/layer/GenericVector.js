@@ -18,7 +18,6 @@ import { getValue } from '../i18n/language';
 import * as EventType from '../event/eventtype';
 import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
-import Generic from '../style/Generic';
 
 /**
  * @classdesc
@@ -42,6 +41,7 @@ class GenericVector extends Vector {
    * - name: nombre de la capa.
    * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - version: Versión WMS.
    * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
    * - infoEventType: Define si consultar la capa con un clic o con "hover".
    * - maxExtent: La medida en que restringe la visualización a una región específica.
@@ -143,8 +143,6 @@ class GenericVector extends Vector {
      * haciendo clic en el objeto geográfico, por defecto falso.
      */
     this.extract = userParameters.extract || false;
-
-    this.styleFacade = params.style;
   }
 
   /**
@@ -345,22 +343,6 @@ class GenericVector extends Vector {
       this.getImpl().ids = newIds;
     }
   }
-
-  /**
-   * Este método devuelve el estilo de la capa.
-   *
-   * @function
-   * @public
-   * @returns {M.layer.Vector.style}
-   * @api
-   */
-  getStyle() {
-    if (this.styleFacade) {
-      return this.style_;
-    }
-    return new Generic(this.constructor.DEFAULT_OPTIONS_STYLE);
-  }
-
 
   /**
    * Este método comprueba si un objeto es igual

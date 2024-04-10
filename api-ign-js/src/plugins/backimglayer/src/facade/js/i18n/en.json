@@ -1,18 +1,4 @@
 {
-  "textHelp": {
-    "help1": "Maps and cartography from the National Geographic Institute and the National Cartographic System used as background layers.",
-    "help2": "Shows a series of preconfigured layers. These are WMTS services that have great visualization performance and are available as a base layer for the entire national territory.",
-    "help3": "Map. Raster Map Service of the National Cartographic System (Map of Spain (ME) 1: 2,000,000, ME 1: 1,250,000, ME500 1: 500,000, Provincial Map 1: 200,000 (MP200), Topographic Map National 1: 50,000 (MTN50), MTN25 1: 25,000).",
-    "help4": "Image. Maximum current PNOA Orthophotos Service of the National Cartographic System (Sentinel 2, PNOA Ortophotos).",
-    "help5": "Street. Base Map Service of the National Cartographic System (Cartociudad Street).",
-    "help6": "Hybrid. Combination of the maximum current Orthophoto Service of the PNOA and Base Map Service of the National Cartographic System.",
-    "help7": "LiDAR. (Relief) LiDAR Service of the National Cartographic System.",
-    "help8": "Land occupation. Land occupation service of the National Cartographic System (SIOSE).",
-    "help9": "Historical Maps Cartography corresponding to the first editions of the National Topographic Map scale 1: 50,000",
-    "help10": "The active layer is shown with a dark blue box. To leave the map area without any background layer, click on the active layer, which will stop the dark blue box from showing and the layer in the map. You can also use the 'None' option.",
-    "help11": "It is only possible to view a single layer at a time. If you want to combine more than one of these layers, it must be loaded from the Layers tool, adding the URL of the service or selecting it among the preconfigured layers (a section has been provided for this purpose with the name 'Background Layers'). You can consult the URLs for these services, and others, on the IDEE web portal in the section",
-    "help12": "Service Directory."
-  },
   "tooltip": "Background layers",
   "none": "None"
 }

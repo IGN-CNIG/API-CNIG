@@ -220,12 +220,7 @@ class LayerBase extends Base {
    * @api
    */
   set name(newName) {
-    let newNamep = newName;
-    if (isUndefined(newName)) {
-      const randomNumber = Math.floor(Math.random() * 9000) + 1000;
-      newNamep = `layer_${randomNumber}`;
-    }
-    this.getImpl().name = newNamep;
+    this.getImpl().name = newName;
   }
 
   /**

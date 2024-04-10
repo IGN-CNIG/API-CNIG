@@ -2,20 +2,6 @@
   "exception": {
     "impl": "La implementación no puede crear controles de Attribution."
   },
-  "textHelp": {
-    "help1": "En la parte superior puede encontrar enlaces a otros visualizadores especializados del IGN que pueden resultar de su interés.",
-    "help2": "Descargas CNIG.",
-    "help3": "Herramienta para la descarga gratuita de ficheros digitales de carácter geográfico generados por la Dirección General del Instituto Geográfico Nacional (IGN).",
-    "help4": "Comparador PNOA.",
-    "help5": "Permite consultar y comparar las ortofotos de diferentes años, desde su inicio en el año 2004 hasta la actualidad, así como comparar esta información con otras fuentes.",
-    "help6": "Visualizador 3D.",
-    "help7": "Servicio capaz de mostrar el relieve mediante anaglifos en 3D. Son necesarios unos gafas para anáglifos con colores rojo y azules.",
-    "help8": "Fototeca.",
-    "help9": "Visualizar, imprimir (en formato PDF) y solicitar certificados de fotogramas originales de vuelos fotogramétricos realizados sobre España.",
-    "help10": "En la parte inferior tiene un enlace directo a las redes sociales del IGN y correo electrónico de consulta consulta@cnig.es a través de las cuales puede mantenerse al día de la actualidad del IGN además de contactarnos directamente.",
-    "help11": "La información relevante a la extensión y su posible parametrización está documentada en",
-    "help12": "El ejemplo de uso de sus parámetros puede comprobarse en"
-  },
   "tooltip": "Enlaces y contacto IGN",
   "title": "Enlaces y contacto",
   "links": {

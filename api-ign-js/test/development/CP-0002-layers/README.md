@@ -1,8 +1,8 @@
 CP-001
-Mapa básico con todas las capas vectoriales, con pruebas de funciones.
+Mapa básico con todas las capas vectoriales.
 
 CP-002
-Mapa básico con todas las capas Rasters, con pruebas de funciones.
+Mapa básico con todas las capas Rasters.
 
 CP-003
 Mapa básico con OSM.
@@ -42,6 +42,3 @@ Mapa básico con capas MBTiles.
 
 CP-015
 Mapa básico con capas OGCAPIFeatures.
-
-CP-016
-Pruebas de la función "toGeoJSON" de las capas y pruebas de la función "getGeoJSON" de los features de estas capas.

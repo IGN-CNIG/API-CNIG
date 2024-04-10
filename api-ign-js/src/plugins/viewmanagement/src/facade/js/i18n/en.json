@@ -7,17 +7,6 @@
     "impl_predefinedzoom": "The implementation used cannot create PredefinedZoomControl.",
     "no_controls": "The ViewManagement plugin needs to activate at least one control."
   },
-  "textHelp": {
-    "help1": "The view management extension allows you to interact through a panel with the view controls.",
-    "help2": "The extension is customizable, so it can change from one viewer to another.",
-    "help3": "The extension panel has several controls, each with its own tools.",
-    "help4": "The first of them is the predefined views control, which by default allows you to return to a default view",
-    "help5": "The zoom in view by rectangle control. Enables the drawing of a rectangle using two points in the viewer, which when finished, zooms into it.",
-    "help6": "The history control allows you to go forward and backward to the different views that have been stored in the viewer",
-    "help7": "The zoom in/out control allows using two buttons to 'zoom in' or 'zoom out' in the viewer.",
-    "help8": "The information relevant to the extension and its possible parameterization is documented in",
-    "help9": "The example of use of its parameters can be checked in"
-  },
   "tooltip": "View Management",
   "viewhistory": "View history",
   "nextView": "Next view",

@@ -1,18 +1,4 @@
 {
-  "textHelp": {
-    "help1": "Mapas y cartografía del Instituto Geográfico Nacional y el Sistema Cartográfico Nacional utilizadas como capas de fondo.",
-    "help2": "Muestra una serie de capas preconfiguradas. Se trata de servicios WMTS que tienen un gran rendimiento en la visualización y que están disponibles como capa base para todo el territorio nacional.",
-    "help3": "Mapa. Servicio Mapa Ráster del Sistema Cartográfico Nacional (Mapa de España(ME) 1: 2.000.000, ME 1: 1.250.000, ME500 1: 500.000, Mapa Provincial 1: 200.000 (MP200), Mapa Topográfico Nacional 1: 50.000 (MTN50), MTN25 1: 25.000).",
-    "help4": "Imagen. Servicio Ortofotos máxima actualidad PNOA del Sistema Cartográfico Nacional (Sentinel 2, Ortofotos PNOA).",
-    "help5": "Callejero. Servicio Mapa Base del Sistema Cartográfico Nacional (Callejero Cartociudad).",
-    "help6": "Híbrido. Combinación Servicio Ortofotos máxima actualidad del PNOA y Servicio Mapa Base del Sistema Cartográfico Nacional.",
-    "help7": "LiDAR. (Relieve) Servicio LiDAR del Sistema Cartográfico Nacional.",
-    "help8": "Ocupación del suelo. Servicio Ocupación del suelo del Sistema Cartográfico Nacional (SIOSE).",
-    "help9": "Mapas Históricos Cartografía correspondiente a las primeras ediciones del Mapa Topográfico Nacional escala 1: 50.000",
-    "help10": "La capa activa se muestra con un recuadro azul oscuro. Para dejar la zona de mapa sin ninguna capa de fondo haga clic sobre la capa activa, lo que hará que deje de mostrarse el recuadro azul oscuro y la capa en el mapa. También puede utiliza la opción 'Ninguna'.",
-    "help11": "Sólo es posible visualizar una única capa a la vez. Si quiere combinar más de una de estas capas, debe cargarse desde la herramienta Capas, añadiendo la URL del servicio o seleccionándola entre las capas preconfiguradas (se ha dispuesto un apartado a tal efecto con el nombre 'Capas de Fondo'). Puede consultar las URL para estos servicios, y otras más, en el portal web de la IDEE en el apartado",
-    "help12": "Directorio de Servicios."
-  },
   "tooltip": "Capas de fondo",
   "none": "Ninguna"
 }

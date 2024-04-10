@@ -54,16 +54,6 @@
             <option value=true>true</option>
             <option value=false>false</option>
         </select>
-        <label for="selectStatusLayers">Funcionalidad estado capas</label>
-        <select name="statusValue" id="selectStatusLayers">
-            <option value=true>true</option>
-            <option value=false>false</option>
-        </select>
-        <label for="selectAddLayers">Funcionalidad estado capas</label>
-        <select name="addValue" id="selectAddLayers">
-            <option value=true>true</option>
-            <option value=false>false</option>
-        </select>
         <label for="selectCollapsible">Selector collapsible</label>
         <select name="collapsibleValue" id="selectCollapsible">
             <option value=true>true</option>
@@ -176,8 +166,6 @@
 
         const selectPosition = document.getElementById("selectPosition");
         const selectCollapsed = document.getElementById("selectCollapsed");
-        const selectAdd = document.getElementById("selectAddLayers");
-        const selectStatus = document.getElementById("selectStatusLayers");
         const selectCollapsible = document.getElementById("selectCollapsible");
         const inputTooltip = document.getElementById("inputTooltip");
         const inputTools = document.getElementById("inputTools");
@@ -195,8 +183,6 @@
 
         selectPosition.addEventListener('change', cambiarTest);
         selectCollapsed.addEventListener('change', cambiarTest);
-        selectAdd.addEventListener('change', cambiarTest);
-        selectStatus.addEventListener('change', cambiarTest);
         selectCollapsible.addEventListener('change', cambiarTest);
         inputTooltip.addEventListener('change', cambiarTest);
         inputTools.addEventListener('change', cambiarTest);
@@ -218,8 +204,6 @@
             let objeto = {};
             objeto.position = selectPosition.options[selectPosition.selectedIndex].value;
             objeto.collapsed = (selectCollapsed.options[selectCollapsed.selectedIndex].value == 'true');
-            objeto.addLayers = (selectAdd.options[selectAdd.selectedIndex].value == 'true');
-            objeto.statusLayers = (selectStatus.options[selectStatus.selectedIndex].value == 'true');
             objeto.collapsible = (selectCollapsible.options[selectCollapsible.selectedIndex].value == 'true');
             inputTooltip.value !== "" ? objeto.tooltip = inputTooltip.value : objeto.tooltip = "";
             inputTools.value !== "" ? objeto.tools = inputTools.value.split(', ') : objeto.tools = [];

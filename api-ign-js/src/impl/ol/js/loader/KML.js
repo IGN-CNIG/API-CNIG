@@ -184,9 +184,7 @@ class KML extends MObject {
           const features = this.format_.readCustomFeatures(response.text, {
             featureProjection: lastProjection,
           });
-
           const screenOverlay = this.format_.getScreenOverlay();
-
           const mFeatures = features.map((olFeature) => {
             const feature = new FacadeFeature(olFeature.getId(), {
               geometry: {

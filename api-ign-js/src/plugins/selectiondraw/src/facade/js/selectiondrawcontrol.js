@@ -35,8 +35,6 @@ export default class SelectionDrawControl extends M.Control {
    * @api
    */
   createView(map) {
-    // eslint-disable-next-line
-    console.warn(getValue('exception.obsolete'));
     return new Promise((success) => {
       const html = M.template.compileSync(template);
       const polygonBtn = html.querySelector('button#polygon');

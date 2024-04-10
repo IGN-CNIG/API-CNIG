@@ -38,8 +38,6 @@ export default class BufferControl extends M.Control {
    */
   createView(map) {
     this.facadeMap_ = map;
-    // eslint-disable-next-line
-    console.warn(getValue('exception.buffer_obsolete'));
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
         vars: {

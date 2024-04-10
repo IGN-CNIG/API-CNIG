@@ -2,7 +2,6 @@
  * @module M/control/Panzoombar
  */
 import panzoombarTemplate from 'templates/panzoombar';
-import myhelp from 'templates/panzoombarhelp';
 import PanzoombarImpl from 'impl/control/Panzoombar';
 import ControlBase from './Control';
 import { isUndefined } from '../util/Utils';
@@ -54,31 +53,6 @@ class Panzoombar extends ControlBase {
    */
   createView(map) {
     return compileTemplate(panzoombarTemplate);
-  }
-
-  /**
-   * Obtiene la ayuda del control
-   *
-   * @function
-   * @public
-   * @api
-  */
-  getHelp() {
-    const textHelp = getValue('panzoombar').textHelp;
-    return {
-      title: Panzoombar.NAME,
-      content: new Promise((success) => {
-        const html = compileTemplate(myhelp, {
-          vars: {
-            urlImages: `${M.config.MAPEA_URL}assets/images`,
-            translations: {
-              help1: textHelp.text1,
-            },
-          },
-        });
-        success(html);
-      }),
-    };
   }
 
   /**

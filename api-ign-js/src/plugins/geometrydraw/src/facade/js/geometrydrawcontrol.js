@@ -238,8 +238,6 @@ export default class GeometryDrawControl extends M.Control {
    * @api stable
    */
   createView(map) {
-    // eslint-disable-next-line
-    console.warn(getValue('exception.obsolete'));
     this.map = map;
     this.getImpl().setSource();
     return new Promise((success, fail) => {

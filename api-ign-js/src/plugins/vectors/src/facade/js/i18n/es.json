@@ -18,10 +18,9 @@
     "error_no_features_wfs": "No se han podido cargar features de la capa. Inténtalo de nuevo en otra zona.",
     "error_wfs": "No se ha podido cargar el servicio WFS",
     "wfs_zoom": "Aumente el nivel de zoom * niveles si quiere añadir este servicio WFS",
-    "url_not_valid": "La URL introducida no es válida",
-    "obsolete": "Mensaje para el desarrollador: M.plugin.Vectors ha quedado obsoleto, utilice en su lugar M.plugin.VectorsManagement"
+    "url_not_valid": "La URL introducida no es válida"
   },
-  "help_template": {
+ "help_template": {
     "help": "Ayuda",
     "create_layers": "Crear capas de puntos (<span class='icon-points'></span>), de líneas/rutas (<span class='icon-lines'></span>) o polígonos (<span class='icon-polygon'></span>)",
     "create_layers_content": "<p>Al hacer clic sobre <span class='icon-points'></span>, <span class='icon-lines'></span> o <span class='icon-polygon'></span> se añadirá una capa vacía con un nombre provisional. <b>Cada capa puede tener uno o varios elementos de dibujo y se pueden tener tantas capas como se desee.</b></p><p>Si quiere cambiar el nombre de la capa pulse sobre el nombre de la capa e introduzca el nombre que desea.</p><p>Con la opción <b>\"Añadir Geometría\"</b> (<span class='icon-add m-vector-layer-add'></span>) seleccionada podemos añadir nuevos elementos de dibujo a nuestra capa. El procedimiento de dibujo tiene las siguientes características:</p><ul><li><b>Un clic dibuja un punto o vértice</b> de línea o de polígono.</li><li><b>Doble clic finaliza el dibujo</b> de línea o polígono.</li><li>Pulsando la tecla <b>ESCape se interrumpe y borra el dibujo</b> que estuviera ejecutándose en ese momento.</li><li>Mientras se está realizando un elemento de dibujo, al pulsar la combinación de teclas <b>Ctrl+Z se elimina el último punto dibujado</b> dentro de la geometría en curso. Deshace, elimina el último vértice que se está dibujando.</li><li>Para elementos lineales o superficiales, al mantener pulsada la tecla \"Shift\" o \"Mayúscula\" durante un proceso de dibujo, se realiza el <b>dibujo de forma continua o libre</b> y no vértice a vértice.</li></ul>",
@@ -77,7 +76,7 @@
   "query": "Consultar",
   "clean": "Limpiar búsqueda",
   "select_service": "Selecciona una capa",
-  "select": "Seleccionar",
+  "select" : "Seleccionar",
   "loading": "Cargando",
   "cancel": "Cancelar",
   "reload_from_view": "Recargar desde la vista",

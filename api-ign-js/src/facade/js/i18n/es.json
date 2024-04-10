@@ -1,27 +1,7 @@
 {
-  "panzoom": {
-    "textHelp": {
-      "text1": "Esta herramienta permite cambiar el zoom del visualizador a partir de un panel con un desplazador. El mapa del visualizador cambia acercándose o alejándose según se cambie el desplazador hacia arriba o hacia abajo."
-    }
-  },
-  "panzoombar": {
-    "textHelp": {
-      "text1": "Esta herramienta permite cambiar el zoom del visualizador a partir de un panel con un desplazador. El mapa del visualizador cambia acercándose o alejándose según se cambie el desplazador hacia arriba o hacia abajo."
-    }
-  },
-  "backgroundlayers": {
-    "textHelp": {
-      "text1": "La herramienta de selector de capas base permite cambiar entre distintas capas base o capas de fondo, configuradas en un visualizador."
-    }
-  },
   "location": {
     "error": "El control ubicación no acepta http. Debe usar https.",
-    "title": "Obtener ubicación actual",
-    "textHelp": {
-      "text1": "La herramienta de localización permite obtener la posición de un dispositivo y posicionarla en el mapa. Su funcionamiento queda restringido a páginas WEB que se publiquen de forma segura sobre el protocolo HTTPS y en entornos locales.",
-      "text2": "En el caso de su utilización en un dispositivo móvil provisto de un sistema GNSS, se obtendrá la posición según los permisos de localización del dispositivo.",
-      "text3": "En dispositivos sin sistemas GNSS, la obtención del posicionamiento se realiza mediante la dirección IP asignada por el operador de internet en una zona delimitada."
-    }
+    "title": "Obtener ubicación actual"
   },
   "layerswitcher": {
     "title": "Selector de capas"
@@ -29,46 +9,24 @@
   "scale": {
     "title": "Escala",
     "scale": "Escala",
-    "level": "Nivel de zoom",
-    "textHelp": {
-      "text1": "Panel informativo que muestra el nivel de zoom y la escala aproximada de la vista actual.",
-      "text2": "El nivel de zoom es el correspondiente para para el sistema de coordenadas EPSG: 3857 WGS84 / Pseudo-Mercator."
-    }
+    "level": "Nivel de zoom"
   },
-  "scaleline": {
-    "textHelp": {
-      "text1": "La escala gráfica es una línea situada en el mapa, a menudo en el margen de la hoja, que se ha subdividido en segmentos para indicar las longitudes sobre el mapa de las unidades terrestres de distancia.",
-      "text2": "Gracias a este elemento es posible medir la distancia real directamente sobre el mapa con la ayuda de una regla o un compás.",
-      "text3": "Fuente"
-    }
-  },
-  "attributionsControl": {
+  "attributions": {
     "attribution": "atribución",
-    "tooltip": "Reconocimientos",
-    "textHelp": {
-      "text1": "La herramienta de selector de capas base permite cambiar entre distintas capas base o capas de fondo, configuradas en un visualizador.",
-      "text2": "Con esta información, se puede dar la atribución a cada capa, permitiendo al usuario saber su fuente."
-    }
+    "tooltip": "Reconocimientos"
   },
   "getfeatureinfo": {
     "info": "Información",
     "title": "Consultar capa",
     "no_info": "No existe información asociada",
     "info_of": "Información de",
-    "unsupported_format": "Formato no soportado",
-    "textHelp": {
-      "text1": "La herramienta de obtener información permite obtener el GetFeatureInfo (la información asociada al punto clickado sobre el visualizador) en servicios WMS y WMTS."
-    }
+    "unsupported_format": "Formato no soportado"
   },
   "wmcselector": {
     "title": "Selector de contextos"
   },
   "rotate": {
-    "title": "Girar al norte",
-    "textHelp": {
-      "text1": "La herramienta de rotación permite volver a una orientación Norte al visualizador.",
-      "text2": "Para poder girar el mapa en el visualizador, se realiza con la combinación de teclas Shit + Alt + click izquierdo del ratón + mover ratón para girar."
-    }
+    "title": "Girar al norte"
   },
   "mouse": {
     "title": "Coordenadas del puntero"
@@ -218,11 +176,6 @@
     "versionError": "La capa [replace1] de tipo [replace2] no soporta la versión.",
     "sldBODYError": "La capa [replace1] de tipo [replace2] no soporta SLD_BODY",
     "styleError": "La capa [replace1] de tipo [replace2] no soporta STYLE",
-    "formatError": "La capa [replace1] de tipo [replace2] no soporta FORMAT",
-    "file_size": "El fichero seleccionado sobrepasa el máximo de 20 MB permitido.",
-    "file_load": "Error al cargar el fichero.",
-    "no_geoms": "No se han detectado geometrías en este fichero.",
-    "file_load_correct": "Error al cargar el fichero. Compruebe que se trata del fichero correcto.",
-    "file_extension": "No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX, GML y GeoJSON."
+    "formatError": "La capa [replace1] de tipo [replace2] no soporta FORMAT"
   }
 }

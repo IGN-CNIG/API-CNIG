@@ -18,7 +18,6 @@ import {
   isObject,
   getEnvolvedExtent,
 } from './util/Utils';
-import { addFileToMap } from './util/LoadFiles';
 import { getValue } from './i18n/language';
 import Exception from './exception/exception';
 import Label from './Label';
@@ -332,35 +331,6 @@ class Map extends Base {
         this._checkCompleted();
       });
     }
-
-    const dropFile = !isUndefined(userParameters.dropFile) ? userParameters.dropFile : true;
-    if (dropFile) {
-      this.addDropFileEvent();
-    }
-  }
-
-  /**
-   * Función que añade manejador del evento drop sobre el mapa
-   * para la carga de ficheros.
-   *
-   * @function
-   */
-  addDropFileEvent() {
-    const container = this.getContainer().parentNode.parentNode;
-    container.addEventListener('dragover', (e) => {
-      e.preventDefault();
-    }, false);
-
-    container.addEventListener('dragleave', (e) => {
-      e.preventDefault();
-    }, false);
-
-    container.addEventListener('drop', (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-      const files = e.dataTransfer.files;
-      addFileToMap(this, files[0]);
-    }, false);
   }
 
   /**
