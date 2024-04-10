@@ -83,6 +83,10 @@ const mp = new M.plugin.VectorsManagement({
 map.addPlugin(mp);
 ```
 
+Para crear etiquetas durante la digitalización de elementos vectoriales, se tiene que usar la herramienta de creación con la funcionalidad texto activada.
+El campo se tiene que rellenar con el nombre de la propiedad y el valor con el formato ```{{}}```, por ejemplo:
+![Ejemplo](./src/facade/assets/images/image.png)
+
 # 👨‍💻 Desarrollo
 
 Para el stack de desarrollo de este componente se ha utilizado
