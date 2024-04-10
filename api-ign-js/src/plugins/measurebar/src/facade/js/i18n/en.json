@@ -4,23 +4,6 @@
     "impl_clear": "The implementation used cannot create MeasureClear.",
     "impl_area": "The implementation used cannot create MeasureArea"
   },
-  "textHelp": {
-    "help1": "Measure lengths and surfaces on the map.",
-    "help2": "1. Measure distances.",
-    "help3": "2. Measure area.",
-    "help4": "3. Delete Measurements.",
-    "help5": "Click on the tool to select it and then on the map to draw the distance you want to measure. As you draw, the total length is updated.",
-    "help6": "Double click to finish the distance measurement, and start another one.",
-    "help7": "Using the Escape key deactivates the tool and deletes the active measurement. This can be useful to restart the tool if an error was made in the last measurement, without deleting the rest of the measurements already made.",
-    "help8": "The tool remains active until you deactivate it by clicking the 'Measure distances' button again.",
-    "help9": "Click on the tool to select it and then on the map to draw the area you want to measure. As you draw, the measured area is updated.",
-    "help10": "Double click to finish area measurement, and start another one.",
-    "help11": "Using the Escape key deactivates the tool and deletes the active measurement. This can be useful to restart the tool if an error was made in the last measurement, without deleting the rest of the measurements already made.",
-    "help12": "The tool remains active until you deactivate it by clicking the 'Measure area' button again.",
-    "help13": "Delete all measurements made, both areas and distances.",
-    "help14": "The information relevant to the extension and its possible parameterization is documented in",
-    "help15": "The example of use of its parameters can be checked in"
-  },
   "text": {
     "tooltip": "Measurement tools",
     "keep_drawing": "Click to continue drawing the line",

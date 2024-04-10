@@ -5,30 +5,7 @@
     "mirrorDefaultCompareViz": "modeVizTypes parameter does not contain the value of defaultCompareViz",
     "mirrorModeVizTypes": "modeVizTypes does not have a valid value",
     "fourLayers": "The number of layers is insufficient to apply the effect",
-    "notLayers": "The number of layers is insufficient to apply the effect",
-    "errorPlugin": "Error loading the plugin",
-    "errorObjectLayer": "Layers cannot be loaded as objects",
-    "errorLinkUrl": "Missing plugin link",
-    "errorScriptUrl": "Missing plugin script",
-    "errorScriptOrLinkUrl": "Missing plugin script or link",
-    "errorURL": "Cannot be shared because it does not have a URL",
-    "errorUrlMBTiles": "The MBTiles or MBTilesVector layer does not have a URL and cannot be shared",
-    "errorGeneric": "The GenericRaster and GenericVector layer cannot be shared"
-  },
-  "textHelp": {
-    "help1": "The compare extension allows different options for comparing maps and layers in a viewer.",
-    "help2": "Comparison options are customizable, so not all viewers may have the same options.",
-    "help3": "The first option is mirror comparison.",
-    "help4": "With this option, synchronized maps are opened in the same window. From the extension panel, you can select how and how many comparison quadrants you want and the comparison layers to show in each of them.",
-    "help5": "The second option is the comparison in synchronized windows.",
-    "help6": "This option is ideal for environments with more than one screen, allowing you to have one on each monitor with maps synchronized with each other. It allows you to open as many synchronized windows as you want and close them all from the extension panel.",
-    "help7": "The third option is the curtain comparison.",
-    "help8": "This option, like the first, allows you to choose which layers you want to compare in each map division and the type of map division to compare.",
-    "help9": "And the fourth option, the magnifying glass comparison.",
-    "help10": "Allows you to compare the selected layer in the extension panel using a magnifying glass.",
-    "help11": "With the command Ctrl+Shift+Enter you can leave the comparison fixed and move the map.",
-    "help12": "The information relevant to the extension and its possible parameterization is documented in",
-    "help13": "The example of using its parameters can be checked in"
+    "notLayers": "The number of layers is insufficient to apply the effect"
   },
   "mirrorpanelParams_tooltip": "mirrorpanelParams_tooltip",
   "lyrcompareParams_tooltip": "lyrcompareParams_tooltip",
@@ -82,9 +59,5 @@
   "inputTransparentRadius": "Modify the opacity of the radius",
   "selectTransparentRadius":"Layer selector, the radius opacity will be applied",
   "tooltip_void": "Single map view",
-  "selectLayers": "Layers selected",
-  "openWindow": "Open new sale",
-  "closeAll": "Close all windows",
-  "tooltipWindSync": "Synchronous layer comparator",
-  "selector": "None"
-  }
+  "selectLayers": "Layers selected"
+}

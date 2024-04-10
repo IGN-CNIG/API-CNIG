@@ -3,7 +3,6 @@
  */
 import LocationImpl from 'impl/control/Location';
 import locationTemplate from 'templates/location';
-import myhelp from 'templates/locationhelp';
 import 'assets/css/controls/location';
 import { getValue } from '../i18n/language';
 import ControlBase from './Control';
@@ -73,33 +72,6 @@ class Location extends ControlBase {
    */
   getActivationButton(element) {
     return element.querySelector('button#m-location-button');
-  }
-
-  /**
-   * Obtiene la ayuda del control
-   *
-   * @function
-   * @public
-   * @api
-  */
-  getHelp() {
-    const textHelp = getValue('location').textHelp;
-    return {
-      title: Location.NAME,
-      content: new Promise((success) => {
-        const html = compileTemplate(myhelp, {
-          vars: {
-            urlImages: `${M.config.MAPEA_URL}assets/images`,
-            translations: {
-              help1: textHelp.text1,
-              help2: textHelp.text2,
-              help3: textHelp.text2,
-            },
-          },
-        });
-        success(html);
-      }),
-    };
   }
 
   /**

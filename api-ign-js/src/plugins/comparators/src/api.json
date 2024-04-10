@@ -67,11 +67,6 @@
       "type": "boolean",
       "name": "mirrorpanelParams",
       "position": 10
-    },
-    {
-      "type": "boolean",
-      "name": "windowsyncParams",
-      "position": 11
     }
   ]
   }],

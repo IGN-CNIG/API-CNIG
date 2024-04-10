@@ -6,12 +6,5 @@
   "excepcion": "La implementación usada no puede crear controles TimelineControl",
   "intervals_error": "Los intervalos no fueron definidos correctamente",
   "initValue": "Valor inicio",
-  "endValue": "Valor final",
-  "textHelp": {
-    "help1": "La extensión línea de tiempo.",
-    "help2": "La extensión es personalizable, por lo que puede cambiar de un visualizador a otro.",
-    "help3": "La línea de tiempo permite hacer filtros espaciales en capas a partir de un atributo de tiempo, o añadir una fecha a una capa y filtrar por ella.",
-    "help4": "La información relevante a la extensión y su posible parametrización está documentada en",
-    "help5": "El ejemplo de uso de sus parámetros puede comprobarse en"
-  }
+  "endValue": "Valor final"
 }

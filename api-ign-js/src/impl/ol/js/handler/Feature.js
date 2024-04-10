@@ -5,12 +5,8 @@ import ClusteredFeature from 'M/feature/Clustered';
 import Cluster from 'M/style/Cluster';
 import { isNullOrEmpty } from 'M/util/Utils';
 import RenderFeature from 'ol/render/Feature';
-import olFeature from 'ol/Feature';
-import { containsXY } from 'ol/extent';
-
 import AnimatedCluster from '../layer/AnimatedCluster';
 import RenderFeatureImpl from '../feature/RenderFeature';
-import FeatureImpl from '../feature/Feature';
 
 /**
  * Este método añade el evento click a los objetos geográficos.
@@ -29,8 +25,6 @@ export const getFacadeFeature = (feature, layer) => {
   }
   if (isNullOrEmpty(mFeature) && (feature instanceof RenderFeature)) {
     mFeature = RenderFeatureImpl.olFeature2Facade(feature);
-  } else if (isNullOrEmpty(mFeature) && (feature instanceof olFeature) && layer.type === 'MVT') {
-    mFeature = FeatureImpl.olFeature2Facade(feature);
   }
   return mFeature;
 };
@@ -88,14 +82,11 @@ class Feature {
    */
   getFeaturesByLayer(evt, layer) {
     const features = [];
-    const olLayer = layer.getImpl().getOL3Layer();
-    const userMaxExtent = layer.userMaxExtent;
 
-    if (!isNullOrEmpty(layer) && layer.isVisible() && !isNullOrEmpty(olLayer)) {
+    if (!isNullOrEmpty(layer) && layer.isVisible() &&
+      !isNullOrEmpty(layer.getImpl().getOL3Layer())) {
+      const olLayer = layer.getImpl().getOL3Layer();
       this.map_.getMapImpl().forEachFeatureAtPixel(evt.pixel, (feature, layerFrom) => {
-        if (userMaxExtent && !this.handleFeatureInExtent(userMaxExtent, evt.pixel)) {
-          return;
-        }
         if ((layerFrom instanceof AnimatedCluster) && !isNullOrEmpty(feature.get('features'))) {
           const clusteredFeatures = feature.get('features').map(f => getFacadeFeature(f, layer));
           if (clusteredFeatures.length === 1) {
@@ -129,12 +120,6 @@ class Feature {
     }
     return features;
   }
-
-  handleFeatureInExtent(userMaxExtent, pixel) {
-    const coordinate = this.map_.getMapImpl().getCoordinateFromPixel(pixel);
-    return containsXY(userMaxExtent, coordinate[0], coordinate[1]);
-  }
-
   /**
    * Este método añade el cursor "pointer" a los objetos geográficos.
    *

@@ -19,8 +19,7 @@ const mapa = Mmap({
   projection: 'EPSG:3857*m',
   center: [-443273.10081370454, 4757481.749296248],
   zoom: 6,
-  layers: [generic_002],
-  controls: ['panzoom'],
+  layers: [generic_002]
 });
 
 const checkIsStatusLayer = (zIndex, baseLayers, transparent, isBase) => {

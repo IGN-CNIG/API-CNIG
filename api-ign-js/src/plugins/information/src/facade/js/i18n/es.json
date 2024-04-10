@@ -2,15 +2,6 @@
   "exception": {
     "impl": "La implementación usada no puede crear controles InformationControl."
   },
-  "textHelp": {
-    "help1": "Proporciona información adicional sobre los elementos de las capas, en el caso en el que el servicio permita la operación de consulta.",
-    "help2": "Se realiza por una petición de información al servicio de mapas a través de la operación getFeatureInfo. También es posible pedir información a ficheros vectoriales como .geojson o .kml",
-    "help3": "Seleccione la herramienta y haga clic sobre el elemento del que desee conocer más información. En el panel, aparecerán las capas que dispongan de información en el punto.",
-    "help4": "Utilice la flecha para desplegar toda la información disponible de cada capa.",
-    "help5": "Si no existen capas consultables, al hacer clic sobre el mapa aparece el siguiente mensaje informativo.",
-    "help6": "La información relevante a la extensión y su posible parametrización está documentada en",
-    "help7": "El ejemplo de uso de sus parámetros puede comprobarse en"
-  },
   "tooltip": "Consultar capas",
   "title": "Información",
   "not_queryable": "No existen capas consultables",

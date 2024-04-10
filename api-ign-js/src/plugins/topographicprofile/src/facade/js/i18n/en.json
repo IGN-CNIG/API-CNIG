@@ -1,7 +1,6 @@
 {
   "exception": {
-    "impl": "The implementation used cannot create Perfiltopografico controls.",
-    "obsolete": "Developer message: M.plugin.Topographicprofile has been deprecated, use the M.plugin.VectorsManagement instead"
+    "impl": "The implementation used cannot create Perfiltopografico controls."
   },
   "tooltip": "Topography Profile",
   "title": "Topography Profile",

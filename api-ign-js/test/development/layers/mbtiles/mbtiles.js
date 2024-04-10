@@ -2,8 +2,6 @@ import MBTiles from 'M/layer/MBTiles';
 
 
 export const mbtile_01 = new MBTiles({
-    // url:'',
-    // source:{},
     name: 'mbtilesLoadFunction',
     legend: 'Capa personalizada MBTiles',
     // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
@@ -16,36 +14,9 @@ export const mbtile_01 = new MBTiles({
         }
       });
     },
-    // opacity: 0,
-    // opacity: 0.5,
-    // opacity: 1,
-    // maxZoomLevel: 4,
-    // maxZoomLevel: 12,
-    // visibility: false,
-    visibility: true,
-    // isBase: false,
-    // isBase: true,
-    // transparent: true,
-    // transparent: false,
-    // infoEventType: 'hover',
-    // infoEventType: 'click',
-    // attribution: {
-    //     name: 'Name Prueba KML',
-    //     description: 'Description Prueba',
-    //     url: 'https://www.ign.es',
-    //     contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
-    //     contentType: 'kml',
-    //   },
-
   },
-  {
-    // crossOrigin: true,
-    // minZoom: 5,
-    // maxZoom: 10,
-    // displayInLayerSwitcher: true,
-    // displayInLayerSwitcher: false,
-  },
-  {
-
-  }
+  // {
+  //   minZoom: 5,
+  //   maxZoom: 10
+  // }
 );

@@ -1,5 +1,5 @@
 import { map as Mmap } from 'M/mapea';
-import { wmts_001 } from '../layers/wmts/wmts';
+import { wmts_004 } from '../layers/wmts/wmts';
 
 
 const mapa = Mmap({
@@ -7,14 +7,11 @@ const mapa = Mmap({
   // projection: 'EPSG:4326*d',
   center: [-443273.10081370454, 4757481.749296248],
   zoom: 6,
-  layers: [
-    wmts_001,
-    'OSM',
-  ],
-  controls: ['panzoom', 'scale', 'getfeatureinfo'],
+  layers: ['OSM'],
+  controls: ['scale', 'getfeatureinfo'],
 });
 
-// mapa.addLayers([wmts_001]);
+mapa.addLayers([wmts_004]);
 
 
 window.mapa = mapa;

@@ -60,7 +60,6 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].geometrydraw = pluginsLanguage.geometrydraw.esGeometrydraw;
     configuration.translations[lang].georefimage = pluginsLanguage.georefimage.esGeorefimage;
     configuration.translations[lang].georefimage2 = pluginsLanguage.georefimage2.esGeorefimage2;
-    configuration.translations[lang].help = pluginsLanguage.help.esHelp;
     configuration.translations[lang].iberpixcompare = pluginsLanguage.iberpixcompare
       .esIberpixcompare;
     configuration.translations[lang].ignsearch = pluginsLanguage.ignsearch.esIgnsearch;
@@ -80,8 +79,6 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].predefinedzoom = pluginsLanguage.predefinedzoom
       .esPredefinedzoom;
     configuration.translations[lang].printermap = pluginsLanguage.printermap.esPrintermap;
-    configuration.translations[lang].printviewmanagement =
-      pluginsLanguage.printviewmanagement.esPrintviewmanagement;
     configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
       .esQueryattributes;
     // configuration.translations[lang].querydatabase = pluginsLanguage
@@ -106,8 +103,6 @@ export const getTranslation = (lang) => {
       pluginsLanguage.viewmanagement.esViewmanagement;
     configuration.translations[lang].locator = pluginsLanguage.locator.esLocator;
     configuration.translations[lang].locatorscn = pluginsLanguage.locatorscn.esLocatorscn;
-    configuration.translations[lang].vectorsmanagement =
-      pluginsLanguage.vectorsmanagement.esVectorsmanagement;
   } else if (lang === 'en') {
     configuration.translations[lang].attributions = pluginsLanguage.attributions.enAttributions;
     configuration.translations[lang].backimglayer = pluginsLanguage.backimglayer.enBackimglayer;
@@ -121,7 +116,6 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].geometrydraw = pluginsLanguage.geometrydraw.enGeometrydraw;
     configuration.translations[lang].georefimage = pluginsLanguage.georefimage.enGeorefimage;
     configuration.translations[lang].georefimage2 = pluginsLanguage.georefimage2.enGeorefimage2;
-    configuration.translations[lang].help = pluginsLanguage.help.enHelp;
     configuration.translations[lang].iberpixcompare = pluginsLanguage.iberpixcompare
       .enIberpixcompare;
     configuration.translations[lang].ignsearch = pluginsLanguage.ignsearch.enIgnsearch;
@@ -165,8 +159,6 @@ export const getTranslation = (lang) => {
       pluginsLanguage.viewmanagement.enViewmanagement;
     configuration.translations[lang].locator = pluginsLanguage.locator.enLocator;
     configuration.translations[lang].locatorscn = pluginsLanguage.locatorscn.enLocatorscn;
-    configuration.translations[lang].vectorsmanagement =
-      pluginsLanguage.vectorsmanagement.enVectorsmanagement;
   }
   return configuration.translations[lang];
 };

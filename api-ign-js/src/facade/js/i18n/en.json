@@ -1,26 +1,6 @@
 {
-  "panzoom": {
-    "textHelp": {
-      "text1": "This tool allows you to change the zoom of the viewer from a panel with a slider. The display map changes zoom in or out as you move the slider up or down."
-    }
-  },
-  "panzoombar": {
-    "textHelp": {
-      "text1": "This tool allows you to change the zoom of the viewer from a panel with a slider. The display map changes zoom in or out as you move the slider up or down."
-    }
-  },
-  "backgroundlayers": {
-    "textHelp": {
-      "text1": "The base layer selector tool allows you to switch between different base layers or background layers, configured in a viewer."
-    }
-  },
   "location": {
-    "title": "Get current location",
-    "textHelp": {
-      "text1": "The location tool allows you to obtain the position of a device and position it on the map. Its operation is restricted to WEB pages that are published securely over the HTTPS protocol and in local environments.",
-      "text2": "If used on a mobile device equipped with a GNSS system, the position will be obtained according to the device's location permissions.",
-      "text3": "On devices without GNSS systems, positioning is obtained using the IP address assigned by the internet operator in a delimited area."
-    }
+    "title": "Get current location"
   },
   "layerswitcher": {
     "title": "Layer selector"
@@ -28,46 +8,24 @@
   "scale": {
     "title": "Scale",
     "scale": "Scale",
-    "level": "Zoom level",
-    "textHelp": {
-      "text1": "Information panel showing the zoom level and approximate scale of the current view.",
-      "text2": "The zoom level is the corresponding one for the EPSG coordinate system: 3857 WGS84 / Pseudo-Mercator."
-    }
+    "level": "Zoom level"
   },
-  "scaleline": {
-    "textHelp": {
-      "text1": "The graphic scale is a line located on the map, often in the margin of the sheet, that has been subdivided into segments to indicate the lengths on the map of terrestrial distance units.",
-      "text2": "Thanks to this element it is possible to measure the real distance directly on the map with the help of a ruler or a compass.",
-      "text3": "Source"
-    }
-  },
-  "attributionsControl": {
+  "attributions": {
     "attribution": "attribution",
-    "tooltip": "Recognitions",
-    "textHelp": {
-      "text1": "The base layer selector tool allows you to switch between different base layers or background layers, configured in a viewer.",
-      "text2": "With this information, attribution can be given to each layer, allowing the user to know its source."
-    }
+    "tooltip": "Recognitions"
   },
   "getfeatureinfo": {
     "info": "Information",
     "title": "Consult layer",
     "no_info": "No associated info",
     "info_of": "Information about",
-    "unsupported_format": "Unsupported format",
-    "textHelp": {
-      "text1": "The obtain information tool allows obtaining the GetFeatureInfo (the information associated with the point clicked on the viewer) in WMS and WMTS services."
-    }
+    "unsupported_format": "Unsupported format"
   },
   "wmcselector": {
     "title": "Context selector"
   },
   "rotate": {
-    "title": "Turn north",
-    "textHelp": {
-      "text1": "The rotation tool allows you to return the viewer to a North orientation.",
-      "text2": "To be able to rotate the map in the viewer, it is done with the key combination Shit + Alt + left mouse click + move mouse to rotate."
-    }
+    "title": "Turn north"
   },
   "mouse": {
     "title": "Pointer coordinates"
@@ -217,11 +175,6 @@
     "versionError": "Layer [replace1] of type [replace2] does not support the version.",
     "sldBODYError": "Layer [replace1] of type [replace2] does not support SLD_BODY.",
     "styleError": "Layer [replace1] of type [replace2] does not support STYLE.",
-    "formatError": "Layer [replace1] of type [replace2] does not support FORMAT.",
-    "file_size": "The selected file exceeds the maximum 20 MB allowed.",
-    "file_load": "Error when loading the file.",
-    "no_geoms": "No geometries have been detected in this file.",
-    "file_load_correct": "Error when loading the file. Check that it is the right file.",
-    "file_extension": "A not allowed file extension has been inserted. The allowed ones are: KML, SHP(.zip), GPX, GML and GeoJSON."
+    "formatError": "Layer [replace1] of type [replace2] does not support FORMAT."
   }
 }

@@ -1,6 +1,6 @@
 import ViewManagement from 'facade/viewmanagement';
 
-M.language.setLang('en');
+M.language.setLang('es');
 
 const map = M.map({
   container: 'mapjs',

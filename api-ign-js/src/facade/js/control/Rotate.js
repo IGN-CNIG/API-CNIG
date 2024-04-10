@@ -4,7 +4,6 @@
 import 'assets/css/controls/rotate';
 import RotateImpl from 'impl/control/Rotate';
 import template from 'templates/rotate';
-import myhelp from 'templates/rotatehelp';
 import ControlBase from './Control';
 import { compileSync as compileTemplate } from '../util/Template';
 import { isUndefined } from '../util/Utils';
@@ -54,33 +53,6 @@ class Rotate extends ControlBase {
       },
     });
   }
-
-  /**
-   * Obtiene la ayuda del control
-   *
-   * @function
-   * @public
-   * @api
-  */
-  getHelp() {
-    const textHelp = getValue('rotate').textHelp;
-    return {
-      title: Rotate.NAME,
-      content: new Promise((success) => {
-        const html = compileTemplate(myhelp, {
-          vars: {
-            urlImages: `${M.config.MAPEA_URL}assets/images`,
-            translations: {
-              help1: textHelp.text1,
-              help2: textHelp.text2,
-            },
-          },
-        });
-        success(html);
-      }),
-    };
-  }
-
 
   /**
    * Este método comprueba si un objeto es igual

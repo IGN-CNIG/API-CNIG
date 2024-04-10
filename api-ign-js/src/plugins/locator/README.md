@@ -49,7 +49,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TC': (top center) - Arriba en el centro.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
-- **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Buscar un lugar.
+- **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Localizador.
 - **zoom**: Zoom que aplicará al mostrar resultado de tipo puntual. Por defecto: 16.
 - **useProxy**: Determina si se desea que las peticiones que se realizan en el control de búsqueda de lugares se realizan con el proxy o no. Por defecto: true.
   - Nota: sólo afecta a las peticiones de búsquedas por lugares. Las peticiones a catastro siempre se realizarán con el proxy.

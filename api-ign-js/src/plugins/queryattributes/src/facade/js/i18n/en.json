@@ -3,12 +3,6 @@
     "impl": "The implementation used cannot create QueryAttributesControl.",
     "no_data": "No data for export."
   },
-  "textHelp": {
-    "help1": "The attribute table extension allows you to display the thematic data of a spatial data source.",
-    "help2": "In addition, it allows you to search an attribute by a value entered by the user, searches by view, by area, clearing the filters and exporting the data.",
-    "help3": "The information relevant to the extension and its possible parameterization is documented in",
-    "help4": "The example of use of its parameters can be checked in"
-  },
   "tooltip": "Search by filters",
   "values": "Values",
   "attribute_table": "Table of attributes",

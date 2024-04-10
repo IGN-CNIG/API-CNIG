@@ -102,10 +102,6 @@ module.exports = {
       to: 'assets/svg',
     }]),
     new CopywebpackPlugin([{
-      from: 'src/facade/assets/images',
-      to: 'assets/images',
-    }]),
-    new CopywebpackPlugin([{
       from: 'node_modules/sql.js/dist/sql-wasm.wasm',
       to: 'wasm/',
     }]),

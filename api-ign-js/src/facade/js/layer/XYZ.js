@@ -14,7 +14,7 @@ import { getValue } from '../i18n/language';
  * Cada mosaico representa una combinación de tres parámetros.
  * Las capas XYZ tienen la siguiente estructura.
  *
- * https://URL/{z}/{x}/{y}.jpg
+ * https://www.ign.es/web/catalogo-cartoteca/resources/webmaps/data/cresques/{z}/{x}/{y}.jpg
  *
  * Donde {z} especifica el nivel de zoom, {x} el número de columna y {y} el número de fila.
  *

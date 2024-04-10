@@ -1,29 +1,14 @@
 import MVT from 'M/layer/MVT';
-window.MVT=MVT;
-import Generic from 'M/style/Generic';
 
 export const mvt_001 = new MVT({
     url: "https://vt-fedme.idee.es/vt.senderogr/{z}/{x}/{y}.pbf",
     name: 'sendero_gr',
-    // projection: '',
-    // mode: 'render',
-    mode: 'feature',
-    // opacity: 0,
-    // opacity: 0.5,
-    // opacity: 1,
-    // layers: ['Layer__0', 'Layer__1'],
-    // layers: 'Layer__0,Layer__1',
-    // layers: [],
     // visibility: true,
-    // visibility: false,
-    extract: true,
-    // extract: false,
+    // extract: true,
     // infoEventType: 'click',
-    infoEventType: 'hover',
     // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
     // isBase: true,
-    // isBase: false,
-    // transparent: true,
+    // opacity: 0.5,
     // transparent: false,
     // attribution: {
     //   name: 'Name Prueba MVT',
@@ -33,37 +18,11 @@ export const mvt_001 = new MVT({
     //   contentType: 'kml',
     // },
   },
-  {
-    // minZoom: 5,
-    // maxZoom: 10,
-    // predefinedStyles: [],
-    // style: new Generic({
-    //   point: {
-    //     radius: 10,
-    //     fill: {
-    //       color: 'blue'
-    //     }
-    //   },
-    //   polygon: {
-    //     fill: {
-    //       color: 'red'
-    //     }
-    //   },
-    //   line: {
-    //     stroke: {
-    //       color: 'black'
-    //     }
-    //   }
-    // }),
-    // displayInLayerSwitcher: true,
-    // displayInLayerSwitcher: false,
-  },
-  {
-    // source: {},
-  },
+  // {
+  //   minZoom: 5,
+  //   maxZoom: 10,
+  // }
 );
-
-// ERROR: No funciona opacity al 0
 
 export const mvt_002 = new MVT({
   url: 'https://vts.larioja.org/rioja/{z}/{x}/{y}.pbf',

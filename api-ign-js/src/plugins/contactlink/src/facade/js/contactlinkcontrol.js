@@ -107,7 +107,7 @@ export default class ContactLinkControl extends M.Control {
      *@private
      *@type { Number }
      */
-    this.order = values.order >= -1 ? values.order : null;
+     this.order = values.order >= -1 ? values.order : null;
   }
 
   /**
@@ -174,15 +174,6 @@ export default class ContactLinkControl extends M.Control {
         let url = this.linksPnoa;
         if (this.linksPnoa.indexOf('index.html') === -1 && this.linksPnoa.indexOf('/comparador_pnoa') > -1) {
           url = `${this.linksPnoa}?center=${map.getCenter().x},${map.getCenter().y}&zoom=${map.getZoom()}&srs=${map.getProjection().code}`;
-        }
-
-        window.open(url);
-      });
-
-      html.querySelector('#urlStereoLink').addEventListener('click', () => {
-        let url = this.linksVisualizador3d;
-        if (this.linksVisualizador3d.indexOf('index.html') === -1 && this.linksVisualizador3d.indexOf('/estereoscopico') > -1) {
-          url = `${this.linksVisualizador3d}?center=${map.getCenter().x},${map.getCenter().y}&zoom=${map.getZoom()}&srs=${map.getProjection().code}`;
         }
 
         window.open(url);

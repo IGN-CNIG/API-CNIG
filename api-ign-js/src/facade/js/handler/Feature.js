@@ -249,8 +249,8 @@ class Features extends Base {
       layerImpl.unselectFeatures(features, evt.coord);
     }
 
-    // ! Tareas #6384/6860
-    if (this.map_.getPopup()) { this.map_.getPopup().hide(); }
+    // ! Tareas #6384
+    // if (this.map_.getPopup()) { this.map_.getPopup().hide(); }
     layer.fire(EventType.UNSELECT_FEATURES, [features, evt.coord]);
   }
 
@@ -331,7 +331,7 @@ class Features extends Base {
    * @export
    */
   addLayer(layer) {
-    if (!includes(this.layers_, layer)) {
+    if (!includes(this.layers_, layer) && layer.name) {
       this.layers_.push(layer);
       this.prevSelectedFeatures_[layer.name] = [];
       this.prevHoverFeatures_[layer.name] = [];

@@ -4,7 +4,6 @@
             <input tabindex="0" type="text" id="m-layerswitcher-addservices-search-input" placeholder="{{translations.url_service}}" class="m-layerswitcher-input-search" />
             <span>
                 <button tabindex="0" id="m-layerswitcher-addservices-search-btn" class="m-layerswitcher-icons-zoom m-search-btn" title="{{translations.query}}"></button>
-                <!--<button tabindex="0" id="m-layerswitcher-addservices-fileurl-btn" class="m-layerswitcher-icons-doc-text m-search-btn" title="{{translations.query}}"></button>-->
                 {{#if codsiActive}}
                     <button tabindex="0" role="button" id="m-layerswitcher-addservices-codsi-btn" class="m-layerswitcher-icons-codsi m-search-btn" title="{{translations.codsi_services}}"></button>
                 {{/if}}
@@ -12,8 +11,6 @@
                 {{#if hasPrecharged}}
                     <button tabindex="0" role="button" id="m-layerswitcher-addservices-list-btn" class="m-layerswitcher-icons-lista m-search-btn" title="{{translations.loaded_services}}"></button>
                 {{/if}}
-                <label tabindex="0" id="labelFileInput" for="m-layerswitcher-addservices-file-input" class="m-layerswitcher-icons-upload" title="{{translations.upload_file}}"></label>
-                <input tabindex="0" type="file" id="m-layerswitcher-addservices-file-input" accept="{{accept}}" style="display: none;">
             </span>
         </div>
         <div id="m-layerswitcher-ogcCContainer"></div>

@@ -41,42 +41,26 @@ const sldBody = '<?xml version="1.0" encoding="ISO-8859-1"?>' +
   '</StyledLayerDescriptor>';
 
 export const generic_001 = new GenericRaster({
-  name: 'Nombre de prueba',
-  // name: 'Segundo nombre de prueba',
-  // isBase: false,
-  // isBase: true,
-  // transparent: true,
-  // transparent: false,
-  legend: 'capaGenericRaster',
-  // legend: 'capaGenericRaster de prueba',
-  // version: '1.2.0',
-  // maxExtent: [-952551.7366869409, 4498177.065457279, -669276.1098620776, 4562995.6654431075],
-  // attribution: {
-  //   name: 'Name Prueba GeoJSON',
-  //   description: 'Description Prueba',
-  //   url: 'https://www.ign.es',
-  //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
-  //   contentType: 'kml',
-  // },
+// [-] name: 'Nombre de prueba',
+// isBase: false,
+// transparent: true,
+// [-] legend: 'capaGenericRaster',
+// [-] version: '1.2.0',
+// maxExtent: [-952551.7366869409, 4498177.065457279, -669276.1098620776, 4562995.6654431075],
 }, {
-  visibility: true,
-  // visibility: false,
-  displayInLayerSwitcher: true,
-  // displayInLayerSwitcher: false,
-  // opacity: 0,
-  opacity: 0.5,
-  // opacity: 1,
-  // minZoom: 5,
-  // maxZoom: 7,
-  // format: 'image/jpeg',
-  // sldBody: sldBody,
-  // styles: 'municipios_transparente',
-  queryable: true,
-  // queryable: false,
-  // minScale: 2000000,
-  // maxScale: 7000000,
-  // minResolution: 705.5551745557614,
-  // maxResolution: 2469.443110945165,
+// [-] visibility: false,
+// [-] opacity: 0.5,
+// [-] minZoom: 5,
+// [-] maxZoom: 7,
+// [-] format: 'image/jpeg',
+// [-] sldBody,
+// [-] styles: 'municipios_transparente',
+// queryable: false,
+// [-] minScale: 2000000,
+// [-] maxScale: 7000000,
+// [-] minResolution: 705.5551745557614,
+// [-] maxResolution: 2469.443110945165,
+// hay que comprobar si maxExtent va en este objeto
 }, new Image({
 source: new ImageWMS({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
@@ -85,49 +69,23 @@ source: new ImageWMS({
 // extent: [-952551.7366869409, 4498177.065457279, -669276.1098620776, 4562995.6654431075],
 }));
 
-// ERROR: No funciona opacity al 0
-
 export const generic_002 = new GenericVector({
-  // name: 'Nombre Vector generico',
-  // legend: 'Leyenda Vector generico',
-  // ids: '1,2',
-  // version: '1.2.0',
-  // extract: true,
-  // extract: false,
-  // infoEventType: 'hover',
-  // infoEventType: 'click',
-  // maxExtent: [-952551.7366869409, 4498177.065457279, -669276.1098620776, 4562995.6654431075],
-  // attribution: {
-  //   name: 'Name Prueba GeoJSON',
-  //   description: 'Description Prueba',
-  //   url: 'https://www.ign.es',
-  //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
-  //   contentType: 'kml',
-  // },
+// [-] ids: '1,2',
+// [-] cql: "nombre LIKE '%ada%'",
+// [-] version: '1.2.0',
+// [-] extract: true,
+// [-] infoEventType: 'hover',
+// maxExtent: [-952551.7366869409, 4498177.065457279, -669276.1098620776, 4562995.6654431075],
 }, {
-  // sldBody,
-  // cql: "nombre LIKE '%ada%'",
-  // attribution: {
-  //   name: 'Name Prueba GeoJSON',
-  //   description: 'Description Prueba',
-  //   url: 'https://www.ign.es',
-  //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
-  //   contentType: 'kml',
-  // },
-  // displayInLayerSwitcher: false,
-  // displayInLayerSwitcher: true,
-  // visibility: false,
-  // visibility: true,
-  // minZoom: 5,
-  // maxZoom: 7,
-  // opacity: 0,
-  // opacity: 0.5,
-  // opacity: 1,
-  // style: new Polygon({
-  //   fill: {
-  //     color: 'red',
-  //   },
-  // }),
+// [-] visibility: false,
+// [-] minZoom: 5,
+// [-] maxZoom: 7,
+// [-] opacity: 0.5,
+// [-] style: new Polygon({
+//   fill: {
+//     color: 'red',
+//   },
+// }),
 }, new VectorLayer({
 source: new VectorSource({
   format: new GeoJSON(),
@@ -145,9 +103,6 @@ style: new Style({
   }),
 }),
 }));
-
-// ERROR: sldBody no genera ningun efecto
-// ERROR: No funciona opacity al 0
 
 export const generic_003 = new GenericRaster({}, {
 }, new Image({
