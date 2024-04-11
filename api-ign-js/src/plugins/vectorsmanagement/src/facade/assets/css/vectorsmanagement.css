@@ -74,7 +74,7 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
 }
 
 .m-control.m-container.m-vectorsmanagement {
-    min-width: max-content;
+    width: 310px;
     background-color: #fff !important;
 }
 
@@ -640,6 +640,7 @@ table#attribute-table>tr>th>button {
 }
 
 .m-vectorsmanagement-previews>button,
+.m-vectorsmanagement-previews>div>button,
 .m-vectorsmanagement-selection-layer>button,
 #creationBtns>button,
 #analysisBtns>div>button,
@@ -651,6 +652,15 @@ table#attribute-table>tr>th>button {
     background-color: #fff;
     height: 40px;
     width: 40px;
+}
+
+.m-vectorsmanagement-toolsContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-left: 2px solid #757474;
+    gap: 5px;
 }
 
 table#attribute-table>tr>th>button,
@@ -672,7 +682,12 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
     width: 20px;
 }
 
+.vectorsmanagement-icon-seleccionar {
+    width: 90px !important;
+}
+
 .m-vectorsmanagement-previews>button.activated,
+.m-vectorsmanagement-previews>div>button.activated,
 .m-vectorsmanagement-selection-layer>button.activated,
 #creationBtns>button.activated,
 #analysisBtns>div>button.activated,
