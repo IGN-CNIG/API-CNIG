@@ -138,8 +138,9 @@ export default class AnalysisControl extends M.Control {
     const active = this.getControlActive();
     if (active && active.id !== btnClick) {
       this.template.querySelector(`#${active.id}`).classList.remove('activated');
-      this.template.querySelector(`#${btnClick}`).classList.add('activated');
     }
+    this.template.querySelector(`#${btnClick}`).classList.add('activated');
+    this.template.querySelector('#vectorsmanagement-analysis-btn').style.display = 'block';
   }
 
   /**
@@ -175,7 +176,6 @@ export default class AnalysisControl extends M.Control {
    * @api
    */
   onSelect(e) {
-    console.log('onSelect + +', e);
     const MFeatures = this.layer_.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
