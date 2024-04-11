@@ -128,10 +128,12 @@
   "title_clear_geometries": "Limpiar capa",
   "clear_geometries_msg": "¿Seguro que desea eliminar todos los elementos de la capa?",
   "confirm": "Confirmar",
+  "accept": "Aceptar",
   "cancel": "Cancelar",
   "cuadrilatero": "Cuadrilátero",
   "circulo": "Círculo",
   "triangulo": "Triángulo",
   "pentagono": "Pentágono",
-  "hexagono": "Hexágono"
+  "hexagono": "Hexágono",
+  "close": "Cerrar"
 }

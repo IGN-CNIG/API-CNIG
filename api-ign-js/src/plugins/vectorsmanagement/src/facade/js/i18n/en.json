@@ -128,10 +128,12 @@
   "title_clear_geometries": "Clear layer",
   "clear_geometries_msg": "Are you sure you want to remove all elements from the layer?",
   "confirm": "Ok",
+  "accept": "Accept",
   "cancel": "Cancel",
   "cuadrilatero": "Quadrilateral",
   "circulo": "Circle",
   "triangulo": "Triangle",
   "pentagono": "Pentagon",
-  "hexagono": "Hexagon"
+  "hexagono": "Hexagon",
+  "close": "Close"
 }

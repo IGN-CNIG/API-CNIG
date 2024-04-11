@@ -270,8 +270,17 @@ export default class AnalysisControl extends M.Control {
       unitBufferM.addEventListener('change', () => { unit = 1; });
       unitBufferKm.addEventListener('change', () => { unit = 1000; });
       btn.style.backgroundColor = color;
-      btn.addEventListener('click', (ev) => {
+      const btn2 = document.createElement('button');
+      btn2.innerHTML = getValue('accept');
+      btn.innerHTML = getValue('close');
+      btn2.style.width = '60px';
+      btn2.style.marginRight = '8px';
+      btn2.style.backgroundColor = color;
+      btn.parentElement.insertBefore(btn2, btn);
+      // btn es cerrar btn2 es aceptar
+      btn2.addEventListener('click', (ev) => {
         this.addBuffer_((distance * unit));
+        btn.click();
       });
     }
   }
