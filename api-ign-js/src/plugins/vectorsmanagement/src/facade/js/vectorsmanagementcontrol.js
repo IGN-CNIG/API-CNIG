@@ -46,8 +46,8 @@ export default class VectorsManagementControl extends M.Control {
     this.style_ = style;
     this.layers_ = map.getLayers().filter(l => (l instanceof M.layer.Vector ||
       l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
-      return { value: l.name, text: l.legend || l.name };
-    });
+      return { value: l.name, text: l.legend || l.name, zIndex: l.getZIndex() };
+    }).sort((a, b) => b.zIndex - a.zIndex);
     this.selectedLayer = null;
 
     // Determina si el plugin es draggable o no
@@ -503,7 +503,7 @@ export default class VectorsManagementControl extends M.Control {
   refreshLayers() {
     this.layers_ = this.map_.getLayers().filter(l => (l instanceof M.layer.Vector ||
       l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher && l.name !== 'bufferLayer').map((l) => {
-      return { value: l.name, text: l.legend || l.name };
+      return { value: l.name, text: l.legend || l.name, zIndex: l.getZIndex() };
     });
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
@@ -520,7 +520,9 @@ export default class VectorsManagementControl extends M.Control {
     option.innerText = `${getValue('selectLayerDefault')}...`;
     selector.appendChild(option);
 
-    this.layers_.forEach((l) => {
+    const layerOrder = [...this.layers_].sort((a, b) => b.zIndex - a.zIndex);
+
+    layerOrder.forEach((l) => {
       option = document.createElement('option');
       option.value = l.value;
       option.innerText = l.text;
