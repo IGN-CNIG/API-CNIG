@@ -281,9 +281,19 @@ export default class VectorsManagementControl extends M.Control {
   addEditionControl(html) {
     this.editionControl = new EditionControl(this.map_, this);
     html.querySelector('#m-vectorsmanagement-edition').addEventListener('click', (event) => {
+      const $selection = document.querySelector('#m-vectorsmanagement-selection');
+
+      if ($selection.classList.contains('activated')) {
+        this.selectionControl.deactivate();
+        $selection.classList.remove('activated');
+      }
+
       const clickActivate = this.deactive(html, 'edition');
+
       if (!clickActivate) {
         this.editionControl.active(html);
+        this.selectionControl.active(html);
+        $selection.classList.add('activated');
         event.target.classList.add('activated');
       }
     });
