@@ -164,9 +164,6 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
     display: inline-block;
 }
 
-.m-vectorsmanagement-style-container {
-    width: 360px;
-}
 
 .m-vectorsmanagement-style-container>button#set-style-btn {
     width: 60px;
