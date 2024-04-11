@@ -818,6 +818,12 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
     position: relative;
   }
 
+.vectorsmanagement-icon-resize-full-alt.disabled,
+.vectorsmanagement-icon-hole.disabled,
+.vectorsmanagement-icon-tamano.disabled {
+    opacity: 0.5;
+}
+
 .vectorsmanagement-geojson {
     cursor: pointer;
 }
