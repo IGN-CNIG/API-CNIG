@@ -207,9 +207,9 @@ const mp = new Comparators({
   collapsible: true,
   isDraggable: true,
   // tooltip: 'Plugin Comparators', // Si se evita uso de opciones tooltip, se usa el archivo de traducción por defecto
-  defaultCompareMode: 'transparecyParams', // 2 - ERROR, 3 - ERROR y 5 - ERROR
-  enabledKeyFunctions: true, // 4 - ERROR
-  // lyrsMirrorMinZindex: 10, // 6 - ERROR
+  defaultCompareMode: 'transparecyParams', // 2 - ERROR, y 4 - ERROR
+  enabledKeyFunctions: true, // 3 - ERROR
+  // lyrsMirrorMinZindex: 10, // 5 - ERROR
   transparencyParams: {
     radius: 100,
     maxRadius: 100,
@@ -271,13 +271,12 @@ window.mp = mp; // */
 // 1 - ERROR Se ha observado que la traducción del "comparators/src/facade/js/i18n/en.json" tiene puesto "exception.fourLayers" y "exception.notLayers" sin traducción correcta comparado con el lenguaje español. Parecen haber sido copiados de "no_layers_plugin".
 
 // 2 - ERROR "transparecyParams"(SIN segunda "n") es mal, tiene que ser "transparencyParams", por lo que hay esta inconsistencia en los textos de README y "plugins/comparators/src/facade/js/comparatorscontrol.js" que se deberían de cambiar.
-// 3 - ERROR Funciona solo con "mirrorpanelParams", "lyrcompareParams", "transparencyParams"(NO FUNCIONA por error al no ser 'transparecyParams', sin esa segunda "n"), "windowsyncParams" y "none"
-// 4 - ERROR enabledKeyFunctions, Los eventos lanzados por esta configuración de "plugins/comparators/src/facade/js/transparencycontrol.js" y "plugins/comparators/src/facade/js/mirrorpanelcontrol.js" se pueden generar de forma duplicada cada vez que se da click a las opciones de comparado. En "transparencycontrol" también se genera aunque si se pone false no debería de haber se generado igual que "mirrorpanelcontrol" que se lo salta en ese caso.
+// 3 - ERROR enabledKeyFunctions, Los eventos lanzados por esta configuración de "plugins/comparators/src/facade/js/transparencycontrol.js" y "plugins/comparators/src/facade/js/mirrorpanelcontrol.js" se pueden generar de forma duplicada cada vez que se da click a las opciones de comparado. En "transparencycontrol" también se genera aunque si se pone false no debería de haber se generado igual que "mirrorpanelcontrol" que se lo salta en ese caso. Se podría añadir función "addEventKey_" a este también.
 // Con poner el generado de estos dos activate con "if (this.enabledKeyFunctions) {this.functionKeyDown = (zEvent) => {...};document.addEventListener('keydown', this.functionKeyDown);}" y en Deactivate el apartados "document.removeEventListener('keydown', this.functionKeyDown);" Se impide esta acumulación de eventos.
 // Ademas hay caso de repetidas llamadas a "if" de "zEvent.ctrlKey && zEvent.shiftKey" que se podría unir en un único if antes del siguiente if.
 // Teniendo en cuenta que "combinedKeys === 'Escape'" de "plugins/comparators/src/facade/js/mirrorpanelcontrol.js" se puede simplificar con un solo if de "(zEvent.key === 'Escape' && !(zEvent.ctrlKey || zEvent.shiftKey || zEvent.altKey || zEvent.metaKey))", eliminando también constante "keyStr". Si se combina con el arreglo de antes de "zEvent.ctrlKey && zEvent.shiftKey", se puede saltar en este caso en el "else" estas mismas pruebas de variables.
 
-// 5 - ERROR Parámetro "defaultCompareMode" no parece hacer nada en las pruebas de JSP de este plugin, porque esta configurado a usar valores default simples(ej 'mirror', 'spyeye' ...) que no se utilizan aquí, tienen que ser 'mirrorpanelParams', 'lyrcompareParams', 'transparecyParams', 'windowsyncParams' o 'none' en el select.
-// 6 - ERROR Parámetro 'lyrsMirrorMinZindex' no se usa en comparators, por lo que se tienen que limpiar de estos. Hay que tener cuidado porque parece como si se copiaron de Plugin "comparepanel"
+// 4 - ERROR Parámetro "defaultCompareMode" no parece hacer nada en las pruebas de JSP de este plugin, porque esta configurado a usar valores default simples(ej 'mirror', 'spyeye' ...) que no se utilizan aquí, tienen que ser 'mirrorpanelParams', 'lyrcompareParams', 'transparecyParams', 'windowsyncParams' o 'none' en el select.
+// 5 - ERROR Parámetro 'lyrsMirrorMinZindex' no se usa en comparators, por lo que se tienen que limpiar de estos. Hay que tener cuidado porque parece como si se copiaron de Plugin "comparepanel"
 
-// 7 - ERROR "this.isDraggableE" parece ser un error traído con copiado y pegado, que en realidad debería de ser "this.isDraggable", ocurre en 4 plugins, en las funciones "getApiRest" de estos.
+// 6 - ERROR "this.isDraggableE" parece ser un error traído con copiado y pegado, que en realidad debería de ser "this.isDraggable", ocurre en 4 plugins, en las funciones "getApiRest" de estos.

@@ -1,6 +1,7 @@
 import BackImgLayer from 'facade/backimglayer';
 
 M.language.setLang('es');
+// M.language.setLang('en');
 
 // const wmstTestLayer0 = new M.layer.WMTS({url: 'https://www.ign.es/wmts/pnoa-ma?', name: 'OI.OrthoimageCoverage', matrixSet: 'GoogleMapsCompatible', legend: 'Imagen', transparent: true, displayInLayerSwitcher: false, queryable: false, visible: true, format: 'image/jpeg', minZoom: 5, maxZoom: 10}); // NO BASE
 // const wmstTestLayer0 = new M.layer.WMTS({url: 'https://www.ign.es/wmts/pnoa-ma?', name: 'OI.OrthoimageCoverage', matrixSet: 'GoogleMapsCompatible', legend: 'Imagen', transparent: false, displayInLayerSwitcher: false, queryable: false, visible: true, format: 'image/jpeg', minZoom: 5, maxZoom: 10}); // BASE
@@ -136,9 +137,9 @@ window.map = map;
 // Se podría poner "(before was character: '+')" o quitarlo completamente
 // El "(NOT * )" se tiene que quitar ya que es descripción falsa.
 
-// 2 - ERROR Al poner el parámetro "Position 'BL'"(Botom Left) en el Plugin, la caja se corta y no muestra tamaño completo con las opciones del Plugin. Ocurre algo menos notable con "position: 'TR'" y "position: 'TL'" porque el título de "Capas de fondo" es más grande que las demás cajas. En 'BL' solo se corta la caja.
+// 2 - ERROR Al poner el parámetro "Position 'BL'"(Botom Left) en el Plugin, la caja se corta y no muestra tamaño completo con las opciones del Plugin. Ocurre algo menos notable con "position: 'TR'" y "position: 'TL'" porque el título de "Capas de fondo" es más grande que las demás cajas, en ingles es más notable este error. En 'BR' solo se corta la caja de texto.
 
-// 3 - ERROR Encontrado error al añadir capa con "addLayer", que tiene puesto la transparencia a "false", da error "(in promise) TypeError: this.map is null" en "value WMTS.js:162" en código concreto parece ser "const defaultExtent = this.map.getMaxExtent();"
+// 3 - ERROR Encontrado error al añadir capa con "addLayers", que tiene puesto la transparencia a "false", da error "(in promise) TypeError: this.map is null" en "value WMTS.js:162" en código concreto parece ser "const defaultExtent = this.map.getMaxExtent();"
 
 // 4 - ERROR Si se usa "mp.turnLayerOptsIntoUrl()" sin que se haya añadido "layerOpts" en el parámetro del Plugin, sufre error "TypeError: this.layerOpts is undefined", podría ser mejor idea comprobar y dar error único descriptivo o devolver nada o calcular de otra forma ese resultado sin layerOpts si no está.
 
@@ -146,6 +147,6 @@ window.map = map;
 
 // 6 - ERROR MEJORA Si se da click sobre el elemento de layer vacío, no se cambia a este el focus de color, igual que se hace con las otras opciones.
 // Se puede arreglar de la siguiente manera:
-// Añadir " else {e.currentTarget.parentElement.querySelector('#m-backimglayer-lyr-empty').classList.add('activeBackimglayerDiv');}" al "if (!isActivated) {...}" de "showBaseLayer", paca que si se apaga un layer se marque el vacío.
+// Añadir " else if (this.empty) {e.currentTarget.parentElement.querySelector('#m-backimglayer-lyr-empty').classList.add('activeBackimglayerDiv');}" al "if (!isActivated) {...}" de "showBaseLayer", para que si se apaga un layer se marque el vacío.
 // Cambiar el "const elem = html.querySelector('#m-backimglayer-previews div.activeBackimglayerDiv:not(#m-backimglayer-lyr-empty)');" de "showEmptyLayer" para que ignore a si mismo en el click.
 // También se puede añadir al "showEmptyLayer" al final, el "html.querySelector('#m-backimglayer-lyr-empty').classList.add('activeBackimglayerDiv');", pero debería ser redundante ya que el quitar de "showBaseLayer" debería ya de haberlo aplicarlo.
