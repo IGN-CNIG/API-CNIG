@@ -703,6 +703,7 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
     align-items: center;
     margin-top: 10px;
     gap: 20px;
+    padding-bottom: 10px;
 }
 
 .vectorsmanagement-icon-font:before {
@@ -738,7 +739,12 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
 }
 
 .vectorsmanagement-icon-pin-located:before {
-    content: '\e900';
+    content: '\e903';
+}
+
+.vectorsmanagement-icon-design-tool:before {
+    content: "\e902";
+    font-weight: bold;
 }
 
 .vectorsmanagement-icon-cancelar:before {
@@ -778,7 +784,11 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
 }
 
 .vectorsmanagement-icon-seleccionar:before {
-    content: '\e931';
+    content: "\e901";
+    font-size: 20px;
+    font-weight: bold;
+    top: 3px;
+    position: relative;
 }
 
 .vectorsmanagement-icon-mas:before {
@@ -821,13 +831,11 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
     content: '\f0ce';
 }
 
-.vectorsmanagement-icon-square:before {
-    content: "\e901";
-    font-size: 22px;
+.vectorsmanagement-icon-json-file:before {
+    content: "\e900";
+    font-size: 20px;
     font-weight: bold;
-    top: 3px;
-    position: relative;
-  }
+}
 
 .vectorsmanagement-icon-resize-full-alt.disabled,
 .vectorsmanagement-icon-hole.disabled,

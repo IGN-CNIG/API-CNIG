@@ -116,6 +116,13 @@ export default class AnalysisControl extends M.Control {
   addEvents() {
     this.template.querySelector('#topographic-profile-btn').addEventListener('click', evt => this.analysisBtnClick(evt.target.id));
     this.template.querySelector('#buffer-btn').addEventListener('click', evt => this.analysisBtnClick(evt.target.id));
+    this.template.querySelector('#vectorsmanagement-btnCoord').addEventListener('click', (evt) => {
+      this.analysisBtnClick(evt.target.id);
+      if (evt.target.classList.contains('activated')) {
+        document.querySelector('.m-vectorsmanagement-analysis-featureInfo').style.display = 'block';
+        document.querySelector('#vectorsmanagement-analysis-btn').style.display = 'none';
+      }
+    });
     this.template.querySelector('#vectorsmanagement-analysis-btn').addEventListener('click', this.calculateAnalysis.bind(this));
     this.template.querySelector('#vectorsmanagement-btnToGeojson').addEventListener('click', () => {
       const controlSelected = this.managementControl_.selectionControl;
@@ -142,6 +149,8 @@ export default class AnalysisControl extends M.Control {
     }
     this.template.querySelector(`#${btnClick}`).classList.add('activated');
     this.template.querySelector('#vectorsmanagement-analysis-btn').style.display = 'block';
+
+    document.querySelector('.m-vectorsmanagement-analysis-featureInfo').style.display = 'none';
   }
 
   /**
