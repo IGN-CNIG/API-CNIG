@@ -76,6 +76,7 @@ export default class StyleControl extends M.Control {
 
     this.refreshStyle();
     this.addEvents();
+    this.managementControl_.accessibilityTab(this.template);
   }
 
   /**

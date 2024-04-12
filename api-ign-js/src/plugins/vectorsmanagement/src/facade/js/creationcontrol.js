@@ -158,6 +158,7 @@ export default class CreationControl extends M.Control {
     html.querySelector('#m-vectorsmanagement-controls').appendChild(this.template);
     this.initializeLayers();
     this.addEvents();
+    this.managementControl_.accessibilityTab(this.template);
   }
 
   /**

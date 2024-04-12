@@ -104,6 +104,7 @@ export default class HelpControl extends M.Control {
     document.querySelector('.m-dialog.info .m-content').style.overflowX = 'auto';
     document.querySelector('.m-dialog.info .m-content').style.maxHeight = '70vh';
     document.querySelector('.m-button button').addEventListener('click', this.deactivate.bind(this));
+    this.managementControl_.accessibilityTab(this.template);
   }
 
 

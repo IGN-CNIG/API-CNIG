@@ -78,6 +78,7 @@ export default class AnalysisControl extends M.Control {
     html.querySelector('#m-vectorsmanagement-controls').appendChild(this.template);
     this.initializeLayers();
     this.addEvents();
+    this.managementControl_.accessibilityTab(this.template);
 
     // eslint-disable-next-line no-underscore-dangle
     const feature = this.managementControl_.selectionControl.selectedFeatures_[0];
@@ -370,6 +371,8 @@ export default class AnalysisControl extends M.Control {
       },
     });
     document.body.appendChild(this.pointTemplate);
+    this.managementControl_.accessibilityTab(this.pointTemplate);
+
     this.pointTemplate.querySelector('.m-panel-btn').addEventListener('click', () => {
       this.removeModalEvents();
       document.body.removeChild(this.pointTemplate);
@@ -511,6 +514,7 @@ export default class AnalysisControl extends M.Control {
 
 
     this.template.querySelector('#analysisBtns #featureInfo').appendChild(this.infoanalysisTemplate);
+    this.managementControl_.accessibilityTab(this.infoanalysisTemplate);
 
     const infoLine3D = document.querySelector('#infoAnalisis3DLine');
     if (infoLine3D) {

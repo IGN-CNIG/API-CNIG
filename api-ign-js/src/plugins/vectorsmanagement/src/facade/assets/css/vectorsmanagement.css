@@ -58,7 +58,6 @@
 .m-areas>div.m-area>div.m-panel.opened.m-plugin-vectorsmanagement {
     background-color: transparent !important;
     box-shadow: none !important;
-    order: -9999999;
 }
 
 div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-container.m-vectorsmanagement>#m-vectorsmanagement-previews,

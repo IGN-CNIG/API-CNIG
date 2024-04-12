@@ -1,11 +1,11 @@
 <div class="m-vectorsmanagement-creation-container">
     <div id="creationBtns" class="m-vectorsmanagement-creationBtns">
-        <button id="pointdrawing" class="vectorsmanagement-icon-pin" title="{{translations.creationPoint}}"></button>
-        <button id="pointlocateddrawing" class="vectorsmanagement-icon-pin-located" title="{{translations.creationCoordPoint}}"></button>
-        <button id="linedrawing" class="vectorsmanagement-icon-linea" title="{{translations.creationLine}}"></button>
-        <button id="polygondrawing" class="vectorsmanagement-icon-poligono" title="{{translations.creationPolygon}}"></button>
-        <button id="figuredrawing" class="vectorsmanagement-icon-medir-area" title="{{translations.creationFigure}}"></button>
-        <button id="textdrawing" class="vectorsmanagement-icon-font" title="{{translations.creationText}}"></button>
+        <button tabindex="0" id="pointdrawing" class="vectorsmanagement-icon-pin" title="{{translations.creationPoint}}"></button>
+        <button tabindex="0" id="pointlocateddrawing" class="vectorsmanagement-icon-pin-located" title="{{translations.creationCoordPoint}}"></button>
+        <button tabindex="0" id="linedrawing" class="vectorsmanagement-icon-linea" title="{{translations.creationLine}}"></button>
+        <button tabindex="0" id="polygondrawing" class="vectorsmanagement-icon-poligono" title="{{translations.creationPolygon}}"></button>
+        <button tabindex="0" id="figuredrawing" class="vectorsmanagement-icon-medir-area" title="{{translations.creationFigure}}"></button>
+        <button tabindex="0" id="textdrawing" class="vectorsmanagement-icon-font" title="{{translations.creationText}}"></button>
     </div>
     <div id="m-point-coordinates" class="closed">
         <div>
@@ -13,7 +13,7 @@
                 <div class="m-point-coordinates-panel">
                     <div id="m-point-coordinates-coordinatesSystem">
                         <label tabindex="0" for="m-point-coordinates-srs" role="text" aria-label="SRS">SRS:</label>
-                        <select name="srs" id="m-point-coordinates-srs" class="dropdown">
+                        <select tabindex="0" name="srs" id="m-point-coordinates-srs" class="dropdown">
                             <option class="m-point-coordinates-srs-option" data-units="d" value="EPSG:4258" option="selected">ETRS89 Geográficas (4258)</option>
                             <option class="m-point-coordinates-srs-option" data-units="d" value="EPSG:4326">WGS84 Geográficas (4326)</option>
                             <option class="m-point-coordinates-srs-option" data-units="m" value="EPSG:3857">WGS84 Pseudo Mercator (3857)</option>
@@ -23,45 +23,45 @@
                             <option class="m-point-coordinates-srs-option" data-units="m" value="EPSG:25828">ETRS89 UTM huso 28 (25828)</option>
                         </select>
                     </div>
-                    <div id="m-point-coordinates-utm" class="closed">
+                    <div tabindex="0" id="m-point-coordinates-utm" class="closed">
                         <label tabindex="0" for="UTM-X" role="text" aria-label="X">X:</label>
-                        <input type="text" name="UTM-X" id="UTM-X" style="color:black">
+                        <input tabindex="0" type="text" name="UTM-X" id="UTM-X" style="color:black">
                         <br />
                         <label tabindex="0" for="UTM-Y" role="text" aria-label="Y">Y:</label>
-                        <input type="text" name="UTM-Y" id="UTM-Y" style="color:black">
+                        <input tabindex="0" type="text" name="UTM-Y" id="UTM-Y" style="color:black">
                     </div>
-                    <div id="m-point-coordinates-latlon">
+                    <div tabindex="0" id="m-point-coordinates-latlon">
                         <label tabindex="0" for="LON" role="text" aria-label="{{translations.creationLongitude}}">{{translations.creationLongitude}}: </label>
-                        <input type="text" name="LON" id="LON" style="color:black">
+                        <input tabindex="0" type="text" name="LON" id="LON" style="color:black">
                         <br />
                         <label tabindex="0" for="LAT" role="text" aria-label="{{translations.creationLatitude}}">{{translations.creationLatitude}}:  </label>
-                        <input type="text" name="LAT" id="LAT" style="color:black">
+                        <input tabindex="0" type="text" name="LAT" id="LAT" style="color:black">
                     </div>
                 </div>
             </div>
             <div id="featureInfo"></div>
         </div>
         <div class="m-vectorsmanagement-coordinates-buttons">
-            <button id='m-vectormanagement-coordinates-draw'>{{translations.draw}}</button>
+            <button tabindex="0" id='m-vectormanagement-coordinates-draw'>{{translations.draw}}</button>
         </div>
     </div>
     <div id="m-text-draw" class="m-vectorsmanagement-text-draw closed">
         <div>
-            <label id="textLabel" for="textContent">{{translations.creationText}}:</label>
-            <input type="text" id="textContent">
+            <label tabindex="0" id="textLabel" for="textContent">{{translations.creationText}}:</label>
+            <input tabindex="0" type="text" id="textContent">
         </div>
     </div>
     <div id="m-figuretools" class="closed">
         <div>
-            <select id="figuresSelector">
+            <select tabindex="0" id="figuresSelector">
                 <option value='4'>{{translations.cuadrilatero}}</option>
                 <option value='40'>{{translations.circulo}}</option>
                 <option value='3'>{{translations.triangulo}}</option>
                 <option value='5'>{{translations.pentagono}}</option>
                 <option value='6'>{{translations.hexagono}}</option>
             </select>
-            <input type="checkbox" id="m-vectorsmanagement-irregularFigure">
-            <label for="m-vectorsmanagement-irregularFigure">Irregular</label>
+            <input tabindex="0" type="checkbox" id="m-vectorsmanagement-irregularFigure">
+            <label tabindex="0" for="m-vectorsmanagement-irregularFigure">Irregular</label>
         </div>
     </div>
 </div>

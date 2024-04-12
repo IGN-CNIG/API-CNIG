@@ -70,6 +70,7 @@ export default class DownloadControl extends M.Control {
 
     html.querySelector('#m-vectorsmanagement-controls').appendChild(this.template);
     const downloadBtn = this.template.querySelector('#m-vectorsmanagement-download-btn');
+    this.managementControl_.accessibilityTab(this.template);
     downloadBtn.addEventListener('click', this.downloadBtnEvent.bind(this));
   }
 

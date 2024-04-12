@@ -31,7 +31,8 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   constructor({
-    map, selection, addlayer, analysis, creation, download, edition, help, style, isDraggable,
+    map, selection, addlayer, analysis, creation, download, edition, help, style,
+    isDraggable, order,
   }) {
     const impl = new M.impl.Control();
     super(impl, 'VectorsManagement');
@@ -52,6 +53,9 @@ export default class VectorsManagementControl extends M.Control {
 
     // Determina si el plugin es draggable o no
     this.isDraggable_ = isDraggable;
+
+    // order
+    this.order = order;
   }
 
   /**
@@ -115,7 +119,7 @@ export default class VectorsManagementControl extends M.Control {
       if (this.isDraggable_) {
         M.utils.draggabillyPlugin(this.getPanel(), '#m-vectorsmanagement-titulo');
       }
-
+      this.accessibilityTab(html);
       success(html);
     });
   }
@@ -562,6 +566,10 @@ export default class VectorsManagementControl extends M.Control {
         this.styleControl.refreshStyle();
       }
     }
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 
   /**

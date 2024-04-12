@@ -131,6 +131,7 @@ export default class EditionControl extends M.Control {
     this.initializeLayers();
     html.querySelector('#m-vectorsmanagement-controls').appendChild(this.template);
     this.addEvents();
+    this.managementControl_.accessibilityTab(this.template);
   }
 
   /**
@@ -291,7 +292,7 @@ export default class EditionControl extends M.Control {
         },
       },
     });
-
+    this.managementControl_.accessibilityTab(this.templateModal);
     M.dialog.info(templateModal.innerHTML, getValue('title_attribute_table'));
     M.utils.draggabillyElement('.m-dialog .m-modal .m-content', '.m-dialog .m-modal .m-content .m-title');
     changeStyleDialog();
@@ -387,7 +388,7 @@ export default class EditionControl extends M.Control {
         },
       },
     });
-
+    this.managementControl_.accessibilityTab(this.templateModal);
     M.dialog.info(templateModal.innerHTML, getValue('title_attribute_table'));
 
     // this.template.querySelector('#clear-layer-modal').classList.remove('closed');
