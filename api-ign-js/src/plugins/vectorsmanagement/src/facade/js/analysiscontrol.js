@@ -7,6 +7,7 @@ import template from '../../templates/analysis';
 import infoanalysis from '../../templates/infoanalysis';
 import pointProfileTemplate from '../../templates/pointprofile';
 import { getValue } from './i18n/language';
+import { changeStyleDialog } from './util';
 
 export default class AnalysisControl extends M.Control {
   /**
@@ -132,6 +133,8 @@ export default class AnalysisControl extends M.Control {
       const pre = JSON.stringify(featuresArea.length === 1
         ? featuresArea[0] : featuresArea, null, 2);
       M.dialog.info(`<pre class="vectorsmanagement-dialogCode"><code>${pre}</code></pre>`, 'GeoJSON');
+
+      changeStyleDialog();
     });
   }
 
