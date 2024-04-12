@@ -132,13 +132,16 @@
     }
 
     #m-help-input {
-      margin-right: 5px;
       padding: 5px 5px !important;
       height: 20px;
     }
 
     #m-help-index>div:nth-child(1) {
       text-align: center;
+    }
+
+    .zoom {
+      width: 35px;
     }
 
     .m-help-btn {
@@ -430,8 +433,8 @@
       <div>
         <input type="text" onkeydown="filterResults(event)" placeholder="{{translations.write}}..." id="m-help-input" />
         <button class="m-help-btn" onclick="filterResults(event)">{{translations.search}}</button>
-        <button class="m-help-btn" onclick="increaseFont(event)">A+</button>
-        <button class="m-help-btn" onclick="reduceFont(event)">A-</button>
+        <button class="m-help-btn zoom" onclick="increaseFont(event)">A+</button>
+        <button class="m-help-btn zoom" onclick="reduceFont(event)">A-</button>
       </div>
       <div></div>
     </div>
