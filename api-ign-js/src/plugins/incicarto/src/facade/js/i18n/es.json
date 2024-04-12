@@ -19,6 +19,7 @@
     "error_wfs": "No se ha podido cargar el servicio WFS",
     "wfs_zoom": "Aumente el nivel de zoom * niveles si quiere añadir este servicio WFS,",
     "error_email": "No se ha podido realizar el envío del email.",
+    "error_email_exception": "No se ha podido realizar el envío del email.",
     "error_email_size": "El tamaño del fichero adjunto es demasiado grande. El tamaño máximo de ficheros permitido para correos electrónicos es 25Mb."
   },
   "textHelp": {
