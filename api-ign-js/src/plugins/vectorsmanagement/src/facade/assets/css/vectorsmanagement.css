@@ -1051,6 +1051,10 @@ div#popup-box {
     font-weight: bold;
 }
 
+#options-content input[type=number]{
+ width: 50px;
+}
+
 @media (max-width: 600px) {
     .m-areas>div.m-area>div.m-panel.m-plugin-vectorsmanagement.opened {
         z-index: 999999999999;
