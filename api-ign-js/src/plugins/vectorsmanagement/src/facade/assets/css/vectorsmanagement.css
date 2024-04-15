@@ -695,6 +695,16 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
     width: 40px;
 }
 
+.m-vectorsmanagement-previews>button.activated,
+.m-vectorsmanagement-previews>div>button.activated,
+.m-vectorsmanagement-selection-layer>button.activated,
+#creationBtns>button.activated,
+#analysisBtns>div>button.activated,
+#editionBtns>button.activated,
+[class^="vectorsmanagement-icon-"]:hover {
+    cursor: pointer;
+}
+
 .m-vectorsmanagement-analysis-content {
     display: flex;
     flex-direction: column;
