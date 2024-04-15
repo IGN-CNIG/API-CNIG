@@ -252,10 +252,17 @@ export default class StyleControl extends M.Control {
         widthInput.value = options.stroke.width;
       }
 
+      const opacityStroke = this.template.querySelector('#opacityStroke');
+
+      if (options.stroke && options.stroke.opacity && opacityStroke) {
+        opacityStroke.value = options.stroke.opacity;
+      }
+
       // Fuente
       const textInput = this.template.querySelector('#textContent');
       const fontInput = this.template.querySelector('#fontFamily');
       const fontSizeInput = this.template.querySelector('#fontSize');
+      const colorSelectorText = this.template.querySelector('#colorSelector-text');
 
       if (options.label && options.label.text) {
         textInput.value = options.label.text;
@@ -271,13 +278,17 @@ export default class StyleControl extends M.Control {
           fontSizeInput.value = 12;
           fontInput.value = options.label.font;
         }
+
+        if (options.label.color) {
+          colorSelectorText.value = options.label.color;
+        }
       } else {
         fontSizeInput.value = 12;
         fontInput.value = 'Arial';
       }
 
       // Opciones de puntos
-      const radiusInput = this.template.querySelector(`#radiusSelector-${type}`);
+      const radiusInput = this.template.querySelector('#radiusSelector-point');
 
       if (radiusInput) {
         if (options.radius) {
@@ -371,10 +382,17 @@ export default class StyleControl extends M.Control {
       options.stroke.width = widthInput.value;
     }
 
+    const opacityStroke = this.template.querySelector('#opacityStroke');
+
+    if (opacityStroke) {
+      options.stroke.opacity = opacityStroke.value;
+    }
+
     // Fuente
     const fontInput = this.template.querySelector('#fontFamily');
     const textInput = this.template.querySelector('#textContent');
     const fontSizeInput = this.template.querySelector('#fontSize');
+    const colorSelectorText = this.template.querySelector('#colorSelector-text');
 
     if (textInput && textInput.value) {
       options.label = {};
@@ -382,10 +400,14 @@ export default class StyleControl extends M.Control {
       if (fontInput && fontSizeInput) {
         options.label.font = `${fontSizeInput.value}px ${fontInput.value}`;
       }
+
+      if (colorSelectorText) {
+        options.label.color = colorSelectorText.value;
+      }
     }
 
     // Opciones de puntos:
-    const radiusInput = this.template.querySelector('#radiusSelector');
+    const radiusInput = this.template.querySelector('#radiusSelector-point');
     if (radiusInput) {
       options.radius = radiusInput.value;
     }
