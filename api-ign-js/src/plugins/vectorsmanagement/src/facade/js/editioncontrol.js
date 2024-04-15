@@ -390,7 +390,7 @@ export default class EditionControl extends M.Control {
         },
       },
     });
-    this.managementControl_.accessibilityTab(this.templateModal);
+    this.managementControl_.accessibilityTab(templateModal);
     M.dialog.info(templateModal.innerHTML, getValue('title_attribute_table'));
 
     // this.template.querySelector('#clear-layer-modal').classList.remove('closed');
