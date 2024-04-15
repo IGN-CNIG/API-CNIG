@@ -139,7 +139,7 @@ export default class DownloadControl extends M.Control {
    * @param {*} geojsonLayer
    */
   download(geojsonLayer) {
-    const fileName = 'misgeometrias';
+    const fileName = this.getLayer().name || 'misgeometrias';
     const downloadFormat = this.template.querySelector('#m-vectorsmanagement-download-format').value;
     let arrayContent;
     let mimeType;
