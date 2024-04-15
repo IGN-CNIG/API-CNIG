@@ -59,6 +59,10 @@
     "analysis_content_1_1": "Allows you to display a graph that represents the relief of the terrain. In the case of specific elements, only their height and coordinates are indicated.",
     "analysis_content_2": "Area of influence",
     "analysis_content_2_1": "Allows you to draw an area of influence of an element.",
+    "analysis_content_3": "Extension",
+    "analysis_content_3_1": "Allows you to show the extension of a geographical object.",
+    "analysis_content_4": "GeoJSON",
+    "analysis_content_4_1": "Allows you to view the GeoJSON of the layer or selected elements.",
     "download_title": "Download",
     "download_content": "This tool allows you to download the complete layer or selected elements in GeoJSON, KML and Shapefile format."
   },
@@ -95,6 +99,7 @@
   "analysisProfile": "Topographic profile",
   "analysisBuffer": "Buffer",
   "getGeoJSON": "Get GeoJSON",
+  "extension": "Extension",
   "draw": "Draw",
   "createdLayer": "Created layer",
   "zmin": "Alt. min",

@@ -93,6 +93,10 @@ export default class HelpControl extends M.Control {
           creation_content_5_1: getValue('help_template').creation_content_5_1,
           creation_content_6: getValue('help_template').creation_content_6,
           creation_content_6_1: getValue('help_template').creation_content_6_1,
+          analysis_content_3: getValue('help_template').analysis_content_3,
+          analysis_content_3_1: getValue('help_template').analysis_content_3_1,
+          analysis_content_4: getValue('help_template').analysis_content_4,
+          analysis_content_4_1: getValue('help_template').analysis_content_4_1,
         },
       },
     });

@@ -59,6 +59,10 @@
     "analysis_content_1_1": "Permite mostrar un gráfico que representa el relieve del terreno. En el caso de elementos puntuales se indica unicamente su altura y coordenadas.",
     "analysis_content_2": "Área de influencia",
     "analysis_content_2_1": "Permite dibujar un área de influencia de un elemento.",
+    "analysis_content_3": "Extensión",
+    "analysis_content_3_1": "Permite mostrar la extensión de un objeto geográfico.",
+    "analysis_content_4": "GeoJSON",
+    "analysis_content_4_1": "Permite ver el GeoJSON de la capa o elementos seleccionados.",
     "download_title": "Descarga",
     "download_content": "Esta herramienta permite descargar la capa completa o los elementos seleccionados en formato GeoJSON, KML, GPX y Shapefile."
   },
@@ -95,6 +99,7 @@
   "analysisProfile": "Perfil topográfico",
   "analysisBuffer": "Área de influencia",
   "getGeoJSON": "Ver GeoJSON",
+  "extension": "Extensión",
   "draw": "Dibujar",
   "createdLayer": "Creada capa",
   "zmin": "Alt. min",

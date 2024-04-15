@@ -72,6 +72,7 @@ export default class AnalysisControl extends M.Control {
           analysisBuffer: getValue('analysisBuffer'),
           calculate: getValue('calculate'),
           getGeoJSON: getValue('getGeoJSON'),
+          extension: getValue('extension'),
         },
       },
     });
