@@ -287,7 +287,7 @@ export default class AnalysisControl extends M.Control {
       const btn2 = document.createElement('button');
       btn2.innerHTML = getValue('accept');
       btn.innerHTML = getValue('close');
-      btn2.style.width = '60px';
+      btn2.style.width = '75px';
       btn2.style.marginRight = '8px';
       btn2.style.backgroundColor = color;
       btn.parentElement.insertBefore(btn2, btn);
