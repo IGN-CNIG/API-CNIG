@@ -65,10 +65,11 @@ export default class StyleControl extends M.Control {
           creationText: getValue('creationText'),
           opacity: getValue('opacity'),
           radius: getValue('radius'),
-          style_options_point: getValue('style_options_point'),
-          style_options_line: getValue('style_options_line'),
-          style_options_polygon: getValue('style_options_polygon'),
+          style_options: getValue('style_options'),
           apply_style: getValue('apply_style'),
+          fill: getValue('fill'),
+          stroke: getValue('stroke'),
+          opts_point: getValue('opts_point'),
         },
       },
     });
@@ -102,14 +103,12 @@ export default class StyleControl extends M.Control {
    * @api
    */
   addEvents() {
-    this.template.querySelector('#point-options').addEventListener('click', () => this.toggleContent('point'));
-    this.template.querySelector('#point-options').addEventListener('keypress', (e) => {
+    this.template.querySelector('#options').addEventListener('click', () => this.toggleContent());
+    this.template.querySelector('#options').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
-        this.toggleContent('point');
+        this.toggleContent();
       }
     });
-    this.template.querySelector('#line-options').addEventListener('click', () => this.toggleContent('line'));
-    this.template.querySelector('#polygon-options').addEventListener('click', () => this.toggleContent('polygon'));
     this.template.querySelector('#set-style-btn').addEventListener('click', () => this.applyStyle());
   }
 
@@ -120,9 +119,9 @@ export default class StyleControl extends M.Control {
    * @param {String} type style type (point/line/polygon)
    * @api
    */
-  toggleContent(type) {
-    const elem = this.template.querySelector(`.${type}-content`);
-    const span = this.template.querySelector(`#${type}-options`).children[0];
+  toggleContent() {
+    const elem = this.template.querySelector('.content');
+    const span = this.template.querySelector('#options').children[0];
     if (elem.classList.contains('closed')) {
       elem.classList.remove('closed');
       span.classList.remove('g-cartografia-flecha-abajo');
@@ -191,11 +190,27 @@ export default class StyleControl extends M.Control {
    */
   showStyle(styleOptions) {
     if (styleOptions) {
-      this.setStyle(styleOptions.point, 'point');
-      this.setStyle(styleOptions.line, 'line');
-      this.setStyle(styleOptions.polygon, 'polygon');
+      // TO-DO ¿?
+      this.setStyle(styleOptions.point);
+      this.setStyle(styleOptions.line);
+      this.setStyle(styleOptions.polygon);
     }
     this.template.classList.remove('closed');
+  }
+
+  rgbaToHex(rgbaColor) {
+    // Extraer los valores de RGBA usando expresiones regulares
+    const rgbaValues = rgbaColor.match(/(\d+(\.\d+)?)/g);
+
+    // Convertir los valores a enteros
+    const r = Number.parseInt(rgbaValues[0], 10);
+    const g = Number.parseInt(rgbaValues[1], 10);
+    const b = Number.parseInt(rgbaValues[2], 10);
+
+    // Convertir a hexadecimal y combinar los componentes de color
+    const hexColor = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+
+    return hexColor.toUpperCase();
   }
 
   /**
@@ -208,26 +223,40 @@ export default class StyleControl extends M.Control {
    */
   setStyle(options, type) {
     if (options) {
-      const colorInput = this.template.querySelector(`#colorSelector-${type}`);
-      const widthInput = this.template.querySelector(`#thicknessSelector-${type}`);
-      const radiusInput = this.template.querySelector(`#radiusSelector-${type}`);
-      const textInput = this.template.querySelector(`#textContent-${type}`);
-      const fontInput = this.template.querySelector(`#fontFamily-${type}`);
-      const fontSizeInput = this.template.querySelector(`#fontSize-${type}`);
-      const opacityInput = this.template.querySelector(`#opacity-${type}`);
-      if (options.stroke && options.stroke.color && colorInput) {
-        colorInput.value = options.stroke.color;
+      // Relleno
+      const colorInputFill = this.template.querySelector('#colorSelectorFill');
+      const opacityInput = this.template.querySelector('#opacity');
+      if (colorInputFill) {
+        if (options.fill.opacity) {
+          opacityInput.value = options.fill.opacity;
+        } else {
+          opacityInput.value = 0.4;
+        }
+
+        if (options.fill.color) {
+          const color = options.fill.color.indexOf('rgba') >= 0;
+          colorInputFill.value = color ?
+            this.rgbaToHex(options.fill.color) : options.fill.color; // TO-DO VALORES RGBA
+        }
       }
+
+      // Borde
+      const colorInputStoke = this.template.querySelector('#colorSelector');
+      if (options.stroke && options.stroke.color && colorInputStoke) {
+        colorInputStoke.value = options.stroke.color;
+      }
+
+      const widthInput = this.template.querySelector('#thicknessSelector');
+
       if (options.stroke && options.stroke.width && widthInput) {
         widthInput.value = options.stroke.width;
       }
-      if (radiusInput) {
-        if (options.radius) {
-          radiusInput.value = options.radius;
-        } else {
-          radiusInput.value = 5;
-        }
-      }
+
+      // Fuente
+      const textInput = this.template.querySelector('#textContent');
+      const fontInput = this.template.querySelector('#fontFamily');
+      const fontSizeInput = this.template.querySelector('#fontSize');
+
       if (options.label && options.label.text) {
         textInput.value = options.label.text;
       } else {
@@ -246,11 +275,15 @@ export default class StyleControl extends M.Control {
         fontSizeInput.value = 12;
         fontInput.value = 'Arial';
       }
-      if (opacityInput) {
-        if (options.fill.opacity) {
-          opacityInput.value = options.fill.opacity;
+
+      // Opciones de puntos
+      const radiusInput = this.template.querySelector(`#radiusSelector-${type}`);
+
+      if (radiusInput) {
+        if (options.radius) {
+          radiusInput.value = options.radius;
         } else {
-          opacityInput.value = 0.4;
+          radiusInput.value = 5;
         }
       }
     }
@@ -263,10 +296,11 @@ export default class StyleControl extends M.Control {
    * @api
    */
   applyStyle() {
+    const styleOpts = this.getStyle();
     const options = {
-      point: this.getStyle('point'),
-      line: this.getStyle('line'),
-      polygon: this.getStyle('polygon'),
+      point: styleOpts,
+      line: styleOpts,
+      polygon: styleOpts,
     };
     const selection = this.managementControl_.getSelection();
     if (selection === 'layer') {
@@ -306,38 +340,54 @@ export default class StyleControl extends M.Control {
    * @param {String} type style type (point/line/polygon)
    * @api
    */
-  getStyle(type) {
+  getStyle() {
     const options = {
       stroke: {},
       fill: {},
     };
-    const colorInput = this.template.querySelector(`#colorSelector-${type}`);
-    const widthInput = this.template.querySelector(`#thicknessSelector-${type}`);
-    const radiusInput = this.template.querySelector(`#radiusSelector-${type}`);
-    const textInput = this.template.querySelector(`#textContent-${type}`);
-    const fontInput = this.template.querySelector(`#fontFamily-${type}`);
-    const fontSizeInput = this.template.querySelector(`#fontSize-${type}`);
-    const opacityInput = this.template.querySelector(`#opacity-${type}`);
 
-    if (colorInput) {
-      options.stroke.color = colorInput.value;
-      options.fill.color = colorInput.value;
+    // Relleno
+    const colorInputFill = this.template.querySelector('#colorSelectorFill');
+
+    if (colorInputFill) {
+      options.fill.color = colorInputFill.value;
     }
-    if (widthInput) {
-      options.stroke.width = widthInput.value;
-    }
-    if (radiusInput) {
-      options.radius = radiusInput.value;
-    }
+
+    const opacityInput = this.template.querySelector('#opacity');
+
     if (opacityInput) {
       options.fill.opacity = opacityInput.value;
     }
+
+    // Borde
+    const colorInputStoke = this.template.querySelector('#colorSelector');
+    if (colorInputStoke) {
+      options.stroke.color = colorInputStoke.value;
+    }
+
+    const widthInput = this.template.querySelector('#thicknessSelector');
+
+    if (widthInput) {
+      options.stroke.width = widthInput.value;
+    }
+
+    // Fuente
+    const fontInput = this.template.querySelector('#fontFamily');
+    const textInput = this.template.querySelector('#textContent');
+    const fontSizeInput = this.template.querySelector('#fontSize');
+
     if (textInput && textInput.value) {
       options.label = {};
       options.label.text = textInput.value;
       if (fontInput && fontSizeInput) {
         options.label.font = `${fontSizeInput.value}px ${fontInput.value}`;
       }
+    }
+
+    // Opciones de puntos:
+    const radiusInput = this.template.querySelector('#radiusSelector');
+    if (radiusInput) {
+      options.radius = radiusInput.value;
     }
     return options;
   }

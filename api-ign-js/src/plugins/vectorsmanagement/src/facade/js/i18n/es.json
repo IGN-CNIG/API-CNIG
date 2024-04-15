@@ -92,9 +92,7 @@
   "styleSize": "Tamaño",
   "opacity": "Opacidad",
   "radius": "Radio",
-  "style_options_point": "Opciones puntos",
-  "style_options_line": "Opciones lineas",
-  "style_options_polygon": "Opciones polígonos",
+  "style_options": "Opciones",
   "apply_style": "Aplicar",
   "analysisProfile": "Perfil topográfico",
   "analysisBuffer": "Área de influencia",
@@ -140,5 +138,8 @@
   "triangulo": "Triángulo",
   "pentagono": "Pentágono",
   "hexagono": "Hexágono",
-  "close": "Cerrar"
+  "close": "Cerrar",
+  "fill": "Relleno",
+  "stroke": "Trazo",
+  "opts_point": "Opciones de puntos"
 }

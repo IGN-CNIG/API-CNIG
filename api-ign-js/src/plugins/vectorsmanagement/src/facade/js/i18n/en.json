@@ -90,11 +90,9 @@
   "styleThickness": "Thickness",
   "styleFont": "Font",
   "styleSize": "Size",
-  "opacity": "Opacidad",
+  "opacity": "Opacity",
   "radius": "Radius",
-  "style_options_point": "Points options",
-  "style_options_line": "Lines options",
-  "style_options_polygon": "Polygons options",
+  "style_options": "Options",
   "apply_style": "Apply",
   "analysisProfile": "Topographic profile",
   "analysisBuffer": "Buffer",
@@ -140,5 +138,8 @@
   "triangulo": "Triangle",
   "pentagono": "Pentagon",
   "hexagono": "Hexagon",
-  "close": "Close"
+  "close": "Close",
+  "fill": "Fill",
+  "stroke": "Stroke",
+  "opts_point": "Point Options"
 }

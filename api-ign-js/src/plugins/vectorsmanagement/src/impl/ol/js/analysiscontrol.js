@@ -505,7 +505,6 @@ export default class Analysiscontrol extends M.impl.Control {
     const $td = elem;
     promiseArray
       .then((points) => {
-        console.log(points);
         let length = 0;
         for (let i = 0, ii = points.length - 1; i < ii; i += 1) {
           const geom = new ol.geom.LineString([points[i], points[i + 1]]);

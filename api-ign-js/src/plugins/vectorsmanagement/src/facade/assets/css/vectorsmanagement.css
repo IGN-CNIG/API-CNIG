@@ -302,9 +302,7 @@ table#attribute-table>tr>th>button {
     padding: 0;
 }
 
-#point-options,
-#line-options,
-#polygon-options {
+#options {
     color: #71a7d3;
     font-size: 14px;
     width: 100%;
@@ -324,7 +322,7 @@ table#attribute-table>tr>th>button {
 .vector-style-col-0,
 .vector-style-col-1,
 .vector-style-col-2 {
-    padding: 0 15px;
+    padding: 0 8px;
     align-content: center;
     align-items: left;
     flex-direction: column;
@@ -1047,6 +1045,10 @@ div.m-areas>div.m-area>div.m-plugin-vectorsmanagement.opened .m-control.m-contai
 
 div#popup-box {
     max-height: calc(100vh - 175px) !important;
+}
+
+.m-vectos-style-title {
+    font-weight: bold;
 }
 
 @media (max-width: 600px) {
