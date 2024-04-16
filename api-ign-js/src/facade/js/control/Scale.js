@@ -4,6 +4,7 @@
 import 'assets/css/controls/scale';
 import scaleTemplate from 'templates/scale';
 import ScaleImpl from 'impl/control/Scale';
+import myhelp from 'templates/scalehelp';
 import ControlBase from './Control';
 import { isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
@@ -66,6 +67,32 @@ class Scale extends ControlBase {
         order: this.order,
       },
     });
+  }
+
+  /**
+   * Obtiene la ayuda del control
+   *
+   * @function
+   * @public
+   * @api
+  */
+  getHelp() {
+    const textHelp = getValue('scale').textHelp;
+    return {
+      title: Scale.NAME,
+      content: new Promise((success) => {
+        const html = compileTemplate(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}assets/images`,
+            translations: {
+              help1: textHelp.text1,
+              help2: textHelp.text2,
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 
   /**

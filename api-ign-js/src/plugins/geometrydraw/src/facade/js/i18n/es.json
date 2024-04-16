@@ -9,7 +9,8 @@
     "comprobar": "Error al cargar el fichero. Compruebe que se trata del fichero correcto.",
     "insertado": "No se ha insertado una extensión de archivo permitida. Las permitidas son: KML, SHP(.zip), GPX y GeoJSON.",
     "maxfichero": "El fichero seleccionado sobrepasa el máximo de 20 MB permitido.",
-    "ficherosel": "No se ha seleccionado formato de descarga."
+    "ficherosel": "No se ha seleccionado formato de descarga.",
+    "obsolete": "Mensaje para el desarrollador: M.plugin.GeometryDraw ha quedado obsoleto, utilice en su lugar M.plugin.VectorsManagement"
   },
   "tooltip": "Dibujo de geometrías",
   "punto": "Punto",
@@ -21,28 +22,18 @@
   "descgeometria": "Descargar geometrías",
   "subircapa": "Subir capa",
   "limpiar": "Limpiar",
-
   "color": "Color",
   "grosor": "Grosor",
   "borrar": "Borrar geometría",
   "dibujar": "Dibujar geometría",
-
   "descargar": "Descargar",
-
   "sistema": "Sistema de coordenadas",
-
   "longitud": "Longitud",
   "latitud": "Latitud",
-
   "fuente": "Fuente",
   "tamaño": "Tamaño",
   "eliminar": "Eliminar texto",
-
   "ficheros": "Los formatos aceptados son KML, SHP (.zip), GPX y GeoJSON.",
   "seleccionar": "Selecciona el fichero",
   "cargarcapa": "Cargar capa"
-
-
-
-
 }

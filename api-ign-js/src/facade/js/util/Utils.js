@@ -4,10 +4,10 @@
  * @example import utils from 'M/utils';
  */
 import { get as remoteGet } from 'M/util/Remote';
-import { getValue } from 'M/i18n/language';
 import chroma from 'chroma-js';
 import Draggabilly from 'draggabilly';
 import * as dynamicImage from 'assets/img/dynamic_legend';
+import { getValue } from '../i18n/language';
 import { INCHES_PER_UNIT, DOTS_PER_INCH } from '../units';
 import * as WKT from '../geom/WKT';
 
@@ -1483,15 +1483,66 @@ export const returnPositionHtmlElement = (className, map) => {
 };
 
 /**
+ * Esta funcion fusiona todos los canvas del mapa en uno solo
+ * @param {M.map} map objeto mapa
+ * @param {String} imageType formato de imagen resultante
+ * @returns {HTMLCanvasElement} canvas resultante
+ */
+const joinCanvas = (map, imageType = 'image/jpeg') => {
+  const canvasList = map.getMapImpl().getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer');
+  if (canvasList.length === 1) {
+    return canvasList[0];
+  }
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const mapImpl = map.getMapImpl();
+  const size = mapImpl.getSize();
+  canvas.width = size[0];
+  canvas.height = size[1];
+  if (/jp.*g$/.test(imageType)) {
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+  canvasList.forEach((c) => {
+    if (c.width) {
+      ctx.save();
+      // opacity
+      if (c.parentNode.style.opacity === '0') {
+        return;
+      }
+      ctx.globalAlpha = parseFloat(c.parentNode.style.opacity) || 1;
+      // Blend mode & filter
+      ctx.globalCompositeOperation = c.parentNode.style.mixBlendMode;
+      ctx.filter = c.parentNode.style.filter;
+      // transform
+      let tr = c.style.transform || c.style.webkitTransform;
+      if (/^matrix/.test(tr)) {
+        tr = tr.replace(/^matrix\(|\)$/g, '').split(',');
+        tr.forEach((t, i) => {
+          tr[i] = parseFloat(t);
+        });
+        ctx.transform(tr[0], tr[1], tr[2], tr[3], tr[4], tr[5]);
+        ctx.drawImage(c, 0, 0);
+      } else {
+        ctx.drawImage(c, 0, 0, c.width, c.height);
+      }
+      ctx.restore();
+    }
+  });
+  return canvas;
+};
+
+/**
  * Esta función devuelve una captura de pantalla del mapa
  * @function
- * @param {M.Map} map
- * @param {HTMLCanvasElement} canva
+ * @param {M.Map} map mapa del que se obtiene el canvas
+ * @param {String} type formato de la imagen resultante
+ * @param {HTMLCanvasElement} canva elemento canvas
  * @api
  * @returns {String} Imagen en base64
  */
 export const getImageMap = (map, type = 'image/jpeg', canva) => {
-  const canvas = canva || map.getMapImpl().getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer')[0];
+  const canvas = canva || joinCanvas(map, type);
   let img = null;
   if (canvas) {
     try {
@@ -1506,11 +1557,12 @@ export const getImageMap = (map, type = 'image/jpeg', canva) => {
 /**
  * Esta función copia una imagen en el portapapeles
  * @function
- * @param {HTMLCanvasElement} canvas
+ * @param {M.Map} map mapa del que se obtiene el canvas
+ * @param {HTMLCanvasElement} canva elemento canvas
  * @api
  */
 export const copyImageClipBoard = (map, canva) => {
-  const canvas = canva || map.getMapImpl().getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer')[0];
+  const canvas = canva || joinCanvas(map, 'image/png');
   if (canvas) {
     try {
       canvas.toBlob((blob) => {

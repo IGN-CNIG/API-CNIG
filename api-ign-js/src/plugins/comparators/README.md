@@ -33,7 +33,7 @@ Plugin que agrupa los diversos plugins comparadores en una misma herramienta.
 
 |  Herramienta abierta  |Herramienta cerrada
 |:----:|:----:|
-|![Comparador abierto](./src/facade/assets/comparador-abierto.png)|![Comparador cerrado](./src/facade/assets/comparador-cerrado.png)|
+|![Comparador abierto](./src/facade/assets/images/comparador-abierto.png)|![Comparador cerrado](./src/facade/assets/images/comparador-cerrado.png)|
 
 
 Los modos de comparación son: Cortina, "spy eye" y modo espejo.
@@ -60,10 +60,6 @@ Ejemplo:
 
 
 ## Modos de comparación
-
-<p align="center">
-  <img src="./src/facade/assets/comparadoresv2.png" height="256" />
-</p>
 
 **Comparador de espejo / mirrorpanelParams**: permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.
 
@@ -112,6 +108,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'mirrorpanelParams': Comparador de espejo.
   - 'lyrcompareParams': Comparador de paneles móviles.
   - 'transparecyParams': Comparador de zona o puntual.
+  - 'windowsyncParams': Comparador en ventana. 
   - 'none': no arranca ninguno de los comparadores.
 
 - **enabledKeyFunctions**:  
@@ -163,6 +160,11 @@ Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valo
     - 7: tres mapas en proporción 2-1-1.
     - 8: un mapa arriba y dos abajo.
     - 9: dos mapas arriba y uno abajo.
+
+- **windowsyncParams**: Parámetro opcionales del plugin windowsync, en caso de no querer cargar este control su valor será "false".
+  - controls: (Array de Strings) Define que controles tendrán los mapas.
+  - plugins: (Array de Objetos) Define los plugins que tendrán los mapas. Es necesario tener el script del plugin en el html principal.
+
 ## Ejemplo
 
 Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue la siguiente estructura:
@@ -300,6 +302,17 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
     modeVizTypes: [0, 1, 2, 3, 5], // 0 - 9
     tooltip: 'tooltipMirror',
   },
+    windowsyncParams: {
+    controls: ['scale'],
+    plugins: [
+      {
+        name: 'Layerswitcher',
+        params: {
+          position: 'TL',
+        },
+      },
+    ],
+  },
 });
 
    map.addPlugin(mp);
@@ -308,7 +321,7 @@ Insertar intervalos a través de servicios WMS. La URL en formato API-CORE sigue
 # API-REST
 
 ```javascript
-URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!listLayers*!defaultCompareMode*!enabledKeyFunctions*!transparencyParams*!lyrcompareParams*!mirrorpanelParams
+URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!listLayers*!defaultCompareMode*!enabledKeyFunctions*!transparencyParams*!lyrcompareParams*!mirrorpanelParams*!windowsyncParams
 ```
 
 <table>
@@ -372,12 +385,17 @@ URL_API?comparators=position*!collapsed*!collapsible*!tooltip*!isDraggable*!list
         <td>Parámetros opcionales del plugin mirrorpanel.</td>
         <td>Base64 ✔️ | Separador ❌</td>
     </tr>
+    <tr>
+        <td>windowsyncParams</td>
+        <td>Parámetros opcionales del plugin windowsync.</td>
+        <td>Base64 ✔️ | Separador ❌</td>
+    </tr>
 </table>
 
 
 ### Ejemplos de uso API-REST
 ```
-https://componentes.cnig.es/api-core?comparators=TR*false*true*comparador*true**mirror*true*10*true*true*true
+https://componentes.cnig.es/api-core?comparators=TR*false*true*comparador*true**mirror*true*10*true*true*true*true
 
 ```
 No funciona ```https://componentes.cnig.es/api-core?comparators``` es necesario espeficiar alguno de los siguientes parámetros: transparencyParams, lyrcompareParams, mirrorpanelParams.
@@ -435,6 +453,9 @@ Ejemplo de constructor:
     defaultCompareViz: 2,
     modeVizTypes: [0, 2],
     tooltip: 'tooltipMirror',
+  },
+  windowsyncParams: {
+    controls: ['scale'],
   },
 }
 ```

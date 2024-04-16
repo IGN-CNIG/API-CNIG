@@ -1,0 +1,21 @@
+<div id="vectorsmanagement-point-profile-container">
+    <p tabindex="0" id="point-profile-title" class="popup-title" style="margin: 0; cursor: move;">{{translations.title_point_profile}}</p>
+    <button tabindex="0" class="m-panel-btn vectorsmanagement-icon-cancelar"></button>
+    <div style="font-size: smaller;">
+        {{#if dist}}
+        <div tabindex="0" style="border-bottom: 1px solid grey;">
+            <p style="font-weight: bold;">{{translations.point_profile_map_coordinates}}</p>
+            <p>{{mapCoordX}}</p>
+            <p>{{mapCoordY}}</p>
+            <p>{{mapProj}}</p>
+        </div>
+        {{/if}}
+        <div tabindex="0" style="border-bottom: 1px solid grey;">
+            <p style="font-weight: bold;">{{translations.point_profile_geographic_coordinates}}</p>
+            <p>{{translations.longitude}}: {{geographicCoordX}}</p>
+            <p>{{translations.latitude}}: {{geographicCoordY}}</p>
+            <p>{{geographicProj}}</p>
+        </div>
+        <p tabindex="0">{{translations.altitude}}: {{altitude}}m</p>
+    </div>
+</div>

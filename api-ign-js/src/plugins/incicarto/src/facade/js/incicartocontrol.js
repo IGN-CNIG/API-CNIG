@@ -589,13 +589,17 @@ export default class IncicartoControl extends M.Control {
       document.querySelector("#m-plugin-incicarto-simple-send-email").addEventListener('click', (e) => {
         let mailto_composed = this.composeMailtoSendByPasarela((event) => {
           const response = JSON.parse(event.target.response);
-          if (response.message.indexOf('file too big') > -1) {
+          if (response.message.indexOf('file too big') > -1 || response.message.indexOf('Message size exceeds') > -1) {
             document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = false;
             this.showMessageInModalAdvanced(getValue('exception.error_email_size'), "nakmessage");
           } else if (response.message.indexOf('Error:') > -1) {
             document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = false;
             this.showMessageInModalAdvanced(getValue('exception.error_email'), "nakmessage");
-          } else if (response.message.indexOf('Email enviado correctamente') > -1) {
+          } else if (response.message.indexOf('IOException while sending message') > -1) {
+            document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = false;
+            this.showMessageInModalAdvanced(getValue('exception.error_email_exception'), "nakmessage");
+          }
+          else if (response.message.indexOf('Email enviado correctamente') > -1) {
             this.showMessageInModalAdvanced(getValue('email_correct'), "okmessage");
           }
         });

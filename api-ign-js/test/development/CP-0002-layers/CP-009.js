@@ -9,6 +9,7 @@ const mapa = Mmap({
   zoom: 6,
   layers: ['OSM'],
   controls: ['scale', 'getfeatureinfo'],
+  controls: ['panzoom', 'scale', 'getfeatureinfo'],
 });
 
 mapa.addLayers([kml_001]);

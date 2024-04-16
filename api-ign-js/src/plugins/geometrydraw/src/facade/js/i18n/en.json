@@ -9,9 +9,9 @@
     "comprobar": "Error loading the file. Verify that this is the correct file.",
     "insertado": "A permitted file extension has not been inserted. The allowed ones are: KML, SHP (.zip), GPX and GeoJSON.",
     "maxfichero": "The selected file exceeds the maximum of 20 MB allowed",
-    "ficherosel": "Download format has not been selected."
+    "ficherosel": "Download format has not been selected.",
+    "obsolete": "Developer message: M.plugin.GeometryDraw has been deprecated, use the M.plugin.VectorsManagement instead"
   },
-
   "tooltip": "Geometry drawing",
   "punto": "Point",
   "coordenadas": "Coordinate point",
@@ -22,26 +22,18 @@
   "descgeometria": "Download geometry",
   "subircapa": "Import layer",
   "limpiar": "Clean",
-
   "color": "Color",
   "grosor": "Stroke",
   "borrar": "Delete geometry",
   "dibujar": "Draw geometry",
-
   "descargar": "Download",
-
   "sistema": "Coordinate system",
-
   "longitud": "Longitude",
   "latitud": "Latitude",
-
   "fuente": "Font",
   "tamaño": "Size",
   "eliminar": "Delete text",
-
   "ficheros": "The accepted formats are KML, SHP (.zip), GPX and GeoJSON.",
   "seleccionar": "Select file",
   "cargarcapa": "Load layer"
-
-
 }
