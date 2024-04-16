@@ -648,6 +648,17 @@ table#attribute-table>tr>th>button {
     width: 40px;
 }
 
+.m-vectorsmanagement-previews>button,
+.m-vectorsmanagement-previews>div>button,
+.m-vectorsmanagement-selection-layer>button,
+#creationBtns>button,
+#analysisBtns>div>button,
+#editionBtns>button,
+[class^="vectorsmanagement-icon-"]:hover::before {
+    color: #71a7d3;
+}
+
+
 .m-vectorsmanagement-toolsContent {
     display: flex;
     justify-content: center;
