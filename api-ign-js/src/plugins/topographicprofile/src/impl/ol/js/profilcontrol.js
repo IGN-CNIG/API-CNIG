@@ -134,10 +134,7 @@ var Profil = function(opt_options) {
   div_to_canvas.addEventListener("click", function(e) { self.onMove(e); });
   div_to_canvas.addEventListener("mousemove", function(e) { self.onMove(e); });
 
-  ol.control.Control.call(this, {
-    element: element,
-    target: options.target
-  });
+  this.element = element;
 
   // Offset in px
   this.margin_ = { top: 25 * ratio, left: 55 * ratio, bottom: 45 * ratio, right: 25 * ratio };

@@ -32,11 +32,7 @@ export default class GeorefImageEpsgControl extends M.impl.Control {
    */
   addTo(map, element) {
     this.facadeMap_ = map;
-
-    ol.control.Control.call(this, {
-      element,
-      target: null,
-    });
+    this.element = element;
     map.getMapImpl().addControl(this);
   }
 

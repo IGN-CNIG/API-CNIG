@@ -49,10 +49,7 @@ export default class MeasureClear extends M.impl.Control {
     this.facadeMap_ = map;
     const button = element.querySelector('#measurebar-clear-btn');
     button.addEventListener('click', this.onClick.bind(this));
-    ol.control.Control.call(this, {
-      element,
-      target: null,
-    });
+    this.element = element;
     map.getMapImpl().addControl(this);
   }
 
