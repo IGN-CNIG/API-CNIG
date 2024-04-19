@@ -112,8 +112,8 @@ export default class AnalysisControl extends M.Control {
    * @api
    */
   addEvents() {
-    this.template.querySelector('#topographic-profile-btn').addEventListener('click', evt => this.analysisBtnClick(evt.target.id));
-    this.template.querySelector('#buffer-btn').addEventListener('click', evt => this.analysisBtnClick(evt.target.id));
+    this.template.querySelector('#topographic-profile-btn').addEventListener('click', (evt) => this.analysisBtnClick(evt.target.id));
+    this.template.querySelector('#buffer-btn').addEventListener('click', (evt) => this.analysisBtnClick(evt.target.id));
     this.template.querySelector('#vectorsmanagement-analysis-btn').addEventListener('click', this.calculateAnalysis.bind(this));
   }
 
@@ -165,12 +165,12 @@ export default class AnalysisControl extends M.Control {
    * @api
    */
   onSelect(e) {
-    console.log('onSelect + +', e);
+    // console.log('onSelect + +', e);
     const MFeatures = this.layer_.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.filter(f => f.getImpl().getOLFeature() ===
-      olFeature)[0] || undefined;
+    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+      || undefined;
 
     this.calculateAnalysis();
   }
@@ -324,11 +324,11 @@ export default class AnalysisControl extends M.Control {
       document.body.removeChild(this.pointTemplate);
     }
     const mapProj = M.impl.ol.js.projections.getSupportedProjs()
-      .filter(p => p.codes.includes(pointXYZ.map.projection))[0];
+      .filter((p) => p.codes.includes(pointXYZ.map.projection))[0];
     const mapUnit = mapProj.units === 'm' ? 'm' : '°';
     const mapLabels = mapProj.units === 'm' ? ['X', 'Y'] : [getValue('creationLongitude'), getValue('creationLatitude')];
     const geographicProj = M.impl.ol.js.projections.getSupportedProjs()
-      .filter(p => p.codes.includes(pointXYZ.geographic.projection))[0];
+      .filter((p) => p.codes.includes(pointXYZ.geographic.projection))[0];
     const dist = mapProj.codes[0] !== geographicProj.codes[0];
     this.pointTemplate = M.template.compileSync(pointProfileTemplate, {
       vars: {
@@ -490,7 +490,6 @@ export default class AnalysisControl extends M.Control {
       },
     });
 
-
     this.template.querySelector('#analysisBtns #featureInfo').appendChild(this.infoanalysisTemplate);
 
     const infoLine3D = document.querySelector('#infoAnalisis3DLine');
@@ -500,7 +499,6 @@ export default class AnalysisControl extends M.Control {
       });
     }
   }
-
 
   /**
    * This function destroys this control
@@ -530,7 +528,7 @@ export default class AnalysisControl extends M.Control {
 
     const selectLayer = this.managementControl_.selectionControl.getLayer();
     const layerID = selectLayer.getImpl().getOL3Layer().ol_uid;
-    const features = this.bufferLayer.getFeatures().filter(f => f.getImpl().getOLFeature().get('parentID') === layerID);
+    const features = this.bufferLayer.getFeatures().filter((f) => f.getImpl().getOLFeature().get('parentID') === layerID);
     this.bufferLayer.removeFeatures(features);
   }
 

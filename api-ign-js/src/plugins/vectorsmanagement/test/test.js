@@ -9,7 +9,7 @@ const map = M.map({
   zoom: 6,
 });
 
-map.addPlugin(new M.plugin.Layerswitcher());
+// map.addPlugin(new M.plugin.Layerswitcher()); // ERROR M.plugin.Layerswitcher is not a constructor
 
 // map.addLayers(new M.layer.Vector({
 //   name: 'vector_a',

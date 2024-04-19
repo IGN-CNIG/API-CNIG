@@ -44,8 +44,8 @@ export default class VectorsManagementControl extends M.Control {
     this.edition_ = edition;
     this.help_ = help;
     this.style_ = style;
-    this.layers_ = map.getLayers().filter(l => (l instanceof M.layer.Vector ||
-      l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
+    this.layers_ = map.getLayers().filter((l) => (l instanceof M.layer.Vector
+      || l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
       return { value: l.name, text: l.legend || l.name };
     });
     this.selectedLayer = null;
@@ -137,7 +137,7 @@ export default class VectorsManagementControl extends M.Control {
     this.html.querySelector('#m-vectorsmanagement-previews').classList.remove('closed');
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
-    this.selectedLayer = this.map.getLayers().filter(l => l.name === selectedLayerName)[0];
+    this.selectedLayer = this.map.getLayers().filter((l) => l.name === selectedLayerName)[0];
     if (this.selection_) {
       this.selectionControl.setLayer(this.selectedLayer);
     }
@@ -496,13 +496,13 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   refreshLayers() {
-    this.layers_ = this.map_.getLayers().filter(l => (l instanceof M.layer.Vector ||
-      l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher && l.name !== 'bufferLayer').map((l) => {
+    this.layers_ = this.map_.getLayers().filter((l) => (l instanceof M.layer.Vector
+      || l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher && l.name !== 'bufferLayer').map((l) => {
       return { value: l.name, text: l.legend || l.name };
     });
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
-    const layerExists = this.layers_.filter(l => l.value === selectedLayerName).length > 0;
+    const layerExists = this.layers_.filter((l) => l.value === selectedLayerName).length > 0;
 
     const length = selector.children.length;
     for (let i = 0; i < length; i += 1) {

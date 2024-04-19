@@ -141,7 +141,7 @@ export default class EditionControl extends M.Control {
    * @api
    */
   initializeLayers() {
-    const layers = this.map_.getLayers().filter(l => l.name === 'selectLayer');
+    const layers = this.map_.getLayers().filter((l) => l.name === 'selectLayer');
     if (layers.length > 0) {
       this.selectionLayer = layers[0];
     } else {
@@ -548,8 +548,8 @@ export default class EditionControl extends M.Control {
     const MFeatures = this.layer_.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.filter(f => f.getImpl().getOLFeature() ===
-      olFeature)[0] || undefined;
+    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+      || undefined;
 
     this.geometry = this.feature.getGeometry().type;
     this.emphasizeSelectedFeature();
@@ -597,7 +597,7 @@ export default class EditionControl extends M.Control {
     this.emphasis = null;
     this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
     const selectedFeatures = this.managementControl_.getSelectedFeatures();
-    selectedFeatures.forEach(f => this.emphasizeFeature(f, false));
+    selectedFeatures.forEach((f) => this.emphasizeFeature(f, false));
   }
 
   /**
@@ -716,7 +716,7 @@ export default class EditionControl extends M.Control {
     const table = this.createEmptyTable();
     const trhead = document.createElement('tr');
     table.appendChild(trhead);
-    features.forEach(f => table.appendChild(document.createElement('tr')));
+    features.forEach((f) => table.appendChild(document.createElement('tr')));
     keys.forEach((k) => {
       const th = this.createAttributeHeader(k);
       trhead.appendChild(th);
@@ -799,11 +799,11 @@ export default class EditionControl extends M.Control {
     const btnDel = document.createElement('button');
     btnDel.name = attributeName;
     btnDel.classList.add('vectorsmanagement-icon-papelera');
-    btnDel.addEventListener('click', evt => this.deleteAttribute(evt));
+    btnDel.addEventListener('click', (evt) => this.deleteAttribute(evt));
     const btnRename = document.createElement('button');
     btnRename.name = attributeName;
     btnRename.classList.add('vectorsmanagement-icon-editar2');
-    btnRename.addEventListener('click', evt => this.renameAttribute(evt));
+    btnRename.addEventListener('click', (evt) => this.renameAttribute(evt));
     th.appendChild(span);
     th.appendChild(btnDel);
     th.appendChild(btnRename);
@@ -949,7 +949,6 @@ export default class EditionControl extends M.Control {
     });
   }
 
-
   changeStyleDialog() {
     document.querySelectorAll('div.m-mapea-container div.m-dialog div.m-title').forEach((t) => {
       const title = t;
@@ -962,7 +961,6 @@ export default class EditionControl extends M.Control {
     button.style.backgroundColor = '#71a7d3';
   }
 
-
   /**
    * Update features attribute name
    *
@@ -974,7 +972,7 @@ export default class EditionControl extends M.Control {
    */
   updateFeaturesAttributeName(attributeName, newAttributeName) {
     const features = this.layer_.getFeatures();
-    features.forEach(f => this.updateAttributes(f, attributeName, newAttributeName));
+    features.forEach((f) => this.updateAttributes(f, attributeName, newAttributeName));
     this.refreshAttributeTable(features);
   }
 

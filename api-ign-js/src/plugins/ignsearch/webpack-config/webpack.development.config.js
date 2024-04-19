@@ -79,5 +79,6 @@ module.exports = {
   },
   watchOptions: {
     poll: 1000,
-  },  devtool: 'eval-source-map',
+  },
+  devtool: 'eval-source-map',
 };

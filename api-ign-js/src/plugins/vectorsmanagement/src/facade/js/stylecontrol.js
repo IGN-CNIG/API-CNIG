@@ -352,7 +352,6 @@ export default class StyleControl extends M.Control {
     this.layer_ = layer;
   }
 
-
   /**
    * This function destroys this control
    *

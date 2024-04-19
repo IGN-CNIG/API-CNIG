@@ -160,7 +160,6 @@ export default class VectorsManagement extends M.Plugin {
     return M.language.getTranslation(lang).vectorsmanagement;
   }
 
-
   /**
    * This function adds this plugin into the map
    *
@@ -199,7 +198,6 @@ export default class VectorsManagement extends M.Plugin {
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
   }
-
 
   /**
    * Gets the API REST Parameters of the plugin
@@ -257,4 +255,3 @@ export default class VectorsManagement extends M.Plugin {
     return false;
   }
 }
-

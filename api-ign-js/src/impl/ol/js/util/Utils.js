@@ -609,32 +609,32 @@ class Utils {
     const endss = olRenderFeature.getEndss();
     const type = olRenderFeature.getType();
     switch (type) {
-      case Point:
+      case 'Point':
         geometry = new Point(coordinates);
         break;
-      case LineString:
+      case 'LineString':
         geometry = new LineString(coordinates);
         break;
-      case LinearRing:
+      case 'LinearRing':
         geometry = new LinearRing(coordinates);
         break;
-      case Polygon:
+      case 'Polygon':
         geometry = new Polygon(coordinates);
         break;
-      case MultiPoint:
+      case 'MultiPoint':
         geometry = new MultiPoint(coordinates);
         break;
-      case MultiLineString:
+      case 'MultiLineString':
         geometry = new MultiLineString(coordinates, undefined, ends);
         break;
-      case MultiPolygon:
+      case 'MultiPolygon':
         geometry = new MultiPolygon(coordinates, undefined, endss);
         break;
-      case GeometryCollection:
+      case 'GeometryCollection':
         const geometries = olRenderFeature.getGeometries();
         geometry = new GeometryCollection(geometries);
         break;
-      case Circle:
+      case 'Circle':
         const center = olRenderFeature.getFlatInteriorPoint();
         geometry = new Circle(center);
         break;

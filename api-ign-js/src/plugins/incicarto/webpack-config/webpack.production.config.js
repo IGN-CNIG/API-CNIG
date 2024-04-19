@@ -89,7 +89,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
-<<<<<<< HEAD
     new ESLintPlugin({
       extensions: [`js`, `jsx`],
       // files: 'src/**/*.js',
@@ -100,18 +99,12 @@ module.exports = {
         {
           from: 'src/api.json',
           to: 'api.json',
+        }, {
+          from: 'src/facade/assets/images',
+          to: 'images',
         }
       ],
     }),
-=======
-    new CopywebpackPlugin([{
-      from: 'src/api.json',
-      to: 'api.json',
-    }, {
-      from: 'src/facade/assets/images',
-      to: 'images',
-    }]),
->>>>>>> origin/develop
   ],
   devtool: 'source-map',
 };

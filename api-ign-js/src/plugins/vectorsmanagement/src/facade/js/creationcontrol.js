@@ -167,7 +167,7 @@ export default class CreationControl extends M.Control {
    * @api
    */
   initializeLayers() {
-    const layers = this.map_.getLayers().filter(l => l.name === 'selectLayer');
+    const layers = this.map_.getLayers().filter((l) => l.name === 'selectLayer');
     if (layers.length > 0) {
       this.selectionLayer = layers[0];
     } else {
@@ -189,23 +189,23 @@ export default class CreationControl extends M.Control {
    * @api
    */
   addEvents() {
-    this.template.querySelector('#pointdrawing').addEventListener('click', evt => this.geometryBtnClick('Point'));
+    this.template.querySelector('#pointdrawing').addEventListener('click', (evt) => this.geometryBtnClick('Point'));
 
-    this.template.querySelector('#pointlocateddrawing').addEventListener('click', evt => this.geometryBtnClick('LocatedPoint'));
+    this.template.querySelector('#pointlocateddrawing').addEventListener('click', (evt) => this.geometryBtnClick('LocatedPoint'));
 
-    this.template.querySelector('#linedrawing').addEventListener('click', evt => this.geometryBtnClick('LineString'));
+    this.template.querySelector('#linedrawing').addEventListener('click', (evt) => this.geometryBtnClick('LineString'));
 
-    this.template.querySelector('#polygondrawing').addEventListener('click', evt => this.geometryBtnClick('Polygon'));
+    this.template.querySelector('#polygondrawing').addEventListener('click', (evt) => this.geometryBtnClick('Polygon'));
 
-    this.template.querySelector('#figuredrawing').addEventListener('click', evt => this.geometryBtnClick('Figure'));
+    this.template.querySelector('#figuredrawing').addEventListener('click', (evt) => this.geometryBtnClick('Figure'));
 
-    this.template.querySelector('#textdrawing').addEventListener('click', evt => this.geometryBtnClick('Text'));
+    this.template.querySelector('#textdrawing').addEventListener('click', (evt) => this.geometryBtnClick('Text'));
 
     this.template.querySelector('#m-point-coordinates-srs').addEventListener('change', this.srsChangeEvent);
 
     this.template.querySelector('#m-vectormanagement-coordinates-draw').addEventListener('click', this.drawPointCoords.bind(this));
 
-    this.template.querySelector('#figuresSelector').addEventListener('change', e => this.getImpl().changeFigure(e));
+    this.template.querySelector('#figuresSelector').addEventListener('change', (e) => this.getImpl().changeFigure(e));
   }
 
   /**
@@ -257,8 +257,8 @@ export default class CreationControl extends M.Control {
       y = this.template.querySelector('#UTM-Y').value;
     }
 
-    if (x !== undefined && x.length > 0 &&
-      y !== undefined && y.length > 0) {
+    if (x !== undefined && x.length > 0
+      && y !== undefined && y.length > 0) {
       const parsedX = parseFloat(x);
       const parsedY = parseFloat(y);
       if (!Number.isNaN(parsedX) && !Number.isNaN(parsedY)) {
@@ -331,8 +331,8 @@ export default class CreationControl extends M.Control {
    * @api
    */
   deactivateDrawing() {
-    if (this.isPointActive || this.isLocatedPointActive || this.isLineActive ||
-      this.isPolygonActive || this.isTextActive || this.isFigureActive) {
+    if (this.isPointActive || this.isLocatedPointActive || this.isLineActive
+      || this.isPolygonActive || this.isTextActive || this.isFigureActive) {
       if (this.isLocatedPointActive) {
         this.template.querySelector('#m-point-coordinates').classList.add('closed');
       } if (this.isFigureActive) {
@@ -420,8 +420,8 @@ export default class CreationControl extends M.Control {
       default:
     }
 
-    if (this.isPointActive || this.isLocatedPointActive || this.isLineActive ||
-      this.isPolygonActive || this.isFigureActive || this.isTextActive) {
+    if (this.isPointActive || this.isLocatedPointActive || this.isLineActive
+      || this.isPolygonActive || this.isFigureActive || this.isTextActive) {
       if (this.isTextActive) {
         this.template.querySelector('#textContent').value = '';
         this.template.querySelector('#m-text-draw').classList.remove('closed');
@@ -535,9 +535,9 @@ export default class CreationControl extends M.Control {
    * @api
    */
   hideTextPoint() {
-    if (this.geometry === 'Point' &&
-      this.feature && this.feature.getStyle() &&
-      this.feature.getStyle().get('label') !== undefined) {
+    if (this.geometry === 'Point'
+      && this.feature && this.feature.getStyle()
+      && this.feature.getStyle().get('label') !== undefined) {
       this.feature.getStyle().set('fill.opacity', 0);
     }
   }
@@ -553,7 +553,6 @@ export default class CreationControl extends M.Control {
     this.textContent = textInput.value === '' ? 'Texto' : textInput.value;
   }
 
-
   /**
    * Sets style for text feature.
    * @public
@@ -563,8 +562,8 @@ export default class CreationControl extends M.Control {
   setTextStyle() {
     let fontProperties;
 
-    if ((this.feature.getStyle() !== null) &&
-      this.feature.getStyle().get('label.font').split(' ')[0] === 'bold') {
+    if ((this.feature.getStyle() !== null)
+      && this.feature.getStyle().get('label.font').split(' ')[0] === 'bold') {
       fontProperties = `bold ${DEFAULT_SIZE}px ${DEFAULT_FONT_FAMILY}`;
     } else {
       fontProperties = `${DEFAULT_SIZE}px ${DEFAULT_FONT_FAMILY}`;

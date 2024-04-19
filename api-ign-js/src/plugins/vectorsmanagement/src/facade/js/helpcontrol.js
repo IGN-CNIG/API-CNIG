@@ -106,7 +106,6 @@ export default class HelpControl extends M.Control {
     document.querySelector('.m-button button').addEventListener('click', this.deactivate.bind(this));
   }
 
-
   /**
    * This function destroys this control
    *

@@ -1,10 +1,10 @@
 
-import { getValue } from './i18n/language';
-import { pixelToCoordinateTransform } from '../../impl/ol/js/utils';
+
 // eslint-disable-next-line import/first
 import JsZip from 'jszip';
 // eslint-disable-next-line import/first
 import { saveAs } from 'file-saver';
+import { pixelToCoordinateTransform } from '../../impl/ol/js/utils';
 import { getValue } from './i18n/language';
 
 // ID and CLASS

@@ -102,7 +102,6 @@ export default class AddLayerControl extends M.Control {
     this.deactivate();
   }
 
-
   /**
    * This function destroys this control
    *

@@ -4,7 +4,6 @@
 import { decodeHtml, isNullOrEmpty } from 'M/util/Utils';
 import OLFormatKML from 'ol/format/KML';
 import Icon from 'ol/style/Icon';
-import OLStyleIcon from 'ol/style/Icon';
 import { parse as parseXML } from 'ol/xml';
 
 /**
@@ -71,7 +70,7 @@ class KML extends OLFormatKML {
           styles = [styles];
         }
         styles.forEach((style) => {
-          if (style.getImage() instanceof OLStyleIcon) {
+          if (style.getImage() instanceof Icon) {
             const image = style.getImage();
             // error de CORS Impresión
             // image.getImage().removeAttribute('crossorigin');
@@ -239,7 +238,7 @@ KML.DEFAULT_IMAGE_STYLE_ANCHOR = [20, 2]; // FIXME maybe [8, 32] ?
  * Unidades de X para la imagen por defecto.
  *
  * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L168
- * @see https://github.com/openlayers/openlayers/blob/c27aac20b7642f7878abe1e23ace07a851511829/src/ol/style/IconAnchorUnits.js#L11
+ * @see https://github.com/openlayers/openlayers/blob/c7969f5255edd8cbe5ece89ab026fe0f6f69cef1/src/ol/style/Icon.js#L13C37-L13C52
  * @const
  * @type {ol.style.Icon}
  * @api
@@ -250,7 +249,7 @@ KML.DEFAULT_IMAGE_STYLE_ANCHOR_X_UNITS = 'pixels';
  * Unidades de Y para la imagen por defecto.
  *
  * @see https://github.com/openlayers/openlayers/blob/v4.0.1/src/ol/format/kml.js#L176
- * @see https://github.com/openlayers/openlayers/blob/c27aac20b7642f7878abe1e23ace07a851511829/src/ol/style/IconAnchorUnits.js#L11
+ * @see https://github.com/openlayers/openlayers/blob/c7969f5255edd8cbe5ece89ab026fe0f6f69cef1/src/ol/style/Icon.js#L13C37-L13C52
  * @const
  * @type {ol.style.Icon}
  * @api

@@ -32,7 +32,6 @@ module.exports = {
       fs: false,
       path: false,
       crypto: false,
-      "stream": require.resolve("stream-browserify"),
     },
   },
   module: {
