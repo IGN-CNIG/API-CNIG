@@ -70,3 +70,31 @@ export const mvt_002 = new MVT({
   name: 'vectortile2',
   projection: 'EPSG:3857',
 });
+
+export const mvt_003 = new MVT({
+  url: "https://vt-fedme.idee.es/vt.senderogr/{z}/{x}/{y}.pbf",
+  name: 'sendero_gr',
+  mode: 'render',
+  extract: true,
+  infoEventType: 'click',
+},
+{
+  style: new Generic({
+    point: {
+      radius: 10,
+      fill: {
+        color: 'blue'
+      }
+    },
+    polygon: {
+      fill: {
+        color: 'red'
+      }
+    },
+    line: {
+      stroke: {
+        color: 'black'
+      }
+    }
+  }),
+});

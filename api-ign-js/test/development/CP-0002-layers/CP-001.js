@@ -9,8 +9,9 @@ import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 // import { vector_001 } from '../layers/vector/vector'; const capaPrueba = vector_001; window.vector = vector_001;
 // import { geojson_001 } from '../layers/geojson/geojson'; const capaPrueba = geojson_001; window.geojson = geojson_001;
 // import { wfs_001 } from '../layers/wfs/wfs'; const capaPrueba = wfs_001; window.wfs = wfs_001;
-import { kml_001 } from '../layers/kml/kml'; const capaPrueba = kml_001; window.kml = kml_001;
-// import { mvt_001 } from '../layers/mvt/mvt'; const capaPrueba = mvt_001; window.mvt = mvt_001;
+// import { kml_001 } from '../layers/kml/kml'; const capaPrueba = kml_001; window.kml = kml_001;
+// import { mvt_001 } from '../layers/mvt/mvt'; const capaPrueba = mvt_001; window.mvt = mvt_001; // Mode 'feature'
+import { mvt_003 } from '../layers/mvt/mvt'; const capaPrueba = mvt_003; window.mvt = mvt_003; // Mode 'render'
 // import { ogcAPIFeatures_001 } from '../layers/ogcApiFeatures/ogcApiFeatures'; const capaPrueba = ogcAPIFeatures_001; window.ogcAPIFeatures = ogcAPIFeatures_001;
 // import { mbtileVector_001 } from '../layers/mbTilesVector/mbTilesVector'; const capaPrueba = mbtileVector_001; window.mbtileVector = mbtileVector_001;
 // import { generic_002 } from '../layers/generic/generic'; const capaPrueba = generic_002; window.generic = generic_002;
@@ -300,16 +301,16 @@ window.listOnlyShown = listOnlyShown; // Solo las funciones mostradas en las pru
 
 // Resultados de pruebas de funciones
 
-// VECTOR vector_001, MVT mvt_001 y mbTilesVector mbtileVector_001
+// VECTOR vector_001, MVT mvt_001, MVT mvt_003 y mbTilesVector mbtileVector_001
 // [APUNTADO A REDMINE] ERROR x3 setMaxExtent(null || undefined), calculateMaxExtent() y resetMaxExtent() tienen error de "TypeError: this.getImpl().getFeaturesExtentPromise is not a function"
 
-// VECTOR vector_001, MVT mvt_001, GEOJSON geojson_001, WFS wfs_001, KML kml_001, ogcApiFeatures ogcAPIFeatures_001, generic generic_002 y mbTilesVector mbtileVector_001
+// VECTOR vector_001, MVT mvt_001, MVT mvt_003, GEOJSON geojson_001, WFS wfs_001, KML kml_001, ogcApiFeatures ogcAPIFeatures_001, generic generic_002 y mbTilesVector mbtileVector_001
 // [APUNTADO A REDMINE] ERROR x1 generateName_() empieza a devolver error "TypeError: iter is undefined" en "_iterableToArray Feature.js:12" cuando se mueve el ratón sobre el mapa
 
-// MVT mvt_001 y mbTilesVector mbtileVector_001
+// MVT mvt_001, MVT mvt_003 y mbTilesVector mbtileVector_001
 // [APUNTADO A REDMINE] ERROR x7 las funciones de "addFeatures", "removeFeatures", "refresh", "redraw", "toGeoJSON"  y "setFilter" no parecen hacer nada, porque se definen como función vacía. Teniendo en cuenta que "clear" solamente usa "removeFeatures" y "setFilter", significa que no hace nada.
 
-// VECTOR vector_001, MVT mvt_001, GEOJSON geojson_001, WFS wfs_001, KML kml_001, ogcApiFeatures ogcAPIFeatures_001 y generic generic_002
+// VECTOR vector_001, MVT mvt_001, MVT mvt_003, GEOJSON geojson_001, WFS wfs_001, KML kml_001, ogcApiFeatures ogcAPIFeatures_001 y generic generic_002
 // [APUNTADO A REDMINE] ERROR x1 clearStyle() no funciona bien, porque en "api-ign-js/src/facade/js/layer/Vector.js" se ejecuta "this.setStyle(null);", pero esta función no hace nada si el estilo ya esta configurado y le enviado es un null/undefined
 
 // ogcApiFeatures ogcAPIFeatures_001 y GEOJSON geojson_001
@@ -326,7 +327,7 @@ window.listOnlyShown = listOnlyShown; // Solo las funciones mostradas en las pru
 // KML kml_001
 // [APUNTADO A REDMINE] ERROR x1 "setStyle" no funciona en el primer lanzado, ningún refrescado tampoco lo soluciona, solo al usar clearStyle() que se aplica y se puede modificar.
 
-// MVT mvt_001
+// MVT mvt_001, MVT mvt_003
 // [APUNTADO A REDMINE] ERROR x1 al usar "getGeometryType" salta "TypeError: firstFeature.getType is not a function" en "getGeometryType MVT.js:174"
 
 // ogcApiFeatures ogcAPIFeatures_001 // Esta capa está bien por si sola.
