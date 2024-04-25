@@ -108,6 +108,6 @@ window.mp = mp;
 // Parece que no sufre error si esta solo esta capa, lo que ocurre con múltiples capas es que las anteriores capas son de la versión "1.1.0", el getCapabilities usado termina permanentemente siendo de esta versión que tiene el error de "CRS" en la capa "RED_ERGNSS".
 // Es decir para la capa "RED_ERGNSS" de versión 1.3.0, se usa el capabilities de 1.1.0 causando este error.
 
-// 2 - ERROR parámetro "buffer: 0" se transforma a 10 porque el "0" se interpreta como false. Se podría solucionar con "isNaN(Number.parseInt(options.buffer))? 10 : Number.parseInt(options.buffer);"
+// 2 - ERROR parámetro "buffer: 0" se transforma a 10 porque el "0" se interpreta como false. Se podría solucionar con "this.buffer_ = isNaN(Number.parseInt(options.buffer)) || options.buffer < 0 ? 10 : Number.parseInt(options.buffer);"
 
 // 3 - ERROR no se muestran ningún resultado si se pone "featureCount" como número "0" o negativo , se puede solucionar con "this.featureCount_ = options.featureCount >= 1 ? options.featureCount : 10;"
