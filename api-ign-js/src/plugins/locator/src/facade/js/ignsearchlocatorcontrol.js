@@ -873,7 +873,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       featureTabOpts.content += `<div><b>${exitState}</b></div>`;
     }
 
-    featureTabOpts.content += `<div><b>${fullAddress !== undefined ? fullAddress : '-'}</b></div><br/>
+    featureTabOpts.content += `${!(fullAddress === '' || fullAddress === undefined || fullAddress === null) ? `<div><b>${fullAddress}</b></div><br/>` : ''}
                 <div class='ignsearchlocator-popup'><b>Lon: </b>${featureCoordinates[1].toFixed(6)} </div>
                 <div class='ignsearchlocator-popup'><b>Lat: </b>${featureCoordinates[0].toFixed(6)}</div>`;
 

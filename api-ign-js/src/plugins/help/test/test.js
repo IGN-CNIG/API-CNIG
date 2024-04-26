@@ -134,6 +134,6 @@ window.mp = mp;
 
 // 1 - ERROR "getAPIRest" usa la variable "this.extendInitialExtraContents_" que no existe, porque tiene que ser sin "_", o se puede hacer lo contrario añadir "_" a todos los demás apartados de esta variable que lo necesiten.
 
-// 2 - ERROR En el help.html hay "< </div>" que no hace nada y ademas es erróneo. Por otro lado los botones de aumentar o disminuir font pueden estar separados según el tamaño de la pantalla, ya que están relacionados uno al otro se podría impedir que se separen con este span de inline-block "<span style="display: inline-block;"><button class="m-help-btn" onclick="increaseFont(event)">A+</button><button class="m-help-btn" onclick="reduceFont(event)">A-</button></span>" También se puede incluir tooltips a estos.
+// 2 - ERROR En el help.html hay "< </div>" que no hace nada y además es erróneo. Por otro lado los botones de aumentar o disminuir font pueden estar separados según el tamaño de la pantalla, ya que están relacionados uno al otro se podría impedir que se separen con este span de inline-block "<span style="display: inline-block;"><button class="m-help-btn" onclick="increaseFont(event)">A+</button><button class="m-help-btn" onclick="reduceFont(event)">A-</button></span>" También se puede incluir tooltips a estos.
 
 // 3 - ERROR "applyZoom" y "removeZoom" del helps.html posiblemente tendría que tener un tooltip para que se explique que hay que hacer hover sobre la imagen en la que se ha activado.

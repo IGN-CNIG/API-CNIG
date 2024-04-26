@@ -205,7 +205,7 @@ const mapa = Mmap(
   // center: [-143777, 4853122], // OK centrado en España que es necesario para minZoom y maxZoom (SALE EXACTAMENTE ESTE VALOR, tras más pruebas a dejado de salir este exactamente por inspector browser)
   // center: '-143777,4853122', // OK
   // center: { x: -143777, y: 4853122 }, // OK
-  // center: { x: -143777, y: 4853122, draw:true}, // OK Ademas de aplicarse el dibujado de feature
+  // center: { x: -143777, y: 4853122, draw:true}, // OK Además de aplicarse el dibujado de feature
   // center: { x: -143777, y: 4853122, draw:false}, // OK
   // center: [], // OK no se aplica nada
   // center: ['-143777', '4853122'], // OK
