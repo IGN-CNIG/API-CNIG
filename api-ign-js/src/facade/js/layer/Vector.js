@@ -4,7 +4,7 @@
 import VectorImpl from 'impl/layer/Vector';
 import { geojsonTo4326 } from 'impl/util/Utils';
 import projAPI from 'impl/projections';
-import { isUndefined, isArray, isNullOrEmpty, isString, modifySVG } from '../util/Utils';
+import { isUndefined, isArray, isNullOrEmpty, isString, modifySVG, normalize } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
 import * as LayerType from './Type';
@@ -111,6 +111,12 @@ class Vector extends LayerBase {
      * infoEventType. Tipo de evento para mostrar la info de una feature.
      */
     this.infoEventType = optns.infoEventType || 'click';
+
+    /**
+      * Vector extract: Opcional, activa la consulta
+      * haciendo clic en el objeto geográfico, por defecto falso.
+    */
+    this.extract = optns.extract || false;
 
     /**
      * predefinedStyles: Estilos predefinidos para la capa.
@@ -278,6 +284,40 @@ class Vector extends LayerBase {
    */
   getFeaturesExtent(skipFilterParam) {
     return this.getImpl().getFeaturesExtent(true, this.filter_);
+  }
+
+  /**
+   * Devuelve el valor de la propiedad "extract". La propiedad "extract" tiene la
+   * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
+   *
+   * @function
+   * @getter
+   * @return {Boolean} Valor de la propiedad "extract".
+   * @api
+   */
+  get extract() {
+    return this.getImpl().extract;
+  }
+
+  /**
+     * Sobrescribe el valor de la propiedad "extract". La propiedad "extract" tiene la
+     * siguiente función: Activa la consulta al hacer clic en la característica, por defecto falso.
+     *
+     * @function
+     * @setter
+     * @param {Boolean|String} newExtract Nuevo valor para sobreescribir la propiedad "extract".
+     * @api
+  */
+  set extract(newExtract) {
+    if (!isNullOrEmpty(newExtract)) {
+      if (isString(newExtract)) {
+        this.getImpl().extract = (normalize(newExtract) === 'true');
+      } else {
+        this.getImpl().extract = newExtract;
+      }
+    } else {
+      this.getImpl().extract = false;
+    }
   }
 
   /**

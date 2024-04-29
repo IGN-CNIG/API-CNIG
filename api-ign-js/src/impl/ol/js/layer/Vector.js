@@ -2,6 +2,9 @@
  * @module M/impl/layer/Vector
  */
 import { isNullOrEmpty, isFunction, includes } from 'M/util/Utils';
+import { compileSync as compileTemplate } from 'M/util/Template';
+import Popup from 'M/Popup';
+import geojsonPopupTemplate from 'templates/geojson_popup';
 import * as EventType from 'M/event/eventtype';
 import Style from 'M/style/Style';
 import { get as getProj } from 'ol/proj';
@@ -11,6 +14,7 @@ import OLSourceVector from 'ol/source/Vector';
 import Layer from './Layer';
 import ImplUtils from '../util/Utils';
 import Feature from '../feature/Feature';
+
 /**
  * @classdesc
  * Esta clase es la base de todas las capas de tipo vectorial,
@@ -338,11 +342,31 @@ class Vector extends Layer {
    * @expose
    */
   selectFeatures(features, coord, evt) {
-    const feature = features[0];
-    if (!isNullOrEmpty(feature)) {
-      const clickFn = feature.getAttribute('vendor.mapea.click');
-      if (isFunction(clickFn)) {
-        clickFn(evt, feature);
+    if (this.extract === true) {
+      const feature = features[0];
+      if (!isNullOrEmpty(feature)) {
+        const clickFn = feature.getAttribute('vendor.mapea.click');
+        if (isFunction(clickFn)) {
+          clickFn(evt, feature);
+        } else {
+          const htmlAsText = compileTemplate(geojsonPopupTemplate, {
+            vars: this.parseFeaturesForTemplate_(features),
+            parseToHtml: false,
+          });
+          const featureTabOpts = {
+            icon: 'g-cartografia-pin',
+            title: this.name,
+            content: htmlAsText,
+          };
+          let popup = this.map.getPopup();
+          if (isNullOrEmpty(popup)) {
+            popup = new Popup();
+            popup.addTab(featureTabOpts);
+            this.map.addPopup(popup, coord);
+          } else {
+            popup.addTab(featureTabOpts);
+          }
+        }
       }
     }
   }
