@@ -216,6 +216,8 @@ class WMS extends LayerBase {
      */
 
     this.crossOrigin = (options.crossOrigin === null || options.crossOrigin === false) ? undefined : 'anonymous';
+
+    this.isWMSfull = options.isWMSfull;
   }
 
   /**
@@ -283,8 +285,8 @@ class WMS extends LayerBase {
     }
 
     // checks if it is a WMS_FULL
-    if (isNullOrEmpty(this.name)) { // WMS_FULL (add all wms layers)
-      this.addAllLayers_();
+    if (this.isWMSfull) {
+      this.addAllLayers_(); // WMS_FULL (add all wms layers)
     } else if (this.useCapabilities) {
       // just one WMS layer and useCapabilities
       this.getCapabilities().then((capabilities) => {

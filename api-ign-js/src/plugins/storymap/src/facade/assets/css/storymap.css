@@ -80,7 +80,7 @@
   width: 33.3%;
 }
 
-.m-panel-btn.g-cartografia-flecha-derecha {
+.m-plugin-storymap.opened > .g-cartografia-flecha-derecha {
   left: 0px !important;
   border-radius: 0% !important;
 }
