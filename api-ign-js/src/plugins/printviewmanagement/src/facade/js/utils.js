@@ -44,10 +44,10 @@ export function getQueueContainer(html) {
 }
 
 // Insert element in Container Queue
-export function innerQueueElement(html, elementTitle) {
+export function innerQueueElement(html, elementTitle, titleSting) {
   const elementQueueContainer = getQueueContainer(html);
   showQueueElement(html.querySelector(`.${CONTAINER_QUEUE_CLASS}`));
-  const queueEl = createQueueElement(elementTitle.value);
+  const queueEl = createQueueElement(elementTitle ? elementTitle.value : titleSting);
   if ([...elementQueueContainer.childNodes].length > 0) {
     elementQueueContainer.insertBefore(queueEl, elementQueueContainer.firstChild);
   } else {
@@ -77,34 +77,32 @@ export function removeQueueElements(html) {
 }
 
 // Generate wld file
-export function createWLD(bbox, dpi, size, epsgUser, map) {
-  const rotationMap = map.getMapImpl().getView().getRotation();
+export function createWLD(bbox, dpi, size, epsgUser = false, map, type) {
   let px;
-  if (rotationMap !== 0) {
-    const result = pixelToCoordinateTransform(map); // eslint-disable-line
-    px = result.join('\n');
-  } else {
-    const epsgWLD = epsgUser;
+
+  if (epsgUser) {
     const rotateX = 0;
     const rotateY = 0;
 
-    if (epsgWLD) {
-      const sizePixelX = ((bbox[2] - bbox[0]) / size[0]);
-      const sizePixelY = ((bbox[3] - bbox[1]) / size[1]) * -1;
-      const upperLeftX = bbox[0] + (sizePixelX / 2);
-      const upperLeftY = bbox[3] + (sizePixelY / 2);
+    const sizePixelX = ((bbox[2] - bbox[0]) / size[0]);
+    const sizePixelY = ((bbox[3] - bbox[1]) / size[1]) * -1;
+    const upperLeftX = bbox[0] + (sizePixelX / 2);
+    const upperLeftY = bbox[3] + (sizePixelY / 2);
 
-      px = sizePixelX.toString().concat('\n', rotateX.toString(), '\n', rotateY.toString(), '\n', sizePixelY.toString(), '\n', upperLeftX.toString(), '\n', upperLeftY.toString());
-    } else {
-      const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
-      const GiroA = (0).toString();
-      const GiroB = (0).toString();
-      const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / dpi)).toString();
-      const Cx = (bbox[0] + (Px / 2)).toString();
-      const Cy = (bbox[3] + (Py / 2)).toString();
-      px = Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy);
-    }
+    px = sizePixelX.toString().concat('\n', rotateX.toString(), '\n', rotateY.toString(), '\n', sizePixelY.toString(), '\n', upperLeftX.toString(), '\n', upperLeftY.toString());
+  } else if (type === 'client') {
+    const result = pixelToCoordinateTransform(map);
+    px = result.join('\n');
+  } else if (type === 'server') {
+    const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / dpi)).toString();
+    const GiroA = (0).toString();
+    const GiroB = (0).toString();
+    const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / dpi)).toString();
+    const Cx = (bbox[0] + (Px / 2)).toString();
+    const Cy = (bbox[3] + (Py / 2)).toString();
+    px = Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy);
   }
+
   return px;
 }
 

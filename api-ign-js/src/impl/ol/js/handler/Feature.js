@@ -29,7 +29,7 @@ export const getFacadeFeature = (feature, layer) => {
   }
   if (isNullOrEmpty(mFeature) && (feature instanceof RenderFeature)) {
     mFeature = RenderFeatureImpl.olFeature2Facade(feature);
-  } else if (isNullOrEmpty(mFeature) && (feature instanceof olFeature) && layer.type === 'MVT') {
+  } else if (isNullOrEmpty(mFeature) && (feature instanceof olFeature)) {
     mFeature = FeatureImpl.olFeature2Facade(feature);
   }
   return mFeature;

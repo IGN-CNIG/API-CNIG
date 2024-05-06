@@ -481,28 +481,31 @@ export default class PrinterMapControl extends M.Control {
       M.proxy(this.useProxy);
       M.remote.post(url, printData).then((responseParam) => {
         let response = responseParam;
-        const responseStatusURL = response.text && JSON.parse(response.text);
-        const ref = responseStatusURL.ref;
-        const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
-        this.getStatus(statusURL, () => removeLoadQueueElement(queueEl), queueEl);
+        if (/* response.error !== true && */response.text.indexOf('</error>') === -1) { // withoud proxy, response.error === true
+          const responseStatusURL = response.text && JSON.parse(response.text);
+          const ref = responseStatusURL.ref;
+          const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
+          this.getStatus(statusURL, () => removeLoadQueueElement(queueEl), queueEl);
+          let downloadUrl;
+          try {
+            response = JSON.parse(response.text);
+            const imageUrl = response.downloadURL.substring(response.downloadURL.indexOf('/print'), response.downloadURL.length);
+            downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, imageUrl]);
+            this.documentRead_.src = downloadUrl;
+          } catch (err) {
+            M.exception(err);
+          }
 
-        // if (response.error !== true) { // withoud proxy, response.error === true
-        let downloadUrl;
-        try {
-          response = JSON.parse(response.text);
-          const imageUrl = response.downloadURL.substring(response.downloadURL.indexOf('/print'), response.downloadURL.length);
-          downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, imageUrl]);
-          this.documentRead_.src = downloadUrl;
-        } catch (err) {
-          M.exception(err);
+          queueEl.setAttribute(PrinterMapControl.DOWNLOAD_ATTR_NAME, downloadUrl);
+          queueEl.addEventListener('click', download);
+          queueEl.addEventListener('keydown', download);
+        } else {
+          queueEl.remove();
+          if (document.querySelector('#m-georefimage-queue-container').childNodes.length === 0) {
+            document.querySelector('.m-printviewmanagement-queue').style.display = 'none';
+          }
+          M.dialog.error(getValue('exception').printError);
         }
-
-        queueEl.setAttribute(PrinterMapControl.DOWNLOAD_ATTR_NAME, downloadUrl);
-        queueEl.addEventListener('click', download);
-        queueEl.addEventListener('keydown', download);
-        // } else {
-        //   M.dialog.error('Se ha producido un error en la impresión.');
-        // }
       });
       M.proxy(this.statusProxy);
     });

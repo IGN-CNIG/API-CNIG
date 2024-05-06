@@ -505,7 +505,6 @@ export default class Analysiscontrol extends M.impl.Control {
     const $td = elem;
     promiseArray
       .then((points) => {
-        // console.log(points);
         let length = 0;
         for (let i = 0, ii = points.length - 1; i < ii; i += 1) {
           const geom = new ol.geom.LineString([points[i], points[i + 1]]);
@@ -537,4 +536,25 @@ export default class Analysiscontrol extends M.impl.Control {
     this.calculateProfile(feature, false);
     this.calculate3DLength(this.arrayXZY, flatLength, elem);
   }
+
+  getAreaGeoJSON(features) {
+    const geoFormat = new M.impl.format.GeoJSON();
+    const src = this.facadeMap_.getProjection().code;
+    return features.map((featureFacade) => {
+      const feature = featureFacade.getImpl().getOLFeature();
+
+      const area = ol.sphere.getArea(feature.getGeometry());
+      feature.getGeometry().transform(src, 'EPSG:3857');
+      const featureJSON = geoFormat.writeFeatureObject(feature);
+      featureJSON.properties = {
+        area: {
+          km: area / (10 ** 6),
+          m: area,
+        },
+      };
+
+      return featureJSON;
+    });
+  }
 }
+

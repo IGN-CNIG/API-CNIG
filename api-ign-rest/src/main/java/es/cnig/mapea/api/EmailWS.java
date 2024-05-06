@@ -148,6 +148,7 @@ public class EmailWS {
 	   MimeMessage message = new MimeMessage(session);
 	   Transport transport = null;
 	   try {
+		   message.addHeader("Access-Control-Allow-Origin", "*");
 		   message.setFrom(new InternetAddress(remitente));
 		   message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario)); //Se podrían añadir varios de la misma manera
 		   message.setSubject(asunto);
@@ -206,14 +207,16 @@ public class EmailWS {
 		   }
 
 		   transport.sendMessage(message, message.getAllRecipients());
-	   } catch (MessagingException me) {
+	   } catch (Exception me) {
+		   System.out.println(me);
 		   me.printStackTrace();
 		   result = me.getMessage();
 	   } finally {
 		   if(transport != null){
 			   try {
 				   transport.close();
-			   } catch (MessagingException me2) {
+			   } catch (Exception me2) {
+				   System.out.println(me2);
 				   me2.printStackTrace();
 			   }
 		   }

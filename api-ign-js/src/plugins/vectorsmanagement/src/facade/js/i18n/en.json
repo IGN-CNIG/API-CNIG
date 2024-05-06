@@ -12,7 +12,8 @@
     "ficherosel": "Download format has not been selected.",
     "query_profile": "The altitude data for this entity could not be queried.",
     "featuresel": "No elements have been selected",
-    "topographic_one_element": "The topographic profile can only be made for a single element"
+    "topographic_one_element": "The topographic profile can only be made for a single element",
+    "typeLayer": "Layers of type MVT and MBTilesVector are not editable"
   },
   "help_template": {
     "title": "Help",
@@ -58,6 +59,10 @@
     "analysis_content_1_1": "Allows you to display a graph that represents the relief of the terrain. In the case of specific elements, only their height and coordinates are indicated.",
     "analysis_content_2": "Area of influence",
     "analysis_content_2_1": "Allows you to draw an area of influence of an element.",
+    "analysis_content_3": "Extension",
+    "analysis_content_3_1": "Allows you to show the extension of a geographical object.",
+    "analysis_content_4": "GeoJSON",
+    "analysis_content_4_1": "Allows you to view the GeoJSON of the layer or selected elements.",
     "download_title": "Download",
     "download_content": "This tool allows you to download the complete layer or selected elements in GeoJSON, KML and Shapefile format."
   },
@@ -85,14 +90,14 @@
   "styleThickness": "Thickness",
   "styleFont": "Font",
   "styleSize": "Size",
-  "opacity": "Opacidad",
+  "opacity": "Opacity",
   "radius": "Radius",
-  "style_options_point": "Points options",
-  "style_options_line": "Lines options",
-  "style_options_polygon": "Polygons options",
+  "style_options": "Options",
   "apply_style": "Apply",
   "analysisProfile": "Topographic profile",
   "analysisBuffer": "Buffer",
+  "getGeoJSON": "Get GeoJSON",
+  "extension": "Extension",
   "draw": "Draw",
   "createdLayer": "Created layer",
   "zmin": "Alt. min",
@@ -126,10 +131,15 @@
   "title_clear_geometries": "Clear layer",
   "clear_geometries_msg": "Are you sure you want to remove all elements from the layer?",
   "confirm": "Ok",
+  "accept": "Accept",
   "cancel": "Cancel",
   "cuadrilatero": "Quadrilateral",
   "circulo": "Circle",
   "triangulo": "Triangle",
   "pentagono": "Pentagon",
-  "hexagono": "Hexagon"
+  "hexagono": "Hexagon",
+  "close": "Close",
+  "fill": "Fill",
+  "stroke": "Stroke",
+  "opts_point": "Point Options"
 }

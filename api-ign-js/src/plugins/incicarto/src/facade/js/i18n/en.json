@@ -19,6 +19,7 @@
     "error_wfs": "Could not load WFS service",
     "wfs_zoom": "Increase the zoom in * levels if you want to add this WFS service",
     "error_email": "The email could not be sent.",
+    "error_email_exception": "The message could not be sent, possibly due to the size of the attached file.",
     "error_email_size": "The size of the attached file is too large. The maximum file size allowed for emails is 25Mb."
   },
   "textHelp": {

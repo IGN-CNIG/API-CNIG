@@ -69,6 +69,7 @@ export default class Selectioncontrol extends M.impl.Control {
         wrapX: false,
         layers: [drawingLayer],
         style: null,
+        toggleCondition: ol.events.condition.platformModifierKeyOnly,
       });
 
       this.select.on('select', (e) => {

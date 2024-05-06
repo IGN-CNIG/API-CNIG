@@ -104,6 +104,7 @@ class WMS extends LayerBase {
       displayInLayerSwitcher: parameters.displayInLayerSwitcher,
       useCapabilities: parameters.useCapabilities,
       transparent: parameters.transparent,
+      isWMSfull: parameters.name === undefined,
     };
 
     const impl = new WMSImpl(optionsVar, vendorOptions);

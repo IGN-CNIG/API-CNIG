@@ -12,7 +12,8 @@
     "ficherosel": "No se ha seleccionado formato de descarga.",
     "query_profile": "No se han podido consultar los datos de altitud para esta entidad.",
     "featuresel": "No se han seleccionado elementos",
-    "topographic_one_element": "El perfil topografico solo se puede realizar para un único elemento"
+    "topographic_one_element": "El perfil topografico solo se puede realizar para un único elemento",
+    "typeLayer": "Las capas de tipo MVT y MBTilesVector no son editables"
   },
   "help_template": {
     "title": "Ayuda",
@@ -58,6 +59,10 @@
     "analysis_content_1_1": "Permite mostrar un gráfico que representa el relieve del terreno. En el caso de elementos puntuales se indica unicamente su altura y coordenadas.",
     "analysis_content_2": "Área de influencia",
     "analysis_content_2_1": "Permite dibujar un área de influencia de un elemento.",
+    "analysis_content_3": "Extensión",
+    "analysis_content_3_1": "Permite mostrar la extensión de un objeto geográfico.",
+    "analysis_content_4": "GeoJSON",
+    "analysis_content_4_1": "Permite ver el GeoJSON de la capa o elementos seleccionados.",
     "download_title": "Descarga",
     "download_content": "Esta herramienta permite descargar la capa completa o los elementos seleccionados en formato GeoJSON, KML, GPX y Shapefile."
   },
@@ -87,12 +92,12 @@
   "styleSize": "Tamaño",
   "opacity": "Opacidad",
   "radius": "Radio",
-  "style_options_point": "Opciones puntos",
-  "style_options_line": "Opciones lineas",
-  "style_options_polygon": "Opciones polígonos",
+  "style_options": "Opciones",
   "apply_style": "Aplicar",
   "analysisProfile": "Perfil topográfico",
   "analysisBuffer": "Área de influencia",
+  "getGeoJSON": "Ver GeoJSON",
+  "extension": "Extensión",
   "draw": "Dibujar",
   "createdLayer": "Creada capa",
   "zmin": "Alt. min",
@@ -126,10 +131,15 @@
   "title_clear_geometries": "Limpiar capa",
   "clear_geometries_msg": "¿Seguro que desea eliminar todos los elementos de la capa?",
   "confirm": "Confirmar",
+  "accept": "Aceptar",
   "cancel": "Cancelar",
   "cuadrilatero": "Cuadrilátero",
   "circulo": "Círculo",
   "triangulo": "Triángulo",
   "pentagono": "Pentágono",
-  "hexagono": "Hexágono"
+  "hexagono": "Hexágono",
+  "close": "Cerrar",
+  "fill": "Relleno",
+  "stroke": "Trazo",
+  "opts_point": "Opciones de puntos"
 }

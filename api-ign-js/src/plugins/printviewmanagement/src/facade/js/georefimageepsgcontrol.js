@@ -145,17 +145,6 @@ export default class GeorefImageEpsgControl extends M.Control {
     */
   printClick(evt) { // Se llama desde printviewmanagementcontrol
     evt.preventDefault();
-    const date = new Date();
-    this.titulo_ = 'mapa_'.concat(
-      date.getFullYear(), '-', date.getMonth() + 1, '-', date.getDay() + 1, '_', date.getHours(), date.getMinutes(), date.getSeconds(),
-    );
-
-    this.queueEl = innerQueueElement(
-      this.html_,
-      this.titulo_,
-    );
-
-    this.canceled = false;
 
     // La del mapa, hacer un getProjection si se cambia
     const DEFAULT_EPSG = this.map_.getProjection().code;
@@ -163,9 +152,21 @@ export default class GeorefImageEpsgControl extends M.Control {
 
     // get value select option id m-georefimageepsg-select
     const value = this.template_.querySelector(ID_IMG_EPSG).selectedIndex;
+
     const {
-      url, name, format, EPSG: epsg, version,
+      url, name, format, EPSG: epsg, version, legend,
     } = this.layers_[value];
+
+    const title = legend || name;
+
+    this.queueEl = innerQueueElement(
+      this.html_,
+      false,
+      title,
+    );
+
+    this.canceled = false;
+
 
     // Bbox Mapa
     const mapBbox = this.map_.getBbox();
@@ -196,7 +197,7 @@ export default class GeorefImageEpsgControl extends M.Control {
 
       const urlLayer =
         this.generateURLLayer_(url, projection, size, extString, format, name, version);
-      this.downloadPrint(urlLayer, extWLD, true);
+      this.downloadPrint(urlLayer, extWLD, true, title);
     } else {
       const projection = this.getUTMZoneProjection();
 
@@ -208,7 +209,7 @@ export default class GeorefImageEpsgControl extends M.Control {
       ext[3] = ext[1] + (f * size[1]);
 
       const urlLayer = this.generateURLLayer_(url, projection, size, ext, format, name, version);
-      this.downloadPrint(urlLayer, ext, false);
+      this.downloadPrint(urlLayer, ext, false, title);
     }
   }
 
@@ -257,7 +258,7 @@ export default class GeorefImageEpsgControl extends M.Control {
     * @function
     * @api stable
     */
-  downloadPrint(url, bbox, epsgUser) {
+  downloadPrint(url, bbox, epsgUser, title = '') {
     const FILE_EXTENSION_GEO = '.wld'; // .jgw
     const FILE_EXTENSION_IMG = '.jpg';
     const TYPE_SAVE = '.zip';
@@ -270,7 +271,7 @@ export default class GeorefImageEpsgControl extends M.Control {
       base64image.then((resolve) => {
         if (!this.canceled) {
           // GET TITLE
-          const titulo = generateTitle('');
+          const titulo = generateTitle(title);
 
           // CONTENT ZIP
           const files = [{

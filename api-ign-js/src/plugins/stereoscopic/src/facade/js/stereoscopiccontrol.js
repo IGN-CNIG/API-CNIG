@@ -17,8 +17,7 @@ export default class StereoscopicControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(orbitControls = false, anaglyphActive = false, maxMagnify = 1,
-    defaultAnaglyphActive = false) {
+  constructor(orbitControls = false,  anaglyphActive = false, maxMagnify = {}, defaultAnaglyphActive = false) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(StereoscopicImplControl)) {
       M.exception(getValue('exception.impl'));
@@ -30,6 +29,7 @@ export default class StereoscopicControl extends M.Control {
     this.orbitControls_ = orbitControls;
     this.anaglyphActive_ = anaglyphActive;
     this.toggle = false;
+    this.isMaxMagnify = Object.keys(maxMagnify).length !== 0;
     this.maxMagnify = maxMagnify;
 
     this.defaultAnaglyphActive = defaultAnaglyphActive;
@@ -63,6 +63,7 @@ export default class StereoscopicControl extends M.Control {
             anaglyph_active: this.anaglyphActive_,
             orbitControls: this.orbitControls_,
             activate3d: getValue('activate3d'),
+            linkGlass: getValue('linkGlass'),
           },
         },
       });
@@ -152,13 +153,22 @@ export default class StereoscopicControl extends M.Control {
     document.getElementById('tools').innerHTML = TR3.setPanel();
 
     const opts = {
-      imgControl: ${this.orbitControls_}, //desvía los controles de manejo de escena a ina imagen externa
-      cursor3d: false, //visiviliza el cusrso 3D
-      anaglyph: ${this.anaglyphActive_}, //Activa el modo Anaglifo
-      autoRotate: false, //Activa la rotación
-      wireframeMesh: false, //Muestra la malla del terreno
-      tentative: true, //Muestra los elelemtos interactivos realzando su tamaño
-      cheapMode: false //Activa el modo ahorro de rendimiento
+        imgControl: ${this.orbitControls_},	//desvía los controles de manejo de escena a ina imagen externa
+        cursor3d: false,		//visiviliza el cusrso 3D
+        anaglyph: ${this.anaglyphActive_},		//Activa el modo Anaglifo
+        autoRotate: false,	//Activa la rotación
+        wireframeMesh: false, //Muestra la malla del terreno
+        tentative: true, 	//Muestra los elelemtos interactivos realzando su tamaño
+        cheapMode: false	//Activa el modo ahorro de rendimiento
+    }
+
+    function getZoomMaxMagnify(objeto, zoom) {
+      for (const clave in objeto) {
+        if(Number(clave) >= zoom) {
+          return objeto[clave];
+        }
+      }
+      return 1;
     }
 
     TR3.setOpts(opts);
@@ -190,20 +200,24 @@ export default class StereoscopicControl extends M.Control {
 
     let changeZoom = 0;
     map.getMapImpl().on('moveend', (e) => {
-      if(changeZoom !== e.frameState.viewState.zoom) {
-        changeZoom = e.frameState.viewState.zoom;
-        if(window.toggle3D) {setTR3(true);}
-        document.querySelector('#range3d').max = (TR3.valuesSet.magnification + ${this.maxMagnify});
-        document.querySelector('#range3d').value = TR3.valuesSet.magnification;
-      } else {
-        if(window.toggle3D) {setTR3(false);}
-      }
+        if(changeZoom !== e.frameState.viewState.zoom) {
+          changeZoom = e.frameState.viewState.zoom;
+          if(window.toggle3D) {setTR3(true);}
+          if(${this.isMaxMagnify}) {
+            const obj = ${JSON.stringify(this.maxMagnify)};
+            const max = getZoomMaxMagnify(obj, changeZoom);
+            document.querySelector('#range3d').max = (TR3.valuesSet.magnification + max);
+            document.querySelector('#range3d').value = TR3.valuesSet.magnification;
+          } else {
+            document.querySelector('#range3d').max = (TR3.valuesSet.magnification + 1);
+            document.querySelector('#range3d').value = TR3.valuesSet.magnification;
+          }
+
+        } else {
+          if(window.toggle3D) {setTR3(false);}
+        }
 
       const toggle3D = document.querySelector('#toggle3D');
-
-      if(toggle3D.classList.contains('toggle3D')) {
-        document.querySelector('#maxDisabled3DView').innerHTML = 'x' + (TR3.valuesSet.magnification + ${this.maxMagnify})
-      }
     });
 
     // https://openlayers.org/en/latest/examples/tile-load-events.html

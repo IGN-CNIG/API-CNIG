@@ -69,7 +69,7 @@ export default class Stereoscopic extends M.Plugin {
      */
     this.anaglyphActive_ = parameters.anaglyphActive || false;
 
-    this.maxMagnify = parameters.maxMagnify || 1;
+     this.maxMagnify = parameters.maxMagnify || {};
 
     this.defaultAnaglyphActive = parameters.defaultAnaglyphActive || false;
   }

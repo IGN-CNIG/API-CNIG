@@ -31,7 +31,8 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   constructor({
-    map, selection, addlayer, analysis, creation, download, edition, help, style, isDraggable,
+    map, selection, addlayer, analysis, creation, download, edition, help, style,
+    isDraggable, order,
   }) {
     const impl = new M.impl.Control();
     super(impl, 'VectorsManagement');
@@ -44,14 +45,17 @@ export default class VectorsManagementControl extends M.Control {
     this.edition_ = edition;
     this.help_ = help;
     this.style_ = style;
-    this.layers_ = map.getLayers().filter((l) => (l instanceof M.layer.Vector
-      || l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
-      return { value: l.name, text: l.legend || l.name };
-    });
+    this.layers_ = map.getLayers().filter(l => (l instanceof M.layer.Vector ||
+      l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
+      return { value: l.name, text: l.legend || l.name, zIndex: l.getZIndex() };
+    }).sort((a, b) => b.zIndex - a.zIndex);
     this.selectedLayer = null;
 
     // Determina si el plugin es draggable o no
     this.isDraggable_ = isDraggable;
+
+    // order
+    this.order = order;
   }
 
   /**
@@ -115,7 +119,7 @@ export default class VectorsManagementControl extends M.Control {
       if (this.isDraggable_) {
         M.utils.draggabillyPlugin(this.getPanel(), '#m-vectorsmanagement-titulo');
       }
-
+      this.accessibilityTab(html);
       success(html);
     });
   }
@@ -137,7 +141,12 @@ export default class VectorsManagementControl extends M.Control {
     this.html.querySelector('#m-vectorsmanagement-previews').classList.remove('closed');
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
-    this.selectedLayer = this.map.getLayers().filter((l) => l.name === selectedLayerName)[0];
+    this.selectedLayer = this.map.getLayers().filter(l => l.name === selectedLayerName)[0];
+
+    if (this.selectedLayer.type === 'MVT' || this.selectedLayer.type === 'MBTilesVector') {
+      M.toast.warning(getValue('exception.typeLayer'), null, 6000);
+    }
+
     if (this.selection_) {
       this.selectionControl.setLayer(this.selectedLayer);
     }
@@ -276,9 +285,19 @@ export default class VectorsManagementControl extends M.Control {
   addEditionControl(html) {
     this.editionControl = new EditionControl(this.map_, this);
     html.querySelector('#m-vectorsmanagement-edition').addEventListener('click', (event) => {
+      const $selection = document.querySelector('#m-vectorsmanagement-selection');
+
+      if ($selection.classList.contains('activated')) {
+        this.selectionControl.deactivate();
+        $selection.classList.remove('activated');
+      }
+
       const clickActivate = this.deactive(html, 'edition');
+
       if (!clickActivate) {
         this.editionControl.active(html);
+        this.selectionControl.active(html);
+        $selection.classList.add('activated');
         event.target.classList.add('activated');
       }
     });
@@ -496,9 +515,9 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   refreshLayers() {
-    this.layers_ = this.map_.getLayers().filter((l) => (l instanceof M.layer.Vector
-      || l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher && l.name !== 'bufferLayer').map((l) => {
-      return { value: l.name, text: l.legend || l.name };
+    this.layers_ = this.map_.getLayers().filter(l => (l instanceof M.layer.Vector ||
+      l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher && l.name !== 'bufferLayer').map((l) => {
+      return { value: l.name, text: l.legend || l.name, zIndex: l.getZIndex() };
     });
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
@@ -515,7 +534,9 @@ export default class VectorsManagementControl extends M.Control {
     option.innerText = `${getValue('selectLayerDefault')}...`;
     selector.appendChild(option);
 
-    this.layers_.forEach((l) => {
+    const layerOrder = [...this.layers_].sort((a, b) => b.zIndex - a.zIndex);
+
+    layerOrder.forEach((l) => {
       option = document.createElement('option');
       option.value = l.value;
       option.innerText = l.text;
@@ -545,6 +566,10 @@ export default class VectorsManagementControl extends M.Control {
         this.styleControl.refreshStyle();
       }
     }
+  }
+
+  accessibilityTab(html) {
+    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 
   /**

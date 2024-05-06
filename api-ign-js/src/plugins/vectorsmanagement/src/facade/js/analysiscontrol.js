@@ -7,6 +7,7 @@ import template from '../../templates/analysis';
 import infoanalysis from '../../templates/infoanalysis';
 import pointProfileTemplate from '../../templates/pointprofile';
 import { getValue } from './i18n/language';
+import { changeStyleDialog } from './util';
 
 export default class AnalysisControl extends M.Control {
   /**
@@ -70,6 +71,8 @@ export default class AnalysisControl extends M.Control {
           analysisProfile: getValue('analysisProfile'),
           analysisBuffer: getValue('analysisBuffer'),
           calculate: getValue('calculate'),
+          getGeoJSON: getValue('getGeoJSON'),
+          extension: getValue('extension'),
         },
       },
     });
@@ -77,6 +80,7 @@ export default class AnalysisControl extends M.Control {
     html.querySelector('#m-vectorsmanagement-controls').appendChild(this.template);
     this.initializeLayers();
     this.addEvents();
+    this.managementControl_.accessibilityTab(this.template);
 
     // eslint-disable-next-line no-underscore-dangle
     const feature = this.managementControl_.selectionControl.selectedFeatures_[0];
@@ -112,9 +116,27 @@ export default class AnalysisControl extends M.Control {
    * @api
    */
   addEvents() {
-    this.template.querySelector('#topographic-profile-btn').addEventListener('click', (evt) => this.analysisBtnClick(evt.target.id));
-    this.template.querySelector('#buffer-btn').addEventListener('click', (evt) => this.analysisBtnClick(evt.target.id));
+    this.template.querySelector('#topographic-profile-btn').addEventListener('click', evt => this.analysisBtnClick(evt.target.id));
+    this.template.querySelector('#buffer-btn').addEventListener('click', evt => this.analysisBtnClick(evt.target.id));
+    this.template.querySelector('#vectorsmanagement-btnCoord').addEventListener('click', (evt) => {
+      this.analysisBtnClick(evt.target.id);
+      if (evt.target.classList.contains('activated')) {
+        document.querySelector('.m-vectorsmanagement-analysis-featureInfo').style.display = 'block';
+        document.querySelector('#vectorsmanagement-analysis-btn').style.display = 'none';
+      }
+    });
     this.template.querySelector('#vectorsmanagement-analysis-btn').addEventListener('click', this.calculateAnalysis.bind(this));
+    this.template.querySelector('#vectorsmanagement-btnToGeojson').addEventListener('click', () => {
+      const controlSelected = this.managementControl_.selectionControl;
+      // eslint-disable-next-line no-underscore-dangle
+      const selectFeatures = controlSelected.selection_ === 'layer' ? this.layer_.getFeatures() : controlSelected.getSelectedFeatures();
+      const featuresArea = this.impl_.getAreaGeoJSON(selectFeatures);
+      const pre = JSON.stringify(featuresArea.length === 1
+        ? featuresArea[0] : featuresArea, null, 2);
+      M.dialog.info(`<pre class="vectorsmanagement-dialogCode"><code>${pre}</code></pre>`, 'GeoJSON');
+
+      changeStyleDialog();
+    });
   }
 
   /**
@@ -128,8 +150,11 @@ export default class AnalysisControl extends M.Control {
     const active = this.getControlActive();
     if (active && active.id !== btnClick) {
       this.template.querySelector(`#${active.id}`).classList.remove('activated');
-      this.template.querySelector(`#${btnClick}`).classList.add('activated');
     }
+    this.template.querySelector(`#${btnClick}`).classList.add('activated');
+    this.template.querySelector('#vectorsmanagement-analysis-btn').style.display = 'block';
+
+    document.querySelector('.m-vectorsmanagement-analysis-featureInfo').style.display = 'none';
   }
 
   /**
@@ -165,7 +190,6 @@ export default class AnalysisControl extends M.Control {
    * @api
    */
   onSelect(e) {
-    // console.log('onSelect + +', e);
     const MFeatures = this.layer_.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
@@ -200,7 +224,7 @@ export default class AnalysisControl extends M.Control {
     const selectedFeatures = this.managementControl_.getSelectedFeatures();
     if (selectedFeatures.length > 0) {
       if (selectedFeatures.length > 1) {
-        M.dialog.info(getValue('topographic_one_element'));
+        M.dialog.info(getValue('exception.topographic_one_element'));
       } else {
         this.feature = selectedFeatures[0];
         if (this.feature.getGeometry().type !== 'Point') {
@@ -260,8 +284,17 @@ export default class AnalysisControl extends M.Control {
       unitBufferM.addEventListener('change', () => { unit = 1; });
       unitBufferKm.addEventListener('change', () => { unit = 1000; });
       btn.style.backgroundColor = color;
-      btn.addEventListener('click', (ev) => {
+      const btn2 = document.createElement('button');
+      btn2.innerHTML = getValue('accept');
+      btn.innerHTML = getValue('close');
+      btn2.style.width = '75px';
+      btn2.style.marginRight = '8px';
+      btn2.style.backgroundColor = color;
+      btn.parentElement.insertBefore(btn2, btn);
+      // btn es cerrar btn2 es aceptar
+      btn2.addEventListener('click', (ev) => {
         this.addBuffer_((distance * unit));
+        btn.click();
       });
     }
   }
@@ -351,6 +384,8 @@ export default class AnalysisControl extends M.Control {
       },
     });
     document.body.appendChild(this.pointTemplate);
+    this.managementControl_.accessibilityTab(this.pointTemplate);
+
     this.pointTemplate.querySelector('.m-panel-btn').addEventListener('click', () => {
       this.removeModalEvents();
       document.body.removeChild(this.pointTemplate);
@@ -491,6 +526,7 @@ export default class AnalysisControl extends M.Control {
     });
 
     this.template.querySelector('#analysisBtns #featureInfo').appendChild(this.infoanalysisTemplate);
+    this.managementControl_.accessibilityTab(this.infoanalysisTemplate);
 
     const infoLine3D = document.querySelector('#infoAnalisis3DLine');
     if (infoLine3D) {

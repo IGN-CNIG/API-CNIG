@@ -523,12 +523,6 @@ div.m-layerswitcher-legend>img {
     float: right;
 }
 
-.m-dialog div.m-message {
-    overflow-y: auto;
-    max-height: 50vh;
-    overflow-x: auto;
-}
-
 .m-layerswitcher-addservices .m-layerswitcher-search-panel .input-container {
     display: flex;
     justify-content: center;
@@ -552,6 +546,9 @@ div.m-layerswitcher-legend>img {
 .m-layerswitcher-addservices-suggestions {
     margin: 1rem 0.5rem;
     display: block;
+    overflow-y: auto;
+    max-height: 50vh;
+    overflow-x: auto;
 }
 
 .m-layerswitcher-addservices-suggestions>table {

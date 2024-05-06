@@ -20,6 +20,14 @@
   top: 5px;
 }
 
+.link3Dview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin: 5px 0px;
+}
+
 
 .m-stereoscopic .tools-icon {
   position: inherit !important;
@@ -343,7 +351,7 @@ div.m-control button[class*=" stereoscopic-"], div.m-control button[class^=stere
 }
 
 .selectorToggle{
-  background-color: #a3b2be !important;
+  background-color: #ffffff !important;
 }
 
 

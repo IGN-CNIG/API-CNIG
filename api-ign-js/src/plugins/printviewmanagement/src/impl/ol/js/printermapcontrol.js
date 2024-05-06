@@ -2,9 +2,7 @@
  * @module M/impl/control/PrinterMapControl
  */
 
-import {
-  encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS, encodeMVT,
-} from './encoders';
+import { encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS } from './encoders';
 
 export default class PrinterMapControl extends M.impl.Control {
   /**
@@ -104,7 +102,8 @@ export default class PrinterMapControl extends M.impl.Control {
           -1) {
           success(encodeXYZ(layer));
         } else if (layer.type === M.layer.type.MVT) {
-          success(encodeMVT(layer, this.facadeMap_));
+          this.errors.push(layer.name);
+          success('');
         } else if (layer.type === M.layer.type.MBTiles ||
           layer.type === M.layer.type.MBTilesVector) {
           this.errors.push(layer.name);

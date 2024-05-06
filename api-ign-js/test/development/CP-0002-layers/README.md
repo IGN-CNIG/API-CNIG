@@ -45,3 +45,6 @@ Mapa básico con capas OGCAPIFeatures.
 
 CP-016
 Pruebas de la función "toGeoJSON" de las capas y pruebas de la función "getGeoJSON" de los features de estas capas. (Anteriormente "Mapa básico con capas COG GeoTiff.")
+
+CP-017
+WMS_FULL, capas wms sin nombre

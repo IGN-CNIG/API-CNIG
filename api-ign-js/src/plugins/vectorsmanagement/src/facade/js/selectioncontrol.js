@@ -5,6 +5,9 @@ import SelectionImplControl from '../../impl/ol/js/selectioncontrol';
 // import template from '../../templates/selection';
 import { getValue } from './i18n/language';
 
+const DISABLED_BUTTON_ID_POINT = ['holedrawing', 'rotatedrawing', 'scaledrawing'];
+const DISABLED_BUTTON_ID_LINE = ['holedrawing'];
+
 export default class SelectionControl extends M.Control {
   /**
    * @classdesc
@@ -195,6 +198,48 @@ export default class SelectionControl extends M.Control {
     if (this.selectedFeatures_.length === 1 && document.querySelector('.m-vectorsmanagement-analysis') !== null) {
       this.managementControl_.analysisControl.showFeatureInfo(this.selectedFeatures_[0]);
     }
+
+    const $edit = document.querySelector('#m-vectorsmanagement-edition');
+
+    if ($edit.classList.contains('activated')) {
+      this.enabledButton([...DISABLED_BUTTON_ID_POINT, ...DISABLED_BUTTON_ID_LINE]);
+      const referenceEditControl = this.managementControl_.editionControl;
+
+      if (this.selectedFeatures_.length === 1) {
+        const geometry = this.selectedFeatures_[0].getGeometry().type;
+
+        if (geometry === 'Point') {
+          this.disabledButton(DISABLED_BUTTON_ID_POINT);
+
+          if (referenceEditControl.isHoleActive) {
+            referenceEditControl.isHoleActive = false;
+            referenceEditControl.getImpl().removeDrawHoleInteraction();
+          } else if (referenceEditControl.isRotateActive) {
+            referenceEditControl.isRotateActive = false;
+            referenceEditControl.getImpl().removeRotateInteraction();
+          } else if (referenceEditControl.isScaleActive) {
+            referenceEditControl.isScaleActive = false;
+            referenceEditControl.getImpl().removeScaleInteraction();
+          }
+        }
+
+        if (geometry === 'LineString') {
+          this.disabledButton(DISABLED_BUTTON_ID_LINE);
+
+          if (referenceEditControl.isHoleActive) {
+            referenceEditControl.isHoleActive = false;
+            referenceEditControl.getImpl().removeDrawHoleInteraction();
+          }
+        }
+      } else {
+        this.disabledButton(DISABLED_BUTTON_ID_LINE);
+
+        if (referenceEditControl.isHoleActive) {
+          referenceEditControl.isHoleActive = false;
+          referenceEditControl.getImpl().removeDrawHoleInteraction();
+        }
+      }
+    }
   }
 
   /**
@@ -296,6 +341,30 @@ export default class SelectionControl extends M.Control {
     }
     this.selection_ = 'layer';
     this.managementControl_.refreshSelection();
+
+    this.enabledButton([...DISABLED_BUTTON_ID_POINT, ...DISABLED_BUTTON_ID_LINE]);
+  }
+
+  disabledButton(IdButtons) {
+    IdButtons.forEach((id) => {
+      const $button = document.querySelector(`#${id}`);
+      $button.setAttribute('disabled', 'disabled');
+      $button.classList.add('disabled');
+
+      if ($button.classList.contains('activated')) {
+        $button.classList.remove('activated');
+      }
+    });
+  }
+
+  enabledButton(IdButtons) {
+    IdButtons.forEach((id) => {
+      const $button = document.querySelector(`#${id}`);
+      if ($button && $button.classList.contains('disabled')) {
+        $button.removeAttribute('disabled');
+        $button.classList.remove('disabled');
+      }
+    });
   }
 
   /**

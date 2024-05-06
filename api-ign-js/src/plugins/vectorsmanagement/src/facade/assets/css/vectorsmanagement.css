@@ -58,7 +58,6 @@
 .m-areas>div.m-area>div.m-panel.opened.m-plugin-vectorsmanagement {
     background-color: transparent !important;
     box-shadow: none !important;
-    order: -9999999;
 }
 
 div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-container.m-vectorsmanagement>#m-vectorsmanagement-previews,
@@ -74,7 +73,7 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
 }
 
 .m-control.m-container.m-vectorsmanagement {
-    min-width: max-content;
+    width: 350px;
     background-color: #fff !important;
 }
 
@@ -164,9 +163,6 @@ div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control.m-cont
     display: inline-block;
 }
 
-.m-vectorsmanagement-style-container {
-    width: 360px;
-}
 
 .m-vectorsmanagement-style-container>button#set-style-btn {
     width: 60px;
@@ -306,9 +302,7 @@ table#attribute-table>tr>th>button {
     padding: 0;
 }
 
-#point-options,
-#line-options,
-#polygon-options {
+#options {
     color: #71a7d3;
     font-size: 14px;
     width: 100%;
@@ -325,10 +319,10 @@ table#attribute-table>tr>th>button {
     width: 100%;
 }
 
-.style-col-0,
-.style-col-1,
-.style-col-2 {
-    padding: 0 15px;
+.vector-style-col-0,
+.vector-style-col-1,
+.vector-style-col-2 {
+    padding: 0 8px;
     align-content: center;
     align-items: left;
     flex-direction: column;
@@ -336,25 +330,25 @@ table#attribute-table>tr>th>button {
     float: left;
 }
 
-.style-col-0 label,
-.style-col-0 input,
-.style-col-1 label,
-.style-col-1 input,
-.style-col-2 label,
-.style-col-2 input {
+.vector-style-col-0 label,
+.vector-style-col-0 input,
+.vector-style-col-1 label,
+.vector-style-col-1 input,
+.vector-style-col-2 label,
+.vector-style-col-2 input {
     vertical-align: middle;
 }
 
-.style-col-1,
-.style-col-2 {
+.vector-style-col-1,
+.vector-style-col-2 {
     width: 50%;
 }
 
-.style-col-1 {
+.vector-style-col-1 {
     padding-right: 10px !important;
 }
 
-.style-col-2 {
+.vector-style-col-2 {
     padding-left: 0 !important;
 }
 
@@ -603,16 +597,17 @@ table#attribute-table>tr>th>button {
 
 @font-face {
     font-family: 'vectorsmanagement';
-    src: url('../fonts/vectorsmanagement.eot?5338693');
-    src: url('../fonts/vectorsmanagement.eot?5338693#iefix') format('embedded-opentype'),
-        url('../fonts/vectorsmanagement.woff2?5338693') format('woff2'),
-        url('../fonts/vectorsmanagement.woff?5338693') format('woff'),
-        url('../fonts/vectorsmanagement.ttf?5338693') format('truetype'),
-        url('../fonts/vectorsmanagement.svg?5338693#vectorsmanagement') format('svg');
+    src:  url('../fonts/vectorsmanagement.eot?66977');
+    src:  url('../fonts/vectorsmanagement.eot?66977#iefix') format('embedded-opentype'),
+      url('../fonts/vectorsmanagement.ttf?66977') format('truetype'),
+      url('../fonts/vectorsmanagement.woff?66977') format('woff'),
+      url('../fonts/vectorsmanagement.svg?66977#vectorsmanagement') format('svg');
     font-weight: normal;
     font-style: normal;
-}
-
+    font-display: block;
+  }
+  
+  
 .m-areas>div.m-area>div.m-panel.m-plugin-vectorsmanagement>div.m-panel-controls>div.m-control>button,
 .m-areas>div.m-area>div.m-panel.m-plugin-vectorsmanagement.collapsed>button.m-panel-btn,
 [class^="vectorsmanagement-"],
@@ -639,6 +634,7 @@ table#attribute-table>tr>th>button {
 }
 
 .m-vectorsmanagement-previews>button,
+.m-vectorsmanagement-previews>div>button,
 .m-vectorsmanagement-selection-layer>button,
 #creationBtns>button,
 #analysisBtns>div>button,
@@ -650,6 +646,26 @@ table#attribute-table>tr>th>button {
     background-color: #fff;
     height: 40px;
     width: 40px;
+}
+
+.m-vectorsmanagement-previews>button,
+.m-vectorsmanagement-previews>div>button,
+.m-vectorsmanagement-selection-layer>button,
+#creationBtns>button,
+#analysisBtns>div>button,
+#editionBtns>button,
+[class^="vectorsmanagement-icon-"]:hover::before {
+    color: #71a7d3;
+}
+
+
+.m-vectorsmanagement-toolsContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-left: 2px solid #757474;
+    gap: 5px;
 }
 
 table#attribute-table>tr>th>button,
@@ -671,7 +687,12 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
     width: 20px;
 }
 
+.vectorsmanagement-icon-seleccionar {
+    width: 90px !important;
+}
+
 .m-vectorsmanagement-previews>button.activated,
+.m-vectorsmanagement-previews>div>button.activated,
 .m-vectorsmanagement-selection-layer>button.activated,
 #creationBtns>button.activated,
 #analysisBtns>div>button.activated,
@@ -685,12 +706,23 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
     width: 40px;
 }
 
+.m-vectorsmanagement-previews>button.activated,
+.m-vectorsmanagement-previews>div>button.activated,
+.m-vectorsmanagement-selection-layer>button.activated,
+#creationBtns>button.activated,
+#analysisBtns>div>button.activated,
+#editionBtns>button.activated,
+[class^="vectorsmanagement-icon-"]:hover {
+    cursor: pointer;
+}
+
 .m-vectorsmanagement-analysis-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 10px;
     gap: 20px;
+    padding-bottom: 10px;
 }
 
 .vectorsmanagement-icon-font:before {
@@ -726,7 +758,12 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
 }
 
 .vectorsmanagement-icon-pin-located:before {
-    content: '\e900';
+    content: '\e903';
+}
+
+.vectorsmanagement-icon-design-tool:before {
+    content: "\e902";
+    font-weight: bold;
 }
 
 .vectorsmanagement-icon-cancelar:before {
@@ -766,7 +803,11 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
 }
 
 .vectorsmanagement-icon-seleccionar:before {
-    content: '\e931';
+    content: "\e901";
+    font-size: 20px;
+    font-weight: bold;
+    top: 3px;
+    position: relative;
 }
 
 .vectorsmanagement-icon-mas:before {
@@ -807,6 +848,33 @@ div#popup-box>div.popup-section>div>span[class^="vectorsmanagement-icon-"]:befor
 
 .vectorsmanagement-icon-table:before {
     content: '\f0ce';
+}
+
+.vectorsmanagement-icon-json-file:before {
+    content: "\e900";
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.vectorsmanagement-icon-resize-full-alt.disabled,
+.vectorsmanagement-icon-hole.disabled,
+.vectorsmanagement-icon-tamano.disabled {
+    opacity: 0.5;
+}
+
+.vectorsmanagement-geojson {
+    cursor: pointer;
+}
+
+
+.vectorsmanagement-geojson:hover:before {
+    color: #71a7d3 !important;
+    transition: 0.3s;
+}
+
+.vectorsmanagement-dialogCode {
+    overflow: auto; 
+    max-height: 50vh;
 }
 
 /* Modal ayuda */
@@ -998,6 +1066,14 @@ div.m-areas>div.m-area>div.m-plugin-vectorsmanagement.opened .m-control.m-contai
 
 div#popup-box {
     max-height: calc(100vh - 175px) !important;
+}
+
+.m-vectos-style-title {
+    font-weight: bold;
+}
+
+#options-content input[type=number]{
+ width: 50px;
 }
 
 @media (max-width: 600px) {

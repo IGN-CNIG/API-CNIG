@@ -441,35 +441,39 @@ export default class GeorefimageControl extends M.Control {
       M.proxy(this.useProxy);
       M.remote.post(printUrl, printData).then((responseParam) => {
         let response = responseParam;
-        const responseStatusURL = response.text && JSON.parse(response.text);
-        const ref = responseStatusURL.ref;
-        const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
-        this.getStatus(
-          statusURL,
-          e => removeLoadQueueElement(e),
-          queueEl,
-        );
+        if (/* response.error !== true && */ response.text.indexOf('</error>') === -1) { // withoud proxy, response.error === true
+          let downloadUrl;
+          const responseStatusURL = response.text && JSON.parse(response.text);
+          const ref = responseStatusURL.ref;
+          const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
+          this.getStatus(
+            statusURL,
+            e => removeLoadQueueElement(e),
+            queueEl,
+          );
 
-        // if (response.error !== true) { // withoud proxy, response.error === true
-        let downloadUrl;
-        try {
-          response = JSON.parse(response.text);
-          if (this.serverUrl_.endsWith('/geoprint')) {
-            const url = this.serverUrl_.substring(0, this.serverUrl_.lastIndexOf('/geoprint'));
-            downloadUrl = M.utils.concatUrlPaths([url, response.downloadURL]);
-          } else {
-            downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
+          try {
+            response = JSON.parse(response.text);
+            if (this.serverUrl_.endsWith('/geoprint')) {
+              const url = this.serverUrl_.substring(0, this.serverUrl_.lastIndexOf('/geoprint'));
+              downloadUrl = M.utils.concatUrlPaths([url, response.downloadURL]);
+            } else {
+              downloadUrl = M.utils.concatUrlPaths([this.serverUrl_, response.downloadURL]);
+            }
+            this.documentRead_.src = downloadUrl;
+          } catch (err) {
+            M.exception(err);
           }
-          this.documentRead_.src = downloadUrl;
-        } catch (err) {
-          M.exception(err);
+          queueEl.setAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME, downloadUrl);
+          queueEl.addEventListener('click', this.downloadPrint.bind(this));
+          queueEl.addEventListener('keydown', this.downloadPrint.bind(this));
+        } else {
+          queueEl.remove();
+          if (document.querySelector('#m-georefimage-queue-container').childNodes.length === 0) {
+            document.querySelector('.m-printviewmanagement-queue').style.display = 'none';
+          }
+          M.dialog.error(getValue('exception').printError);
         }
-        queueEl.setAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME, downloadUrl);
-        queueEl.addEventListener('click', this.downloadPrint.bind(this));
-        queueEl.addEventListener('keydown', this.downloadPrint.bind(this));
-        // } else {
-        //   M.dialog.error('Se ha producido un error en la impresión.');
-        // }
       });
 
       M.proxy(this.statusProxy);
@@ -488,7 +492,7 @@ export default class GeorefimageControl extends M.Control {
 
     try {
       const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
-      queueEl.addEventListener('click', evt => this.downloadPrint(evt, base64image));
+      queueEl.addEventListener('click', evt => this.downloadPrint(evt, base64image, 'client'));
     } catch (exceptionVar) {
       queueEl.parentElement.remove();
       M.toast.error('Error CrossOrigin', null, 6000);
@@ -708,6 +712,7 @@ export default class GeorefimageControl extends M.Control {
         layer.type !== 'GenericVector' &&
         layer.type !== 'MBTiles' &&
         layer.type !== 'MBTilesVector' &&
+        layer.type !== 'MVT' &&
         mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
     });
 
@@ -718,7 +723,8 @@ export default class GeorefimageControl extends M.Control {
         layer.type === 'GenericRaster' ||
         layer.type === 'GenericVector' ||
         layer.type === 'MBTiles' ||
-        layer.type === 'MBTilesVector'
+        layer.type === 'MBTilesVector' ||
+        layer.type === 'MVT'
       ));
     });
 
@@ -833,7 +839,7 @@ export default class GeorefimageControl extends M.Control {
    * @function
    * @api stable
    */
-  downloadPrint(evt, imgBase64) {
+  downloadPrint(evt, imgBase64, type = 'server') {
     if (evt.key !== undefined && evt.key !== 'Enter' && evt.key !== ' ') {
       return;
     }
@@ -875,7 +881,7 @@ export default class GeorefimageControl extends M.Control {
 
     const files = (addWLD) ? [{
       name: titulo.concat(FILE_EXTENSION_GEO),
-      data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize(), null, this.map_),
+      data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize(), null, this.map_, type),
       base64: false,
     },
     fileIMG,

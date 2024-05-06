@@ -143,6 +143,9 @@ export default class VectorsManagement extends M.Plugin {
 
     // Determina si el plugin es draggable o no
     this.isDraggable = !M.utils.isUndefined(options.isDraggable) ? options.isDraggable : false;
+
+    // Indicates order to the plugin
+    this.order = options.order >= -1 ? options.order : null;
   }
 
   /**
@@ -180,6 +183,7 @@ export default class VectorsManagement extends M.Plugin {
       help: this.help,
       style: this.style,
       isDraggable: this.isDraggable,
+      order: this.order,
     }));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('VectorsManagement', {
@@ -189,6 +193,7 @@ export default class VectorsManagement extends M.Plugin {
       className: 'm-plugin-vectorsmanagement',
       tooltip: this.tooltip_,
       collapsedButtonClass: 'vectorsmanagement-icon-vectors',
+      order: this.order,
     });
 
     this.controls_[0].on('vectorsmanagement:activeChanges', (data) => {
