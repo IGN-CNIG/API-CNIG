@@ -123,7 +123,7 @@ setTimeout(() => {map.addPlugin(mp); window.mp = mp;}, 2000); // 1 - ERROR // So
 // Lista de errores encontrados
 
 // 1 - ERROR Salta el error "TypeError: e is null" en "api-ign-js/src/impl/ol/js/layer/Vector.js.js:307" por causa de "const olFeatures = [...olSource.getFeatures()];" en el cual "olSource" es aun null. Tras este error se puede cerrar el plugin, pero este ahora no vuelve a poner el mapa en su sitio.
-// Si se da click sobre este botón de plugin muy rapidamente tras el activado del mapa, por no ser cargado antes del refresh de "addAbrePanelEvent".
+// Si se da click sobre este botón de plugin muy rápidamente tras el activado del mapa, por no ser cargado antes del refresh de "addAbrePanelEvent".
 // Si se pone el parámetro "filter: false" se llama a "setBboxFilter" con evento "moveend" antes de que termine de cargar el mapa.
 // si se pone "collapsed: false," también ocurre este error, pero no tiene error constante o permanente como consecuencia de estos.
 // Se ha colocado el añadido de plugin tras hacer el añadido de layers para que haya más tiempo a que se cargue esto. Pero no era suficiente por lo que el añadido del plugin ahora se hace con espera de 2 segundos de "setTimeout".
@@ -148,6 +148,23 @@ setTimeout(() => {map.addPlugin(mp); window.mp = mp;}, 2000); // 1 - ERROR // So
 //  }
 //};
 //this.map.getMapImpl().on('moveend', this.currentMapMoveendEvent_);
+// Parece que se puede añadir filtrado por vista pero este no se quita cuando se configura el de área, no se si es intencionado este diseño o no. Podría ser por causa de que hay múltiples "moveend" del mismo filtrado cuando el filtrado esta puesto a false o por que los eventos no se quitan.
+// En "queryattributes/src/facade/js/queryattributescontrol.js" se ha cambiado como se generaba el primer "moveend" para que también se pueda limpiar:
+//if (this.filters) {
+//  this.showAttributeTable(this.configuration.layer);
+//} else {
+//  this.showAttributeTable(this.configuration.layer, this.setBboxFilter.bind(this));
+//  this.map.getMapImpl().un('moveend', this.currentMapMoveendEvent_);
+//  this.currentMapMoveendEvent_ = (evt) => {
+//    this.setBboxFilter();
+//  };
+//  if (this.refreshBBOXFilterOnPanning) {
+//    this.map.getMapImpl().once('moveend', this.currentMapMoveendEvent_);
+//  } else {
+//    this.map.getMapImpl().on('moveend', this.currentMapMoveendEvent_);
+//  }
+//}
+// Por otro lado he añadido dentro del "setDrawFilter" el "this.bboxfilter = false;" para desactivarlo en ese caso.
 
 // 4 - ERROR si se da click sobre el mapa se abre este plugin por si solo, el botón hasta no se cambia a su formato de cerrar popup. Podría ser que se tiene que mover los creados de eventos a otro elemento que se usa tras darle al botón de activar este plugin.
 
@@ -164,22 +181,6 @@ setTimeout(() => {map.addPlugin(mp); window.mp = mp;}, 2000); // 1 - ERROR // So
 // Ocurre los mismo con "setDrawFilter" haciendo lo mismo parece solucionarlo.
 // Estos cambios también podrían incluir un popup de Mapea si se quiere comunicar al usuario que no hay nada encontrado con este filtro, pero se tendría que tener en cuenta que no aparezcan múltiples de estos.
 
-// 8 - ERROR parece que se puede añadir filtrado por vista pero este no se quita cuando se configura el de área, no se si es intencionado este diseño o no. Podría ser por causa de que hay múltiples "moveend" del mismo filtrado cuando el filtrado esta puesto a false o por que los eventos no se quitan.
-// En "queryattributes/src/facade/js/queryattributescontrol.js" se ha cambiado como se generaba el primer "moveend" para que también se pueda limpiar:
-//if (this.filters) {
-//  this.showAttributeTable(this.configuration.layer);
-//} else {
-//  this.showAttributeTable(this.configuration.layer, this.setBboxFilter.bind(this));
-//  this.map.getMapImpl().un('moveend', this.currentMapMoveendEvent_);
-//  this.currentMapMoveendEvent_ = (evt) => {
-//    this.setBboxFilter();
-//  };
-//  if (this.refreshBBOXFilterOnPanning) {
-//    this.map.getMapImpl().once('moveend', this.currentMapMoveendEvent_);
-//  } else {
-//    this.map.getMapImpl().on('moveend', this.currentMapMoveendEvent_);
-//  }
-//}
-// Por otro lado he añadido entro del "setDrawFilter" el "this.bboxfilter = false;" para desactivarlo en ese caso.
+// 8 - ERROR si se escoge filtro por vista y se da click sobre uno de los features, aparece el popup con información de este, el problema es que este filtrado siempre pone centrado en mitad de todos los features visibles, por lo que el botón de cerrado de ese popup de feature único no se puede usar, se podría impedir el zoom al fit cuando están estos popups o cambiar la estructura del popup para que empiece desde el lado del botón de cerrado o cambiar el botón de cerrado al otro lado.
 
-/////////////////////NO SE HA TERMINADO DE REPASAR ESTE PLUGIN EN RAMA "develop", queda por probar el exportado y JSP.
+// 9 - ERROR tras finalizar los filtrados se añaden todos los elementos visibles hasta cierto tamaño, permitiendo el scroll desde entonces, pero si se escoge un feature, aparece un elemento adicional de información de este, causando que el elemento de scroll apunte a este y se reduzca para permitirle espacio, el problema es que si se vuelve a hacer el buscado este elemento de feature de antes se queda visible y inaccesible hasta que no se le da a minimizar y expandir este para que se vuelvan a aplicar los estilos correctos, podría ser recomendable retener ese tamaño pequeño hasta que no se limpie el visualizado de feature único.
