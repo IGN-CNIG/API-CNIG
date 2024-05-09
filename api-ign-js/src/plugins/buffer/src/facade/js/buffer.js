@@ -129,6 +129,7 @@ export default class Buffer extends M.Plugin {
     const layerAux = this.hasLayerBuffer_();
     if (layerAux == null) {
       this.bufferLayer = new BufferLayer(this.featureOverlay);
+      this.bufferLayer.displayInLayerSwitcher = false;
       this.map_.addLayers(this.bufferLayer);
     } else {
       this.bufferLayer = layerAux;
