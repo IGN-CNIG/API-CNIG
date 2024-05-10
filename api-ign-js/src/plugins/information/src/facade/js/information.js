@@ -76,7 +76,7 @@ export default class Information extends M.Plugin {
      * @private
      * @type {Integer}
      */
-    this.buffer_ = options.buffer || 10;
+    this.buffer_ = options.buffer || 99;
 
     /**
      * Information opened all, only if there is one layer, or not opened
