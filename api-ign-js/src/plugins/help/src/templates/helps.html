@@ -108,9 +108,23 @@
       padding-left: 10px;
     }
 
-    #m-help-index li:before {
+    .m-help-tools {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+
+    #m-help-index li a:before {
       content: counters(item, ".") " ";
       counter-increment: item;
+    }
+    #m-help-index li:not(:has(> span)) > a {
+      padding-left: 18px;
+    }
+
+    .hiddenSubContent {
+      display: none;
     }
 
     #m-help-toggle {
@@ -147,7 +161,6 @@
     .m-help-btn {
       color: white;
       background-color: rgb(54, 75, 95);
-      margin-left: 10px;
       padding: 7px 6px;
       border: 2px solid #364b5f;
       font-weight: 700;
@@ -430,7 +443,7 @@
   </header>
   <section id="m-help-section">
     <div id="m-help-index" class="m-help-show-index">
-      <div>
+      <div class="m-help-tools">
         <input type="text" onkeydown="filterResults(event)" placeholder="{{translations.write}}..." id="m-help-input" />
         <button class="m-help-btn" onclick="filterResults(event)">{{translations.search}}</button>
         <button class="m-help-btn zoom" onclick="increaseFont(event)">A+</button>
