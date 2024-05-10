@@ -503,6 +503,10 @@ function layerToParam(layer, map) {
    */
 export function getLayers(map) {
   const layers = map.getLayers().filter((layer) => {
+    if (layer.displayInLayerSwitcher === false) {
+      return false;
+    }
+
     let res = layer.name !== '__draw__' && layer.name !== 'selectionLayer';
     if (layer.name === 'attributions' && layer.type === 'KML') {
       res = res && false;
