@@ -116,7 +116,7 @@ class Vector extends LayerBase {
       * Vector extract: Opcional, activa la consulta
       * haciendo clic en el objeto geográfico, por defecto falso.
     */
-    this.extract = optns.extract || false;
+    this.extract = optns.extract || true;
 
     /**
      * predefinedStyles: Estilos predefinidos para la capa.
