@@ -21,7 +21,7 @@ export default class OverviewMap extends M.Plugin {
    * @param {Object} impl implementation object
    * @api stable
    */
-  constructor(options = {}, vendorOptions) {
+  constructor(options = {}) {
     super();
     /**
      * Facade of the map

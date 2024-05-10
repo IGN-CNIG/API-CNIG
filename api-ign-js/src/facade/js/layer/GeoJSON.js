@@ -4,7 +4,13 @@
 import GeoJSONImpl from 'impl/layer/GeoJSON';
 import LayerVector from './Vector';
 import { GeoJSON as GeoJSONType } from './Type';
-import { isString, isNullOrEmpty, isUndefined, isArray, normalize } from '../util/Utils';
+import {
+  isString,
+  isNullOrEmpty,
+  isUndefined,
+  isArray,
+  normalize,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 
@@ -51,20 +57,9 @@ class GeoJSON extends LayerVector {
    * - opacity: Opacidad de capa, por defecto 1.
    * - style: Define el estilo de la capa.
    * - predefinedStyles: Estilos predefinidos para la capa.
-   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
-   * <pre><code>
-   * import OLSourceVector from 'ol/source/Vector';
-   * {
-   *  opacity: 0.1,
-   *  source: new OLSourceVector({
-   *    attributions: 'geojson',
-   *    ...
-   *  })
-   * }
-   * </code></pre>
    * @api
    */
-  constructor(parameters = {}, options = {}, vendorOptions) {
+  constructor(parameters = {}, options = {}) {
     const optionsVar = options;
 
     if (typeof parameters !== 'string') {
@@ -77,7 +72,7 @@ class GeoJSON extends LayerVector {
      * @implements {M.impl.layer.GeoJSON}
      * @type {M.impl.layer.GeoJSON}
      */
-    const impl = new GeoJSONImpl(parameters, optionsVar, vendorOptions);
+    const impl = new GeoJSONImpl(parameters, optionsVar);
 
     const opts = parameters;
     opts.type = GeoJSONType;

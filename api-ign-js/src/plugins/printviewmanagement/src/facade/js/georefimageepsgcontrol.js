@@ -109,7 +109,6 @@ export default class GeorefImageEpsgControl extends M.Control {
     this.html_ = html;
     const button = this.html_.querySelector('#m-printviewmanagement-georefImageEpsg');
 
-
     const template = new Promise((resolve, reject) => {
       this.template_ = M.template.compileSync(georefimage2HTML, {
         jsonp: true,
@@ -123,7 +122,6 @@ export default class GeorefImageEpsgControl extends M.Control {
       });
       resolve(this.template_);
     });
-
 
     template.then((t) => {
       if (!button.classList.contains('activated')) {
@@ -167,7 +165,6 @@ export default class GeorefImageEpsgControl extends M.Control {
 
     this.canceled = false;
 
-
     // Bbox Mapa
     const mapBbox = this.map_.getBbox();
     // Size
@@ -195,8 +192,15 @@ export default class GeorefImageEpsgControl extends M.Control {
 
       const extString = ext.join(',');
 
-      const urlLayer =
-        this.generateURLLayer_(url, projection, size, extString, format, name, version);
+      const urlLayer = this.generateURLLayer_(
+        url,
+        projection,
+        size,
+        extString,
+        format,
+        name,
+        version,
+      );
       this.downloadPrint(urlLayer, extWLD, true, title);
     } else {
       const projection = this.getUTMZoneProjection();
@@ -215,7 +219,7 @@ export default class GeorefImageEpsgControl extends M.Control {
 
   transformExtentOL(extent, projection) {
     const { def } = M.impl.ol.js.projections.getSupportedProjs()
-      .filter(proj => proj.codes.includes(projection))[0];
+      .filter((proj) => proj.codes.includes(projection))[0];
     const typeCoordinates = def.includes('+proj=longlat');
 
     if (typeCoordinates) {
@@ -327,7 +331,7 @@ export default class GeorefImageEpsgControl extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 
   deactive() {
@@ -345,4 +349,3 @@ export default class GeorefImageEpsgControl extends M.Control {
   destroy() {
   }
 }
-

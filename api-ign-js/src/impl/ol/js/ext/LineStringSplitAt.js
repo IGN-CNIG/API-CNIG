@@ -28,8 +28,8 @@ OLGeomLineString.prototype.splitAt = (pt, tol) => {
     return result;
   }
   // Nothing to do
-  if (olCoordinateEqual(pt, this.getFirstCoordinate()) ||
-    olCoordinateEqual(pt, this.getLastCoordinate())) {
+  if (olCoordinateEqual(pt, this.getFirstCoordinate())
+    || olCoordinateEqual(pt, this.getLastCoordinate())) {
     return [this];
   }
   // Get

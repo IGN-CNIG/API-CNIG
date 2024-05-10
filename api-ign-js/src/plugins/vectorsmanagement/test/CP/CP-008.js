@@ -9,7 +9,6 @@ const map = M.map({
   zoom: 6,
 });
 
-
 const generic002 = new M.layer.GenericVector({}, {}, new ol.layer.Vector({
   source: new ol.source.Vector({
     format: new ol.format.GeoJSON(),

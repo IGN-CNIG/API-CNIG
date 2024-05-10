@@ -116,8 +116,8 @@ export default class AnalysisControl extends M.Control {
    * @api
    */
   addEvents() {
-    this.template.querySelector('#topographic-profile-btn').addEventListener('click', evt => this.analysisBtnClick(evt.target.id));
-    this.template.querySelector('#buffer-btn').addEventListener('click', evt => this.analysisBtnClick(evt.target.id));
+    this.template.querySelector('#topographic-profile-btn').addEventListener('click', (evt) => this.analysisBtnClick(evt.target.id));
+    this.template.querySelector('#buffer-btn').addEventListener('click', (evt) => this.analysisBtnClick(evt.target.id));
     this.template.querySelector('#vectorsmanagement-btnCoord').addEventListener('click', (evt) => {
       this.analysisBtnClick(evt.target.id);
       if (evt.target.classList.contains('activated')) {

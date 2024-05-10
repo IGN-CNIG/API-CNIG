@@ -5,7 +5,12 @@ import PopupImpl from 'impl/Popup';
 
 import 'assets/css/popup';
 import popupTemplate from 'templates/popup';
-import { isNullOrEmpty, isUndefined, returnPositionHtmlElement, transfomContent } from './util/Utils';
+import {
+  isNullOrEmpty,
+  isUndefined,
+  returnPositionHtmlElement,
+  transfomContent,
+} from './util/Utils';
 import Base from './Base';
 import { compileSync as compileTemplate } from './util/Template';
 import * as EventType from './event/eventtype';
@@ -43,8 +48,8 @@ class Tab {
      */
     this.content = options.content;
 
-    if (options.intelligence === true ||
-      (!isUndefined(options.intelligence) && (options.intelligence.activate === true))) {
+    if (options.intelligence === true
+      || (!isUndefined(options.intelligence) && (options.intelligence.activate === true))) {
       this.content = transfomContent(this.content, options.intelligence.sizes);
     }
 
@@ -123,7 +128,7 @@ class Popup extends Base {
    * @api
    */
   removeTab(tabToRemove) {
-    this.tabs_ = this.tabs_.filter(tab => tab.content !== tabToRemove.content);
+    this.tabs_ = this.tabs_.filter((tab) => tab.content !== tabToRemove.content);
     this.update();
   }
 
@@ -256,11 +261,11 @@ class Popup extends Base {
     listeners.forEach((listener) => {
       if (listener.all === true) {
         html.querySelectorAll(listener.selector).forEach((element) => {
-          element.addEventListener(listener.type, e => listener.callback(e));
+          element.addEventListener(listener.type, (e) => listener.callback(e));
         });
       } else {
         html.querySelector(listener.selector)
-          .addEventListener(listener.type, e => listener.callback(e));
+          .addEventListener(listener.type, (e) => listener.callback(e));
       }
     });
   }
@@ -577,6 +582,5 @@ Popup.status.DEFAULT = 'm-default';
  * @api
  */
 Popup.status.FULL = 'm-full';
-
 
 export default Popup;

@@ -10,7 +10,6 @@ const map = M.map({
 
 });
 
-
 const mp = new StoryMap({
   collapsed: false,
   collapsible: true,

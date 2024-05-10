@@ -16,6 +16,7 @@ export default class MeasureArea extends Measure {
       M.Exception(getValue('exception.impl_area'));
     }
   }
+
   /**
    * This function checks if an object is equals
    * to this control

@@ -287,7 +287,7 @@
       const lstImg = content.querySelectorAll('img:not(h2 img)');
       let lstBtn, btn;
       if (lstImg && lstImg.length > 0) {
-        lstImg.forEach(img => {
+        lstImg.forEach((img) => {
           img.classList.add('m-help-content-magnify');
             btn = document.createElement('button');
             btn.className = 'm-help-btnMagnify';
@@ -369,9 +369,9 @@
       y = pos.y;
 
       /*prevent the magnifier glass from being positioned outside the image:*/
-      if (x < parseFloat(getComputedStyle(img).width) &&
-        y < parseFloat(getComputedStyle(img).height) &&
-        x > 0 && y > 0) {
+      if (x < parseFloat(getComputedStyle(img).width)
+        && y < parseFloat(getComputedStyle(img).height)
+        && x > 0 && y > 0) {
         imgZoomed.style.display = "";
         /*set the position of the magnifier glass:*/
         var px = (e.pageX - window.pageXOffset - (parseFloat(getComputedStyle(imgZoomed).width) / 2));

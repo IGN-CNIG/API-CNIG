@@ -40,7 +40,7 @@ Ejemplo:
 |Una vez localizadas las incidencias de la zona de estudio, podemos notificar las incidencias para su corrección. Para ello pulsará en la herramienta con la campanilla.|<img src='./assets/incicarto-func04.png'  style='width:500px;'>|
 |<img src='./assets/incicarto-func06.png'  style='width:500px;'>|En la ventana emergente podemos clasificar el error si tenemos datos o conocimientos para ello. También podemos introducir un correo electrónico para realizar un seguimiento de la incidencia y una pequeña descripción libre para documentar la incidencia.|
 
-Disponemos de dos posibilidades para notificar la incidencia. 
+Disponemos de dos posibilidades para notificar la incidencia.
 
 * Mediante un correo electrónico dirigido al buzón de incidencias relacionado con la incidencia detectada.
 * Al gestor de incidencias INCIGEO para su posterior asignación al servicio competente para su subsanación.
@@ -65,13 +65,13 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'advance': se usará el gestor de incidencias INCIGEO.
 - **buzones**: Contiene un array con los objetos que definen el nombre y direcciones de los buzones de incidencias. Cada objeto buzón contiene dos parámetros. Por defecto: [].
   - 'name': nombre del propietario del buzón de incidencias.
-  - 'email': correo electrónico del buzón. 
-- **controllist**: Contiene un array enumerando las listas controladas con sus características. 
+  - 'email': correo electrónico del buzón.
+- **controllist**: Contiene un array enumerando las listas controladas con sus características.
   - 'id': identificador de la lista.
   - 'name': nombre de la lista.
   - 'mandatory': indica si el usuario está obligado a legir una opción.
 
-Por defecto: 
+Por defecto:
 ```javascript
 [
   {
@@ -91,7 +91,7 @@ Por defecto:
   },
 ]
 ```
-  
+
 - **themeList**: Lista de control con los temas por los que podemos clasificar una incidencia. los temas son objetos con las propiedades. Por defecto: [].
   - 'idTheme': identificador de código de tema.
   - 'nameTheme': nombre del tema de error.
@@ -171,7 +171,7 @@ URL_API?incicarto=position*collapsed*collapsible*tooltip*wfszoom*prefixSubject*i
     <td>productList</td>
     <td>Lista de control con los productos del IGN en los que se ha detectado el error.</td>
     <td>Base64 ✔️ | Separador ❌</td>
-  </tr>  
+  </tr>
   <tr>
     <td>isDraggable</td>
     <td>true/false</td>
@@ -197,7 +197,7 @@ Ejemplo:
 M.utils.encodeBase64(obj_params);
 ```
 
-Ejemplo del constructor: 
+Ejemplo del constructor:
 ```javascript
 {
   collapsed: true,

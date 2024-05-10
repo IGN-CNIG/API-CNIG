@@ -3,7 +3,6 @@
  */
 import LyrcompareInteraction from 'impl/cplyrcompareinteraction';
 
-
 export default class Lyrcomparecontrol extends M.impl.Control {
   /**
    * This function adds the control to the specified map

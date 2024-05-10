@@ -2,7 +2,17 @@
  * @module M/parameter
  * @example import parameter from 'M/parameter';
  */
-import { isNullOrEmpty, isString, isNull, isFunction, normalize, isArray, isObject, isUrl, isUndefined } from '../util/Utils';
+import {
+  isNullOrEmpty,
+  isString,
+  isNull,
+  isFunction,
+  normalize,
+  isArray,
+  isObject,
+  isUrl,
+  isUndefined,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from '../layer/Type';
 import Layer from '../layer/Layer';
@@ -286,8 +296,8 @@ export const maxExtent = (maxExtentParam) => {
       Exception(`El parámetro no es de un tipo soportado: ${typeof maxExtentParameter}`);
     }
 
-    if (Number.isNaN(maxExtentVar.x.min) || Number.isNaN(maxExtentVar.y.min) ||
-      Number.isNaN(maxExtentVar.x.max) || Number.isNaN(maxExtentVar.y.max)) {
+    if (Number.isNaN(maxExtentVar.x.min) || Number.isNaN(maxExtentVar.y.min)
+      || Number.isNaN(maxExtentVar.x.max) || Number.isNaN(maxExtentVar.y.max)) {
       Exception(getValue('exception').invalid_maxextent_param);
     }
   }
@@ -329,8 +339,8 @@ export const projection = (projectionParameter) => {
   } else if (isObject(projectionParameter)) {
     // object
     // y max
-    if (!isNull(projectionParameter.code) &&
-      !isNull(projectionParameter.units)) {
+    if (!isNull(projectionParameter.code)
+      && !isNull(projectionParameter.units)) {
       projectionVar.code = projectionParameter.code;
       projectionVar.units = normalize(projectionParameter.units.substring(0, 1));
     } else {
@@ -550,7 +560,6 @@ export const getNameKML = (parameter) => {
   return name;
 };
 
-
 /**
  * Analiza el parámetro de capas KML especificado y devuelve el "extract" de la capa.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -664,7 +673,6 @@ export const getLegendKML = (parameter) => {
   }
   return legend;
 };
-
 
 /**
  * Analiza el parámetro para obtener la URL del servicio.
@@ -938,8 +946,8 @@ export const getCQLWFS = (parameter) => {
       params = parameter.split(/\*/);
       cql = params[6].trim();
     }
-  } else if ((isObject(parameter) &&
-      !isNullOrEmpty(parameter.cql)) || (!isNullOrEmpty(parameter.ecql))) {
+  } else if ((isObject(parameter)
+    && !isNullOrEmpty(parameter.cql)) || (!isNullOrEmpty(parameter.ecql))) {
     cql = parameter.cql ? parameter.cql.trim() : parameter.ecql.trim();
   } else if (!isObject(parameter)) {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
@@ -1219,7 +1227,6 @@ export const wfs = (userParameters) => {
   return layers;
 };
 
-
 /**
  * Analiza el parámetro para obtener la leyenda de la capa GeoJSON.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -1389,7 +1396,6 @@ export const getStyleGeoJSON = (parameter) => {
   }
   return style;
 };
-
 
 /**
  * Analiza los parámetros para la capa GeoJSON especificados por el usuario.
@@ -2061,7 +2067,6 @@ export const wms = (userParameters) => {
   return layers;
 };
 
-
 /**
  * Analiza el parámetro para obtener el nombre de la capa COG.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -2140,28 +2145,28 @@ export const getURLCOG = (parameter) => {
  * @api
  */
 export const getProjectionCOG = (parameter) => {
-  let projection;
+  let projectionCOG;
   let params;
   if (isString(parameter)) {
     // <COG>*<URL>*<NAME>*<MATRIXSET>
     if (/^COG\*[^*]+\*[^*]+\*[^*]+/i.test(parameter)) {
       params = parameter.split(/\*/);
-      projection = params[3].trim();
+      projectionCOG = params[3].trim();
     } else if (/^[^*]+\*[^*]+\*[^*]+/.test(parameter)) {
       // <URL>*<NAME>*<MATRIXSET>
       params = parameter.split(/\*/);
-      projection = params[2].trim();
+      projectionCOG = params[2].trim();
     }
   } else if (isObject(parameter) && !isNullOrEmpty(parameter.projection)) {
-    projection = parameter.projection.trim();
+    projectionCOG = parameter.projection.trim();
   } else if (!isObject(parameter)) {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
-  if (isUrl(projection) || /^(true|false)$/i.test(projection)) {
-    projection = null;
+  if (isUrl(projectionCOG) || /^(true|false)$/i.test(projectionCOG)) {
+    projectionCOG = null;
   }
-  return projection;
+  return projectionCOG;
 };
 
 /**
@@ -2466,7 +2471,6 @@ export const getConvertToRGBCOG = (parameter) => {
  */
 export const getBandsCOG = (parameter) => {
   let bands;
-  let params;
   if (isString(parameter)) {
     if (/^COG\*[^*]+\*[^*]+\*[^*]*\*[^*]*\*(true|false)\*(image\/.*)\*(true|false)\*(true|false)\*(true|false)\*(true|false)\*(true|false)\*(true|false)/i.test(parameter)) {
       bands = [];
@@ -2494,7 +2498,6 @@ export const getBandsCOG = (parameter) => {
  */
 export const getStylesCOG = (parameter) => {
   let styles;
-  let params;
   if (isString(parameter)) {
     if (/^COG\*[^*]+\*[^*]+\*[^*]*\*[^*]*\*(true|false)\*(image\/.*)\*(true|false)\*(true|false)\*(true|false)\*(true|false)\*(true|false)\*(true|false)/i.test(parameter)) {
       styles = [];
@@ -2923,8 +2926,9 @@ export const cog = (userParameters) => {
     // get visibility
     layerObj.visibility = getVisibilityCOG(userParam);
 
-    layerObj.isBase = (layerObj.transparent === undefined) ?
-      userParam.isBase : !layerObj.transparent;
+    layerObj.isBase = (layerObj.transparent === undefined)
+      ? userParam.isBase
+      : !layerObj.transparent;
 
     return layerObj;
   });
@@ -2935,7 +2939,6 @@ export const cog = (userParameters) => {
 
   return layers;
 };
-
 
 /**
  * Analiza el parámetro para obtener el nombre de la capa XYZ.
@@ -2979,7 +2982,6 @@ export const getNameXYZ = (parameter) => {
   }
   return name;
 };
-
 
 /**
  * Analiza el parámetro para obtener la URL del servicio
@@ -3053,7 +3055,6 @@ export const getExtraParameter = (parameter, defaultValue, position, nameVariabl
   return extraParam;
 };
 
-
 /**
  * Analiza los parámetros especificados por el usuario para la capa XYZ.
  *
@@ -3113,7 +3114,6 @@ export const xyz = (userParamer) => {
   return layersVar;
 };
 
-
 /**
  * Analiza el parámetro para obtener el nombre de la capa TMS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -3156,7 +3156,6 @@ export const getNameTMS = (parameter) => {
   }
   return name;
 };
-
 
 /**
  * Analiza los parámetros especificados por el usuario para la capa TMS.
@@ -3224,7 +3223,6 @@ export const tms = (userParamer) => {
 
   return layersVar;
 };
-
 
 /**
  * Analiza los parámetros especificados por el usuario para la capa WMTS.
@@ -3431,7 +3429,6 @@ export const getNameMBTiles = (parameter) => {
   return name;
 };
 
-
 /**
  * Analiza el parámetro para obtener la transparencia de la capa MBTiles.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -3584,7 +3581,7 @@ export const getMaxExtentMBTiles = (parameter) => {
       if (!isNullOrEmpty(value)) {
         value = value.split(';');
         if (!isNullOrEmpty(value) && value.length === 4) {
-          value = value.map(ext => parseFloat(ext.trim()));
+          value = value.map((ext) => parseFloat(ext.trim()));
           extent = value;
         }
       } else {
@@ -4418,7 +4415,6 @@ export const ogcapifeatures = (userParameters) => {
   return layers;
 };
 
-
 const generic = (userParameters, type) => {
   const params = userParameters;
 
@@ -4486,7 +4482,6 @@ const parameterFunction = {
   genericvector,
   genericraster,
 };
-
 
 /**
  * Analiza los parámetros de capa de usuario especificados en un objeto.

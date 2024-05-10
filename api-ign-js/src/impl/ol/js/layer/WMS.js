@@ -86,7 +86,7 @@ class WMS extends LayerBase {
    * </code></pre>
    * @api stable
    */
-  constructor(options = {}, vendorOptions) {
+  constructor(options = {}, vendorOptions = {}) {
     // calls the super constructor
     super(options, vendorOptions);
 
@@ -149,7 +149,6 @@ class WMS extends LayerBase {
       this.tiled = (this.options.singleTile !== true);
     }
 
-
     /**
      * WMS numZoomLevels. Número de niveles de zoom.
      */
@@ -175,7 +174,6 @@ class WMS extends LayerBase {
      */
     this.styles = this.options.styles || '';
 
-
     /**
      * WMS sldBody. Parámetros "ol.source.ImageWMS"
      */
@@ -190,7 +188,6 @@ class WMS extends LayerBase {
      * WMS minZoom. Zoom mínimo aplicable a la capa.
      */
     this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
-
 
     /**
      * WMS maxZoom. Zoom máximo aplicable a la capa.
@@ -233,8 +230,8 @@ class WMS extends LayerBase {
     if ((visibility === true) && (this.transparent !== true)) {
       // hides all base layers
       this.map.getBaseLayers()
-        .filter(layer => !layer.equals(this.facadeLayer_) && layer.isVisible())
-        .forEach(layer => layer.setVisible(false));
+        .filter((layer) => !layer.equals(this.facadeLayer_) && layer.isVisible())
+        .forEach((layer) => layer.setVisible(false));
 
       // set this layer visible
       if (!isNullOrEmpty(this.ol3Layer)) {
@@ -277,8 +274,8 @@ class WMS extends LayerBase {
     this.fire(EventType.ADDED_TO_MAP);
 
     // calculates the resolutions from scales
-    if (!isNull(this.options) &&
-      !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
+    if (!isNull(this.options)
+      && !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
       const units = this.map.getProjection().units;
       this.options.minResolution = getResolutionFromScale(this.options.minScale, units);
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
@@ -427,15 +424,15 @@ class WMS extends LayerBase {
 
         try {
           this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
-          // this.legendUrl_ = capabilitiesLayer.Style.find(s => s.Name === this.styles).LegendURL[0].OnlineResource;
+          // this.legendUrl_ = capabilitiesLayer.Style.find((s) => s.Name === this.styles).LegendURL[0].OnlineResource;
           /* eslint-disable no-empty */
         } catch (err) {}
       } else if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Layer !== undefined) {
-        if (capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0] !== undefined) {
-          capabilitiesLayer = capabilitiesLayer[i].Layer.filter(l => l.Name === selff.facadeLayer_.name)[0];
+        if (capabilitiesLayer[i].Layer.filter((l) => l.Name === selff.facadeLayer_.name)[0] !== undefined) {
+          capabilitiesLayer = capabilitiesLayer[i].Layer.filter((l) => l.Name === selff.facadeLayer_.name)[0];
           try {
             this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
-            // this.legendUrl_ = capabilitiesLayer.Style.find(s => s.Name === this.styles).LegendURL[0].OnlineResource;
+            // this.legendUrl_ = capabilitiesLayer.Style.find((s) => s.Name === this.styles).LegendURL[0].OnlineResource;
             /* eslint-disable no-empty */
           } catch (err) {}
         }
@@ -511,9 +508,9 @@ class WMS extends LayerBase {
       const opacity = this.opacity_;
       const zIndex = this.zIndex_;
       if (this.tiled === true) {
-        const tileGrid = (this.useCapabilities) ?
-          new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) }) :
-          false;
+        const tileGrid = (this.useCapabilities)
+          ? new OLTileGrid({ resolutions, extent, origin: getBottomLeft(extent) })
+          : false;
         olSource = new TileWMS({
           crossOrigin: this.crossOrigin, // crossOrigin inicial
           url: this.url,

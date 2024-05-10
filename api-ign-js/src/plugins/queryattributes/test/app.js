@@ -71,8 +71,8 @@ const map = M.map({
     ],
   }
 });
-        
-// Capa de prueba  
+
+// Capa de prueba
 const campamentos = new M.layer.WFS({
   url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?",
   namespace: "sepim",
@@ -92,7 +92,6 @@ const vertex = new M.layer.GeoJSON({
   extract: true, // Con esta propiedad sale el popup standard con las propiedades
 });
 
-
 // Definimos unas reglas de estilo para aplicar a la capa de vértices
 let estiloPoint = new M.style.Point({
   icon: {
@@ -108,7 +107,7 @@ let estiloPoint = new M.style.Point({
           form: function(feature,map) {
                   return M.style.form.CIRCLE;
           },
-          //e2m: luego sigo definiendo el resto de propiedades comunes a todos los sÃ­mbolos       
+          //e2m: luego sigo definiendo el resto de propiedades comunes a todos los sÃ­mbolos
           radius: function(feature,map) {
                                   return 5;//5
 
@@ -131,9 +130,9 @@ let estiloPoint = new M.style.Point({
                   },               // Degradado entre color de borde e interior
           opacity: 1,              // Transparencia. 0(transparente). 1(opaco).
           snaptopixel: true,
-  },                                    
+  },
 });
-        
+
 vertex.setStyle(estiloPoint);// Asociamos a la capa el estilo definido
 
 map.addLayers(vertex);

@@ -101,7 +101,6 @@ export default class Buffer extends M.Plugin {
     return M.language.getTranslation(lang).buffer;
   }
 
-
   /**
    * This function adds this plugin into the map
    *

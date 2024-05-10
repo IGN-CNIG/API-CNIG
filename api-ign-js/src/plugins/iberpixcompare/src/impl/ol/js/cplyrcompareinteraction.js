@@ -28,20 +28,20 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     this.opacityVal = (optionsE.opacityVal || 100);
 
     const layerA = [optionsE.lyrA]
-      .map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
+      .map((layer) => layer.getImpl().getOL3Layer()).filter((layer) => layer != null);
     this.addLayerA(layerA);
 
     const layerB = [optionsE.lyrB]
-      .map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
+      .map((layer) => layer.getImpl().getOL3Layer()).filter((layer) => layer != null);
     this.addLayerB(layerB);
 
     if (optionsE.lyrC !== undefined && optionsE.lyrD !== undefined) {
       const layerC = [optionsE.lyrC]
-        .map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
+        .map((layer) => layer.getImpl().getOL3Layer()).filter((layer) => layer != null);
       this.addLayerC(layerC);
 
       const layerD = [optionsE.lyrD]
-        .map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
+        .map((layer) => layer.getImpl().getOL3Layer()).filter((layer) => layer != null);
       this.addLayerD(layerD);
     }
   }
@@ -484,14 +484,16 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
           (lienzoMapa[0] * ratio) / 2,
           (lienzoMapa[1] * ratio) / 2,
           (ctx.canvas.width * ratio) / 2 - margenClip * ratio,
-          (ctx.canvas.height * ratio) / 2 - margenClip * ratio); // e2m: down&right fixed
+          (ctx.canvas.height * ratio) / 2 - margenClip * ratio,
+        ); // e2m: down&right fixed
       }
     } else if (this.comparisonMode === 3) {
       ctx.rect(
         this.pos[0] * ratio,
         this.pos[1] * ratio,
         (ctx.canvas.width - this.pos[0]) * ratio - margenClip * ratio,
-        (ctx.canvas.height - this.pos[1]) * ratio - margenClip * ratio); // e2m: down&right dynamic
+        (ctx.canvas.height - this.pos[1]) * ratio - margenClip * ratio,
+      ); // e2m: down&right dynamic
     }
 
     if (margenClip > 0) {
@@ -508,6 +510,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
   postcomposeD_(e) {
     e.context.restore();
   }
+
   /**
    * Create the swipe indicator
    *

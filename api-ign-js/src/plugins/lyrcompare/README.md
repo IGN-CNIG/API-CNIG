@@ -14,7 +14,7 @@ Podemos seleccionar el modo de comparación:
 - **Multivista**: Se muestra una capa en cada esquina.
 
 ### Imágen de ejemplo: Cortina vertical
-![Imagen -  Cortina Vertical](./img/cortinaVertical.png) 
+![Imagen -  Cortina Vertical](./img/cortinaVertical.png)
 
 ### Imágen de ejemplo: Cortina horizontal
 ![Imagen -  Cortina Horizontal](./img/cortinaHorizontal.png)
@@ -171,7 +171,7 @@ WMTS con formato Mapea y sin interfaz.
 const pluginLyrCompare = new M.plugin.LyrCompare({
   position: 'TL',
   layers: [
-    'WMTS*https://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN*true*image/jpeg*false*false*true',        
+    'WMTS*https://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN*true*image/jpeg*false*false*true',
     'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*false*image/jpeg*false*false*true',
     'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Callejero*true*image/png*false*false*true',
     'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true',

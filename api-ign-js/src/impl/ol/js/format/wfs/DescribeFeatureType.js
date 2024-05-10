@@ -76,11 +76,9 @@ class DescribeFeatureType {
 
     let describeFeatureTypeResponse;
     if (/json/gi.test(this.outputFormat_)) {
-      try {
-        describeFeatureTypeResponse = JSON.parse(response.text);
-      } catch (err) {
-        throw err;
-      }
+      // try {
+      describeFeatureTypeResponse = JSON.parse(response.text);
+      // } catch (err) { throw err; } // Eslint no-useless-catch fix
     }
 
     if (!describeFeatureTypeResponse) {

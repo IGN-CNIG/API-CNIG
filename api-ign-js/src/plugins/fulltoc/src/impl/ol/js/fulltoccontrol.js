@@ -137,7 +137,6 @@ export default class FullTOCControl extends M.impl.Control {
     layer.setZIndex(layer.getZIndex() + 8);
   }
 
-
   /**
    * Loads OGCAPIFeatures layer
    * @public
@@ -164,7 +163,6 @@ export default class FullTOCControl extends M.impl.Control {
       return numberFeatures;
     });
   }
-
 
   /**
    * Gets feature url of features
@@ -224,7 +222,6 @@ export default class FullTOCControl extends M.impl.Control {
     fUrl = fUrl.replaceAll(' ', '%20');
     return fUrl;
   }
-
 
   /**
    * Centers on features

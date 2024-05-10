@@ -41,8 +41,9 @@ export default class AttributionsControl extends M.Control {
     return new Promise((success, fail) => {
       const html = M.template.compileSync(template, {
         vars: {
-          icon: this.position === 'BR' || this.position === 'TR' ?
-            'g-cartografia-flecha-derecha' : 'g-cartografia-flecha-izquierda',
+          icon: this.position === 'BR' || this.position === 'TR'
+            ? 'g-cartografia-flecha-derecha'
+            : 'g-cartografia-flecha-izquierda',
         },
       });
       html.querySelector('#close-button').addEventListener('click', () => this.closePanel());

@@ -3,8 +3,6 @@
  */
 
 export default class ComparepanelControl extends M.impl.Control {
-   
-  
   /**
    * This function adds the control to the specified map
    *
@@ -19,6 +17,4 @@ export default class ComparepanelControl extends M.impl.Control {
     this.olMap = map.getMapImpl();
     super.addTo(map, html);
   }
-
-
 }

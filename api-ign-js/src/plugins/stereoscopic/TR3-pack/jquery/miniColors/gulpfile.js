@@ -1,4 +1,6 @@
 /* eslint-env node, es6 */
+/* eslint-disable strict */
+
 'use strict';
 
 const gulp = require('gulp-help')(require('gulp'));
@@ -15,7 +17,7 @@ gulp.task('clean', 'Clean up!', () => {
 gulp.task('minify', 'Minify it!', ['clean'], () => {
   return gulp.src('jquery.minicolors.js')
     .pipe(uglify({
-      preserveComments: 'license'
+      preserveComments: 'license',
     }))
     .on('error', (err) => {
       console.error(err);

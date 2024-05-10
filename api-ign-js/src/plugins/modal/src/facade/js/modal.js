@@ -157,11 +157,8 @@ export default class Modal extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    const URL =
-      (this.options.helpLink && Object.keys(this.options.helpLink).length > 0) ? [
-        this.options.helpLink.es,
-        this.options.helpLink.en,
-      ] : [this.url_en, this.url_es];
+    const URL = (this.options.helpLink && Object.keys(this.options.helpLink).length > 0)
+      ? [this.options.helpLink.es, this.options.helpLink.en] : [this.url_en, this.url_es];
     return `${this.name}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${URL[0]}*${URL[1]}`;
   }
 

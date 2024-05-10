@@ -101,23 +101,24 @@ export default class ComparatorsControl extends M.Control {
 
     this.defaultCompareMode = this.options.defaultCompareMode || false;
 
-    this.mirrorpanelParams =
-      M.utils.isUndefined(this.options.mirrorpanelParams) ? true : this.options.mirrorpanelParams;
+    this.mirrorpanelParams = M.utils
+      .isUndefined(this.options.mirrorpanelParams) ? true : this.options.mirrorpanelParams;
     if (typeof this.mirrorpanelParams === 'object') {
       this.mirrorpanelParams.enabledKeyFunctions = this.options.enabledKeyFunctions || false;
     }
 
-    this.lyrcompareParams =
-      M.utils.isUndefined(this.options.lyrcompareParams) ? true : this.options.lyrcompareParams;
+    this.lyrcompareParams = M.utils
+      .isUndefined(this.options.lyrcompareParams) ? true : this.options.lyrcompareParams;
 
-    this.transparencyParams =
-      M.utils.isUndefined(this.options.transparencyParams) ? true : this.options.transparencyParams;
+    this.transparencyParams = M.utils
+      .isUndefined(this.options.transparencyParams) ? true : this.options.transparencyParams;
     if (typeof this.transparencyParams === 'object') {
       this.transparencyParams.enabledKeyFunctions = this.options.enabledKeyFunctions || false;
     }
 
-    this.windowsyncParams = M.utils.isUndefined(this.options.windowsyncParams) ?
-      true : this.options.windowsyncParams;
+    this.windowsyncParams = M.utils.isUndefined(this.options.windowsyncParams)
+      ? true
+      : this.options.windowsyncParams;
 
     this.control = null;
   }
@@ -132,19 +133,19 @@ export default class ComparatorsControl extends M.Control {
    */
   createView(map) {
     this.map_ = map;
-    this.layerDefault = this.map_.getLayers().filter(l => l.getZIndex() !== 0 && l.name !== '__draw__');
+    this.layerDefault = this.map_.getLayers().filter((l) => l.getZIndex() !== 0 && l.name !== '__draw__');
     this.layersPlugin = [];
 
     if (this.options.listLayers) {
       this.layersPlugin = this.options.listLayers
-        .map(l => ((l instanceof Object) ? transformToStringLayers(l, this.map_) : l));
+        .map((l) => ((l instanceof Object) ? transformToStringLayers(l, this.map_) : l));
     }
 
     if (this.options.enabledDisplayInLayerSwitcher) {
       this.layersPlugin = this.layersPlugin.concat(this.map_
         .getLayers()
-        .filter(l => l.displayInLayerSwitcher && (l.type === 'WMS' || l.type === 'WMTS'))
-        .map(l => transformToStringLayers(l, this.map_)));
+        .filter((l) => l.displayInLayerSwitcher && (l.type === 'WMS' || l.type === 'WMTS'))
+        .map((l) => transformToStringLayers(l, this.map_)));
       this.addLayersEventsMap_();
       this.removeLayersEventMap_();
       this.defaultLayers_(this.layerDefault);
@@ -160,7 +161,7 @@ export default class ComparatorsControl extends M.Control {
         this.map_,
         this.defaultCompareMode,
       ],
-      controlCreate: param => new MirrorpanelControl(...param),
+      controlCreate: (param) => new MirrorpanelControl(...param),
       control: null,
       active: false,
     },
@@ -172,7 +173,7 @@ export default class ComparatorsControl extends M.Control {
         this.layersPlugin,
         this.map_,
       ],
-      controlCreate: param => new LyrCompareControl(...param),
+      controlCreate: (param) => new LyrCompareControl(...param),
       control: null,
       active: false,
     },
@@ -184,7 +185,7 @@ export default class ComparatorsControl extends M.Control {
         this.layersPlugin,
         this.map_,
       ],
-      controlCreate: param => new TransparencyControl(...param),
+      controlCreate: (param) => new TransparencyControl(...param),
       control: null,
       active: false,
     },
@@ -196,12 +197,11 @@ export default class ComparatorsControl extends M.Control {
         this.layersPlugin,
         this.map_,
       ],
-      controlCreate: param => new WindowSyncControl(...param),
+      controlCreate: (param) => new WindowSyncControl(...param),
       control: null,
       active: false,
     },
     ];
-
 
     return new Promise((success, fail) => {
       const translations = {
@@ -238,7 +238,6 @@ export default class ComparatorsControl extends M.Control {
       }
 
       this.accessibilityTab_(this.html);
-
 
       setTimeout(() => {
         this.defaultCompareMode_();
@@ -280,7 +279,7 @@ export default class ComparatorsControl extends M.Control {
 
           if (c.id === 'transparency') {
             setTimeout(() => {
-              this.map_.getLayers().forEach(l => !l.isBase && l.setVisible(false));
+              this.map_.getLayers().forEach((l) => !l.isBase && l.setVisible(false));
             }, 1000);
           }
 
@@ -301,16 +300,19 @@ export default class ComparatorsControl extends M.Control {
   }
 
   defaultLayers_() {
-    if (!this.controls ||
-      (!this.controls[0].active && !this.controls[1].active && !this.controls[2].active)) {
+    if (!this.controls
+      || (!this.controls[0].active && !this.controls[1].active && !this.controls[2].active)) {
       const layerDefault = this.layerDefault;
       setTimeout(() => {
         this.map_.addLayers(layerDefault);
       }, 500);
     }
     // else if (this.layerDefault.length !== 0) {
-    //   this.map_.addLayers(this.layerDefault.map(l =>
-    //     transformToStringLayers(l, this.map_, false)));
+    //   this.map_.addLayers(this.layerDefault.map((l) => transformToStringLayers(
+    //     l,
+    //     this.map_,
+    //     false,
+    //   )));
     // }
   }
 
@@ -350,9 +352,9 @@ export default class ComparatorsControl extends M.Control {
           this.layerDefault = [...this.layerDefault, ...layersStringDefault];
 
           // eslint-disable-next-line
-          this.controls.forEach(c =>
+          this.controls.forEach((c) => c
             // eslint-disable-next-line
-            c.controlParam[1] = [...c.controlParam[1], ...layersStringDefault]);
+            .controlParam[1] = [...c.controlParam[1], ...layersStringDefault]);
         }
       });
     });
@@ -392,7 +394,7 @@ export default class ComparatorsControl extends M.Control {
     });
   }
 
-  addNewLayerUpdate_(layer = [], control, selectes) {
+  addNewLayerUpdate_(layer = [], control = undefined, selectes = undefined) {
     const [activeLayerComparators, otherLayers] = checkLayers(layer, this.layersPlugin);
     this.addZindex_(activeLayerComparators);
     if (otherLayers.length === 0) return;
@@ -423,7 +425,7 @@ export default class ComparatorsControl extends M.Control {
   // get zIndex this.defaultLayers
   searchIndex_(layer) {
     const { name } = layer;
-    let index = this.layerDefault.filter(l => l.name === name);
+    let index = this.layerDefault.filter((l) => l.name === name);
     index = (index.length === 0) ? 0 : index[0].getZIndex();
     this.options.listLayers.forEach((l) => {
       if (l.name === name && typeof l === 'object') {
@@ -432,7 +434,6 @@ export default class ComparatorsControl extends M.Control {
     });
     return index;
   }
-
 
   changeLayersEventMap_(layer) {
     const { name } = layer;
@@ -517,7 +518,7 @@ export default class ComparatorsControl extends M.Control {
    * @api
    */
   accessibilityTab_(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 
   defaultCompareViz_() {
@@ -570,8 +571,9 @@ export default class ComparatorsControl extends M.Control {
 
     this.controls.forEach((c) => {
       const controlObjet = c;
-      controlObjet.active = (dic[this.options.defaultCompareMode] === controlObjet.id) ?
-        !controlObjet.active : false;
+      controlObjet.active = (dic[this.options.defaultCompareMode] === controlObjet.id)
+        ? !controlObjet.active
+        : false;
     });
 
     this.eventActive_();

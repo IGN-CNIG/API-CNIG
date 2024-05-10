@@ -66,7 +66,7 @@ export default class Comparepanel extends M.Plugin {
       'curtain': 'lyrcompare',
       'timeline': 'timeline',
       'spyeye': 'transparency',
-    }
+    };
 
     this.position = positions.includes(options.position) ? options.position : 'TR';
 
@@ -117,8 +117,8 @@ export default class Comparepanel extends M.Plugin {
      * Posible values: mirror | curtain | spyeye | timeline
      * @type {String}
      */
-     const defaultCompareModes = ['mirror', 'curtain', 'spyeye', 'timeline', 'none'];
-     this.defaultCompareMode = defaultCompareModes.includes(options.defaultCompareMode) ? options.defaultCompareMode : 'mirror';
+    const defaultCompareModes = ['mirror', 'curtain', 'spyeye', 'timeline', 'none'];
+    this.defaultCompareMode = defaultCompareModes.includes(options.defaultCompareMode) ? options.defaultCompareMode : 'mirror';
 
     /**
      * defaultCompareViz
@@ -128,24 +128,21 @@ export default class Comparepanel extends M.Plugin {
      */
     this.defaultCompareViz = options.defaultCompareViz || 0;
 
-
     /**
      * The name of the vector layer hat contains the attribution information.
      *
      * @private
      * @type {string}
      */
-     this.layerName_ = options.layerName || 'attributions';
+    this.layerName_ = options.layerName || 'attributions';
 
-     /**
+    /**
       * Layer with attributions
       *
       * @private
       * @type {M.layer.GeoJSON | M.layer.KML}
       */
-     this.layerCobertura_ = options.layerCobertura;
-
-
+    this.layerCobertura_ = options.layerCobertura;
 
     /**
      * Parameter of the features of the layer that contains the information of the URL.
@@ -160,8 +157,8 @@ export default class Comparepanel extends M.Plugin {
      * @type {number}
      * @public
      */
-     this.lyrsMirrorMinZindex = options.lyrsMirrorMinZindex;
-     if (this.lyrsMirrorMinZindex === undefined) this.lyrsMirrorMinZindex = 100;
+    this.lyrsMirrorMinZindex = options.lyrsMirrorMinZindex;
+    if (this.lyrsMirrorMinZindex === undefined) this.lyrsMirrorMinZindex = 100;
 
     /**
      * mirrorpanelParams
@@ -187,7 +184,6 @@ export default class Comparepanel extends M.Plugin {
      */
     this.lyrcompareParams = options.lyrcompareParams || {};
 
-
     /**
      * transparencyParams
      * @public
@@ -202,7 +198,7 @@ export default class Comparepanel extends M.Plugin {
      * Value: Object with configuration of BackImgLayers plugin
      * @type {Object}
      */
-     this.backImgLayersConfig = options.backImgLayersConfig || {};
+    this.backImgLayersConfig = options.backImgLayersConfig || {};
 
     /**
      * Metadata from api.json
@@ -217,7 +213,7 @@ export default class Comparepanel extends M.Plugin {
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
   }
-  
+
   /**
    * Return plugin language
    *
@@ -242,16 +238,14 @@ export default class Comparepanel extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-
     // e2m: ponemos el arraque del visualizador mirror a cero por defecto
     this.mirrorpanelParams.modeViz = this.mirrorpanelParams.modeViz || {};
     this.mirrorpanelParams.modeViz = (this.defaultCompareMode === 'mirror' ? this.defaultCompareViz : 0);
 
-    if (this.defaultCompareMode==='none'){
+    if (this.defaultCompareMode === 'none') {
       this.defaultCompareMode = 'mirror';
       this.defaultCompareViz = 0;
     }
-
 
     // e2m: ponemos el arraqnue del visualizador mirror a cero por defecto
     this.lyrcompareParams.comparisonMode = this.lyrcompareParams.comparisonMode || {};
@@ -267,7 +261,7 @@ export default class Comparepanel extends M.Plugin {
       position: this.position,
       urlCover: this.urlCoberturas_,
       lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
-      map
+      map,
     });
 
     this.controls_.push(this.control_);
@@ -284,8 +278,8 @@ export default class Comparepanel extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+    // eslint-disable-next-line no-underscore-dangle
     this.panel_._element.classList.add(this.vertical ? 'orientation-vertical' : 'orientation-horizontal');
-
   }
 
   /**
@@ -298,7 +292,9 @@ export default class Comparepanel extends M.Plugin {
   destroy() {
     this.control_.deactivate();
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.baseLayers, this.vertical, this.mirrorpanelParams, this.lyrcompareParams, this.timelineParams, this.transparencyParams] = [null, null, null, null, null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.baseLayers, this.vertical, this.mirrorpanelParams,
+      this.lyrcompareParams, this.timelineParams, this.transparencyParams] = [null, null, null,
+      null, null, null, null, null, null];
   }
 
   /**

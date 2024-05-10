@@ -127,7 +127,7 @@ const mp = new Help({
   ], // */
 });
 
-map.addPlugin(mp); 
+map.addPlugin(mp);
 window.mp = mp;
 
 // Lista de errores

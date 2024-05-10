@@ -3,7 +3,12 @@
  */
 import GeoJSONImpl from 'impl/format/GeoJSON';
 import Base from '../Base';
-import { isUndefined, isArray, isNullOrEmpty, isString } from '../util/Utils';
+import {
+  isUndefined,
+  isArray,
+  isNullOrEmpty,
+  isString,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 

@@ -4,7 +4,6 @@ M.language.setLang('en');
 // M.language.setLang('es');
 // M.proxy(false);
 
-
 const map = M.map({
   container: 'mapjs',
   zoom: 5,

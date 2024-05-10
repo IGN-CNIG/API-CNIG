@@ -75,8 +75,9 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @private
      * @type {boolean}
      */
-    this.resultVisibility = !M.utils.isUndefined(options.resultVisibility) ?
-      options.resultVisibility : true;
+    this.resultVisibility = !M.utils.isUndefined(options.resultVisibility)
+      ? options.resultVisibility
+      : true;
 
     /**
      * This variable indicates Geocoder Candidates service url
@@ -120,6 +121,7 @@ export default class IGNSearchLocatorControl extends M.Control {
         Number.parseFloat(geocoderCoords[1]),
       ];
     }
+
     /**
      * Geocoder reverse coordinates
      *
@@ -171,8 +173,8 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @param {Node} html - Panel html
    */
   initializateAddress(html) {
-    if ((this.requestStreet && this.requestStreet.length > 0) ||
-      (this.geocoderCoords && this.geocoderCoords.length === 2)) {
+    if ((this.requestStreet && this.requestStreet.length > 0)
+      || (this.geocoderCoords && this.geocoderCoords.length === 2)) {
       this.active(html);
     }
     if (this.requestStreet && this.requestStreet.length > 0) {
@@ -253,12 +255,12 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   addEvents() {
-    this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-search-input').addEventListener('keyup', e => this.createTimeout(e));
+    this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-search-input').addEventListener('keyup', (e) => this.createTimeout(e));
     this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-search-input').addEventListener('click', () => this.openRecentsResults());
     if (this.reverse) {
       this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-search-input').style.width = '160px';
       this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-locate-button').addEventListener('click', this.activateDeactivateReverse.bind(this));
-      this.clickReverseEvent = this.map.on(M.evt.CLICK, e => this.showReversePopUp(e));
+      this.clickReverseEvent = this.map.on(M.evt.CLICK, (e) => this.showReversePopUp(e));
     }
     this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-clean-button').addEventListener('click', () => this.clearResults());
   }
@@ -371,19 +373,19 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   createFullAddress(jsonResult) {
-    const via = (jsonResult.tip_via === null ||
-      jsonResult.tip_via === undefined) ? '' : jsonResult.tip_via;
-    const address = (jsonResult.address === null ||
-      jsonResult.address === undefined) ? '' : jsonResult.address;
-    const portal = (jsonResult.portalNumber === null ||
-      jsonResult.portalNumber === undefined ||
-      jsonResult.portalNumber === 0) ? '' : jsonResult.portalNumber;
-    const muni = (jsonResult.muni === null ||
-      jsonResult.muni === undefined) ? '' : jsonResult.muni;
-    const province = (jsonResult.province === null ||
-      jsonResult.province === undefined) ? '' : jsonResult.province;
-    const extension = (jsonResult.extension === null ||
-      jsonResult.extension === undefined) ? '' : jsonResult.extension.trim();
+    const via = (jsonResult.tip_via === null
+      || jsonResult.tip_via === undefined) ? '' : jsonResult.tip_via;
+    const address = (jsonResult.address === null
+      || jsonResult.address === undefined) ? '' : jsonResult.address;
+    const portal = (jsonResult.portalNumber === null
+      || jsonResult.portalNumber === undefined
+      || jsonResult.portalNumber === 0) ? '' : jsonResult.portalNumber;
+    const muni = (jsonResult.muni === null
+      || jsonResult.muni === undefined) ? '' : jsonResult.muni;
+    const province = (jsonResult.province === null
+      || jsonResult.province === undefined) ? '' : jsonResult.province;
+    const extension = (jsonResult.extension === null
+      || jsonResult.extension === undefined) ? '' : jsonResult.extension.trim();
     let street = `${via} ${address} ${portal}`;
     if (!M.utils.isNullOrEmpty(extension)) {
       street += ` ${extension}`;
@@ -412,8 +414,8 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   openRecentsResults() {
-    if (!this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-search-input').value &&
-      !this.html_.querySelector('#m-ignsearchlocator-results-list')) {
+    if (!this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocator-search-input').value
+      && !this.html_.querySelector('#m-ignsearchlocator-results-list')) {
       const recents = window.localStorage.getItem('recents');
       if (recents && recents.length > 0) {
         const compiledResult = M.template.compileSync(results, {
@@ -522,8 +524,8 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.resultsBox.classList.remove('locator-icon-spinner');
     const compiledResult = M.template.compileSync(results, {
       vars: {
-        noresults: this.allCandidates.length === 0 &&
-          this.nomenclatorFinished && this.candidatesFinished,
+        noresults: this.allCandidates.length === 0
+          && this.nomenclatorFinished && this.candidatesFinished,
         places: this.allCandidates,
         translations: {
           noresults: getValue('exception.noresults'),
@@ -556,7 +558,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     const text = listElement.querySelector('#info').innerHTML;
     this.html_.querySelector('#m-ignsearchlocator-search-input').value = text;
     const candidates = isRecentElement ? JSON.parse(window.localStorage.getItem('recents')) : this.allCandidates;
-    const selectedObject = candidates.filter(element => element.id === this.currentElement.getAttribute('id'))[0];
+    const selectedObject = candidates.filter((element) => element.id === this.currentElement.getAttribute('id'))[0];
     this.setRecents(selectedObject);
     this.createGeometryStyles();
     // if item comes from geocoder
@@ -718,12 +720,14 @@ export default class IGNSearchLocatorControl extends M.Control {
     return new Promise((resolve) => {
       const id = `&id=${selectedObject.id}`;
       const type = `&type=${selectedObject.type}`;
-      const portal = (selectedObject.portalNumber !== 0 &&
-          selectedObject.portalNumber !== undefined) ?
-        `&portal=${selectedObject.portalNumber}` : '';
-      const extension = (selectedObject.extension !== 0 &&
-          selectedObject.extension !== undefined) ?
-        `&extension=${selectedObject.extension}` : '';
+      const portal = (selectedObject.portalNumber !== 0
+        && selectedObject.portalNumber !== undefined)
+        ? `&portal=${selectedObject.portalNumber}`
+        : '';
+      const extension = (selectedObject.extension !== 0
+        && selectedObject.extension !== undefined)
+        ? `&extension=${selectedObject.extension}`
+        : '';
       const via = selectedObject.tip_via !== '' ? `&tip_via=${window.encodeURIComponent(selectedObject.tip_via)}` : '';
       let address = selectedObject.address;
 
@@ -865,7 +869,11 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   showPopUp(
-    fullAddress, mapcoords, featureCoordinates, exitState = null, e = {},
+    fullAddress,
+    mapcoords,
+    featureCoordinates,
+    exitState = null,
+    e = {},
     hasOffset = true,
   ) {
     const featureTabOpts = { content: '', title: '' };
@@ -876,7 +884,6 @@ export default class IGNSearchLocatorControl extends M.Control {
     featureTabOpts.content += `<div><b>${fullAddress !== undefined ? fullAddress : '-'}</b></div><br/>
                 <div class='ignsearchlocator-popup'><b>Lon: </b>${featureCoordinates[1].toFixed(6)} </div>
                 <div class='ignsearchlocator-popup'><b>Lat: </b>${featureCoordinates[0].toFixed(6)}</div>`;
-
 
     const myPopUp = new M.Popup({ panMapIfOutOfView: !e.fake });
     myPopUp.addTab(featureTabOpts);

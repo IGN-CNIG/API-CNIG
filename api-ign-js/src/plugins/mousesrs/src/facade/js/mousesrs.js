@@ -178,7 +178,6 @@ export default class MouseSRS extends M.Plugin {
     this.panel_ = null;
   }
 
-
   /**
    * Name of the plugin
    *
@@ -258,6 +257,7 @@ export default class MouseSRS extends M.Plugin {
 
     return cadena;
   }
+
   /**
    * Gets the API REST Parameters in base64 of the plugin
    *

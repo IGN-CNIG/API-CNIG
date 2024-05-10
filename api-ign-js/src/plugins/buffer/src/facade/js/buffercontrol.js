@@ -52,10 +52,10 @@ export default class BufferControl extends M.Control {
         },
       });
       this.template_ = html;
-      this.template_.querySelector('#point').addEventListener('click', e => this.manageDraw_(e));
-      this.template_.querySelector('#polygon').addEventListener('click', e => this.manageDraw_(e));
-      this.template_.querySelector('#lineString').addEventListener('click', e => this.manageDraw_(e));
-      this.template_.querySelector('#remove').addEventListener('click', e => this.removeFeatures(e));
+      this.template_.querySelector('#point').addEventListener('click', (e) => this.manageDraw_(e));
+      this.template_.querySelector('#polygon').addEventListener('click', (e) => this.manageDraw_(e));
+      this.template_.querySelector('#lineString').addEventListener('click', (e) => this.manageDraw_(e));
+      this.template_.querySelector('#remove').addEventListener('click', (e) => this.removeFeatures(e));
       success(html);
     });
   }
@@ -173,7 +173,6 @@ export default class BufferControl extends M.Control {
     }
   }
 
-
   /**
    * Get feature and create buffer
    * @public
@@ -189,7 +188,6 @@ export default class BufferControl extends M.Control {
     feature.setGeometry(format.readFeature(buffered).getGeometry().transform('EPSG:4326', this.facadeMap_.getProjection().code));
     this.manageActivatedDeactivated(target);
   }
-
 
   /**
    * Manage which features has to activated or deactivated
@@ -210,7 +208,6 @@ export default class BufferControl extends M.Control {
     }
     return flag;
   }
-
 
   /**
    * Remove all features and deactivated all tools

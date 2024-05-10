@@ -54,18 +54,17 @@ export default class BackImgLayerControl extends M.Control {
       return numColumnsV;
     });
 
-
     if (layerOpts !== undefined) {
       const layerOptsModified = layerOpts;
 
       layerOpts.filter((element) => {
         /* eslint no-underscore-dangle: 0 */
-        return (((layerOpts.indexOf(element)) !== 0) &&
-          (layerOpts.indexOf(element) % (numColumnsV) === 0));
+        return (((layerOpts.indexOf(element)) !== 0)
+          && (layerOpts.indexOf(element) % (numColumnsV) === 0));
       }).map((element) => {
         const elementIndex = layerOpts.indexOf(element);
 
-        const temp = Object.assign({}, element);
+        const temp = { ...element };
         temp.firstElement = true;
         layerOptsModified[elementIndex] = temp;
         return temp;
@@ -263,7 +262,7 @@ export default class BackImgLayerControl extends M.Control {
           if (key === 'Enter') this.showEmptyLayer(html);
         });
       } else {
-        b.addEventListener('click', e => this.showBaseLayer(e, this.layers[i], i));
+        b.addEventListener('click', (e) => this.showBaseLayer(e, this.layers[i], i));
         b.addEventListener('keydown', (e) => {
           if (e.key === 'Enter') this.showBaseLayer(e, this.layers[i], i);
         });
@@ -283,8 +282,7 @@ export default class BackImgLayerControl extends M.Control {
     return control instanceof BackImgLayerControl;
   }
 
-
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 }

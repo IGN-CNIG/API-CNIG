@@ -210,7 +210,6 @@ export default class Timeline extends M.Plugin {
     map.addPanels(this.panel_);
   }
 
-
   /**
    * This function destroys this plugin
    *
@@ -226,8 +225,9 @@ export default class Timeline extends M.Plugin {
     }
 
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.layers, this.radius]
-      = [null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.layers, this.radius] = [
+      null, null, null, null, null,
+    ];
   }
 
   /**

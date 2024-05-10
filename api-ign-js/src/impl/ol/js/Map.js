@@ -89,7 +89,7 @@ class Map extends MObject {
    * @param {object} viewVendorOptions Parámetros para la vista del mapa de la librería base.
    * @api
    */
-  constructor(div, facadeMap, options = {}, viewVendorOptions) {
+  constructor(div, facadeMap, options = {}, viewVendorOptions = {}) {
     super();
     /**
      * Fachada del mapa a implementar.
@@ -282,7 +282,7 @@ class Map extends MObject {
    * @api
    */
   getBaseLayers() {
-    return this.layers_.filter(layer => layer.transparent === false);
+    return this.layers_.filter((layer) => layer.transparent === false);
   }
 
   /**
@@ -341,7 +341,6 @@ class Map extends MObject {
 
     return this;
   }
-
 
   /**
    * Este método elimina las capas del mapa.
@@ -489,7 +488,7 @@ class Map extends MObject {
   removeKML(layers) {
     const kmlMapLayers = this.getKML(layers);
     kmlMapLayers.forEach((kmlLayer) => {
-      this.layers_ = this.layers_.filter(layer => !kmlLayer.equals(layer));
+      this.layers_ = this.layers_.filter((layer) => !kmlLayer.equals(layer));
       kmlLayer.getImpl().destroy();
       kmlLayer.fire(EventType.REMOVED_FROM_MAP, [kmlLayer]);
     }, this);
@@ -621,8 +620,8 @@ class Map extends MObject {
     });
     // calculate resolutions if layers were added and there is not any base layer
     // or if some base layer was added
-    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer) ||
-      addedLayers.some(l => l.transparent !== true && l.isVisible());
+    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer)
+      || addedLayers.some((l) => l.transparent !== true && l.isVisible());
     if (calculateResolutions) {
       this.updateResolutionsFromBaseLayer();
     }
@@ -642,7 +641,7 @@ class Map extends MObject {
     const wmsMapLayers = this.getWMS(layers);
     wmsMapLayers.forEach((wmsLayer) => {
       wmsLayer.fire(EventType.REMOVED_FROM_MAP, [wmsLayer]);
-      this.layers_ = this.layers_.filter(layer => !wmsLayer.equals(layer));
+      this.layers_ = this.layers_.filter((layer) => !wmsLayer.equals(layer));
       wmsLayer.getImpl().destroy();
     });
 
@@ -838,7 +837,7 @@ class Map extends MObject {
   removeWFS(layers) {
     const wfsMapLayers = this.getWFS(layers);
     wfsMapLayers.forEach((wfsLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(wfsLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(wfsLayer));
       wfsLayer.getImpl().destroy();
       wfsLayer.fire(EventType.REMOVED_FROM_MAP, [wfsLayer]);
     });
@@ -969,7 +968,7 @@ class Map extends MObject {
   removeCOG(layers) {
     const cogMapLayers = this.getCOG(layers);
     cogMapLayers.forEach((cogLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(cogLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(cogLayer));
       cogLayer.getImpl().destroy();
       cogLayer.fire(EventType.REMOVED_FROM_MAP, [cogLayer]);
     });
@@ -1098,7 +1097,7 @@ class Map extends MObject {
   removeOGCAPIFeatures(layers) {
     const ogcapifMapLayers = this.getOGCAPIFeatures(layers);
     ogcapifMapLayers.forEach((ogcapifLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(ogcapifLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(ogcapifLayer));
       ogcapifLayer.getImpl().destroy();
       ogcapifLayer.fire(EventType.REMOVED_FROM_MAP, [ogcapifLayer]);
     });
@@ -1231,7 +1230,7 @@ class Map extends MObject {
   removeWMTS(layers) {
     const wmtsMapLayers = this.getWMTS(layers);
     wmtsMapLayers.forEach((wmtsLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(wmtsLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(wmtsLayer));
       wmtsLayer.getImpl().destroy();
       wmtsLayer.fire(EventType.REMOVED_FROM_MAP, [wmtsLayer]);
     });
@@ -1331,8 +1330,8 @@ class Map extends MObject {
       }
     });
 
-    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer) ||
-      addedLayers.some(l => l.transparent !== true && l.isVisible());
+    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer)
+      || addedLayers.some((l) => l.transparent !== true && l.isVisible());
     if (calculateResolutions) {
       this.updateResolutionsFromBaseLayer();
     }
@@ -1352,7 +1351,7 @@ class Map extends MObject {
   removeMBTiles(layers) {
     const mbtilesMapLayers = this.getMBTiles(layers);
     mbtilesMapLayers.forEach((mbtilesLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(mbtilesLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(mbtilesLayer));
       mbtilesLayer.getImpl().destroy();
       mbtilesLayer.fire(EventType.REMOVED_FROM_MAP, [mbtilesLayer]);
     });
@@ -1460,7 +1459,7 @@ class Map extends MObject {
   removeMBTilesVector(layers) {
     const mbtilesMapLayers = this.getMBTilesVector(layers);
     mbtilesMapLayers.forEach((mbtilesLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(mbtilesLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(mbtilesLayer));
       mbtilesLayer.getImpl().destroy();
       mbtilesLayer.fire(EventType.REMOVED_FROM_MAP, [mbtilesLayer]);
     });
@@ -1584,7 +1583,7 @@ class Map extends MObject {
     // removes unknow layers
     layers.forEach((layer) => {
       if (includes(this.layers_, layer)) {
-        this.layers_ = this.layers_.filter(layer2 => !layer2.equals(layer));
+        this.layers_ = this.layers_.filter((layer2) => !layer2.equals(layer));
         layer.getImpl().destroy();
         if (layer.transparent === false) {
           // it was base layer so sets the visibility of the first one
@@ -1660,7 +1659,7 @@ class Map extends MObject {
   removeMVT(layers) {
     const mvtLayers = this.getMVT(layers);
     mvtLayers.forEach((mvtLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(mvtLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(mvtLayer));
       mvtLayer.getImpl().destroy();
       mvtLayer.fire(EventType.REMOVED_FROM_MAP, [mvtLayer]);
     });
@@ -1714,7 +1713,7 @@ class Map extends MObject {
   getXYZs(filtersParam) {
     let foundLayers = [];
     let filters = filtersParam;
-    const xyzLayers = this.layers_.filter(layer => layer.type === LayerType.XYZ);
+    const xyzLayers = this.layers_.filter((layer) => layer.type === LayerType.XYZ);
 
     // parse to Array
     if (isNullOrEmpty(filters)) {
@@ -1796,7 +1795,7 @@ class Map extends MObject {
     const xyzMapLayers = this.getXYZs(layers);
     xyzMapLayers.forEach((xyzLayer) => {
       xyzLayer.getImpl().destroy();
-      this.layers_ = this.layers_.filter(layer => !layer.equals(xyzLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(xyzLayer));
       xyzLayer.fire(EventType.REMOVED_FROM_MAP, [xyzLayer]);
     });
 
@@ -1815,7 +1814,7 @@ class Map extends MObject {
   getTMS(filtersParam) {
     let foundLayers = [];
     let filters = filtersParam;
-    const tmsLayers = this.layers_.filter(layer => layer.type === LayerType.TMS);
+    const tmsLayers = this.layers_.filter((layer) => layer.type === LayerType.TMS);
 
     // parse to Array
     if (isNullOrEmpty(filters)) {
@@ -1897,13 +1896,12 @@ class Map extends MObject {
     const tmsMapLayers = this.getTMS(layers);
     tmsMapLayers.forEach((tmsLayer) => {
       tmsLayer.getImpl().destroy();
-      this.layers_ = this.layers_.filter(layer => !layer.equals(tmsLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(tmsLayer));
       tmsLayer.fire(EventType.REMOVED_FROM_MAP, [tmsLayer]);
     });
 
     return this;
   }
-
 
   /**
    * Este método obtiene los controles especificados por el usuario.
@@ -1918,7 +1916,7 @@ class Map extends MObject {
     let filtersVar = filters;
     let foundControls = [];
 
-    let panelControls = this.facadeMap_.getPanels().map(p => p.getControls());
+    let panelControls = this.facadeMap_.getPanels().map((p) => p.getControls());
     if (panelControls.length > 0) {
       panelControls = panelControls.reduce((acc, controls) => acc.concat(controls));
     }
@@ -1952,7 +1950,7 @@ class Map extends MObject {
     }
     const nonRepeatFoundControls = [];
     foundControls.forEach((control) => {
-      const controlNames = nonRepeatFoundControls.map(c => c.name);
+      const controlNames = nonRepeatFoundControls.map((c) => c.name);
       if (!controlNames.includes(control.name)) {
         nonRepeatFoundControls.push(control);
       }
@@ -2074,10 +2072,9 @@ class Map extends MObject {
     const layerVersion = version;
     const projection = this.getProjection();
     // gest the capabilities URL
-    const getCapabilitiesUrl = (type === 'WMS') ?
-      getWMSGetCapabilitiesUrl(layerUrl, layerVersion) :
-      getWMTSGetCapabilitiesUrl(layerUrl, layerVersion);
-
+    const getCapabilitiesUrl = (type === 'WMS')
+      ? getWMSGetCapabilitiesUrl(layerUrl, layerVersion)
+      : getWMTSGetCapabilitiesUrl(layerUrl, layerVersion);
 
     // gets the getCapabilities response
     const response = await getRemote(getCapabilitiesUrl);
@@ -2088,7 +2085,8 @@ class Map extends MObject {
     if (type === 'WMS') {
       const getCapabilitiesUtils = await new GetCapabilities(
         parsedCapabilities,
-        layerUrl, projection,
+        layerUrl,
+        projection,
       );
       this.getCapabilitiesPromise = getCapabilitiesUtils;
     } else {
@@ -2096,7 +2094,7 @@ class Map extends MObject {
         parsedCapabilities.Contents.Layer.forEach((l) => {
           const name = l.Identifier;
           l.Style.forEach((s) => {
-            const layerText = response.text.split('Layer>').filter(text => text.indexOf(`Identifier>${name}<`) > -1)[0];
+            const layerText = response.text.split('Layer>').filter((text) => text.indexOf(`Identifier>${name}<`) > -1)[0];
             /* eslint-disable no-param-reassign */
             s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
           });
@@ -2291,7 +2289,6 @@ class Map extends MObject {
     return maxZoom;
   }
 
-
   /**
    * Este método establece el centro actual de la
    * instancia del mapa.
@@ -2339,7 +2336,6 @@ class Map extends MObject {
     }
     return center;
   }
-
 
   /**
    * Este método establece el estado de zoomConstrains
@@ -2444,7 +2440,7 @@ class Map extends MObject {
           bbox.x.max,
           bbox.y.max,
         ], size);
-        const restDiff = resolutions.map(r => Math.abs(r - oldResolution));
+        const restDiff = resolutions.map((r) => Math.abs(r - oldResolution));
         const newResolutionIdx = restDiff.indexOf(Math.min(...restDiff));
         newResolution = resolutions[newResolutionIdx];
       }

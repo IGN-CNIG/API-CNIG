@@ -214,7 +214,6 @@ export default class ShareMapControl extends M.Control {
      */
     this.filterLayers = options.filterLayers;
 
-
     /** Select all layers or not
       * @private
       * @type {Boolean}
@@ -475,7 +474,6 @@ export default class ShareMapControl extends M.Control {
     });
   }
 
-
   /**
    * This methods gets the controls url parameters
    *
@@ -484,25 +482,25 @@ export default class ShareMapControl extends M.Control {
    */
   getControls() {
     const url = this.baseUrl_.match(/(.*[A-Za-z-0-9])/)[0];
-    const controls = this.map_.getControls().map(control => control.name);
+    const controls = this.map_.getControls().map((control) => control.name);
     return new Promise((resolve) => {
       M.remote.get(`${url}/api/actions/controls`).then((response) => {
         const allowedControls = JSON.parse(response.text);
-        const resolvedControls = controls.filter(control => allowedControls.includes(control))
-          .filter(c => c !== 'backgroundlayers');
+        const resolvedControls = controls.filter((control) => allowedControls.includes(control))
+          .filter((c) => c !== 'backgroundlayers');
         if (resolvedControls.includes('mouse')) {
-          const mouseControl = this.map_.getControls().find(c => c.name === 'mouse');
+          const mouseControl = this.map_.getControls().find((c) => c.name === 'mouse');
           const { showProj } = mouseControl.getImpl();
           const index = resolvedControls.indexOf('mouse');
           resolvedControls[index] = showProj === true ? 'mouse*true' : 'mouse';
         }
         if (resolvedControls.includes('scale')) {
-          const scaleControl = this.map_.getControls().find(c => c.name === 'scale');
+          const scaleControl = this.map_.getControls().find((c) => c.name === 'scale');
           const { exactScale } = scaleControl.getImpl();
           const index = resolvedControls.indexOf('scale');
           resolvedControls[index] = exactScale === true ? 'scale*true' : 'scale';
         }
-        const backgroundlayers = this.map_.getControls().filter(c => c.name === 'backgroundlayers')[0];
+        const backgroundlayers = this.map_.getControls().filter((c) => c.name === 'backgroundlayers')[0];
         let backgroundlayersAPI;
         if (!M.utils.isNullOrEmpty(backgroundlayers)) {
           const { visible, activeLayer } = backgroundlayers;
@@ -538,7 +536,7 @@ export default class ShareMapControl extends M.Control {
       return res;
     });
 
-    return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
+    return layers.map((layer) => this.layerToParam(layer)).filter((param) => param != null);
   }
 
   /**
@@ -552,7 +550,7 @@ export default class ShareMapControl extends M.Control {
       return layer.displayInLayerSwitcher === true && layer.transparent === true;
     });
 
-    return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
+    return layers.map((layer) => this.layerToParam(layer)).filter((param) => param != null);
   }
 
   /**
@@ -560,8 +558,8 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getLayersInfilterLayers() {
-    const layers = this.map_.getLayers().filter(layer => this.filterLayers.includes(layer.name));
-    return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
+    const layers = this.map_.getLayers().filter((layer) => this.filterLayers.includes(layer.name));
+    return layers.map((layer) => this.layerToParam(layer)).filter((param) => param != null);
   }
 
   /**
@@ -613,8 +611,9 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getGeoJSON(layer) {
-    const source = !M.utils.isUndefined(layer.source) ?
-      layer.serialize() : encodeURIComponent(layer.url);
+    const source = !M.utils.isUndefined(layer.source)
+      ? layer.serialize()
+      : encodeURIComponent(layer.url);
     const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
     return `GeoJSON*${layer.name}*${source}*${layer.extract}*${style}`;
   }
@@ -708,7 +707,6 @@ export default class ShareMapControl extends M.Control {
   //   const properties = ol3.getProperties();
   //   delete properties.source;
 
-
   //   const vendorOptions = `
   //     new ol.layer.${typeLayer}({
   //        source: new ol.source.${typeSource}({
@@ -772,6 +770,6 @@ export default class ShareMapControl extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 }

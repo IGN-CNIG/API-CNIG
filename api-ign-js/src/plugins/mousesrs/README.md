@@ -118,7 +118,7 @@ Ejemplo:
 M.utils.encodeBase64(obj_params);
 ```
 
-Ejemplo del constructor: 
+Ejemplo del constructor:
 
 ```javascript
 {

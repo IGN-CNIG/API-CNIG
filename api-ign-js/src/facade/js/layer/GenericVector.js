@@ -98,7 +98,6 @@ class GenericVector extends Vector {
       params.legend = params.legend || opts.legend;
     }
 
-
     params.infoEventType = userParameters.infoEventType || 'click';
     opts.userMaxExtent = params.maxExtent || opts.userMaxExtent;
 
@@ -171,7 +170,7 @@ class GenericVector extends Vector {
     * @api
     */
   calculateMaxExtent() {
-    return new Promise(resolve => resolve(this.getMaxExtent(false)));
+    return new Promise((resolve) => { resolve(this.getMaxExtent(false)); });
   }
 
   /**
@@ -360,7 +359,6 @@ class GenericVector extends Vector {
     }
     return new Generic(this.constructor.DEFAULT_OPTIONS_STYLE);
   }
-
 
   /**
    * Este método comprueba si un objeto es igual

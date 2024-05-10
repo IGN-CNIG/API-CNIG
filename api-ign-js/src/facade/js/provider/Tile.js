@@ -52,7 +52,7 @@ class Tile {
   init(data) {
     this.initPromise_ = new Promise((resolve, reject) => {
       sqljs({
-        locateFile: file => `${M.config.SQL_WASM_URL}${file}`,
+        locateFile: (file) => `${M.config.SQL_WASM_URL}${file}`,
       }).then((SQL) => {
         getUint8ArrayFromData(data).then((uint8Array) => {
           this.db_ = new SQL.Database(uint8Array);
@@ -133,7 +133,7 @@ class Tile {
         return vectorTile;
       });
     } else {
-      cacheVectorTile = new Promise(resolve => resolve(cacheVectorTile));
+      cacheVectorTile = new Promise((resolve) => { resolve(cacheVectorTile); });
     }
     return cacheVectorTile;
   }

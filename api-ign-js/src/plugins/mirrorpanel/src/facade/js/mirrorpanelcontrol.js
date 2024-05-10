@@ -108,7 +108,6 @@ export default class MirrorpanelControl extends M.Control {
     this.createMapContainers();
   }
 
-
   /**
    * This function creates the view
    *
@@ -175,7 +174,7 @@ export default class MirrorpanelControl extends M.Control {
       // Button's click events
       this.template.querySelectorAll('button[id^="set-mirror-"]')
         .forEach((button, modeViz) => {
-          button.addEventListener('click', evt => {
+          button.addEventListener('click', (evt) => {
             this.manageVisionPanelByCSSGrid(modeViz);
           });
         });
@@ -196,6 +195,7 @@ export default class MirrorpanelControl extends M.Control {
   activate() {
     super.activate();
   }
+
   /**
    * This function is called on the control deactivation
    *
@@ -433,7 +433,7 @@ export default class MirrorpanelControl extends M.Control {
 
     this.mapL[mapLyr].getMapImpl().on('pointermove', (event) => {
       this.lyrCursor[mapLyr].setVisible(false);
-      Object.keys(this.featureLyrCursor).forEach(k => {
+      Object.keys(this.featureLyrCursor).forEach((k) => {
         if (k !== mapLyr) {
           if (this.featureLyrCursor[k] !== null) {
             this.lyrCursor[k].setVisible(true);

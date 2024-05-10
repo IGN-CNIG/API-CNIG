@@ -351,14 +351,17 @@ class KML extends Vector {
         this.loader_.getLoaderFn((features) => {
           resolve(features);
         })(
-          null, null, getProj(this.map.getProjection().code),
-          this.scaleLabel, this.layers, this.removeFolderChildren,
+          null,
+          null,
+          getProj(this.map.getProjection().code),
+          this.scaleLabel,
+          this.layers,
+          this.removeFolderChildren,
         );
       });
     }
     return this.loadFeaturesPromise_;
   }
-
 
   /**
    * Esta función comprueba si un objeto es igual

@@ -35,7 +35,7 @@ export default class IberpixCompareControl extends M.Control {
     this.order = options.order;
     this.position = options.position;
     this.params = [options.mirrorpanelParams, options.lyrcompareParams];
-    this.params.forEach(p => {
+    this.params.forEach((p) => {
       // eslint-disable-next-line no-param-reassign
       p.position = this.position;
     });
@@ -99,7 +99,7 @@ export default class IberpixCompareControl extends M.Control {
   }
 
   addButtonEvents() {
-    this.plugins.forEach(p => {
+    this.plugins.forEach((p) => {
       this.template.querySelector(`#m-cp-${p.name} .cp-button`).addEventListener('click', (e) => {
         this.deactivateAndActivate(p);
       });
@@ -112,7 +112,7 @@ export default class IberpixCompareControl extends M.Control {
   }
 
   deactivateAndActivate(plugin) {
-    this.plugins.forEach(p => {
+    this.plugins.forEach((p) => {
       if (p.name !== plugin.name) {
         this.template.querySelector(`#m-cp-${p.name} .cp-${p.name}`).classList.remove('hide-panel');
         this.template.querySelector(`#m-cp-${p.name} .cp-button`).classList.remove('active');
@@ -149,6 +149,6 @@ export default class IberpixCompareControl extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 }

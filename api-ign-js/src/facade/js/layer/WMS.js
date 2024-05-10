@@ -4,7 +4,14 @@
  */
 import WMSImpl from 'impl/layer/WMS';
 
-import { isNullOrEmpty, isUndefined, sameUrl, isString, normalize, isFunction } from '../util/Utils';
+import {
+  isNullOrEmpty,
+  isUndefined,
+  sameUrl,
+  isString,
+  normalize,
+  isFunction,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
 import * as parameter from '../parameter/parameter';
@@ -120,7 +127,6 @@ class WMS extends LayerBase {
      * WMS version: Versión WMS.
      */
     this.version = parameters.version;
-
 
     /**
      * WMS tiled: Verdadero si queremos dividir la capa en mosaicos, falso en caso contrario.
@@ -334,7 +340,7 @@ class WMS extends LayerBase {
    * @api
    */
   calculateMaxExtent() {
-    return new Promise(resolve => this.getMaxExtent(resolve));
+    return new Promise((resolve) => { this.getMaxExtent(resolve); });
   }
 
   /**
@@ -367,7 +373,6 @@ class WMS extends LayerBase {
     }
     return capabilitiesMaxExtent;
   }
-
 
   /**
    * Este método recupera una Promesa que será

@@ -61,6 +61,7 @@ export default class InformationControl extends M.Control {
     document.body.style.cursor = 'url(\'https://i.ibb.co/HBtH3Qs/click-info.png\') 1 7, auto';
     document.addEventListener('keyup', this.checkEscKey.bind(this));
   }
+
   /**
    * This function is called on the control deactivation
    *

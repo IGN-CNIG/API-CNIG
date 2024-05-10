@@ -125,7 +125,6 @@ export default class MirrorpanelControl extends M.Control {
       },
     });
 
-
     /**
      * Defie las capas de los mapas
      */
@@ -133,7 +132,7 @@ export default class MirrorpanelControl extends M.Control {
 
     this.layers = this.map_
       .getLayers()
-      .filter(l => l.displayInLayerSwitcher && (l.type === 'WMS' || l.type === 'WMTS'));
+      .filter((l) => l.displayInLayerSwitcher && (l.type === 'WMS' || l.type === 'WMTS'));
 
     this.lyrSelectorIds = ['mapLASelect', 'mapLBSelect', 'mapLCSelect', 'mapLDSelect'];
     this.maps = ['A', 'B', 'C', 'D'];
@@ -169,7 +168,6 @@ export default class MirrorpanelControl extends M.Control {
         M.toast.error(`Error: ${getValue('exception.mirrorModeVizTypes')} - ${n}`);
       }
     });
-
 
     this.createMapContainers();
     const options = {
@@ -250,7 +248,6 @@ export default class MirrorpanelControl extends M.Control {
     });
   }
 
-
   /**
    * This function destroys this control
    *
@@ -315,15 +312,14 @@ export default class MirrorpanelControl extends M.Control {
     this.removeMaps();
 
     if (
-      !(document.getElementById('mapjsB') ||
-        document.getElementById('mapjsC') ||
-        document.getElementById('mapjsD'))
+      !(document.getElementById('mapjsB')
+      || document.getElementById('mapjsC')
+      || document.getElementById('mapjsD'))
     ) return;
 
     this.destroyMapsContainer();
     this.template.remove();
   }
-
 
   /**
   * Crea los 4 contenedores de los mapas,
@@ -355,7 +351,6 @@ export default class MirrorpanelControl extends M.Control {
     bigContainer.appendChild(mapjsD);
   }
 
-
   changeViewPluginsGrid(change) {
     M.config.MOBILE_WIDTH = (change) ? '2000' : '768';
     let pluginsControls = [];
@@ -363,7 +358,7 @@ export default class MirrorpanelControl extends M.Control {
       pluginsControls = (e) ? [...pluginsControls, ...e.getControls(), ...e.getPlugins()]
         : pluginsControls;
     });
-    pluginsControls.forEach(e => ((e.changeStyleResponsive)
+    pluginsControls.forEach((e) => ((e.changeStyleResponsive)
       ? e.changeStyleResponsive(change) : null));
   }
 
@@ -480,7 +475,6 @@ export default class MirrorpanelControl extends M.Control {
     this.mapL[mapLyr].refresh();
   }
 
-
   createControls(control) {
     const controlsUrl = [
       'scale',
@@ -494,7 +488,6 @@ export default class MirrorpanelControl extends M.Control {
     ];
     return (controlsUrl.includes(control)) ? control : false;
   }
-
 
   addPluginsControls(mapLyr) {
     Object.keys(this.enabledControlsPlugins).forEach((k) => {
@@ -610,7 +603,6 @@ export default class MirrorpanelControl extends M.Control {
     document.getElementById('lienzo').remove();
   }
 
-
   /**
    * Cambia la capa del mapa
    * @param {M.map} map Mapa
@@ -630,7 +622,6 @@ export default class MirrorpanelControl extends M.Control {
     }
 
     optionSelected.disabled = true;
-
 
     const map = id.split('Select')[0].split('mapL')[1];
 
@@ -655,7 +646,7 @@ export default class MirrorpanelControl extends M.Control {
    */
   externalLayersEvt(optionSelected) {
     const name = getNameString(optionSelected.value);
-    const layer = this.mapL.A.getLayers().find(l => l.name === name);
+    const layer = this.mapL.A.getLayers().find((l) => l.name === name);
     layer.setVisible(!layer.isVisible());
   }
 
@@ -696,14 +687,13 @@ export default class MirrorpanelControl extends M.Control {
       }
       const keyStr = ['Control', 'Shift', 'Alt', 'Meta'].includes(zEvent.key) ? '' : zEvent.key;
 
-      const combinedKeys = (zEvent.ctrlKey ? 'Control ' : '') +
-            (zEvent.shiftKey ? 'Shift ' : '') +
-            (zEvent.altKey ? 'Alt ' : '') +
-            (zEvent.metaKey ? 'Meta ' : '') + keyStr;
+      const combinedKeys = (zEvent.ctrlKey ? 'Control ' : '')
+        + (zEvent.shiftKey ? 'Shift ' : '')
+        + (zEvent.altKey ? 'Alt ' : '')
+        + (zEvent.metaKey ? 'Meta ' : '') + keyStr;
       if (combinedKeys === 'Escape') {
         this.manageVisionPanelByCSSGrid(0);
       }
     });
   }
 }
-

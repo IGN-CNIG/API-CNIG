@@ -13,6 +13,7 @@ class GenerateVersionPlugin {
     this.fileName = opt.fileName;
     this.aliasRoot = opt.aliasRoot;
   }
+
   /**
    * This function apply the logic plugin.
    * @function

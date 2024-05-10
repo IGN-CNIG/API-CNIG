@@ -26,7 +26,7 @@
     * [X] Se comprueba que se carga con todos los controles.
         - [X] backgroundlayers.
         - [X] getfeatureinfo.
-        - [X] location. 
+        - [X] location.
         - [X] panzoom.
         - [X] panzoombar.
         - [X] rotate.

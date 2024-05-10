@@ -5,7 +5,6 @@ import template from 'templates/zoompanel';
 import ZoomPanelImpl from '../../impl/ol/js/zoompanelcontrol';
 import { getValue } from './i18n/language';
 
-
 export default class ZoomPanelControl extends M.Control {
   /**
    * Main constructor of the class. Creates a PluginControl

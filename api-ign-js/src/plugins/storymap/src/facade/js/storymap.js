@@ -101,7 +101,6 @@ export default class StoryMap extends M.Plugin {
      */
     this.options_ = options;
 
-
     /**
      * Option to allow the plugin to be draggable or not
      * @private

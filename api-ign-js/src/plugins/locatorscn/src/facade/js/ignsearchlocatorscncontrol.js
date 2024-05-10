@@ -53,8 +53,9 @@ export default class IGNSearchLocatorscnControl extends M.Control {
      * @private
      * @type {boolean}
      */
-    this.resultVisibility = !M.utils.isUndefined(options.resultVisibility) ?
-      options.resultVisibility : true;
+    this.resultVisibility = !M.utils.isUndefined(options.resultVisibility)
+      ? options.resultVisibility
+      : true;
 
     /**
      * This variable indicates the layers for the autocomplete.
@@ -119,6 +120,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
         Number.parseFloat(peliasCoords[1]),
       ];
     }
+
     /**
      * Pelias reverse coordinates
      *
@@ -170,9 +172,9 @@ export default class IGNSearchLocatorscnControl extends M.Control {
    * @param {Node} html - Panel html
    */
   initializateAddress(html) {
-    if ((this.locationID && this.locationID.length > 0) || (this.requestStreet &&
-        this.requestStreet.length > 0) ||
-      (this.geocoderCoords && this.geocoderCoords.length === 2)) {
+    if ((this.locationID && this.locationID.length > 0) || (this.requestStreet
+        && this.requestStreet.length > 0)
+        || (this.geocoderCoords && this.geocoderCoords.length === 2)) {
       this.active(html);
     }
     if (this.locationID && this.locationID.length > 0) {
@@ -257,12 +259,12 @@ export default class IGNSearchLocatorscnControl extends M.Control {
    * @api
    */
   addEvents() {
-    this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-search-input').addEventListener('keyup', e => this.createTimeout(e));
+    this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-search-input').addEventListener('keyup', (e) => this.createTimeout(e));
     this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-search-input').addEventListener('click', () => this.openRecentsResults());
     if (this.reverse) {
       this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-search-input').style.width = '160px';
       this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-locate-button').addEventListener('click', this.activateDeactivateReverse.bind(this));
-      this.clickReverseEvent = this.map.on(M.evt.CLICK, e => this.showReversePopUp(e));
+      this.clickReverseEvent = this.map.on(M.evt.CLICK, (e) => this.showReversePopUp(e));
     }
     this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-clean-button').addEventListener('click', () => this.clearResults());
   }
@@ -379,12 +381,12 @@ export default class IGNSearchLocatorscnControl extends M.Control {
    * @api
    */
   createFullAddress(jsonResult) {
-    const via = (jsonResult.tip_via === null ||
-      jsonResult.tip_via === undefined) ? '' : jsonResult.tip_via;
-    const address = (jsonResult.address === null ||
-      jsonResult.address === undefined) ? '' : jsonResult.address;
-    const extension = (jsonResult.extension === null ||
-      jsonResult.extension === undefined) ? '' : jsonResult.extension.trim();
+    const via = (jsonResult.tip_via === null
+      || jsonResult.tip_via === undefined) ? '' : jsonResult.tip_via;
+    const address = (jsonResult.address === null
+      || jsonResult.address === undefined) ? '' : jsonResult.address;
+    const extension = (jsonResult.extension === null
+      || jsonResult.extension === undefined) ? '' : jsonResult.extension.trim();
     let street = `${via} ${address}`;
     if (!M.utils.isNullOrEmpty(extension)) {
       street += ` ${extension}`;
@@ -413,8 +415,8 @@ export default class IGNSearchLocatorscnControl extends M.Control {
    * @api
    */
   openRecentsResults() {
-    if (!this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-search-input').value &&
-      !this.html_.querySelector('#m-ignsearchlocatorscn-results-list')) {
+    if (!this.html_.querySelector('#m-ignsearch-panel>#m-ignsearchlocatorscn-search-input').value
+      && !this.html_.querySelector('#m-ignsearchlocatorscn-results-list')) {
       const recents = window.localStorage.getItem('recents');
       if (recents && recents.length > 0) {
         const compiledResult = M.template.compileSync(results, {
@@ -584,8 +586,8 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     this.resultsBox.classList.remove('locatorscn-icon-spinner');
     const compiledResult = M.template.compileSync(results, {
       vars: {
-        noresults: this.allCandidates.length === 0 &&
-          this.candidatesFinished,
+        noresults: this.allCandidates.length === 0
+          && this.candidatesFinished,
         places: this.allCandidates,
         translations: {
           noresults: getValue('exception.noresults'),
@@ -618,7 +620,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     const text = listElement.querySelector('#info').innerHTML;
     this.html_.querySelector('#m-ignsearchlocatorscn-search-input').value = text;
     const candidates = isRecentElement ? JSON.parse(window.localStorage.getItem('recents')) : this.allCandidates;
-    const selectedObject = candidates.filter(element => element.id === this.currentElement.getAttribute('id'))[0];
+    const selectedObject = candidates.filter((element) => element.id === this.currentElement.getAttribute('id'))[0];
     this.setRecents(selectedObject);
     this.createGeometryStyles();
     // if item comes from Pelias
@@ -864,7 +866,11 @@ export default class IGNSearchLocatorscnControl extends M.Control {
    */
 
   showPopUp(
-    addressData, mapcoords, featureCoordinates, exitState = null, e = {},
+    addressData,
+    mapcoords,
+    featureCoordinates,
+    exitState = null,
+    e = {},
     hasOffset = true,
   ) {
     const featureTabOpts = { content: '', title: '' };

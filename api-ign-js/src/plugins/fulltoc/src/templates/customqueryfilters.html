@@ -1,10 +1,10 @@
 
-    <form>  
+    <form>
             <div id="search-form-otros">
                 <div tabindex="0" role="text" class="warning-msg warning-msg-custom-query ">{{translations.custom_query_warning}}</div>
 
             {{#each filtersList}}
-        
+
             {{#if this.title}}
                 {{#if this.bool}}
                 <div id="form-input" class="custom-query-form-input">
@@ -36,7 +36,7 @@
                 </div>
                 {{else if this.date}}
                     {{#if this.value}}
-                    
+
                         <div id="form-input" class="custom-query-form-input">
                             <label tabindex="0" for="search-form-{{this.title}}" class="custom-query-form-label">{{this.title}}</label>
                             <input tabindex="0" class="search-form-date" type="date" id="search-form-{{this.title}}" value="{{this.value}}">
@@ -63,7 +63,3 @@
 
         </div>
       </form>
-      
-      
-
-        

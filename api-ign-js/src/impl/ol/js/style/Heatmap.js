@@ -72,8 +72,8 @@ class Heatmap extends Style {
         this.oldOLLayer_ = ol3Layer;
       }
       const features = this.layer_.getFeatures();
-      const olFeatures = features.map(f => f.getImpl().getOLFeature());
-      olFeatures.forEach(f => f.setStyle(null));
+      const olFeatures = features.map((f) => f.getImpl().getOLFeature());
+      olFeatures.forEach((f) => f.setStyle(null));
       this.createHeatmapLayer_(olFeatures);
       this.layer_.getImpl().setOL3Layer(this.heatmapLayer_);
     }

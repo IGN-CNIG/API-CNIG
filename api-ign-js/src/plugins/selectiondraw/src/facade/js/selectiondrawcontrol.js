@@ -42,7 +42,7 @@ export default class SelectionDrawControl extends M.Control {
       const polygonBtn = html.querySelector('button#polygon');
       const pointBtn = html.querySelector('button#point');
       const clearBtn = html.querySelector('button#clear');
-      const drawLayer = map.getLayers().find(l => l.name === '__draw__');
+      const drawLayer = map.getLayers().find((l) => l.name === '__draw__');
 
       clearBtn.addEventListener('click', () => {
         drawLayer.clear();

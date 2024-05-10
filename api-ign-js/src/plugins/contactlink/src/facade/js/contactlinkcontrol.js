@@ -25,7 +25,6 @@ export default class ContactLinkControl extends M.Control {
     const impl = new ContactLinkImplControl();
     super(impl, 'ContactLink');
 
-
     /**
      * Link to cnig downloads
      * @private
@@ -195,9 +194,8 @@ export default class ContactLinkControl extends M.Control {
    * @function
    * @api stable
    */
-  activate() {
+  activate() {}
 
-  }
   /**
    * This function is called on the control deactivation
    *
@@ -205,9 +203,8 @@ export default class ContactLinkControl extends M.Control {
    * @function
    * @api stable
    */
-  deactivate() {
+  deactivate() {}
 
-  }
   /**
    * This function gets activation button
    *
@@ -232,9 +229,8 @@ export default class ContactLinkControl extends M.Control {
     return control instanceof ContactLinkControl;
   }
 
-
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
   // Add your own functions
 }

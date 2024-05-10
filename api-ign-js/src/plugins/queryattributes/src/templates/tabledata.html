@@ -9,7 +9,7 @@
                       <th data-sort="{{this.name}}" style="display:none;">{{this.alias}} <span class="icon-sort" /></th>
                     {{else}}
                       <th data-sort="{{this.name}}">{{this.alias}} <span class="icon-sort" /></th>
-                    {{/if}}  
+                    {{/if}}
                   {{/each}}
               </tr>
             </thead>
@@ -25,7 +25,7 @@
                       {{/if}}
                       {{#if isPkColumn}}
                         <td id="feat_{{this.value}}" style="display:none;"> {{this.value}}</td>
-                      {{/if}}                      
+                      {{/if}}
                       {{#if isFormatter}}
                         <td style="text-align:{{this.align}}; font-size:0.5rem;">{{formatterStr this}}</td>
                       {{/if}}
@@ -37,7 +37,7 @@
                       {{/if}}
                       {{#if isButtonURL}}
                         <td style="text-align:{{this.align}};"> <a class="m-queryattributes-information-button-link" href="{{this.value}}" target="_blank" rel="noopener noreferrer">{{this.typeparam}}</a></td>
-                      {{/if}}                                            
+                      {{/if}}
                     {{/each}}
                 </tr>
                 {{/each}}

@@ -1,5 +1,3 @@
-
-
 // eslint-disable-next-line import/first
 import JsZip from 'jszip';
 // eslint-disable-next-line import/first
@@ -36,7 +34,6 @@ export function showQueueElement(element) {
     e.style.display = 'block';
   }
 }
-
 
 // Return container queue
 export function getQueueContainer(html) {
@@ -77,7 +74,7 @@ export function removeQueueElements(html) {
 }
 
 // Generate wld file
-export function createWLD(bbox, dpi, size, epsgUser = false, map, type) {
+export function createWLD(bbox, dpi, size, epsgUser = false, map = {}, type = undefined) {
   let px;
 
   if (epsgUser) {
@@ -105,7 +102,6 @@ export function createWLD(bbox, dpi, size, epsgUser = false, map, type) {
 
   return px;
 }
-
 
 // Create jsZip file
 export function createZipFile(files, type, titulo) {

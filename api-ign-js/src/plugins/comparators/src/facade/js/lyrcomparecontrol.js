@@ -107,7 +107,6 @@ export default class LyrCompareControl extends M.Control {
     // eslint-disable-next-line radix
     this.staticDivision = values.staticDivision === undefined ? 1 : parseInt(values.staticDivision);
 
-
     /**
     * Opacity
     * Value: number in range 0 - 100
@@ -219,10 +218,8 @@ export default class LyrCompareControl extends M.Control {
       */
     this.interface = values.interface === undefined ? true : values.interface;
 
-
     this.dicAccesibilityButton = (M.language.getLang() === 'es') ? dicAccesibilityButtonES : dicAccesibilityButtonEN;
   }
-
 
   /**
     * This function creates the view
@@ -368,7 +365,6 @@ export default class LyrCompareControl extends M.Control {
     const mirrorID = dicMirrorLang[idButton];
     const langMirror = this.dicAccesibilityButton[mirrorID];
 
-
     langMirror.forEach(({ id, text }) => {
       document.querySelector(`.${id}`).innerHTML = text.secondaryMap;
     });
@@ -421,7 +417,6 @@ export default class LyrCompareControl extends M.Control {
     // if (this.comparisonMode) {
     //   this.activateCurtain();
     // }
-
 
     if ((this.layers.length - 1) === 0) {
       M.dialog.error(getValue('no_layers_plugin'));
@@ -507,7 +502,7 @@ export default class LyrCompareControl extends M.Control {
       // eslint-disable-next-line consistent-return
       item.addEventListener('change', (evt) => {
         const options = evt.target.options;
-        Array.from(options).forEach(option => option.removeAttribute('selected'));
+        Array.from(options).forEach((option) => option.removeAttribute('selected'));
         evt.target.selectedOptions[0].setAttribute('selected', '');
 
         // eslint-disable-next-line no-shadow, array-callback-return, consistent-return
@@ -690,7 +685,7 @@ export default class LyrCompareControl extends M.Control {
       }
 
       selectA.options[this.defaultLyrA].setAttribute('selected', '');
-      if (this.map_.getLayers().some(l => l.name === this.layerSelectedA.name)) {
+      if (this.map_.getLayers().some((l) => l.name === this.layerSelectedA.name)) {
         this.map_.addLayers(this.layerSelectedA);
       }
     }
@@ -706,7 +701,7 @@ export default class LyrCompareControl extends M.Control {
         return;
       }
 
-      if (this.map_.getLayers().some(l => l.name === this.layerSelectedB.name)) {
+      if (this.map_.getLayers().some((l) => l.name === this.layerSelectedB.name)) {
         this.map_.addLayers(this.layerSelectedB);
       }
     }
@@ -722,7 +717,7 @@ export default class LyrCompareControl extends M.Control {
         return;
       }
 
-      if (this.map_.getLayers().some(l => l.name === this.layerSelectedC.name)) {
+      if (this.map_.getLayers().some((l) => l.name === this.layerSelectedC.name)) {
         this.map_.addLayers(this.layerSelectedC);
       }
     }
@@ -738,7 +733,7 @@ export default class LyrCompareControl extends M.Control {
         return;
       }
 
-      if (this.map_.getLayers().some(l => l.name === this.layerSelectedD.name)) {
+      if (this.map_.getLayers().some((l) => l.name === this.layerSelectedD.name)) {
         this.map_.addLayers(this.layerSelectedD);
       }
     }
@@ -785,7 +780,6 @@ export default class LyrCompareControl extends M.Control {
     this.getImpl().removeEffectsCurtain();
   }
 
-
   manageLyrAvailable(lyrList) {
     if (this.template === null) {
       return;
@@ -802,16 +796,14 @@ export default class LyrCompareControl extends M.Control {
       dropDownContainer = this.template.querySelector(`#m-lyrcompare-lyr${dropDownLyrLetter}`);
       // eslint-disable-next-line no-plusplus
       for (let iOpt = 1; iOpt < dropDownContainer.options.length; iOpt++) {
-        dropDownContainer.options[iOpt].disabled =
-        !lyrList.includes(dropDownContainer.options[iOpt].value);
+        dropDownContainer.options[iOpt].disabled = !lyrList
+          .includes(dropDownContainer.options[iOpt].value);
       }
     } catch (error) {
-      /* eslint-disable */
-           console.log(error);
-           /* eslint-enable */
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
   }
-
 
   /**
     * This procedure updates texts in controls
@@ -883,7 +875,6 @@ export default class LyrCompareControl extends M.Control {
     }
   }
 
-
   removeActivate() {
     if (this.template.querySelector('.buttom-pressed')) {
       this.template.querySelector('.buttom-pressed').classList.remove('buttom-pressed');
@@ -916,19 +907,19 @@ export default class LyrCompareControl extends M.Control {
           const urlLayer = layer.split('*');
           const name = urlLayer[3];
           const layerByUrl = this.map_.getLayers()
-            .filter(l => name.includes(l.name))[this.map_.getLayers()
-              .filter(l => name.includes(l.name)).length - 1];
+            .filter((l) => name.includes(l.name))[this.map_.getLayers()
+              .filter((l) => name.includes(l.name)).length - 1];
           this.map_.removeLayers(layerByUrl);
         } else {
           const layerByName = this.map_.getLayers()
-            .filter(l => layer.includes(l.name))[this.map_.getLayers()
-              .filter(l => layer.includes(l.name)).length - 1];
+            .filter((l) => layer.includes(l.name))[this.map_.getLayers()
+              .filter((l) => layer.includes(l.name)).length - 1];
           this.map_.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
         const layerByObject = this.map_.getLayers()
-          .filter(l => layer.name.includes(l.name))[this.map_.getLayers()
-            .filter(l => layer.name.includes(l.name)).length - 1];
+          .filter((l) => layer.name.includes(l.name))[this.map_.getLayers()
+            .filter((l) => layer.name.includes(l.name)).length - 1];
         this.map_.removeLayers(layerByObject);
       }
     });
@@ -961,7 +952,7 @@ export default class LyrCompareControl extends M.Control {
   }
 
   getLayersNames() {
-    return this.layers.map(l => l.name);
+    return this.layers.map((l) => l.name);
   }
 
   addlayersControl(layer) {

@@ -176,7 +176,7 @@ https://componentes.cnig.es/api-core/?contactlink=base64=eyJwb3NpdGlvbiI6IlRMIiw
 
 ```javascript
 const mp = new ContactLink({
-  position: 'TR', 
+  position: 'TR',
   descargascnig: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp',
   pnoa: 'https://www.ign.es/web/comparador_pnoa/index.html',
   visualizador3d: 'https://visualizadores.ign.es/estereoscopico/',
@@ -186,7 +186,7 @@ const mp = new ContactLink({
   facebook: 'https://www.facebook.com/IGNSpain/',
   pinterest: 'https://www.pinterest.es/IGNSpain/',
   youtube: 'https://www.youtube.com/user/IGNSpain',
-  mail: 'mailto:ign@fomento.es', 
+  mail: 'mailto:ign@fomento.es',
 });
 
 map.addPlugin(mp);

@@ -4,7 +4,6 @@
  * @example import polyfill from 'M/polyfill';
  */
 
-
 /**
  * Esta función agrega funciones de "polyfill" a la API.
  * Un "polyfill" es una función que agrega una funcionalidad

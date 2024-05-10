@@ -136,8 +136,9 @@ class GenericRaster extends LayerBase {
    * @api
    */
   calculateMaxExtent() {
-    return new Promise(resolve => resolve(this.getMaxExtent(false)));
+    return new Promise((resolve) => { resolve(this.getMaxExtent(false)); });
   }
+
   /**
    * Este método cambia la extensión máxima de la capa.
    *
@@ -158,7 +159,6 @@ class GenericRaster extends LayerBase {
     }
     this.getImpl().setMaxExtent(extent);
   }
-
 
   /**
    * Devuelve la url del servicio.

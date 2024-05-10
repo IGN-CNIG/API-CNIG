@@ -20,7 +20,6 @@ const DEFAULT_CLASS_QUANTILE = 5;
  */
 const DEFAULT_CLASS_EQUAL_INTERVAL = 5;
 
-
 /**
  * @constant
  * @type {number}
@@ -127,7 +126,6 @@ export const stddevFn = (array) => {
   return stddev;
 };
 
-
 /**
  * Calcule las matrices requeridas para los descansos de Jenks. Estas matrices
  * se puede usar para cualquier clasificación de datos con `clases <= n_clases`.
@@ -206,11 +204,11 @@ const getMatrices = (data, numberClasses) => {
           // will increase its variance beyond the limit, break
           // the class at this point, setting the lowerClassLimit
           // at this point.
-          if (varianceCombinations[l][j] >=
-            (variance + varianceCombinations[i4][j - 1])) {
+          if (varianceCombinations[l][j]
+            >= (variance + varianceCombinations[i4][j - 1])) {
             lowerClassLimits[l][j] = lowerClassLimit;
-            varianceCombinations[l][j] = variance +
-              varianceCombinations[i4][j - 1];
+            varianceCombinations[l][j] = variance
+              + varianceCombinations[i4][j - 1];
           }
         }
       }

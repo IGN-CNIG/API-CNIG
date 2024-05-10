@@ -557,4 +557,3 @@ export default class Analysiscontrol extends M.impl.Control {
     });
   }
 }
-

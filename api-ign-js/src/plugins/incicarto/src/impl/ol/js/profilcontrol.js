@@ -181,8 +181,8 @@ Profil.prototype.onMove = function(e) {
   var dx = e.pageX - pos.left;
   var dy = e.pageY - pos.top;
   var ratio = this.ratio;
-  if (dx > this.margin_.left / ratio && dx < (this.canvas_.width - this.margin_.right) / ratio &&
-    dy > this.margin_.top / ratio && dy < (this.canvas_.height - this.margin_.bottom) / ratio) {
+  if (dx > this.margin_.left / ratio && dx < (this.canvas_.width - this.margin_.right) / ratio
+    && dy > this.margin_.top / ratio && dy < (this.canvas_.height - this.margin_.bottom) / ratio) {
     this.bar_.style.left = dx + 'px';
     this.bar_.style.display = 'block';
     var d = (dx * ratio - this.margin_.left) / this.scale_[0];
@@ -224,6 +224,7 @@ Profil.prototype.show = function() {
   this.element.classList.remove('ol-collapsed');
   this.dispatchEvent({ type: 'show', show: true });
 }
+
 /** Hide panel
  * @api stable
  */
@@ -231,6 +232,7 @@ Profil.prototype.hide = function() {
   this.element.classList.add('ol-collapsed');
   this.dispatchEvent({ type: 'show', show: false });
 }
+
 /** Toggle panel
  * @api stable
  */
@@ -239,6 +241,7 @@ Profil.prototype.toggle = function() {
   var b = this.element.classList.contains('ol-collapsed');
   this.dispatchEvent({ type: 'show', show: !b });
 }
+
 /** Is panel visible
  */
 Profil.prototype.isShown = function() {
@@ -292,17 +295,15 @@ Profil.prototype.setGeometry = function(g, options) {
 
   function dist2d(p1, p2) {
     const distancia = ol.sphere.getDistance(
-      ol.proj.transform(p1.map(coord => parseFloat(coord)), 'EPSG:4326', 'EPSG:4326'),
-      ol.proj.transform(p2.map(coord => parseFloat(coord)), 'EPSG:4326', 'EPSG:4326'));
+      ol.proj.transform(p1.map((coord) => parseFloat(coord)), 'EPSG:4326', 'EPSG:4326'),
+      ol.proj.transform(p2.map((coord) => parseFloat(coord)), 'EPSG:4326', 'EPSG:4326'));
 
     return distancia;
 
   }*/
 
-
   // Distance beetween 2 coords
   var proj = options.projection || this.getMap().getView().getProjection();
-
 
   function dist2d(p1, p2) {
     return ol.sphere.getDistance(

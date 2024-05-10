@@ -447,16 +447,18 @@ class OLStyleFontSymbol extends OLStyleRegularShape {
    * @api
    */
   getChecksum() {
-    const strokeChecksum = (this.stroke_ !== null) ?
-      this.stroke_.getChecksum() : '-';
-    const fillChecksum = (this.fill_ !== null) ?
-      this.fill_.getChecksum() : '-';
+    const strokeChecksum = (this.stroke_ !== null)
+      ? this.stroke_.getChecksum()
+      : '-';
+    const fillChecksum = (this.fill_ !== null)
+      ? this.fill_.getChecksum()
+      : '-';
 
-    const recalculate = (this.checksums_ === null) ||
-      (strokeChecksum !== this.checksums_[1] ||
-        fillChecksum !== this.checksums_[2] ||
-        this.radius_ !== this.checksums_[3] ||
-        `${this.form_}-${this.glyphs_ !== this.checksums_[4]}`);
+    const recalculate = (this.checksums_ === null)
+      || (strokeChecksum !== this.checksums_[1]
+        || fillChecksum !== this.checksums_[2]
+        || this.radius_ !== this.checksums_[3]
+        || `${this.form_}-${this.glyphs_ !== this.checksums_[4]}`);
 
     if (recalculate) {
       /* eslint-disable*/

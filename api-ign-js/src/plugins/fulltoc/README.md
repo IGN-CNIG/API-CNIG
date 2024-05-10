@@ -2,7 +2,7 @@
 # M.plugin.FullTOC
 
 Plugin que proporciona un árbol de contenidos con las capas disponibles para mostrar en el visualizador. Permite la carga de:
-- capas de un listado predefinido. 
+- capas de un listado predefinido.
 - capas de servicios que introduzca el usuario.
 
 # Aclaraciones

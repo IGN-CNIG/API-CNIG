@@ -177,7 +177,6 @@ export default class Comparators extends M.Plugin {
     this.controls_[0].controls = [];
     this.map_.removeControls(this.controls_);
 
-
     this.map_ = null;
     this.panel_ = null;
     this.name = null;

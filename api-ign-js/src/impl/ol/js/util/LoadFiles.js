@@ -391,8 +391,8 @@ class LoadFiles {
 
     // En el caso de que no tenga geometrías, comprobamos si es GML 3.2,
     // si lo es tenemos que parsearlo a mano.
-    if ((features.length === 0 || features[0].getGeometry() === undefined) &&
-    newSource.indexOf('gml/3.2') > 0) {
+    if ((features.length === 0 || features[0].getGeometry() === undefined)
+      && newSource.indexOf('gml/3.2') > 0) {
       features = this.gmlParser(newSource, projection);
     }
 

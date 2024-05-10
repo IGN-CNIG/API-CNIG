@@ -45,8 +45,8 @@ export default class VectorsManagementControl extends M.Control {
     this.edition_ = edition;
     this.help_ = help;
     this.style_ = style;
-    this.layers_ = map.getLayers().filter(l => (l instanceof M.layer.Vector ||
-      l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
+    this.layers_ = map.getLayers().filter((l) => (l instanceof M.layer.Vector
+      || l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
       return { value: l.name, text: l.legend || l.name, zIndex: l.getZIndex() };
     }).sort((a, b) => b.zIndex - a.zIndex);
     this.selectedLayer = null;
@@ -141,7 +141,7 @@ export default class VectorsManagementControl extends M.Control {
     this.html.querySelector('#m-vectorsmanagement-previews').classList.remove('closed');
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
-    this.selectedLayer = this.map.getLayers().filter(l => l.name === selectedLayerName)[0];
+    this.selectedLayer = this.map.getLayers().filter((l) => l.name === selectedLayerName)[0];
 
     if (this.selectedLayer.type === 'MVT' || this.selectedLayer.type === 'MBTilesVector') {
       M.toast.warning(getValue('exception.typeLayer'), null, 6000);
@@ -515,8 +515,8 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   refreshLayers() {
-    this.layers_ = this.map_.getLayers().filter(l => (l instanceof M.layer.Vector ||
-      l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher && l.name !== 'bufferLayer').map((l) => {
+    this.layers_ = this.map_.getLayers().filter((l) => (l instanceof M.layer.Vector
+      || l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher && l.name !== 'bufferLayer').map((l) => {
       return { value: l.name, text: l.legend || l.name, zIndex: l.getZIndex() };
     });
     const selector = this.html.querySelector('#m-selectionlayer');
@@ -569,7 +569,7 @@ export default class VectorsManagementControl extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 
   /**

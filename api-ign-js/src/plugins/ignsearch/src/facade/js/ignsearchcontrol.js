@@ -179,6 +179,7 @@ export default class IGNSearchControl extends M.Control {
      */
     this.pointStyle = pointStyle;
   }
+
   /**
    * This function creates the view
    *
@@ -207,7 +208,7 @@ export default class IGNSearchControl extends M.Control {
       this.resultsBox = html.querySelector('#m-ignsearch-results');
       this.searchInput = this.html.querySelector('#m-ignsearch-search-input');
       html.querySelector('#m-ignsearch-clear-button').addEventListener('click', this.clearResultsAndGeometry.bind(this));
-      html.querySelector('#m-ignsearch-search-input').addEventListener('keyup', e => this.createTimeout(e));
+      html.querySelector('#m-ignsearch-search-input').addEventListener('keyup', (e) => this.createTimeout(e));
       html.querySelector('#m-ignsearch-search-input').addEventListener('keydown', () => {
         clearTimeout(typingTimer);
       });
@@ -216,7 +217,7 @@ export default class IGNSearchControl extends M.Control {
       });
       html.querySelector('#m-ignsearch-locate-button').addEventListener('click', this.activateDeactivateReverse.bind(this));
       document.querySelector('.ign-search-panel>.m-panel-btn').addEventListener('click', this.clearResults.bind(this));
-      this.clickReverseEvent = this.map.on(M.evt.CLICK, e => this.showReversePopUp(e));
+      this.clickReverseEvent = this.map.on(M.evt.CLICK, (e) => this.showReversePopUp(e));
       this.changePlaceholder();
       if (!this.reverse) {
         html.querySelector('#m-ignsearch-locate-button').style.display = 'none';
@@ -322,7 +323,6 @@ export default class IGNSearchControl extends M.Control {
     }
   }
 
-
   /**
    * This function toggles reverse geocoder button activation.
    *
@@ -340,6 +340,7 @@ export default class IGNSearchControl extends M.Control {
       document.querySelector('#m-ignsearch-locate-button span').style.color = '#7A7A73';
     }
   }
+
   /**
    * This function shows information tooltip on clicked point.
    * @param {Event} e - Event
@@ -386,6 +387,7 @@ export default class IGNSearchControl extends M.Control {
     clearTimeout(typingTimer);
     typingTimer = setTimeout(() => this.searchInputValue(e), 500);
   }
+
   /**
    * This function gets activation button
    *
@@ -397,6 +399,7 @@ export default class IGNSearchControl extends M.Control {
   getActivationButton(html) {
     return html.querySelector('.m-ignsearch button');
   }
+
   /**
    * This function compares controls
    *
@@ -408,6 +411,7 @@ export default class IGNSearchControl extends M.Control {
   equals(control) {
     return control instanceof IGNSearchControl;
   }
+
   /**
    * This function
    * 1.- Takes user's input
@@ -534,7 +538,6 @@ export default class IGNSearchControl extends M.Control {
           datosGeometria = urlSinJSON.split('(((');
           datosCoordenadas = datosGeometria[1].split('), (');
 
-
           if (geoJsonData2.includes(']]]')) {
             geoJsonData2 = geoJsonData2.replace(']]]', ']]]]');
           }
@@ -555,7 +558,6 @@ export default class IGNSearchControl extends M.Control {
         if (geoJsonData2.includes('"type":"Polygon"')) {
           datosGeometria = urlSinJSON.split('((');
           datosCoordenadas = datosGeometria[1].split('), (');
-
 
           if (geoJsonData2.includes(']]')) {
             geoJsonData2 = geoJsonData2.replace(']]', ']]]');
@@ -625,8 +627,8 @@ export default class IGNSearchControl extends M.Control {
       this.map.addLayers(this.clickedElementLayer);
       this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
       // show popup for streets
-      if (featureJSON.properties.type === 'callejero' ||
-        featureJSON.properties.type === 'portal') {
+      if (featureJSON.properties.type === 'callejero'
+        || featureJSON.properties.type === 'portal') {
         const fullAddress = this.createFullAddress(featureJSON.properties);
 
         const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
@@ -680,8 +682,8 @@ export default class IGNSearchControl extends M.Control {
     this.map.addLayers(this.clickedElementLayer);
     this.zoomInLocation('g', featureJSON.geometry.type, this.zoom);
     // show popup for streets
-    if (featureJSON.properties.type === 'callejero' ||
-      featureJSON.properties.type === 'portal') {
+    if (featureJSON.properties.type === 'callejero'
+      || featureJSON.properties.type === 'portal') {
       const fullAddress = this.createFullAddress(featureJSON.properties);
       const coordinates = [featureJSON.properties.lat, featureJSON.properties.lng];
       const perfectResult = featureJSON.properties.state;
@@ -691,23 +693,23 @@ export default class IGNSearchControl extends M.Control {
     }
   }
 
-
   /**
    * This function takes data from an entity and returns the complete address
    * @param {string} jsonResult - json string with entity data
    */
   createFullAddress(jsonResult) {
-    const via = (jsonResult.tip_via === null ||
-      jsonResult.tip_via === undefined) ? '' : jsonResult.tip_via;
-    const address = (jsonResult.address === null ||
-      jsonResult.address === undefined) ? '' : jsonResult.address;
-    const portal = (jsonResult.portalNumber === null ||
-      jsonResult.portalNumber === undefined ||
-      jsonResult.portalNumber === 0) ? '' : jsonResult.portalNumber;
-    const muni = (jsonResult.muni === null ||
-      jsonResult.muni === undefined) ? '' : jsonResult.muni;
+    const via = (jsonResult.tip_via === null
+      || jsonResult.tip_via === undefined) ? '' : jsonResult.tip_via;
+    const address = (jsonResult.address === null
+      || jsonResult.address === undefined) ? '' : jsonResult.address;
+    const portal = (jsonResult.portalNumber === null
+      || jsonResult.portalNumber === undefined
+      || jsonResult.portalNumber === 0) ? '' : jsonResult.portalNumber;
+    const muni = (jsonResult.muni === null
+      || jsonResult.muni === undefined) ? '' : jsonResult.muni;
     return `${via} ${address} ${portal}, ${muni.toUpperCase()}`;
   }
+
   /**
    * This function removes last search layer and adds new layer
    * with current result (from nomenclator) features to map and zooms in result.
@@ -767,6 +769,7 @@ export default class IGNSearchControl extends M.Control {
       }
     });
   }
+
   /**
    * This function gets user input, searches for coincidences and adds each one to the given array.
    * @public
@@ -797,6 +800,7 @@ export default class IGNSearchControl extends M.Control {
       }
     });
   }
+
   /**
    * This function adds search coincidences on Nomenclator to array
    * @public
@@ -841,6 +845,7 @@ export default class IGNSearchControl extends M.Control {
       }
     });
   }
+
   /**
    * This function gets address of selected item and returns geojson data (with coordinates)
    * Only for Geocoder service
@@ -861,8 +866,9 @@ export default class IGNSearchControl extends M.Control {
         if (listElement.getAttribute('id') === element.id) {
           id = `&id=${element.id}`;
           type = `&type=${element.type}`;
-          portal = (element.portalNumber !== 0 && element.portalNumber !== undefined) ?
-            `&portal=${element.portalNumber}` : '';
+          portal = (element.portalNumber !== 0 && element.portalNumber !== undefined)
+            ? `&portal=${element.portalNumber}`
+            : '';
           via = element.tip_via !== '' ? `&tip_via=${element.tip_via}` : '';
         }
       });
@@ -889,6 +895,7 @@ export default class IGNSearchControl extends M.Control {
       M.proxy(true);
     });
   }
+
   /**
    * This function zooms in clicked location and draws geometry
    * @public
@@ -917,6 +924,7 @@ export default class IGNSearchControl extends M.Control {
     }
     this.resultsBox.innerHTML = '';
   }
+
   /**
    * This function zooms in MaxExtent of clicked element
    * @public
@@ -942,6 +950,7 @@ export default class IGNSearchControl extends M.Control {
       });
     }
   }
+
   /**
    * This function returns clicked location object
    * @public
@@ -951,8 +960,9 @@ export default class IGNSearchControl extends M.Control {
    * @api
    */
   findClickedItem(listElement, allCandidates) {
-    return allCandidates.filter(element => element.id === listElement.getAttribute('id'))[0];
+    return allCandidates.filter((element) => element.id === listElement.getAttribute('id'))[0];
   }
+
   /**
    * This function fixes path to get to this feature's coordinates
    * @public
@@ -999,6 +1009,7 @@ export default class IGNSearchControl extends M.Control {
       resolve();
     });
   }
+
   /**
    * This function clears drawn geometry from map.
    * @public
@@ -1010,6 +1021,7 @@ export default class IGNSearchControl extends M.Control {
     this.resultsBox.innerHTML = '';
     this.searchValue = '';
   }
+
   /**
    * This function clears input content, results box, popup and shown geometry.
    * @public
@@ -1027,6 +1039,7 @@ export default class IGNSearchControl extends M.Control {
       this.lat,
     ]);
   }
+
   /**
    * This function sets geometry visibility on map (visible|invisible).
    * @public
@@ -1037,6 +1050,7 @@ export default class IGNSearchControl extends M.Control {
   setResultVisibility(flag) {
     this.resultVisibility_ = flag;
   }
+
   /**
    * This function changes input placeholder based on services choice
    * @public
@@ -1050,6 +1064,7 @@ export default class IGNSearchControl extends M.Control {
       this.searchInput.placeholder = 'Topónimo';
     }
   }
+
   /**
    * This function creates some geometry styles.
    * @public
@@ -1098,6 +1113,7 @@ export default class IGNSearchControl extends M.Control {
       },
     });
   }
+
   /**
     * This
     function inserts a popUp with information about the searched location
@@ -1121,6 +1137,7 @@ export default class IGNSearchControl extends M.Control {
     }
     this.showPopUp(fullAddress, newCoordinates, coordinates, exitState, false, e);
   }
+
   /**
    * This function inserts a popup on the map with information about its location.
    * @param { string } fullAddress location address(street, portal, etc.)
@@ -1152,6 +1169,7 @@ export default class IGNSearchControl extends M.Control {
     this.lat = mapcoords[1];
     this.lng = mapcoords[0];
   }
+
   /**
    * This function sets given scale to map
    * @public

@@ -48,7 +48,7 @@ map.addLayers(new M.layer.GeoJSON({
 //   url: 'https://api-features.idee.es/collections/',
 //   name: 'hidrografia/Falls',
 //   legend: 'Capa OGCAPIFeatures',
-//   limit: 20  
+//   limit: 20
 // }));
 
 // window.fetch('./countries.mbtiles').then((response) => {
@@ -61,7 +61,6 @@ map.addLayers(new M.layer.GeoJSON({
 // }).catch((e) => {
 //   throw e;
 // });
-
 
 const mp = new VectorsManagement({
   position: 'TL',

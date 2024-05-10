@@ -34,7 +34,7 @@ exports.handlers = {
             const type = param.type.names[0];
             if (type in properties) {
               param.type.names[0] = type;
-              params.push.apply(params, properties[type].map(p => {
+              params.push.apply(params, properties[type].map((p) => {
                 const property = Object.assign({}, p);
                 property.name = `${param.name}.${property.name}`;
                 return property;

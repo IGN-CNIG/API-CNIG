@@ -5,7 +5,7 @@
 
 # Descripción
 
-Plugin que permite utilizar diferentes herramientas de impresión. 
+Plugin que permite utilizar diferentes herramientas de impresión.
 - Impresión de imagen con plantilla.
 - Impresión de imagen (desde servidor o desde cliente).
 - Impresión de imágenes de capas precargadas.
@@ -50,12 +50,12 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **printStatusUrl**: URL para consultar el estado de la impresión. Por defecto: https://componentes.cnig.es/geoprint/print/status.
 - **georefImageEpsg**: Indica si el control "Impresión de imágenes de capas precargadas" se añade al plugin (true/false). Por defecto: true.
   - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Impresión del mapa.
-  - **layers**: Array de objetos con información de las capas a imprimir. 
+  - **layers**: Array de objetos con información de las capas a imprimir.
     - url: URL de la capa.
     - name: Nombre de la capa.
     - format: Formato de la capa.
     - legend: Leyenda de la capa.
-    - EPSG: Opcional, por defecto 3857. 
+    - EPSG: Opcional, por defecto 3857.
   ```JavaScript
       layers: [
       {

@@ -162,7 +162,7 @@ export default class HelpControl extends M.Control {
           divContainer.id = `help-element-${index}`;
           divContainer.tabIndex = index;
           // eslint-disable-next-line no-return-assign
-          [...element.querySelectorAll('[tabindex]')].forEach(e => e.tabIndex = index);
+          [...element.querySelectorAll('[tabindex]')].forEach((e) => e.tabIndex = index);
           divContainer.appendChild(element);
           contents.appendChild(divContainer);
         });

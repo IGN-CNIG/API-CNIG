@@ -140,7 +140,6 @@ class WMTS extends LayerBase {
      */
     this.useCapabilities = parameters.useCapabilities !== false;
 
-
     /**
      * WMTS capabilitiesMetadata: Capacidades de metadatos WMTS.
      */
@@ -159,7 +158,6 @@ class WMTS extends LayerBase {
   get matrixSet() {
     return this.getImpl().matrixSet;
   }
-
 
   /**
    * Sobrescribe el valor de la "propiedad matrixSet".

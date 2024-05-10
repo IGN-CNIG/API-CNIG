@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
 	BufferAttribute,
 	ClampToEdgeWrapping,
@@ -20,7 +21,6 @@ import {
 	Scene,
 	Vector3
 } from './three.module.js';
-
 
 class GLTFExporter {
 
@@ -522,8 +522,8 @@ class GLTFWriter {
 
 		} catch ( error ) {
 
-			console.warn( 'THREE.GLTFExporter: userData of \'' + object.name + '\' ' +
-				'won\'t be serialized because of JSON.stringify error - ' + error.message );
+			console.warn( 'THREE.GLTFExporter: userData of \'' + object.name + '\' '
+				+ 'won\'t be serialized because of JSON.stringify error - ' + error.message );
 
 		}
 
@@ -965,10 +965,10 @@ class GLTFWriter {
 
 			}
 
-			if ( ( typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement ) ||
-				( typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement ) ||
-				( typeof OffscreenCanvas !== 'undefined' && image instanceof OffscreenCanvas ) ||
-				( typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap ) ) {
+			if ( ( typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement )
+				|| ( typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement )
+				|| ( typeof OffscreenCanvas !== 'undefined' && image instanceof OffscreenCanvas )
+				|| ( typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap ) ) {
 
 				ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
 
@@ -1380,8 +1380,7 @@ class GLTFWriter {
 
 			// Prefix all geometry attributes except the ones specifically
 			// listed in the spec; non-spec attributes are considered custom.
-			const validVertexAttributes =
-					/^(POSITION|NORMAL|TANGENT|TEXCOORD_\d+|COLOR_\d+|JOINTS_\d+|WEIGHTS_\d+)$/;
+			const validVertexAttributes = /^(POSITION|NORMAL|TANGENT|TEXCOORD_\d+|COLOR_\d+|JOINTS_\d+|WEIGHTS_\d+)$/;
 
 			if ( ! validVertexAttributes.test( attributeName ) ) attributeName = '_' + attributeName;
 
@@ -1396,9 +1395,9 @@ class GLTFWriter {
 			modifiedAttribute = null;
 			const array = attribute.array;
 
-			if ( attributeName === 'JOINTS_0' &&
-				! ( array instanceof Uint16Array ) &&
-				! ( array instanceof Uint8Array ) ) {
+			if ( attributeName === 'JOINTS_0'
+				&& !( array instanceof Uint16Array )
+				&& !( array instanceof Uint8Array ) ) {
 
 				console.warn( 'GLTFExporter: Attribute "skinIndex" converted to type UNSIGNED_SHORT.' );
 				modifiedAttribute = new BufferAttribute( new Uint16Array( array ), attribute.itemSize, attribute.normalized );

@@ -150,15 +150,14 @@ export default class CompareMirrorpanel extends M.Control {
       this.template = M.template.compileSync(template, templateOptions);
       this.accessibilityTab(this.template);
 
-
       // Button's click events
       this.template.querySelectorAll('button[id^="set-mirror-"]').forEach((button) => {
         const modeViz = parseInt(button.getAttribute('id').replace('set-mirror-', ''), 10);
-        button.addEventListener('click', evt => {
+        button.addEventListener('click', (evt) => {
           this.manageVisionPanelByCSSGrid(modeViz);
         });
 
-        button.addEventListener('keydown', evt => {
+        button.addEventListener('keydown', (evt) => {
           if (evt.keyCode === 13) this.manageVisionPanelByCSSGrid(modeViz);
         });
       });
@@ -367,7 +366,7 @@ export default class CompareMirrorpanel extends M.Control {
     this.mapL[mapLyr].addLayers(this.lyrCursor[mapLyr]);
     this.mapL[mapLyr].getMapImpl().on('pointermove', (event) => {
       this.lyrCursor[mapLyr].setVisible(false);
-      Object.keys(this.featureLyrCursor).forEach(k => {
+      Object.keys(this.featureLyrCursor).forEach((k) => {
         if (k !== mapLyr) {
           if (this.featureLyrCursor[k] !== null) {
             this.lyrCursor[k].setVisible(true);
@@ -448,6 +447,6 @@ export default class CompareMirrorpanel extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 }

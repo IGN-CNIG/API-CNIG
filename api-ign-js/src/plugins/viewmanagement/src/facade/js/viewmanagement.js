@@ -90,9 +90,10 @@ export default class ViewManagement extends M.Plugin {
      * @private
      * @type {Boolean|Array<Object>}
      */
-    this.predefinedzoom = M.utils.isUndefined(options.predefinedZoom) ||
-      options.predefinedZoom === true ?
-      this.getPredefinedZoom() : options.predefinedZoom;
+    this.predefinedzoom = M.utils.isUndefined(options.predefinedZoom)
+      || options.predefinedZoom === true
+      ? this.getPredefinedZoom()
+      : options.predefinedZoom;
 
     /**
      * Indicates if the control ZoomExtent is added to the plugin
@@ -147,8 +148,8 @@ export default class ViewManagement extends M.Plugin {
    * @api
    */
   addTo(map) {
-    if (this.predefinedzoom === false && this.zoomextent === false &&
-      this.viewhistory === false && this.zoompanel === false) {
+    if (this.predefinedzoom === false && this.zoomextent === false
+      && this.viewhistory === false && this.zoompanel === false) {
       M.dialog.error(getValue('exception.no_controls'));
     }
     this.controls_.push(new ViewManagementControl(

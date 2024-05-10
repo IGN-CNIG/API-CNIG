@@ -4,14 +4,22 @@
 import StyleBase from './Style';
 import StyleComposite from './Composite';
 import * as StyleQuantification from './Quantification';
-import { extendsObj, isNullOrEmpty, generateColorScale, isArray, isString, stringifyFunctions, defineFunctionFromString, isUndefined } from '../util/Utils';
+import {
+  extendsObj,
+  isNullOrEmpty,
+  generateColorScale,
+  isArray,
+  isString,
+  stringifyFunctions,
+  defineFunctionFromString,
+  isUndefined,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import * as Filter from '../filter/Filter';
 import StyleCluster from './Cluster';
 import StyleProportional from './Proportional';
 import { getValue } from '../i18n/language';
 import Generic from './Generic';
-
 
 /**
  * Precisión de los números en el "canvas".
@@ -145,7 +153,7 @@ class Choropleth extends StyleComposite {
    */
   setQuantification(quantification) {
     this.quantification_ = quantification;
-    if (!this.choroplethStyles_.some(style => isString(style))) {
+    if (!this.choroplethStyles_.some((style) => isString(style))) {
       if (this.choroplethStyles_.length < this.quantification_().length) {
         const [startStyle, endStyle] = this.choroplethStyles_;
         let startColor = startStyle.get('fill.color');
@@ -206,8 +214,9 @@ class Choropleth extends StyleComposite {
     if (!isNullOrEmpty(this.choroplethStyles_)) {
       if (this.breakPoints_.length > 0) {
         const canvasImages = [];
-        this.updateCanvasPromise_ = new Promise((success, fail) =>
-          this.loadCanvasImages_(0, canvasImages, success));
+        this.updateCanvasPromise_ = new Promise((success, fail) => {
+          this.loadCanvasImages_(0, canvasImages, success);
+        });
       }
     }
   }
@@ -272,8 +281,8 @@ class Choropleth extends StyleComposite {
    * @api
    */
   drawGeometryToCanvas(canvasImages, callbackFn) {
-    const heights = canvasImages.map(canvasImage => canvasImage.image.height);
-    const widths = canvasImages.map(canvasImage => canvasImage.image.width);
+    const heights = canvasImages.map((canvasImage) => canvasImage.image.height);
+    const widths = canvasImages.map((canvasImage) => canvasImage.image.width);
 
     const vectorContext = this.canvas_.getContext('2d');
     vectorContext.canvas.height = heights.reduce((acc, h) => acc + h + 5);
@@ -346,8 +355,8 @@ class Choropleth extends StyleComposite {
       const features = this.layer_.getFeatures();
       if (!isNullOrEmpty(features)) {
         const dataValues = this.getValues();
-        if (isNullOrEmpty(this.choroplethStyles_) || (!isNullOrEmpty(this.choroplethStyles_) &&
-            (isString(this.choroplethStyles_[0]) || isString(this.choroplethStyles_[1])))) {
+        if (isNullOrEmpty(this.choroplethStyles_) || (!isNullOrEmpty(this.choroplethStyles_)
+            && (isString(this.choroplethStyles_[0]) || isString(this.choroplethStyles_[1])))) {
           this.breakPoints_ = this.quantification_(dataValues);
           const colors = this.choroplethStyles_ || [];
           if (isUndefined(colors[0])) {
@@ -361,8 +370,8 @@ class Choropleth extends StyleComposite {
           if (!isArray(scaleColor)) {
             scaleColor = [scaleColor];
           }
-          const generateStyle = (scale, defaultStyle) =>
-            (scale.map(c => defaultStyle(c, this.borderColor)));
+          const generateStyle = (scale, defaultStyle) => (scale
+            .map((c) => defaultStyle(c, this.borderColor)));
           this.choroplethStyles_ = generateStyle(scaleColor, Choropleth.DEFAULT_STYLE);
         } else {
           this.breakPoints_ = this.quantification_(dataValues, this.choroplethStyles_.length);
@@ -370,7 +379,7 @@ class Choropleth extends StyleComposite {
       }
       for (let i = this.breakPoints_.length - 1; i > -1; i -= 1) {
         const filterLTE = new Filter.LTE(this.attributeName_, this.breakPoints_[i]);
-        filterLTE.execute(features).forEach(f => f.setStyle(this.choroplethStyles_[i]));
+        filterLTE.execute(features).forEach((f) => f.setStyle(this.choroplethStyles_[i]));
       }
       this.updateCanvas();
     }
@@ -460,7 +469,7 @@ class Choropleth extends StyleComposite {
    */
   toJSON() {
     const attributeName = this.getAttributeName();
-    const styles = this.getChoroplethStyles().map(style => style.serialize());
+    const styles = this.getChoroplethStyles().map((style) => style.serialize());
     let quantification = this.getQuantification();
     if (isNullOrEmpty(quantification.name)) {
       quantification = stringifyFunctions(quantification);
@@ -469,7 +478,7 @@ class Choropleth extends StyleComposite {
     }
     let options = extendsObj({}, this.getOptions());
     options = stringifyFunctions(options);
-    const compStyles = this.getStyles().map(style => style.serialize());
+    const compStyles = this.getStyles().map((style) => style.serialize());
 
     const parameters = [attributeName, styles, quantification, options, compStyles];
     const deserializedMethod = 'M.style.Choropleth.deserialize';
@@ -489,8 +498,8 @@ class Choropleth extends StyleComposite {
     serializedQuantification, serializedOptions, serializedCompStyles,
   ]) {
     const attributeName = serializedAttributeName;
-    const styles = serializedStyles.map(serializedStyle =>
-      StyleBase.deserialize(serializedStyle));
+    const styles = serializedStyles.map((serializedStyle) => StyleBase
+      .deserialize(serializedStyle));
     let quantification;
     if (serializedQuantification === 'jenks') {
       quantification = StyleQuantification.JENKS();
@@ -513,8 +522,8 @@ class Choropleth extends StyleComposite {
     /* eslint-enable */
     const deserializedStyle = styleFn(attributeName, styles, quantification, options);
 
-    const compStyles = serializedCompStyles.map(serializedStyle =>
-      StyleBase.deserialize(serializedStyle));
+    const compStyles = serializedCompStyles.map((serializedStyle) => StyleBase
+      .deserialize(serializedStyle));
     deserializedStyle.add(compStyles);
 
     return deserializedStyle;

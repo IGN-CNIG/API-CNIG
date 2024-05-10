@@ -62,7 +62,7 @@ class XYZ extends Layer {
    * </code></pre>
    * @api stable
    */
-  constructor(userParameters, options = {}, vendorOptions) {
+  constructor(userParameters, options = {}, vendorOptions = {}) {
     super(options, vendorOptions);
 
     /**
@@ -186,7 +186,6 @@ class XYZ extends Layer {
       this.ol3Layer.setMinZoom(this.minZoom);
     }
   }
-
 
   /**
    * Este método modifica la url de la tesela.

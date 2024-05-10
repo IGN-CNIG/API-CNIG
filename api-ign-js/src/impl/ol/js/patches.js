@@ -14,25 +14,6 @@ import { createFromCapabilitiesMatrixSet } from 'ol/tilegrid/WMTS';
 // import { POINTERUP, POINTERDOWN, POINTERDRAG } from 'ol/MapBrowserEventType';
 // import { getValues } from 'ol/obj';
 
-
-/**
- * Devuelve verdadero si la capa es visible y si la resolución aprobada es
- * entre "minResolution" y "maxResolution" de la capa. La comparacion es
- * inclusiva para "minResolution" y exclusiva para "maxResolution".
- * 
- * Parche: Comparación de resoluciones máximas inclusiva para mostrar capas con 
- * la misma resolución que su resolución máxima.
- * @param {ol.layer.LayerState} layerState Estado de la capa.
- * @param {number} resolution Resolución.
- * @return {boolean} La capa es visible en la resolución dada.
- * @function
- * @api
- */
-LayerModule.visibleAtResolution = (layerState, resolution) => {
-  return layerState.visible && resolution >= layerState.minResolution &&
-    resolution <= layerState.maxResolution;
-};
-
 /**
  * Parche: deshabilita la configuración del orden de los ejes.
  * @function

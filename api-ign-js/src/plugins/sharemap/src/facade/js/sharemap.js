@@ -206,8 +206,7 @@ export default class ShareMap extends M.Plugin {
       * @private
       * @type @type {Array}
       */
-    this.filterLayers = (options.shareLayer === undefined || options.shareLayer
-      === false)
+    this.filterLayers = (options.shareLayer === undefined || options.shareLayer === false)
       ? filterLayers
       : [];
 
@@ -283,6 +282,7 @@ export default class ShareMap extends M.Plugin {
 
     map.addPanels(this.panel_);
   }
+
   /**
    * This function destroys this plugin
    *

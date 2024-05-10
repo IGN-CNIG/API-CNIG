@@ -33,7 +33,6 @@ export class ChoroplethBinding extends Binding {
     this.addTemplate('choroplethstyles.html', parent, { ranges: rangesArray });
   }
 
-
   addEventRangeListener() {
     const rangesButton = this.querySelector('[data-number-ranges]');
     rangesButton.addEventListener('input', this.setRanges.bind(this));
@@ -115,7 +114,7 @@ export class ChoroplethBinding extends Binding {
     }
     if (this.layer_ != null) {
       options['attributes'] = this.getAttributes();
-      options['attributes'].forEach(attribute => attribute['selected'] = options.attribute);
+      options['attributes'].forEach((attribute) => attribute['selected'] = options.attribute);
     }
     return options;
   }

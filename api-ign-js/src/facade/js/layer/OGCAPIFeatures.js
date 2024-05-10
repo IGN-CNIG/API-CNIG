@@ -3,7 +3,12 @@
  */
 import OGCAPIFeaturesImpl from 'impl/layer/OGCAPIFeatures';
 
-import { isUndefined, isNullOrEmpty, isString, normalize } from '../util/Utils';
+import {
+  isUndefined,
+  isNullOrEmpty,
+  isString,
+  normalize,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';
 import * as LayerType from './Type';
@@ -433,7 +438,6 @@ class OGCAPIFeatures extends Vector {
       this.getImpl().extract = false;
     }
   }
-
 
   /**
    * Este método comprueba si un objeto es igual

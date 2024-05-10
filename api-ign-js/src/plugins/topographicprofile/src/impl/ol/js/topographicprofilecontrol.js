@@ -6,8 +6,8 @@ import Profil from './profilcontrol';
 import { getValue } from '../../../facade/js/i18n/language';
 
 const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
-const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_500&' +
-  'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
+const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_500&'
+  + 'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
 const NO_DATA_VALUE = 'NODATA_value -9999.000';
 
 export default class TopographicprofileControl extends M.impl.Control {
@@ -16,8 +16,9 @@ export default class TopographicprofileControl extends M.impl.Control {
     [this.distancePoinst_, this.mercator_, this.serviceURL, this.coordEPSG4326] = [opts.distance, 'EPSG:900913', opts.serviceURL, 'EPSG:4326'];
     [this.projectionMap_, this.profil_, this.facadeMap_, this.vector_, this.source_,
       this.vectorProfile_, this.sourceProfile_, this.draw_, this.lineCoord_,
-      this.pointsCoord_, this.dataPoints_, this.pt]
-      = [null, null, null, null, null, null, null, null, null, null, null, null];
+      this.pointsCoord_, this.dataPoints_, this.pt] = [
+      null, null, null, null, null, null, null, null, null, null, null, null,
+    ];
     [this.lineString_, this.feature_, this.style_] = [null, null, null];
   }
 
@@ -125,7 +126,6 @@ export default class TopographicprofileControl extends M.impl.Control {
     return points;
   }
 
-
   getDistBetweenPoints(firstPoint, secondPoint) {
     const line = new ol.geom.LineString([ol.proj
       .transform(firstPoint, this.projectionMap_, this.mercator_),
@@ -154,14 +154,12 @@ export default class TopographicprofileControl extends M.impl.Control {
     panel.style.pointerEvents = 'none';
   }
 
-
   endLoad() {
     document.body.style.cursor = 'default';
     this.activate();
     const panel = document.querySelector('.m-topographicprofile.activated');
     panel.style.pointerEvents = 'auto';
   }
-
 
   activate() {
     if (!this.draw_) {
@@ -185,8 +183,10 @@ export default class TopographicprofileControl extends M.impl.Control {
       // this.facadeMap_.getMapImpl().addInteraction(this.draw_);
       this.pointsCoord_ = '';
       for (let i = 1; i < this.lineCoord_.length; i += 1) {
-        this.pointsCoord_ = this.pointsCoord_.concat(this.findNewPoints(this.lineCoord_[i - 1],
-          this.lineCoord_[i]));
+        this.pointsCoord_ = this.pointsCoord_.concat(this.findNewPoints(
+          this.lineCoord_[i - 1],
+          this.lineCoord_[i],
+        ));
       }
       this.getDataFromGGISCore();
     });
@@ -252,7 +252,6 @@ export default class TopographicprofileControl extends M.impl.Control {
     this.lineString_.setCoordinates(coordsXYZMap);
     this.vector_.getSource().addFeature(this.feature_);
   }
-
 
   controlProfile() {
     if (!this.profil_) {

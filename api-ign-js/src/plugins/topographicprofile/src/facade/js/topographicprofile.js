@@ -43,15 +43,12 @@ export default class Topographicprofile extends M.Plugin {
      */
     this.position_ = opts.position ? opts.position : 'TR';
 
-
     /**
      * Metadata from api.json
      * @private
      * @type {Object}
      */
     this.metadata_ = api.metadata;
-
-
 
     this.facadeMap_ = null;
     this.panel_ = null;

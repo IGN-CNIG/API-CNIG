@@ -95,8 +95,9 @@ export default class Help extends M.Plugin {
      * @private
      * @type {Boolean}
      */
-    this.extendInitialExtraContents = M.utils.isUndefined(options.extendInitialExtraContents) ?
-      true : options.extendInitialExtraContents;
+    this.extendInitialExtraContents = M.utils.isUndefined(options.extendInitialExtraContents)
+      ? true
+      : options.extendInitialExtraContents;
 
     /**
      * Contenido extra para la ayuda - Final

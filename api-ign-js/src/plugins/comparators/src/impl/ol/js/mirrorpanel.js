@@ -23,4 +23,3 @@ export default class CompareMirrorpanel extends M.impl.Control {
     super.addTo(map, html);
   }
 }
-

@@ -48,7 +48,7 @@ module.exports = {
             options: {
               // insert: 'head',
               injectType: 'singletonStyleTag',
-            }, 
+            },
           },
           "css-loader",
         ],

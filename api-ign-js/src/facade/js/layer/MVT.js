@@ -5,7 +5,12 @@ import MVTTileImpl from 'impl/layer/MVT';
 import RenderFeatureImpl from 'impl/feature/RenderFeature';
 import FeatureImpl from 'impl/feature/Feature';
 import Vector from './Vector';
-import { isUndefined, isNullOrEmpty, normalize, isString } from '../util/Utils';
+import {
+  isUndefined,
+  isNullOrEmpty,
+  normalize,
+  isString,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import { MVT as MVTType } from './Type';
 import * as parameter from '../parameter/parameter';
@@ -75,7 +80,7 @@ class MVT extends Vector {
    * </code></pre>
    * @api
    */
-  constructor(parameters = {}, options = {}, vendorOptions = {}, implParam) {
+  constructor(parameters = {}, options = {}, vendorOptions = {}, implParam = undefined) {
     let opts = parameter.layer(parameters, MVTType);
     const optionsVar = options;
     if (typeof parameters !== 'string') {
@@ -190,7 +195,8 @@ class MVT extends Vector {
     return features.map((olFeature) => {
       if (this.mode === mode.RENDER) {
         return RenderFeatureImpl.olFeature2Facade(olFeature);
-      } else if (this.mode === mode.FEATURE) {
+      }
+      if (this.mode === mode.FEATURE) {
         return FeatureImpl.olFeature2Facade(olFeature, undefined, this.getProjection());
       }
       return null;

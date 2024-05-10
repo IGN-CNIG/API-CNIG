@@ -14,7 +14,6 @@ import tokml from 'tokml';
 import * as shp from 'shpjs';
 import { getValue } from './i18n/language';
 
-
 const DEFAULT_TEXT = 'Texto';
 const DEFAULT_FONT_COLOR = '#71a7d3';
 const DEFAULT_FONT_FAMILY = 'Arial';
@@ -297,10 +296,10 @@ export default class GeometryDrawControl extends M.Control {
     this.fontSize = this.textDrawTemplate.querySelector('#fontSize').value;
     this.fontFamily = this.textDrawTemplate.querySelector('#fontFamily').value;
 
-    this.textDrawTemplate.querySelector('#textContent').addEventListener('input', e => this.styleChange(e));
-    this.textDrawTemplate.querySelector('#fontColor').addEventListener('change', e => this.styleChange(e));
-    this.textDrawTemplate.querySelector('#fontSize').addEventListener('change', e => this.styleChange(e));
-    this.textDrawTemplate.querySelector('#fontFamily').addEventListener('change', e => this.styleChange(e));
+    this.textDrawTemplate.querySelector('#textContent').addEventListener('input', (e) => this.styleChange(e));
+    this.textDrawTemplate.querySelector('#fontColor').addEventListener('change', (e) => this.styleChange(e));
+    this.textDrawTemplate.querySelector('#fontSize').addEventListener('change', (e) => this.styleChange(e));
+    this.textDrawTemplate.querySelector('#fontFamily').addEventListener('change', (e) => this.styleChange(e));
     this.textDrawTemplate.querySelector('button').addEventListener('click', this.deleteSingleFeature.bind(this));
     this.textDrawTemplate.querySelector('button').style.display = 'none';
   }
@@ -345,7 +344,7 @@ export default class GeometryDrawControl extends M.Control {
     });
     const inputFile = this.uploadingTemplate.querySelector('#geometrydraw-uploading>input');
     this.loadBtn_ = this.uploadingTemplate.querySelector('#geometrydraw-uploading button');
-    inputFile.addEventListener('change', evt => this.changeFile(evt, inputFile.files[0]));
+    inputFile.addEventListener('change', (evt) => this.changeFile(evt, inputFile.files[0]));
     this.loadBtn_.addEventListener('click', () => {
       this.loadLayer();
     });
@@ -373,8 +372,8 @@ export default class GeometryDrawControl extends M.Control {
     this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
 
-    this.drawingTools.querySelector('#colorSelector').addEventListener('change', e => this.styleChange(e));
-    this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', e => this.styleChange(e));
+    this.drawingTools.querySelector('#colorSelector').addEventListener('change', (e) => this.styleChange(e));
+    this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', (e) => this.styleChange(e));
     this.drawingTools.querySelector('button').addEventListener('click', () => this.deleteSingleFeature());
 
     this.drawingTools.querySelector('button').style.display = 'none';
@@ -406,8 +405,8 @@ export default class GeometryDrawControl extends M.Control {
     this.currentColor = this.locationDrawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.locationDrawingTools.querySelector('#thicknessSelector').value;
 
-    this.locationDrawingTools.querySelector('#colorSelector').addEventListener('change', e => this.styleChange(e));
-    this.locationDrawingTools.querySelector('#thicknessSelector').addEventListener('change', e => this.styleChange(e));
+    this.locationDrawingTools.querySelector('#colorSelector').addEventListener('change', (e) => this.styleChange(e));
+    this.locationDrawingTools.querySelector('#thicknessSelector').addEventListener('change', (e) => this.styleChange(e));
     this.locationDrawingTools.querySelector('button#m-geometrydraw-coordinates-delete').addEventListener('click', () => this.deleteSingleFeature());
     this.locationDrawingTools.querySelector('#m-geometrydraw-coordinates-srs').addEventListener('change', (e) => {
       const value = e.target.value;
@@ -458,8 +457,8 @@ export default class GeometryDrawControl extends M.Control {
         },
       });
 
-      if (innerThis.x !== undefined && innerThis.x.length > 0 &&
-        innerThis.y !== undefined && innerThis.y.length > 0) {
+      if (innerThis.x !== undefined && innerThis.x.length > 0
+          && innerThis.y !== undefined && innerThis.y.length > 0) {
         const parsedX = parseFloat(innerThis.x);
         const parsedY = parseFloat(innerThis.y);
         if (!Number.isNaN(parsedX) && !Number.isNaN(parsedY)) {
@@ -483,11 +482,11 @@ export default class GeometryDrawControl extends M.Control {
    * @param {String} html - Geometry buttons template.
    */
   addEvents(html) {
-    html.querySelector('#pointdrawing').addEventListener('click', e => this.geometryBtnClick('Point'));
-    html.querySelector('#pointlocateddrawing').addEventListener('click', e => this.geometryBtnClick('LocatedPoint'));
-    html.querySelector('#linedrawing').addEventListener('click', e => this.geometryBtnClick('LineString'));
-    html.querySelector('#polygondrawing').addEventListener('click', e => this.geometryBtnClick('Polygon'));
-    html.querySelector('#textdrawing').addEventListener('click', e => this.geometryBtnClick('Text'));
+    html.querySelector('#pointdrawing').addEventListener('click', (e) => this.geometryBtnClick('Point'));
+    html.querySelector('#pointlocateddrawing').addEventListener('click', (e) => this.geometryBtnClick('LocatedPoint'));
+    html.querySelector('#linedrawing').addEventListener('click', (e) => this.geometryBtnClick('LineString'));
+    html.querySelector('#polygondrawing').addEventListener('click', (e) => this.geometryBtnClick('Polygon'));
+    html.querySelector('#textdrawing').addEventListener('click', (e) => this.geometryBtnClick('Text'));
     html.querySelector('#cleanAll').addEventListener('click', () => this.deleteDrawnFeatures());
     html.querySelector('#download').addEventListener('click', () => this.openDownloadOptions());
     html.querySelector('#upload').addEventListener('click', () => this.openUploadOptions());
@@ -565,8 +564,8 @@ export default class GeometryDrawControl extends M.Control {
       this.createDrawingTemplate();
     }
 
-    if (this.isPointActive || this.isLocatedPointActive || this.isLineActive ||
-      this.isPolygonActive || this.isTextActive) {
+    if (this.isPointActive || this.isLocatedPointActive || this.isLineActive
+        || this.isPolygonActive || this.isTextActive) {
       if (this.isTextActive) {
         this.textDrawTemplate.querySelector('#textContent').value = '';
         this.textDrawTemplate.querySelector('button').style.display = 'none';
@@ -600,8 +599,8 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   deactivateDrawing() {
-    if (this.isPointActive || this.isLocatedPointActive || this.isLineActive ||
-      this.isPolygonActive || this.isTextActive) {
+    if (this.isPointActive || this.isLocatedPointActive || this.isLineActive
+        || this.isPolygonActive || this.isTextActive) {
       if (this.isLocatedPointActive) {
         document.querySelector('.m-geometrydraw').removeChild(this.locationDrawingTools);
 
@@ -845,7 +844,6 @@ export default class GeometryDrawControl extends M.Control {
     this.getImpl().setImplSource();
   }
 
-
   /**
    * Sets style for text feature.
    * @public
@@ -863,8 +861,8 @@ export default class GeometryDrawControl extends M.Control {
       this.fontSize = DEFAULT_SIZE;
     }
 
-    if ((this.feature.getStyle() !== null) &&
-      this.feature.getStyle().get('label.font').split(' ')[0] === 'bold') {
+    if ((this.feature.getStyle() !== null)
+      && this.feature.getStyle().get('label.font').split(' ')[0] === 'bold') {
       fontProperties = `bold ${this.fontSize}px ${this.fontFamily}`;
     } else {
       fontProperties = `${this.fontSize}px ${this.fontFamily}`;
@@ -1116,9 +1114,9 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   hideTextPoint() {
-    if (this.geometry === 'Point' &&
-      this.feature &&
-      this.feature.getStyle().get('label') !== undefined) {
+    if (this.geometry === 'Point'
+      && this.feature
+      && this.feature.getStyle().get('label') !== undefined) {
       this.feature.getStyle().set('fill.opacity', 0);
     }
   }
@@ -1207,14 +1205,14 @@ export default class GeometryDrawControl extends M.Control {
         case 'Poylgon':
         case 'MultiPolygon':
           feature.geometry.coordinates.forEach((coord) => {
-            if (feature.geometry.type === 'Polygon' &&
-              Number.isNaN(coord[0][coord[0].length - 1])) {
+            if (feature.geometry.type === 'Polygon'
+              && Number.isNaN(coord[0][coord[0].length - 1])) {
               coord.map((c) => {
                 c.pop();
                 return c;
               });
-            } else if (feature.geometry.type === 'MultiPolygon' &&
-              Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
+            } else if (feature.geometry.type === 'MultiPolygon'
+              && Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
               coord.forEach((coordsArray) => {
                 coordsArray.map((c) => {
                   c.pop();
@@ -1564,7 +1562,7 @@ export default class GeometryDrawControl extends M.Control {
    */
   toGeoJSON(layer) {
     const code = this.map_.getProjection().code;
-    const featuresAsJSON = layer.getFeatures().map(feature => feature.getGeoJSON());
+    const featuresAsJSON = layer.getFeatures().map((feature) => feature.getGeoJSON());
     return { type: 'FeatureCollection', features: this.geojsonTo4326(featuresAsJSON, code) };
   }
 
@@ -1691,8 +1689,8 @@ export default class GeometryDrawControl extends M.Control {
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.filter(f => f.getImpl().getOLFeature() ===
-      olFeature)[0] || undefined;
+    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+      || undefined;
 
     this.geometry = this.feature.getGeometry().type;
 
@@ -1703,8 +1701,8 @@ export default class GeometryDrawControl extends M.Control {
     }
 
     // if selected feature is a text feature
-    if (this.geometry === 'Point' &&
-      this.feature.getStyle().get('label') !== undefined) {
+    if (this.geometry === 'Point'
+      && this.feature.getStyle().get('label') !== undefined) {
       document.querySelector('.m-geometrydraw').appendChild(this.textDrawTemplate);
       document.querySelector('.m-geometrydraw>#textdrawtools button').style.display = 'block';
     } else {

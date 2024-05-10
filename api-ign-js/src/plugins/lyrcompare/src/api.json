@@ -1,6 +1,6 @@
 {
   "url": {
-    "name": "lyrcompare", 
+    "name": "lyrcompare",
     "separator": "*!"
   },
   "constructor": "M.plugin.LyrCompare",

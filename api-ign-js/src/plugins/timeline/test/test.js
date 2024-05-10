@@ -190,7 +190,6 @@ const pluginTimeline = new Timeline({
 //   intervals
 // });
 
-
 map.addPlugin(pluginTimeline);
 
 window.map = map;

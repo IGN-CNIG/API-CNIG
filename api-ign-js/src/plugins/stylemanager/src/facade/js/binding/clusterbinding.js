@@ -71,7 +71,7 @@ export class ClusterBinding extends Binding {
       Binding.createObj(styleOpts['ranges'][id], path, value);
     });
 
-    styleOpts['ranges'] = Object.values(styleOpts['ranges']).filter(option => !Number.isNaN(option['minRange']) && !Number.isNaN(option['maxRange']));
+    styleOpts['ranges'] = Object.values(styleOpts['ranges']).filter((option) => !Number.isNaN(option['minRange']) && !Number.isNaN(option['maxRange']));
     return styleOpts;
   }
 
@@ -181,7 +181,7 @@ export class ClusterBinding extends Binding {
     let options = { ...ClusterBinding.DEFAULT_OPTIONS_STYLE };
     if (this.style_ != null) {
       options = { ...this.style_.getOptions() };
-      const ranges = options['ranges'].filter(range => !Number.isNaN(range['min'])).map((rangeOpt) => {
+      const ranges = options['ranges'].filter((range) => !Number.isNaN(range['min'])).map((rangeOpt) => {
         const obj = {};
         const style = rangeOpt['style'];
         obj['min'] = rangeOpt['min'];

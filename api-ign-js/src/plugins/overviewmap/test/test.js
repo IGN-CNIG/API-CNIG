@@ -9,7 +9,6 @@ const map = M.map({
   zoom: 5,
 });
 
-
 const mp = new OverviewMap({
   position: 'BR',
   fixed: true,

@@ -9,13 +9,13 @@
   </a>
   <a title="Node version" href="https://nodejs.org/es">
     <img src="https://img.shields.io/badge/node-v14.16-blue">
-  </a>  
+  </a>
   <a title="NPM version" href="https://www.npmjs.com/package/npm">
     <img src="https://img.shields.io/badge/npm-v6.14-blue">
   </a>
   <a title="Language" href="https://www.w3schools.com/html/" target="_blank">
     <img src="https://img.shields.io/static/v1?label=Lang&message=HTML&color=maroon">
-  </a>  
+  </a>
   <a title="Language" href="https://www.w3schools.com/js/" target="_blank">
     <img src="https://img.shields.io/static/v1?label=Lang&message=Javascript&color=maroon">
   </a>
@@ -108,16 +108,16 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'mirrorpanelParams': Comparador de espejo.
   - 'lyrcompareParams': Comparador de paneles móviles.
   - 'transparecyParams': Comparador de zona o puntual.
-  - 'windowsyncParams': Comparador en ventana. 
+  - 'windowsyncParams': Comparador en ventana.
   - 'none': no arranca ninguno de los comparadores.
 
-- **enabledKeyFunctions**:  
+- **enabledKeyFunctions**:
 Comparación en modo espejo:
 Si es true, se pueden usar las combinaciones de teclas Ctrl + Shift + [F1-F8] para cambiar entre los distintos modos de visualización. Con la tecla Escape se destruye el plugin.  <br>
 Comparación en modo transparecyParams:
-Ctrl + Shift + Enter: Alterna el estado de congelación.  
-Ctrl + Shift + Flecha hacia arriba: Aumenta el radio, si el radio alcanza el valor máximo de 200, no ocurre ningún cambio.  
-Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valor mínimo de 32, no ocurre ningún cambio.  
+Ctrl + Shift + Enter: Alterna el estado de congelación.
+Ctrl + Shift + Flecha hacia arriba: Aumenta el radio, si el radio alcanza el valor máximo de 200, no ocurre ningún cambio.
+Ctrl + Shift + Flecha hacia abajo: Disminuye el radio, si el radio llega al valor mínimo de 32, no ocurre ningún cambio.
 
 - **isDraggable**: "True" para que el plugins se pueda desplazar, por defecto false.
 

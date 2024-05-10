@@ -24,7 +24,6 @@ export default class WindowSyncControl extends M.impl.Control {
     });
   }
 
-
   removeEventListeners(maps) {
     maps.forEach(({ map }) => {
       const mapOl = map.getMapImpl();
@@ -46,7 +45,6 @@ export default class WindowSyncControl extends M.impl.Control {
     map2Ol.getView().setRotation(rotation);
     */
 
-
     map2Ol.getView().animate({
       center,
       zoom,
@@ -61,4 +59,3 @@ export default class WindowSyncControl extends M.impl.Control {
     });
   }
 }
-

@@ -178,14 +178,16 @@ export default class LyrCompareControl extends M.Control {
         if (isLoad) {
           this.setFunctionsAndCompile(success);
         } else {
-          const idInterval = setInterval(() => {
-            isLoad = this.allLayerLoad();
-            if (isLoad) {
-              clearInterval(idInterval);
-              this.setFunctionsAndCompile(success);
-            }
-          },
-          200);
+          const idInterval = setInterval(
+            () => {
+              isLoad = this.allLayerLoad();
+              if (isLoad) {
+                clearInterval(idInterval);
+                this.setFunctionsAndCompile(success);
+              }
+            },
+            200,
+          );
         }
       } else {
         M.dialog.error(getValueTranslate('no_layers_plugin'), 'lyrcompare');
@@ -251,7 +253,7 @@ export default class LyrCompareControl extends M.Control {
       // ---> comparisonMode = 1, 2, 3
       this.template.querySelectorAll('button[id^="m-lyrcompare-"]')
         .forEach((button, i) => {
-          button.addEventListener('click', evt => {
+          button.addEventListener('click', (evt) => {
             if (this.comparisonMode === 0) {
               this.comparisonMode = i + 1;
               this.activateCurtain();
@@ -269,7 +271,6 @@ export default class LyrCompareControl extends M.Control {
     }
     return success(this.template);
   }
-
 
   /**
    * This function set events and values to template
@@ -310,8 +311,8 @@ export default class LyrCompareControl extends M.Control {
       this.getImpl().setStaticDivision(this.staticDivision);
     });
 
-    this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
-      item.addEventListener('change', evt => {
+    this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach((item) => {
+      item.addEventListener('change', (evt) => {
         const layer = this.layers.filter((l) => {
           return l.name === evt.target.value;
         });
@@ -512,7 +513,6 @@ export default class LyrCompareControl extends M.Control {
     this.updateControls();
   }
 
-
   /**
    * This function is called to remove the effects
    *
@@ -534,7 +534,7 @@ export default class LyrCompareControl extends M.Control {
 
     const swapControl = document.querySelector('.lyrcompare-swipe-control');
     if (this.comparisonMode === 0) {
-      this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
+      this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach((item) => {
         // eslint-disable-next-line no-param-reassign
         item.disabled = true;
       });
@@ -558,7 +558,7 @@ export default class LyrCompareControl extends M.Control {
       this.template.querySelector('#m-lyrcompare-lyrB').disabled = false;
     } else if (this.comparisonMode === 3) {
       if (swapControl) swapControl.style.opacity = '1';
-      this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach(item => {
+      this.template.querySelectorAll('select[id^="m-lyrcompare-"]').forEach((item) => {
         // eslint-disable-next-line no-param-reassign
         item.disabled = false;
       });
@@ -585,7 +585,6 @@ export default class LyrCompareControl extends M.Control {
     }
   }
 
-
   removeActivate() {
     this.template.querySelector('#m-lyrcompare-vcurtain').classList.remove('buttom-pressed-vcurtain');
     this.template.querySelector('#m-lyrcompare-hcurtain').classList.remove('buttom-pressed-hcurtain');
@@ -611,33 +610,33 @@ export default class LyrCompareControl extends M.Control {
    * @api stable
    */
   removeCurtainLayers(layers) {
-    layers.forEach(layer => {
+    layers.forEach((layer) => {
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
           const name = urlLayer[3];
           const layerByUrl = this.map.getLayers()
-            .filter(l => name.includes(l.name))[this.map.getLayers()
-              .filter(l => name.includes(l.name)).length - 1];
+            .filter((l) => name.includes(l.name))[this.map.getLayers()
+              .filter((l) => name.includes(l.name)).length - 1];
           this.map.removeLayers(layerByUrl);
         } else {
           const layerByName = this.map.getLayers()
-            .filter(l => layer.includes(l.name))[this.map.getLayers()
-              .filter(l => layer.includes(l.name)).length - 1];
+            .filter((l) => layer.includes(l.name))[this.map.getLayers()
+              .filter((l) => layer.includes(l.name)).length - 1];
           this.map.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
         const layerByObject = this.map.getLayers()
-          .filter(l => layer.name.includes(l.name))[this.map.getLayers()
-            .filter(l => layer.name.includes(l.name)).length - 1];
+          .filter((l) => layer.name.includes(l.name))[this.map.getLayers()
+            .filter((l) => layer.name.includes(l.name)).length - 1];
         this.map.removeLayers(layerByObject);
       }
     });
   }
 
   allLayerLoad() {
-    if (this.layers[0].load === undefined || (this.layers[1].load === undefined &&
-      (this.layers[2] !== undefined && this.layers[3] !== undefined
+    if (this.layers[0].load === undefined || (this.layers[1].load === undefined
+        && (this.layers[2] !== undefined && this.layers[3] !== undefined
         && (this.layers[2].load === undefined || this.layers[3].load === undefined)))) {
       return false;
     }
@@ -663,9 +662,9 @@ export default class LyrCompareControl extends M.Control {
               url: urlLayer[2],
               name: urlLayer[3],
             });
-            if (this.map.getLayers().filter(l => newLayer.name.includes(l.name)).length > 0) {
+            if (this.map.getLayers().filter((l) => newLayer.name.includes(l.name)).length > 0) {
               this.map.removeLayers(this.map.getLayers()
-                .filter(l => newLayer.name.includes(l.name))[0]);
+                .filter((l) => newLayer.name.includes(l.name))[0]);
             }
             this.map.addLayers(newLayer);
           } else if (urlLayer[0].toUpperCase() === 'WMTS') {
@@ -676,11 +675,11 @@ export default class LyrCompareControl extends M.Control {
             this.map.addLayers(newLayer);
           }
         } else {
-          const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[0];
+          const layerByName = this.map.getLayers().filter((l) => layer.includes(l.name))[0];
           newLayer = this.isValidLayer(layerByName) ? layerByName : null;
         }
       } else if (layer instanceof Object) {
-        const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[0];
+        const layerByObject = this.map.getLayers().filter((l) => layer.name.includes(l.name))[0];
         newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
       }
 
@@ -705,6 +704,7 @@ export default class LyrCompareControl extends M.Control {
     }, this);
     return (transform[0] === undefined) ? [] : transform;
   }
+
   /**
    * This function transform string to M.Layer
    *
@@ -732,6 +732,6 @@ export default class LyrCompareControl extends M.Control {
   }
 
   getLayersNames() {
-    return this.layers.map(l => l.name);
+    return this.layers.map((l) => l.name);
   }
 }

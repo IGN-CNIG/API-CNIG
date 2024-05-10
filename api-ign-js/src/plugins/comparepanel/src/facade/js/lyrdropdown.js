@@ -5,7 +5,7 @@
 import 'assets/css/lyrdropdown';
 import LyrdropdownControl from './lyrdropdowncontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';   //e2m: Multilanguage support
+import { getValue } from './i18n/language'; // e2m: Multilanguage support
 
 export default class Lyrdropdown extends M.Plugin {
   /**
@@ -83,12 +83,10 @@ export default class Lyrdropdown extends M.Plugin {
     this.layers = [];
     if (options.layers === undefined) {
       M.dialog.error('No se ha especificado una capa válida sobre la que aplicar el efecto');
+    } else if (Array.isArray(options.layers)) {
+      this.layers = options.layers;
     } else {
-      if (Array.isArray(options.layers)) {
-        this.layers = options.layers;
-      } else {
-        this.layers = options.layers.split(',');
-      }
+      this.layers = options.layers.split(',');
     }
 
     /**
@@ -96,7 +94,7 @@ export default class Lyrdropdown extends M.Plugin {
      * Value: number in range 10 - 1000
      * @type {number}
      * @public
-     */    
+     */
     this.lyrsMirrorMinZindex = options.lyrsMirrorMinZindex;
     if (this.lyrsMirrorMinZindex === undefined) this.lyrsMirrorMinZindex = 100;
 
@@ -126,8 +124,8 @@ export default class Lyrdropdown extends M.Plugin {
     const pluginOnLeft = !!(['TL', 'BL'].includes(this.position));
     this.control_ = new LyrdropdownControl({
       pluginOnLeft,
-      collapsible:  this.collapsible,
-      collapsed:  this.collapsed,
+      collapsible: this.collapsible,
+      collapsed: this.collapsed,
       layers: this.layers,
       lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
@@ -138,7 +136,7 @@ export default class Lyrdropdown extends M.Plugin {
     this.panel_ = new M.ui.Panel('panelLyrdropdown', {
       collapsible: this.collapsible,
       collapsed: this.collapsed,
-      position: M.ui.position[this.position], //M.ui.position.TR
+      position: M.ui.position[this.position], // M.ui.position.TR
       collapsedButtonClass: 'g-cartografia-flecha-izquierda',
       tooltip: this.tooltip_,
     });
@@ -156,35 +154,30 @@ export default class Lyrdropdown extends M.Plugin {
    */
   destroy() {
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.collapsible,this.collapsed,this.layers] = [null, null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.collapsible, this.collapsed, this.layers] = [
+      null, null, null, null, null, null];
   }
 
-
-  setDisabledLyrs(lyrList){
-    
-    if (this.control_ === undefined){
+  setDisabledLyrs(lyrList) {
+    if (this.control_ === undefined) {
       return;
     }
-    if (this.control_.template === null){
+    if (this.control_.template === null) {
       return;
     }
     try {
       let optionLyrs = null;
       optionLyrs = this.control_.template.querySelector('#m-lyrdropdown-selector');
-      optionLyrs.options[2].disabled=true;
-      for (let  iOpt =1; iOpt < optionLyrs.options.length; iOpt++) {
-        optionLyrs.options[iOpt].disabled = !lyrList.includes(optionLyrs.options[iOpt].value)
+      optionLyrs.options[2].disabled = true;
+      // eslint-disable-next-line no-plusplus
+      for (let iOpt = 1; iOpt < optionLyrs.options.length; iOpt++) {
+        optionLyrs.options[iOpt].disabled = !lyrList.includes(optionLyrs.options[iOpt].value);
       }
     } catch (error) {
-          /* eslint-disable */
-          console.log(error);
-          /* eslint-enable */
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
-  
-   
-   }
-
-
+  }
 
   /**
    * This function gets name plugin
@@ -197,8 +190,6 @@ export default class Lyrdropdown extends M.Plugin {
     return this.name_;
   }
 
-
-
   /**
    * This function gets metadata plugin
    *
@@ -206,7 +197,7 @@ export default class Lyrdropdown extends M.Plugin {
    * @function
    * @api stable
    */
-  getMetadata(){
+  getMetadata() {
     return this.metadata_;
   }
 
@@ -221,7 +212,7 @@ export default class Lyrdropdown extends M.Plugin {
     return `${this.name}=${this.position}*${this.collapsible}*${this.collapsed}*${this.layers.join(',')}`;
   }
 
-    /**
+  /**
    * Activate plugin
    *
    * @function
@@ -255,5 +246,4 @@ export default class Lyrdropdown extends M.Plugin {
   equals(plugin) {
     return plugin instanceof Lyrdropdown;
   }
-
 }

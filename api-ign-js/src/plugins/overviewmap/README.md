@@ -121,7 +121,7 @@ Ejemplo de constructor:
   zoom: 4,
   baseLayer: "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true",
   collapsed: false,
-  collapsible: false, 
+  collapsible: false,
   tooltip: "Mapa"
 }
 ```

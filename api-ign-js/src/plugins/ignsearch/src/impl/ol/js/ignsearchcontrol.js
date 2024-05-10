@@ -14,6 +14,7 @@ export default class IGNSearchControl extends M.impl.Control {
   addTo(map, html) {
     super.addTo(map, html);
   }
+
   /**
    * This function sets a new scale to the map.
    * Developed for WGS 84 / Pseudo - Mercator 3857 projection.
@@ -76,6 +77,7 @@ export default class IGNSearchControl extends M.impl.Control {
     // const resolution = (scale / dpiToCM) / 100;
     // olView.setResolution(resolution);
   }
+
   /**
    * This function reprojects given coordinates to given projection.
    * @private

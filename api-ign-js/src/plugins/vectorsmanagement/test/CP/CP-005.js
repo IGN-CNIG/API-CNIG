@@ -9,13 +9,11 @@ const map = M.map({
   zoom: 6,
 });
 
-
 const mvt = new M.layer.MVT({
   url: 'https://vt-fedme.idee.es/vt.senderogr/{z}/{x}/{y}.pbf',
   name: 'sendero_gr',
   mode: 'feature',
 });
-
 
 map.addLayers([mvt]);
 

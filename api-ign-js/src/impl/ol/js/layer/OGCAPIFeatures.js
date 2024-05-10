@@ -53,7 +53,7 @@ class OGCAPIFeatures extends Vector {
    * </code></pre>
    * @api stable
    */
-  constructor(options = {}, vendorOptions) {
+  constructor(options = {}, vendorOptions = {}) {
     // calls the super constructor
     super(options, vendorOptions);
 
@@ -170,7 +170,6 @@ class OGCAPIFeatures extends Vector {
         this.formater_ = new FormatGML(this.name, this.version, this.map.getProjection());
       }
       this.loader_ = new LoaderWFS(this.map, this.service_, this.formater_);
-
 
       // const isCluster = (this.facadeVector_.getStyle() instanceof StyleCluster);
       const ol3LayerSource = this.ol3Layer.getSource();
@@ -294,8 +293,8 @@ class OGCAPIFeatures extends Vector {
    */
   getDescribeFeatureType() {
     if (isNullOrEmpty(this.describeFeatureType_)) {
-      this.describeFeatureType_ =
-        this.service_.getDescribeFeatureType().then((describeFeatureType) => {
+      this.describeFeatureType_ = this.service_
+        .getDescribeFeatureType().then((describeFeatureType) => {
           if (!isNullOrEmpty(describeFeatureType)) {
             this.formater_ = new FormatImplGeoJSON({
               geometryName: describeFeatureType.geometryName,
@@ -403,10 +402,10 @@ class OGCAPIFeatures extends Vector {
       equals = equals && (this.extract === obj.extract);
       equals = equals && (this.bbox === obj.bbox);
       equals = equals && (this.id === obj.id);
-      equals = equals && (this.getFeatureOutputFormat ===
-        obj.getFeatureOutputFormat);
-      equals = equals && (this.describeFeatureTypeOutputFormat ===
-        obj.describeFeatureTypeOutputFormat);
+      equals = equals && (this.getFeatureOutputFormat
+        === obj.getFeatureOutputFormat);
+      equals = equals && (this.describeFeatureTypeOutputFormat
+        === obj.describeFeatureTypeOutputFormat);
     }
 
     return equals;

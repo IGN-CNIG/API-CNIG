@@ -161,7 +161,7 @@ https://componentes.cnig.es/api-core/?layerswitcher=position*collapsed*collapsib
   </tr>
 </table>
 
-### Ejemplo de uso 
+### Ejemplo de uso
 
 Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
 Ejemplo:
@@ -169,7 +169,7 @@ Ejemplo:
 M.utils.encodeBase64(obj_params);
 ```
 
-Ejemplo de constructor del plugin: 
+Ejemplo de constructor del plugin:
 ```
      {
            collapsed: false,
@@ -186,7 +186,7 @@ Ejemplo de constructor del plugin:
        }
 ```
 ```
-https://componentes.cnig.es/api-core?layerswitcher=base64=eyJjb2xsYXBzZWQiOmZhbHNlLCJwb3NpdGlvbiI6IlRMIiwidG9vbHRpcCI6IkNhcGFzIiwiY29sbGFwc2libGUiOnRydWUsImlzRHJhZ2dhYmxlIjp0cnVlLCJtb2RlU2VsZWN0TGF5ZXJzIjoiZXllcyIsInRvb2xzIjpbInRyYW5zcGFyZW5jeSIsImxlZ2VuZCIsInpvb20iLCJpbmZvcm1hdGlvbiIsInN0eWxlIiwiZGVsZXRlIl0sImlzTW92ZUxheWVycyI6dHJ1ZSwiaHR0cHMiOnRydWUsImh0dHAiOnRydWUsImNvZHNpIjpmYWxzZX0= 
+https://componentes.cnig.es/api-core?layerswitcher=base64=eyJjb2xsYXBzZWQiOmZhbHNlLCJwb3NpdGlvbiI6IlRMIiwidG9vbHRpcCI6IkNhcGFzIiwiY29sbGFwc2libGUiOnRydWUsImlzRHJhZ2dhYmxlIjp0cnVlLCJtb2RlU2VsZWN0TGF5ZXJzIjoiZXllcyIsInRvb2xzIjpbInRyYW5zcGFyZW5jeSIsImxlZ2VuZCIsInpvb20iLCJpbmZvcm1hdGlvbiIsInN0eWxlIiwiZGVsZXRlIl0sImlzTW92ZUxheWVycyI6dHJ1ZSwiaHR0cHMiOnRydWUsImh0dHAiOnRydWUsImNvZHNpIjpmYWxzZX0=
 ```
 
 

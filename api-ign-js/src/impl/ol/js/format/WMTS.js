@@ -65,8 +65,8 @@ class WMTSCapabilities {
     */
   getMatrixSet(layerName, srid) {
     let matrixSet;
-    for (let i = 0; i < this.capabilities.Contents.Layer.length &&
-       matrixSet === undefined; i += 1) {
+    for (let i = 0; i < this.capabilities.Contents.Layer.length
+        && matrixSet === undefined; i += 1) {
       const layer = this.capabilities.Contents.Layer[i];
       if (layer.Identifier === layerName) {
         if (!isNullOrEmpty(srid)) {
@@ -100,7 +100,7 @@ class WMTSCapabilities {
       return tMatrixSet.Identifier === matrixSet;
     })[0];
     if (tileMatrixSet != null && tileMatrixSet.length > 0) {
-      matrixIds = tileMatrixSet.TileMatrix.map(tileMatrix => tileMatrix.Identifier);
+      matrixIds = tileMatrixSet.TileMatrix.map((tileMatrix) => tileMatrix.Identifier);
     }
     return matrixIds;
   }
@@ -116,13 +116,12 @@ class WMTSCapabilities {
     */
   getFormat(layerName) {
     let format;
-    const layer = this.capabilities.Contents.Layer.filter(l => l.Identifier === layerName)[0];
+    const layer = this.capabilities.Contents.Layer.filter((l) => l.Identifier === layerName)[0];
     if (layer != null) {
       format = layer.Format[0];
     }
     return format;
   }
-
 
   /**
     * Este método obtiene las opciones de las capacidades del WMTS.
@@ -146,4 +145,3 @@ class WMTSCapabilities {
 }
 
 export default WMTSCapabilities;
-

@@ -178,7 +178,6 @@ export default class Incicarto extends M.Plugin {
       this.errProducts_ = this.controllist_[2];
     }
 
-
     this.control_ = new IncicartoControl({
       wfszoom: this.wfszoom_,
       controllist: this.controllist_,

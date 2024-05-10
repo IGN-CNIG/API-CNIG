@@ -50,6 +50,7 @@ class Feature {
       this.olFeature_.setId(generateRandom('mapea_feature_'));
     }
   }
+
   /**
    * Este método devuelve el objeto openlayers del objeto geográfico.
    * @public
@@ -60,6 +61,7 @@ class Feature {
   getOLFeature() {
     return this.olFeature_;
   }
+
   /**
    * Este método sobrescribe el objeto geográfico de Openlayers.
    * @public
@@ -76,6 +78,7 @@ class Feature {
       }
     }
   }
+
   /**
    * Este método retorna los atributos de un objeto geográfico.
    * @public
@@ -91,6 +94,7 @@ class Feature {
     }
     return properties;
   }
+
   /**
    * Este método retorna los atributos de un objeto geográfico.
    *
@@ -102,6 +106,7 @@ class Feature {
   getId() {
     return this.olFeature_.getId();
   }
+
   /**
    * Este método modifica el identificador del objeto geográfico.
    *
@@ -113,6 +118,7 @@ class Feature {
   setId(id) {
     this.olFeature_.setId(id);
   }
+
   /**
    * Este método sobrescribe los atributos del objeto geográfico.
    *
@@ -124,6 +130,7 @@ class Feature {
   setAttributes(attributes) {
     this.olFeature_.setProperties(attributes);
   }
+
   /**
    * Este método de la clase transforma "OLFeature" (Objeto geográfico de Openlayer)
    * a "M.Feature" (Objeto geográfico de API-CNIG).
@@ -157,10 +164,11 @@ class Feature {
    * @api stable
    */
   static olRenderFeature2Facade(olRenderFeature, tileProjection, mapProjection) {
-    const olFeature =
-      ImplUtils.olRenderFeature2olFeature(olRenderFeature, tileProjection, mapProjection);
+    const olFeature = ImplUtils
+      .olRenderFeature2olFeature(olRenderFeature, tileProjection, mapProjection);
     return Feature.olFeature2Facade(olFeature);
   }
+
   /**
    * Este método de la clase transforma "M.Feature" (Objeto geográfico de API-CNIG)
    * a "OLFeature" (Objeto geográfico de Openlayer).
@@ -174,6 +182,7 @@ class Feature {
   static facade2OLFeature(feature) {
     return feature.getImpl().getOLFeature();
   }
+
   /**
    * Este método retorna el valor del atributo.
    *
@@ -186,6 +195,7 @@ class Feature {
   getAttribute(attribute) {
     return this.olFeature_.get(attribute);
   }
+
   /**
    * Este método sobrescribe el valor de un atributo del objeto geográfico.
    *
@@ -198,6 +208,7 @@ class Feature {
   setAttribute(attribute, value) {
     return this.olFeature_.set(attribute, value);
   }
+
   /**
    * Este método retorna la geometría del objeto geográfico.
    *
@@ -229,6 +240,7 @@ class Feature {
     }
     return geometry;
   }
+
   /**
    * Este método modifica la geometría del objeto geográfico.
    *
@@ -257,6 +269,7 @@ class Feature {
       this.olFeature_.setGeometry(new OLGeomPolygon(geometry.coordinates));
     }
   }
+
   /**
    * Este método establece el vector de la clase de la fachada.
    *
@@ -267,6 +280,7 @@ class Feature {
   setFacadeObj(obj) {
     this.facadeFeature_ = obj;
   }
+
   /**
    * Este método retorna el centroide del objeto geográfico.
    *
@@ -291,6 +305,7 @@ class Feature {
     olCentroid = olCentroid || Feature.olFeature2Facade(olCentroid);
     return olCentroid;
   }
+
   /**
    * Este método elimina el estilo del objeto geográfico.
    *

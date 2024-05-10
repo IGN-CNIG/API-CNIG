@@ -159,7 +159,6 @@ export default class MouseSRSControl extends M.impl.Control {
     });
   }
 
-
   formatEPSGs(html) {
     // GET EPSG of Selectors
     const query = [...html.querySelectorAll('select option')];
@@ -175,7 +174,7 @@ export default class MouseSRSControl extends M.impl.Control {
     const supportedProjs = M.impl.ol.js.projections.getSupportedProjs();
 
     // Find EPSG in supportedProjs
-    const find = supportedProjs.find(p => p.codes.includes(epsg));
+    const find = supportedProjs.find((p) => p.codes.includes(epsg));
 
     if (!find) return epsg;
 

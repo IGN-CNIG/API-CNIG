@@ -95,8 +95,6 @@ export default class Transparency extends M.Plugin {
       this.radius = 100; // Default value
     }
 
-
-
     /**
      * Metadata from api.json
      * @private
@@ -170,7 +168,6 @@ export default class Transparency extends M.Plugin {
     map.addPanels(this.panel_);
   }
 
-
   /**
    * This function destroys this plugin
    *
@@ -182,8 +179,9 @@ export default class Transparency extends M.Plugin {
     this.control_.removeEffects();
     this.control_.removeTransparencyLayers(this.control_.getLayersNames());
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.layers, this.radius]
-      = [null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.layers, this.radius] = [
+      null, null, null, null, null,
+    ];
   }
 
   /**

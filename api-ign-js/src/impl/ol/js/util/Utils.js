@@ -285,13 +285,14 @@ class Utils {
 
   static addFacadeName(facadeName, olLayer) {
     const ol3layer = olLayer;
-    if (isNullOrEmpty(facadeName) && !isNullOrEmpty(ol3layer.getSource()) &&
-        !isNullOrEmpty(ol3layer.getSource().getParams) &&
-        !isNullOrEmpty(ol3layer.getSource().getParams().LAYERS)) {
+    if (isNullOrEmpty(facadeName) && !isNullOrEmpty(ol3layer.getSource())
+      && !isNullOrEmpty(ol3layer.getSource().getParams)
+      && !isNullOrEmpty(ol3layer.getSource().getParams().LAYERS)) {
       return ol3layer.getSource().getParams().LAYERS;
-    } else if (isNullOrEmpty(facadeName) && !isNullOrEmpty(ol3layer.getSource()) &&
-        !isNullOrEmpty(ol3layer.getSource().getUrl) &&
-        !isNullOrEmpty(ol3layer.getSource().getUrl()) && typeof ol3layer.getSource().getUrl() !== 'function') {
+    }
+    if (isNullOrEmpty(facadeName) && !isNullOrEmpty(ol3layer.getSource())
+      && !isNullOrEmpty(ol3layer.getSource().getUrl)
+      && !isNullOrEmpty(ol3layer.getSource().getUrl()) && typeof ol3layer.getSource().getUrl() !== 'function') {
       const url = ol3layer.getSource().getUrl();
       let result = null;
       const typeName = url.split('&typeName=')[1];
@@ -303,9 +304,11 @@ class Utils {
         // facadeLayer.namespace = result[0];
       }
       return generateRandom('layer_');
-    } else if (ol3layer.getSource().getLayer) {
+    }
+    if (ol3layer.getSource().getLayer) {
       return ol3layer.getSource().getLayer();
-    } else if (isNullOrEmpty(facadeName)) {
+    }
+    if (isNullOrEmpty(facadeName)) {
       return generateRandom('layer_');
     }
     return facadeName;
@@ -413,7 +416,7 @@ class Utils {
     * @api
     */
   static getFeaturesExtent(features, projectionCode) {
-    const olFeatures = features.map(f => (f instanceof Feature ? f.getImpl().getOLFeature() : f));
+    const olFeatures = features.map((f) => (f instanceof Feature ? f.getImpl().getOLFeature() : f));
     let extents = [];
     olFeatures.forEach((feature) => {
       if (feature.getGeometry()) {
@@ -587,8 +590,13 @@ class Utils {
     const clonedFlatCoordinates = [...flatCoordinates];
     const clonedProperties = Object.assign(properties);
     const clonedEnds = [...ends];
-    const clonedOLRenderFeature =
-       new RenderFeature(type, clonedFlatCoordinates, clonedEnds, clonedProperties, id);
+    const clonedOLRenderFeature = new RenderFeature(
+      type,
+      clonedFlatCoordinates,
+      clonedEnds,
+      clonedProperties,
+      id,
+    );
     return clonedOLRenderFeature;
   }
 

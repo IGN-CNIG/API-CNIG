@@ -2,7 +2,6 @@ import Rescale from 'facade/rescale';
 
 M.language.setLang('es');
 
-
 // const map = M.map({
 //   container: 'mapjs',
 //   controls: ['scale*true'],
@@ -26,7 +25,6 @@ const map = M.map({
   zoom: 4,
   minZoom: 4,
 });
-
 
 const mp = new Rescale({
   collapsible: true,

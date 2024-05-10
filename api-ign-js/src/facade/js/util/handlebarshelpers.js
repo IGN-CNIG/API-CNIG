@@ -4,7 +4,7 @@
  * @example import handlebarshelpers from 'M/handlebarshelpers';
  */
 
-import { getTextFromHtml } from '../util/Utils';
+import { getTextFromHtml } from './Utils';
 
 /**
  * Esta función incluye métodos para ayudar a "Handlebars".

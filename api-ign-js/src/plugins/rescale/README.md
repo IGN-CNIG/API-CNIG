@@ -68,7 +68,7 @@ URL_API?rescale=position*collapsed*collapsible*tooltip
   <tr>
     <td>collapsible</td>
     <td>true/false</td>
-    <td>Base64 ✔️ | Separador ✔️</td> 
+    <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
   <tr>
     <td>tooltip</td>
@@ -95,7 +95,7 @@ Ejemplo:
 M.utils.encodeBase64(obj_params);
 ```
 
-Ejemplo de constructor del plugin: 
+Ejemplo de constructor del plugin:
 ```javascript
 {
   collapsible: true,

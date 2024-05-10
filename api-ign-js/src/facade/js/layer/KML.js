@@ -3,7 +3,12 @@
  */
 import KMLImpl from 'impl/layer/KML';
 import LayerVector from './Vector';
-import { isNullOrEmpty, isUndefined, normalize, isString } from '../util/Utils';
+import {
+  isNullOrEmpty,
+  isUndefined,
+  normalize,
+  isString,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from './Type';
 import * as parameter from '../parameter/parameter';
@@ -70,9 +75,9 @@ class KML extends LayerVector {
     optionsVar.label = parameters.label;
     optionsVar.visibility = parameters.visibility;
     optionsVar.layers = userParameters.layers || undefined;
-    optionsVar.removeFolderChildren = isUndefined(userParameters.removeFolderChildren) ?
-      true :
-      userParameters.removeFolderChildren;
+    optionsVar.removeFolderChildren = isUndefined(userParameters.removeFolderChildren)
+      ? true
+      : userParameters.removeFolderChildren;
 
     if (typeof userParameters !== 'string') {
       optionsVar.maxExtent = userParameters.maxExtent;

@@ -162,13 +162,11 @@ export default class Mirrorpanel extends M.Plugin {
      */
     this.interface = options.interface === undefined ? true : options.interface;
 
-
     /**
      *@private
      *@type { string }
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
-
 
     /**
      * Metadata from api.json
@@ -250,10 +248,10 @@ export default class Mirrorpanel extends M.Plugin {
       }
       const keyStr = ['Control', 'Shift', 'Alt', 'Meta'].includes(zEvent.key) ? '' : zEvent.key;
 
-      const combinedKeys = (zEvent.ctrlKey ? 'Control ' : '') +
-        (zEvent.shiftKey ? 'Shift ' : '') +
-        (zEvent.altKey ? 'Alt ' : '') +
-        (zEvent.metaKey ? 'Meta ' : '') + keyStr;
+      const combinedKeys = (zEvent.ctrlKey ? 'Control ' : '')
+        + (zEvent.shiftKey ? 'Shift ' : '')
+        + (zEvent.altKey ? 'Alt ' : '')
+        + (zEvent.metaKey ? 'Meta ' : '') + keyStr;
       if (combinedKeys === 'Escape') {
         this.control_.manageVisionPanelByCSSGrid(0);
       }
@@ -274,8 +272,9 @@ export default class Mirrorpanel extends M.Plugin {
     this.map_.removeControls([this.control_]);
     [this.control_, this.panel_, this.map_, this.collapsible, this.collapsed, this.modeViz,
       this.enabledPlugins, this.enabledKeyFunctions, this.showCursors, this.mirrorLayers,
-      this.defaultBaseLyrs, this.backImgLayersParams, this.interface]
-      = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+      this.defaultBaseLyrs, this.backImgLayersParams, this.interface] = [
+      null, null, null, null, null, null, null, null, null, null, null, null, null,
+    ];
   }
 
   /**

@@ -49,7 +49,6 @@ export default class PrinterMapControl extends M.Control {
      */
     this.serverUrl_ = serverUrl;
 
-
     /**
      * Mapfish template url
      * @private
@@ -64,14 +63,12 @@ export default class PrinterMapControl extends M.Control {
      */
     this.printTemplateGeoUrl_ = printTemplateGeoUrl;
 
-
     /**
      * Url for getting priting status
      * @private
      * @type {String}
      */
     this.printStatusUrl_ = printStatusUrl;
-
 
     /**
      * Credits text for template
@@ -853,8 +850,9 @@ export default class PrinterMapControl extends M.Control {
     const outputFormat = this.format_;
     const parameters = this.params_.parameters;
     const attributionContainer = document.querySelector('#m-attributions-container>div>a');
-    const attribution = attributionContainer !== null ?
-      `${getValue('base')}: ${attributionContainer.innerHTML}` : '';
+    const attribution = attributionContainer !== null
+      ? `${getValue('base')}: ${attributionContainer.innerHTML}`
+      : '';
 
     if (outputFormat === 'jpg') {
       layout += ' jpg';
@@ -897,14 +895,14 @@ export default class PrinterMapControl extends M.Control {
     }, this.params_.layout);
 
     return this.encodeLayers().then((encodedLayers) => {
-      printData.attributes.map.layers = encodedLayers.filter(l => M.utils.isObject(l));
+      printData.attributes.map.layers = encodedLayers.filter((l) => M.utils.isObject(l));
       printData.attributes = Object.assign(printData.attributes, parameters);
-      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
+      if (projection !== 'EPSG:3857' && this.map_.getLayers().some((layer) => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.projection = 'EPSG:3857';
       }
 
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
+      if (projection !== 'EPSG:3857' && this.map_.getLayers().some((layer) => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.bbox = this.getImpl().transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
       }
 
@@ -970,7 +968,9 @@ export default class PrinterMapControl extends M.Control {
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
       if (this.map_.getProjection().code !== projection) {
         printData.attributes.map.bbox = this.getImpl().transformExt(
-          printData.attributes.map.bbox, this.map_.getProjection().code, projection,
+          printData.attributes.map.bbox,
+          this.map_.getProjection().code,
+          projection,
         );
       }
 
@@ -1303,7 +1303,7 @@ export default class PrinterMapControl extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 }
 

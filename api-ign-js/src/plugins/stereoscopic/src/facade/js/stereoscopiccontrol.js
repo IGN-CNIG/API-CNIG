@@ -17,7 +17,12 @@ export default class StereoscopicControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(orbitControls = false,  anaglyphActive = false, maxMagnify = {}, defaultAnaglyphActive = false) {
+  constructor(
+    orbitControls = false,
+    anaglyphActive = false,
+    maxMagnify = {},
+    defaultAnaglyphActive = false,
+  ) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(StereoscopicImplControl)) {
       M.exception(getValue('exception.impl'));
@@ -127,7 +132,7 @@ export default class StereoscopicControl extends M.Control {
     newScript.type = 'module';
 
     const url = `${M.config.MAPEA_URL}plugins/stereoscopic/`;
-
+    /* eslint-disable no-tabs */
     const inlineScript = document.createTextNode(` const TR3cfg = new Array();
 
     import * as THREE from '${url}TR3-pack/THREE/three.module.js';
@@ -193,7 +198,7 @@ export default class StereoscopicControl extends M.Control {
 
       TR3.setStart(TR3pms).then(function (obj) {
         TR3.scene.remove();
-        changeZoom ? TR3.setMagniValues('auto') 
+        changeZoom ? TR3.setMagniValues('auto')
         : TR3.setMagniValues(document.querySelector('#range3d').value);
       });
     }
@@ -315,6 +320,7 @@ export default class StereoscopicControl extends M.Control {
     map.getLayers()[0].getImpl().getOL3Layer().getSource().on('tileloaderror', function () {
       progress.addLoaded();
     });`);
+    /* eslint-enable no-tabs */
 
     newScript.appendChild(inlineScript);
     document.body.appendChild(newScript);

@@ -34,7 +34,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - **position**.  Ubicación del plugin sobre el mapa.
   - 'TL':top left (default)
-  - 'TR':top right 
+  - 'TR':top right
 - **collapsed**. Indica si el plugin aparece por defecto colapsado o no.
 
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Gestión de la vista.
@@ -49,7 +49,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 ```
 - **delay**. Valor tipo Number, determina el tiempo de cada step cuando se hace clic en el botón "play". Por defecto dura 2s (1000 = 1s).
 - **content**.  Recibe un objeto con JSON, se define los idomas.
-  
+
 ```javascript
    content: {
         es: StoryMapJSON,

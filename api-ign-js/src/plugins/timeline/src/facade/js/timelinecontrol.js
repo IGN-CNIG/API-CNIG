@@ -119,8 +119,8 @@ export default class TimelineControl extends M.Control {
 
         this.intervals.forEach((interval, k) => {
           const tag = document.createElement('div');
-          if (k !== 0 && k !== this.intervals.length - 1 && k !==
-            parseInt(this.intervals.length / 2, 10)) {
+          if (k !== 0 && k !== this.intervals.length - 1 && k
+            !== parseInt(this.intervals.length / 2, 10)) {
             tag.dataset.tag = '';
           } else {
             tag.dataset.tag = interval.tag;
@@ -174,11 +174,11 @@ export default class TimelineControl extends M.Control {
           });
         }
       } else {
-        const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[0];
+        const layerByName = this.map.getLayers().filter((l) => layer.includes(l.name))[0];
         newLayer = this.isValidLayer(layerByName) ? layerByName : null;
       }
     } else if (layer instanceof Object) {
-      const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[0];
+      const layerByObject = this.map.getLayers().filter((l) => layer.name.includes(l.name))[0];
       newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
     }
     if (newLayer !== null) {
@@ -240,7 +240,6 @@ export default class TimelineControl extends M.Control {
     }
   }
 
-
   /** This function search a layer in the map
    *
    * @public
@@ -250,7 +249,7 @@ export default class TimelineControl extends M.Control {
    */
   getMapLayer(layerSearch) {
     return this.map.getLayers()
-      .filter(layer => layer.getImpl().legend === layerSearch.getImpl().legend)[0];
+      .filter((layer) => layer.getImpl().legend === layerSearch.getImpl().legend)[0];
   }
 
   /** This function make the play animation
@@ -442,7 +441,7 @@ export default class TimelineControl extends M.Control {
     });
 
     [this.template.querySelector('#m-timelineDinamic-back'),
-      this.template.querySelector('#m-timelineDinamic-before')].forEach(l => {
+      this.template.querySelector('#m-timelineDinamic-before')].forEach((l) => {
       l.addEventListener('click', ({ target }) => {
         this.evtFormatMove(target.id);
       });
@@ -475,8 +474,8 @@ export default class TimelineControl extends M.Control {
         },
         {
           params: {
-            CQL_FILTER: (equalsTimeLine) ?
-              `${attributeParam} = '${new Date(end).toISOString()}'`
+            CQL_FILTER: (equalsTimeLine)
+              ? `${attributeParam} = '${new Date(end).toISOString()}'`
               : `${attributeParam} DURING ${new Date(init).toISOString()}/${new Date(end).toISOString()}`,
           },
         },
@@ -621,8 +620,10 @@ export default class TimelineControl extends M.Control {
       const valueEnd = this.getFormatValue(Number(inputvalue), formatValue);
 
       this.changeDateLayer(valueInit, valueEnd);
-      this.changeValueInputDate(new Date(valueInit).toISOString(),
-        new Date(valueEnd).toISOString());
+      this.changeValueInputDate(
+        new Date(valueInit).toISOString(),
+        new Date(valueEnd).toISOString(),
+      );
     });
 
     this.template.querySelector('.wrap #b').addEventListener('input', ({ target }) => {
@@ -638,8 +639,10 @@ export default class TimelineControl extends M.Control {
       const valueInit = this.getFormatValue(Number(inputvalue), formatValue);
 
       this.changeDateLayer(valueInit, valueEnd);
-      this.changeValueInputDate(new Date(valueInit).toISOString(),
-        new Date(valueEnd).toISOString());
+      this.changeValueInputDate(
+        new Date(valueInit).toISOString(),
+        new Date(valueEnd).toISOString(),
+      );
     });
   }
 
@@ -655,7 +658,6 @@ export default class TimelineControl extends M.Control {
 
     const dateInit = new Date(init).getTime();
     const dateEnd = new Date(end).getTime();
-
 
     inputInit.min = dateInit;
     inputInit.max = dateEnd;
@@ -701,14 +703,14 @@ export default class TimelineControl extends M.Control {
     const layersTimeLine = this.getLayerTimeLine();
     this.removeLayers();
 
-    layersTimeLine.forEach(l => {
+    layersTimeLine.forEach((l) => {
       if (l instanceof M.layer.Vector) {
         l.on(M.evt.LOAD, () => {
           const searhDinamic = this.searchLayerDinamic(l);
-          const [vectorInitValue, vectorEndValue]
-            = this.getGroupLimit(initValue, endValue, searhDinamic);
+          const [vectorInitValue, vectorEndValue] = this
+            .getGroupLimit(initValue, endValue, searhDinamic);
 
-          const filter = new M.filter.Function(f => {
+          const filter = new M.filter.Function((f) => {
             const dateTime = f.getAttributes()[l.attributeParam];
             if (l.equalsTimeLine) {
               if (
@@ -727,8 +729,8 @@ export default class TimelineControl extends M.Control {
         const searhDinamic = this.searchLayerDinamic(l);
         const [wmsInitValue, wmsEndValue] = this.getGroupLimit(initValue, endValue, searhDinamic);
         // eslint-disable-next-line no-param-reassign
-        l.options.params.CQL_FILTER = (l.equalsTimeLine) ?
-          `${l.attributeParam} = '${new Date(end).toISOString()}'`
+        l.options.params.CQL_FILTER = (l.equalsTimeLine)
+          ? `${l.attributeParam} = '${new Date(end).toISOString()}'`
           : `${l.attributeParam} DURING ${new Date(wmsInitValue).toISOString()}/${new Date(wmsEndValue).toISOString()}`;
       }
       this.map.addLayers(l);
@@ -748,7 +750,7 @@ export default class TimelineControl extends M.Control {
         const searhDinamic = this.searchLayerDinamic(l);
         const [vectorInitValue, vectorEndValue] = this.getGroupLimit(init, end, searhDinamic);
 
-        const filter = new M.filter.Function(f => {
+        const filter = new M.filter.Function((f) => {
           const dateTime = f.getAttributes()[l.attributeParam];
           if (l.equalsTimeLine) {
             if (
@@ -795,7 +797,7 @@ export default class TimelineControl extends M.Control {
 
     this.changeValueInputDate(new Date(dateInit).toISOString(), new Date(dateEnd).toISOString());
     const [reverseInit, reverseEnd] = [dateInit, dateEnd]
-      .map(n => this.getFormatValue(n, formatRevert));
+      .map((n) => this.getFormatValue(n, formatRevert));
 
     this.changeDateLayer(dateInit, dateEnd);
     this.changeValueSlider(reverseInit, reverseEnd);

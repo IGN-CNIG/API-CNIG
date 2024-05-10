@@ -67,8 +67,8 @@ export default class PredefinedZoomControl extends M.Control {
         element.classList.add('activated');
         if (this.savedZooms_[0].bbox !== undefined) {
           this.zoomToGivenBox(element, this.savedZooms_[0].bbox);
-        } else if (this.savedZooms_[0].center !== undefined &&
-          this.savedZooms_[0].zoom !== undefined) {
+        } else if (this.savedZooms_[0].center !== undefined
+          && this.savedZooms_[0].zoom !== undefined) {
           this.zoomToCenter(element, this.savedZooms_[0].center, this.savedZooms_[0].zoom);
         }
       }

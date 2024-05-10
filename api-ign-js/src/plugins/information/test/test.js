@@ -1,3 +1,4 @@
+/* eslint-disable max-len,spaced-comment */
 import Information from 'facade/information';
 
 // M.language.setLang('en');
@@ -12,7 +13,7 @@ const map = M.map({
 });
 window.map = map;
 
-const mpLayerswitcher = new M.plugin.Layerswitcher({collapsed: true, position: 'TL'}); map.addPlugin(mpLayerswitcher);
+const mpLayerswitcher = new M.plugin.Layerswitcher({ collapsed: true, position: 'TL' }); map.addPlugin(mpLayerswitcher);
 // const mp2 = new M.plugin.Infocoordinates({position: 'TR', decimalGEOcoord: 4, decimalUTMcoord: 4}); map.addPlugin(mp2);
 // const mp3 = new M.plugin.Vectors({position: 'TR', wfszoom: 12}); map.addPlugin(mp3);
 // const mp4 = new M.plugin.MeasureBar({ position: 'TR' }); map.addPlugin(mp4);

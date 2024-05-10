@@ -79,7 +79,6 @@ export default class TopographicprofileControl extends M.Control {
     return html.querySelector('#m-topographicprofile-btn');
   }
 
-
   /**
    * This function is called on the control deactivation
    *

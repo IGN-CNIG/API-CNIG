@@ -54,8 +54,8 @@ export default class BufferControl extends M.impl.Control {
    * an instance of Draw or Modify
    */
   isInteractionInstanceOfDrawOrModify(interaction) {
-    if (interaction instanceof ol.interaction.Draw ||
-      interaction instanceof ol.interaction.Modify) {
+    if (interaction instanceof ol.interaction.Draw
+        || interaction instanceof ol.interaction.Modify) {
       return true;
     }
     return false;
@@ -81,15 +81,15 @@ export default class BufferControl extends M.impl.Control {
     return new ol.interaction.Modify({
       source: olLayer.getSource(),
       deleteCondition: (event) => {
-        return ol.events.condition.shiftKeyOnly(event) &&
-          ol.events.condition.singleClick(event);
+        return ol.events.condition.shiftKeyOnly(event)
+          && ol.events.condition.singleClick(event);
       },
     });
   }
 
   removeInteraction(interaction) {
-    if (interaction instanceof ol.interaction.Draw ||
-      interaction instanceof ol.interaction.Modify) {
+    if (interaction instanceof ol.interaction.Draw
+        || interaction instanceof ol.interaction.Modify) {
       this.facadeMap_.getMapImpl().removeInteraction(interaction);
     }
   }

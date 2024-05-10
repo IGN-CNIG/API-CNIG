@@ -184,9 +184,10 @@ class BackgroundLayers extends ControlBase {
     const buttons = document.querySelectorAll('.m-plugin-baselayer .m-panel-controls #div-contenedor button');
     buttons.forEach((e) => {
       // eslint-disable-next-line no-unused-expressions
-      (e.classList.contains('m-background-unique-btn')) ?
+      (e.classList.contains('m-background-unique-btn'))
       // eslint-disable-next-line space-infix-ops
-        e.style.display = (change) ? 'block' : 'none': e.style.display = (change) ? 'none' : 'block';
+        ? e.style.display = (change) ? 'block' : 'none'
+        : e.style.display = (change) ? 'none' : 'block';
     });
   }
 
@@ -235,7 +236,7 @@ class BackgroundLayers extends ControlBase {
   handlerClickMobile(e) {
     this.removeLayers();
     this.activeLayer += 1;
-    this.activeLayer = this.activeLayer % this.layers.length;
+    this.activeLayer %= this.layers.length;
     const layersInfo = this.layers[this.activeLayer];
     const { layers, id, title } = layersInfo;
     layers.forEach((layer, index, array) => layer.setZIndex(index - array.length));
@@ -270,8 +271,8 @@ class BackgroundLayers extends ControlBase {
    */
   listen(html) {
     html.querySelectorAll('button.m-background-group-btn')
-      .forEach((b, i) => b.addEventListener('click', e => this.showBaseLayer(e, this.layers[i], i)));
-    html.querySelector('#m-baselayerselector-unique-btn').addEventListener('click', e => this.showBaseLayer(e));
+      .forEach((b, i) => b.addEventListener('click', (e) => this.showBaseLayer(e, this.layers[i], i)));
+    html.querySelector('#m-baselayerselector-unique-btn').addEventListener('click', (e) => this.showBaseLayer(e));
   }
 
   /**

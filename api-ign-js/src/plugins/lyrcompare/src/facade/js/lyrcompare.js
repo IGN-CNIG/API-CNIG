@@ -61,7 +61,6 @@ export default class LyrCompare extends M.Plugin {
      */
     this.controls_ = [];
 
-
     /**
      * Facade of the map
      * @private
@@ -265,7 +264,6 @@ export default class LyrCompare extends M.Plugin {
       map.addPanels(this.panel_);
     }
   }
-
 
   /**
    * This function destroys this plugin

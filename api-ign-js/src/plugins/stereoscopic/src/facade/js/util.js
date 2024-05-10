@@ -30,6 +30,7 @@ function loadAllScripts() {
 
     Promise.all(loadPromises)
       .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error al cargar los scripts:', error);
         reject1(error);
       });
@@ -63,6 +64,7 @@ function loadAllStyles() {
 
     Promise.all(loadPromises)
       .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error al cargar los estilos:', error);
         reject1(error);
       });

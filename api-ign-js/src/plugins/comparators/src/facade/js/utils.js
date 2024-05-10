@@ -1,6 +1,5 @@
 import { handlerErrorGenericLayer, handlerErrorTileLoadFunction } from './errorhandling';
 
-
 export const dicAccesibilityButton = {
   'set-mirror-0': [
     {
@@ -241,7 +240,7 @@ export const checkLayers = (layer, comparatorLayers) => {
   const otherLayers = [];
 
   layer.forEach((l) => {
-    const some = comparatorLayers.some(c => l.name === getNameString(c));
+    const some = comparatorLayers.some((c) => l.name === getNameString(c));
     if (some) {
       activeLayerComparators = l;
     } else {
@@ -318,13 +317,11 @@ export const formatearID = (str) => {
   return str.replace(/[^\w$]/g, '');
 };
 
-
 function normalizeString(text) {
   let newText = text.replace(/,/g, '');
   newText = newText.replace(/\*/g, '');
   return newText;
 }
-
 
 /**
  * This methods gets the kml url parameters
@@ -343,8 +340,9 @@ function getKML(layer) {
  * @function
  */
 function getGeoJSON(layer) {
-  const source = !M.utils.isUndefined(layer.source) ?
-    layer.serialize() : layer.url;
+  const source = !M.utils.isUndefined(layer.source)
+    ? layer.serialize()
+    : layer.url;
   const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
   return `GeoJSON*${layer.name}*${source}*${layer.extract}*${style}`;
 }
@@ -435,7 +433,6 @@ function getTMS(layer) {
   return `TMS*${normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.isVisible()}*${layer.transparent}*${layer.tileGridMaxZoom}*${layer.displayInLayerSwitcher}*${normalizeString(layer.legend || '')}`;
 }
 
-
 function getOSM(layer) {
   return `OSM*${normalizeString(layer.legend || layer.name)}*${normalizeString(layer.legend || '')}*${layer.url}*${layer.isVisible()}*${layer.transparent}`;
 }
@@ -515,7 +512,7 @@ export function getLayers(map) {
     return res;
   });
 
-  return layers.map(layer => layerToParam(layer, map)).filter(param => param != null);
+  return layers.map((layer) => layerToParam(layer, map)).filter((param) => param != null);
 }
 
 /**
@@ -526,7 +523,7 @@ export function getLayers(map) {
    */
 export function getBaseLayers(map) {
   return map.getBaseLayers()
-    .map(layer => layerToParam(layer, map))
-    .filter(param => param != null)
+    .map((layer) => layerToParam(layer, map))
+    .filter((param) => param != null)
     .reverse();
 }

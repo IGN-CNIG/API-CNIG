@@ -151,8 +151,8 @@ class MVT extends Vector {
     });
 
     // register events in order to fire the LOAD event
-    source.on(TileEventType.TILELOADERROR, evt => this.checkAllTilesLoaded_(evt));
-    // source.on(TileEventType.TILELOADEND, evt => this.checkAllTilesLoaded_(evt));
+    source.on(TileEventType.TILELOADERROR, (evt) => this.checkAllTilesLoaded_(evt));
+    // source.on(TileEventType.TILELOADEND, (evt) => this.checkAllTilesLoaded_(evt));
 
     this.ol3Layer = new OLLayerVectorTile(extend({
       source,
@@ -190,8 +190,9 @@ class MVT extends Vector {
 
     setTimeout(() => {
       const filtered = this.map.getLayers().filter((l) => {
-        const checkLayers = l.getImpl().layers_ !== undefined ?
-          l.getImpl().layers_ === this.layers_ : true;
+        const checkLayers = l.getImpl().layers_ !== undefined
+          ? l.getImpl().layers_ === this.layers_
+          : true;
         return l.url === this.url && checkLayers;
       });
 
@@ -326,9 +327,9 @@ class MVT extends Vector {
     const loaded = tileImages.every((tile) => {
       const tileCoord = tile.getTileCoord();
       const tileState = tile.getState();
-      const sameTile = (currTileCoord[0] === tileCoord[0] &&
-        currTileCoord[1] === tileCoord[1] &&
-        currTileCoord[2] === tileCoord[2]);
+      const sameTile = (currTileCoord[0] === tileCoord[0]
+        && currTileCoord[1] === tileCoord[1]
+        && currTileCoord[2] === tileCoord[2]);
       const tileLoaded = sameTile || (tileState !== TileState.LOADING);
       return tileLoaded;
     });

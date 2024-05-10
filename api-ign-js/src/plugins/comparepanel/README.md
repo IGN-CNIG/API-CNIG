@@ -9,13 +9,13 @@
   </a>
   <a title="Node version" href="https://nodejs.org/es">
     <img src="https://img.shields.io/badge/node-v14.16-blue">
-  </a>  
+  </a>
   <a title="NPM version" href="https://www.npmjs.com/package/npm">
     <img src="https://img.shields.io/badge/npm-v6.14-blue">
   </a>
   <a title="Language" href="https://www.w3schools.com/html/" target="_blank">
     <img src="https://img.shields.io/static/v1?label=Lang&message=HTML&color=maroon">
-  </a>  
+  </a>
   <a title="Language" href="https://www.w3schools.com/js/" target="_blank">
     <img src="https://img.shields.io/static/v1?label=Lang&message=Javascript&color=maroon">
   </a>

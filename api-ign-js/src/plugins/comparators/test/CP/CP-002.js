@@ -9,7 +9,6 @@ const map = M.map({
   bbox: [323020, 4126873, 374759, 4152013],
 });
 
-
 // ! ViewManagement
 /*
 const viewmanagement = {

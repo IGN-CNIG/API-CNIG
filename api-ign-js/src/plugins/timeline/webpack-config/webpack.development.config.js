@@ -42,13 +42,13 @@ module.exports = {
         test: /\.css$/i,
         use: [
           {
-            loader: "style-loader",
+            loader: 'style-loader',
             options: {
               // insert: 'head',
               injectType: 'singletonStyleTag',
-            }, 
+            },
           },
-          "css-loader",
+          'css-loader',
         ],
         exclude: [/node_modules/],
       },

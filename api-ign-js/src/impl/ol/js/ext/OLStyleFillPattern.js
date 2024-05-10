@@ -191,8 +191,8 @@ class OLStyleFillPattern extends OLStyleFill {
    */
   static getPattern(optionsParam) {
     const options = optionsParam;
-    const pat = OLStyleFillPattern.patterns[options.pattern] ||
-      OLStyleFillPattern.patterns.dot;
+    const pat = OLStyleFillPattern.patterns[options.pattern]
+      || OLStyleFillPattern.patterns.dot;
     let d = Math.round(options.spacing) || 10;
     switch (options.pattern) {
       case 'dot':

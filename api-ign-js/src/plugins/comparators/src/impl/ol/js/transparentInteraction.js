@@ -27,10 +27,9 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
     this.radius = (optionsE.radius || 100);
     this.OLVersion = 'OL6';
 
-
     const layer = [optionsE.layers]
     // eslint-disable-next-line no-shadow
-      .map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
+      .map((layer) => layer.getImpl().getOL3Layer()).filter((layer) => layer != null);
     this.addLayer(layer);
   }
 
@@ -194,7 +193,6 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
 
     // ctx.clip();
     // console.log(pointerPos);
-
 
     // Rectangle
     // var ctx = event.context;

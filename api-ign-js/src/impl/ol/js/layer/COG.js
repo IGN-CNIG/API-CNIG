@@ -10,15 +10,17 @@ import {
   addParameters,
   concatUrlPaths,
   fillResolutions,
-  generateResolutionsFromExtent
+  generateResolutionsFromExtent,
 } from 'M/util/Utils';
 import FacadeLayerBase from 'M/layer/Layer';
 import * as LayerType from 'M/layer/Type';
 import * as EventType from 'M/event/eventtype';
 import TileLayer from 'ol/layer/WebGLTile';
 import GeoTIFF from 'ol/source/GeoTIFF';
+import { get as getProj } from 'ol/proj';
 import ImplMap from '../Map';
 import LayerBase from './Layer';
+import ImplUtils from '../util/Utils';
 
 /**
  * @classdesc
@@ -72,7 +74,7 @@ class COG extends LayerBase {
    * </code></pre>
    * @api stable
    */
-  constructor(options = {}, vendorOptions) {
+  constructor(options = {}, vendorOptions = {}) {
     // calls the super constructor
     super(options, vendorOptions);
 
@@ -143,7 +145,6 @@ class COG extends LayerBase {
      */
     this.styles = this.options.styles || '';
 
-
     /**
      * COG sldBody. Parámetros "ol.source.ImageCOG"
      */
@@ -173,7 +174,6 @@ class COG extends LayerBase {
      * COG minZoom. Zoom mínimo aplicable a la capa.
      */
     this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
-
 
     /**
      * COG maxZoom. Zoom máximo aplicable a la capa.
@@ -208,8 +208,8 @@ class COG extends LayerBase {
     if ((visibility === true) && (this.transparent !== true)) {
       // hides all base layers
       this.map.getBaseLayers()
-        .filter(layer => !layer.equals(this.facadeLayer_) && layer.isVisible())
-        .forEach(layer => layer.setVisible(false));
+        .filter((layer) => !layer.equals(this.facadeLayer_) && layer.isVisible())
+        .forEach((layer) => layer.setVisible(false));
 
       // set this layer visible
       if (!isNullOrEmpty(this.ol3Layer)) {
@@ -254,8 +254,8 @@ class COG extends LayerBase {
     this.addSingleLayer_(null);
 
     // calculates the resolutions from scales
-    if (!isNull(this.options) &&
-      !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
+    if (!isNull(this.options)
+      && !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
       const units = this.map.getProjection().units;
       this.options.minResolution = getResolutionFromScale(this.options.minScale, units);
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
@@ -308,7 +308,6 @@ class COG extends LayerBase {
     const minResolution = this.options.minResolution;
     const maxResolution = this.options.maxResolution;
     const zIndex = this.zIndex_;
-
 
     let resolutions = this.map.getResolutions();
     if (isNullOrEmpty(resolutions) && !isNullOrEmpty(this.resolutions_)) {
@@ -392,6 +391,7 @@ class COG extends LayerBase {
       ];
       if (bands.length !== 0) {
         sources.forEach((src) => {
+          // eslint-disable-next-line no-param-reassign
           src.bands = bands;
         });
       }
@@ -506,7 +506,7 @@ class COG extends LayerBase {
     }
     // });
   }
-  
+
   /**
    * Este método obtiene el número de niveles de zoom
    * disponibles para la capa COG.

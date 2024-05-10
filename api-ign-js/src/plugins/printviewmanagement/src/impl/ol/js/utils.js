@@ -1,4 +1,3 @@
-
 const EPSG_DEFAULT = 'EPSG:4326';
 
 export const reproject = (origin, coordinates) => {

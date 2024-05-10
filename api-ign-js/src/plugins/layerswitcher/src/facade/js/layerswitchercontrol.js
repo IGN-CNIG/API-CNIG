@@ -1,5 +1,4 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle,no-param-reassign */
 /**
  * @module M/control/LayerswitcherControl
  */
@@ -206,7 +205,6 @@ export default class LayerswitcherControl extends M.Control {
         this.template_.addEventListener('click', this.clickLayer.bind(this), false);
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
 
-
         this.getImpl().registerEvent(map);
         this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('click', this.openAddServices.bind(this), false);
         this.template_.querySelector('#m-layerswitcher-addlayers').addEventListener('touchstart', this.openAddServices.bind(this), false);
@@ -255,8 +253,8 @@ export default class LayerswitcherControl extends M.Control {
 
         this.overlayLayers = this.reorderLayers(this.overlayLayers);
 
-        const overlayLayersPromise =
-          Promise.all(this.overlayLayers.map(this.parseLayerForTemplate_.bind(this)));
+        const overlayLayersPromise = Promise
+          .all(this.overlayLayers.map(this.parseLayerForTemplate_.bind(this)));
         overlayLayersPromise.then((parsedOverlayLayers) => {
           success({
             overlayLayers: parsedOverlayLayers,
@@ -293,21 +291,21 @@ export default class LayerswitcherControl extends M.Control {
 
   //  Esta función ordena todas las capas por zindex
   reorderLayers(layers) {
-    const result = layers.sort((layer1, layer2) => layer1.getZIndex() -
-      layer2.getZIndex()).reverse();
+    const result = layers.sort((layer1, layer2) => layer1.getZIndex()
+      - layer2.getZIndex()).reverse();
     return result;
   }
 
   // Esta función monta objeto con propiedades de la capa para la plantilla
   parseLayerForTemplate_(layer) {
     const layerTitle = layer.legend || layer.name;
-    const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata) &&
-      !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
+    const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata)
+      && !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
 
     return new Promise((success) => {
-      let hasStyles = (hasMetadata && layer.capabilitiesMetadata.style.length > 1) ||
-        (layer instanceof M.layer.Vector && !M.utils.isNullOrEmpty(layer.predefinedStyles) &&
-          layer.predefinedStyles.length > 1);
+      let hasStyles = (hasMetadata && layer.capabilitiesMetadata.style.length > 1)
+        || (layer instanceof M.layer.Vector && !M.utils.isNullOrEmpty(layer.predefinedStyles)
+          && layer.predefinedStyles.length > 1);
       if (layer.type === 'KML' && (layer.options.extractStyles || M.utils.isUndefined(layer.options.extractStyles))) {
         hasStyles = false;
       }
@@ -378,8 +376,8 @@ export default class LayerswitcherControl extends M.Control {
               const url = elem.getAttribute('data-layer-url') || undefined;
               const type = elem.getAttribute('data-layer-type');
               const filtered = layers.filter((layer) => {
-                return layer.name === name && (layer.url === url || (layer.url === undefined && (layer.type === 'OSM' || layer.type === 'GeoJSON' || layer.type === 'MBTilesVector' || layer.type === 'MBTiles'))) &&
-                  layer.type === type;
+                return layer.name === name && (layer.url === url || (layer.url === undefined && (layer.type === 'OSM' || layer.type === 'GeoJSON' || layer.type === 'MBTilesVector' || layer.type === 'MBTiles')))
+                  && layer.type === type;
               });
               if (filtered.length > 0) {
                 filtered[0].setZIndex(maxZIndex);
@@ -417,8 +415,8 @@ export default class LayerswitcherControl extends M.Control {
     const selectLayer = evt.target.getAttribute('data-select-type');
     if (evt.target.id === 'm-layerswitcher-hsalllayers') {
       this.showHideAllLayers();
-    } else if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles'))) &&
-      !M.utils.isNullOrEmpty(layerType)) {
+    } else if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles')))
+      && !M.utils.isNullOrEmpty(layerType)) {
       let layer = this.findLayer(evt);
       if (layer.length > 0) {
         layer = layer[0];
@@ -752,8 +750,8 @@ export default class LayerswitcherControl extends M.Control {
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-style') > -1) {
           let otherStyles = [];
           let isVectorLayer = false;
-          if (!M.utils.isUndefined(layer.capabilitiesMetadata) &&
-            !M.utils.isUndefined(layer.capabilitiesMetadata.style)) {
+          if (!M.utils.isUndefined(layer.capabilitiesMetadata)
+            && !M.utils.isUndefined(layer.capabilitiesMetadata.style)) {
             otherStyles = layer.capabilitiesMetadata.style;
           }
 
@@ -800,7 +798,6 @@ export default class LayerswitcherControl extends M.Control {
     evt.stopPropagation();
   }
 
-
   eventIconTarget_(layerType, layer) {
     const layersTypes = ['WMTS', 'WFS', 'MBTilesVector', 'MBTiles', 'OSM', 'XYZ', 'TMS', 'GeoJSON', 'KML', 'OGCAPIFeatures', 'Vector', 'GenericRaster', 'GenericVector', 'MVT'];
     if (layerType === 'WMS') {
@@ -819,6 +816,7 @@ export default class LayerswitcherControl extends M.Control {
             }
           })
           .catch((err) => {
+            // eslint-disable-next-line no-console
             console.error(err);
           });
       } else if (extent === null) {
@@ -884,10 +882,10 @@ export default class LayerswitcherControl extends M.Control {
     const tableBody = document.querySelector('#m-layerswitcher-table tbody');
     tableBody.innerHTML = '';
 
-    this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes)) ?
-      false :
+    this.latestVars_.attributes = (M.utils.isNullOrEmpty(this.latestVars_.allAttributes))
+      ? false
       // eslint-disable-next-line max-len
-      this.latestVars_.allAttributes.slice(this.pages_.element, this.pages_.element + this.numPages_);
+      : this.latestVars_.allAttributes.slice(this.pages_.element, this.pages_.element + this.numPages_);
 
     if (this.latestVars_.attributes) {
       this.latestVars_.attributes.forEach((att) => {
@@ -906,7 +904,6 @@ export default class LayerswitcherControl extends M.Control {
     this.hasNext_();
     this.hasPrevious_();
   }
-
 
   /**
    * This function adds / deletes classes if you have next results
@@ -971,11 +968,11 @@ export default class LayerswitcherControl extends M.Control {
     const layerURL = evt.target.getAttribute('data-layer-url') || undefined;
     const layerType = evt.target.getAttribute('data-layer-type');
     let result = [];
-    if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles'))) &&
-      !M.utils.isNullOrEmpty(layerType)) {
+    if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles')))
+      && !M.utils.isNullOrEmpty(layerType)) {
       result = this.overlayLayers.filter((l) => {
-        return l.name === layerName && (l.url === layerURL ||
-          l.url === undefined || l.url[0] === layerURL) && l.type === layerType;
+        return l.name === layerName && (l.url === layerURL
+          || l.url === undefined || l.url[0] === layerURL) && l.type === layerType;
       });
     }
 
@@ -1077,8 +1074,8 @@ export default class LayerswitcherControl extends M.Control {
       }
     }
     if (layer.type === 'WMTS') {
-      provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
-        `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
+      provider = `${layer.capabilitiesMetadata.attribution.ProviderName}`
+        + `<p><a class="m-layerswitcher-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
       const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
       if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
         const mail = sc.ContactInfo.Address.ElectronicMailAddress;
@@ -1435,8 +1432,8 @@ export default class LayerswitcherControl extends M.Control {
   // Permite añadir servicios
   openAddServices() {
     const precharged = this.precharged;
-    const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
-      (precharged.services !== undefined && precharged.services.length > 0);
+    const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0)
+      || (precharged.services !== undefined && precharged.services.length > 0);
     const codsiActive = this.codsiActive;
     const accept = '.kml, .zip, .gpx, .geojson, .gml, .json';
     const addServices = M.template.compileSync(addServicesTemplate, {
@@ -1577,8 +1574,8 @@ export default class LayerswitcherControl extends M.Control {
     const listSuggestBtn = document.querySelector(LIST_BTN);
 
     if (listSuggestBtn !== null) {
-      listSuggestBtn.addEventListener('click', e => this.showSuggestions(e));
-      listSuggestBtn.addEventListener('keydown', e => (e.keyCode === 13) && this.showSuggestions(e));
+      listSuggestBtn.addEventListener('click', (e) => this.showSuggestions(e));
+      listSuggestBtn.addEventListener('keydown', (e) => (e.keyCode === 13) && this.showSuggestions(e));
     }
 
     // evento para desplegar capas predefinidas
@@ -1591,7 +1588,7 @@ export default class LayerswitcherControl extends M.Control {
 
     // evento para mostrar listado de capas predefinidas
     document.querySelectorAll('#m-layerswitcher-addservices-suggestions .m-layerswitcher-suggestion').forEach((elem) => {
-      elem.addEventListener('click', e => this.loadSuggestion(e));
+      elem.addEventListener('click', (e) => this.loadSuggestion(e));
     });
   }
 
@@ -1715,9 +1712,9 @@ export default class LayerswitcherControl extends M.Control {
         let insideService = false;
         allServices.forEach((service) => {
           if (service.type === layer.type && this.checkUrls(service.url, layer.url)) {
-            if (service.white_list !== undefined && service.white_list.length > 0 &&
-              service.white_list.indexOf(layer.name) > -1 &&
-              layerNames.indexOf(layer.name) === -1) {
+            if (service.white_list !== undefined && service.white_list.length > 0
+                && service.white_list.indexOf(layer.name) > -1
+                && layerNames.indexOf(layer.name) === -1) {
               layers.push(layer);
               layerNames.push(layer.name);
             } else if (service.white_list === undefined && layerNames.indexOf(layer.name) === -1) {
@@ -1736,19 +1733,19 @@ export default class LayerswitcherControl extends M.Control {
       });
     } else if (this.precharged.groups !== undefined && this.precharged.groups.length > 0) {
       this.precharged.groups.forEach((group) => {
-        if (group.services !== undefined && group.services.length > 0 &&
-          group.name === this.filterName) {
+        if (group.services !== undefined && group.services.length > 0
+            && group.name === this.filterName) {
           allLayers.forEach((layer) => {
             let insideService = false;
             group.services.forEach((service) => {
               if (service.type === layer.type && this.checkUrls(service.url, layer.url)) {
-                if (service.white_list !== undefined && service.white_list.length > 0 &&
-                  service.white_list.indexOf(layer.name) > -1 &&
-                  layerNames.indexOf(layer.name) === -1) {
+                if (service.white_list !== undefined && service.white_list.length > 0
+                    && service.white_list.indexOf(layer.name) > -1
+                    && layerNames.indexOf(layer.name) === -1) {
                   layers.push(layer);
                   layerNames.push(layer.name);
-                } else if (service.white_list === undefined &&
-                  layerNames.indexOf(layer.name) === -1) {
+                } else if (service.white_list === undefined
+                    && layerNames.indexOf(layer.name) === -1) {
                   layers.push(layer);
                   layerNames.push(layer.name);
                 }
@@ -1867,36 +1864,36 @@ export default class LayerswitcherControl extends M.Control {
       container.innerHTML = html.innerHTML;
       const results = container.querySelectorAll('span.m-check-layerswitcher-addservices');
       for (let i = 0; i < results.length; i += 1) {
-        results[i].addEventListener('click', evt => this.registerCheck(evt));
+        results[i].addEventListener('click', (evt) => this.registerCheck(evt));
       }
 
       const resultsWFS = container.querySelectorAll('span.m-check-layerswitcher-addservices-wfs');
       for (let i = 0; i < resultsWFS.length; i += 1) {
-        resultsWFS[i].addEventListener('click', evt => this.registerCheckWFS(evt));
+        resultsWFS[i].addEventListener('click', (evt) => this.registerCheckWFS(evt));
       }
 
       const resultsNames = container.querySelectorAll('#m-layerswitcher-all tbody tr td.m-layerswitcher-table-layer-name');
       for (let i = 0; i < resultsNames.length; i += 1) {
-        resultsNames[i].addEventListener('click', evt => this.registerCheckFromName(evt));
+        resultsNames[i].addEventListener('click', (evt) => this.registerCheckFromName(evt));
       }
 
       const resultsNamesWFS = container.querySelectorAll('#m-layerswitcher-wfs tbody tr td.m-layerswitcher-table-layer-name');
       for (let i = 0; i < resultsNamesWFS.length; i += 1) {
-        resultsNamesWFS[i].addEventListener('click', evt => this.registerCheckFromNameWFS(evt));
+        resultsNamesWFS[i].addEventListener('click', (evt) => this.registerCheckFromNameWFS(evt));
       }
 
       const checkboxResults = container.querySelectorAll('.m-layerswitcher-table-results .m-layerswitcher-table-container table tbody tr td span');
-      checkboxResults.forEach(l => l.addEventListener('keydown', e => (e.keyCode === 13) && this.registerCheckFromName(e)));
+      checkboxResults.forEach((l) => l.addEventListener('keydown', (e) => (e.keyCode === 13) && this.registerCheckFromName(e)));
 
       const sAll = container.querySelector('#m-layerswitcher-addservices-selectall');
       if (!M.utils.isNull(sAll)) {
-        sAll.addEventListener('click', evt => this.registerCheck(evt));
+        sAll.addEventListener('click', (evt) => this.registerCheck(evt));
       }
       const selAllWFS = container.querySelector('#m-layerswitcher-addservices-selectall-wfs');
       if (!M.utils.isNull(selAllWFS)) {
-        selAllWFS.addEventListener('click', evt => this.registerCheckWFS(evt));
+        selAllWFS.addEventListener('click', (evt) => this.registerCheckWFS(evt));
       }
-      container.querySelector('.m-layerswitcher-addservices-add').addEventListener('click', evt => this.addLayers(evt));
+      container.querySelector('.m-layerswitcher-addservices-add').addEventListener('click', (evt) => this.addLayers(evt));
       const elem = container.querySelector('.m-layerswitcher-show-capabilities');
       if (!M.utils.isNull(elem)) {
         elem.addEventListener('click', () => {
@@ -2085,8 +2082,8 @@ export default class LayerswitcherControl extends M.Control {
               if (this.capabilities[j].type === 'WMTS') {
                 if (meta.style !== undefined && meta.style.length > 0) {
                   meta.style.forEach((s) => {
-                    if (s.isDefault === true && s.LegendURL !== undefined &&
-                      s.LegendURL.length > 0) {
+                    if (s.isDefault === true && s.LegendURL !== undefined
+                        && s.LegendURL.length > 0) {
                       const urlDefaultStyle = s.LegendURL[0].href;
                       this.capabilities[j].setLegendURL(urlDefaultStyle);
                     }
@@ -2243,10 +2240,10 @@ export default class LayerswitcherControl extends M.Control {
     if (type === 'mvt' || type === 'kml') {
       const selAll = document.querySelector('#m-layerswitcher-addservices-selectall');
       if (!M.utils.isNullOrEmpty(selAll)) {
-        selAll.addEventListener('click', evt => this.registerCheck(evt));
+        selAll.addEventListener('click', (evt) => this.registerCheck(evt));
         const results = document.querySelectorAll('span.m-check-layerswitcher-addservices');
         for (let i = 0; i < results.length; i += 1) {
-          results[i].addEventListener('click', evt => this.registerCheck(evt));
+          results[i].addEventListener('click', (evt) => this.registerCheck(evt));
         }
       }
     }
@@ -2341,8 +2338,13 @@ export default class LayerswitcherControl extends M.Control {
 
   // Plantilla para OGCAPI
   printOGCModal(
-    url, selectedLayer, limitVal, onlyBbox, summary,
-    filterByID, filterByOtherFilters,
+    url,
+    selectedLayer,
+    limitVal,
+    onlyBbox,
+    summary,
+    filterByID,
+    filterByOtherFilters,
   ) {
     let prevID;
     let urlOGC = url.trim();
@@ -2473,10 +2475,15 @@ export default class LayerswitcherControl extends M.Control {
     layer.setZIndex(layer.getZIndex() + 8);
   }
 
-
   setOnClickersFiltersButtons(
-    summary, urlOGC, radioBtnFilterByID,
-    radioBtnFilterByOther, layers, url, filterByID, filterByOtherFilters,
+    summary,
+    urlOGC,
+    radioBtnFilterByID,
+    radioBtnFilterByOther,
+    layers,
+    url,
+    filterByID,
+    filterByOtherFilters,
   ) {
     let indexCurrentLayer;
     let formInputs;
@@ -2546,8 +2553,8 @@ export default class LayerswitcherControl extends M.Control {
                 v.bool = true;
               } else if (type === 'timestamp' || type === 'date') {
                 v.date = true;
-              } else if (type === 'int4' || type === 'int' ||
-                type === 'number' || type === 'numeric' || type.includes('numeric')) {
+              } else if (type === 'int4' || type === 'int'
+                || type === 'number' || type === 'numeric' || type.includes('numeric')) {
                 v.number = true;
               } else {
                 v.text = true;
@@ -2654,7 +2661,13 @@ export default class LayerswitcherControl extends M.Control {
             return capa.id === selectValue;
           });
           this.printOGCModal(
-            url, indexCurrentLayer, limit, checked, summary, filterByID, filterByOtherFilters,
+            url,
+            indexCurrentLayer,
+            limit,
+            checked,
+            summary,
+            filterByID,
+            filterByOtherFilters,
           );
         });
       }).catch((err) => {
@@ -2760,14 +2773,13 @@ export default class LayerswitcherControl extends M.Control {
     Object.keys(checkboxes).forEach((name) => {
       const checkboxGroup = checkboxes[name];
       /* eslint-disable-next-line max-len */
-      const checkedValues = checkboxGroup.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+      const checkedValues = checkboxGroup.filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
 
       if (checkedValues.length === 1) {
         // Si solo hay un checkbox marcado, establecer el valor correspondiente en formData
         formData[name] = checkedValues[0];
       }
     });
-
 
     const propsKeysForm = Object.keys(formData);
     const propsValuesForm = Object.values(formData);
@@ -2875,13 +2887,13 @@ export default class LayerswitcherControl extends M.Control {
     this.codsiCleanButton = document.querySelector(CODSI_CLEAN);
 
     if (this.codsiButton !== null) {
-      this.codsiButton.addEventListener('click', e => this.showCODSI(e));
-      this.codsiButton.addEventListener('keydown', e => (e.keyCode === 13) && this.showCODSI(e));
+      this.codsiButton.addEventListener('click', (e) => this.showCODSI(e));
+      this.codsiButton.addEventListener('keydown', (e) => (e.keyCode === 13) && this.showCODSI(e));
       this.codsiFilterButton.addEventListener('click', (e) => {
         this.loadCODSIResults(this.select_codsi);
       });
 
-      this.codsiFilterButton.addEventListener('keydown', e => (e.keyCode === 13) && this.loadCODSIResults(this.select_codsi));
+      this.codsiFilterButton.addEventListener('keydown', (e) => (e.keyCode === 13) && this.loadCODSIResults(this.select_codsi));
 
       this.codsiSearchInput.addEventListener('keypress', (e) => {
         if (e.keyCode === 13) {
@@ -2980,8 +2992,8 @@ export default class LayerswitcherControl extends M.Control {
     this.codsiResults.innerHTML = '';
 
     if (results.length > 0) {
-      const resultsElement = results.map(r => this.createElementCODSIResults(r));
-      resultsElement.forEach(r => this.codsiResults.appendChild(r));
+      const resultsElement = results.map((r) => this.createElementCODSIResults(r));
+      resultsElement.forEach((r) => this.codsiResults.appendChild(r));
     } else {
       this.codsiResults.innerHTML = `<div class="codsi-no-results">${getValue('exception.codsi_no_results')}</div>`;
     }
@@ -3117,7 +3129,7 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 
   /**

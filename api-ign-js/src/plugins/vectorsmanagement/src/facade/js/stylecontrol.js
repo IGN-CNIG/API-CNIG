@@ -235,8 +235,9 @@ export default class StyleControl extends M.Control {
 
         if (options.fill.color) {
           const color = options.fill.color.indexOf('rgba') >= 0;
-          colorInputFill.value = color ?
-            this.rgbaToHex(options.fill.color) : options.fill.color; // TO-DO VALORES RGBA
+          colorInputFill.value = color
+            ? this.rgbaToHex(options.fill.color)
+            : options.fill.color; // TO-DO VALORES RGBA
         }
       }
 

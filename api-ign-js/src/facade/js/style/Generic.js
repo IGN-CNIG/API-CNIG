@@ -47,7 +47,6 @@ class Generic extends Simple {
     return this.getImpl().toImage(this.canvas_);
   }
 
-
   /**
    * Deserializa el método M.style.Simple.deserialize.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.

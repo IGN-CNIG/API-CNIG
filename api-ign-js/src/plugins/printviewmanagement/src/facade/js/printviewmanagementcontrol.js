@@ -51,7 +51,6 @@ export default class PrintViewManagementControl extends M.Control {
       */
     this.tooltipGeorefImageEpsg_ = georefImageEpsg.tooltip || getValue('tooltip_georefimageepsg');
 
-
     /**
      * Indicates if the control georefImageEpsg is added to the plugin
      * @private
@@ -91,6 +90,7 @@ export default class PrintViewManagementControl extends M.Control {
 
     this.useProxy = useProxy;
   }
+
   /**
    * This function creates the view
    *
@@ -135,7 +135,6 @@ export default class PrintViewManagementControl extends M.Control {
       success(html);
     });
   }
-
 
   selectElementHTML() {
     // IDs
@@ -227,7 +226,10 @@ export default class PrintViewManagementControl extends M.Control {
 
   addPrinterMapControl(html) {
     this.printerMapControl = new PrinterMapControl(
-      this.printermap_, this.map_, this.statusProxy, this.useProxy,
+      this.printermap_,
+      this.map_,
+      this.statusProxy,
+      this.useProxy,
     );
     html.querySelector('#m-printviewmanagement-printermap').addEventListener('click', () => {
       this.showDownloadButton('printermap');
@@ -238,7 +240,10 @@ export default class PrintViewManagementControl extends M.Control {
 
   addGeorefImageControl(html) {
     this.georefImageControl = new GeorefimageControl(
-      this.georefImage_, this.map_, this.statusProxy, this.useProxy,
+      this.georefImage_,
+      this.map_,
+      this.statusProxy,
+      this.useProxy,
     );
     html.querySelector('#m-printviewmanagement-georefImage').addEventListener('click', () => {
       this.showDownloadButton('georefImage');
@@ -329,7 +334,7 @@ export default class PrintViewManagementControl extends M.Control {
    * @api
    */
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 
   /**

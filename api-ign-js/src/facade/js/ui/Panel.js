@@ -4,7 +4,12 @@
 import 'assets/css/panel';
 import panelTemplate from 'templates/panel';
 import * as Position from './position';
-import { isNullOrEmpty, isArray, isString, includes } from '../util/Utils';
+import {
+  isNullOrEmpty,
+  isArray,
+  isString,
+  includes,
+} from '../util/Utils';
 import MObject from '../Object';
 import * as EventType from '../event/eventtype';
 import ControlBase from '../control/Control';
@@ -439,7 +444,7 @@ class Panel extends MObject {
     let hasControl = false;
     if (!isNullOrEmpty(controlParam)) {
       if (isString(controlParam)) {
-        hasControl = this._controls.filter(control => control.name === controlParam)[0] != null;
+        hasControl = this._controls.filter((control) => control.name === controlParam)[0] != null;
       } else if (controlParam instanceof ControlBase) {
         hasControl = includes(this._controls, controlParam);
       }
@@ -464,7 +469,7 @@ class Panel extends MObject {
       controls.forEach((controlParam) => {
         const control = controlParam;
         if ((control instanceof ControlBase) && this.hasControl(control)) {
-          this._controls = this._controls.filter(control2 => !control.equals(control2));
+          this._controls = this._controls.filter((control2) => !control.equals(control2));
           control.setPanel(null);
         }
       }, this);

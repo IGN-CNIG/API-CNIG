@@ -46,11 +46,11 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - _absolute_: Representación de las capas de manera lineal, con consultas.
   - _relative_: Representación de las capas mediante intervalos, con consultas.
 
-  **AbsoluteSimple**: 
+  **AbsoluteSimple**:
   - Nombre: nombre descriptivo de la capa.
   - Etiqueta: etiqueta o fecha de la capa.
   - Servicio en formato API-CNIG para insertar una capa a través de servicios WMS ó WMTS, o la capa como objeto, de cada intervalo.
-  
+
   Ejemplos de uso
   Insertar intervalos a través de servicios WMS. La URL en formato API-CNIG sigue la siguiente estructura: Servicio,Leyenda,URL,Nombre. Separados por "*".
   ```javascript
@@ -76,7 +76,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - end: Fecha final del filtro.
   - layer: Capa a filtrar.
   - attributeParam: Define el atributo de tiempo para filtrar.
-  - equalsTimeLine: Filtrar por fechas iguales o entre dos fechas. 
+  - equalsTimeLine: Filtrar por fechas iguales o entre dos fechas.
   - grupo: Sirve para agrupar capas, tienen que tener el mismo nombre para pertenecer al grupo. Ejemplo:
   ```javascript
   intervals:[
@@ -101,11 +101,11 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   ```
 - **speedDate**: _Opcional_ Velocidad del Step por segundo, por defecto 2.
 - **paramsDate**: _Opcional_ Determina el Step, Segundo(sec), Minuto(min), Hora(hrs), Días(day), Meses (mos), Años(yr).
-- **stepValue**: _Opcional_ Determina el valor del paramsDate, por ejemplo que el step sea de 5 años. 
+- **stepValue**: _Opcional_ Determina el valor del paramsDate, por ejemplo que el step sea de 5 años.
 - **paramsDate**: _Opcional_  Determina la forma de moverte por el Slider, lineal, logarítmica o exponencial. Valor por defecto, _linear_.
   - Lineal: Valor String, _linear_. El valor del slider siempre será el mismo.
   - Exponencial: Valor String, _exponential_. Los valores iniciales del slider es mayor que los finales.
-  - Logarítmica: Valor String, _logarithmic_. Los valores finales del slider es mayor que los iniciales. 
+  - Logarítmica: Valor String, _logarithmic_. Los valores finales del slider es mayor que los iniciales.
 - **formatMove**: _Opcional_  Determina el movimiento del slider cuando se hace _play_. Valor por defecto, _continuous_.
   - continua: Slider mueve inicio y fin, valor String _continuous_.
   - discreta: Slider mueve solo fin, valor String _discrete_.

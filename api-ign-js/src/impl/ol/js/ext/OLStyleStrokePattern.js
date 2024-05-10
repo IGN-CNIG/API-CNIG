@@ -169,6 +169,7 @@ class OLStyleStrokePattern extends OLStyleStroke {
 
     this.setColor(pattern);
   }
+
   /**
    * Este método es llamado por el constructor de la clase padre,
    * clona el estilo y asigna el "canvas".
@@ -182,6 +183,7 @@ class OLStyleStrokePattern extends OLStyleStroke {
     s.canvas_ = this.canvas_;
     return s;
   }
+
   /**
    * Este método devuelve la imagen del "canvas".
    * @function
@@ -191,6 +193,7 @@ class OLStyleStrokePattern extends OLStyleStroke {
   getImage() {
     return this.canvas_;
   }
+
   /**
    * Este método devuelve el color del estilo.
    * @function

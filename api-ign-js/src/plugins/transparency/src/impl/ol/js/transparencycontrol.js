@@ -4,7 +4,6 @@
  */
 import TransparentInteraction from 'impl/TransparentInteraction';
 
-
 export default class TransparencyControl extends M.impl.Control {
   /**
    * This function adds the control to the specified map
@@ -77,7 +76,6 @@ export default class TransparencyControl extends M.impl.Control {
   removeEffects() {
     this.olMap.removeInteraction(this.transparentInteraction_);
   }
-
 
   /**
    * Remove layer

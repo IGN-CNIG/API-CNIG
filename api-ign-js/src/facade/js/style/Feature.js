@@ -48,8 +48,8 @@ class Feature extends StyleBase {
     if (options.point) {
       options = options.point;
     }
-    if (options.icon && options.icon.src && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg') &&
-      (options.icon.fill || options.icon.stroke)) {
+    if (options.icon && options.icon.src && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg')
+      && (options.icon.fill || options.icon.stroke)) {
       modifySVG(options.icon.src, options).then((resp) => {
         options.icon.src = resp;
         this.applyToFeature(this.feature_);

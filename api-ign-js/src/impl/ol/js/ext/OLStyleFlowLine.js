@@ -2,7 +2,6 @@
  * @module M/impl/ol/js/ext/OLStyleFlowLine
  */
 
-
 /* eslint-disable  no-cond-assign */
 import OLStyleStyle from 'ol/style/Style';
 import { asString as olColorAsString } from 'ol/color';
@@ -83,6 +82,7 @@ class OLStyleFlowLine extends OLStyleStyle {
     // Overlap
     this._noOverlap = options.noOverlap;
   }
+
   /**
    * Modifica el ancho inicial de la línea.
    * @function
@@ -92,6 +92,7 @@ class OLStyleFlowLine extends OLStyleStyle {
   setWidth(width) {
     this._width = width || 0;
   }
+
   /**
    * Modifica el ancho final de la línea.
    * @function
@@ -101,6 +102,7 @@ class OLStyleFlowLine extends OLStyleStyle {
   setWidth2(width) {
     this._width2 = width;
   }
+
   /**
    * Devuelve el desplazamiento inicial o final de la línea.
    * @function
@@ -111,6 +113,7 @@ class OLStyleFlowLine extends OLStyleStyle {
   getOffset(where) {
     return this._offset[where];
   }
+
   /**
    * Añade un desplazamiento al inicio o final de la línea.
    * @function
@@ -134,6 +137,7 @@ class OLStyleFlowLine extends OLStyleStyle {
       }
     }
   }
+
   /**
    * Modifica el tipo de extremo de la línea.
    * @function
@@ -143,6 +147,7 @@ class OLStyleFlowLine extends OLStyleStyle {
   setLineCap(cap) {
     this._lineCap = (cap === 'round' ? 'round' : 'butt');
   }
+
   /**
    * Devuelve el ancho actual en el paso.
    * @param {ol.feature} feature Objetos geográficos.
@@ -157,6 +162,7 @@ class OLStyleFlowLine extends OLStyleStyle {
     const w2 = (typeof (this._width2) === 'number') ? this._width2 : this._width;
     return this._width + ((w2 - this._width) * step);
   }
+
   /**
    * Modifica el color inicial de la línea.
    * @function
@@ -170,6 +176,7 @@ class OLStyleFlowLine extends OLStyleStyle {
       this._color = [0, 0, 0, 1];
     }
   }
+
   /**
    * Modifica el color final de la línea.
    * @function
@@ -183,6 +190,7 @@ class OLStyleFlowLine extends OLStyleStyle {
       this._color2 = null;
     }
   }
+
   /**
    * Modifica el color de la flecha.
    * @function
@@ -196,6 +204,7 @@ class OLStyleFlowLine extends OLStyleStyle {
       this._acolor = null;
     }
   }
+
   /**
    * Devuelve el color actual en el paso.
    * @function
@@ -217,6 +226,7 @@ class OLStyleFlowLine extends OLStyleStyle {
       ${(color[3] + ((color2[3] - color[3]) * step))}
       )`;
   }
+
   /**
    * Devuelve el tipo de flecha.
    * @function
@@ -226,6 +236,7 @@ class OLStyleFlowLine extends OLStyleStyle {
   getArrow() {
     return this._arrow;
   }
+
   /**
    * Modifica el tipo de flecha.
    * @function
@@ -233,11 +244,12 @@ class OLStyleFlowLine extends OLStyleStyle {
    * @api
    */
   setArrow(n) {
-    this._arrow = parseInt(n, 0);
+    this._arrow = parseInt(n, 10);
     if (this._arrow < -1 || this._arrow > 2) {
       this._arrow = 0;
     }
   }
+
   /**
    * Devuelve el tamaño de la flecha.
    * @function
@@ -247,6 +259,7 @@ class OLStyleFlowLine extends OLStyleStyle {
   getArrowSize() {
     return this._arrowSize || [16, 16];
   }
+
   /**
    * Modifica el tamaño de la flecha.
    * @function
@@ -260,6 +273,7 @@ class OLStyleFlowLine extends OLStyleStyle {
       this._arrowSize = [size, size];
     }
   }
+
   /**
    * Dibuja una flecha en el contexto.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -284,6 +298,7 @@ class OLStyleFlowLine extends OLStyleStyle {
     ctx.lineTo(p0[0], p0[1]);
     ctx.fill();
   }
+
   /**
    * Renderiza la geometría.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -375,6 +390,7 @@ class OLStyleFlowLine extends OLStyleStyle {
       ctx.restore();
     }
   }
+
   /**
    * Divide la geometría en dos partes, en el punto de la geometría.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -424,6 +440,7 @@ class OLStyleFlowLine extends OLStyleStyle {
     }
     return [p0, p];
   }
+
   /**
    * Divide la geometría en partes de igual longitud.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.

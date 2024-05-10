@@ -192,7 +192,7 @@ export default class Attributions extends M.Plugin {
      */
     this.urlAttribute = options.urlAttribute || 'Gobierno de España';
 
-    window.addEventListener('resize', e => this.setCollapsiblePanel(e));
+    window.addEventListener('resize', (e) => this.setCollapsiblePanel(e));
 
     /**
      *@private
@@ -297,7 +297,6 @@ export default class Attributions extends M.Plugin {
     }
   }
 
-
   /**
    * This method shows the layer attributions
    *
@@ -399,7 +398,7 @@ export default class Attributions extends M.Plugin {
   clearContent() {
     if (!M.utils.isNullOrEmpty(this.control_)) {
       const html = this.control_.getElement();
-      html.querySelectorAll('div').forEach(child => html.removeChild(child));
+      html.querySelectorAll('div').forEach((child) => html.removeChild(child));
     }
   }
 
@@ -417,7 +416,7 @@ export default class Attributions extends M.Plugin {
    */
   getMapAttributions() {
     this.updateBBoxFeature();
-    const featuresAttributions = this.map_.getLayers().filter(l => l.name.includes('attributions'))[0].getFeatures();
+    const featuresAttributions = this.map_.getLayers().filter((l) => l.name.includes('attributions'))[0].getFeatures();
     const interFilter = intersect(this.bboxFeature_);
     const filteredFeatures = interFilter.execute(featuresAttributions);
     return filteredFeatures.map((feature) => {
@@ -427,7 +426,7 @@ export default class Attributions extends M.Plugin {
       };
     }).filter((element, index, array) => array
     // remove repeat elements
-      .map(e => e.attribution).indexOf(element.attribution) === index);
+      .map((e) => e.attribution).indexOf(element.attribution) === index);
   }
 
   /**
@@ -493,12 +492,13 @@ export default class Attributions extends M.Plugin {
       }
     }
   }
+
   /**
    * @function
    * @public
    */
   onMoveEnd(callback) {
-    this.impl_.registerEvent('moveend', e => callback(e));
+    this.impl_.registerEvent('moveend', (e) => callback(e));
   }
 
   /**

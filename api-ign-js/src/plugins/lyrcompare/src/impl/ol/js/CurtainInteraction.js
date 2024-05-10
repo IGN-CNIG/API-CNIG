@@ -29,21 +29,21 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     this.pos = false;
     this.opacityVal = (optionsE.opacityVal || 100);
 
-    const layerA = [optionsE.lyrA].map(layer => layer.getImpl().getOL3Layer())
-      .filter(layer => layer != null);
+    const layerA = [optionsE.lyrA].map((layer) => layer.getImpl().getOL3Layer())
+      .filter((layer) => layer != null);
     this.addLayerA(layerA);
 
-    const layerB = [optionsE.lyrB].map(layer => layer.getImpl().getOL3Layer())
-      .filter(layer => layer != null);
+    const layerB = [optionsE.lyrB].map((layer) => layer.getImpl().getOL3Layer())
+      .filter((layer) => layer != null);
     this.addLayerB(layerB);
 
     if (optionsE.lyrC !== undefined && optionsE.lyrD !== undefined) {
-      const layerC = [optionsE.lyrC].map(layer => layer.getImpl().getOL3Layer())
-        .filter(layer => layer != null);
+      const layerC = [optionsE.lyrC].map((layer) => layer.getImpl().getOL3Layer())
+        .filter((layer) => layer != null);
       this.addLayerC(layerC);
 
-      const layerD = [optionsE.lyrD].map(layer => layer.getImpl().getOL3Layer())
-        .filter(layer => layer != null);
+      const layerD = [optionsE.lyrD].map((layer) => layer.getImpl().getOL3Layer())
+        .filter((layer) => layer != null);
       this.addLayerD(layerD);
     }
   }
@@ -129,7 +129,6 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
       this.layers_[3].setVisible(true);
     }
   }
-
 
   /**
    * Add Layer A to clip
@@ -257,6 +256,7 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
       this.moveSwipeControl();
     }
   }
+
   /**
    *  Update position of the clip
    *
@@ -434,7 +434,8 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
         0,
         this.pos[1] * ratio,
         this.pos[0] * ratio - margenClip * ratio,
-        (lienzoMapa[1] - this.pos[1]) * ratio - margenClip * ratio); // e2m: down&left dynamic
+        (lienzoMapa[1] - this.pos[1]) * ratio - margenClip * ratio,
+      ); // e2m: down&left dynamic
     }
     if (margenClip > 0) {
       ctx.lineWidth = 2 * margenClip * ratio;
@@ -490,6 +491,7 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
   postrenderD_(e) {
     e.context.restore();
   }
+
   /**
    * Create the swipe indicator
    *

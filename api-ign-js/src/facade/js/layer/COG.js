@@ -3,7 +3,10 @@
  * @module M/layer/COG
  */
 import COGImpl from 'impl/layer/COG';
-import { isNullOrEmpty, isUndefined, sameUrl, isFunction } from '../util/Utils';
+import {
+  isNullOrEmpty,
+  isUndefined,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
 import * as parameter from '../parameter/parameter';
@@ -42,7 +45,7 @@ class COG extends LayerBase {
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - visibility: Indica la visibilidad de la capa.
-   *    * - convertToRGB: Convierte la compresion de la imagen a RGB, puede ser 'auto', true o false,
+   *    * - convertToRGB: Convierte la compresion de la imagen a RGB, puede ser 'auto'|true|false,
    *   por defecto 'auto'.
    * - opacity: Opacidad de la capa de 0 a 1, por defecto 1.
    * - bands: Bandas a mostrar en forma de array y como numero, si el array esta vacio muestra todas
@@ -135,8 +138,8 @@ class COG extends LayerBase {
    * @api
    */
   set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.COG)) {
+    if (!isUndefined(newType)
+      && !isNullOrEmpty(newType) && (newType !== LayerType.COG)) {
       Exception('El tipo de capa debe ser \''.concat(LayerType.COG).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
     }
   }

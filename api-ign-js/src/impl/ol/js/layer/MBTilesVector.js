@@ -20,7 +20,6 @@ import { getValue } from 'M/i18n/language';
 import ImplMap from '../Map';
 import Vector from './Vector';
 
-
 /**
  * Tamaño de la tesela vectorial de MBTiles por defecto.
  *
@@ -105,7 +104,7 @@ class MBTilesVector extends Vector {
    * </code></pre>
    * @api
    */
-  constructor(userParameters, options = {}, vendorOptions) {
+  constructor(userParameters, options = {}, vendorOptions = {}) {
     // calls the super constructor
     super(options, vendorOptions);
 
@@ -213,8 +212,8 @@ class MBTilesVector extends Vector {
                 format,
               });
 
-              this.ol3Layer.getSource().on('tileloaderror', evt => this.checkAllTilesLoaded_(evt));
-              this.ol3Layer.getSource().on('tileloadend', evt => this.checkAllTilesLoaded_(evt));
+              this.ol3Layer.getSource().on('tileloaderror', (evt) => this.checkAllTilesLoaded_(evt));
+              this.ol3Layer.getSource().on('tileloadend', (evt) => this.checkAllTilesLoaded_(evt));
 
               this.map.on(EventType.CHANGE_ZOOM, () => {
                 if (this.map) {
@@ -242,9 +241,9 @@ class MBTilesVector extends Vector {
       });
 
       this.ol3Layer
-        .getSource().on('tileloaderror', evt => this.checkAllTilesLoaded_(evt));
+        .getSource().on('tileloaderror', (evt) => this.checkAllTilesLoaded_(evt));
       this.ol3Layer
-        .getSource().on('tileloadend', evt => this.checkAllTilesLoaded_(evt));
+        .getSource().on('tileloadend', (evt) => this.checkAllTilesLoaded_(evt));
 
       this.map.on(EventType.CHANGE_ZOOM, () => {
         if (this.map) {
@@ -284,7 +283,7 @@ class MBTilesVector extends Vector {
       source: new OLSourceVectorTile({
         projection: opts.projection,
         url: '{z},{x},{y}',
-        tileLoadFunction: tile => tileLoadFn(tile, mvtFormat, opts, this),
+        tileLoadFunction: (tile) => tileLoadFn(tile, mvtFormat, opts, this),
         tileGrid: new TileGrid({
           extent: opts.sourceExtent,
           origin: getBottomLeft(opts.sourceExtent),
@@ -558,9 +557,9 @@ class MBTilesVector extends Vector {
     const loaded = tileImages.some((tile) => {
       const tileCoord = tile.getTileCoord();
       const tileState = tile.getState();
-      const sameTile = (currTileCoord[0] === tileCoord[0] &&
-        currTileCoord[1] === tileCoord[1] &&
-        currTileCoord[2] === tileCoord[2]);
+      const sameTile = (currTileCoord[0] === tileCoord[0]
+        && currTileCoord[1] === tileCoord[1]
+        && currTileCoord[2] === tileCoord[2]);
       const tileLoaded = sameTile || (tileState !== 1);
       return tileLoaded;
     });

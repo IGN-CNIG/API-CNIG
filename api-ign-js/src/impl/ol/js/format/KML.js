@@ -1,10 +1,10 @@
 /**
  * @module M/impl/format/KML
  */
+import { parse as parseXML } from 'ol/xml';
 import { decodeHtml, isNullOrEmpty } from 'M/util/Utils';
 import OLFormatKML from 'ol/format/KML';
 import Icon from 'ol/style/Icon';
-import { parse as parseXML } from 'ol/xml';
 
 /**
  * @classdesc
@@ -43,7 +43,6 @@ class KML extends OLFormatKML {
      */
     this.screenOverlay_ = null;
   }
-
 
   /**
    * Este método devuelve los objetos geográficos obtenidos de una fuente y los personaliza.
@@ -110,8 +109,9 @@ class KML extends OLFormatKML {
       const icon = screenOverlay.querySelector(iconAttr);
 
       // Icon src of ScreenOverlay
-      const src = icon !== null ?
-        icon.querySelector(hrefAttr).innerHTML : KML.DEFAULT_NO_IMAGE_STYLE;
+      const src = icon !== null
+        ? icon.querySelector(hrefAttr).innerHTML
+        : KML.DEFAULT_NO_IMAGE_STYLE;
 
       // overlayXY (offset)
       let overlayXY;

@@ -3,7 +3,6 @@
  */
 import CurtainInteraction from 'impl/CurtainInteraction';
 
-
 export default class Lyrcomparecontrol extends M.impl.Control {
   /**
    * This function adds the control to the specified map
@@ -129,7 +128,6 @@ export default class Lyrcomparecontrol extends M.impl.Control {
   removeEffectsCurtain() {
     this.olMap.removeInteraction(this.transparentInteraction_);
   }
-
 
   /**
    * Remove layer

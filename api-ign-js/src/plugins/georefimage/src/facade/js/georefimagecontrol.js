@@ -42,7 +42,6 @@ export default class GeorefimageControl extends M.Control {
      */
     this.printTemplateUrl_ = printTemplateUrl;
 
-
     /**
      * Url for getting priting status
      * @private
@@ -584,7 +583,9 @@ export default class GeorefimageControl extends M.Control {
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
       if (this.map_.getProjection().code !== projection) {
         printData.attributes.map.bbox = this.getImpl().transformExt(
-          printData.attributes.map.bbox, this.map_.getProjection().code, projection,
+          printData.attributes.map.bbox,
+          this.map_.getProjection().code,
+          projection,
         );
       }
 

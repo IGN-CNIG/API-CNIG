@@ -74,7 +74,6 @@ export default class InfocoordinatesControl extends M.impl.Control {
     return res;
   }
 
-
   datumCalc(srs) {
     let datum = 'ETRS89';
     if (srs.indexOf('3857') > -1) {
@@ -98,8 +97,8 @@ export default class InfocoordinatesControl extends M.impl.Control {
 
     // 3.- lanzo el servicio y el método devolverá un texto que lo recogerá una promesa
     const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
-    const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&' +
-      'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
+    const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&'
+      + 'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
     const url = `${PROFILE_URL}${bbox}${PROFILE_URL_SUFFIX}`;
     return M.remote.get(url);
   }

@@ -5,7 +5,12 @@ import MBTilesVectorImpl from 'impl/layer/MBTilesVector';
 import RenderFeatureImpl from 'impl/feature/RenderFeature';
 import Vector from './Vector';
 import * as LayerType from './Type';
-import { isUndefined, isNullOrEmpty, isString, normalize } from '../util/Utils';
+import {
+  isUndefined,
+  isNullOrEmpty,
+  isString,
+  normalize,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 import * as parameter from '../parameter/parameter';
@@ -157,7 +162,7 @@ class MBTilesVector extends Vector {
    */
   getFeatures() {
     const features = this.getImpl().getFeatures();
-    return features.map(olFeature => RenderFeatureImpl.olFeature2Facade(olFeature));
+    return features.map((olFeature) => RenderFeatureImpl.olFeature2Facade(olFeature));
   }
 
   /**
@@ -293,7 +298,6 @@ MBTilesVector.DEFAULT_PARAMS = {
   },
   radius: 5,
 };
-
 
 /**
  * Estilos por defecto de la capa MBTilesVector.

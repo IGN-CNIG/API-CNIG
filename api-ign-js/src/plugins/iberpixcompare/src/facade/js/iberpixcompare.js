@@ -161,7 +161,6 @@ export default class IberpixCompare extends M.Plugin {
     return M.language.getTranslation(lang).iberpixcompare;
   }
 
-
   /**
    * This function adds this plugin into the map
    *
@@ -199,7 +198,6 @@ export default class IberpixCompare extends M.Plugin {
     this.panel_._element.classList.add(this.vertical ? 'orientation-vertical' : 'orientation-horizontal');
   }
 
-
   /**
    * This function destroys this plugin
    *
@@ -211,8 +209,9 @@ export default class IberpixCompare extends M.Plugin {
     this.control_.deactivate();
     this.map_.removeControls([this.control_]);
     [this.control_, this.panel_, this.map_,
-      this.vertical, this.mirrorpanelParams, this.lyrcompareParams]
-      = [null, null, null, null, null, null];
+      this.vertical, this.mirrorpanelParams, this.lyrcompareParams] = [
+      null, null, null, null, null, null,
+    ];
   }
 
   /**

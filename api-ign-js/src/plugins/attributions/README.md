@@ -17,7 +17,7 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 ```html
  <link href="https://componentes.cnig.es/api-core/plugins/attributions/attributions.ol.min.css" rel="stylesheet" />
  <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/attributions/attributions.ol.min.js"></script>
-``` 
+```
 
 # Uso del histórico de versiones
 
@@ -39,14 +39,14 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BR': (bottom right) - Abajo a la derecha.
 * **tooltip**: Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Reconocimientos'.
 * **mode**: Modo de uso del plugin Attributions (1 ó 2). Por defecto: 1
-     - **1** `DISPONIBLE`: Atribuciones mediante archivo de atribuciones (modo por defecto). Parámetros específicos: 
+     - **1** `DISPONIBLE`: Atribuciones mediante archivo de atribuciones (modo por defecto). Parámetros específicos:
          + **url**: Url del archivo de atribuciones a utilizar. Por defecto: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml'.
          + **type**: En el caso de no pasar nada por el parámetro 'layer' o pasar una capa que no sea de tipo vectorial, generará la capa de atribuciones con el tipo indicado en este parámetro. Los valores permitidos son ('kml' y 'geojson'). Por defecto: 'kml'.
          + **layerName**: Nombre asociado a la capa de atribuciones (nombre de la capa). Se usa para la construcción de la capa. Por defecto: 'attributions'.
          + **layer**: Capa definida por el usuario para determinar las atribuciones {M.layer.GeoJSON | M.layer.KML}. No requiere los parámetros anteriores (type, url y layerName)
          + **attributionParam**: Nombre del campo de atribución en el archivo. Por defecto: 'atribucion'.
          + **urlParam**: Nombre del campo de url en el archivo. Por defecto: 'url'.
-     - **2** ` NO DISPONIBLE`: Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa. 
+     - **2** ` NO DISPONIBLE`: Atribuciones mediante consulta de parámetros de Capabilities de los servicios cargados en el mapa.
 * **scale**: Escala a partir de la cual se activa la asignación de atribuciones. Por defecto 10000.
 * **defaultAttribution**: Valor por defecto que se mostrará en la atribución del mapa definido por el usuario. Por defecto: Instituto Geográfico Nacional.
 * **defaultURL**: Valor por defecto a usar como url asociada a la atribución definida por el usuario. Por defecto: https://www.ign.es/.
@@ -168,7 +168,7 @@ URL_API?attributions=position*tooltip*mode*scale*defaultAttribution*defaultURL*u
     <td>Texto adicional a añadir en la atribución</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
-  
+
 </table>
 
 
@@ -190,7 +190,7 @@ Ejemplo:
 M.utils.encodeBase64(obj_params);
 ```
 
-Ejemplo de constructor: 
+Ejemplo de constructor:
 ```javascript
 {
   mode: 1,
@@ -211,7 +211,7 @@ const map = M.map({
   container: 'map'
 });
 
-const mp = new M.plugin.Attributions({ 
+const mp = new M.plugin.Attributions({
   mode: 1,
   scale: 10000,
   /*Uso de type, para generar una capa de tipo GeoJSON o KML*/
@@ -219,7 +219,7 @@ const mp = new M.plugin.Attributions({
   url: 'http://www.ign.es/resources/viewer/data/20200206_atribucionPNOA-3857.geojson', // URL de la capa
   layerName: 'Ejemplo Attributions', // Nombre de la capa
   /*
-  + Se puede defenir una capa directamente sin usar los 
+  + Se puede defenir una capa directamente sin usar los
     parámetros anteriores (type, url y layerName).
 
   layer: new M.layer.GeoJSON({

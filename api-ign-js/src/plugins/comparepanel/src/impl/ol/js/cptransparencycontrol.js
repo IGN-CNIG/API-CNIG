@@ -4,7 +4,6 @@
  */
 import TransparentInteraction from 'impl/cptransparentInteraction';
 
-
 export default class TransparencyControl extends M.impl.Control {
   /**
    * This function adds the control to the specified map
@@ -33,7 +32,6 @@ export default class TransparencyControl extends M.impl.Control {
    * @api stable
    */
   effectSelected(layers, radius, freeze) {
-
     layers.setVisible(true);
     layers.setZIndex(5000);
     this.transparentInteraction_ = new TransparentInteraction({
@@ -43,8 +41,7 @@ export default class TransparencyControl extends M.impl.Control {
       layers,
     });
     this.olMap.addInteraction(this.transparentInteraction_);
-    return;
-
+    // return;
   }
 
   /**
@@ -67,10 +64,10 @@ export default class TransparencyControl extends M.impl.Control {
    * @param { boolean } value value to assign
    * @api stable
    */
-     setFreeze(value) {
-      this.freezePosition = this.transparentInteraction_.pos;
-      if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setFreeze(value);
-    }
+  setFreeze(value) {
+    this.freezePosition = this.transparentInteraction_.pos;
+    if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setFreeze(value);
+  }
 
   /**
    * Toogle Freeze mode
@@ -79,8 +76,8 @@ export default class TransparencyControl extends M.impl.Control {
    * @function
    * @api stable
    */
-   toogleFreeze() {
-    this.freezePosition = this.transparentInteraction_.pos;     
+  toogleFreeze() {
+    this.freezePosition = this.transparentInteraction_.pos;
     if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.toogleFreeze();
   }
 

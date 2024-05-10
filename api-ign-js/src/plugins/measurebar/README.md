@@ -5,8 +5,8 @@
 
 # Descripción
 
-Herramienta de medición de áreas y distancias.  
-Con clicks del ratón se establecen los vértices de la línea/área de medición.  
+Herramienta de medición de áreas y distancias.
+Con clicks del ratón se establecen los vértices de la línea/área de medición.
 Manteniendo pulsado SHIFT, la línea/área de edición se dibuja a mano alzada.
 
 # Dependencias

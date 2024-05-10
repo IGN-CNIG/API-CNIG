@@ -168,8 +168,8 @@ export default class QueryAttributesControl extends M.Control {
         },
       });
       const mbtilesvector = this.map.getMBTilesVector();
-      const hasmbtilesvector = mbtilesvector.find(layer =>
-        this.configuration.layer === layer.name);
+      const hasmbtilesvector = mbtilesvector
+        .find((layer) => this.configuration.layer === layer.name);
       if (!hasmbtilesvector && this.hasLayer_(this.configuration.layer)[0]) {
         html.querySelector('#m-queryattributes-options-container').appendChild(this.initialView);
 
@@ -287,7 +287,6 @@ export default class QueryAttributesControl extends M.Control {
         }
         // e2m: ocultamos nuestro spinner de búsqueda.
         this.html.querySelector('#m-queryattributes-searching-results').style.display = 'none';
-
 
         if (!M.utils.isNullOrEmpty(features)) {
           Object.keys(features[0].getAttributes()).forEach((attr) => {
@@ -517,7 +516,6 @@ export default class QueryAttributesControl extends M.Control {
       const buttons = '#m-queryattributes-options-buttons>button';
       document.querySelector(`${buttons}#cleanEmphasis-btn`).style.display = 'block';
 
-
       const html = M.template.compileSync(information, {
         vars: {
           fields,
@@ -619,6 +617,7 @@ export default class QueryAttributesControl extends M.Control {
             block: 'center',
           });
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.error(error);
         }
       }
@@ -660,7 +659,6 @@ export default class QueryAttributesControl extends M.Control {
       });
     }
   }
-
 
   /**
    * e2m:
@@ -803,7 +801,7 @@ export default class QueryAttributesControl extends M.Control {
    */
   isNotAdded(layerName, htmlSelect) {
     const aChildren = [...htmlSelect.children];
-    return !aChildren.some(o => o.innerHTML === layerName);
+    return !aChildren.some((o) => o.innerHTML === layerName);
   }
 
   setBboxFilter() {
@@ -839,7 +837,6 @@ export default class QueryAttributesControl extends M.Control {
     });
   }
 
-
   // e2m: búsqueda por filtro de texto.
   searchFilter() {
     this.html.querySelector('#m-queryattributes-searching-results').style.display = 'block';
@@ -866,7 +863,7 @@ export default class QueryAttributesControl extends M.Control {
      */
     const searchingFields = this.configuration.columns.filter((item) => {
       return item.searchable === true;
-    }).map(field => field.name);
+    }).map((field) => field.name);
 
     const filter = new M.filter.Function((feature) => {
       let res = false;
@@ -882,7 +879,6 @@ export default class QueryAttributesControl extends M.Control {
       });
       return res;
     });
-
 
     this.layer.setFilter(filter);
     this.filtered = true;
@@ -1094,7 +1090,7 @@ export default class QueryAttributesControl extends M.Control {
    */
   toGeoJSON(features) {
     const code = this.map.getProjection().code;
-    const featuresAsJSON = features.map(feature => feature.getGeoJSON());
+    const featuresAsJSON = features.map((feature) => feature.getGeoJSON());
     return { type: 'FeatureCollection', features: this.geojsonTo4326(featuresAsJSON, code) };
   }
 
@@ -1125,14 +1121,14 @@ export default class QueryAttributesControl extends M.Control {
         case 'Poylgon':
         case 'MultiPolygon':
           feature.geometry.coordinates.forEach((coord) => {
-            if (feature.geometry.type === 'Polygon' &&
-              Number.isNaN(coord[0][coord[0].length - 1])) {
+            if (feature.geometry.type === 'Polygon'
+              && Number.isNaN(coord[0][coord[0].length - 1])) {
               coord.map((c) => {
                 c.pop();
                 return c;
               });
-            } else if (feature.geometry.type === 'MultiPolygon' &&
-              Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
+            } else if (feature.geometry.type === 'MultiPolygon'
+              && Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
               coord.forEach((coordsArray) => {
                 coordsArray.map((c) => {
                   c.pop();
@@ -1254,8 +1250,9 @@ export default class QueryAttributesControl extends M.Control {
    */
   isLayerLoaded(layer) {
     let isLoaded = false;
-    const kmlLayerLoaded = this.kmlLayers.find(l => l.layer === layer) ?
-      this.kmlLayers.find(l => l.layer === layer).loaded : false;
+    const kmlLayerLoaded = this.kmlLayers.find((l) => l.layer === layer)
+      ? this.kmlLayers.find((l) => l.layer === layer).loaded
+      : false;
     if (layer.type && layer.type !== 'KML' && layer.getImpl().isLoaded()) {
       isLoaded = true;
     } else if (kmlLayerLoaded) {
@@ -1274,8 +1271,8 @@ export default class QueryAttributesControl extends M.Control {
    */
   hasLayer_(layerSearch) {
     const layersFind = [];
-    if (M.utils.isNullOrEmpty(layerSearch) || (!M.utils.isArray(layerSearch) &&
-        !M.utils.isString(layerSearch) && !(layerSearch instanceof M.Layer))) {
+    if (M.utils.isNullOrEmpty(layerSearch) || (!M.utils.isArray(layerSearch)
+      && !M.utils.isString(layerSearch) && !(layerSearch instanceof M.Layer))) {
       return layersFind;
     }
 

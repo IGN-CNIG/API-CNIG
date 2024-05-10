@@ -55,7 +55,6 @@ const map = M.map({
 // });
 // map.addWMTS(wmts);
 
-
 // layers: ['WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*EPSG:25830*IGNBaseTodo*false*image/png*false*false*true'],
 //   projection: 'EPSG:25830*m',
 
@@ -65,7 +64,6 @@ const map = M.map({
 // 25830 ANDALUCIA
 
 // layers: ['WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*EPSG:25830*PNOA'],
-
 
 // const map = M.map({
 //   container: 'mapjs',

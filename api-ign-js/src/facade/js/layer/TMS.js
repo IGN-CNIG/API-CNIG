@@ -131,7 +131,6 @@ class TMS extends LayerBase {
      */
     this.minZoom = parameters.minZoom;
 
-
     /**
      * TMS maxzoom. Zoom máximo.
      */

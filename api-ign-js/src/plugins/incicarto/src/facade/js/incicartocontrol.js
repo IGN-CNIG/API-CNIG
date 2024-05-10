@@ -18,7 +18,7 @@ import tokml from 'tokml';
 import togpx from 'togpx';
 import * as shp from 'shpjs';
 import { getValue } from './i18n/language';
-import { timesSeries } from 'async';
+// import { timesSeries } from 'async';
 
 const formatNumber = (x) => {
   const num = Math.round(x * 100) / 100;
@@ -29,8 +29,8 @@ const POINTS = [1, 15];
 const LINES = [10, 15];
 const LINE_POINTS = [1, 15, 20, 15];
 
-const HOSTNAME = ['mapea-lite.desarrollo.guadaltel.es', 'componentes.cnig.es']
-const PATH_NAME = 'api-core'
+const HOSTNAME = ['mapea-lite.desarrollo.guadaltel.es', 'componentes.cnig.es'];
+const PATH_NAME = 'api-core';
 const CONTROLS = [
   'scale',
   'scaleline',
@@ -39,8 +39,8 @@ const CONTROLS = [
   'location',
   'getfeatureinfo',
   'rotate',
-  'backgroundlayers'
-]
+  'backgroundlayers',
+];
 
 export default class IncicartoControl extends M.Control {
   /**
@@ -203,7 +203,6 @@ export default class IncicartoControl extends M.Control {
   createView(map) {
     this.map = map;
     return new Promise((success, fail) => {
-
       const optionsTemplate = {
         jsonp: true,
         vars: {
@@ -254,17 +253,18 @@ export default class IncicartoControl extends M.Control {
 
   renderLayers() {
     const filtered = this.map.getLayers().filter((layer) => {
-      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 &&
-        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult' &&
-        layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1 && layer.name !== 'infocoordinatesLayerFeatures';
+      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1
+        && layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.name !== 'coordinateresult'
+        && layer.name !== 'searchresult' && layer.name.indexOf('Coordenadas centro ') === -1 && layer.name !== 'infocoordinatesLayerFeatures';
     });
 
     const layers = [];
     filtered.forEach((layer) => {
       if (!(layer.type.toLowerCase() === 'kml' && layer.name.toLowerCase() === 'attributions')) {
         const newLayer = layer;
-        const geometry = !M.utils.isNullOrEmpty(layer.geometry) ?
-          layer.geometry : layer.getGeometryType();
+        const geometry = !M.utils.isNullOrEmpty(layer.geometry)
+          ? layer.geometry
+          : layer.getGeometryType();
         if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('point') > -1) {
           newLayer.point = true;
         } else if (!M.utils.isNullOrEmpty(geometry) && geometry.toLowerCase().indexOf('polygon') > -1) {
@@ -344,7 +344,7 @@ export default class IncicartoControl extends M.Control {
     const maxZIndex = Math.max(...(filterLayers.map((l) => {
       return l.getZIndex();
     })));
-    return maxZIndex
+    return maxZIndex;
   }
 
   /**
@@ -369,9 +369,9 @@ export default class IncicartoControl extends M.Control {
     });
     this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
-    this.drawingTools.querySelector('.collapsor').addEventListener('click', e => this.toogleCollapse(e));
-    this.drawingTools.querySelector('#colorSelector').addEventListener('change', e => this.styleChange(e));
-    this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', e => this.styleChange(e));
+    this.drawingTools.querySelector('.collapsor').addEventListener('click', (e) => this.toogleCollapse(e));
+    this.drawingTools.querySelector('#colorSelector').addEventListener('change', (e) => this.styleChange(e));
+    this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', (e) => this.styleChange(e));
     this.drawingTools.querySelector('button.m-incicarto-layer-delete-feature').addEventListener('click', () => this.deleteSingleFeature());
     this.drawingTools.querySelector('button.m-incicarto-layer-profile').addEventListener('click', () => this.getProfile());
     this.drawingTools.querySelector('button').style.display = 'none';
@@ -465,7 +465,7 @@ export default class IncicartoControl extends M.Control {
       },
     });
     const inputFile = this.uploadingTemplate.querySelector('#incicarto-uploading>input');
-    inputFile.addEventListener('change', evt => this.changeFile(evt, inputFile.files[0]));
+    inputFile.addEventListener('change', (evt) => this.changeFile(evt, inputFile.files[0]));
   }
 
   /**
@@ -488,9 +488,10 @@ export default class IncicartoControl extends M.Control {
    * Genera la versión avanzada del formulario de Incidencias con conexión a INCIGEO
    */
   activateModalAdvanced() {
-    let optionsModal = {
+    const optionsModal = {
       jsonp: true,
-      parseToHtml: false, // La compilación de la plantilla devuelve una cadena cuando parseToHtml = false
+      // La compilación de la plantilla devuelve una cadena cuando parseToHtml = false
+      parseToHtml: false,
       vars: {
         translations: {
           headtext1: 'Descripción de la incidencia',
@@ -520,21 +521,22 @@ export default class IncicartoControl extends M.Control {
     }
 
     const dialog = M.template.compileSync(modaladvance, optionsModal);
-    M.dialog.info(dialog, "Enviar notificación de incidencia en cartografía");
+    M.dialog.info(dialog, 'Enviar notificación de incidencia en cartografía');
 
     setTimeout(() => {
-      document.querySelector("#m-plugin-incicarto-send-email").addEventListener('click', (e) => {
-        let destinataryContainer = document.querySelector("#email-to");
-        let destinatary = destinataryContainer.options[destinataryContainer.selectedIndex].value;
-        let mailto_composed = this.composeMailtoSend(destinatary)
-        if (mailto_composed === false) {
-          console.error("El mail no ha sido validado");
+      document.querySelector('#m-plugin-incicarto-send-email').addEventListener('click', (e) => {
+        const destinataryContainer = document.querySelector('#email-to');
+        const destinatary = destinataryContainer.options[destinataryContainer.selectedIndex].value;
+        const mailtoComposed = this.composeMailtoSend(destinatary);
+        if (mailtoComposed === false) {
+          // eslint-disable-next-line no-console
+          console.error('El mail no ha sido validado');
           return;
         }
 
-        document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
-        this.showMessageInModalAdvanced(getValue('email_correct'), "okmessage");
-        document.querySelector("#m-plugin-incicarto-send-email").disabled = true;
+        document.querySelector('#m-plugin-incicarto-send-email').disabled = true;
+        this.showMessageInModalAdvanced(getValue('email_correct'), 'okmessage');
+        document.querySelector('#m-plugin-incicarto-send-email').disabled = true;
       });
 
       document.getElementById('fileUpload').onchange = function () {
@@ -564,10 +566,10 @@ export default class IncicartoControl extends M.Control {
    * Genera la versión sencilla del formulario de Incidencias
    */
   activateModalSimple() {
-
-    let optionsModal = {
+    const optionsModal = {
       jsonp: true,
-      parseToHtml: false, // La compilación de la plantilla devuelve una cadena cuando parseToHtml = false
+      // La compilación de la plantilla devuelve una cadena cuando parseToHtml = false
+      parseToHtml: false,
       vars: {
         translations: {
           headtext1: 'Descripción de la incidencia',
@@ -584,29 +586,29 @@ export default class IncicartoControl extends M.Control {
     }
 
     const dialog = M.template.compileSync(modalsimple, optionsModal);
-    M.dialog.info(dialog, "Enviar notificación de incidencia en cartografía");
+    M.dialog.info(dialog, 'Enviar notificación de incidencia en cartografía');
     setTimeout(() => {
-      document.querySelector("#m-plugin-incicarto-simple-send-email").addEventListener('click', (e) => {
-        let mailto_composed = this.composeMailtoSendByPasarela((event) => {
+      document.querySelector('#m-plugin-incicarto-simple-send-email').addEventListener('click', (e) => {
+        const mailtoComposed = this.composeMailtoSendByPasarela((event) => {
           const response = JSON.parse(event.target.response);
           if (response.message.indexOf('file too big') > -1 || response.message.indexOf('Message size exceeds') > -1) {
-            document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = false;
-            this.showMessageInModalAdvanced(getValue('exception.error_email_size'), "nakmessage");
+            document.querySelector('#m-plugin-incicarto-simple-send-email').disabled = false;
+            this.showMessageInModalAdvanced(getValue('exception.error_email_size'), 'nakmessage');
           } else if (response.message.indexOf('Error:') > -1) {
-            document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = false;
-            this.showMessageInModalAdvanced(getValue('exception.error_email'), "nakmessage");
+            document.querySelector('#m-plugin-incicarto-simple-send-email').disabled = false;
+            this.showMessageInModalAdvanced(getValue('exception.error_email'), 'nakmessage');
           } else if (response.message.indexOf('IOException while sending message') > -1) {
-            document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = false;
-            this.showMessageInModalAdvanced(getValue('exception.error_email_exception'), "nakmessage");
-          }
-          else if (response.message.indexOf('Email enviado correctamente') > -1) {
-            this.showMessageInModalAdvanced(getValue('email_correct'), "okmessage");
+            document.querySelector('#m-plugin-incicarto-simple-send-email').disabled = false;
+            this.showMessageInModalAdvanced(getValue('exception.error_email_exception'), 'nakmessage');
+          } else if (response.message.indexOf('Email enviado correctamente') > -1) {
+            this.showMessageInModalAdvanced(getValue('email_correct'), 'okmessage');
           }
         });
 
-        if (mailto_composed === false) {
-          console.error("El mail no ha sido validado");
-          return;
+        if (mailtoComposed === false) {
+          // eslint-disable-next-line no-console
+          console.error('El mail no ha sido validado');
+          // return;
         }
       });
 
@@ -631,7 +633,6 @@ export default class IncicartoControl extends M.Control {
       const titleModal = document.querySelector('div.m-dialog.info div.m-title');
       titleModal.style.backgroundColor = '#71a7d3';
     }, 10);
-
   }
 
   /**
@@ -641,17 +642,17 @@ export default class IncicartoControl extends M.Control {
    */
   showMessageInModalAdvanced(messageText, classHTML) {
     this.resetMessageInModalAdvanced();
-    document.querySelector("#result-notification").innerHTML = messageText;
-    document.querySelector("#result-notification").classList.add(classHTML);
+    document.querySelector('#result-notification').innerHTML = messageText;
+    document.querySelector('#result-notification').classList.add(classHTML);
   }
 
   /**
    * Limpia el cuadro para mensajes en el modal
    */
   resetMessageInModalAdvanced() {
-    document.querySelector("#result-notification").innerHTML = "";
-    document.querySelector("#result-notification").classList.remove("okmessage");
-    document.querySelector("#result-notification").classList.remove("nakmessage");
+    document.querySelector('#result-notification').innerHTML = '';
+    document.querySelector('#result-notification').classList.remove('okmessage');
+    document.querySelector('#result-notification').classList.remove('nakmessage');
   }
 
   /**
@@ -662,22 +663,23 @@ export default class IncicartoControl extends M.Control {
   validateIncidenciaMessageInModalAdvanced() {
     // NO OBTENIA EL PRIMER VALOR, SE DEJA COMENTADO
     // const themeMetadataContainer = document.querySelector("#theme-select");
-    const errorMetadataContainer = document.querySelector("#error-select");
-    const productMetadataContainer = document.querySelector("#product-select");
+    const errorMetadataContainer = document.querySelector('#error-select');
+    const productMetadataContainer = document.querySelector('#product-select');
     // if (this.errThemes.mandatory === true && themeMetadataContainer.selectedIndex === 0) {
     //   this.showMessageInModalAdvanced("Clasifique el error con un tema", "nakmessage");
     //   return false;
-    // } else 
+    // } else
     if (this.errTypes.mandatory === true && errorMetadataContainer.selectedIndex === 0) {
-      this.showMessageInModalAdvanced("Clasifique el error con un tipo", "nakmessage");
+      this.showMessageInModalAdvanced('Clasifique el error con un tipo', 'nakmessage');
       return false;
-    } else if (this.errProducts.mandatory === true && productMetadataContainer.selectedIndex === 0) {
-      this.showMessageInModalAdvanced("Clasifique el error con un producto", "nakmessage");
+    }
+    if (this.errProducts.mandatory === true
+        && productMetadataContainer.selectedIndex === 0) {
+      this.showMessageInModalAdvanced('Clasifique el error con un producto', 'nakmessage');
       return false;
     }
 
     return true;
-
   }
 
   /**
@@ -687,17 +689,17 @@ export default class IncicartoControl extends M.Control {
    * @returns
    */
   composeMailtoSend(destinatary) {
-    let themeMetadataContainer = document.querySelector("#theme-select");
-    let errorMetadataContainer = document.querySelector("#error-select");
-    let productMetadataContainer = document.querySelector("#product-select");
+    const themeMetadataContainer = document.querySelector('#theme-select');
+    const errorMetadataContainer = document.querySelector('#error-select');
+    const productMetadataContainer = document.querySelector('#product-select');
 
     if (this.validateIncidenciaMessageInModalAdvanced() === false) {
       return false;
-    };
+    }
 
-    let error = errorMetadataContainer.options[errorMetadataContainer.selectedIndex].value;
-    let product = productMetadataContainer.options[productMetadataContainer.selectedIndex].value;
-    let theme = themeMetadataContainer.selectedOptions[0].innerText;
+    const error = errorMetadataContainer.options[errorMetadataContainer.selectedIndex].value;
+    const product = productMetadataContainer.options[productMetadataContainer.selectedIndex].value;
+    const theme = themeMetadataContainer.selectedOptions[0].innerText;
 
     const currentDate = new Date();
 
@@ -712,49 +714,51 @@ export default class IncicartoControl extends M.Control {
     // Formatear la fecha según el formato AAAA/MM/DD hh:mm:ss
     const dateFormat = `${year}/${month}/${day} ${hours}:${mins}:${segs}`;
 
-    let email_subject = 'Incidencia Cartografía - ' + theme + ' - ' + dateFormat;
+    const emailSubject = `Incidencia Cartografía - ${theme} - ${dateFormat}`;
 
-    const propiedades_incidencia = this.createContentEmail(email_subject, theme, destinatary);
+    const propiedadesIncidencia = this.createContentEmail(emailSubject, theme, destinatary);
 
     this.geometryIncidenceJSON = JSON.parse(this.geometryIncidence);
     if (this.geometryIncidenceJSON.features.length > 0) {
-      this.geometryIncidenceJSON.features[0].properties = propiedades_incidencia;
+      this.geometryIncidenceJSON.features[0].properties = propiedadesIncidencia;
     }
 
-    let email_body = {
-      "description": propiedades_incidencia.errDescripcion,
-      "theme": theme,
-      "error": error,
-      "product": product,
-      "features": this.geometryIncidenceJSON.features
+    const emailBody = {
+      'description': propiedadesIncidencia.errDescripcion,
+      'theme': theme,
+      'error': error,
+      'product': product,
+      'features': this.geometryIncidenceJSON.features,
     };
 
-    let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
+    const emailForm = document.querySelector('#m-plugin-incicarto-email-form');
     emailForm.action = `${M.config.MAPEA_URL}api/email`;
-    document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
-    document.querySelector("#m-plugin-incicarto-email-mailto").value = destinatary;
-    document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
-    document.querySelector("#m-plugin-incicarto-email-shareURL").value = propiedades_incidencia.URL;
-    document.querySelector("#m-plugin-incicarto-email-apiURL").value = propiedades_incidencia.API_URL;
-    document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(email_body, null, '\t');
-    let inputFile = document.querySelector('#fileUpload');
+    document.querySelector('#m-plugin-incicarto-email-subject').value = emailSubject;
+    document.querySelector('#m-plugin-incicarto-email-mailto').value = destinatary;
+    document.querySelector('#m-plugin-incicarto-email-sendergeometry').value = JSON.stringify(this.geometryIncidenceJSON);
+    document.querySelector('#m-plugin-incicarto-email-shareURL').value = propiedadesIncidencia.URL;
+    document.querySelector('#m-plugin-incicarto-email-apiURL').value = propiedadesIncidencia.API_URL;
+    document.querySelector('#m-plugin-incicarto-email-body').value = JSON.stringify(emailBody, null, '\t');
+    const inputFile = document.querySelector('#fileUpload');
     if (inputFile && inputFile.files.length > 0) {
-      let inputFileForm = document.querySelector('#fileUploadForm');
+      const inputFileForm = document.querySelector('#fileUploadForm');
       inputFileForm.files = inputFile.files;
     }
     emailForm.submit();
 
-    //return 'mailto:' + destinatary + '?subject=' + email_subject + '&body=' + JSON.stringify(email_body, null, '\t');
+    // return 'mailto:' + destinatary + '?subject=' + emailSubject
+    // + '&body=' + JSON.stringify(emailBody, null, '\t');
     return true;
   }
 
-  createContentEmail(email_subject, theme, destinatary = this.themes.find(item => item.idTheme == theme).emailTheme) {
-    let emailName = document.querySelector("#person-notify").value;
-    let emailUser = document.querySelector("#email-notify").value;
-    let errDescription = document.querySelector("#err-description").value;
+  createContentEmail(emailSubject, theme, destinatary = this.themes
+    .find((item) => item.idTheme === theme).emailTheme) {
+    const emailName = document.querySelector('#person-notify').value;
+    const emailUser = document.querySelector('#email-notify').value;
+    const errDescription = document.querySelector('#err-description').value;
 
     let url = window.location.href;
-    let api_url = M.config.MAPEA_URL;
+    let apiUrl = M.config.MAPEA_URL;
     let onlyURL = false;
 
     const { x, y } = this.map_.getCenter();
@@ -765,7 +769,7 @@ export default class IncicartoControl extends M.Control {
     const controls = (this.getControlsFormat()) ? `&controls=${this.getControlsFormat()}` : '';
     const plugin = (this.getPlugins()) ? `&${this.getPlugins()}` : '';
 
-    // File 
+    // File
     // URL del visor - centro, zoom, srs, todas las capas.
     // URL de la API - centro, zoom, srs, todas las capas.
     if (url.startsWith('file:///')) {
@@ -773,41 +777,39 @@ export default class IncicartoControl extends M.Control {
       url = `file://${url.substring(index)}`;
     }
 
-
     // API
     // M.config.MAP_VIWER_LAYERS
     // URL de la API - centro, zoom, srs, todas las capas, plugin y controles
-    if (HOSTNAME.includes(window.location.hostname) && window.location.pathname.includes(PATH_NAME)) {
+    if (HOSTNAME.includes(window.location.hostname) && window.location.pathname
+      .includes(PATH_NAME)) {
       onlyURL = true;
       url = url.split('?')[0];
-      api_url += `?${center}${zoom}${srs}${layers}${controls}${plugin}`;
+      apiUrl += `?${center}${zoom}${srs}${layers}${controls}${plugin}`;
     } else {
       // Visor
       // URL del visor - centro, zoom, srs, todas las capas.
       // URL de la API - centro, zoom, srs, todas las capas.
       url = url.split('?')[0];
       url += `?${center}${zoom}${srs}${layers}`;
-      api_url += `?${center}${zoom}${srs}${layers}`;
+      apiUrl += `?${center}${zoom}${srs}${layers}`;
     }
 
     if (url.indexOf('.jsp') > -1) {
-      url = ''
+      url = '';
       onlyURL = true;
     }
 
     return {
-      "email_subject": email_subject,
-      "theme": theme,
-      "destinatary": destinatary,
-      "emailName": emailName,
-      "emailUser": emailUser,
-      "errDescripcion": errDescription,
-      "URL": (onlyURL) ? '' : encodeURI(url),
-      "API_URL": encodeURI(api_url),
-    }
-
+      'email_subject': emailSubject,
+      'theme': theme,
+      'destinatary': destinatary,
+      'emailName': emailName,
+      'emailUser': emailUser,
+      'errDescripcion': errDescription,
+      'URL': (onlyURL) ? '' : encodeURI(url),
+      'API_URL': encodeURI(apiUrl),
+    };
   }
-
 
   /**
    * This method gets the externs layers parameters
@@ -817,12 +819,12 @@ export default class IncicartoControl extends M.Control {
    */
   getLayersInLayerswitcher() {
     const layers = this.map_.getLayers().filter((layer) => {
-      return (layer.displayInLayerSwitcher === true && layer.transparent === true) || layer.transparent === false;
+      return (layer.displayInLayerSwitcher === true && layer.transparent === true)
+        || layer.transparent === false;
     });
 
-    return layers.map(layer => this.layerToParam(layer)).filter(param => param != null);
+    return layers.map((layer) => this.layerToParam(layer)).filter((param) => param != null);
   }
-
 
   /**
    * This function gets the url param from layer
@@ -854,7 +856,6 @@ export default class IncicartoControl extends M.Control {
     return param;
   }
 
-
   normalizeString(text) {
     let newText = text.replace(/,/g, '');
     newText = newText.replace(/\*/g, '');
@@ -879,7 +880,6 @@ export default class IncicartoControl extends M.Control {
     const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
     return `GeoJSON*${layer.name}*${source}**${style}`;
   }
-
 
   /**
    * This method gets the wms url parameter
@@ -946,12 +946,12 @@ export default class IncicartoControl extends M.Control {
    * @function
    */
   getGeoJSON(layer) {
-    const source = !M.utils.isUndefined(layer.source) ?
-      layer.serialize() : encodeURIComponent(layer.url);
+    const source = !M.utils.isUndefined(layer.source)
+      ? layer.serialize()
+      : encodeURIComponent(layer.url);
     const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
     return `GeoJSON*${layer.name}*${source}*${layer.extract}*${style}`;
   }
-
 
   /**
    * This method gets the plugins url parameter
@@ -961,7 +961,7 @@ export default class IncicartoControl extends M.Control {
       let newCurrent = '';
       // if (M.utils.isFunction(plugin.getAPIRestBase64)) {
       //   newCurrent = plugin.getAPIRestBase64();
-      // } else 
+      // } else
       if (M.utils.isFunction(plugin.getAPIRest)) {
         newCurrent = plugin.getAPIRest();
       }
@@ -970,7 +970,7 @@ export default class IncicartoControl extends M.Control {
   }
 
   getControlsFormat() {
-    const controls = this.getControls()
+    const controls = this.getControls();
 
     let newControls = controls.filter((c) => {
       return c !== undefined && c.indexOf('backgroundlayers') === -1;
@@ -993,24 +993,24 @@ export default class IncicartoControl extends M.Control {
    * @function
    */
   getControls() {
-    const controls = this.map_.getControls().map(control => control.name);
+    const controls = this.map_.getControls().map((control) => control.name);
 
     const allowedControls = CONTROLS;
-    const resolvedControls = controls.filter(control => allowedControls.includes(control))
-      .filter(c => c !== 'backgroundlayers');
+    const resolvedControls = controls.filter((control) => allowedControls.includes(control))
+      .filter((c) => c !== 'backgroundlayers');
     if (resolvedControls.includes('mouse')) {
-      const mouseControl = this.map_.getControls().find(c => c.name === 'mouse');
+      const mouseControl = this.map_.getControls().find((c) => c.name === 'mouse');
       const { showProj } = mouseControl.getImpl();
       const index = resolvedControls.indexOf('mouse');
       resolvedControls[index] = showProj === true ? 'mouse*true' : 'mouse';
     }
     if (resolvedControls.includes('scale')) {
-      const scaleControl = this.map_.getControls().find(c => c.name === 'scale');
+      const scaleControl = this.map_.getControls().find((c) => c.name === 'scale');
       const { exactScale } = scaleControl.getImpl();
       const index = resolvedControls.indexOf('scale');
       resolvedControls[index] = exactScale === true ? 'scale*true' : 'scale';
     }
-    const backgroundlayers = this.map_.getControls().filter(c => c.name === 'backgroundlayers')[0];
+    const backgroundlayers = this.map_.getControls().filter((c) => c.name === 'backgroundlayers')[0];
     let backgroundlayersAPI;
     if (!M.utils.isNullOrEmpty(backgroundlayers)) {
       const { visible, activeLayer } = backgroundlayers;
@@ -1025,71 +1025,71 @@ export default class IncicartoControl extends M.Control {
   }
 
   /**
-   * Compone el mensaje para el correo enviado por el interfaz Modal Simple y lo envía por pasarela de Fomento
+   * Compone el mensaje para el correo enviado por el interfaz Modal Simple
+   * y lo envía por pasarela de Fomento
    *
    * @returns
    */
   composeMailtoSendByPasarela(callback) {
-    const themeMetadataContainer = document.querySelector("#theme-select");
+    const themeMetadataContainer = document.querySelector('#theme-select');
     if (this.errThemes.mandatory === true && themeMetadataContainer.selectedIndex === -1) {
       return false;
-    } else {
-      document.querySelector("#m-plugin-incicarto-simple-send-email").disabled = true;
-      this.showMessageInModalAdvanced(getValue('sending_email'), "okmessage");
+    }
+    document.querySelector('#m-plugin-incicarto-simple-send-email').disabled = true;
+    this.showMessageInModalAdvanced(getValue('sending_email'), 'okmessage');
 
-      const themeID = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
-      const themeValue = themeMetadataContainer.selectedOptions[0].innerText;
+    const themeID = themeMetadataContainer.options[themeMetadataContainer.selectedIndex].value;
+    const themeValue = themeMetadataContainer.selectedOptions[0].innerText;
 
-      const currentDate = new Date();
+    const currentDate = new Date();
 
-      // Obtener los componentes de la fecha
-      const year = currentDate.getFullYear();
-      const month = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
-      const day = `${currentDate.getDate().toString().padStart(2, '0')}`;
-      const hours = `${currentDate.getHours().toString().padStart(2, '0')}`;
-      const mins = `${currentDate.getMinutes().toString().padStart(2, '0')}`;
-      const segs = `${currentDate.getSeconds().toString().padStart(2, '0')}`;
+    // Obtener los componentes de la fecha
+    const year = currentDate.getFullYear();
+    const month = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
+    const day = `${currentDate.getDate().toString().padStart(2, '0')}`;
+    const hours = `${currentDate.getHours().toString().padStart(2, '0')}`;
+    const mins = `${currentDate.getMinutes().toString().padStart(2, '0')}`;
+    const segs = `${currentDate.getSeconds().toString().padStart(2, '0')}`;
 
-      // Formatear la fecha según el formato AAAA/MM/DD hh:mm:ss
-      const dateFormat = `${year}/${month}/${day} ${hours}:${mins}:${segs}`;
+    // Formatear la fecha según el formato AAAA/MM/DD hh:mm:ss
+    const dateFormat = `${year}/${month}/${day} ${hours}:${mins}:${segs}`;
 
-      let email_subject = this.prefixSubject + themeValue + ' - ' + dateFormat;
+    const emailSubject = `${this.prefixSubject + themeValue} - ${dateFormat}`;
 
-      const propiedades_incidencia = this.createContentEmail(email_subject, themeID);
+    const propiedadesIncidencia = this.createContentEmail(emailSubject, themeID);
 
-      if (this.geometryIncidenceJSON.features.length > 0) {
-        this.geometryIncidenceJSON.features[0].properties = propiedades_incidencia;
-      }
+    if (this.geometryIncidenceJSON.features.length > 0) {
+      this.geometryIncidenceJSON.features[0].properties = propiedadesIncidencia;
+    }
 
-      // e2m: empaquetamos los datos para la pasarela
-      // ----------------------------------------------------------------------------------------------------------
-      let emailForm = document.querySelector("#m-plugin-incicarto-email-form");
-      document.querySelector("#m-plugin-incicarto-email-subject").value = email_subject;
-      document.querySelector("#m-plugin-incicarto-email-mailto").value = propiedades_incidencia.destinatary;
-      document.querySelector("#m-plugin-incicarto-email-sendername").value = propiedades_incidencia.emailName;
-      document.querySelector("#m-plugin-incicarto-email-senderemail").value = propiedades_incidencia.emailUser;
-      document.querySelector("#m-plugin-incicarto-email-apiURL").value = propiedades_incidencia.API_URL;
-      document.querySelector("#m-plugin-incicarto-email-errDescription").value = propiedades_incidencia.errDescripcion;
-      document.querySelector("#m-plugin-incicarto-email-sendergeometry").value = JSON.stringify(this.geometryIncidenceJSON);
-      document.querySelector("#m-plugin-incicarto-email-shareURL").value = propiedades_incidencia.URL;
-      document.querySelector("#m-plugin-incicarto-email-body").value = JSON.stringify(this.geometryIncidenceJSON, null, '\t');
-      let inputFile = document.querySelector('#fileUpload');
-      if (inputFile.files.length > 0) {
-        let inputFileForm = document.querySelector('#fileUploadForm');
-        inputFileForm.files = inputFile.files;
-      }
+    // e2m: empaquetamos los datos para la pasarela
+    // ---------------------------------------------------------------------------------------------
+    const emailForm = document.querySelector('#m-plugin-incicarto-email-form');
+    document.querySelector('#m-plugin-incicarto-email-subject').value = emailSubject;
+    document.querySelector('#m-plugin-incicarto-email-mailto').value = propiedadesIncidencia.destinatary;
+    document.querySelector('#m-plugin-incicarto-email-sendername').value = propiedadesIncidencia.emailName;
+    document.querySelector('#m-plugin-incicarto-email-senderemail').value = propiedadesIncidencia.emailUser;
+    document.querySelector('#m-plugin-incicarto-email-apiURL').value = propiedadesIncidencia.API_URL;
+    document.querySelector('#m-plugin-incicarto-email-errDescription').value = propiedadesIncidencia.errDescripcion;
+    document.querySelector('#m-plugin-incicarto-email-sendergeometry').value = JSON.stringify(this.geometryIncidenceJSON);
+    document.querySelector('#m-plugin-incicarto-email-shareURL').value = propiedadesIncidencia.URL;
+    document.querySelector('#m-plugin-incicarto-email-body').value = JSON.stringify(this.geometryIncidenceJSON, null, '\t');
+    const inputFile = document.querySelector('#fileUpload');
+    if (inputFile.files.length > 0) {
+      const inputFileForm = document.querySelector('#fileUploadForm');
+      inputFileForm.files = inputFile.files;
+    }
 
-      try {
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", `${M.config.MAPEA_URL}api/email`);
-        xhr.onload = callback;
-        const formData = new FormData(emailForm);
-        xhr.send(formData);
-      } catch (error) {
-        console.error(error);
-        this.showMessageInModalAdvanced(getValue('error_sending_email'), "nakmessage");
-      }
-
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `${M.config.MAPEA_URL}api/email`);
+      xhr.onload = callback;
+      const formData = new FormData(emailForm);
+      xhr.send(formData);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      this.showMessageInModalAdvanced(getValue('error_sending_email'), 'nakmessage');
     }
   }
 
@@ -1205,7 +1205,7 @@ export default class IncicartoControl extends M.Control {
     document.querySelector('#m-incicarto-addwfs-results').innerHTML = '';
     document.querySelector('#m-incicarto-addwfs-results').appendChild(selectWFS);
     const selector = '#m-incicarto-select-wfs .m-incicarto-common-btn';
-    document.querySelector(selector).addEventListener('click', e => this.openWFSFilters(e, services));
+    document.querySelector(selector).addEventListener('click', (e) => this.openWFSFilters(e, services));
     const elem = document.querySelector('#m-incicarto-select-wfs .m-incicarto-wfs-show-capabilities');
     if (elem !== null) {
       elem.addEventListener('click', () => {
@@ -1266,9 +1266,6 @@ export default class IncicartoControl extends M.Control {
       document.querySelector(`li[name="${layerName}"] span.m-incicarto-layer-add`).click();
     }, 100);
   }
-
-
-
 
   /**
    * Changes style of current feature.
@@ -1396,7 +1393,6 @@ export default class IncicartoControl extends M.Control {
     }
   }
 
-
   /**
    * Lanza el proceso de notificación por e-mail
    * @public
@@ -1409,19 +1405,20 @@ export default class IncicartoControl extends M.Control {
     if (geojsonLayer.features.length > 0) {
       this.geometryIncidence = arrayContent;
       this.geometryIncidenceJSON = geojsonLayer;
-      if (this.interfazmode === "simple") {
+      if (this.interfazmode === 'simple') {
         this.activateModalSimple();
       } else {
         this.getCentroid4INCIGEO(geojsonLayer);
         this.activateModalAdvanced();
       }
     } else {
-      M.dialog.error("No hay geometrías trazadas en la incidencia");
+      M.dialog.error('No hay geometrías trazadas en la incidencia');
     }
   }
 
   /**
-   * Lanza el proceso de notificación por e-mail preguntando formatos y permitiendo elegir el tipo de notificación: simple o compleja
+   * Lanza el proceso de notificación por e-mail preguntando formatos y permitiendo elegir
+   * el tipo de notificación: simple o compleja
    * @public
    * @function
    * @api
@@ -1436,14 +1433,15 @@ export default class IncicartoControl extends M.Control {
         jsonp: true,
         vars: {
           translations: {
-            //download: getValue('download'),
+            // download: getValue('download'),
             simpleText: 'Incidencia Simple',
             complexText: 'Incidencia Compleja',
           },
         },
       });
       document.querySelector(selector).appendChild(html);
-      //html.querySelector('button').addEventListener('click', this.downloadLayer.bind(this, layer));
+      // html.querySelector('button')
+      // .addEventListener('click', this.downloadLayer.bind(this, layer));
       html.querySelector('#sendSimpleInci').addEventListener('click', this.sendLayerSimpleIncidence.bind(this, layer));
       html.querySelector('#sendComplexInci').addEventListener('click', this.sendLayerComplexIncidence.bind(this, layer));
       html.querySelector('#sendSimpleInci').style.display = 'block';
@@ -1493,14 +1491,14 @@ export default class IncicartoControl extends M.Control {
         case 'Poylgon':
         case 'MultiPolygon':
           feature.geometry.coordinates.forEach((coord) => {
-            if (feature.geometry.type === 'Polygon' &&
-              Number.isNaN(coord[0][coord[0].length - 1])) {
+            if (feature.geometry.type === 'Polygon'
+              && Number.isNaN(coord[0][coord[0].length - 1])) {
               coord.map((c) => {
                 c.pop();
                 return c;
               });
-            } else if (feature.geometry.type === 'MultiPolygon' &&
-              Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
+            } else if (feature.geometry.type === 'MultiPolygon'
+              && Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
               coord.forEach((coordsArray) => {
                 coordsArray.map((c) => {
                   c.pop();
@@ -1581,7 +1579,7 @@ export default class IncicartoControl extends M.Control {
    */
   toGeoJSON(layer) {
     const code = this.map.getProjection().code;
-    const featuresAsJSON = layer.getFeatures().map(feature => feature.getGeoJSON());
+    const featuresAsJSON = layer.getFeatures().map((feature) => feature.getGeoJSON());
     return { type: 'FeatureCollection', features: this.geojsonTo4326(featuresAsJSON, code) };
   }
 
@@ -1660,25 +1658,21 @@ export default class IncicartoControl extends M.Control {
     const downloadFormat = document.querySelector(selector).querySelector('select').value;
     const geojsonLayer = this.toGeoJSON(layer);
     let arrayContent;
-    let mimeType;
-    let extensionFormat;
+    // let mimeType; let extensionFormat;
 
     switch (downloadFormat) {
       case 'geojson':
         arrayContent = JSON.stringify(geojsonLayer);
-        mimeType = 'json';
-        extensionFormat = 'geojson';
+        // mimeType = 'json'; extensionFormat = 'geojson';
         break;
       case 'kml':
         const fixedGeojsonLayer = this.fixGeojsonKmlBug(geojsonLayer);
         arrayContent = tokml(fixedGeojsonLayer);
-        mimeType = 'xml';
-        extensionFormat = 'kml';
+        // mimeType = 'xml'; extensionFormat = 'kml';
         break;
       case 'gpx':
         arrayContent = togpx(geojsonLayer);
-        mimeType = 'xml';
-        extensionFormat = 'gpx';
+        // mimeType = 'xml'; extensionFormat = 'gpx';
         break;
       case 'shp':
         const json = this.parseGeojsonForShp(geojsonLayer);
@@ -1697,14 +1691,13 @@ export default class IncicartoControl extends M.Control {
         break;
     }
 
-
     if (geojsonLayer.features.length > 0) {
       this.geometryIncidence = arrayContent;
       this.geometryIncidenceJSON = geojsonLayer;
       this.getCentroid4INCIGEO(geojsonLayer);
       this.activateModalSimple();
     } else {
-      M.dialog.error("No hay geometrías trazadas en la incidencia");
+      M.dialog.error('No hay geometrías trazadas en la incidencia');
     }
 
     document.querySelector(selector).innerHTML = '';
@@ -1722,25 +1715,21 @@ export default class IncicartoControl extends M.Control {
     const downloadFormat = document.querySelector(selector).querySelector('select').value;
     const geojsonLayer = this.toGeoJSON(layer);
     let arrayContent;
-    let mimeType;
-    let extensionFormat;
+    // let mimeType; let extensionFormat;
 
     switch (downloadFormat) {
       case 'geojson':
         arrayContent = JSON.stringify(geojsonLayer);
-        mimeType = 'json';
-        extensionFormat = 'geojson';
+        // mimeType = 'json'; extensionFormat = 'geojson';
         break;
       case 'kml':
         const fixedGeojsonLayer = this.fixGeojsonKmlBug(geojsonLayer);
         arrayContent = tokml(fixedGeojsonLayer);
-        mimeType = 'xml';
-        extensionFormat = 'kml';
+        // mimeType = 'xml'; extensionFormat = 'kml';
         break;
       case 'gpx':
         arrayContent = togpx(geojsonLayer);
-        mimeType = 'xml';
-        extensionFormat = 'gpx';
+        // mimeType = 'xml'; extensionFormat = 'gpx';
         break;
       case 'shp':
         const json = this.parseGeojsonForShp(geojsonLayer);
@@ -1759,21 +1748,19 @@ export default class IncicartoControl extends M.Control {
         break;
     }
 
-
     if (geojsonLayer.features.length > 0) {
       this.geometryIncidence = arrayContent;
       this.geometryIncidenceJSON = geojsonLayer;
       this.getCentroid4INCIGEO(geojsonLayer);
       this.activateModalAdvanced();
     } else {
-      M.dialog.error("No hay geometrías trazadas en la incidencia");
+      M.dialog.error('No hay geometrías trazadas en la incidencia');
     }
 
     document.querySelector(selector).innerHTML = '';
   }
 
   getCentroid4INCIGEO(geojsonLayer) {
-
     if (geojsonLayer.features.length > 0) {
       if (geojsonLayer.features[0].geometry.coordinates.length === 2) {
         // Punto 2D
@@ -1783,21 +1770,17 @@ export default class IncicartoControl extends M.Control {
         // Punto 3D
         this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0];
         this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[1];
+      } else if (geojsonLayer.features[0].geometry.coordinates[0].length === 2) {
+        // Línea
+        this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0][0];
+        this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[0][1];
       } else {
-        if (geojsonLayer.features[0].geometry.coordinates[0].length === 2) {
-          // Línea
-          this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0][0];
-          this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[0][1];
-        } else {
-          // Polígono
-          this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0][0][0];
-          this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[0][0][1];
-        }
+        // Polígono
+        this.geometryIncidenceX = geojsonLayer.features[0].geometry.coordinates[0][0][0];
+        this.geometryIncidenceY = geojsonLayer.features[0].geometry.coordinates[0][0][1];
       }
     }
-
   }
-
 
   /**
    * This function compares controls
@@ -1991,7 +1974,8 @@ export default class IncicartoControl extends M.Control {
     this.style = undefined;
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
-    this.feature = MFeatures.filter(f => f.getImpl().getOLFeature() === olFeature)[0] || undefined;
+    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+      || undefined;
     this.geometry = this.feature.getGeometry().type;
     const selector = `#m-incicarto-list li[name="${this.drawLayer.name}"] div.m-incicarto-layer-actions-container`;
     document.querySelector(selector).appendChild(this.drawingTools);
@@ -2031,7 +2015,7 @@ export default class IncicartoControl extends M.Control {
     let render = false;
     if (!M.utils.isNullOrEmpty(layerName)) {
       evt.stopPropagation();
-      const layer = this.map.getLayers().filter(l => l.name === layerName && (l.url === layerURL || layerURL === ''))[0];
+      const layer = this.map.getLayers().filter((l) => l.name === layerName && (l.url === layerURL || layerURL === ''))[0];
       if (evt.target.classList.contains('m-incicarto-layer-legend-change')) {
         const changeName = M.template.compileSync(changeNameTemplate, {
           jsonp: true,
@@ -2135,7 +2119,6 @@ export default class IncicartoControl extends M.Control {
   }
 
   openDrawOptions(layer) {
-
     this.isEditionActive = false;
     this.deactivateSelection();
     this.deactivateDrawing();
@@ -2145,7 +2128,6 @@ export default class IncicartoControl extends M.Control {
 
     const cond = this.drawLayer !== undefined && layer.name !== this.drawLayer.name;
     if (cond || !this.isDrawingActive) {
-
       this.invokeEscKey();
       this.drawLayer = layer;
       this.isDrawingActive = true;

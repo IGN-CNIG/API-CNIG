@@ -3,7 +3,6 @@ import Comparators from 'facade/comparators';
 M.language.setLang('es');
 // M.proxy(false);
 
-
 const map = M.map({
   container: 'mapjs',
   zoom: 6,

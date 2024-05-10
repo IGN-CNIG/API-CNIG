@@ -38,7 +38,7 @@ const mp = new Locator({
     requestStreet: 'https://www.cartociudad.es/geocoder/api/geocoder/findJsonp?q=Sevilla&type=provincia&tip_via=null&id=41&portal=null&extension=null',
   }, // */
   byParcelCadastre: true,
-  /*/ 
+  /*/
   byParcelCadastre: {
     cadastreWMS: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_RCCOOR',
     CMC_url: 'http://ovc.catastro.meh.es/ovcservweb/ConsultaMunicipioCodigos',
@@ -85,7 +85,7 @@ map.addPlugin(new M.plugin.Layerswitcher({ position: 'TR' }));
 //  document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc');
 //  // Si se quiere aquí ira el "once" descrito más adelante.
 //}
-// 4.1 - ERROR Dentro de este mismo "if" se puede añadir un código para abrir todos los elementos y no solo el de "byPlaceAddressPostal_", pero este cambio cambiará como funciona ahora este apartado a cualquier cliente que lo uso anteriormente por lo que podría no ser necesario para tener igual comportamiento. La única razón para tener este abrir sin "position: 'TC'" es solo cuando dentro de "byPlaceAddressPostal" se utiliza "geocoderCoords" o "requestStreet", por que estos activan su opción automáticamente. 
+// 4.1 - ERROR Dentro de este mismo "if" se puede añadir un código para abrir todos los elementos y no solo el de "byPlaceAddressPostal_", pero este cambio cambiará como funciona ahora este apartado a cualquier cliente que lo uso anteriormente por lo que podría no ser necesario para tener igual comportamiento. La única razón para tener este abrir sin "position: 'TC'" es solo cuando dentro de "byPlaceAddressPostal" se utiliza "geocoderCoords" o "requestStreet", por que estos activan su opción automáticamente.
 //this.once(M.evt.ADDED_TO_MAP, () => {
 //  if (this.byPlaceAddressPostal_ !== false) {
 //    html.querySelector('#m-locator-ignsearch').click();

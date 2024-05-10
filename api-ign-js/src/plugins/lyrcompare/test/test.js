@@ -36,7 +36,6 @@ map.addPlugin(pluginLyrCompare);
 M.language.setLang('es'); //Español
 //M.language.setLang('en');//Inglés
 
-
 /***************************
  *     Otras pruebas       *
  **************************/
@@ -56,9 +55,6 @@ M.language.setLang('es'); //Español
   //Ojo, si añado esta capa sin TOC, se ve siempre y no se muestran capas base
   //layers: ["WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*EPSG:25830*PNOA"],
 });*/
-
-
-
 
 //Añado un BackImageLayer para ver el comportamiento.
 //Código para configurar el BackImgLayer
@@ -149,7 +145,6 @@ M.language.setLang('es'); //Español
 
 map.addPlugin(mpBIL);*/
 
-
 // 1 WMS por url
 // const pluginTransparency = new Transparency({
 //   position: 'TL',
@@ -195,7 +190,6 @@ map.addWMS(wms);
   format: 'image/jpeg'
 });
 map.addWMTS(wmtsMinutasMTN50);*/
-
 
 /*let wmtsMTN501edi = new M.layer.WMTS({
   url: "http://www.ign.es/wmts/primera-edicion-mtn",

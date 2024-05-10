@@ -117,7 +117,7 @@ class WKT extends MObject {
     const opts = getOptsProjection(options);
     const { ids } = options;
     const olFeatures = this.formatter_.readFeaturesFromText(wktCollection, opts);
-    const mFeatures = olFeatures.map(f => FeatureImpl.olFeature2Facade(f));
+    const mFeatures = olFeatures.map((f) => FeatureImpl.olFeature2Facade(f));
     if (ids != null && ids.length === mFeatures.length) {
       mFeatures.forEach((mFeature, index) => mFeature.setId(ids[index]));
     }
@@ -166,7 +166,6 @@ class WKT extends MObject {
     return wktGeom;
   }
 
-
   /**
     * Este método escribe los objetos geográficos en formato WKT.
     *
@@ -184,11 +183,10 @@ class WKT extends MObject {
     */
   writeCollection(features, options = {}) {
     const opts = getOptsProjection(options);
-    const olFeatures = features.map(f => FeatureImpl.facade2OLFeature(f));
+    const olFeatures = features.map((f) => FeatureImpl.facade2OLFeature(f));
     const wkt = this.formatter_.writeFeaturesText(olFeatures, opts);
     return wkt;
   }
 }
 
 export default WKT;
-

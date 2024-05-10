@@ -80,15 +80,15 @@ export class SimpleCategoryBinding extends Binding {
    */
   refreshTemplate() {
     const geometry = this.getGeometry();
-    const hiddenGeometries =
-      SimpleCategoryBinding.GEOMETRIES.filter(section => section !== geometry);
+    const hiddenGeometries = SimpleCategoryBinding
+      .GEOMETRIES.filter((section) => section !== geometry);
     hiddenGeometries.push('pattern');
     hiddenGeometries.forEach((geo) => {
       if ((geometry === 'point' && geo === 'pattern') || geo !== 'pattern') {
-        this.querySelectorAllForEach(`[data-geometry="${geo}"]`, node => node.classList.add('m-hidden'));
+        this.querySelectorAllForEach(`[data-geometry="${geo}"]`, (node) => node.classList.add('m-hidden'));
       }
     });
-    this.querySelectorAllForEach(`[data-geometry="${geometry}"]`, node => node.classList.remove('m-hidden'));
+    this.querySelectorAllForEach(`[data-geometry="${geometry}"]`, (node) => node.classList.remove('m-hidden'));
     this.addLabelPathListener();
   }
 
@@ -101,7 +101,7 @@ export class SimpleCategoryBinding extends Binding {
     if (style != null) {
       const options = style.getOptions();
       if (options['fill'] != null) {
-        const valuesFill = Object.values(options.fill).filter(value => value !== undefined);
+        const valuesFill = Object.values(options.fill).filter((value) => value !== undefined);
         if (valuesFill.length > 0) {
           this.checkOptionSection('fill');
         }
@@ -286,7 +286,6 @@ export class SimpleCategoryBinding extends Binding {
       }
     });
 
-
     const fontSize = this.querySelector('[data-font-size]').value || 12;
     const fontFamily = this.querySelector('[data-font-family]').value;
 
@@ -374,7 +373,6 @@ export class SimpleCategoryBinding extends Binding {
     const geometry = this.getGeometry();
     const styleOptions = this.generateOptions().options;
 
-
     switch (geometry) {
       case 'point':
         style = new M.style.Point(styleOptions);
@@ -440,7 +438,6 @@ export class SimpleCategoryBinding extends Binding {
     input.disabled = false;
   }
 
-
   /**
    * @function
    *
@@ -465,10 +462,10 @@ export class SimpleCategoryBinding extends Binding {
     options['icon']['gradientcolor'] = chroma(options['icon']['gradientcolor']).hex();
     // --
 
-    const patternValids = Object.keys(M.style.pattern).filter(name => name !== 'ICON' && name !== 'IMAGE');
+    const patternValids = Object.keys(M.style.pattern).filter((name) => name !== 'ICON' && name !== 'IMAGE');
     const alignValues = Object.values(M.style.align);
     const baselineValues = Object.values(M.style.baseline);
-    const formValues = Object.values(M.style.form).filter(name => name != null);
+    const formValues = Object.values(M.style.form).filter((name) => name != null);
     const linejoins = [getValue('bevel'), getValue('miter'), getValue('rounded')];
     const linecapstrokes = [getValue('rounded'), getValue('extreme'), getValue('square')];
 
@@ -484,7 +481,7 @@ export class SimpleCategoryBinding extends Binding {
     if (this.layer_ != null) {
       const labelTextValues = Object.keys(this.getFeaturesAttributes());
       const labelTextSelected = options['label'] != null ? options['label']['text'] : '';
-      options['featuresAttr'] = SimpleCategoryBinding.arrayDataToTemplate(labelTextSelected, labelTextValues.map(name => `{{${name}}}`), labelTextValues);
+      options['featuresAttr'] = SimpleCategoryBinding.arrayDataToTemplate(labelTextSelected, labelTextValues.map((name) => `{{${name}}}`), labelTextValues);
     }
     return options;
   }
@@ -596,7 +593,6 @@ export class SimpleCategoryBinding extends Binding {
   static get RADIUS_OPTION() {
     return 10;
   }
-
 
   /**
    * TODO

@@ -12,8 +12,12 @@ const inflateCoordinates = (flatCoordinates, offset, end, stride, optCoordinates
 };
 
 const inflateCoordinatesArray = (
-  parseType, flatCoordinates,
-  offset, ends, stride, optCoordinatess,
+  parseType,
+  flatCoordinates,
+  offset,
+  ends,
+  stride,
+  optCoordinatess,
 ) => {
   let coordinatess = optCoordinatess !== undefined ? optCoordinatess : [];
   let i = 0;
@@ -41,7 +45,6 @@ const inflateCoordinatesArray = (
   }
   return coordinatess;
 };
-
 
 export const encodeKML = (layer, facadeMap) => {
   let encodedLayer = null;
@@ -111,9 +114,9 @@ export const encodeKML = (layer, facadeMap) => {
         if (!M.utils.isNullOrEmpty(text)) {
           styleText = {
             conflictResolution: 'false',
-            fontColor: M.utils.isNullOrEmpty(text.getFill()) ? '' : M.utils.rgbToHex(M.utils.isArray(text.getFill().getColor()) ?
-              `rgba(${text.getFill().getColor().toString()})` :
-              text.getFill().getColor()),
+            fontColor: M.utils.isNullOrEmpty(text.getFill()) ? '' : M.utils.rgbToHex(M.utils.isArray(text.getFill().getColor())
+              ? `rgba(${text.getFill().getColor().toString()})`
+              : text.getFill().getColor()),
             fontSize: '11px',
             fontFamily: 'Helvetica, sans-serif',
             fontWeight: 'bold',
@@ -121,9 +124,9 @@ export const encodeKML = (layer, facadeMap) => {
             labelAlign: text.getTextAlign(),
             labelXOffset: text.getOffsetX(),
             labelYOffset: text.getOffsetY(),
-            labelOutlineColor: M.utils.isNullOrEmpty(text.getStroke()) ? '' : M.utils.rgbToHex(M.utils.isArray(text.getStroke().getColor()) ?
-              `rgba(${text.getStroke().getColor().toString()})` :
-              text.getStroke().getColor()),
+            labelOutlineColor: M.utils.isNullOrEmpty(text.getStroke()) ? '' : M.utils.rgbToHex(M.utils.isArray(text.getStroke().getColor())
+              ? `rgba(${text.getStroke().getColor().toString()})`
+              : text.getStroke().getColor()),
             labelOutlineWidth: M.utils.isNullOrEmpty(text.getStroke()) ? '' : text.getStroke().getWidth(),
             type: 'text',
           };
@@ -133,8 +136,8 @@ export const encodeKML = (layer, facadeMap) => {
 
         nameFeature = `draw${index}`;
 
-        if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) &&
-            !M.utils.isNullOrEmpty(text)) {
+        if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox))
+          && !M.utils.isNullOrEmpty(text)) {
           const styleStr = JSON.stringify(styleGeom);
           const styleTextStr = JSON.stringify(styleText);
           let styleName = stylesNames[styleStr];
@@ -143,8 +146,8 @@ export const encodeKML = (layer, facadeMap) => {
           if (M.utils.isUndefined(styleName) || M.utils.isUndefined(styleNameText)) {
             const symbolizers = [];
             let flag = 0;
-            if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) &&
-                M.utils.isUndefined(styleName)) {
+            if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)
+              && M.utils.isUndefined(styleName)) {
               styleName = indexGeom;
               stylesNames[styleStr] = styleName;
               flag = 1;
@@ -404,16 +407,17 @@ export const encodeMVT = (layer, facadeMap) => {
     }
 
     if (featureStyle instanceof Function) {
-      featureStyle =
-          featureStyle.call(featureStyle, feature.getImpl().getOLFeature(), resolution);
+      featureStyle = featureStyle
+        .call(featureStyle, feature.getImpl().getOLFeature(), resolution);
     }
 
     if (featureStyle instanceof Array) {
       // SRC style has priority
       if (featureStyle.length > 1) {
-        featureStyle = (!M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
-              featureStyle[1].getImage().getSrc) ?
-          featureStyle[1] : featureStyle[0];
+        featureStyle = (!M.utils.isNullOrEmpty(featureStyle[1].getImage())
+          && featureStyle[1].getImage().getSrc)
+          ? featureStyle[1]
+          : featureStyle[0];
       } else {
         featureStyle = featureStyle[0];
       }
@@ -439,24 +443,28 @@ export const encodeMVT = (layer, facadeMap) => {
         parseType = geometry.getType().toLowerCase();
       }
 
-      const stroke = M.utils.isNullOrEmpty(image) ?
-        featureStyle.getStroke() : (image.getStroke && image.getStroke());
-      const fill = M.utils.isNullOrEmpty(image) ?
-        featureStyle.getFill() : (image.getFill && image.getFill());
-
+      const stroke = M.utils.isNullOrEmpty(image)
+        ? featureStyle.getStroke()
+        : (image.getStroke && image.getStroke());
+      const fill = M.utils.isNullOrEmpty(image)
+        ? featureStyle.getFill()
+        : (image.getFill && image.getFill());
 
       let styleText;
-      const lineDash = (featureStyle.getStroke() !== null &&
-            featureStyle.getStroke() !== undefined) ?
-        featureStyle.getStroke().getLineDash() : undefined;
+      const lineDash = (featureStyle.getStroke() !== null
+        && featureStyle.getStroke() !== undefined)
+        ? featureStyle.getStroke().getLineDash()
+        : undefined;
       const styleGeom = {
         type: parseType,
         fillColor: M.utils.isNullOrEmpty(fill) || (layer.name.indexOf(' Reverse') > -1 && layer.name.indexOf('Cobertura') > -1) ? '#000000' : M.utils.rgbaToHex(fill.getColor()).slice(0, 7),
-        fillOpacity: M.utils.isNullOrEmpty(fill) ?
-          0 : M.utils.getOpacityFromRgba(fill.getColor()),
+        fillOpacity: M.utils.isNullOrEmpty(fill)
+          ? 0
+          : M.utils.getOpacityFromRgba(fill.getColor()),
         strokeColor: M.utils.isNullOrEmpty(stroke) ? '#000000' : M.utils.rgbaToHex(stroke.getColor()),
-        strokeOpacity: M.utils.isNullOrEmpty(stroke) ?
-          0 : M.utils.getOpacityFromRgba(stroke.getColor()),
+        strokeOpacity: M.utils.isNullOrEmpty(stroke)
+          ? 0
+          : M.utils.getOpacityFromRgba(stroke.getColor()),
         strokeWidth: M.utils.isNullOrEmpty(stroke) ? 0 : (stroke.getWidth && stroke.getWidth()),
         pointRadius: M.utils.isNullOrEmpty(image) ? '' : (image.getRadius && image.getRadius()),
         externalGraphic: M.utils.isNullOrEmpty(image) ? '' : (image.getSrc && image.getSrc()),
@@ -581,8 +589,8 @@ export const encodeMVT = (layer, facadeMap) => {
 
       nameFeature = `draw${index}`;
       const extent = geometry.getExtent();
-      if ((!M.utils.isNullOrEmpty(geometry) && ol.extent.intersects(bbox, extent)) ||
-          !M.utils.isNullOrEmpty(text)) {
+      if ((!M.utils.isNullOrEmpty(geometry) && ol.extent.intersects(bbox, extent))
+        || !M.utils.isNullOrEmpty(text)) {
         const styleStr = JSON.stringify(styleGeom);
         const styleTextStr = JSON.stringify(styleText);
         let styleName = stylesNames[styleStr];
@@ -591,8 +599,8 @@ export const encodeMVT = (layer, facadeMap) => {
         if (M.utils.isUndefined(styleName) || M.utils.isUndefined(styleNameText)) {
           const symbolizers = [];
           let flag = 0;
-          if (!M.utils.isNullOrEmpty(geometry) && ol.extent.intersects(bbox, extent) &&
-              M.utils.isUndefined(styleName)) {
+          if (!M.utils.isNullOrEmpty(geometry) && ol.extent.intersects(bbox, extent)
+            && M.utils.isUndefined(styleName)) {
             styleName = indexGeom;
             stylesNames[styleStr] = styleName;
             flag = 1;
@@ -628,8 +636,13 @@ export const encodeMVT = (layer, facadeMap) => {
         }
 
         let coordinates = geometry.getFlatCoordinates();
-        coordinates =
-            inflateCoordinatesArray(parseType, coordinates.slice(), 0, geometry.getEnds(), 2);
+        coordinates = inflateCoordinatesArray(
+          parseType,
+          coordinates.slice(),
+          0,
+          geometry.getEnds(),
+          2,
+        );
         if (coordinates.length > 0) {
           const geoJSONFeature = {
             id: feature.getId(),
@@ -647,8 +660,9 @@ export const encodeMVT = (layer, facadeMap) => {
         }
 
         /*
-            if (projection.code !== 'EPSG:3857' && this.facadeMap_.getLayers().some(layerParam =>
-            (layerParam.type === M.layer.type.OSM || layerParam.type === M.layer.type.Mapbox))) {
+            if (projection.code !== 'EPSG:3857' && this.facadeMap_.getLayers()
+              .some((layerParam) => (layerParam.type === M.layer.type.OSM
+                || layerParam.type === M.layer.type.Mapbox))) {
               geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getOLFeature(), {
                 featureProjection: projection.code,
                 dataProjection: 'EPSG:3857',

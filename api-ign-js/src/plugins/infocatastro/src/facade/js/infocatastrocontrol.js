@@ -6,7 +6,6 @@ import InfoCatastroImplControl from 'impl/infocatastrocontrol';
 import template from 'templates/infocatastro';
 import { getValue } from './i18n/language';
 
-
 export default class InfoCatastroControl extends M.Control {
   /**
    * @classdesc

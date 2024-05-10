@@ -26,8 +26,9 @@ exports.handlers = {
         }
         observable = observables[key];
         observable.name = name;
-        observable.readonly = typeof observable.readonly == 'boolean' ?
-          observable.readonly : true;
+        observable.readonly = typeof observable.readonly == 'boolean'
+          ? observable.readonly
+          : true;
         if (doclet.name.indexOf('get') === 0) {
           observable.type = doclet.returns[0].type;
           observable.description = doclet.returns[0].description;

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-relative-packages */
 /**
  * @module M/i18n/plugins
  * @example import pluginsLanguage from 'M/i18n/plugins';
@@ -19,46 +20,37 @@ import enBeautytoc from '../../../plugins/beautytoc/src/facade/js/i18n/en';
 import esBuffer from '../../../plugins/buffer/src/facade/js/i18n/es';
 import enBuffer from '../../../plugins/buffer/src/facade/js/i18n/en';
 
-
 // Calendar
 import esCalendar from '../../../plugins/calendar/src/facade/js/i18n/es';
 import enCalendar from '../../../plugins/calendar/src/facade/js/i18n/en';
-
 
 // Comparators
 import esComparators from '../../../plugins/comparators/src/facade/js/i18n/es';
 import enComparators from '../../../plugins/comparators/src/facade/js/i18n/en';
 
-
 // Comparepanel
 import esComparepanel from '../../../plugins/comparepanel/src/facade/js/i18n/es';
 import enComparepanel from '../../../plugins/comparepanel/src/facade/js/i18n/en';
-
 
 // Contactlink
 import esContactlink from '../../../plugins/contactlink/src/facade/js/i18n/es';
 import enContactlink from '../../../plugins/contactlink/src/facade/js/i18n/en';
 
-
 // Fulltoc
 import esFulltoc from '../../../plugins/fulltoc/src/facade/js/i18n/es';
 import enFulltoc from '../../../plugins/fulltoc/src/facade/js/i18n/en';
-
 
 // Geometrydraw
 import esGeometrydraw from '../../../plugins/geometrydraw/src/facade/js/i18n/es';
 import enGeometrydraw from '../../../plugins/geometrydraw/src/facade/js/i18n/en';
 
-
 // Georefimage
 import esGeorefimage from '../../../plugins/georefimage/src/facade/js/i18n/es';
 import enGeorefimage from '../../../plugins/georefimage/src/facade/js/i18n/en';
 
-
 // Georefimage2
 import esGeorefimage2 from '../../../plugins/georefimage2/src/facade/js/i18n/es';
 import enGeorefimage2 from '../../../plugins/georefimage2/src/facade/js/i18n/en';
-
 
 // Help
 import esHelp from '../../../plugins/help/src/facade/js/i18n/es';
@@ -68,11 +60,9 @@ import enHelp from '../../../plugins/help/src/facade/js/i18n/en';
 import esIberpixcompare from '../../../plugins/iberpixcompare/src/facade/js/i18n/es';
 import enIberpixcompare from '../../../plugins/iberpixcompare/src/facade/js/i18n/en';
 
-
 // Ignsearch
 import esIgnsearch from '../../../plugins/ignsearch/src/facade/js/i18n/es';
 import enIgnsearch from '../../../plugins/ignsearch/src/facade/js/i18n/en';
-
 
 // Ignsearchlocator
 import esIgnsearchlocator from '../../../plugins/ignsearchlocator/src/facade/js/i18n/es';

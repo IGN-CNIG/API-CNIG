@@ -7,7 +7,6 @@ import template from 'templates/transparency';
 import { getValue } from './i18n/language';
 import { transformToLayers } from './utils';
 
-
 export default class TransparencyControl extends M.Control {
   /**
     * @classdesc
@@ -52,7 +51,6 @@ export default class TransparencyControl extends M.Control {
     this.enabledKeyFunctions = values.enabledKeyFunctions;
     if (this.enabledKeyFunctions === undefined) this.enabledKeyFunctions = true;
 
-
     /**
       * All layers
       * @public
@@ -87,7 +85,6 @@ export default class TransparencyControl extends M.Control {
     } else if (this.minRadius > this.maxRadius) {
       this.minRadius = this.maxRadius;
     }
-
 
     /**
      * Transparent effect radius
@@ -200,22 +197,20 @@ export default class TransparencyControl extends M.Control {
         .addEventListener('click', (evt) => {
           this.freeze = !this.freeze;
           this.getImpl().setFreeze(this.freeze);
-          this.template.querySelector('#m-transparency-lock').style.visibility =
-             'visible';
+          this.template.querySelector('#m-transparency-lock').style.visibility = 'visible';
           this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
         });
 
       if (this.layers.length === 0 || this.layers === '') {
         M.toast.error(getValue('exception.notLayers'), null, 6000);
       } else if (options !== '') {
-        this.template.querySelector('#m-transparency-lock').style.visibility =
-             'hidden';
+        this.template.querySelector('#m-transparency-lock').style.visibility = 'hidden';
         this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
         this.template
           .querySelector('select')
           .addEventListener('change', (evt) => {
             const optionsSelect = evt.target.options;
-            Array.from(optionsSelect).forEach(option => option.removeAttribute('selected'));
+            Array.from(optionsSelect).forEach((option) => option.removeAttribute('selected'));
             evt.target.selectedOptions[0].setAttribute('selected', '');
 
             this.layerSelected.setVisible(false);
@@ -245,7 +240,6 @@ export default class TransparencyControl extends M.Control {
     templateResult.then((t) => {
       html.querySelector('#m-comparators-contents').appendChild(t);
     });
-
 
     document.addEventListener('keydown', (zEvent) => {
       if (!this.enabledKeyFunctions) {
@@ -283,12 +277,10 @@ export default class TransparencyControl extends M.Control {
   evtActive_() {
     if (document.querySelector('#m-lyrdropdown-selector')) {
       document.querySelector('#m-lyrdropdown-selector').value = 'none';
-      document.querySelector('#m-lyrdropdown-selector').style.display =
-       'none';
+      document.querySelector('#m-lyrdropdown-selector').style.display = 'none';
     }
 
-    this.template.querySelector('#m-transparency-lock').style.visibility =
-     'visible';
+    this.template.querySelector('#m-transparency-lock').style.visibility = 'visible';
     this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
     this.activate();
 
@@ -296,9 +288,8 @@ export default class TransparencyControl extends M.Control {
   }
 
   setDefaultLayer() {
-    /* eslint-disable */
-     console.log("Activación remota");
-     /* eslint-enable */
+    // eslint-disable-next-line no-console
+    console.log('Activación remota');
   }
 
   /**
@@ -310,7 +301,7 @@ export default class TransparencyControl extends M.Control {
     */
   activate() {
     this.map_.getLayers().forEach((l) => {
-      if (this.layers.some(layer => layer.name === l.name)) this.map_.removeLayers(l);
+      if (this.layers.some((layer) => layer.name === l.name)) this.map_.removeLayers(l);
     });
 
     if (this.layerSelected === null) {
@@ -323,10 +314,8 @@ export default class TransparencyControl extends M.Control {
     });
 
     if (names.length >= 1) {
-      this.template.querySelector('#m-transparency-lock').style.visibility =
-         'visible';
-      this.template.querySelector('#m-transparency-unlock').style.visibility =
-         'hidden';
+      this.template.querySelector('#m-transparency-lock').style.visibility = 'visible';
+      this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
     }
 
     setTimeout(() => {
@@ -403,18 +392,18 @@ export default class TransparencyControl extends M.Control {
           const name = urlLayer[3];
           const layerByUrl = this.map_
             .getLayers()
-            .filter(l => name.includes(l.name))[0];
+            .filter((l) => name.includes(l.name))[0];
           this.map_.removeLayers(layerByUrl);
         } else {
           const layerByName = this.map_
             .getLayers()
-            .filter(l => layer.includes(l.name))[0];
+            .filter((l) => layer.includes(l.name))[0];
           this.map_.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
         const layerByObject = this.map_
           .getLayers()
-          .filter(l => layer.name.includes(l.name))[0];
+          .filter((l) => layer.name.includes(l.name))[0];
         this.map_.removeLayers(layerByObject);
       }
     });
@@ -447,7 +436,6 @@ export default class TransparencyControl extends M.Control {
   }
 
   getLayersNames() {
-    return this.layers.map(l => l.name);
+    return this.layers.map((l) => l.name);
   }
 }
-

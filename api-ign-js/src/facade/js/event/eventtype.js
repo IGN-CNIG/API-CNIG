@@ -81,7 +81,6 @@ export const ADDED_MBTILES = 'added:mbtiles';
  */
 export const ADDED_MBTILES_VECTOR = 'added:mbtilesvector';
 
-
 /**
  * Evento que se produce al añadir XYZ.
  * @public

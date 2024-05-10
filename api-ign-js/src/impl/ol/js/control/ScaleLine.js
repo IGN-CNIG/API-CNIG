@@ -60,7 +60,6 @@ class ScaleLine extends OLControlScaleLine {
   constructor(vendorOptions) {
     super(vendorOptions);
 
-
     this.facadeMap_ = null;
   }
 
@@ -139,10 +138,14 @@ class ScaleLine extends OLControlScaleLine {
     const projection = viewState.projection;
     const units = this.getUnits();
     const pointResolutionUnits = units === Units.DEGREES ? 'degrees' : 'm';
-    let pointResolution =
-      getPointResolution(projection, viewState.resolution, center, pointResolutionUnits);
-    if (projection.getUnits() !== 'degrees' && projection.getMetersPerUnit() &&
-      pointResolutionUnits === 'm') {
+    let pointResolution = getPointResolution(
+      projection,
+      viewState.resolution,
+      center,
+      pointResolutionUnits,
+    );
+    if (projection.getUnits() !== 'degrees' && projection.getMetersPerUnit()
+      && pointResolutionUnits === 'm') {
       pointResolution *= projection.getMetersPerUnit();
     }
 
@@ -220,7 +223,8 @@ class ScaleLine extends OLControlScaleLine {
         this.element.style.display = 'none';
         this.renderedVisible_ = false;
         return;
-      } else if (width >= this.minWidth_) {
+      }
+      if (width >= this.minWidth_) {
         break;
       }
       i += 1;
