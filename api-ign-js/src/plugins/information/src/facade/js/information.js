@@ -68,7 +68,7 @@ export default class Information extends M.Plugin {
      * @private
      * @type {Integer}
      */
-    this.featureCount_ = options.featureCount || 10;
+    this.featureCount_ = options.featureCount || 99;
 
     /**
      * Buffer for click information
@@ -76,7 +76,7 @@ export default class Information extends M.Plugin {
      * @private
      * @type {Integer}
      */
-    this.buffer_ = options.buffer || 99;
+    this.buffer_ = options.buffer || 10;
 
     /**
      * Information opened all, only if there is one layer, or not opened
