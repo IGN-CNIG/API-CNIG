@@ -68,7 +68,7 @@ export default class Information extends M.Plugin {
      * @private
      * @type {Integer}
      */
-    this.featureCount_ = options.featureCount || 10;
+    this.featureCount_ = options.featureCount || 99;
 
     /**
      * Buffer for click information

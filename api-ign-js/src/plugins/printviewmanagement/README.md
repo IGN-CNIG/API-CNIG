@@ -59,19 +59,47 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   ```JavaScript
       layers: [
       {
-        url: 'http://www.ign.es/wms-inspire/mapa-raster?',
-        name: 'mtn_rasterizado',
-        format: 'image/jpeg',
-        legend: 'Mapa ETRS89 UTM',
-        EPSG: 'EPSG:4326',
-      },
-      {
-        url: 'http://www.ign.es/wms-inspire/pnoa-ma?',
-        name: 'OI.OrthoimageCoverage',
-        format: 'image/jpeg',
-        legend: 'Imagen (PNOA) ETRS89 UTM',
-        // EPSG: 'EPSG:4258',
-      },
+                url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+                name: 'mtn_rasterizado',
+                format: 'image/jpeg',
+                legend: 'Mapa ETRS89 (long,lat)',
+                EPSG: 'EPSG:4326',
+              },
+              {
+                url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+                name: 'mtn_rasterizado',
+                format: 'image/jpeg',
+                legend: 'Mapa WGS84/Pseudo-Mercator',
+                EPSG: 'EPSG:3857',
+              },
+              {
+                url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+                name: 'mtn_rasterizado',
+                format: 'image/jpeg',
+                legend: 'Mapa ETRS89/UTM-31-N',
+                EPSG: 'EPSG:25831',
+              },
+              {
+                url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+                name: 'mtn_rasterizado',
+                format: 'image/jpeg',
+                legend: 'Mapa ETRS89/UTM-30-N',
+                EPSG: 'EPSG:25830',
+              },
+              {
+                url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+                name: 'mtn_rasterizado',
+                format: 'image/jpeg',
+                legend: 'Mapa ETRS89/UTM-29-N',
+                EPSG: 'EPSG:25829',
+              },
+              {
+                url: 'http://www.ign.es/wms-inspire/mapa-raster?',
+                name: 'mtn_rasterizado',
+                format: 'image/jpeg',
+                legend: 'Mapa ETRS89/UTM-28-N',
+                EPSG: 'EPSG:25828',
+              },
     ],
 
   ```

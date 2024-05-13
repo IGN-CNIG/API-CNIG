@@ -162,7 +162,7 @@ class OGCAPIFeatures extends Vector {
      * OGCAPIFeatures extract: Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */
-    this.extract = parameters.extract;
+    this.extract = parameters.extract || true;
 
     /**
      * OGCAPIFeatures cql: Declaración CQL para filtrar las características

@@ -142,7 +142,7 @@ class GenericVector extends Vector {
      * extract: Opcional, activa la consulta
      * haciendo clic en el objeto geográfico, por defecto falso.
      */
-    this.extract = userParameters.extract || false;
+    this.extract = userParameters.extract || true;
 
     this.styleFacade = params.style;
   }
