@@ -49,11 +49,24 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **initialExtraContents**: Contenido extra para mostrar antes de la ayuda de las herramientas. Permite un array de objetos con el siguiente formato:
   [{title: 'Texto', content: 'HTML en formato texto'}].
   El objeto también puede contener subcontenido que consiste en un array de objetos. Ejemplo:
-    [{title: 'Texto', content: 'HTML en formato texto', subContents: [{title: 'Texto 2', content: 'HTML en formato texto 2'}]}]
+  ```javascript
+    [
+      {
+        title: 'Texto',
+        content: 'HTML en formato texto',
+        subContents: [{title: 'Texto 2', content: 'HTML en formato texto 2'}]
+    },
+  ]
+  ```
+    
   En caso de desear implementar varios idiomas el parámetro initialExtraContents permitirá recibir un objeto con los diferentes idiomas. Ejemplo:
-    { es: [{ title: 'Texto en español', content: 'HTML en formato texto en español' }],
+  ```javascript
+    {
+      es: [{ title: 'Texto en español', content: 'HTML en formato texto en español' }],
       en: [{ title: 'Texto en inglés', content: 'HTML en formato texto en inglés' }]
     }
+  ```
+    
   Nota: mostará el idioma del visualizador.
 - **finalExtraContents**: funciona igual que initialExtraContents.
 - **extendInitialExtraContents**: Booleano que permite extender el contenido inicial con información definida de la API-CNIG. Por defecto: true.
