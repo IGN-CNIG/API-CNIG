@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 import ContactLink from 'facade/contactlink';
 
 M.language.setLang('es');
-//M.language.setLang('en');
+// M.language.setLang('en');
 
 const map = M.map({
   container: 'mapjs',
@@ -28,7 +29,7 @@ const mp = new ContactLink({
 });
 window.mp = mp;
 
-/*/ PRUEBA con capa
+/* / PRUEBA con capa
 const mvt = new M.layer.MVT({
   url: 'https://herramienta-centralizada-sigc.desarrollo.guadaltel.es/geoserver/gwc/service/tms/1.0.0/Global:carloscastellano_rios____cc_20191104@EPSG%3A3857@pbf/{z}/{x}/{-y}.pbf',
   name: 'vectortile',

@@ -24,7 +24,7 @@ const mp = new Help({
     }
   },
   extendInitialExtraContents: true,
-  /*/ PRUEBA initialExtraContents 1
+  /* / PRUEBA initialExtraContents 1
   initialExtraContents: {es: [
     { title: 'Índice 1', content: '<div><h2>Título 1</h2><div><p>Contenido 1</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
       subContents : [
@@ -76,7 +76,7 @@ const mp = new Help({
       ]
     },
   ], // */
-  /*/ PRUEBA finalExtraContents 1
+  /* / PRUEBA finalExtraContents 1
   finalExtraContents: { es: [
     { title: 'Índice 7', content: '<div><h2>Título 7</h2><div><p>Contenido 7</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
       subContents : [
