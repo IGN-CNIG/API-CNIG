@@ -18,6 +18,7 @@ const map = M.map({
     1.5699518004657511, 0.7849759002328756, 0.3699518004657511, 0.18497590023287555,
   ], // */
 });
+window.map = map;
 
 const mp = new Rescale({
   collapsible: true,
@@ -25,7 +26,7 @@ const mp = new Rescale({
   position: 'TL', // 'TL' | 'TR' | 'BR' | 'BL'
   // tooltip: 'TOOLTIP TEST Rescale',
 });
-map.addPlugin(mp); window.map = map;
+map.addPlugin(mp); window.mp = mp;
 
 // Lista de errores encontrados
 
