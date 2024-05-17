@@ -1,0 +1,399 @@
+.m-stereoscopic .info{
+  position : absolute;
+  width : 60%;
+  padding : 5px;
+  top : 10px;
+  left : 20%;
+  background : rgba(245, 245, 245, 0.8);
+  font-size : large;
+  border-radius : 5px;
+  border-style: dashed;
+  border-width: 2px;
+  text-align: center;
+}
+
+.m-stereoscopic .destroy-plugin {
+  position: absolute;
+  background-color: transparent;
+  border: 0px;
+  right: 5px;
+  top: 5px;
+}
+
+.link3Dview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin: 5px 0px;
+}
+
+
+.m-stereoscopic .tools-icon {
+  position: inherit !important;
+  overflow: hidden;
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  display: table;
+}
+
+.m-panel-btn.stereoscopic-plugin-3D::before {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.m-stereoscopic #m-feature-freedrawing-ftext {
+  margin: 0;
+}
+
+.m-panel.m-plugin-stereoscopic.opened .m-panel-btn {
+  position: absolute;
+  background-color: #71a7d3 !important;
+}
+
+.m-area.m-left .m-panel.m-plugin-stereoscopic.opened .m-panel-btn {
+  right: -40px;
+}
+
+.m-area.m-right .m-panel.m-plugin-stereoscopic.opened .m-panel-btn {
+  left: -40px;
+}
+
+.m-panel.m-plugin-stereoscopic.opened .m-panel-btn.g-cartografia-flecha-derecha,
+.m-panel.m-plugin-stereoscopic.opened .m-panel-btn.g-cartografia-flecha-izquierda {
+  color: #71a7d3 !important;
+  background-color: white !important;
+}
+
+.m-panel.m-plugin-stereoscopic.collapsed .m-panel-btn.stereoscopic-plugin-3D {
+  color: white !important;
+}
+
+.m-stereoscopic.activated #ctrlTest {
+  color: #e06f6f !important;
+}
+
+.m-panel.m-plugin-stereoscopic.opened .stereoscopic-anaglyph {
+  outline: unset !important;
+  font-size: 28px;
+}
+
+.m-panel.m-plugin-stereoscopic.opened .stereoscopic-anaglyph:hover {
+  cursor: pointer !important;
+}
+
+.m-panel.m-plugin-stereoscopic.opened .m-stereoscopic.activated .stereoscopic-anaglyph::before {
+  font-weight: bold;
+}
+
+.m-stereoscopic #ctrlTest {
+  padding: 6px 0px  0px 0px !important;
+}
+
+.m-stereoscopic div.m-control button[class*=" g-cartografia-"], div.m-control button[class^=g-cartografia-] {
+  padding: 8px;
+  font-size: 24px;
+  background: 0 0;
+  border: none;
+  cursor: pointer;
+  opacity: .75;
+  -webkit-transition: opacity .25s ease 0s;
+  transition: opacity .25s ease 0s;
+  color: #404040;
+  margin: 0;
+}
+
+
+.m-stereoscopic .group-row2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.m-panel.m-plugin-stereoscopic.collapsed {
+  height: 40px;
+  order: -99;
+}
+
+.m-stereoscopic .panel-style {
+  background-color: #f4f4f4;
+  width: 500px;
+}
+
+.m-stereoscopic .panel-style .m-panel-controls {
+  width: 100%
+}
+
+.m-stereoscopic .panel-style .m-panel-controls .styles-row.m-simple-category {
+  width: 100%;
+}
+
+.m-stereoscopic .m-styletools-simple-section {
+  width: 100%;
+}
+
+.m-stereoscopic>.m-areas>div.m-area>div.m-panel.no-collapsible {
+  border-radius: 7px;
+}
+
+.m-stereoscopic .title {
+  margin: 0;
+  color: white !important;
+  font-family: Muli, sans-serif !important;
+  line-height: 40px;
+  text-align: center;
+  height: 39px;
+  border-bottom: 1px solid rgba(0, 0, 0, .08);
+  font-size: 15px;
+  background-color: #71a7d3;
+}
+
+.m-stereoscopic .m-styles-body {
+  background-color: white;
+  /*margin: 10px;*/
+  padding: 15px 15px 8px 15px;
+}
+
+.m-styles-body select {
+  height: 1.2rem;
+  padding: 0px 4px;
+}
+
+.m-stereoscopic input[type='range']:focus {
+  outline: none;
+}
+
+.m-stereoscopic input[type='range'],
+.m-stereoscopic input[type='range']::-webkit-slider-runnable-track,
+.m-stereoscopic input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  position: relative;
+  bottom: 1px;
+}
+
+.m-stereoscopic .enable3Dview::-webkit-slider-thumb {
+  margin-top: -3px;
+  background-color: #0B4371;
+  width: 12px;
+  height: 12px;
+  border-radius: 50px;
+}
+
+.m-stereoscopic .disabled3Dview::-webkit-slider-thumb {
+  margin-top: -3px;
+  background-color: rgb(163, 163, 163);
+  width: 12px;
+  height: 12px;
+  border-radius: 50px;
+}
+
+.m-stereoscopic .enable3Dview::-webkit-slider-runnable-track {
+  height: 5px;
+  background-color: #71a7d3;
+}
+
+.m-stereoscopic .disabled3Dview::-webkit-slider-runnable-track {
+  height: 5px;
+  background-color: rgb(163, 163, 163);
+}
+
+.m-stereoscopic input[type=range]:focus::-webkit-slider-runnable-track {
+  outline: none;
+}
+
+@-moz-document url-prefix() {
+  .m-stereoscopic input[type='range'] {
+    position: relative;
+    top: 7px;
+  }
+
+  .m-stereoscopic .m-styles-body .group-row2 > div {
+    margin: 6px 0px;
+  }
+
+  .m-stereoscopic .m-styles-body {
+    padding: 5px 15px 8px 15px !important;
+  }
+}
+
+.loader-stereoscopic {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 6vh;
+  height: 6vh;
+  margin-left:43%;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@font-face {
+  font-family: 'stereoscopic';
+  src: url('../font/stereoscopic.eot?7804453');
+  src: url('../font/stereoscopic.eot?7804453#iefix') format('embedded-opentype'),
+       url('../font/stereoscopic.woff2?7804453') format('woff2'),
+       url('../font/stereoscopic.woff?7804453') format('woff'),
+       url('../font/stereoscopic.ttf?7804453') format('truetype'),
+       url('../font/stereoscopic.svg?7804453#stereoscopic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+ [class^="stereoscopic-"]:before, [class*=" stereoscopic-"]:before {
+  font-family: "stereoscopic";
+  font-style: normal;
+  font-weight: normal;
+  speak: never;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+div.m-control button[class*=" stereoscopic-"], div.m-control button[class^=stereoscopic-] {
+  padding: 8px;
+  font-size: 24px;
+  background: 0 0;
+  border: none;
+  cursor: pointer;
+  opacity: .75;
+  -webkit-transition: opacity .25s ease 0s;
+  transition: opacity .25s ease 0s;
+  color: #404040;
+  margin: 0;
+}
+
+.stereoscopic-plugin-3D:before { content: '\e801'; } /* '' */
+
+.m-stereoscopic #anaglyphType {
+  margin-left: 6px;
+}
+
+.orbitalMoves {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#imgOrbitalMoves {
+  width: 110px;
+}
+
+#glases3d {
+  border: none;
+  padding: 10px 20px;
+  background-color: #71a7d3;
+  border-radius: 10px;
+}
+
+#glases3d:hover {
+  cursor: pointer;
+  background-color: #a3b2be;
+}
+
+#toggle3D {
+  margin-top: 10px;
+  border: none;
+  background-color: #71a7d3;
+  border-radius: 10px;
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  font-size: 0.83rem;
+  gap: 10px;
+}
+
+#toggle3D svg {
+  margin-bottom: 5px;
+}
+
+#toggle3D:hover {
+  cursor: pointer;
+}
+
+.toggle3D {
+  background-color: #a3b2be !important;
+}
+
+.selectorToggle{
+  background-color: #ffffff !important;
+}
+
+
+.m-stereoscopic .enable3Dview::-moz-range-thumb {
+  background-color: #71a7d3 !important;
+  width: 12px;
+  height: 12px;
+  border-radius: 50px;
+}
+
+.m-stereoscopic .disabled3Dview::-moz-range-thumb {
+  background-color: gray !important;
+  width: 12px;
+  height: 12px;
+  border-radius: 50px;
+}
+
+.m-stereoscopic .disabled3Dview::-moz-range-track {
+  height: 5px;
+  background-color: gray !important;
+}
+
+.m-stereoscopic .enable3Dview::-moz-range-track {
+  height: 5px;
+  background-color: #71a7d3 !important;
+}
+
+.disabled3Dview {
+  color: black;
+}
+
+.enable3Dview {
+  color: black;
+}
+
+.containerMagnify {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.containerMagnify input {
+  padding-top: 4px;
+}

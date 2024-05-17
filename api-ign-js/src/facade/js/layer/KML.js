@@ -103,7 +103,7 @@ class KML extends LayerVector {
      * KML extract: Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */
-    this.extract = parameters.extract;
+    this.extract = parameters.extract || true;
 
     /**
      * KML options: Optiones que se mandan a la implementación.
@@ -184,6 +184,36 @@ class KML extends LayerVector {
    */
   set options(newOptions) {
     this.getImpl().options = newOptions;
+  }
+
+  /**
+   * Devuelve la leyenda de la capa.
+   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   *
+   * @function
+   * @getter
+   * @return {M.layer.WMS.impl.legend} Leyenda de la capa.
+   * @api
+   */
+  get legend() {
+    return this.getImpl().legend;
+  }
+
+  /**
+   * Sobrescribe la leyenda de la capa.
+   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   *
+   * @function
+   * @setter
+   * @param {String} newLegend Nueva leyenda.
+   * @api
+   */
+  set legend(newLegend) {
+    if (isNullOrEmpty(newLegend)) {
+      this.getImpl().legend = this.name;
+    } else {
+      this.getImpl().legend = newLegend;
+    }
   }
 
   /**

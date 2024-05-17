@@ -3,6 +3,7 @@
  */
 import MVTTileImpl from 'impl/layer/MVT';
 import RenderFeatureImpl from 'impl/feature/RenderFeature';
+import FeatureImpl from 'impl/feature/Feature';
 import Vector from './Vector';
 import { isUndefined, isNullOrEmpty, normalize, isString } from '../util/Utils';
 import Exception from '../exception/exception';
@@ -58,6 +59,7 @@ class MVT extends Vector {
    * - maxZoom. Zoom máximo aplicable a la capa.
    * - visibility. Define si la capa es visible o no. Verdadero por defecto.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
+   * - predefinedStyles: Estilos predefinidos para la capa.
    * @param {Object} implParam Valores de la implementación por defecto,
    * se pasa un objeto implementación MVT.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
@@ -92,7 +94,9 @@ class MVT extends Vector {
      * extract: Optional Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */
-    this.extract = opts.extract;
+    this.extract = opts.extract || true;
+
+    this.mode = opts.mode || mode.RENDER;
   }
 
   /**
@@ -183,8 +187,14 @@ class MVT extends Vector {
    */
   getFeatures() {
     const features = this.getImpl().getFeatures();
-
-    return features.map(olFeature => RenderFeatureImpl.olFeature2Facade(olFeature));
+    return features.map((olFeature) => {
+      if (this.mode === mode.RENDER) {
+        return RenderFeatureImpl.olFeature2Facade(olFeature);
+      } else if (this.mode === mode.FEATURE) {
+        return FeatureImpl.olFeature2Facade(olFeature, undefined, this.getProjection());
+      }
+      return null;
+    });
   }
 
   /**

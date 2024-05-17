@@ -1,0 +1,45 @@
+<div aria-label="Plugin Vectors Management" role="menuitem" id="div-contenedor-vectorsmanagement" class="m-control m-container m-vectorsmanagement">
+    <!-- Título del plugin -->
+   <header role="heading" tabindex="0" id="m-vectorsmanagement-titulo" class="m-vectorsmanagement-titulo">{{translations.headertitle}}</header>
+   <section tabindex="0" class="m-vectorsmanagement-selection-layer">
+    <!-- Selección de capa -->
+    <select tabindex="0" role="select" id="m-selectionlayer" class="m-vectorsmanagement-selectValues" title="{{translations.selecctionlayer}}">
+        <option value="" selected disabled>{{translations.selectLayerDefault}}...</option>
+        {{#each layer}}
+            <option value="{{value}}">{{text}}</option>
+        {{/each}}
+    </select>
+    {{#if addlayer}}
+    <button tabindex="0" id="layerdrawing" title="{{translations.creationLayer}}" class="vectorsmanagement-icon-layers"></button>
+    {{/if}}
+    {{#if help}}
+    <button tabindex="0" id="m-vectorsmanagement-help" title="{{translations.help}}" class="vectorsmanagement-icon-ayuda"></button>
+    {{/if}}
+    </section>
+   <!-- Contenedor de controles -->
+   <section id="m-vectorsmanagement-previews" class="m-vectorsmanagement-previews closed">
+       {{#if selection}}
+       <button tabindex="0" id="m-vectorsmanagement-selection" title="{{translations.selection}}" class="vectorsmanagement-icon-seleccionar"></button>
+       {{/if}}
+       <div class="m-vectorsmanagement-toolsContent">
+            {{#if creation}}
+            <button tabindex="0" id="m-vectorsmanagement-creation" title="{{translations.creation}}" class="vectorsmanagement-icon-mas"></button>
+            {{/if}}
+            {{#if edition}}
+            <button tabindex="0" id="m-vectorsmanagement-edition" title="{{translations.edition}}" class="vectorsmanagement-icon-editar"></button>
+            {{/if}}
+            {{#if style}}
+            <button tabindex="0" id="m-vectorsmanagement-style" title="{{translations.style}}" class="vectorsmanagement-icon-estilo"></button>
+            {{/if}}
+            {{#if analysis}}
+            <button tabindex="0" id="m-vectorsmanagement-analysis" title="{{translations.analysis}}" class="vectorsmanagement-icon-analisis"></button>
+            {{/if}}
+            {{#if download}}
+            <button tabindex="0" id="m-vectorsmanagement-download" title="{{translations.download}}" class="vectorsmanagement-icon-descargar"></button>
+            {{/if}}
+       </div>
+   </section>
+
+    <!-- Contenedor de controles -->
+   <section id="m-vectorsmanagement-controls" class="m-vectorsmanagement-controls"></section>
+</div>

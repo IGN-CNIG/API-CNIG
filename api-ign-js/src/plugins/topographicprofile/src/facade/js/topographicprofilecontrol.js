@@ -38,6 +38,8 @@ export default class TopographicprofileControl extends M.Control {
    * @api stable
    */
   createView(map) {
+    // eslint-disable-next-line
+    console.warn(getValue('exception.obsolete'));
     if (!M.template.compileSync) { // JGL: retrocompatibilidad Mapea4
       M.template.compileSync = (string, options) => {
         let templateCompiled;

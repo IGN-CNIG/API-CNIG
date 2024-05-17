@@ -5,6 +5,7 @@ import VectorLayer from 'ol/layer/Vector';
 import WFS from 'ol/format/WFS';
 import GeoJSON from 'ol/format/GeoJSON';
 import { bbox } from 'ol/loadingstrategy';
+import Generic from 'M/style/Generic';
 
 // import { bbox as bboxStrategy } from 'ol/loadingstrategy.js';
 

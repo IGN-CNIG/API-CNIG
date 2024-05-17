@@ -14,6 +14,28 @@
     "codsi": "Ha ocurrido un error al consultar el catálogo CODSI",
     "codsi_no_results": "No hay resultados para su búsqueda"
   },
+  "textHelp": {
+    "help1": "La extensión selector de capas permite gestionar las capas que se muestran en un visualizador cartográfico.",
+    "help2": "Esta extensión es personalizable mediante parámetros, por lo que la extensión puede cambiar de un visualizador a otro.",
+    "help3": "Las distintas herramientas disponibles en el selector de capas son:",
+    "help4": "Añadir capa:",
+    "help5": "La primer opción es la de introducir la URL de un servicio en la caja de texto. Para ello, partiendo del directorio de servicios IDEE (https://www.idee.es/segun-tipo-de-servicio) por ejemplo, utilizando el servicio de Mosaicos de Satélite históricos de España (https://wms-satelites-historicos.idee.es/satelites-historicos). Al darle a la lupa de buscar, aparece un listado de capas disponibles en el servicio. En este ejemplo, se elije la capa 'filomena' y se le da a añadir:",
+    "help6": "En el caso que se quisieran más capas, se podrían seleccionar todas las que se quisieran. Una vez añadida, tendríamos el siguiente aspecto en el visualizador:",
+    "help7": "Otra forma de cargar capas es desde el catálogo de servicios d ela IDEE (https://www.idee.es/csw-inspire-idee/srv/spa/catalog.search#/home). Haciendo click sobre el botón de los prismáticos, aparecerá otro buscador por texto y un listado de posibilidades. Por ejemplo si buscamos 'unidades administrativas IGN'",
+    "help8": "y hacemos click sobre 'WMS de Unidades Administrativas de España', podremos cargar las capas del servicio buscado:",
+    "help9": "Por último, se pueden cargar capas desde un listado de algunas capas disponibles, que se configura por temáticas. En el ejemplo mostrado, se va a cargar la primera edición del MTN 50 que se encuentra en cartografía:",
+    "help10": "Aparecerá de nuevo el selector de capas del servicio, y se marca la primera edición del MTN 50 y se añade al mapa:",
+    "help11": "Una vez se tienen cargadas en el mapa las capas, se puede trabajar con ellas desde el selector de capas.",
+    "help12": "La primera funcionalidad sería la de encender las capas, esto se puede hacer desde el botón ojo amarillo que permite encender y apagar todas, o desde los distintos botones ojo verde-rojo para encender o apagar solo una capa:",
+    "help13": "Otra funcionalidad sería eliminar la capa, desde el botón del cubo de basura.",
+    "help14": "Dentro de las opciones de una capa visible, se tienen las herramientas de añadir transparencia a la capa:",
+    "help15": "mostrar la leyenda de la capa:",
+    "help16": "centrar el visualizador a la extensión de la capa:",
+    "help17": "obtener más información de la capa:",
+    "help18": "y en el caso que la capa lo permita, poder aplicarle otro estilo cartográfico:",
+    "help19": "La información relevante a la extensión y su posible parametrización está documentada en",
+    "help20": "El ejemplo de uso de sus parámetros puede comprobarse en"
+  },
   "tooltip": "Gestor de capas",
   "info": "Información",
   "layer_info": "Información de la capa",
@@ -107,5 +129,6 @@
   "previous": "Anterior",
   "next": "Siguiente",
   "separatedby": "Identificador separados por comas ','",
-  "placeHolderLegend": "Texto que se muestra en el selector"
+  "placeHolderLegend": "Texto que se muestra en el TOC",
+  "upload_file": "Subir fichero"
 }

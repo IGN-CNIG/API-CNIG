@@ -24,7 +24,7 @@ class Feature extends Base {
    * @constructor
    * @param {String} id Identificador del objeto geográfico.
    * @param {Object} geojson Geojson con objetos geográficos.
-   * @param {Object} style Estilo de los objetos geográficos.
+   * @param {Object} style Estilo para el objeto geográfico.
    * @api
    */
   constructor(id, geojson, style) {

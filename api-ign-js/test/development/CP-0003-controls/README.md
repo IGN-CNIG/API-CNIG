@@ -24,3 +24,6 @@ Control rotation
 
 CP-009
 Control attributions
+
+CP-010
+Pruebas de funciones de los controles

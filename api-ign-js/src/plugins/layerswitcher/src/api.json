@@ -55,6 +55,14 @@
       "type": "boolean",
       "name": "useProxy",
       "position": 11
+    }, {
+      "type": "boolean",
+      "name": "addLayers",
+      "position": 12
+    }, {
+      "type": "boolean",
+      "name": "statusLayers",
+      "position": 13
     }]
   }],
   "files": {

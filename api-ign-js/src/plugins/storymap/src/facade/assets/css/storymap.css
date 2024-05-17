@@ -80,7 +80,7 @@
   width: 33.3%;
 }
 
-.m-panel-btn.g-cartografia-flecha-derecha {
+.m-plugin-storymap.opened > .g-cartografia-flecha-derecha {
   left: 0px !important;
   border-radius: 0% !important;
 }
@@ -391,10 +391,17 @@
     font-size: 0.8rem;
   }
 
-  .m-areas>div.m-area>div.m-plugin-storymap.m-panel.opened>.m-panel-controls .m-storymap-panel,
-  div.m-area.m-top.m-right,
-  div.m-area.m-top.m-right > div,
-  #m-storymap-container {
+  .m-areas>div.m-area>div.m-plugin-storymap.m-panel.opened {
+    width: 100vw;
+    height: 100vh;
+    position: fixed!important;
+    top: 0;
+    left: 0;
+    margin: 0!important;
+    z-index: 999999;
+  }
+
+  #m-storymap-panel {
     width: 100%;
   }
 

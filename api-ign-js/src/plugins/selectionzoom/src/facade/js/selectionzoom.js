@@ -6,6 +6,7 @@ import '../assets/css/selectionzoom';
 import api from '../../api';
 import SelectionZoomControl from './selectionzoomcontrol';
 import { getValue } from './i18n/language';
+import myhelp from '../../templates/myhelp';
 
 import es from './i18n/es';
 import en from './i18n/en';
@@ -314,5 +315,31 @@ export default class SelectionZoom extends M.Plugin {
    */
   getMetadata() {
     return this.metadata_;
+  }
+
+  /**
+   * Obtiene la ayuda del plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getHelp() {
+    return {
+      title: this.name,
+      content: new Promise((success) => {
+        const html = M.template.compileSync(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}plugins/selectionzoom/images/`,
+            translations: {
+              help1: getValue('textHelp.help1'),
+              help2: getValue('textHelp.help2'),
+              help3: getValue('textHelp.help3'),
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 }
