@@ -97,7 +97,7 @@ class MBTilesVector extends Vector {
      * MBTilesVector extract: Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */
-    this.extract = parameters.extract || true;
+    this.extract = parameters.extract === undefined ? true : parameters.extract;
   }
 
   /**

@@ -103,7 +103,7 @@ class KML extends LayerVector {
      * KML extract: Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */
-    this.extract = parameters.extract || true;
+    this.extract = parameters.extract === undefined ? true : parameters.extract;
 
     /**
      * KML options: Optiones que se mandan a la implementación.
