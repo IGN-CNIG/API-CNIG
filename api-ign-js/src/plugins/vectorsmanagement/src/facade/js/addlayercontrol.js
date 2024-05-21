@@ -97,6 +97,7 @@ export default class AddLayerControl extends M.Control {
     const newVector = new M.layer.Vector({
       name: name || `vector_${Math.floor(Math.random() * 9000) + 1000}`,
       legend: name || `Vector_${Math.floor(Math.random() * 9000) + 1000}`,
+      extract: true,
     });
     this.map_.addLayers(newVector);
     this.deactivate();
