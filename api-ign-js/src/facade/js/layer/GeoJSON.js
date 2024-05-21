@@ -122,7 +122,7 @@ class GeoJSON extends LayerVector {
        * GeoJSON extract: Opcional, activa la consulta
        * haciendo clic en el objeto geográfico, por defecto falso.
        */
-      this.extract = parameters.extract === undefined ? true : parameters.extract;
+      this.extract = parameters.extract === undefined ? false : parameters.extract;
 
       /**
        * GeoJSON crs: Sistema de Referencia de Coordenadas.
