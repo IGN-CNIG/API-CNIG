@@ -13,14 +13,14 @@ jobs:
         run: |
           SOURCE_BRANCH="${{ github.head_ref }}"
           TARGET_BRANCH="${{ github.base_ref }}"
-          # Define allowed source and target branches
-          ALLOWED_SOURCE_BRANCH="develop"
-          ALLOWED_TARGET_BRANCH="premain"
-          if [ "$SOURCE_BRANCH" != "$ALLOWED_SOURCE_BRANCH" ]; then
-            echo "No se permite hacer pull request desde esta rama como rama de origen."
+          
+          # Define the special rules for specific branches
+          SPECIAL_SOURCE_BRANCH="premain"
+          SPECIAL_TARGET_BRANCH="master"
+           
+          if [ "$TARGET_BRANCH" == "$SPECIAL_TARGET_BRANCH" ] && [ "$SOURCE_BRANCH" != "$SPECIAL_SOURCE_BRANCH" ]; then
+            echo "No se permite hacer pull request a '$TARGET_BRANCH' desde '$SOURCE_BRANCH'. Solo se permite desde '$SPECIAL_SOURCE_BRANCH'."
             exit 1
           fi
-          if [ "$TARGET_BRANCH" != "$ALLOWED_TARGET_BRANCH" ]; then
-            echo "No se permite hacer pull request a esta rama como rama de destino."
-            exit 1
-          fi
+           
+          echo "Pull request permitido desde '$SOURCE_BRANCH' hacia '$TARGET_BRANCH'."

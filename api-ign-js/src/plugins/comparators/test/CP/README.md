@@ -51,3 +51,5 @@
 - Tabs y Enter
     * [X] Se comprueba que se puede hacer enter y tabs sobre los botones para abrir y cerrar las ventanas.
 
+CP-004
+https://proyectos.cnig.es/issues/7280

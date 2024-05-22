@@ -7,6 +7,9 @@ import template from '../../templates/help';
 import helps from '../../templates/helps';
 import { getValue } from './i18n/language';
 
+const SVG_CLOSE = '<svg id="indexLink-top-arrow" fill="currentColor" height="18px" width="18px" viewBox="0 0 24 24" style="display: inline-block; vertical-align: middle;"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg>';
+const SVG_OPEN = '<svg fill="currentColor" height="18px" width="18px" viewBox="0 0 24 24" style="display: inline-block; vertical-align: middle;"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg>';
+
 export default class HelpControl extends M.Control {
   /**
    * @classdesc
@@ -168,6 +171,25 @@ export default class HelpControl extends M.Control {
         });
         windowHelp.document.querySelector('#m-help-index > div > ol > li > a').click();
         windowHelp.addZoomAction();
+
+        listContent.querySelectorAll('li:has(>ol)').forEach((element) => {
+          // AÑADIR como primer elemento del li
+          const span = document.createElement('span');
+          span.innerHTML = SVG_OPEN;
+          element.insertBefore(span, element.firstChild);
+
+          span.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            element.querySelector('ol').classList.toggle('hiddenSubContent');
+
+            if (element.querySelector('ol').classList.contains('hiddenSubContent')) {
+              span.innerHTML = SVG_CLOSE;
+            } else {
+              span.innerHTML = SVG_OPEN;
+            }
+          });
+        });
       });
 
       this.helpsContent = [];
