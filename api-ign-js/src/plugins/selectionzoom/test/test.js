@@ -52,7 +52,7 @@ const mp = new SelectionZoom({
       // bbox: '-331239.86207381164, 4199163.69513152, -324436.96655643097, 4208412.575554026', // Al no estar configurado uno de estos métodos daba error
     },
   ], // */
-  /*/ Parámetros por separado de las mismas zonas de arriba (DEPRECADO)
+  /* / Parámetros por separado de las mismas zonas de arriba (DEPRECADO)
   ids: 'peninsula,canarias,baleares,ceuta,melilla',
   titles: 'Peninsula,Canarias,Baleares,Ceuta,Melilla',
   previews: '../src/facade/assets/images/espana.png,../src/facade/assets/images/canarias.png,../src/facade/assets/images/baleares.png,../src/facade/assets/images/ceuta.png,../src/facade/assets/images/melilla.png',

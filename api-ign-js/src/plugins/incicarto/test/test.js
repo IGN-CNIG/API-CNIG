@@ -13,7 +13,7 @@ const map = M.map({
   },
   projection: 'EPSG:3857*m',
   zoom: 6,
-  /*/ Capas precargadas
+  /* / Capas precargadas
   layers: [
     'WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*toporaster*SIG-C:25830*WMTS*false',
     'WFS*CampamentosCampamentosCampamentosCampamentos*http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows*sepim:campamentos*POINT***eyJwYXJhbWV0ZXJzIjpbeyJpY29uIjp7ImZvcm0iOiJDSVJDTEUiLCJjbGFzcyI6ImctY2FydG9ncmFmaWEtYmFuZGVyYSIsImZvbnRzaXplIjowLjUsInJhZGl1cyI6MTUsImZpbGwiOiJ3aGl0ZSJ9LCJyYWRpdXMiOjV9XSwiZGVzZXJpYWxpemVkTWV0aG9kIjoiKChzZXJpYWxpemVkUGFyYW1ldGVycykgPT4gTS5zdHlsZS5TaW1wbGUuZGVzZXJpYWxpemUoc2VyaWFsaXplZFBhcmFtZXRlcnMsICdNLnN0eWxlLlBvaW50JykpIn0',
@@ -21,7 +21,7 @@ const map = M.map({
 });
 window.map = map;
 
-/*/ Añadimos el BackImgLayer
+/* / Añadimos el BackImgLayer
 const mpBIL = new M.plugin.BackImgLayer({
   position: 'TR',
   collapsible: true,
@@ -136,7 +136,7 @@ map.addPlugin(mpBIL); // */
 // addWMSLayer('TN.RoadTransportNetwork.RoadLink', 'Vías de comunicación por carretera', 'https://www.ign.es/wms-inspire/ign-base?', '1.3.0', true, { visibility: false, displayInLayerSwitcher: true, queryable: false, zIndex: 506 });
 // addWMSLayer('TN.RailTransportNetwork.RailwayLink', 'Vías de comunicación ferroviarias', 'https://www.ign.es/wms-inspire/ign-base?', '1.3.0', true, { visibility: false, displayInLayerSwitcher: true, queryable: fals
 
-/*/ PRUEBA con capas WMS
+/* / PRUEBA con capas WMS
 const objLyrREDNAP = new M.layer.WMS({ url: 'https://www.ign.es/wms-inspire/redes-geodesicas?',
   name: 'RED_NAP', legend: 'Red de Nivelación de Alta Precisión',
   tiled: false, visibility: false,
@@ -220,7 +220,7 @@ const mp = new Incicarto({
 });
 window.mp = mp;
 
-/*/ PRUEBA con múltiples plugins
+/* / PRUEBA con múltiples plugins
 const mp2 = new M.plugin.Infocoordinates({ position: 'TR', decimalGEOcoord: 4, decimalUTMcoord: 4 });
 const mp3 = new M.plugin.Information({ position: 'TR', buffer: 100 });
 const mp4 = new M.plugin.MeasureBar({ position: 'TR' });

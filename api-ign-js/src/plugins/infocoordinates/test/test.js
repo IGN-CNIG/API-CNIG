@@ -23,7 +23,7 @@ const mp = new Infocoordinates({
 window.mp = mp;
 map.addPlugin(mp);
 
-/*/ PRUEBA con otros plugins
+/* / PRUEBA con otros plugins
 const mp2 = new M.plugin.Information({ position: 'TR', buffer: 100 });
 const mp3 = new M.plugin.Vectors({ position: 'TR', collapsed: true, collapsible: true, wfszoom: 12 });
 const mp4 = new M.plugin.MeasureBar({ position: 'TR' });

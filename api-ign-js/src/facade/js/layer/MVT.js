@@ -94,7 +94,7 @@ class MVT extends Vector {
      * extract: Optional Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */
-    this.extract = opts.extract || true;
+    this.extract = opts.extract === undefined ? false : opts.extract;
 
     this.mode = opts.mode || mode.RENDER;
   }

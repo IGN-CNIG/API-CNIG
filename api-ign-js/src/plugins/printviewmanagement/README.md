@@ -45,7 +45,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Impresión del mapa.
 - **isDraggable**: "True" para que el plugin se pueda desplazar, por defecto false.
-- **useProxy**: Define si el plugin utilizará el proxy o no, valores "true" o "false".
+- **useProxy**: Define si el plugin utilizará el proxy o no, valores true o false. Por defecto: false.
 - **serverUrl**: URL del servidor Geoprint. Por defecto: https://componentes.cnig.es/geoprint.
 - **printStatusUrl**: URL para consultar el estado de la impresión. Por defecto: https://componentes.cnig.es/geoprint/print/status.
 - **georefImageEpsg**: Indica si el control "Impresión de imágenes de capas precargadas" se añade al plugin (true/false). Por defecto: true.

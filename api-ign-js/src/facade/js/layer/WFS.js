@@ -145,7 +145,7 @@ class WFS extends Vector {
      * WFS extract: Opcional, activa la consulta haciendo clic en un objeto geográfico,
      * por defecto falso.
      */
-    this.extract = parameters.extract || true;
+    this.extract = parameters.extract === undefined ? false : parameters.extract;
 
     /**
      * options: Opciones WFS.

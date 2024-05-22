@@ -24,7 +24,7 @@ const mp = new Locator({
   pointStyle: 'pinAzul', // 'pinAzul' | 'pinRojo' | 'pinMorado' | 'in_case_of_wrong_string'
   zoom: 5,
   byPlaceAddressPostal: true,
-  /*/
+  /* /
   byPlaceAddressPostal: {
     maxResults: 5,
     noProcess: 'poblacion', // 'municipio' | 'poblacion' | 'toponimo' | 'callejero' | 'municipio,poblacion' | 'municipio,provincia,comunidad%20autonoma,poblacion,toponimo,expendeduria,ngbe,callejero,carretera,portal' | etc
@@ -38,7 +38,7 @@ const mp = new Locator({
     requestStreet: 'https://www.cartociudad.es/geocoder/api/geocoder/findJsonp?q=Sevilla&type=provincia&tip_via=null&id=41&portal=null&extension=null',
   }, // */
   byParcelCadastre: true,
-  /*/ 
+  /* / 
   byParcelCadastre: {
     cadastreWMS: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_RCCOOR',
     CMC_url: 'http://ovc.catastro.meh.es/ovcservweb/ConsultaMunicipioCodigos',
@@ -46,7 +46,7 @@ const mp = new Locator({
     CPMRC_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC',
   }, // */
   byCoordinates: true,
-  /*/
+  /* /
   byCoordinates: {
     projections: [
       { title: 'ETRS89 geographic (4258) d', code: 'EPSG:4258', units: 'd' },
