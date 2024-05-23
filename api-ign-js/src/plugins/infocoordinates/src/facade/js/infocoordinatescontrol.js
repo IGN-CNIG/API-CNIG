@@ -355,7 +355,7 @@ export default class InfocoordinatesControl extends M.Control {
 
   displayPoint(numPoint) {
     const pos = this.layerFeatures.getImpl()
-      .getFeatures()[numPoint - 1].getImpl().getFeatures().getProperties().coordinates;
+      .getFeatures(true)[numPoint - 1].getImpl().getOLFeature().getProperties().coordinates;
 
     // Modificamos el color del estilo de los puntos anteriores.
     if (numPoint > 1) {
@@ -536,8 +536,8 @@ export default class InfocoordinatesControl extends M.Control {
 
   copyAllPoints() {
     let printDocument = `${getValue('point').replace(':', '')},Long,Lat,Alt,EPSG,X,Y,Alt,EPSG\n`;
-    for (let i = 0; i < this.layerFeatures.getImpl().getFeatures().length; i += 1) {
-      const featureSelected = this.layerFeatures.getImpl().getFeatures()[i];
+    for (let i = 0; i < this.layerFeatures.getImpl().getFeatures(true).length; i += 1) {
+      const featureSelected = this.layerFeatures.getImpl().getFeatures(true)[i];
       const alt = featureSelected.getAttributes().Altitude !== undefined ? parseFloat(featureSelected.getAttributes().Altitude) : '-';
 
       // Cojo el srs seleccionado en el select
@@ -587,8 +587,8 @@ export default class InfocoordinatesControl extends M.Control {
     if (this.outputDownloadFormat === 'csv') {
       printDocument.push(`${getValue('point').replace(':', '')},Long,Lat,Alt,EPSG,X,Y,Alt,EPSG\n`);
     }
-    for (let i = 0; i < this.layerFeatures.getImpl().getFeatures().length; i += 1) {
-      const featureSelected = this.layerFeatures.getImpl().getFeatures()[i];
+    for (let i = 0; i < this.layerFeatures.getImpl().getFeatures(true).length; i += 1) {
+      const featureSelected = this.layerFeatures.getImpl().getFeatures(true)[i];
       const alt = featureSelected.getAttributes().Altitude !== undefined ? parseFloat(featureSelected.getAttributes().Altitude) : '-';
 
       // Cojo el srs seleccionado en el select
@@ -658,11 +658,11 @@ export default class InfocoordinatesControl extends M.Control {
       document.getElementsByClassName('contenedorPuntoSelect')[0].style = 'display: none';
 
       // Creamos las etiquetas de los puntos
-      for (let i = 0; i < this.layerFeatures.getImpl().getFeatures().length; i += 1) {
+      for (let i = 0; i < this.layerFeatures.getImpl().getFeatures(true).length; i += 1) {
         const pos = this.layerFeatures.getImpl()
-          .getFeatures()[i].getImpl().getOLFeature().getProperties().coordinates;
+          .getFeatures(true)[i].getImpl().getOLFeature().getProperties().coordinates;
         const varUTM = this.calculateUTMcoordinates(i + 1);
-        const altitude = `${parseFloat(this.layerFeatures.getImpl().getFeatures()[i].getImpl().getOLFeature().getProperties().Altitude).toFixed(2)}`.replace('.', ',');
+        const altitude = `${parseFloat(this.layerFeatures.getImpl().getFeatures(true)[i].getImpl().getOLFeature().getProperties().Altitude).toFixed(2)}`.replace('.', ',');
         const textHTML = `<div class="m-popup m-collapsed" style="padding: 5px 5px 5px 5px !important;background-color: rgba(255, 255, 255, 0.7) !important;">
               <div class="contenedorCoordPunto">
                 <table>

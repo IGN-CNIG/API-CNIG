@@ -178,6 +178,15 @@ export default class ContactLinkControl extends M.Control {
         window.open(url);
       });
 
+      html.querySelector('#urlStereoLink').addEventListener('click', () => {
+        let url = this.linksVisualizador3d;
+        if (this.linksVisualizador3d.indexOf('index.html') === -1 && this.linksVisualizador3d.indexOf('/estereoscopico') > -1) {
+          url = `${this.linksVisualizador3d}?center=${map.getCenter().x},${map.getCenter().y}&zoom=${map.getZoom()}&srs=${map.getProjection().code}`;
+        }
+
+        window.open(url);
+      });
+
       html.querySelector('#urlFototecaContactLink').addEventListener('click', () => {
         const url = `${this.linksFototeca}fototeca/?center=${map.getCenter().x},${map.getCenter().y}&zoom=${map.getZoom()}&srs=${map.getProjection().code}`;
         window.open(url);
