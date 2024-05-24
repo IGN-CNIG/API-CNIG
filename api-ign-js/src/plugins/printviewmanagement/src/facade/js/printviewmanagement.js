@@ -178,7 +178,7 @@ export default class PrintViewManagement extends M.Plugin {
      * @private
      * @type {Boolean}
      */
-    this.useProxy = M.utils.isUndefined(options.useProxy) ? true : options.useProxy;
+    this.useProxy = M.utils.isUndefined(options.useProxy) ? false : options.useProxy;
 
     /**
      * Stores the proxy state at plugin load time
