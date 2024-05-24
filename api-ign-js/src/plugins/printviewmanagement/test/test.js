@@ -3,7 +3,7 @@ import PrintViewManagement from 'facade/printviewmanagement';
 M.language.setLang('es');
 // M.language.setLang('en');
 
-/* / Capa de Suelo
+/*/ Capa de Suelo
 const suelo = new M.layer.WMTS({
   url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
   name: 'LU.ExistingLandUse', legend: 'Ocupación del suelo WMTS',
@@ -21,7 +21,7 @@ window.map = map;
 
 // TODAS LAS CAPAS
 
-/* / Capa GeoJSON
+// Capa GeoJSON
 const capaGeoJSON = new M.layer.GeoJSON({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
   name: 'Capa GeoJSON', legend: 'Capa GeoJSON',
@@ -29,7 +29,7 @@ const capaGeoJSON = new M.layer.GeoJSON({
 });
 map.addLayers(capaGeoJSON);// */
 
-/* / Capa WFS
+// Capa WFS
 const capaWFS = new M.layer.WFS({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?',
   name: 'campamentos', legend: 'Capa WFS l',
@@ -38,7 +38,7 @@ const capaWFS = new M.layer.WFS({
 });
 map.addLayers(capaWFS); // */
 
-/* / Capa OSM
+/*/ Capa OSM
 const capaOSM = new M.layer.OSM({
   url: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
   name: 'Capa OSM', legend: 'Capa OSM',
@@ -55,7 +55,7 @@ const capaKML = new M.layer.KML({
 }, { crossOrigin: 'anonymous' });
 map.addLayers(capaKML); // */
 
-/* / Capa KML1
+/*/ Capa KML1
 const capaKML1 = new M.layer.KML({
   url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
   name: 'Capa KML1', legend: 'Capa KML1',
@@ -63,7 +63,7 @@ const capaKML1 = new M.layer.KML({
 }, {extractStyles: false,style: new M.style.Point({ radius: 5, fill: { color: 'green', opacity: 0.5 }, stroke: { color: '#FF0000' } }) });
 map.addLayers(capaKML1); // */
 
-/* / Capa MVT
+/*/ Capa MVT
 const capaMVT = new M.layer.MVT({
   url: 'https://www.ign.es/web/resources/mapa-base-xyz/vt/{z}/{x}/{y}.pbf',
   // layers: ['camino_lin'],
@@ -73,7 +73,7 @@ const capaMVT = new M.layer.MVT({
 }, { crossOrigin: 'anonymous' });
 map.addLayers(capaMVT); // */
 
-/* / Capa OGCAPIFeatures
+/*/ Capa OGCAPIFeatures
 const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
   url: 'https://api-features.idee.es/collections/',
   name: 'hidrografia/Falls', legend: 'Capa OGCAPIFeatures L',
@@ -81,7 +81,7 @@ const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
 });
 map.addLayers(capaOGCAPIFeatures); // */
 
-/* / Capa TMS
+/*/ Capa TMS
 const capaTMS = new M.layer.TMS({
   url: 'https://tms-mapa-raster.ign.es/1.0.0/mapa-raster/{z}/{x}/{-y}.jpeg',
   name: 'Capa TMS', legend: 'Capa TMS L',
@@ -89,7 +89,7 @@ const capaTMS = new M.layer.TMS({
 }, { crossOrigin: 'anonymous' });
 map.addLayers(capaTMS); // */
 
-/* / Capa Vector
+/*/ Capa Vector
 const capaVector = new M.layer.Vector({
   name: 'capaVector', legend: 'vector legend',
   attribution: {
@@ -111,14 +111,14 @@ const feature = new M.Feature('localizacion', {
 capaVector.addFeatures(feature);
 map.addLayers(capaVector); // */
 
-/* / Capa WMS
+/*/ Capa WMS
 const capaWMS = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit', legend: 'Capa WMS l',
 }, { crossOrigin: 'anonymous' });
 map.addLayers(capaWMS); // */
 
-/* / Capa WMTS
+/*/ Capa WMTS
 const capaWMTS = new M.layer.WMTS({
   url: 'https://servicios.idee.es/wmts/ocupacion-suelo',
   name: 'LC.LandCoverSurfaces', legend: 'LC.LandCoverSurfaces l',
@@ -127,7 +127,7 @@ const capaWMTS = new M.layer.WMTS({
 }, { crossOrigin: 'anonymous' });
 map.addLayers(capaWMTS); // */
 
-/* / Capa XYZ
+/*/ Capa XYZ
 const capaXYZ = new M.layer.XYZ({
   url: 'https://www.ign.es/web/catalogo-cartoteca/resources/webmaps/data/cresques/{z}/{x}/{y}.jpg',
   name: 'Capa XYZ', legend: 'Capa XYZ l',
@@ -135,7 +135,7 @@ const capaXYZ = new M.layer.XYZ({
 }, { crossOrigin: 'anonymous' });
 map.addLayers(capaXYZ); // */
 
-/* / Capa MBTiles fetch
+/*/ Capa MBTiles fetch
 window.fetch('./cabrera.mbtiles').then((response) => {
   const mbtile = new M.layer.MBTiles({
     name: 'mbtiles', legend: 'Capa MBTiles L',
@@ -144,7 +144,7 @@ window.fetch('./cabrera.mbtiles').then((response) => {
   map.addLayers(mbtile); window.mbtile = mbtile;
 }).catch((e) => { throw e; }); // */
 
-/* / Capa MBTilesVector fetch
+/*/ Capa MBTilesVector fetch
 window.fetch('./countries.mbtiles').then((response) => {
   const mbtilesvector = new M.layer.MBTilesVector({
     name: 'mbtiles_vector', legend: 'Capa MBTilesVector L',
@@ -163,8 +163,8 @@ const mp = new PrintViewManagement({
   serverUrl: 'https://componentes.cnig.es/geoprint',
   printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
   defaultOpenControl: 1, // 1 (printermap), 2 (georefImage), 3 (georefImageEpsg) OR 0 , >=4 (Ninguno) Abre el control indicado inicialmente.
-  //printermap: true,
-  //
+  printermap: true,
+  /*/
   printermap: { // serverUrl y printStatusUrl añadidos fuera de este.
     tooltip: 'TEST TOOLTIP printermap', // Tooltip del botón para escoger esta opción
     printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG', // Templates a los cuales se añade este mapa
@@ -176,8 +176,8 @@ const mp = new PrintViewManagement({
     credits: "Ejemplo Guadaltel de prueba de Credits", // TEXTO de créditos abajo del template
     order: 2,
   }, // */
-  //georefImage: true,
-  //
+  georefImage: true,
+  /*/
   georefImage: { // serverUrl y printStatusUrl añadidos fuera de este.
     tooltip: 'TEST TOOLTIP georefImage',
     printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/mapexport',
@@ -185,8 +185,8 @@ const mp = new PrintViewManagement({
     printType: 'client', // 'client' | 'server'
     order: 4, // 8 - ERROR no existe actualmente
   }, // */
-  //georefImageEpsg: true,
-  //
+  georefImageEpsg: true,
+  /*/
   georefImageEpsg: {
     tooltip: 'TEST TOOLTIP georefImageEpsg',
     layers: [{ // WMTS -> OK

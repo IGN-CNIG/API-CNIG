@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import Infocoordinates from 'facade/infocoordinates';
 
 M.language.setLang('es');
@@ -24,7 +23,7 @@ const mp = new Infocoordinates({
 window.mp = mp;
 map.addPlugin(mp);
 
-/* / PRUEBA con otros plugins
+/*/ PRUEBA con otros plugins
 const mp2 = new M.plugin.Information({ position: 'TR', buffer: 100 });
 const mp3 = new M.plugin.Vectors({ position: 'TR', collapsed: true, collapsible: true, wfszoom: 12 });
 const mp4 = new M.plugin.MeasureBar({ position: 'TR' });
@@ -52,3 +51,32 @@ map.addPlugin(mp4); window.mp4 = mp4; // */
 // Se Podría aplicar a la tabla un estilo de "table-layout: fixed;width: 100%;" para que no se salga del width y tras esto para arreglar los errores de height por lineas adicionales hay que cambiar los colspan (por ejemplo máximo de "9") con los td a "3" en los primeros cuatro textos y "4" en los demás, añadir overflow hidden a las coordenadas, poner a los iconos pequeños el colspan "1", dejando el resto del colspan a los demás apartados. Sería necesario en "m-infocoordinates-help" quitar "display: flex;align-items: center;" y poner solo a el span de ese el "float: left; margin-top: 7px;" con esto podría estar decentemente bien visualizado ahora y con menos problemas de tamaños.
 
 // 7 - ERROR en JSP, si se refresca el plugin, este parece que solo hace desaparecer las coordenadas y los valores numéricos de overlays se quedan visibles permanentemente. Dentro de la función "removeAllPoints" hay un limpiado de todos los overlays con "this.map_.getMapImpl().removeOverlay", se podría crear una función común que se puede usar aquí y en el destroy del plugin a través de control_, el problema es que este borrado posiblemente quita otros overlay que no fueron añadidos por este plugin, por lo que podría ser una buena idea añadir un Array que tenga en cuenta todos los overlays que este plugin añade o quita. Por otro lado hay código repetido para hacer el "this.map_.getMapImpl().addOverlay(this.helpTooltip_);", que se podría convertir en una función de generado de overlays con "(textHTML, pos)".
+
+// ERRORES OL
+// 8 - ERROR Al hacer click en el mapa salta un error:
+    // Uncaught TypeError: t is undefined
+    //     value Vector.js:258
+    //     displayPoint infocoordinatescontrol.js:358
+// La causa es una linea de código en el método "displayPoint" que es distinta a develop
+  // Diferente forma de obtener los features de la capa
+    // ol: this.layerFeatures.getImpl().getFeatures()
+    // develop: this.layerFeatures.impl_.features_
+// Si se modifica esa linea, ya no da error pero no se dibuja el + en la posición del click (el número si aparece)
+
+// 9 - ERROR Al exportar los puntos salta un error (si se ha solucinado el error 8):
+    // Uncaught TypeError: t is undefined
+    //     value Vector.js:258
+    //     importAllPoints infocoordinatescontrol.js:589
+// La causa es una linea de código en el método "importAllPoints" que es distinta a develop. Es la misma instrucción que en el error 8
+
+// 10 - ERROR Al activar la herramienta de copiar puntos salta el siguiente error (si se ha solucinado el error 8):
+    // Uncaught TypeError: t is undefined
+    //     value Vector.js:258
+    //     copyAllPoints infocoordinatescontrol.js:538
+// La causa es una linea de código en el método "copyAllPoints" que es distinta que en develop. Es la misma instrucción que en el error 8.
+
+// 10 - ERROR Al activar la funcionalidad de "ver coordenadas de todos los puntos" salta el siguiente error (si se ha solucinado el error 8):
+// Uncaught TypeError: t is undefined
+//     value Vector.js:258
+//     displayAllPoints infocoordinatescontrol.js:660
+// La causa es una linea de código en el método "displayAllPoints" que es distinta que en develop. Es la misma instrucción que en el error 8.

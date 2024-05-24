@@ -21,8 +21,8 @@ const map = M.map({
 window.map = map;
 
 const mp = new SelectionZoom({
-  collapsible: true,
-  collapsed: true,
+  collapsible: false,
+  collapsed: false,
   position: 'TR', // 'TL' | 'TR' | 'BR' | 'BL'
   tooltip: 'TOOLTIP TEST Vista predefinida',
   // Parámetro de opciones para configurar zonas

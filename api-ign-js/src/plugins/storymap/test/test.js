@@ -90,3 +90,7 @@ map.addPlugin(mp); window.mp = mp;
 //   }, (document.querySelector('#buttonDelay').getAttribute('speed') * 1000));
 //   return id;
 // }
+
+//----------------
+// ERROR-MEJORA Al hacer click en el selector de velocidad se activa el play. No deberia estar ligado el selecctor de velocidad al avance de los elementos.
+// si se quiere pasar a la velocidad 0.5x, tienes que pasar por todas las velocidades para dar la vuelta y puedes perderte información

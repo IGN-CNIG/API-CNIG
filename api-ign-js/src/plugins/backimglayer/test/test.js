@@ -31,10 +31,11 @@ const mp = new BackImgLayer({
   collapsible: true,
   tooltip: 'Tooltip de texto "Capas de fondo" que aparece al hacer hover sobre él.',
   layerVisibility: false,
-  columnsNumber: 0,
+  columnsNumber: 3, // 8 - ERROR MEJORA
   empty: true,
+  layerId: 1, // 7 - ERROR
 
-  /* // PRUEBA 1 // Cuando no se pasa layerOpts, se usan los parámetros ids, titles, previews y layers
+  /*/ PRUEBA 1 // Cuando no se pasa layerOpts, se usan los parámetros ids, titles, previews y layers
   position: 'TL', // 2 - ERROR
   ids: 'mapa,hibrido',
   titles: 'Mapa,Hibrido',
@@ -42,10 +43,10 @@ const mp = new BackImgLayer({
   layers: wmtsLayer1 + ',' + wmtsLayer2,
   // */
 
-  /* // PRUEBA 2
-  position: 'BR', // 2 - ERROR
+  /*/ PRUEBA 2
+  position: 'TR', // 2 - ERROR
   columnsNumber: 3, // 2 // El "2" termina como 2x2 si hay 3
-  // ids: ['mapa', 'hibrido'],// BUG IGNORAR si "ids" ya es array no se puede usar split(',') de strings para convertirlo al Array
+  //ids: ['mapa', 'hibrido'],// BUG IGNORAR si "ids" ya es array no se puede usar split(',') de strings para convertirlo al Array
   ids: 'mapa,hibrido',
   // titles: ['Mapa', 'Hibrido'],// BUG IGNORAR si "titles" ya es array no se puede usar split(',') de strings para convertirlo al Array
   titles: 'Mapa,Hibrido',
@@ -58,7 +59,7 @@ const mp = new BackImgLayer({
   // layers: wmtsLayer1 + ',' + wmtsLayer2, // OK
   // */
 
-  // PRUEBA 3
+  /*/ PRUEBA 3
   position: 'TR', // 2 - ERROR
   layerOpts: [
     {
@@ -99,8 +100,8 @@ const mp = new BackImgLayer({
   ],
   // */
 
-  /* // PRUEBA 4 // Formato parámetros REST: Hubo error al usar antiguo formato con 'asterisco' en vez de '*'
-  position: 'BL', // 2 - ERROR
+  /*/ PRUEBA 4 // Formato parámetros REST: Hubo error al usar antiguo formato con 'asterisco' en vez de '*'
+  position: 'TL', // 2 - ERROR
   ids: 'mapa,hibrido',
   titles: 'Mapa,Hibrido',
   previews: pwImg3 + ',' + pwImg4,
@@ -109,21 +110,21 @@ const mp = new BackImgLayer({
 
 });
 
-map.addPlugin(mp);window.mp = mp; window.BackImgLayer = BackImgLayer;
+map.addPlugin(mp); window.mp = mp; window.BackImgLayer = BackImgLayer;
 
-/* // Esto es una prueba de insertar layer, al aplicar el plugin 'BackImgLayer' un zIndex 0 en sus layers seleccionables, este se pone encima al ser zIndex aproximadamente 43 y no se ve la capa del plugin
+/*/ Esto es una prueba de insertar layer, al aplicar el plugin 'BackImgLayer' un zIndex 0 en sus layers seleccionables, este se pone encima al ser zIndex aproximadamente 43 y no se ve la capa del plugin
 const wmstTestLayer = new M.layer.WMTS({
   url: 'https://www.ign.es/wmts/pnoa-ma?',
   name: 'OI.OrthoimageCoverage',
   matrixSet: 'GoogleMapsCompatible',
   legend: 'Imagen',
-  transparent: true, // 3 - ERROR
+  transparent: false, // 3 - ERROR
   displayInLayerSwitcher: false,
   queryable: false,
   visible: true,
   format: 'image/jpeg',
   minZoom: 5,
-  maxZoom: 10
+  maxZoom: 10,
 });
 map.addLayers(wmstTestLayer); window.wmstTestLayer = wmstTestLayer; // */
 
@@ -137,11 +138,14 @@ window.map = map;
 // Se podría poner "(before was character: '+')" o quitarlo completamente
 // El "(NOT * )" se tiene que quitar ya que es descripción falsa.
 
-// 2 - ERROR Al poner el parámetro "Position 'BL'"(Botom Left) en el Plugin, la caja se corta y no muestra tamaño completo con las opciones del Plugin. Ocurre algo menos notable con "position: 'TR'" y "position: 'TL'" porque el título de "Capas de fondo" es más grande que las demás cajas, en ingles es más notable este error. En 'BR' solo se corta la caja de texto.
+// 2 - ERROR Al poner el parámetro 
+// "Position 'BL'"(Botom Left) en el Plugin, la caja se corta y no muestra tamaño completo con las opciones del Plugin. El boton para ocultar el plugin está separado de la caja del plugin.
+// Ocurre algo menos notable con "position: 'TR'" y "position: 'TL'" porque el título de "Capas de fondo" es más grande que las demás cajas, en ingles es más notable este error.
+// En 'BR' solo se corta la caja de texto. La caja esta separada del lateral de la ventana.
 
 // 3 - ERROR Encontrado error al añadir capa con "addLayers", que tiene puesto la transparencia a "false", da error "(in promise) TypeError: this.map is null" en "value WMTS.js:162" en código concreto parece ser "const defaultExtent = this.map.getMaxExtent();"
 
-// 4 - ERROR Si se usa "mp.turnLayerOptsIntoUrl()" sin que se haya añadido "layerOpts" en el parámetro del Plugin, sufre error "TypeError: this.layerOpts is undefined", podría ser mejor idea comprobar y dar error único descriptivo o devolver nada o calcular de otra forma ese resultado sin layerOpts si no está.
+// 4 - ERROR Si se usa "mp.turnLayerOptsIntoUrl()" sin que se haya añadido "layerOpts" en el parámetro del Plugin, sufre error "TypeError: this.layerOpts is undefined", podría ser mejor idea comprobar y dar error único descriptivo o devolver nada o calcular de otra forma ese resultado sin layerOpts si no está. [DEVELOP]
 
 // 5 - ERROR Creo que se usa "*!" para definir API-REST, en ambos funciones "getAPIRest()" y README, pero parece que se usa actualmente solo '*' en muchos de estos apartados. Es muy posible que hay inconsistencia similares en muchos apartados similares en todos los plugins, pero desconozco si se tiene o no que usar '*!'.
 
@@ -150,3 +154,9 @@ window.map = map;
 // Añadir " else if (this.empty) {e.currentTarget.parentElement.querySelector('#m-backimglayer-lyr-empty').classList.add('activeBackimglayerDiv');}" al "if (!isActivated) {...}" de "showBaseLayer", para que si se apaga un layer se marque el vacío.
 // Cambiar el "const elem = html.querySelector('#m-backimglayer-previews div.activeBackimglayerDiv:not(#m-backimglayer-lyr-empty)');" de "showEmptyLayer" para que ignore a si mismo en el click.
 // También se puede añadir al "showEmptyLayer" al final, el "html.querySelector('#m-backimglayer-lyr-empty').classList.add('activeBackimglayerDiv');", pero debería ser redundante ya que el quitar de "showBaseLayer" debería ya de haberlo aplicarlo.
+
+
+//---------
+// 7 - Parametro layerId: con valor negativo no carga capa (no se menciona en el README), con valor mayor que el número de layers da error "(in promise) TypeError: layers is undefined"
+
+// 8 - ERROR MEJORA: El valor de columnsNumber no tiene en cuenta el elemento de layer vacío.

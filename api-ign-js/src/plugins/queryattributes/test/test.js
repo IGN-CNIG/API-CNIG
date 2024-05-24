@@ -66,7 +66,7 @@ const vertex = new M.layer.GeoJSON({
   url: 'https://projects.develmap.com/attributestable/roivertexcenterred.geojson',
   extract: true, // Con esta propiedad sale el popup standard con las propiedades
 });
-vertex.setStyle(estiloPoint);// Asociamos a la capa el estilo definido
+//vertex.setStyle(estiloPoint);// Asociamos a la capa el estilo definido
 map.addLayers(vertex); // */
 
 // Capa WFS
@@ -84,7 +84,7 @@ map.addWFS(campamentos); // */
 const mp = new QueryAttributes({
   collapsible: true,
   collapsed: true, // 1 - ERROR
-  position: 'BL', // 'TL' | 'TR' | 'BR' | 'BL'
+  position: 'TL', // 'TL' | 'TR' | 'BR' | 'BL'
   tooltip: 'TEST TOOLTIP Consulta de atributos',
   refreshBBOXFilterOnPanning: true, // true | false
   //
@@ -181,6 +181,12 @@ setTimeout(() => {map.addPlugin(mp); window.mp = mp;}, 2000); // 1 - ERROR // So
 // Ocurre los mismo con "setDrawFilter" haciendo lo mismo parece solucionarlo.
 // Estos cambios también podrían incluir un popup de Mapea si se quiere comunicar al usuario que no hay nada encontrado con este filtro, pero se tendría que tener en cuenta que no aparezcan múltiples de estos.
 
-// 8 - ERROR si se escoge filtro por vista y se da click sobre uno de los features, aparece el popup con información de este, el problema es que este filtrado siempre pone centrado en mitad de todos los features visibles, por lo que el botón de cerrado de ese popup de feature único no se puede usar, se podría impedir el zoom al fit cuando están estos popups o cambiar la estructura del popup para que empiece desde el lado del botón de cerrado o cambiar el botón de cerrado al otro lado.
+// 8 - ERROR si se escoge filtro por vista, el parámetro "refreshBBOXFilterOnPanning" es true y se da click sobre uno de los features, aparece el popup con información de este, el problema es que este filtrado siempre pone centrado en mitad de todos los features visibles, por lo que el botón de cerrado de ese popup de feature único no se puede usar, se podría impedir el zoom al fit cuando están estos popups o cambiar la estructura del popup para que empiece desde el lado del botón de cerrado o cambiar el botón de cerrado al otro lado.
 
 // 9 - ERROR tras finalizar los filtrados se añaden todos los elementos visibles hasta cierto tamaño, permitiendo el scroll desde entonces, pero si se escoge un feature, aparece un elemento adicional de información de este, causando que el elemento de scroll apunte a este y se reduzca para permitirle espacio, el problema es que si se vuelve a hacer el buscado este elemento de feature de antes se queda visible y inaccesible hasta que no se le da a minimizar y expandir este para que se vuelvan a aplicar los estilos correctos, podría ser recomendable retener ese tamaño pequeño hasta que no se limpie el visualizado de feature único.
+
+//------------------------------
+// 10 - ERROR Cuando se activa el filtro por zona de pantalla y el parámetro "refreshBBOXFilterOnPanning" es true, no deja hacer zoom out si no hay más features en el nivel de zoom anerior ya que te centra en los features de la vista.
+// Tambien se ralentiza si se intenta realizar mucho zoom out.
+
+// 11 - ERROR-MEJORA El filtro por texto y por vista/área no se aplican juntos, sólo se aplica uno

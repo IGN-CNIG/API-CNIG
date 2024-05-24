@@ -23,7 +23,7 @@ window.map = map;
 
 const mp = new Rescale({
   collapsible: true,
-  collapsed: true,
+  collapsed: false,
   position: 'TL', // 'TL' | 'TR' | 'BR' | 'BL'
   // tooltip: 'TOOLTIP TEST Rescale',
 });

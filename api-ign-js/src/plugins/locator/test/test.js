@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import Locator from 'facade/locator';
 
 M.language.setLang('es');
@@ -17,15 +16,15 @@ window.map = map;
 
 const mp = new Locator({
   collapsible: true, // Ignorado con position 'TC', porque es false en ese caso.
-  collapsed: true, // Ignorado con position 'TC', porque "collapsible" se pone a false.
+  collapsed: false, // Ignorado con position 'TC', porque "collapsible" se pone a false.
   isDraggable: true, // Ignorado con position 'TC', porque elimina ese título
   position: 'TC', // TL | TR | BL | BR | TC
-  useProxy: true,
+  useProxy: false,
   tooltip: 'Plugin Localizador',
-  pointStyle: 'pinAzul', // 'pinAzul' | 'pinRojo' | 'pinMorado' | 'in_case_of_wrong_string'
-  zoom: 5,
+  pointStyle: 'pinRojo', // 'pinAzul' | 'pinRojo' | 'pinMorado' | 'in_case_of_wrong_string'
+  zoom: 15,
   byPlaceAddressPostal: true,
-  /* /
+  /*/
   byPlaceAddressPostal: {
     maxResults: 5,
     noProcess: 'poblacion', // 'municipio' | 'poblacion' | 'toponimo' | 'callejero' | 'municipio,poblacion' | 'municipio,provincia,comunidad%20autonoma,poblacion,toponimo,expendeduria,ngbe,callejero,carretera,portal' | etc
@@ -39,7 +38,7 @@ const mp = new Locator({
     requestStreet: 'https://www.cartociudad.es/geocoder/api/geocoder/findJsonp?q=Sevilla&type=provincia&tip_via=null&id=41&portal=null&extension=null',
   }, // */
   byParcelCadastre: true,
-  /* /
+  /*/
   byParcelCadastre: {
     cadastreWMS: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_RCCOOR',
     CMC_url: 'http://ovc.catastro.meh.es/ovcservweb/ConsultaMunicipioCodigos',
@@ -47,7 +46,7 @@ const mp = new Locator({
     CPMRC_url: 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC',
   }, // */
   byCoordinates: true,
-  /* /
+  /*/
   byCoordinates: {
     projections: [
       { title: 'ETRS89 geographic (4258) d', code: 'EPSG:4258', units: 'd' },
@@ -72,6 +71,7 @@ map.addPlugin(new M.plugin.Layerswitcher({ position: 'TR' }));
 
 // 2 - ERROR, el buscado ha dejado de funcionar por como se configura ahora las llamadas de xhr, normalmente se enviaba al M.remote.get() la URL y parámetros, pero ahora los gets no añaden esos parámetros por lo que hay que usar "M.utils.addParameters(url, param);" que une los parámetros a la URL. Ocurre en las funciones "onProvinciaSelect" y "buildUrl_", dentro de "locator/src/facade/js/infocatastrocontrol.js"
 // Se ha encontrado el REGEX por el que se puede encontrar todos estos errores "M.remote.get\((\w+(.\w+)?), (\{(\n|\s|.)+?\})\)" mientras que la cadena de reemplazo sería "M.remote.get(M.utils.addParameters($1, $3))", hay algunos otros plugins que pueden ser solucionados por este cambio. También se puede optar por añadir la constante de search igual que en otros elementos similares "const searchUrl = M.utils.addParameters($1, $3);M.remote.get(searchUrl)", aquí haría falta añadir salto de linea y espacios para que se ajuste al código.
+//-- 2.1 - Si se hace la petición la primera no funciona porque no usa el proxy, independientemente del valor del parámetro useProxy. Si se hace tras una búsqueda de dirección, ya si se hace con proxy y se realiza correctamente aunque useProxy sea false y no se haya usado en la búsqueda de dirección.
 
 // 3 - ERROR 'pinAzul' | 'pinRojo' | 'pinMorado' no tienen anchor ajustado para cada tipo de imagen.
 // El 'pinAzul' de [M.config.THEME_URL, '/img/marker.svg'], debería de tener "anchor:[0.49, 0.95]".
@@ -81,13 +81,13 @@ map.addPlugin(new M.plugin.Layerswitcher({ position: 'TR' }));
 // 4 - ERROR Si se pone "byPlaceAddressPostal: false", la posición inicial del panel esta mal, puesto en el lateral en vez de mitad cuando esta el "position: 'TC'". Como si el default "TL" se ha puesto y no se ha actualizado al "TC".
 // Se ha observado que no ocurre con "byPlaceAddressPostal: true" y a la vez es el único que se abre automáticamente en el inicio, porque tiene el siguiente código "if (this.position === 'TC') { if (this.byPlaceAddressPostal_ !== false) { document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc'); html.querySelector('#m-locator-ignsearch').click();}}" dentro de "locator/src/facade/js/locatorcontrol.js" en función "createView(map) {..."
 // Se puede solucionar error de la posición inicial con, este "if" tras los tres "if" de añadido de estas opciones de control, quitando el código de "...classList.add('m-plugin-locator-tc');" del if de "this.byPlaceAddressPostal_ !== false":
-// if (this.position === 'TC' && (this.byParcelCadastre_ !== false || this.byCoordinates_ !== false
+//if (this.position === 'TC' && (this.byParcelCadastre_ !== false || this.byCoordinates_ !== false
 //  || this.byPlaceAddressPostal_ !== false)) {
 //  document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc');
 //  // Si se quiere aquí ira el "once" descrito más adelante.
-// }
+//}
 // 4.1 - ERROR Dentro de este mismo "if" se puede añadir un código para abrir todos los elementos y no solo el de "byPlaceAddressPostal_", pero este cambio cambiará como funciona ahora este apartado a cualquier cliente que lo uso anteriormente por lo que podría no ser necesario para tener igual comportamiento. La única razón para tener este abrir sin "position: 'TC'" es solo cuando dentro de "byPlaceAddressPostal" se utiliza "geocoderCoords" o "requestStreet", por que estos activan su opción automáticamente.
-// this.once(M.evt.ADDED_TO_MAP, () => {
+//this.once(M.evt.ADDED_TO_MAP, () => {
 //  if (this.byPlaceAddressPostal_ !== false) {
 //    html.querySelector('#m-locator-ignsearch').click();
 //  } else if (this.byParcelCadastre_ !== false) {
@@ -95,7 +95,7 @@ map.addPlugin(new M.plugin.Layerswitcher({ position: 'TR' }));
 //  } else if (this.byCoordinates_ !== false) {
 //    html.querySelector('#m-locator-xylocator').click();
 //  }
-// });
+//});
 // Si no se quiere abrir los demás se puede asegurarse que la funcionalidad actual solo se active cuando estén como mínimo uno de estos "geocoderCoords" o "requestStreet" en "byPlaceAddressPostal". Realmente esos 2 ifs podrían ser unidos con un "&&" ya que solo se activan si son ambos true.
 // 4.2 - ERROR Luego cuando se da click para tener desactivadas todas las opciones, los icono se mueve del centro, es decir cada vez que lo activas o desactivas, hay que mover el ratón para volver a alcanzar el mismo icono.
 

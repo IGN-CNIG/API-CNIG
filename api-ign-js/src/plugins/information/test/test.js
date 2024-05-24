@@ -61,7 +61,7 @@ const layer5 = new M.layer.WMS({
 }, {});
 map.addLayers([layer1, layer2, layer3, layer4, layer5]); // */
 
-/* / Prueba de todos los usables capas WMTS, GenericRaster y WMS
+/*/ Prueba de todos los usables capas WMTS, GenericRaster y WMS
 const wmtsLayer = new M.layer.WMTS({
   url: "https://servicios.idee.es/wmts/ocupacion-suelo",
   name: "LC.LandCoverSurfaces", legend: "CORINE / SIOSE",
@@ -83,7 +83,7 @@ const hidrografia = new M.layer.WMS({
 });
 map.addLayers([wmtsLayer, generic_001, hidrografia]); // */
 
-/* / Prueba WMTS
+/*/ Prueba WMTS
 const testLayer = new M.layer.WMTS({
   url: 'https://www.ign.es/wmts/primera-edicion-mtn?',
   name: 'catastrones', legend: 'catastrones',
@@ -96,9 +96,10 @@ map.addLayers([testLayer]); // */
 const mp = new Information({
   position: 'TR', // TL | TR | BL | BR
   buffer: 100, // 2 - ERROR
-  opened: 'one', // 'one' | 'all' | 'closed'
-  featureCount: 10, // 10, // 3 - ERROR
+  opened: 'all', // 'one' | 'all' | 'closed'
+  featureCount: 3, // 10, // 3 - ERROR
   format: 'text/html', //  'text/html' como default || ('text/plain'|'plain') | ('application/vnd.ogc.gml'|'gml')
+  outputDownloadFormat: 'csv',
 });
 map.addPlugin(mp);
 window.mp = mp;
