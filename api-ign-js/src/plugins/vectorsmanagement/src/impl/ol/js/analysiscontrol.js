@@ -201,6 +201,7 @@ export default class Analysiscontrol extends M.impl.Control {
       return arrayXZY2;
     }).catch((err) => {
       M.proxy(true);
+      console.log(err);
       // document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = '';
       M.dialog.error(getValue('exception.query_profile'), 'Error');
     });

@@ -20,7 +20,7 @@ map.addLayers(new M.layer.Vector({
   legend: 'Capa Vector',
 }, { displayInLayerSwitcher: true })); // */
 
-// Capa WFS
+/* / Capa WFS
 map.addLayers(new M.layer.WFS({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
   namespace: 'tematicos',
@@ -29,7 +29,7 @@ map.addLayers(new M.layer.WFS({
   geometry: 'MPOLYGON',
 })); // */
 
-// Capa GeoJSON
+/* / Capa GeoJSON
 map.addLayers(new M.layer.GeoJSON({
   name: 'Municipios',
   legend: 'Capa GeoJSON',
@@ -165,3 +165,15 @@ map.addPlugin(mp); window.mp = mp;
 //     this.refreshAttributeTable(features);
 //   }
 // }
+
+// Errores OL
+// 9 - ERROR, Error al calcular el perfil topográfico, al añadir el control profileControl al mapa (src/impl/ol/analysiscontrol:293):
+  // TypeError: Cannot read properties of undefined (reading 'length')
+    // at Profil.value (Control.js:120:44)
+    // at t.<anonymous> (Map.js:509:23)
+    // at t.value (Target.js:114:11)
+    // at t.value (Collection.js:207:10)
+    // at t.value (Collection.js:233:10)
+    // at t.value (Map.js:594:24)
+    // at Analysiscontrol.showProfile (analysiscontrol.js:293:34)
+    // at eval (analysiscontrol.js:198:14)
