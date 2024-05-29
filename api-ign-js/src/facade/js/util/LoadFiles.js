@@ -47,6 +47,7 @@ export const loadFeaturesFromSource = (map, source, layerName, fileExt) => {
       const layer = new Vector({ name: layerName, legend: layerName, extract: true });
       layer.addFeatures(features);
       map.addLayers(layer);
+      LoadFilesImpl.centerFeatures(features, map);
     }
   } catch (e) {
     Dialog.error(getValue('exception').file_load_correct);

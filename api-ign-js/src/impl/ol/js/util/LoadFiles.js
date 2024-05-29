@@ -10,8 +10,10 @@ import Point from 'ol/geom/Point';
 import WFS from 'ol/format/WFS';
 import GML2 from 'ol/format/GML2';
 import GML3 from 'ol/format/GML3';
+import View from 'ol/View';
 import { transform } from 'ol/proj';
 import OLFeature from 'ol/Feature';
+import ImplUtils from '../util/Utils';
 import Feature from '../feature/Feature';
 
 /**
@@ -22,7 +24,30 @@ import Feature from '../feature/Feature';
  * @api
  */
 class LoadFiles {
-/**
+  /**
+ * Centra el mapa en los features obtenidos
+ * @public
+ * @function
+ * @param {Array<M.Feature>} features array de features
+ * @param {M.Map} map mapa donde se realizará el centrado
+ */
+  static centerFeatures(features, map) {
+    if ((features.length === 1) && (features[0].getGeometry().type === 'Point')) {
+      const pointView = new View({
+        center: features[0].getGeometry().coordinates,
+        zoom: 15,
+      });
+      map.getMapImpl().setView(pointView);
+    } else {
+      const extent = ImplUtils.getFeaturesExtent(features);
+      map.getMapImpl().getView().fit(extent, {
+        duration: 500,
+        minResolution: 1,
+      });
+    }
+  }
+
+  /**
  * Obtiene los features de un GeoJSON
  * @public
  * @function
