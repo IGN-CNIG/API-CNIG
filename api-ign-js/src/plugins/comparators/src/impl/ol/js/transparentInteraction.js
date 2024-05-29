@@ -14,10 +14,8 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
   constructor(options) {
     super(options);
     this.layers_ = [];
-    ol.interaction.Pointer.call(this, {
-      handleDownEvent: this.setPosition,
-      handleMoveEvent: this.setPosition,
-    });
+    this.handleDownEvent = this.setPosition;
+    this.handleMoveEvent = this.setPosition;
 
     // Default options
     const optionsE = options || {};

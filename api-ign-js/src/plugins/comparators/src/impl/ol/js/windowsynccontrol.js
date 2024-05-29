@@ -25,11 +25,13 @@ export default class WindowSyncControl extends M.impl.Control {
   }
 
   removeEventListeners(maps) {
-    maps.forEach(({ map }) => {
-      const mapOl = map.getMapImpl();
-      mapOl.un(['moveend', 'rotateend'], this.fnEventMaps);
-    });
-    this.fnEventMaps = null;
+    if (this.fnEventMaps) {
+      maps.forEach(({ map }) => {
+        const mapOl = map.getMapImpl();
+        mapOl.un(['moveend', 'rotateend'], this.fnEventMaps);
+      });
+      this.fnEventMaps = null;
+    }
   }
 
   evtChangeMaps(map1Ol, map2) {

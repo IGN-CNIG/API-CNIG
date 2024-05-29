@@ -1354,7 +1354,7 @@ export default class IncicartoControl extends M.impl.Control {
       this.showProfile(arrayXZY2);
     }).catch((err) => {
       M.proxy(true);
-      document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = '';
+      document.querySelector('.m-incicarto .m-incicarto-loading-container').innerHTML = '';
       M.dialog.error(getValue('exception.query_profile'), 'Error');
     });
   }
@@ -1414,7 +1414,7 @@ export default class IncicartoControl extends M.impl.Control {
     });
 
     profil.show();
-    document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = '';
+    document.querySelector('.m-incicarto .m-incicarto-loading-container').innerHTML = '';
   }
 
   findNewPoints(originPoint, destPoint) {
