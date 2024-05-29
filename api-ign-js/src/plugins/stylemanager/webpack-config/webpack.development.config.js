@@ -75,9 +75,9 @@ module.exports = {
     hot: true,
     open: true,
     port: 6123,
-    openPage: 'test/dev.html',
-    watchOptions: {
-      poll: 1000,
+    open: 'test/dev.html',
+    static: {
+      directory: path.join(__dirname, '/../'),
     },
   },
   watchOptions: {
