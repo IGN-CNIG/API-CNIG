@@ -320,6 +320,10 @@ export default class GeorefimageControl extends M.Control {
         this.removeSelector();
       }
 
+      if (this.printType === 'client') {
+        this.template_.querySelector(ID_DPI).disabled = true;
+      }
+
       // Add event template
       this.addEvents();
 
@@ -335,9 +339,9 @@ export default class GeorefimageControl extends M.Control {
   removeSelector() {
     this.elementFieldset_.remove();
 
-    if (this.printType === 'client') {
-      this.template_.querySelector('.georefimage-jgwKeppview').remove();
-    }
+    // if (this.printType === 'client') {
+    //   this.template_.querySelector('.georefimage-jgwKeppview').remove(); #7452
+    // }
 
     const format = document.createElement('h3');
     format.id = 'm-georefimage-projection';
