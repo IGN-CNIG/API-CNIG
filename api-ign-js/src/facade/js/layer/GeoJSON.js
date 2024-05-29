@@ -26,7 +26,17 @@ import { getValue } from '../i18n/language';
  * @property {Boolean} extract Activa la consulta al hacer clic sobre un objeto geográfico,
  * por defecto falso.
  * @property {Object} options Opciones GeoJSON.
- *
+ * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+ * <pre><code>
+ * import OLSourceVector from 'ol/source/Vector';
+ * {
+ *  opacity: 0.1,
+ *  source: new OLSourceVector({
+ *    attributions: 'geojson',
+ *    ...
+ *  })
+ * }
+ * </code></pre>
  * @api
  * @extends {M.layer.Vector}
  */
@@ -59,7 +69,7 @@ class GeoJSON extends LayerVector {
    * - predefinedStyles: Estilos predefinidos para la capa.
    * @api
    */
-  constructor(parameters = {}, options = {}) {
+  constructor(parameters = {}, options = {}, vendorOptions = {}) {
     const optionsVar = options;
 
     if (typeof parameters !== 'string') {
@@ -72,7 +82,7 @@ class GeoJSON extends LayerVector {
      * @implements {M.impl.layer.GeoJSON}
      * @type {M.impl.layer.GeoJSON}
      */
-    const impl = new GeoJSONImpl(parameters, optionsVar);
+    const impl = new GeoJSONImpl(parameters, optionsVar, vendorOptions);
 
     const opts = parameters;
     opts.type = GeoJSONType;

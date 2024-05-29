@@ -98,7 +98,7 @@ export default class MouseSRSControl extends M.impl.Control {
     this.mousePositionControl = new ExtendedMouse({
       coordinateFormat: ol.coordinate.createStringXY(this.getDecimalUnits()), // this.precision_),
       projection: this.srs_,
-      label: this.label_,
+      label: (this.epsgFormat) ? this.formatEPSG(this.label_) : this.label_,
       placeholder: '',
       undefinedHTML: '',
       className: 'm-mouse-srs',
@@ -126,7 +126,7 @@ export default class MouseSRSControl extends M.impl.Control {
   openChangeSRS(map, html) {
     const content = M.template.compileSync(template, {
       jsonp: true,
-      parseToHtml: false,
+      parseToHtml: true,
       vars: {
         selected: this.srs_,
         hasHelp: this.helpUrl !== undefined && M.utils.isUrl(this.helpUrl),
@@ -136,7 +136,8 @@ export default class MouseSRSControl extends M.impl.Control {
       },
     });
 
-    M.dialog.info(content, getValue('select_srs'), this.order);
+    if (this.epsgFormat) { this.formatEPSGs(content); }
+    M.dialog.info(content.outerHTML, getValue('select_srs'), this.order);
     setTimeout(() => {
       document.querySelector('.m-dialog>div.m-modal>div.m-content').style.minWidth = '260px';
       document.querySelector('#m-mousesrs-srs-selector').addEventListener('change', this.changeSRS.bind(this, map, html));

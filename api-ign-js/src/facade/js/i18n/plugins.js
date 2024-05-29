@@ -84,6 +84,10 @@ import enInfocoordinates from '../../../plugins/infocoordinates/src/facade/js/i1
 import esInformation from '../../../plugins/information/src/facade/js/i18n/es';
 import enInformation from '../../../plugins/information/src/facade/js/i18n/en';
 
+// Layerswitcher
+import esLayerswitcher from '../../../plugins/layerswitcher/src/facade/js/i18n/es';
+import enLayerswitcher from '../../../plugins/layerswitcher/src/facade/js/i18n/en';
+
 // Lyrcompare
 import esLyrcompare from '../../../plugins/lyrcompare/src/facade/js/i18n/es';
 import enLyrcompare from '../../../plugins/lyrcompare/src/facade/js/i18n/en';
@@ -292,6 +296,10 @@ const pluginsLanguage = {
   information: {
     esInformation,
     enInformation,
+  },
+  layerswitcher: {
+    esLayerswitcher,
+    enLayerswitcher,
   },
   lyrcompare: {
     esLyrcompare,

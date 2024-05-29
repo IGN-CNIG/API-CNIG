@@ -1,3 +1,6 @@
+xx/xx/xx - Versión 5.0.0
+- Se incluye nuevo tipo de capa COG
+
 29/02/2024 - Versión 4.9.0
 - Plugin comparators: se añade nuevo control windowsync y se añaden traducciones.
 - Plugin contactlink: para visor estereoscopico enviará como parámetro el centro, zoom y proyección del mapa.
@@ -14,7 +17,6 @@
   - Se soluciona problema al mostrar/ocultar todas las capas.
   - Se soluciona problema con leyenda de capas KML.
   - Se parametriza la funcionalidad de añadir capas y mostrar/ocultar todos los servicios.
-- Plugin comparators: se añaden traducciones.
 - Plugin viewmanagement: se añaden traducciones.
 - Se incorpora plugin vectorsmanagement dejando obsoleto los plugins buffer, vectors, topographicprofile, selectiondraw y geometrydraw.
 - Se incorpora plugin help para generar página de ayuda al vuelo de controles y plugins y de información indicada por el usuario.

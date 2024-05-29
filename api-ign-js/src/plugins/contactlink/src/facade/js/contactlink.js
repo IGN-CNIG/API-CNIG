@@ -312,6 +312,8 @@ export default class ContactLink extends M.Plugin {
               help8: getValue('textHelp.help8'),
               help9: getValue('textHelp.help9'),
               help10: getValue('textHelp.help10'),
+              help11: getValue('textHelp.help11'),
+              help12: getValue('textHelp.help12'),
             },
           },
         });
