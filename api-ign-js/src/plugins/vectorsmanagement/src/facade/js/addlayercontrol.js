@@ -72,6 +72,12 @@ export default class AddLayerControl extends M.Control {
     );
     const color = '#71a7d3';
     const dialog = document.querySelector('.m-dialog > div.m-modal > div.m-content');
+    const buttons = dialog.querySelector('.m-button');
+    const cancel = document.createElement('button');
+    cancel.type = 'button';
+    cancel.innerHTML = getValue('cancel');
+    cancel.style.width = 'auto';
+    buttons.appendChild(cancel);
     dialog.style.minWidth = 'auto';
     const title = document.querySelector('.m-modal .m-title');
     title.style.backgroundColor = color;
@@ -88,6 +94,11 @@ export default class AddLayerControl extends M.Control {
       const changeEvent = document.createEvent('HTMLEvents');
       changeEvent.initEvent('change');
       selectionLayer.dispatchEvent(changeEvent);
+    });
+    cancel.addEventListener('click', () => {
+      const modal = document.querySelector('.m-dialog');
+      const parent = modal.parentNode;
+      parent.removeChild(modal);
     });
   }
 
