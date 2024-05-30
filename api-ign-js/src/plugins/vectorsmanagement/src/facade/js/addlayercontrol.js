@@ -77,6 +77,7 @@ export default class AddLayerControl extends M.Control {
     cancel.type = 'button';
     cancel.innerHTML = getValue('cancel');
     cancel.style.width = 'auto';
+    cancel.style.backgroundColor = '#71a7d3';
     buttons.appendChild(cancel);
     dialog.style.minWidth = 'auto';
     const title = document.querySelector('.m-modal .m-title');
