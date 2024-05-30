@@ -81,6 +81,7 @@ export default class AddLayerControl extends M.Control {
     btn.style.backgroundColor = color;
     btn.addEventListener('click', () => {
       this.addLayer(inputName.value);
+      M.toast.info(getValue('creationLayer_done'), null, 6000);
       // Seleccionar en el desplegable la capa que acabamos de crear
       const selectionLayer = document.querySelector('#m-selectionlayer');
       selectionLayer.options.selectedIndex = 1;
