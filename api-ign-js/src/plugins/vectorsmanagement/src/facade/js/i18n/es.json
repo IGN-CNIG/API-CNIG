@@ -78,6 +78,7 @@
   "selectionLayer": "Capa",
   "selectionFeature": "Feature",
   "creationLayer": "Capa",
+  "creationLayer_done": "¡La capa se ha creado con éxito!" ,
   "creationPoint": "Punto",
   "creationCoordPoint": "Punto coordenadas",
   "creationLine": "Linea",
