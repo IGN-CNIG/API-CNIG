@@ -754,9 +754,7 @@ export const enableTouchScroll = (elem) => {
  * @api
  */
 export const rgbToHex = (rgbColor) => {
-  // try {
   const hexColor = chroma(rgbColor).hex();
-  // } catch (err) { throw err; } // Eslint no-useless-catch fix
   return hexColor;
 };
 
@@ -769,9 +767,7 @@ export const rgbToHex = (rgbColor) => {
  * @api
  */
 export const rgbaToHex = (rgbaColor) => {
-  // try {
   const hexColor = chroma(rgbaColor).hex();
-  // } catch (err) { throw err; } // Eslint no-useless-catch fix
   return hexColor;
 };
 
@@ -789,9 +785,7 @@ export const getOpacityFromRgba = (rgbaColor) => {
   const rgbaRegExp = /^rgba\s*\((\s*\d+\s*,){3}\s*([\d.]+)\s*\)$/;
   if (rgbaRegExp.test(rgbaColor)) {
     opacity = rgbaColor.replace(rgbaRegExp, '$2');
-    // try {
     opacity = parseFloat(opacity);
-    // } catch (err) { throw err; } // Eslint no-useless-catch fix
   }
 
   return opacity;
@@ -1533,9 +1527,7 @@ export const getImageMap = (map, type = 'image/jpeg', canva = undefined) => {
   const canvas = canva || joinCanvas(map, type);
   let img = null;
   if (canvas) {
-    // try {
     img = canvas.toDataURL(type);
-    // } catch (e) { throw e; } // Eslint no-useless-catch fix
   }
   return img;
 };
@@ -1550,7 +1542,6 @@ export const getImageMap = (map, type = 'image/jpeg', canva = undefined) => {
 export const copyImageClipBoard = (map, canva) => {
   const canvas = canva || joinCanvas(map, 'image/png');
   if (canvas) {
-    // try {
     canvas.toBlob((blob) => {
       if (blob) {
         const item = new window.ClipboardItem({ 'image/png': blob });
@@ -1563,7 +1554,6 @@ export const copyImageClipBoard = (map, canva) => {
         });
       }
     });
-    // } catch (e) { throw e; } // Eslint no-useless-catch fix
   }
 };
 

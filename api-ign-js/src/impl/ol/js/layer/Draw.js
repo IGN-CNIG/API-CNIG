@@ -218,12 +218,9 @@ class Draw extends Layer {
       const olSource = this.ol3Layer.getSource();
 
       features.forEach((feature) => {
-        // try {
+        // try { // Eslint no-useless-catch fix
         olSource.removeFeature(feature);
-        // } catch (err) {// Eslint no-useless-catch fix
-        //  throw err;
-        //  // the feature does not exist in the source
-        // }
+        // } catch (err) { throw err; /* the feature does not exist in the source */}
       });
     }
   }

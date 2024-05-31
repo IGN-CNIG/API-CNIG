@@ -1585,6 +1585,60 @@ export default class GeometryDrawControl extends M.Control {
   }
 
   /**
+    * Este método transforma coordenadas a EPSG:4326.
+    *
+    * @function
+    * @param {String} type Tipo de geometría.
+    * @param {Object} codeProjection Código de proyección actual.
+    * @param {Number|Array} coordinates Coordenadas a transformar.
+    * @return {Array} Coordenadas transformadas.
+    * @public
+    * @api
+    */
+  geometryTypeCoordTransform(type, codeProjection, coordinates) {
+    const newCoordinates = [];
+    switch (type) {
+      case 'Point':
+        return this.getImpl().getTransformedCoordinates(codeProjection, coordinates);
+      case 'MultiPoint':
+      case 'LineString':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const newDot = this.getImpl().getTransformedCoordinates(codeProjection, coordinates[i]);
+          newCoordinates.push(newDot);
+        }
+        return newCoordinates;
+      case 'MultiLineString':
+      case 'Polygon':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const group = [];
+          for (let j = 0; j < coordinates[i].length; j += 1) {
+            const dot = this.getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j]);
+            group.push(dot);
+          }
+          newCoordinates.push(group);
+        }
+        return newCoordinates;
+      case 'MultiPolygon':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const group = [];
+          for (let j = 0; j < coordinates[i].length; j += 1) {
+            const newPolygon = [];
+            const aux = coordinates[i][j];
+            for (let k = 0; k < aux.length; k += 1) {
+              const dot = this.getImpl().getTransformedCoordinates(codeProjection, aux[k]);
+              newPolygon.push(dot);
+            }
+            group.push(newPolygon);
+          }
+          newCoordinates.push(group);
+        }
+        return newCoordinates;
+      default:
+        return newCoordinates;
+    }
+  }
+
+  /**
    * Converts features coordinates on geojson format to 4326.
    * @public
    * @function
@@ -1592,68 +1646,23 @@ export default class GeometryDrawControl extends M.Control {
   geojsonTo4326(featuresAsJSON, codeProjection) {
     const jsonResult = [];
     featuresAsJSON.forEach((featureAsJSON) => {
-      const coordinates = featureAsJSON.geometry.coordinates;
-      let newCoordinates = [];
-      switch (featureAsJSON.geometry.type) {
-        case 'Point':
-          newCoordinates = this.getImpl().getTransformedCoordinates(codeProjection, coordinates);
-          break;
-        case 'MultiPoint':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newDot = this
-              .getImpl().getTransformedCoordinates(codeProjection, coordinates[i]);
-            newCoordinates.push(newDot);
-          }
-          break;
-        case 'LineString':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newDot = this.getImpl().getTransformedCoordinates(
-              codeProjection,
-              coordinates[i],
-            );
-            newCoordinates.push(newDot);
-          }
-          break;
-        case 'MultiLineString':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newLine = [];
-            for (let j = 0; j < coordinates[i].length; j += 1) {
-              const newDot = this
-                .getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j]);
-              newLine.push(newDot);
-            }
-            newCoordinates.push(newLine);
-          }
-          break;
-        case 'Polygon':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newPoly = [];
-            for (let j = 0; j < coordinates[i].length; j += 1) {
-              const newDot = this
-                .getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j]);
-              newPoly.push(newDot);
-            }
-            newCoordinates.push(newPoly);
-          }
-          break;
-        case 'MultiPolygon':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newPolygon = [];
-            for (let j = 0; j < coordinates[i].length; j += 1) {
-              const newPolygonLine = [];
-              for (let k = 0; k < coordinates[i][j].length; k += 1) {
-                const newDot = this
-                  .getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j][k]);
-                newPolygonLine.push(newDot);
-              }
-              newPolygon.push(newPolygonLine);
-            }
-            newCoordinates.push(newPolygon);
-          }
-          break;
-        default:
+      let jsonFeature;
+      if (featureAsJSON.geometry.type !== 'GeometryCollection') {
+        const newCoordinates = this.geometryTypeCoordTransform(
+          featureAsJSON.geometry.type,
+          codeProjection,
+          featureAsJSON.geometry.coordinates,
+        );
+        jsonFeature = this.createGeoJSONFeature(featureAsJSON, newCoordinates);
+      } else {
+        const collection = featureAsJSON.geometry.geometries.map((g) => {
+          return {
+            type: g.type,
+            coordinates: this.geometryTypeCoordTransform(g.type, codeProjection, g.coordinates),
+          };
+        });
+        jsonFeature = { ...featureAsJSON, geometry: { type: 'GeometryCollection', geometries: collection } };
       }
-      const jsonFeature = this.createGeoJSONFeature(featureAsJSON, newCoordinates);
       jsonResult.push(jsonFeature);
     });
     return jsonResult;
