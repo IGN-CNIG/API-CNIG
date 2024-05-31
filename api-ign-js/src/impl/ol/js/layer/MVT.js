@@ -18,6 +18,7 @@ import Feature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
 import { mode } from 'M/layer/MVT';
 import Vector from './Vector';
+import ImplUtils from '../util/Utils';
 
 /**
  * @classdesc
@@ -336,6 +337,32 @@ class MVT extends Vector {
       this.loaded_ = true;
       this.facadeVector_.fire(EventType.LOAD);
     }
+  }
+
+  /**
+   * Este método devuelve la extensión de todas los objetos geográficos
+   * o discrimina por el filtro, asíncrono.
+   *
+   * @function
+   * @param {boolean} skipFilter Indica si se salta el filtro.
+   * @param {M.Filter} filter Filtro para ejecutar.
+   * @return {Array<number>} Alcance de los objetos geográficos.
+   * @api stable
+   */
+  getFeaturesExtentPromise(skipFilter, filter) {
+    return new Promise((resolve) => {
+      const codeProj = this.map.getProjection().code;
+      if (this.isLoaded() === true) {
+        const features = this.getFeatures(skipFilter, filter);
+        const extent = ImplUtils.getFeaturesExtent(features, codeProj);
+        resolve(extent);
+      } else {
+        this.requestFeatures_().then((features) => {
+          const extent = ImplUtils.getFeaturesExtent(features, codeProj);
+          resolve(extent);
+        });
+      }
+    });
   }
 
   /**
