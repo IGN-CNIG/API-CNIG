@@ -225,7 +225,7 @@ class OLStyleFontSymbol extends OLStyleRegularShape {
     }
 
     // no atlas manager is used, create a new canvas
-    const canvas = this.getImage();
+    const canvas = this.getImage(1);
 
     const renderOptions = {
       strokeStyle,
