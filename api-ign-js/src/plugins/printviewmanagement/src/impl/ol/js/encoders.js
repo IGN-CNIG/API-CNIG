@@ -305,6 +305,19 @@ export const encodeImage = (layer) => {
   return encodedLayer;
 };
 
+export const encodeCOG = (layer) => {
+  let encodedLayer = null;
+  const olLayer = layer.getImpl().getOL3Layer();
+  encodedLayer = {
+    type: 'geotiff',
+    name: layer.name,
+    url: olLayer.getSource().getKey(),
+    opacity: olLayer.getOpacity(),
+    // style: { '*': { symbolizers: [] }, version: '2' },
+  };
+  return encodedLayer;
+};
+
 export const encodeXYZ = (layer) => {
   const layerImpl = layer.getImpl();
   const olLayer = layerImpl.getOL3Layer();

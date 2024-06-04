@@ -1,15 +1,16 @@
+/* eslint-disable max-len,object-property-newline */
 import PrintViewManagement from 'facade/printviewmanagement';
 
 M.language.setLang('es');
 // M.language.setLang('en');
 
-/*/ Capa de Suelo
+/* / Capa de Suelo
 const suelo = new M.layer.WMTS({
   url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
   name: 'LU.ExistingLandUse', legend: 'Ocupación del suelo WMTS',
   matrixSet: 'GoogleMapsCompatible',
   minZoom: 4, maxZoom: 20, visibility: true,
-}, { crossOrigin: 'anonymous' }); // */
+}, { crossOrigin: 'anonymous' }); window.suelo = suelo; // */
 
 const map = M.map({
   container: 'mapjs',
@@ -27,7 +28,7 @@ const capaGeoJSON = new M.layer.GeoJSON({
   name: 'Capa GeoJSON', legend: 'Capa GeoJSON',
   extract: true,
 });
-map.addLayers(capaGeoJSON);// */
+map.addLayers(capaGeoJSON); window.capaGeoJSON = capaGeoJSON; // */
 
 // Capa WFS
 const capaWFS = new M.layer.WFS({
@@ -36,16 +37,16 @@ const capaWFS = new M.layer.WFS({
   namespace: 'sepim',
   geometry: 'MPOINT',
 });
-map.addLayers(capaWFS); // */
+map.addLayers(capaWFS); window.capaWFS = capaWFS; // */
 
-/*/ Capa OSM
+/* / Capa OSM
 const capaOSM = new M.layer.OSM({
   url: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
   name: 'Capa OSM', legend: 'Capa OSM',
   transparent: true,
   matrixSet: 'EPSG:3857',
 });
-map.addLayers(capaOSM); // */
+map.addLayers(capaOSM); window.capaOSM = capaOSM; // */
 
 // Capa KML
 const capaKML = new M.layer.KML({
@@ -53,17 +54,17 @@ const capaKML = new M.layer.KML({
   name: 'Capa KML', legend: 'Capa KML',
   extract: true,
 }, { crossOrigin: 'anonymous' });
-map.addLayers(capaKML); // */
+map.addLayers(capaKML); window.capaKML = capaKML; // */
 
-/*/ Capa KML1
+/* / Capa KML1
 const capaKML1 = new M.layer.KML({
   url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
   name: 'Capa KML1', legend: 'Capa KML1',
   extract: true,
 }, {extractStyles: false,style: new M.style.Point({ radius: 5, fill: { color: 'green', opacity: 0.5 }, stroke: { color: '#FF0000' } }) });
-map.addLayers(capaKML1); // */
+map.addLayers(capaKML1); window.capaKML1 = capaKML1; // */
 
-/*/ Capa MVT
+/* / Capa MVT
 const capaMVT = new M.layer.MVT({
   url: 'https://www.ign.es/web/resources/mapa-base-xyz/vt/{z}/{x}/{y}.pbf',
   // layers: ['camino_lin'],
@@ -71,25 +72,25 @@ const capaMVT = new M.layer.MVT({
   projection: 'EPSG:3857',
   extract: true,
 }, { crossOrigin: 'anonymous' });
-map.addLayers(capaMVT); // */
+map.addLayers(capaMVT); window.capaMVT = capaMVT; // */
 
-/*/ Capa OGCAPIFeatures
+/* / Capa OGCAPIFeatures
 const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
   url: 'https://api-features.idee.es/collections/',
   name: 'hidrografia/Falls', legend: 'Capa OGCAPIFeatures L',
   limit: 20,
 });
-map.addLayers(capaOGCAPIFeatures); // */
+map.addLayers(capaOGCAPIFeatures); window.capaOGCAPIFeatures = capaOGCAPIFeatures; // */
 
-/*/ Capa TMS
+/* / Capa TMS
 const capaTMS = new M.layer.TMS({
   url: 'https://tms-mapa-raster.ign.es/1.0.0/mapa-raster/{z}/{x}/{-y}.jpeg',
   name: 'Capa TMS', legend: 'Capa TMS L',
   projection: 'EPSG:3857',
 }, { crossOrigin: 'anonymous' });
-map.addLayers(capaTMS); // */
+map.addLayers(capaTMS); window.capaTMS = capaTMS; // */
 
-/*/ Capa Vector
+/* / Capa Vector
 const capaVector = new M.layer.Vector({
   name: 'capaVector', legend: 'vector legend',
   attribution: {
@@ -109,33 +110,33 @@ const feature = new M.Feature('localizacion', {
   },
 });
 capaVector.addFeatures(feature);
-map.addLayers(capaVector); // */
+map.addLayers(capaVector); window.capaVector = capaVector; // */
 
-/*/ Capa WMS
+/* /Capa WMS
 const capaWMS = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit', legend: 'Capa WMS l',
 }, { crossOrigin: 'anonymous' });
-map.addLayers(capaWMS); // */
+map.addLayers(capaWMS); window.capaWMS = capaWMS; // */
 
-/*/ Capa WMTS
+/* / Capa WMTS
 const capaWMTS = new M.layer.WMTS({
   url: 'https://servicios.idee.es/wmts/ocupacion-suelo',
   name: 'LC.LandCoverSurfaces', legend: 'LC.LandCoverSurfaces l',
   matrixSet: 'GoogleMapsCompatible',
   format: 'image/png',
 }, { crossOrigin: 'anonymous' });
-map.addLayers(capaWMTS); // */
+map.addLayers(capaWMTS); window.capaWMTS = capaWMTS; // */
 
-/*/ Capa XYZ
+/* / Capa XYZ
 const capaXYZ = new M.layer.XYZ({
   url: 'https://www.ign.es/web/catalogo-cartoteca/resources/webmaps/data/cresques/{z}/{x}/{y}.jpg',
   name: 'Capa XYZ', legend: 'Capa XYZ l',
   projection: 'EPSG:3857',
 }, { crossOrigin: 'anonymous' });
-map.addLayers(capaXYZ); // */
+map.addLayers(capaXYZ); window.capaXYZ = capaXYZ; // */
 
-/*/ Capa MBTiles fetch
+/* / Capa MBTiles fetch
 window.fetch('./cabrera.mbtiles').then((response) => {
   const mbtile = new M.layer.MBTiles({
     name: 'mbtiles', legend: 'Capa MBTiles L',
@@ -144,7 +145,7 @@ window.fetch('./cabrera.mbtiles').then((response) => {
   map.addLayers(mbtile); window.mbtile = mbtile;
 }).catch((e) => { throw e; }); // */
 
-/*/ Capa MBTilesVector fetch
+/* / Capa MBTilesVector fetch
 window.fetch('./countries.mbtiles').then((response) => {
   const mbtilesvector = new M.layer.MBTilesVector({
     name: 'mbtiles_vector', legend: 'Capa MBTilesVector L',
@@ -153,6 +154,26 @@ window.fetch('./countries.mbtiles').then((response) => {
   });
   map.addLayers(mbtilesvector); window.mbtilesvector = mbtilesvector;
 }).catch((e) => { throw e; }); // */
+
+// Capa COG
+const cog = new M.layer.COG({
+  url: 'http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif',
+  name: 'Nombre cog',
+  legend: 'Leyenda cog',
+  transparent: true,
+}, {
+  convertToRGB: 'auto',
+  nodata: 0,
+});
+map.addLayers(cog); window.cog = cog; // */
+
+/* / TEST DE LOCATOR PLUGIN, buscar Cádiz para el ejemplo de error "No enum constant" de "GEOMETRYCOLLECTION"
+const locatorAditionalTest = new M.plugin.Locator({
+  collapsible: true, collapsed: false, isDraggable: true, useProxy: false,
+  position: 'TC', pointStyle: 'pinRojo', zoom: 15, order: 1,
+  byPlaceAddressPostal: true, byParcelCadastre: true, byCoordinates: true,
+});
+map.addPlugin(locatorAditionalTest); window.locatorAditionalTest = locatorAditionalTest; // */
 
 const mp = new PrintViewManagement({
   collapsible: true,
@@ -164,7 +185,7 @@ const mp = new PrintViewManagement({
   printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
   defaultOpenControl: 1, // 1 (printermap), 2 (georefImage), 3 (georefImageEpsg) OR 0 , >=4 (Ninguno) Abre el control indicado inicialmente.
   printermap: true,
-  /*/
+  /* /
   printermap: { // serverUrl y printStatusUrl añadidos fuera de este.
     tooltip: 'TEST TOOLTIP printermap', // Tooltip del botón para escoger esta opción
     printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG', // Templates a los cuales se añade este mapa
@@ -177,7 +198,7 @@ const mp = new PrintViewManagement({
     order: 2,
   }, // */
   georefImage: true,
-  /*/
+  /* /
   georefImage: { // serverUrl y printStatusUrl añadidos fuera de este.
     tooltip: 'TEST TOOLTIP georefImage',
     printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/mapexport',
@@ -186,7 +207,7 @@ const mp = new PrintViewManagement({
     order: 4, // 8 - ERROR no existe actualmente
   }, // */
   georefImageEpsg: true,
-  /*/
+  /* /
   georefImageEpsg: {
     tooltip: 'TEST TOOLTIP georefImageEpsg',
     layers: [{ // WMTS -> OK
@@ -208,6 +229,8 @@ const mp = new PrintViewManagement({
   order: 1,
 });
 map.addPlugin(mp); window.mp = mp;
+
+// Para pruebas locales, lanzar Tomcat del proyecto y usar "http://localhost:8080" en vez de "https://mapea-lite.desarrollo.guadaltel.es"
 
 // Lista de errores encontrados
 
@@ -231,11 +254,11 @@ map.addPlugin(mp); window.mp = mp;
 // 5 - ERROR si se crea parámetro "georefImageEpsg" con EPSG puesto, entonces se añade archivo WLD con "createWLD", pero si no esta este parámetro el archivo es siempre vacío. Se podría eliminar su introducción ya que parece sobrante, igual que se hizo con el condicional de "addWLD" pero con "epsgUser".
 
 // 6 - ERROR la función "converterDecimalToDMS" esta hecha de forma complicada innecesariamente y puede causar problemas si las coordenadas no tienen "minutos" o "segundos", marcándolos en ese caso con "NaN", también hay casos de errores si se envian valores no apropiados que podrían causar error, se ha diseñado este cambio para sustituir las funciones antiguas de "converterDecimalToDMS":
-//converterDecimalToDMS(coordinate) {
+// converterDecimalToDMS(coordinate) {
 //  const aux = ((Math.abs(coordinate) % 1) * 60);
 //  // sign Degrees Minutes Seconds
 //  return `${Math.sign(coordinate) === -1 ? '-' : ''}${Math.trunc(Math.abs(coordinate))}º ${Math.trunc(aux)}' ${Math.trunc((aux % 1) * 60)}'' `;
-//}
+// }
 
 // 7 - ERROR la función "getGeorefImageEpsg()" de "printviewmanagement/src/facade/js/printviewmanagement.js" pone el order a 0 y ignora el valor que se introduce a este, podría ser mejor idea configurarlo directamente con 'const { layers, tooltip, order = 0 } = this.options.georefImageEpsg;' eliminando el creado de la constante anterior de orden con comentarios de "¿?"
 

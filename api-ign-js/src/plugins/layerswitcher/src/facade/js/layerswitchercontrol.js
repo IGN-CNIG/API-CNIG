@@ -50,6 +50,8 @@ const SPINER_FATHER = '.m-layerswitcher-search-panel';
 
 const SHOW_BUTTON = [1, 2, 3]; // Añadir más numeros para mostrar más botones
 
+const layersTypes = ['WMTS', 'WFS', 'MBTilesVector', 'MBTiles', 'OSM', 'XYZ', 'TMS', 'GeoJSON', 'KML', 'OGCAPIFeatures', 'Vector', 'GenericRaster', 'GenericVector', 'MVT', 'COG'];
+
 export default class LayerswitcherControl extends M.Control {
   constructor(options = {}) {
     if (M.utils.isUndefined(LayerswitcherImplControl)) {
@@ -799,7 +801,6 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   eventIconTarget_(layerType, layer) {
-    const layersTypes = ['WMTS', 'WFS', 'MBTilesVector', 'MBTiles', 'OSM', 'XYZ', 'TMS', 'GeoJSON', 'KML', 'OGCAPIFeatures', 'Vector', 'GenericRaster', 'GenericVector', 'MVT'];
     if (layerType === 'WMS') {
       layer.getMaxExtent((me) => {
         this.map_.setBbox(me);
