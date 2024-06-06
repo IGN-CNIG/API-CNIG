@@ -50,6 +50,7 @@ class COG extends LayerBase {
    * - opacity: Opacidad de la capa de 0 a 1, por defecto 1.
    * - bands: Bandas a mostrar en forma de array y como numero, si el array esta vacio muestra todas
    *   por defecto [].
+   * - nodata: Usado para sobreescribir el parametro nodata del dato original
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - minScale: Escala mínima.
@@ -86,6 +87,7 @@ class COG extends LayerBase {
       visibility: parameters.visibility,
       queryable: parameters.queryable,
       displayInLayerSwitcher: parameters.displayInLayerSwitcher,
+      projection: parameters.projection,
     };
     const impl = new COGImpl(optionsVar, vendorOptions);
     // calls the super constructor
@@ -197,6 +199,18 @@ class COG extends LayerBase {
    */
   set options(newOptions) {
     this.getImpl().options = newOptions;
+  }
+
+  /**
+   * Devuelve la extensión de la capa.
+   * @returns {Array} Devuelve la extensión de la capa.
+   */
+  getMaxExtent() {
+    return this.getImpl().getMaxExtent();
+  }
+
+  getExtent() {
+    return this.getImpl().getExtent();
   }
 
   /**

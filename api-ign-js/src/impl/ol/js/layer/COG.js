@@ -145,6 +145,8 @@ class COG extends LayerBase {
      */
     this.styles = this.options.styles || '';
 
+    this.projection_ = this.options.projection;
+
     /**
      * COG sldBody. Parámetros "ol.source.ImageCOG"
      */
@@ -362,27 +364,11 @@ class COG extends LayerBase {
   createOLSource_(resolutions, minResolution, maxResolution, extent) {
     let olSource = this.vendorOptions_.source;
     if (isNullOrEmpty(this.vendorOptions_.source)) {
-      const layerParams = {
-        LAYERS: this.name,
-        VERSION: this.version,
-        TRANSPARENT: this.transparent,
-        FORMAT: this.format,
-        STYLES: this.styles,
-      };
-
-      if (!isNullOrEmpty(this.sldBody)) {
-        layerParams.SLD_BODY = this.sldBody;
-      }
-
-      if (!isNullOrEmpty(this.options.params)) {
-        Object.keys(this.options.params).forEach((key) => {
-          layerParams[key.toUpperCase()] = this.options.params[key];
-        });
-      }
       const convertToRGB = this.convertToRGB_;
       const bands = this.bands_;
       const nodata = this.nodata_;
       const zIndex = this.zIndex_;
+      const projectionCOG = this.projection_;
       const sources = [
         {
           url: this.url,
@@ -401,6 +387,7 @@ class COG extends LayerBase {
         minResolution,
         maxResolution,
         zIndex,
+        projection: projectionCOG,
       });
     }
     return olSource;
@@ -414,24 +401,22 @@ class COG extends LayerBase {
    * @returns {Array<Number>} Extensión, asincrono.
    * @api stable
    */
+  getMaxExtent() {
+    return this.getExtent();
+  }
+
   getExtent() {
     const olProjection = getProj(this.map.getProjection().code);
 
-    // creates the promise
-    this.extentPromise = new Promise((success, fail) => {
-      if (!isNullOrEmpty(this.extent_)) {
-        this.extent_ = ImplUtils.transformExtent(this.extent_, this.extentProj_, olProjection);
-        this.extentProj_ = olProjection;
-        success(this.extent_);
-      } else {
-        this.getCapabilities().then((getCapabilities) => {
-          this.extent_ = getCapabilities.getLayerExtent(this.name);
-          this.extentProj_ = olProjection;
-          success(this.extent_);
-        });
-      }
-    });
-    return this.extentPromise;
+    const olProperties = this.getOL3Layer().getProperties();
+    if (olProperties.source.tileGrid) {
+      this.extent_ = olProperties.source.getTileGrid().extent_;
+      this.extentProj_ = olProperties.source.projection.code_;
+      this.extent_ = ImplUtils.transformExtent(this.extent_, this.extentProj_, olProjection);
+    } else {
+      this.extent_ = olProjection.getExtent();
+    }
+    return this.extent_;
   }
 
   /**

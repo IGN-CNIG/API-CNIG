@@ -807,21 +807,23 @@ export default class LayerswitcherControl extends M.Control {
       });
     } else if (layersTypes.includes(layerType)) {
       const extent = layer.getMaxExtent();
-      if (extent === null && layer.calculateMaxExtent) {
-        layer.calculateMaxExtent()
-          .then((ext) => {
-            if (ext.length > 0) {
-              this.map_.setBbox(ext);
-            } else {
-              this.map_.setBbox(this.map_.getExtent());
-            }
-          })
-          .catch((err) => {
-            // eslint-disable-next-line no-console
-            console.error(err);
-          });
-      } else if (extent === null) {
-        this.map_.setBbox(this.map_.getExtent());
+      if (extent === null) {
+        if (layer.calculateMaxExtent) {
+          layer.calculateMaxExtent()
+            .then((ext) => {
+              if (ext.length > 0) {
+                this.map_.setBbox(ext);
+              } else {
+                this.map_.setBbox(this.map_.getExtent());
+              }
+            })
+            .catch((err) => {
+              // eslint-disable-next-line no-console
+              console.error(err);
+            });
+        } else {
+          this.map_.setBbox(this.map_.getExtent());
+        }
       } else {
         this.map_.setBbox(extent);
       }
@@ -1261,6 +1263,9 @@ export default class LayerswitcherControl extends M.Control {
               }
             });
             M.proxy(this.statusProxy);
+            // COG
+          } else if (url.indexOf('.tif') >= 0) {
+            this.printLayerModal(url, 'cog');
             // TMS
           } else if (url.indexOf('{z}/{x}/{-y}') >= 0) {
             this.printLayerModal(url, 'tms');
@@ -2330,6 +2335,12 @@ export default class LayerswitcherControl extends M.Control {
           obj.layers = layersSelected;
         }
         this.map_.addLayers(new M.layer.KML(obj));
+      } else if (type === 'cog') {
+        this.map_.addLayers(new M.layer.COG({
+          name,
+          legend,
+          url,
+        }));
       }
 
       document.querySelector('div.m-dialog.info').parentNode.removeChild(document.querySelector('div.m-dialog.info'));
