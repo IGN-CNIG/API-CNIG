@@ -198,30 +198,6 @@ class OGCAPIFeatures extends Vector {
   }
 
   /**
-   * Devuelve la leyenda de la capa.
-   * @function
-   * @return {M.layer.OGCAPIFeature.impl.legend} Devuelve la leyenda.
-   * @api
-   */
-  get legend() {
-    return this.getImpl().legend;
-  }
-
-  /**
-   * Sobrescribe la leyenda.
-   * @function
-   * @param {String} newLegend Nueva leyenda.
-   * @api
-   */
-  set legend(newLegend) {
-    if (isNullOrEmpty(newLegend)) {
-      this.getImpl().legend = this.name;
-    } else {
-      this.getImpl().legend = newLegend;
-    }
-  }
-
-  /**
    * Devuelve el nombre de la capa.
    * @function
    * @return {M.layer.OGCAPIFeature.impl.name} Devuelve el nombre de la capa.

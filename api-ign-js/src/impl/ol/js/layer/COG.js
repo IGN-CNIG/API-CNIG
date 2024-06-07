@@ -7,12 +7,9 @@ import {
   isNullOrEmpty,
   isNull,
   getResolutionFromScale,
-  addParameters,
-  concatUrlPaths,
   fillResolutions,
   generateResolutionsFromExtent,
 } from 'M/util/Utils';
-import FacadeLayerBase from 'M/layer/Layer';
 import * as LayerType from 'M/layer/Type';
 import * as EventType from 'M/event/eventtype';
 import TileLayer from 'ol/layer/WebGLTile';
@@ -253,7 +250,7 @@ class COG extends LayerBase {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
-    this.addSingleLayer_(null);
+    this.createOLLayer_(null);
 
     // calculates the resolutions from scales
     if (!isNull(this.options)
@@ -261,17 +258,6 @@ class COG extends LayerBase {
       const units = this.map.getProjection().units;
       this.options.minResolution = getResolutionFromScale(this.options.minScale, units);
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
-    }
-
-    if (this.legendUrl_ === concatUrlPaths([M.config.THEME_URL, FacadeLayerBase.LEGEND_DEFAULT])) {
-      this.legendUrl_ = addParameters(this.url, {
-        SERVICE: 'COG',
-        VERSION: this.version,
-        REQUEST: 'GetLegendGraphic',
-        LAYER: this.name,
-        FORMAT: 'image/png',
-        // EXCEPTIONS: 'image/png',
-      });
     }
   }
 
@@ -304,7 +290,7 @@ class COG extends LayerBase {
    * @function
    * @api stable
    */
-  addSingleLayer_() {
+  createOLLayer_() {
     let extent;
 
     const minResolution = this.options.minResolution;
@@ -326,7 +312,7 @@ class COG extends LayerBase {
       }
     }
 
-    const source = this.createOLSource_(resolutions, minResolution, maxResolution, extent);
+    const source = this.createOLSource_(minResolution, maxResolution);
 
     // this.ol3Layer = new TileLayer(extend({
     //   source,

@@ -4,7 +4,7 @@
 import MBTilesImpl from 'impl/layer/MBTiles';
 import LayerBase from './Layer';
 import * as LayerType from './Type';
-import { isNullOrEmpty, isUndefined } from '../util/Utils';
+import { isUndefined } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 import * as parameter from '../parameter/parameter';
@@ -114,38 +114,6 @@ class MBTiles extends LayerBase {
      * MBTiles options: Opciones que se mandan a la implementación.
      */
     this.options = options;
-  }
-
-  /**
-   * Devuelve la leyenda de la capa.
-   * La leyenda indica el nombre que aparece en el árbol de
-   * contenidos, si lo hay.
-   *
-   * @function
-   * @getter
-   * @return {M.layer.MBTiles.impl.legend} Leyenda de la capa.
-   * @api
-   */
-  get legend() {
-    return this.getImpl().legend;
-  }
-
-  /**
-   * Sobrescribe la leyenda de la capa.
-   * La leyenda indica el nombre que aparece en el árbol de
-   * contenidos, si lo hay.
-   *
-   * @function
-   * @setter
-   * @param {String} newLegend Nueva leyenda.
-   * @api
-   */
-  set legend(newLegend) {
-    if (isNullOrEmpty(newLegend)) {
-      this.getImpl().legend = this.name;
-    } else {
-      this.getImpl().legend = newLegend;
-    }
   }
 
   /**
