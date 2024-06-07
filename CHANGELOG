@@ -1,5 +1,7 @@
 xx/xx/xx - Versión 5.0.0
 - Se incluye nuevo tipo de capa COG
+- Se soluciona problema al obtener la leyenda de las capas
+- Subida de versión de OL a la 8.1
 
 29/02/2024 - Versión 4.9.0
 - Plugin comparators: se añade nuevo control windowsync y se añaden traducciones.
