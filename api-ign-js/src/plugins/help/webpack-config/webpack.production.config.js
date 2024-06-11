@@ -97,6 +97,9 @@ module.exports = {
         {
           from: 'src/api.json',
           to: 'api.json',
+        }, {
+          from: 'src/facade/assets/images',
+          to: 'images',
         }
       ],
     }),
