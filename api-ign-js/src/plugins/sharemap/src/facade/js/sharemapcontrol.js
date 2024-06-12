@@ -590,6 +590,8 @@ export default class ShareMapControl extends M.Control {
       param = this.getMVT(layer);
     } else if (layer.type === 'OGCAPIFeatures') {
       param = this.getOGCAPIFeatures(layer);
+    } else if (layer.type === 'COG') {
+      param = this.getCOG(layer);
     }
     return param;
   }
@@ -666,6 +668,16 @@ export default class ShareMapControl extends M.Control {
    */
   getWMS(layer) {
     return `WMS*${this.normalizeString(layer.legend || layer.name)}*${layer.url}*${layer.name}*${layer.transparent}*${layer.tiled}*${layer.userMaxExtent || ''}*${layer.version}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+  }
+
+  /**
+   * This method gets the cog url parameter
+   *
+   * @public
+   * @function
+   */
+  getCOG(layer) {
+    return `COG*${layer.legend}*${layer.url}*${layer.name}*${layer.transparent}*${layer.projection || ''}*${layer.displayInLayerSwitcher}*${layer.isVisible()}`;
   }
 
   /**
