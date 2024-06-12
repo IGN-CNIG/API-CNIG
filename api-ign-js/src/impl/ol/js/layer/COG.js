@@ -53,7 +53,7 @@ class COG extends LayerBase {
    * - maxScale: Escala máxima.
    * - minResolution: Resolución mínima.
    * - maxResolution: Resolución máxima.
-   * - styles: Estilos de las bandas.
+   * - style: Estilo de las bandas.
    * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
    *   En este caso la capa sería detectado por los plugins de tablas de contenidos
    *   y aparecería como no visible.
@@ -125,9 +125,9 @@ class COG extends LayerBase {
     }
 
     /**
-     * COG styles. Estilos de la capa.
+     * COG style. Estilo de las bandas.
      */
-    this.styles = this.options.styles || '';
+    this.style = this.options.style || '';
 
     this.projection_ = this.options.projection;
 
@@ -236,7 +236,7 @@ class COG extends LayerBase {
       opacity: this.opacity_,
       source,
       extent: this.maxExtent_,
-      style: this.styles,
+      style: this.style,
       minResolution: this.options.minResolution,
       maxResolution: this.options.maxResolution,
     }, this.vendorOptions_, true);

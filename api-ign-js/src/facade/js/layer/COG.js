@@ -57,7 +57,7 @@ class COG extends LayerBase {
    * - maxScale: Escala máxima.
    * - minResolution: Resolución mínima.
    * - maxResolution: Resolución máxima.
-   * - styles: Estilos de las bandas.
+   * - style: Estilo de las bandas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileCOG from 'ol/source/TileCOG';

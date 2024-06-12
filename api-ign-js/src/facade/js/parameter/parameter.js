@@ -2679,7 +2679,7 @@ export const cog = (userParameters) => {
     layerObj.name = getNameCOG(userParam);
 
     // gets transparent
-    layerObj.transparent = getTransparentCOG(userParam); // probar si es realmente base
+    layerObj.transparent = getTransparentCOG(userParam);
 
     // gets the matrix set
     layerObj.projection = getProjectionCOG(userParam);
