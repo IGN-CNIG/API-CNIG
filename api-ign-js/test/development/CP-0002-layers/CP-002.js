@@ -6,20 +6,22 @@ import { map as Mmap } from 'M/mapea';
 // import { xyz_001 } from '../layers/xyz/xyz'; const capaPrueba = xyz_001; window.xyz = xyz_001; // STRING ==> import { xyz_002 } from '../layers/xyz/xyz'; const capaPrueba = xyz_002; window.xyz = xyz_002;
 // import { osm } from '../layers/osm/osm'; const capaPrueba = osm; window.osm = osm;// STRING ==> import { osm_002 } from '../layers/osm/osm'; const capaPrueba = osm_002; window.osm = osm_002;// STRING ==> import { osm_003 } from '../layers/osm/osm'; const capaPrueba = osm_003; window.osm = osm_003;
 // import { mbtile_01 } from '../layers/mbtiles/mbtiles'; const capaPrueba = mbtile_01; window.mbtile = mbtile_01;
-import { generic_001 } from '../layers/generic/generic'; const capaPrueba = generic_001; window.generic = generic_001;
-// import { cog_001 } from '../layers/cog/cog'; const capaPrueba = cog_001; window.cog = cog_001;
+// import { generic_001 } from '../layers/generic/generic'; const capaPrueba = generic_001; window.generic = generic_001;
+import { cog_001 } from '../layers/cog/cog'; const capaPrueba = cog_001; window.cog = cog_001;
 window.capaPrueba = capaPrueba;
 
 const mapa = Mmap({
   container: 'map',
   projection: 'EPSG:3857*m',
-  center: [-443273.10081370454, 4757481.749296248], zoom: 6, // Other Tests
+  // center: [-443273.10081370454, 4757481.749296248], zoom: 6, // Other Tests
+  bbox: [287821.2283355333, 5226384.980194519, 324511.00191241794, 5237544.7863241555],
   // center: [309697, 5231113], zoom: 14, // COG Test
-  layers: [capaPrueba]
+  // layers: [capaPrueba]
+  controls: ['attributions', 'scale']
 });
 
 mapa.addLayers([
-  // capaPrueba
+  capaPrueba
 ]);
 
 window.mapa = mapa;

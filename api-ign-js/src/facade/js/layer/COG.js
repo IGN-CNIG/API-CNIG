@@ -64,7 +64,7 @@ class COG extends LayerBase {
    * {
    *  opacity: 0.1,
    *  source: new OLSourceTileCOG({
-   *    attributions: 'wms',
+   *    attributions: '',
    *    ...
    *  })
    * }
@@ -74,7 +74,7 @@ class COG extends LayerBase {
   constructor(userParameters, options = {}, vendorOptions = {}) {
     // checks if the implementation can create WMC layers
     if (isUndefined(COGImpl)) {
-      Exception(getValue('exception').wms_method);
+      Exception(getValue('exception').cog_method);
     }
     // checks if the param is null or empty
     if (isNullOrEmpty(userParameters)) {
@@ -88,6 +88,7 @@ class COG extends LayerBase {
       queryable: parameters.queryable,
       displayInLayerSwitcher: parameters.displayInLayerSwitcher,
       projection: parameters.projection,
+      maxExtent: userParameters.maxExtent,
     };
     const impl = new COGImpl(optionsVar, vendorOptions);
     // calls the super constructor
@@ -177,46 +178,6 @@ class COG extends LayerBase {
    */
   getMaxExtent() {
     return this.getImpl().getMaxExtent();
-  }
-
-  getExtent() {
-    return this.getImpl().getExtent();
-  }
-
-  /**
-   * Devuelve las URL de "tileMappins" (url del contexto, de la configuración).
-   *
-   * @function
-   * @returns {M.config.tileMappgins.urls} Devuelve "noCacheURL".
-   * @api
-   */
-  getNoCacheUrl() {
-    return this._noCacheUrl;
-  }
-
-  /**
-   * Devuelve el nombre del "tileMappins" (nombres del contexto, de la configuración).
-   *
-   * @function
-   * @returns {M.config.tileMappgins.names} Devuelve "noCacheName".
-   * @api
-   */
-  getNoCacheName() {
-    return this._noCacheName;
-  }
-
-  /**
-   * Actualización de capas COG de resolución mínima y máxima.
-   *
-   * @public
-   * @function
-   * @param {String|Mx.Projection} projection Proyección del mapa.
-   * @returns {M.COG.impl.updateMinMaxResolution} Devuelve la resolucción
-   * máxima y mínima.
-   * @api
-   */
-  updateMinMaxResolution(projection) {
-    return this.getImpl().updateMinMaxResolution(projection);
   }
 
   /**
