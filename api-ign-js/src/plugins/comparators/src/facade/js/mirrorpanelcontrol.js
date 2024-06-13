@@ -280,8 +280,8 @@ export default class MirrorpanelControl extends M.Control {
     this.maps.forEach((map) => {
       if (this.layerSelected[map] !== null) {
         const [type, nameWMS, ,, nameWMTS] = this.layerSelected[map].split('*');
-        if (type === 'WMS') this.mapL[map].removeWMS(nameWMS);
-        if (type === 'WMTS') this.mapL[map].removeWMTS(nameWMTS);
+        if (type === 'WMS') this.mapL[map].removeWMS({ name: nameWMS });
+        if (type === 'WMTS') this.mapL[map].removeWMTS({ name: nameWMTS });
       }
     });
   }
