@@ -118,24 +118,22 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   const terremotos = 'WMS*Eventos sísmicos*https://www.ign.es/wms-inspire/geofisica*NZ.ObservedEvent'
 
   const pluginTimeline = new Timeline({
-    position: 'TR',
-    timelineType: 'absolute',
-    intervals : [
-      {
-        id: '1',
-        init: '1918-05-12T23:39:58.767Z',
-        end: '1951-01-16T12:47:07.530Z',
-        layer: terremotos,
-        // grupo: 'GRUPO'
-      },
-    ],
-    speedDate: 2,
-    paramsDate:  'yr',
-    formatValue: 'exponential',
-    stepValue: 5,
-    sizeWidthDinamic: 'sizeWidthDinamic_medium',
-    formatMove: 'continuous'
-  });
+  position: 'TR',
+  timelineType: 'relative',
+  intervals: [
+    {
+      id: '1',
+      init: '2013-11-14T23:22:21.799Z',
+      end: '2013-11-15T01:29:43.421Z',
+      layer: terremotos,
+      attributeParam: 'date',
+      // grupo: 'GRUPO'
+    },
+  ],
+  formatValue: 'exponential',
+  sizeWidthDinamic: 'sizeWidthDinamic_medium',
+  formatMove: 'continuous',
+  }); 
 
   map.addPlugin(pluginTimeline);
   ```

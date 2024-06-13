@@ -715,11 +715,17 @@ export default class TimelineControl extends M.Control {
             if (l.equalsTimeLine) {
               if (
                 vectorEndValue === new Date(this.transformTime_NumbToDate(dateTime)[0]).getTime()
-              ) return f;
-            } else if (
+              ) {
+                return f;
+              }
+            }
+
+            if (
               vectorInitValue <= new Date(this.transformTime_NumbToDate(dateTime)[0]).getTime()
               && vectorEndValue >= new Date(this.transformTime_NumbToDate(dateTime)[0]).getTime()
-            ) return f;
+            ) {
+              return f;
+            }
           });
 
           // eslint-disable-next-line no-param-reassign
@@ -755,11 +761,17 @@ export default class TimelineControl extends M.Control {
           if (l.equalsTimeLine) {
             if (
               vectorEndValue === new Date(this.transformTime_NumbToDate(dateTime)[0]).getTime()
-            ) return f;
-          } else if (
-            vectorInitValue <= new Date(this.transformTime_NumbToDate(dateTime)[0]).getTime()
-            && vectorEndValue >= new Date(this.transformTime_NumbToDate(dateTime)[0]).getTime()
-          ) return f;
+            ) {
+              return f;
+            }
+
+            if (
+              vectorInitValue <= new Date(this.transformTime_NumbToDate(dateTime)[0]).getTime()
+              && vectorEndValue >= new Date(this.transformTime_NumbToDate(dateTime)[0]).getTime()
+            ) {
+              return f;
+            }
+          }
         });
 
         l.setFilter(filter);
