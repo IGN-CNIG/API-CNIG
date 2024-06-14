@@ -179,8 +179,8 @@ export default class Timeline extends M.Plugin {
       throw new Error('Add correct typesTimeline, (absoluteSimple', 'absolute', 'relative)');
     }
 
-    if (this.typesTimeline === 'absoluteSimple') {
-      this.intervals = this.intervals.filter((layer) => {
+    if (this.typesTimeline === 'absolute' || this.typesTimeline === 'relative') {
+      this.intervals = this.intervals.filter(({ layer }) => {
         if (typeof layer === 'string') {
           return !layer.includes('GenericRaster') || !layer.includes('GenericVector');
         }
@@ -188,7 +188,7 @@ export default class Timeline extends M.Plugin {
         return layer.type !== 'GenericRaster' || layer.type !== 'GenericVector';
       });
     } else {
-      this.intervals = this.intervals.filter(({ layer }) => {
+      this.intervals = this.intervals.filter((layer) => {
         if (typeof layer === 'string') {
           return !layer.includes('GenericRaster') || !layer.includes('GenericVector');
         }
