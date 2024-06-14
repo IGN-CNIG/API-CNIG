@@ -2023,8 +2023,11 @@ class Map extends MObject {
     }
 
     const olMap = this.getMapImpl();
-    const olView = olMap.getView();
-    olView.set('extent', olExtent);
+
+    const view = olMap.getView();
+    const newView = new View({ ...view, extent: maxExtent });
+    olMap.setView(newView);
+
     this.updateResolutionsFromBaseLayer();
 
     if (!isNullOrEmpty(olExtent) && (zoomToExtent !== false)) {
