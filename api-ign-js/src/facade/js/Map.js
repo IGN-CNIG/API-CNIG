@@ -2318,7 +2318,10 @@ class Map extends Base {
   resetMaxExtent() {
     this.userMaxExtent = null;
     this.calculateMaxExtent().then((maxExtentParam) => {
-      const maxExtent = parameter.maxExtent(maxExtentParam);
+      let maxExtent = parameter.maxExtent(maxExtentParam);
+      if (isObject(maxExtent)) {
+        maxExtent = [maxExtent.x.min, maxExtent.y.min, maxExtent.x.max, maxExtent.y.max];
+      }
       this.getImpl().setMaxExtent(maxExtent, true);
     });
     return this;

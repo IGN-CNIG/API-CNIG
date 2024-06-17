@@ -1,5 +1,6 @@
 # Directorios y ficheros ignorados por git
 *.settings
+*.log
 *.project
 *.classpath
 *.externalToolBuilders
