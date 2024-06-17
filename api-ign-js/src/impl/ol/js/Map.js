@@ -2579,7 +2579,7 @@ class Map extends MObject {
           prevMaxExtent.x.max, prevMaxExtent.y.max,
         ];
       }
-      this.setMaxExtent(ImplUtils
+      this.setBbox(ImplUtils
         .transformExtent(prevMaxExtent, olPrevProjection, olProjection), false);
     }
 
