@@ -2930,7 +2930,7 @@ class Map extends Base {
       // 1 check the WMC extent
       const visibleBaseLayer = this.getBaseLayers().find((layer) => layer.isVisible());
       if (!isNullOrEmpty(visibleBaseLayer)) {
-        visibleBaseLayer.getMaxExtent(resolve);
+        resolve(visibleBaseLayer.getMaxExtent(resolve));
       } else {
         const layers = this.getLayers().filter((layer) => layer.name !== '__draw__');
         Promise.all(layers.map((layer) => layer.calculateMaxExtent()))
