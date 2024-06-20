@@ -5,7 +5,6 @@ const AllowMutateEsmExports = require('./AllowMutateEsmExportsPlugin');
 const argv = require('yargs').argv;
 const ESLintPlugin = require('eslint-webpack-plugin');
 
-
 const testName = argv.name;
 const coremin = argv['core-min'];
 if (testName === undefined) {
@@ -61,7 +60,7 @@ module.exports = {
       fs: false,
       path: false,
       crypto: false,
-      "buffer": require.resolve("buffer/"),
+      'buffer': require.resolve('buffer/'),
     },
   },
   module: {
@@ -85,13 +84,13 @@ module.exports = {
         test: /\.css$/i,
         use: [
           {
-            loader: "style-loader",
+            loader: 'style-loader',
             options: {
               // insert: 'head',
               injectType: 'singletonStyleTag',
-            }, 
+            },
           },
-          "css-loader",
+          'css-loader',
         ],
         exclude: [/node_modules\/(?!ol)/],
       },
@@ -113,13 +112,17 @@ module.exports = {
   ],
   devServer: {
     // https: true,
-    hot: true,
+    // hot: true,
     // host: '0.0.0.0',
     // open: true,
     // port: 6123,
     open: `test/development/${testName}.html`,
     static: {
       directory: path.join(__dirname, '/../'),
+      watch: {
+        ignored: '**/node_modules',
+        usePolling: false,
+      },
     },
   },
   watchOptions: {
