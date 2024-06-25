@@ -165,7 +165,7 @@ class LayerBase extends Base {
    *
    * @function
    * @getter
-   * @return {M.layer.COG.impl.legend} Leyenda de la capa.
+   * @return {M.layer.GeoTIFF.impl.legend} Leyenda de la capa.
    * @api
    */
   get legend() {

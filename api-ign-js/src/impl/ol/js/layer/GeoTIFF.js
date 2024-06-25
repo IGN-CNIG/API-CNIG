@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable max-len */
 /**
- * @module M/impl/layer/COG
+ * @module M/impl/layer/GeoTIFF
  */
 import {
   isNullOrEmpty,
@@ -12,7 +12,7 @@ import {
 import * as LayerType from 'M/layer/Type';
 import * as EventType from 'M/event/eventtype';
 import TileLayer from 'ol/layer/WebGLTile';
-import GeoTIFF from 'ol/source/GeoTIFF';
+import GeoTIFFSource from 'ol/source/GeoTIFF';
 import { get as getProj } from 'ol/proj';
 import ImplMap from '../Map';
 import LayerBase from './Layer';
@@ -20,18 +20,18 @@ import ImplUtils from '../util/Utils';
 
 /**
  * @classdesc
- * COG devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales.
+ * GeoTIFF devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales.
  * Permitiendo las personalización de las capas mediante estilos. Se trata de un mapa dínamico.
  *
- * @property {Object} options Opciones de la capa COG.
- * @property {Array<M.layer.COG>} layers Intancia de COG con metadatos.
+ * @property {Object} options Opciones de la capa GeoTIFF.
+ * @property {Array<M.layer.GeoTIFF>} layers Intancia de GeoTIFF con metadatos.
  *
  * @api
  * @extends {M.impl.layer.Layer}
  */
-class COG extends LayerBase {
+class GeoTIFF extends LayerBase {
   /**
-   * Constructor principal de la clase. Crea una capa COG
+   * Constructor principal de la clase. Crea una capa GeoTIFF
    * con parámetros especificados por el usuario.
    *
    * @constructor
@@ -75,37 +75,37 @@ class COG extends LayerBase {
     super(options, vendorOptions);
 
     /**
-     * COG facadeLayer_. Instancia de la fachada.
+     * GeoTIFF facadeLayer_. Instancia de la fachada.
      */
     this.facadeLayer_ = null;
 
     /**
-     * COG options. Opciones de la capa.
+     * GeoTIFF options. Opciones de la capa.
      */
     this.options = options;
 
     /**
-     * COG displayInLayerSwitcher. Mostrar en el selector de capas.
+     * GeoTIFF displayInLayerSwitcher. Mostrar en el selector de capas.
      */
     this.displayInLayerSwitcher_ = true;
 
     /**
-     * COG resolutions_. Resoluciones de la capa.
+     * GeoTIFF resolutions_. Resoluciones de la capa.
      */
     this.resolutions_ = null;
 
     /**
-     * COG extentProj_. Proyección actual.
+     * GeoTIFF extentProj_. Proyección actual.
      */
     this.extentProj_ = null;
 
     /**
-     * COG opacity_. Opacidad entre 0 y 1. Por defecto 1.
+     * GeoTIFF opacity_. Opacidad entre 0 y 1. Por defecto 1.
      */
     this.opacity_ = this.options.opacity || 1;
 
     /**
-     * COG visibility. Indica la visibilidad de la capa.
+     * GeoTIFF visibility. Indica la visibilidad de la capa.
      */
     if (this.options.visibility === false) {
       this.visibility = false;
@@ -117,7 +117,7 @@ class COG extends LayerBase {
     this.maxExtent_ = this.options.maxExtent || null;
 
     /**
-     * COG animated. Define si la capa está animada,
+     * GeoTIFF animated. Define si la capa está animada,
      * el valor predeterminado es falso.
      */
     if (isNullOrEmpty(this.options.animated)) {
@@ -125,44 +125,44 @@ class COG extends LayerBase {
     }
 
     /**
-     * COG style. Estilo de las bandas.
+     * GeoTIFF style. Estilo de las bandas.
      */
     this.style = this.options.style || '';
 
     this.projection_ = this.options.projection;
 
     /**
-     * COG sldBody. Parámetros "ol.source.ImageCOG"
+     * GeoTIFF sldBody. Parámetros "ol.source.ImageCOG"
      */
     this.sldBody = options.sldBody;
 
     /**
-     * COG zIndex_. Índice de la capa, (+40).
+     * GeoTIFF zIndex_. Índice de la capa, (+40).
      */
-    this.zIndex_ = ImplMap.Z_INDEX[LayerType.COG];
+    this.zIndex_ = ImplMap.Z_INDEX[LayerType.GeoTIFF];
 
     /**
-     * COG convertToRGB_. .
+     * GeoTIFF convertToRGB_. .
      */
     this.convertToRGB_ = !isNullOrEmpty(options.convertToRGB) ? options.convertToRGB : 'auto';
 
     /**
-     * COG bands_. Bandas a renderizar.
+     * GeoTIFF bands_. Bandas a renderizar.
      */
     this.bands_ = options.bands ? options.bands : [];
 
     /**
-     * COG nodata_. Bandas a renderizar.
+     * GeoTIFF nodata_. Bandas a renderizar.
      */
     this.nodata_ = options.nodata;
 
     /**
-     * COG minZoom. Zoom mínimo aplicable a la capa.
+     * GeoTIFF minZoom. Zoom mínimo aplicable a la capa.
      */
     this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
 
     /**
-     * COG maxZoom. Zoom máximo aplicable a la capa.
+     * GeoTIFF maxZoom. Zoom máximo aplicable a la capa.
      */
     this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
   }
@@ -271,7 +271,7 @@ class COG extends LayerBase {
 
   /**
    * Este método obtiene la resolución máxima para
-   * este COG.
+   * este GeoTIFF.
    *
    *
    * @public
@@ -297,7 +297,7 @@ class COG extends LayerBase {
       const convertToRGB = this.convertToRGB_;
       const bands = this.bands_;
       const nodata = this.nodata_;
-      const projectionCOG = this.options.projection;
+      const projectionGeoTIFF = this.options.projection;
       const sources = [
         {
           url: this.url,
@@ -310,10 +310,10 @@ class COG extends LayerBase {
           src.bands = bands;
         });
       }
-      olSource = new GeoTIFF({
+      olSource = new GeoTIFFSource({
         sources,
         convertToRGB,
-        projection: projectionCOG,
+        projection: projectionGeoTIFF,
       });
     }
     return olSource;
@@ -405,12 +405,12 @@ class COG extends LayerBase {
   }
 
   /**
-   * Este método establece la clase de fachada COG.
+   * Este método establece la clase de fachada GeoTIFF.
    * La fachada se refiere a
    * un patrón estructural como una capa de abstracción con un patrón de diseño.
    *
    * @function
-   * @param {object} obj COG de la fachada.
+   * @param {object} obj GeoTIFF de la fachada.
    * @api stable
    */
   setFacadeObj(obj) {
@@ -445,7 +445,7 @@ class COG extends LayerBase {
    */
   equals(obj) {
     let equals = false;
-    if (obj instanceof COG) {
+    if (obj instanceof GeoTIFF) {
       equals = (this.url === obj.url);
       equals = equals && (this.name === obj.name);
       equals = equals && (this.version === obj.version);
@@ -455,4 +455,4 @@ class COG extends LayerBase {
   }
 }
 
-export default COG;
+export default GeoTIFF;

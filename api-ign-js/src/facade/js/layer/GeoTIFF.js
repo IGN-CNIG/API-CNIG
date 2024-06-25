@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 /**
- * @module M/layer/COG
+ * @module M/layer/GeoTIFF
  */
-import COGImpl from 'impl/layer/COG';
+import GeoTIFFImpl from 'impl/layer/GeoTIFF';
 import {
   isNullOrEmpty,
   isUndefined,
@@ -15,24 +15,25 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * COG devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales.
+ * GeoTIFF devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales.
  * Permitiendo las personalización de las capas mediante estilos. Se trata de un mapa dínamico.
  *
  * @property {String} legend Nombre asociado en el árbol de contenido, si usamos uno.
  * @property {Boolean} transparent 'Falso' si es una capa base, 'verdadero' en caso contrario.
  * @property {Number} minZoom Limitar el zoom mínimo.
  * @property {Number} maxZoom Limitar el zoom máximo.
- * @property {Object} options Capa de opciones COG.
+ * @property {Object} options Capa de opciones GeoTIFF.
  *
  * @api
  * @extends {M.Layer}
  */
-class COG extends LayerBase {
+class GeoTIFF extends LayerBase {
   /**
-   * Constructor principal de la clase. Crea una capa COG
+   * Constructor principal de la clase. Crea una capa GeoTIFF
    * con parámetros especificados por el usuario.
    * @constructor
-   * @param {string|Mx.parameters.COG} userParameters Parámetros para la construcción de la capa.
+   * @param {string|Mx.parameters.GeoTIFF} userParameters Parámetros para la
+   * construcción de la capa.
    * - name: nombre de la capa en el servidor.
    * - url: url del servicio WFS.
    * - projection: SRS usado por la capa.
@@ -73,15 +74,15 @@ class COG extends LayerBase {
    */
   constructor(userParameters, options = {}, vendorOptions = {}) {
     // checks if the implementation can create WMC layers
-    if (isUndefined(COGImpl)) {
-      Exception(getValue('exception').cog_method);
+    if (isUndefined(GeoTIFFImpl)) {
+      Exception(getValue('exception').geotiff_method);
     }
     // checks if the param is null or empty
     if (isNullOrEmpty(userParameters)) {
       Exception(getValue('exception').no_param);
     }
     // This Layer is of parameters.
-    const parameters = parameter.layer(userParameters, LayerType.COG);
+    const parameters = parameter.layer(userParameters, LayerType.GeoTIFF);
     const optionsVar = {
       ...options,
       visibility: parameters.visibility,
@@ -90,46 +91,46 @@ class COG extends LayerBase {
       projection: parameters.projection,
       maxExtent: userParameters.maxExtent,
     };
-    const impl = new COGImpl(optionsVar, vendorOptions);
+    const impl = new GeoTIFFImpl(optionsVar, vendorOptions);
     // calls the super constructor
     super(parameters, impl);
 
     /**
-     * COG legend: Nombre asociado en el árbol de contenido, si usamos uno.
+     * GeoTIFF legend: Nombre asociado en el árbol de contenido, si usamos uno.
      */
     this.legend = parameters.legend;
 
     /**
-     * COG transparent: Falso si es una capa base, verdadero en caso contrario.
+     * GeoTIFF transparent: Falso si es una capa base, verdadero en caso contrario.
      */
     this.transparent = parameters.transparent;
 
     /**
-     * COG minZoom: Limitar el zoom mínimo.
+     * GeoTIFF minZoom: Limitar el zoom mínimo.
      */
     this.minZoom = parameters.minZoom;
 
     /**
-     * COG maxZoom: Limitar el zoom máximo.
+     * GeoTIFF maxZoom: Limitar el zoom máximo.
      */
     this.maxZoom = parameters.maxZoom;
 
     /**
-     * COG options: Opciones COG.
+     * GeoTIFF options: Opciones GeoTIFF.
      */
     this.options = optionsVar;
   }
 
   /**
-   * Devuelve el tipo de layer, COG.
+   * Devuelve el tipo de layer, GeoTIFF.
    *
    * @function
    * @getter
-   * @returns {M.LayerType.COG} Tipo COG.
+   * @returns {M.LayerType.GeoTIFF} Tipo GeoTIFF.
    * @api
    */
   get type() {
-    return LayerType.COG;
+    return LayerType.GeoTIFF;
   }
 
   /**
@@ -142,8 +143,8 @@ class COG extends LayerBase {
    */
   set type(newType) {
     if (!isUndefined(newType)
-      && !isNullOrEmpty(newType) && (newType !== LayerType.COG)) {
-      Exception('El tipo de capa debe ser \''.concat(LayerType.COG).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
+      && !isNullOrEmpty(newType) && (newType !== LayerType.GeoTIFF)) {
+      Exception('El tipo de capa debe ser \''.concat(LayerType.GeoTIFF).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
     }
   }
 
@@ -152,7 +153,7 @@ class COG extends LayerBase {
    *
    * @function
    * @getter
-   * @return {M.layer.COG.options} Devuelve las opciones de la
+   * @return {M.layer.GeoTIFF.options} Devuelve las opciones de la
    * implementación.
    * @api
    */
@@ -191,7 +192,7 @@ class COG extends LayerBase {
    */
   equals(obj) {
     let equals = false;
-    if (obj instanceof COG) {
+    if (obj instanceof GeoTIFF) {
       equals = (this.url === obj.url);
       equals = equals && (this.name === obj.name);
     }
@@ -200,4 +201,4 @@ class COG extends LayerBase {
   }
 }
 
-export default COG;
+export default GeoTIFF;
