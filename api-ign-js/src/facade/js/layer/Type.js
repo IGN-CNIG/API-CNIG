@@ -25,13 +25,13 @@ export const KML = 'KML';
 export const WMS = 'WMS';
 
 /**
- * Tipo COG (). Definido por una url,
+ * Tipo GeoTIFF (). Definido por una url,
  * @const
  * @type {string}
  * @public
  * @api
  */
-export const COG = 'COG';
+export const GeoTIFF = 'GeoTIFF';
 
 /**
  * Tipo WFS (Web Feature Service). Estándar OGC para la
@@ -187,7 +187,7 @@ export const GenericRaster = 'GenericRaster';
 const layertypes = {
   KML,
   WMS,
-  COG,
+  GeoTIFF,
   WFS,
   WMTS,
   OSM,
@@ -239,7 +239,7 @@ export const know = (type) => {
   const knowTypes = [
     KML,
     WMS,
-    COG,
+    GeoTIFF,
     WFS,
     WMTS,
     MVT,

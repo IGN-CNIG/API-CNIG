@@ -42,12 +42,12 @@ export const ADDED_KML = 'added:kml';
 export const ADDED_WMS = 'added:wms';
 
 /**
- * Evento que se produce al añadir COG.
+ * Evento que se produce al añadir GeoTIFF.
  * @public
  * @type {string}
  * @api
  */
-export const ADDED_COG = 'added:cog';
+export const ADDED_GEOTIFF = 'added:geotiff';
 
 /**
  * Evento que se produce al añadir MapLibre.

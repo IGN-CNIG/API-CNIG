@@ -2068,18 +2068,18 @@ export const wms = (userParameters) => {
 };
 
 /**
- * Analiza el parámetro para obtener el nombre de la capa COG.
+ * Analiza el parámetro para obtener el nombre de la capa GeoTIFF.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
  * @public
  * @function
- * @param {string|Mx.parameters.COG} parameter Parámetro para obtener
- * el nombre de la capa COG.
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * el nombre de la capa GeoTIFF.
  * @returns {string} Nombre de la capa.
  * @throws {Exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
-export const getNameCOG = (parameter) => {
+export const getNameGeoTIFF = (parameter) => {
   let name;
   let params;
   if (isString(parameter)) {
@@ -2098,18 +2098,18 @@ export const getNameCOG = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la URL del servicio de la capa COG.
+ * Analiza el parámetro para obtener la URL del servicio de la capa GeoTIFF.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
  * @public
  * @function
- * @param {string|Mx.parameters.COG} parameter Parámetro para obtener la
- * URL del servicio de la capa COG.
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener la
+ * URL del servicio de la capa GeoTIFF.
  * @returns {string} URL del servicio.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
-export const getURLCOG = (parameter) => {
+export const getURLGeoTIFF = (parameter) => {
   let url;
   let params;
   if (isString(parameter)) {
@@ -2128,47 +2128,48 @@ export const getURLCOG = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la proyeccion de la capa COG.
+ * Analiza el parámetro para obtener la proyeccion de la capa GeoTIFF.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
  * @public
  * @function
- * @param {string|Mx.parameters.COG} parameter Parámetro para obtener la proyeccion de la capa COG.
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * la proyeccion de la capa GeoTIFF.
  * @returns {string} Conjunto de matrices.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
-export const getProjectionCOG = (parameter) => {
-  let projectionCOG;
+export const getProjectionGeoTIFF = (parameter) => {
+  let projectionGeoTIFF;
   let params;
   if (isString(parameter)) {
     params = parameter.split('*');
     if (params.length >= 6) {
       const value = params[5];
-      projectionCOG = isNullOrEmpty(value) ? undefined : value;
+      projectionGeoTIFF = isNullOrEmpty(value) ? undefined : value;
     }
   } else if (isObject(parameter) && !isNullOrEmpty(parameter.projection)) {
-    projectionCOG = parameter.projection.trim();
+    projectionGeoTIFF = parameter.projection.trim();
   } else if (!isObject(parameter)) {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
   }
 
-  return projectionCOG;
+  return projectionGeoTIFF;
 };
 
 /**
- * Analiza el parámetro para obtener la leyenda de la capa COG.
+ * Analiza el parámetro para obtener la leyenda de la capa GeoTIFF.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
  * @public
  * @function
- * @param {string|Mx.parameters.COG} parameter Parámetro para obtener
- * la leyenda de la capa COG.
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * la leyenda de la capa GeoTIFF.
  * @returns {string} Leyenda de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
-export const getLegendCOG = (parameter) => {
+export const getLegendGeoTIFF = (parameter) => {
   let legend;
   let params;
   if (isString(parameter)) {
@@ -2187,19 +2188,19 @@ export const getLegendCOG = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la transparencia de la capa COG.
+ * Analiza el parámetro para obtener la transparencia de la capa GeoTIFF.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
  * @public
  * @function
- * @param {string|Mx.parameters.COG} parameter Parámetro para obtener
- * la transparencia de la capa COG.
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * la transparencia de la capa GeoTIFF.
  * @returns {boolean} Devuelve verdadero si la capa es transparente, falso
  * si no.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
-export const getTransparentCOG = (parameter) => {
+export const getTransparentGeoTIFF = (parameter) => {
   let transparent;
   let params;
   if (isString(parameter)) {
@@ -2220,18 +2221,18 @@ export const getTransparentCOG = (parameter) => {
 };
 
 /**
- * Analiza los parámetros para obtener el conjunto de capas COG.
+ * Analiza los parámetros para obtener el conjunto de capas GeoTIFF.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
  * @public
  * @function
- * @param {string|Mx.parameters.COG} parameter Parámetro para obtener
- * el conjunto de capas COG.
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * el conjunto de capas GeoTIFF.
  * @returns {string} Conjunto de capas.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
-export const getDisplayInLayerSwitcherCOG = (parameter) => {
+export const getDisplayInLayerSwitcherGeoTIFF = (parameter) => {
   let displayInLayerSwitcher;
   let params;
   if (isString(parameter)) {
@@ -2252,18 +2253,18 @@ export const getDisplayInLayerSwitcherCOG = (parameter) => {
 };
 
 /**
- * Analiza el parámetro para obtener la visibilidad de la capa COG.
+ * Analiza el parámetro para obtener la visibilidad de la capa GeoTIFF.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
  * @public
  * @function
- * @param {string|Mx.parameters.COG} parameter Parámetro para obtener
- * la visibilidad de la capa COG.
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * la visibilidad de la capa GeoTIFF.
  * @returns {boolean} Visibilidad de la capa.
  * @throws {M.exception} Si el parámetro no es de un tipo soportado.
  * @api
  */
-export const getVisibilityCOG = (parameter) => {
+export const getVisibilityGeoTIFF = (parameter) => {
   let visibility;
   let params;
   if (isString(parameter)) {
@@ -2641,15 +2642,15 @@ export const getUseCapabilitiesWMTS = (parameter) => {
 };
 
 /**
- * Analiza los parámetros especificados por el usuario para la capa COG.
+ * Analiza los parámetros especificados por el usuario para la capa GeoTIFF.
  *
- * @param {string|Mx.parameters.COG} userParameters Parámetros para la capa COG.
- * @returns {Mx.parameters.COG|Array<Mx.parameters.COG>} Parámetros de la capa COG.
+ * @param {string|Mx.parameters.GeoTIFF} userParameters Parámetros para la capa GeoTIFF.
+ * @returns {Mx.parameters.GeoTIFF|Array<Mx.parameters.GeoTIFF>} Parámetros de la capa GeoTIFF.
  * @public
  * @function
  * @api
  */
-export const cog = (userParameters) => {
+export const geotiff = (userParameters) => {
   let layers = [];
 
   // checks if the param is null or empty
@@ -2667,28 +2668,28 @@ export const cog = (userParameters) => {
     const layerObj = {};
 
     // gets the layer type
-    layerObj.type = LayerType.COG;
+    layerObj.type = LayerType.GeoTIFF;
 
     // gets the legend
-    layerObj.legend = getLegendCOG(userParam);
+    layerObj.legend = getLegendGeoTIFF(userParam);
 
     // gets the URL
-    layerObj.url = getURLCOG(userParam);
+    layerObj.url = getURLGeoTIFF(userParam);
 
     // gets the name
-    layerObj.name = getNameCOG(userParam);
+    layerObj.name = getNameGeoTIFF(userParam);
 
     // gets transparent
-    layerObj.transparent = getTransparentCOG(userParam);
+    layerObj.transparent = getTransparentGeoTIFF(userParam);
 
     // gets the matrix set
-    layerObj.projection = getProjectionCOG(userParam);
+    layerObj.projection = getProjectionGeoTIFF(userParam);
 
     // get displayInLayerSwitcher
-    layerObj.displayInLayerSwitcher = getDisplayInLayerSwitcherCOG(userParam);
+    layerObj.displayInLayerSwitcher = getDisplayInLayerSwitcherGeoTIFF(userParam);
 
     // get visibility
-    layerObj.visibility = getVisibilityCOG(userParam);
+    layerObj.visibility = getVisibilityGeoTIFF(userParam);
 
     layerObj.isBase = (layerObj.transparent === undefined)
       ? userParam.isBase
@@ -4254,7 +4255,7 @@ const parameterFunction = {
   wfs,
   osm,
   wms,
-  cog,
+  geotiff,
   maplibre,
   wmts,
   geojson,
