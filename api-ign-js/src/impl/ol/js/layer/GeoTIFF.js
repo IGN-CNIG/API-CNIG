@@ -20,11 +20,16 @@ import ImplUtils from '../util/Utils';
 
 /**
  * @classdesc
- * GeoTIFF devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales.
- * Permitiendo las personalización de las capas mediante estilos. Se trata de un mapa dínamico.
+ * El formato ráster GeoTIFF aprovecha un formato de archivo independiente de plataforma (TIFF)
+ * maduro añadiendo los metadatos necesarios para describir y utilizar datos de imágenes geográficas.
+ * Estos metadatos sirven para georreferenciar el archivo ráster, por lo que a demás de los datos,
+ * el archivo contiene metadatos necesarios para su utilización.
  *
  * @property {Object} options Opciones de la capa GeoTIFF.
- * @property {Array<M.layer.GeoTIFF>} layers Intancia de GeoTIFF con metadatos.
+* @property {Boolean} visibility Define si la capa es visible o no.
+ * @property {Number} minZoom Limitar el zoom mínimo.
+ * @property {Number} maxZoom Limitar el zoom máximo.
+ * @property {Object} style Opciones de la capa GeoTIFF.
  *
  * @api
  * @extends {M.impl.layer.Layer}
@@ -130,11 +135,6 @@ class GeoTIFF extends LayerBase {
     this.style = this.options.style || '';
 
     this.projection_ = this.options.projection;
-
-    /**
-     * GeoTIFF sldBody. Parámetros "ol.source.ImageCOG"
-     */
-    this.sldBody = options.sldBody;
 
     /**
      * GeoTIFF zIndex_. Índice de la capa, (+40).

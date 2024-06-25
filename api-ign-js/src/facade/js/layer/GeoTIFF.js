@@ -15,8 +15,11 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * GeoTIFF devuelve un mapa en formato imagen de un conjunto capas ráster o vectoriales.
- * Permitiendo las personalización de las capas mediante estilos. Se trata de un mapa dínamico.
+ * El formato ráster GeoTIFF aprovecha un formato de archivo independiente de plataforma (TIFF)
+ * maduro añadiendo los metadatos necesarios para describir y utilizar 
+ * datos de imágenes geográficas.
+ * Estos metadatos sirven para georreferenciar el archivo ráster, por lo que a demás de los datos,
+ * el archivo contiene metadatos necesarios para su utilización.
  *
  * @property {String} legend Nombre asociado en el árbol de contenido, si usamos uno.
  * @property {Boolean} transparent 'Falso' si es una capa base, 'verdadero' en caso contrario.
@@ -34,19 +37,16 @@ class GeoTIFF extends LayerBase {
    * @constructor
    * @param {string|Mx.parameters.GeoTIFF} userParameters Parámetros para la
    * construcción de la capa.
-   * - name: nombre de la capa en el servidor.
-   * - url: url del servicio WFS.
+   * - name: nombre de la capa.
+   * - url: url del servicio.
    * - projection: SRS usado por la capa.
-   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - legend: nombre asociado en el árbol de contenidos, si usamos uno.
+   * - isBase: verdadero si es una capa base, falso en caso contrario.
    * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
-   *   En este caso la capa sería detectado por los plugins de tablas de contenidos
-   *   y aparecería como no visible.
-   * - type: Tipo de la capa.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - visibility: Indica la visibilidad de la capa.
-   *    * - convertToRGB: Convierte la compresion de la imagen a RGB, puede ser 'auto'|true|false,
+   * - convertToRGB: Convierte la compresion de la imagen a RGB, puede ser 'auto'|true|false,
    *   por defecto 'auto'.
    * - opacity: Opacidad de la capa de 0 a 1, por defecto 1.
    * - bands: Bandas a mostrar en forma de array y como numero, si el array esta vacio muestra todas
@@ -73,7 +73,6 @@ class GeoTIFF extends LayerBase {
    * @api
    */
   constructor(userParameters, options = {}, vendorOptions = {}) {
-    // checks if the implementation can create WMC layers
     if (isUndefined(GeoTIFFImpl)) {
       Exception(getValue('exception').geotiff_method);
     }
@@ -126,7 +125,7 @@ class GeoTIFF extends LayerBase {
    *
    * @function
    * @getter
-   * @returns {M.LayerType.GeoTIFF} Tipo GeoTIFF.
+   * @returns {String} Tipo GeoTIFF.
    * @api
    */
   get type() {
@@ -153,7 +152,7 @@ class GeoTIFF extends LayerBase {
    *
    * @function
    * @getter
-   * @return {M.layer.GeoTIFF.options} Devuelve las opciones de la
+   * @return {M.layer.GeoTIFF.impl.options} Devuelve las opciones de la
    * implementación.
    * @api
    */
@@ -195,6 +194,7 @@ class GeoTIFF extends LayerBase {
     if (obj instanceof GeoTIFF) {
       equals = (this.url === obj.url);
       equals = equals && (this.name === obj.name);
+      equals = equals && (this.legend === obj.legend);
     }
 
     return equals;
