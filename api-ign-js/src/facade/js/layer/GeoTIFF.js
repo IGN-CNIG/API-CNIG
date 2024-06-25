@@ -16,7 +16,7 @@ import { getValue } from '../i18n/language';
 /**
  * @classdesc
  * El formato ráster GeoTIFF aprovecha un formato de archivo independiente de plataforma (TIFF)
- * maduro añadiendo los metadatos necesarios para describir y utilizar 
+ * maduro añadiendo los metadatos necesarios para describir y utilizar
  * datos de imágenes geográficas.
  * Estos metadatos sirven para georreferenciar el archivo ráster, por lo que a demás de los datos,
  * el archivo contiene metadatos necesarios para su utilización.
