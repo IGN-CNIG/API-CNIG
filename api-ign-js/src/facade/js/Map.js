@@ -52,7 +52,7 @@ import GenericVector from './layer/GenericVector';
 import Panel from './ui/Panel';
 import * as Position from './ui/position';
 import GeoJSON from './layer/GeoJSON';
-import COG from './layer/COG';
+import GeoTIFF from './layer/GeoTIFF';
 import MapLibre from './layer/MapLibre';
 import StylePoint from './style/Point';
 import MBTiles from './layer/MBTiles';
@@ -616,8 +616,8 @@ class Map extends Base {
               case 'GeoJSON':
                 layer = new GeoJSON(parameterVariable, { style: parameterVariable.style });
                 break;
-              case 'COG':
-                layer = new COG(layerParam);
+              case 'GeoTIFF':
+                layer = new GeoTIFF(layerParam);
                 break;
               case 'KML':
                 layer = new KML(layerParam);
@@ -1159,19 +1159,19 @@ class Map extends Base {
   }
 
   /**
-   * Este método obtiene las capas COG agregadas al mapa.
+   * Este método obtiene las capas GeoTIFF agregadas al mapa.
    *
    * @function
    * @param {Array<string>|Array<Mx.parameters.WMC>} layersParam Opcional.
-   * - Matriz de capas de nombres, tipo COG.
-   * @returns {Array<COG>} Matriz de capas, tipo COG.
+   * - Matriz de capas de nombres, tipo GeoTIFF.
+   * @returns {Array<GeoTIFF>} Matriz de capas, tipo GeoTIFF.
    * @api
    */
-  getCOG(layersParamVar) {
+  getGeoTIFF(layersParamVar) {
     let layersParam = layersParamVar;
     // checks if the implementation can manage layers
-    if (isUndefined(MapImpl.prototype.getCOG)) {
-      Exception(getValue('exception').getcog_method);
+    if (isUndefined(MapImpl.prototype.getGeoTIFF)) {
+      Exception(getValue('exception').getgeotiff_method);
     }
 
     // parses parameters to Array
@@ -1185,30 +1185,30 @@ class Map extends Base {
     let filters = [];
     if (layersParam.length > 0) {
       filters = layersParam.map((layerParam) => {
-        return parameter.layer(layerParam, LayerType.COG);
+        return parameter.layer(layerParam, LayerType.GeoTIFF);
       });
     }
 
     // gets the layers
-    const layers = this.getImpl().getCOG(filters).sort(Map.LAYER_SORT);
+    const layers = this.getImpl().getGeoTIFF(filters).sort(Map.LAYER_SORT);
 
     return layers;
   }
 
   /**
-   * Este método agrega las capas COG al mapa.
-   *
-   * @function
-   * @param {Array<string>|Array<Mx.parameters.COG>} layersParam Colección u objeto de capa.
-   * @returns {Map} Devuelve el estado del mapa.
-   * @api
-   */
-  addCOG(layersParamVar) {
+ * Este método agrega las capas GeoTIFF al mapa.
+ *
+ * @function
+ * @param {Array<string>|Array<Mx.parameters.GeoTIFF>} layersParam Colección u objeto de capa.
+ * @returns {Map} Devuelve el estado del mapa.
+ * @api
+ */
+  addGeoTIFF(layersParamVar) {
     let layersParam = layersParamVar;
     if (!isNullOrEmpty(layersParam)) {
-      // checks if the implementation can manage layers
-      if (isUndefined(MapImpl.prototype.addCOG)) {
-        Exception(getValue('exception').addcog_method);
+    // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.addGeoTIFF)) {
+        Exception(getValue('exception').addgeotiff_method);
       }
 
       // parses parameters to Array
@@ -1216,57 +1216,56 @@ class Map extends Base {
         layersParam = [layersParam];
       }
 
-      // gets the parameters as COG objects to add
-      const cogLayers = [];
+      // gets the parameters as GeoTIFF objects to add
+      const geotiffLayers = [];
       layersParam.forEach((layerParam) => {
-        let cogLayer;
-        if (isObject(layerParam) && (layerParam instanceof COG)) {
-          cogLayer = layerParam;
+        let geotiffLayer;
+        if (isObject(layerParam) && (layerParam instanceof GeoTIFF)) {
+          geotiffLayer = layerParam;
         } else if (!(layerParam instanceof Layer)) {
           try {
-            cogLayer = new COG(layerParam, layerParam.options);
+            geotiffLayer = new GeoTIFF(layerParam, layerParam.options);
           } catch (err) {
             Dialog.error(err.toString());
             throw err;
           }
         }
-        // this.featuresHandler_.addLayer(cogLayer);
-        cogLayers.push(cogLayer);
+        geotiffLayers.push(geotiffLayer);
       });
 
       // adds the layers
-      this.getImpl().addCOG(cogLayers);
-      this.fire(EventType.ADDED_LAYER, [cogLayers]);
-      this.fire(EventType.ADDED_COG, [cogLayers]);
+      this.getImpl().addGeoTIFF(geotiffLayers);
+      this.fire(EventType.ADDED_LAYER, [geotiffLayers]);
+      this.fire(EventType.ADDED_GEOTIFF, [geotiffLayers]);
     }
     return this;
   }
 
   /**
-   * Este método elimina las capas COG del mapa.
-   *
-   * @function
-   * @param {Array<string>|Array<Mx.parameters.COG>} layersParam Matriz de capas de nombres que
-   * desea eliminar.
-   * @returns {Map} Devuelve el estado del mapa.
-   * @api
-   */
-  removeCOG(layersParam) {
+ * Este método elimina las capas GeoTIFF del mapa.
+ *
+ * @function
+ * @param {Array<string>|Array<Mx.parameters.GeoTIFF>} layersParam Matriz de capas de nombres que
+ * desea eliminar.
+ * @returns {Map} Devuelve el estado del mapa.
+ * @api
+ */
+  removeGeoTIFF(layersParam) {
     if (!isNullOrEmpty(layersParam)) {
-      // checks if the implementation can manage layers
-      if (isUndefined(MapImpl.prototype.removeCOG)) {
-        Exception(getValue('exception').removecog_method);
+    // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.removeGeoTIFF)) {
+        Exception(getValue('exception').removegeotiff_method);
       }
 
       // gets the layers
-      const cogLayers = this.getCOG(layersParam);
-      if (cogLayers.length > 0) {
-        this.fire(EventType.REMOVED_LAYER, [cogLayers]);
-        cogLayers.forEach((layer) => {
+      const geotiffLayers = this.getGeoTIFF(layersParam);
+      if (geotiffLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [geotiffLayers]);
+        geotiffLayers.forEach((layer) => {
           this.featuresHandler_.removeLayer(layer);
         });
         // removes the layers
-        this.getImpl().removeCOG(cogLayers);
+        this.getImpl().removeGeoTIFF(geotiffLayers);
       }
     }
     return this;
