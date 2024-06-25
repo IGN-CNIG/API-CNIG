@@ -62,6 +62,7 @@ class GeoTIFF extends LayerBase {
    * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
    *   En este caso la capa sería detectado por los plugins de tablas de contenidos
    *   y aparecería como no visible.
+   * - normalize: Normalización de los datos.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileCOG from 'ol/source/TileCOG';

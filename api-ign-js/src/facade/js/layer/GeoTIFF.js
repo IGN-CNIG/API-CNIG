@@ -12,7 +12,6 @@ import LayerBase from './Layer';
 import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
 import { getValue } from '../i18n/language';
-import { normalize } from 'yargs';
 
 /**
  * @classdesc
@@ -44,6 +43,7 @@ class GeoTIFF extends LayerBase {
    * - legend: nombre asociado en el árbol de contenidos, si usamos uno.
    * - isBase: verdadero si es una capa base, falso en caso contrario.
    * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
+   * - normalize: Normalización de los datos.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - visibility: Indica la visibilidad de la capa.
