@@ -441,7 +441,16 @@ class GenericRaster extends LayerBase {
    * @api stable
    */
   getMaxExtent() {
-    return this.ol3Layer.getExtent() || this.ol3Layer.getSource().getImageExtent();
+    let extent = this.ol3Layer.getExtent();
+    if (isUndefined(extent)) {
+      const tilegrid = this.ol3Layer.getSource().getTileGrid;
+      if (!isUndefined(tilegrid)) {
+        extent = this.ol3Layer.getSource().getTileGrid();
+      } else {
+        extent = this.ol3Layer.getSource().getImageExtent();
+      }
+    }
+    return extent;
   }
 
   /**

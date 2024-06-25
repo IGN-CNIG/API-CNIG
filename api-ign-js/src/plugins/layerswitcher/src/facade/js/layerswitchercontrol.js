@@ -417,7 +417,7 @@ export default class LayerswitcherControl extends M.Control {
     const selectLayer = evt.target.getAttribute('data-select-type');
     if (evt.target.id === 'm-layerswitcher-hsalllayers') {
       this.showHideAllLayers();
-    } else if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles')))
+    } else if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericRaster' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles')))
       && !M.utils.isNullOrEmpty(layerType)) {
       let layer = this.findLayer(evt);
       if (layer.length > 0) {
@@ -971,7 +971,7 @@ export default class LayerswitcherControl extends M.Control {
     const layerURL = evt.target.getAttribute('data-layer-url') || undefined;
     const layerType = evt.target.getAttribute('data-layer-type');
     let result = [];
-    if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles')))
+    if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericRaster' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles')))
       && !M.utils.isNullOrEmpty(layerType)) {
       result = this.overlayLayers.filter((l) => {
         return l.name === layerName && (l.url === layerURL

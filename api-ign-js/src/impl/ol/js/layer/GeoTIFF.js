@@ -7,6 +7,7 @@ import {
   isNullOrEmpty,
   extend,
   isNull,
+  isUndefined,
   getResolutionFromScale,
 } from 'M/util/Utils';
 import * as LayerType from 'M/layer/Type';
@@ -134,6 +135,11 @@ class GeoTIFF extends LayerBase {
      * GeoTIFF style. Estilo de las bandas.
      */
     this.style = this.options.style || '';
+
+    /**
+     * GeoTIFF normalize. Normalización de los datos.
+    */
+    this.normalize = isUndefined(this.options.normalize) ? true : this.options.normalize;
 
     this.projection_ = this.options.projection;
 
