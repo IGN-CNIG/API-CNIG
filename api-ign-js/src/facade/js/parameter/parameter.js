@@ -2285,6 +2285,35 @@ export const getVisibilityGeoTIFF = (parameter) => {
 };
 
 /**
+ * Analiza el parámetro para obtener la normalización de los datos de la capa GeoTIFF.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * la normalización de la capa GeoTIFF.
+ * @returns {boolean} Normalización de los datos.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getNormalizeGeoTIFF = (parameter) => {
+  let normalizeParam;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 8) {
+      const value = params[7];
+      normalizeParam = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.normalize)) {
+    normalizeParam = parameter.normalize;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return normalizeParam;
+};
+
+/**
  * Analiza el parámetro para obtener el nombre de la capa WMTS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
@@ -2690,6 +2719,9 @@ export const geotiff = (userParameters) => {
 
     // get visibility
     layerObj.visibility = getVisibilityGeoTIFF(userParam);
+
+    // get normalize
+    layerObj.normalize = getNormalizeGeoTIFF(userParam);
 
     layerObj.isBase = (layerObj.transparent === undefined)
       ? userParam.isBase

@@ -42,7 +42,7 @@ class GeoTIFF extends LayerBase {
    * @constructor
    * @implements {M.impl.Layer}
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
-   * - url: url del servicio WFS.
+   * - url: url del servicio.
    * - projection: SRS usado por la capa.
    * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
@@ -210,6 +210,7 @@ class GeoTIFF extends LayerBase {
   addTo(map) {
     this.map = map;
     this.createOLLayer_(null);
+    this.fire(EventType.ADDED_TO_MAP);
   }
 
   /**
@@ -314,6 +315,7 @@ class GeoTIFF extends LayerBase {
         sources,
         convertToRGB,
         projection: projectionGeoTIFF,
+        normalize: this.normalize,
       });
     }
     return olSource;

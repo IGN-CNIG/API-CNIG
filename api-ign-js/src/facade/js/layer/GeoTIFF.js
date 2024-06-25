@@ -12,6 +12,7 @@ import LayerBase from './Layer';
 import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
 import { getValue } from '../i18n/language';
+import { normalize } from 'yargs';
 
 /**
  * @classdesc
@@ -89,6 +90,7 @@ class GeoTIFF extends LayerBase {
       displayInLayerSwitcher: parameters.displayInLayerSwitcher,
       projection: parameters.projection,
       maxExtent: userParameters.maxExtent,
+      normalize: parameters.normalize,
     };
     const impl = new GeoTIFFImpl(optionsVar, vendorOptions);
     // calls the super constructor
