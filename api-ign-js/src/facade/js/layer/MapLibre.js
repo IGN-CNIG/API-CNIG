@@ -100,6 +100,8 @@ class MapLibre extends LayerBase {
 
     this.disableBackgroundColor = opts.disableBackgroundColor !== undefined
       ? opts.disableBackgroundColor : undefined;
+
+    this.style = opts.style;
   }
 
   /**
@@ -113,7 +115,9 @@ class MapLibre extends LayerBase {
     return this.getImpl().extract;
   }
 
-  getStyle() {}
+  getStyle() {
+    return this.style;
+  }
 
   /**
    * Devuelve el objeto geográfico con el id pasado por parámetros.
