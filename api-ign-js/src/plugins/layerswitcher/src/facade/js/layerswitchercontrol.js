@@ -50,7 +50,7 @@ const SPINER_FATHER = '.m-layerswitcher-search-panel';
 
 const SHOW_BUTTON = [1, 2, 3]; // Añadir más numeros para mostrar más botones
 
-const layersTypes = ['WMTS', 'WFS', 'MBTilesVector', 'MBTiles', 'OSM', 'XYZ', 'TMS', 'GeoJSON', 'KML', 'OGCAPIFeatures', 'Vector', 'GenericRaster', 'GenericVector', 'MVT', 'COG'];
+const layersTypes = ['WMTS', 'WFS', 'MBTilesVector', 'MBTiles', 'OSM', 'XYZ', 'TMS', 'GeoJSON', 'KML', 'OGCAPIFeatures', 'Vector', 'GenericRaster', 'GenericVector', 'MVT', 'GeoTIFF'];
 
 export default class LayerswitcherControl extends M.Control {
   constructor(options = {}) {
@@ -1263,9 +1263,9 @@ export default class LayerswitcherControl extends M.Control {
               }
             });
             M.proxy(this.statusProxy);
-            // COG
+            // GeoTIFF
           } else if (url.indexOf('.tif') >= 0) {
-            this.printLayerModal(url, 'cog');
+            this.printLayerModal(url, 'geotiff');
             // TMS
           } else if (url.indexOf('{z}/{x}/{-y}') >= 0) {
             this.printLayerModal(url, 'tms');
@@ -2335,8 +2335,8 @@ export default class LayerswitcherControl extends M.Control {
           obj.layers = layersSelected;
         }
         this.map_.addLayers(new M.layer.KML(obj));
-      } else if (type === 'cog') {
-        this.map_.addLayers(new M.layer.COG({
+      } else if (type === 'geotiff') {
+        this.map_.addLayers(new M.layer.GeoTIFF({
           name,
           legend,
           url,

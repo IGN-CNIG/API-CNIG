@@ -305,7 +305,7 @@ export const encodeImage = (layer) => {
   return encodedLayer;
 };
 
-export const encodeCOG = (layer) => {
+export const encodeGeoTIFF = (layer) => {
   let encodedLayer = null;
   const olLayer = layer.getImpl().getOL3Layer();
   encodedLayer = {

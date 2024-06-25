@@ -3,7 +3,7 @@
  */
 
 import {
-  encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS, encodeMVT, encodeCOG,
+  encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS, encodeMVT, encodeGeoTIFF,
 } from './encoders';
 
 export default class GeorefimageControl extends M.impl.Control {
@@ -105,8 +105,8 @@ export default class GeorefimageControl extends M.impl.Control {
       } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type)
         > -1) {
         success(encodeXYZ(layer));
-      } else if (layer.type === M.layer.type.COG) {
-        success(encodeCOG(layer));
+      } else if (layer.type === M.layer.type.GeoTIFF) {
+        success(encodeGeoTIFF(layer));
       } else {
         success(this.encodeWFS(layer));
       }

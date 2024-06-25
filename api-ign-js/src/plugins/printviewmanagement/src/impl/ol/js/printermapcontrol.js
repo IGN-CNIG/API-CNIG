@@ -3,7 +3,7 @@
  */
 
 import {
-  encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS, encodeCOG,
+  encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS, encodeGeoTIFF,
 } from './encoders';
 
 export default class PrinterMapControl extends M.impl.Control {
@@ -103,8 +103,8 @@ export default class PrinterMapControl extends M.impl.Control {
         } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type)
           > -1) {
           success(encodeXYZ(layer));
-        } else if (layer.type === M.layer.type.COG) {
-          success(encodeCOG(layer));
+        } else if (layer.type === M.layer.type.GeoTIFF) {
+          success(encodeGeoTIFF(layer));
         } else if (layer.type === M.layer.type.MVT
           || layer.type === M.layer.type.MBTiles || layer.type === M.layer.type.MBTilesVector) {
           this.errors.push(layer.name);
