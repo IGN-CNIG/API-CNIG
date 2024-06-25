@@ -250,6 +250,7 @@ class Map extends MObject {
     const kmlLayers = this.getKML(filters);
     const wmsLayers = this.getWMS(filters);
     const cogLayers = this.getCOG(filters);
+    const mapLibreLayers = this.getMapLibre(filters);
     const wfsLayers = this.getWFS(filters);
     const ogcapifLayers = this.getOGCAPIFeatures(filters);
     const wmtsLayers = this.getWMTS(filters);
@@ -262,6 +263,7 @@ class Map extends MObject {
 
     return kmlLayers.concat(wmsLayers)
       .concat(cogLayers)
+      .concat(mapLibreLayers)
       .concat(wfsLayers)
       .concat(ogcapifLayers)
       .concat(wmtsLayers)
@@ -324,6 +326,8 @@ class Map extends MObject {
         this.facadeMap_.addOGCAPIFeatures(layer);
       } else if (layer.type === LayerType.MVT) {
         this.facadeMap_.addMVT(layer);
+      } else if (layer.type === LayerType.MapLibre) {
+        this.facadeMap_.addMapLibre(layer);
       } else if (layer.type === 'MBTiles') {
         this.facadeMap_.addMBTiles(layer);
       } else if (layer.type === 'MBTilesVector') {
@@ -364,6 +368,7 @@ class Map extends MObject {
       this.removeKML(knowLayers);
       this.removeWMS(knowLayers);
       this.removeCOG(knowLayers);
+      this.removeMapLibre(knowLayers);
       this.removeWFS(knowLayers);
       this.removeOGCAPIFeatures(knowLayers);
       this.removeWMTS(knowLayers);
@@ -1702,6 +1707,104 @@ class Map extends MObject {
   }
 
   /**
+   * Este método obtiene las capas MapLibre del mapa.
+   *
+   * @function
+   * @param {Array<M.Layer>} filtersParam Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.MapLibre>} Capas MapLibre del mapa.
+   * @public
+   * @api
+   */
+  getMapLibre(filtersParam) {
+    let foundLayers = [];
+    let filters = filtersParam;
+
+    const MapLibreLayers = this.layers_.filter((layer) => {
+      return (layer.type === LayerType.MapLibre);
+    });
+
+    if (isNullOrEmpty(filters)) {
+      filters = [];
+    }
+    if (!isArray(filters)) {
+      filters = [filters];
+    }
+
+    if (filters.length === 0) {
+      foundLayers = MapLibreLayers;
+    } else {
+      filters.forEach((filterLayer) => {
+        const filteredMapLibreLayers = MapLibreLayers.filter((mapLibreLayer) => {
+          let layerMatched = true;
+          if (!foundLayers.includes(mapLibreLayer)) {
+            if (!isNullOrEmpty(filterLayer.type)) {
+              layerMatched = (layerMatched && (filterLayer.type === mapLibreLayer.type));
+            }
+            if (!isNullOrEmpty(filterLayer.url)) {
+              layerMatched = (layerMatched && (filterLayer.url === mapLibreLayer.url));
+            }
+            if (!isNullOrEmpty(filterLayer.name)) {
+              layerMatched = (layerMatched && (filterLayer.name === mapLibreLayer.name));
+            }
+          } else {
+            layerMatched = false;
+          }
+          return layerMatched;
+        });
+        foundLayers = foundLayers.concat(filteredMapLibreLayers);
+      });
+    }
+    return foundLayers;
+  }
+
+  /**
+     * Este método elimina las capas MapLibre del mapa especificadas por el usuario.
+     *
+     * @function
+     * @param {Array<M.layer.MapLibre>} layers Capas MapLibre a eliminar.
+     * @returns {M.impl.Map} Mapa.
+     * @public
+     * @api
+     */
+  removeMapLibre(layers) {
+    const mapLibreLayers = this.getMapLibre(layers);
+    mapLibreLayers.forEach((mapLibreLayer) => {
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(mapLibreLayer));
+      mapLibreLayer.getImpl().destroy();
+      mapLibreLayer.fire(EventType.REMOVED_FROM_MAP, [mapLibreLayer]);
+    });
+
+    return this;
+  }
+
+  /**
+     * Este método añade las capas MapLibre especificadas por el usuario al mapa.
+     *
+     * @function
+     * @param {Array<M.layer.MapLibre>} layers Capas MapLibre a añadir.
+     * @returns {M.impl.Map} Mapa.
+     * @public
+     * @api
+     */
+  addMapLibre(layers) {
+    layers.forEach((layer) => {
+      if (layer.type === LayerType.MapLibre) {
+        if (!includes(this.layers_, layer)) {
+          layer.getImpl().addTo(this.facadeMap_);
+          this.layers_.push(layer);
+          if (layer.transparent === true) {
+            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.MapLibre];
+            layer.setZIndex(zIndex);
+          } else {
+            layer.setZIndex(0);
+          }
+        }
+      }
+    });
+    return this;
+  }
+
+  /**
    * Este método obtiene las capas XYZ añadidas al mapa.
    *
    * @function
@@ -2947,6 +3050,7 @@ Map.Z_INDEX[LayerType.MVT] = 40;
 Map.Z_INDEX[LayerType.Vector] = 40;
 Map.Z_INDEX[LayerType.GeoJSON] = 40;
 Map.Z_INDEX[LayerType.COG] = 40;
+Map.Z_INDEX[LayerType.MapLibre] = 40;
 Map.Z_INDEX[LayerType.MBTiles] = 40;
 Map.Z_INDEX[LayerType.MBTilesVector] = 40;
 Map.Z_INDEX[LayerType.XYZ] = 40;

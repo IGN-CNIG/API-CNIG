@@ -193,6 +193,7 @@
     "location_method": "La implementación usada no puede crear controles Location",
     "wms_method": "La implementación usada no puede crear capas WMS",
     "cog_method": "La implementación usada no puede crear capas COG",
+    "mapLibre_method": "La implementación usada no puede crear capas MapLibre",
     "generic_method": "La implementación usada no puede crear capas Genéricas",
     "wmts_method": "La implementación usada no puede crear capas WMTS",
     "no_impl": "No se ha especificado ninguna implementación",

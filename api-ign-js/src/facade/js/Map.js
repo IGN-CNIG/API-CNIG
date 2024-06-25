@@ -53,6 +53,7 @@ import Panel from './ui/Panel';
 import * as Position from './ui/position';
 import GeoJSON from './layer/GeoJSON';
 import COG from './layer/COG';
+import MapLibre from './layer/MapLibre';
 import StylePoint from './style/Point';
 import MBTiles from './layer/MBTiles';
 import MBTilesVector from './layer/MBTilesVector';
@@ -653,6 +654,9 @@ class Map extends Base {
                 break;
               case 'GenericVector':
                 layer = new GenericVector(layerParam);
+                break;
+              case 'MapLibre':
+                layer = new MapLibre(layerParam);
                 break;
               default:
                 Dialog.error(getValue('dialog').invalid_type_layer);
@@ -1263,6 +1267,120 @@ class Map extends Base {
         });
         // removes the layers
         this.getImpl().removeCOG(cogLayers);
+      }
+    }
+    return this;
+  }
+
+  /**
+   * Este método obtiene las capas MapLibre agregadas al mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.WMC>} layersParam Opcional.
+   * - Matriz de capas de nombres, tipo MapLibre.
+   * @returns {Array<MapLibre>} Matriz de capas, tipo MapLibre.
+   * @api
+   */
+  getMapLibre(layersParamVar) {
+    let layersParam = layersParamVar;
+    // checks if the implementation can manage layers
+    if (isUndefined(MapImpl.prototype.getMapLibre)) {
+      Exception(getValue('exception').mapLibre_method);
+    }
+
+    // parses parameters to Array
+    if (isNull(layersParam)) {
+      layersParam = [];
+    } else if (!isArray(layersParam)) {
+      layersParam = [layersParam];
+    }
+
+    // gets the parameters as Layer objects to filter
+    let filters = [];
+    if (layersParam.length > 0) {
+      filters = layersParam.map((layerParam) => {
+        return parameter.layer(layerParam, LayerType.MapLibre);
+      });
+    }
+
+    // gets the layers
+    const layers = this.getImpl().getMapLibre(filters).sort(Map.LAYER_SORT);
+
+    return layers;
+  }
+
+  /**
+     * Este método agrega las capas MapLibre al mapa.
+     *
+     * @function
+     * @param {Array<string>|Array<Mx.parameters.MapLibre>} layersParam Colección u objeto de capa.
+     * @returns {Map} Devuelve el estado del mapa.
+     * @api
+     */
+  addMapLibre(layersParamVar) {
+    let layersParam = layersParamVar;
+    if (!isNullOrEmpty(layersParam)) {
+      // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.addMapLibre)) {
+        Exception(getValue('exception').addto_method);
+      }
+
+      // parses parameters to Array
+      if (!isArray(layersParam)) {
+        layersParam = [layersParam];
+      }
+
+      // gets the parameters as addMapLibre objects to add
+      const mapLibreLayers = [];
+      layersParam.forEach((layerParam) => {
+        let mapLibreLayer;
+        if (isObject(layerParam) && (layerParam instanceof MapLibre)) {
+          mapLibreLayer = layerParam;
+        } else if (!(layerParam instanceof Layer)) {
+          try {
+            mapLibreLayer = new MapLibre(layerParam, layerParam.options);
+          } catch (err) {
+            Dialog.error(err.toString());
+            throw err;
+          }
+        }
+        this.featuresHandler_.addLayer(mapLibreLayer);
+        mapLibreLayers.push(mapLibreLayer);
+      });
+
+      // adds the layers
+      this.getImpl().addMapLibre(mapLibreLayers);
+      this.fire(EventType.ADDED_LAYER, [mapLibreLayers]);
+      this.fire(EventType.ADDED_MAPLIBRE, [mapLibreLayers]);
+    }
+    return this;
+  }
+
+  /**
+     * Este método elimina las capas MapLibre del mapa.
+     *
+     * @function
+     * @param {Array<string>|Array<Mx.parameters.MapLibre>} layersParam Matriz de capas de nombres
+     * que desea eliminar.
+     * @returns {Map} Devuelve el estado del mapa.
+     * @api
+     */
+  removeMapLibre(layersParam) {
+    if (!isNullOrEmpty(layersParam)) {
+      // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.removeMapLibre)) {
+        Exception(getValue('exception').removelayers_method);
+      }
+
+      // gets the layers
+      const mapLibreLayers = this.getMapLibre(layersParam);
+      if (mapLibreLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [mapLibreLayers]);
+        mapLibreLayers.forEach((layer) => {
+          this.featuresHandler_.removeLayer(layer);
+        });
+        // removes the layers
+        this.getImpl().removeMapLibre(mapLibreLayers);
       }
     }
     return this;

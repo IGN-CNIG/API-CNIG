@@ -9,7 +9,6 @@ const webpack = require('webpack');
 const PJSON_PATH = path.resolve(__dirname, '..', 'package.json');
 const pjson = require(PJSON_PATH);
 
-
 module.exports = {
   mode: 'production',
   // node: {
@@ -22,7 +21,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
     filename: 'js/[name].js',
-    chunkFilename: 'chunk.js'
+    chunkFilename: 'chunk.js',
   },
   resolve: {
     alias: {
@@ -40,14 +39,14 @@ module.exports = {
       fs: false,
       path: false,
       crypto: false,
-      "buffer": require.resolve("buffer/"),
+      'buffer': require.resolve('buffer/'),
     },
   },
   module: {
     parser: {
       javascript: {
-        dynamicImportMode: "eager"
-      }
+        dynamicImportMode: 'eager',
+      },
     },
     rules: [
       {
@@ -80,6 +79,16 @@ module.exports = {
         exclude: /node_modules/,
         type: 'asset/inline',
       },
+      {
+        test: /node_modules\/@geoblocks\/.*\.m?js/,
+        type: 'javascript/auto',
+      },
+      {
+        test: /node_modules\/@geoblocks\/.*\.m?js/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
     ],
   },
   optimization: {
@@ -101,7 +110,7 @@ module.exports = {
       filename: 'assets/css/[name].css',
     }),
     new ESLintPlugin({
-      extensions: [`js`, `jsx`],
+      extensions: ['js', 'jsx'],
       // files: 'src/**/*',
       exclude: ['**/node_modules/**', '/lib/', '/test/', '/dist/'],
     }),
@@ -110,7 +119,7 @@ module.exports = {
         {
           from: 'src/configuration.js',
           to: `filter/configuration-${pjson.version}.js`,
-        }
+        },
       ],
     }),
     new CopywebpackPlugin({
@@ -118,7 +127,7 @@ module.exports = {
         {
           from: 'src/configuration.js',
           to: 'filter/configuration.js',
-        }
+        },
       ],
     }),
     new CopywebpackPlugin({
@@ -126,7 +135,7 @@ module.exports = {
         {
           from: 'src/facade/assets/images',
           to: 'assets/images',
-        }
+        },
       ],
     }),
     new CopywebpackPlugin({
@@ -134,7 +143,7 @@ module.exports = {
         {
           from: 'src/facade/assets/img',
           to: 'assets/img',
-        }
+        },
       ],
     }),
     new CopywebpackPlugin({
@@ -142,7 +151,7 @@ module.exports = {
         {
           from: 'src/facade/assets/svg',
           to: 'assets/svg',
-        }
+        },
       ],
     }),
     new CopywebpackPlugin({
@@ -150,7 +159,7 @@ module.exports = {
         {
           from: 'node_modules/sql.js/dist/sql-wasm.wasm',
           to: 'wasm/',
-        }
+        },
       ],
     }),
   ],

@@ -99,6 +99,16 @@ module.exports = {
         exclude: /node_modules/,
         type: 'asset/inline',
       },
+      {
+        test: /node_modules\/@geoblocks\/.*\.m?js/,
+        type: 'javascript/auto',
+      },
+      {
+        test: /node_modules\/@geoblocks\/.*\.m?js/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
     ],
   },
   plugins: [

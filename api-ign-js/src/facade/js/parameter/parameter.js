@@ -2704,6 +2704,26 @@ export const cog = (userParameters) => {
   return layers;
 };
 
+export const maplibre = (userParameters) => {
+  const params = userParameters;
+
+  if (!isString(params)) {
+    return userParameters;
+  }
+
+  const urlParams = params.split(/\*/);
+  return {
+    type: LayerType.MapLibre,
+    style: urlParams[1] || undefined,
+    disableBackgroundColor: urlParams[2] || undefined,
+    legend: urlParams[3] || undefined,
+    transparent: urlParams[4] || undefined,
+    extract: urlParams[5] || undefined,
+    displayInLayerSwitcher: urlParams[6] || undefined,
+    visibility: urlParams[7] || undefined,
+  };
+};
+
 /**
  * Analiza el parámetro para obtener el nombre de la capa XYZ.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -4235,6 +4255,7 @@ const parameterFunction = {
   osm,
   wms,
   cog,
+  maplibre,
   wmts,
   geojson,
   mvt,

@@ -50,6 +50,14 @@ export const ADDED_WMS = 'added:wms';
 export const ADDED_COG = 'added:cog';
 
 /**
+ * Evento que se produce al añadir MapLibre.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const ADDED_MAPLIBRE = 'added:maplibre';
+
+/**
  * Evento que se produce al añadir WFS.
  * @public
  * @type {string}

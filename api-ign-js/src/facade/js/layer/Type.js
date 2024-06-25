@@ -130,6 +130,16 @@ export const Vector = 'Vector';
 export const MVT = 'MVT';
 
 /**
+ * MapLibre. Se sirven en forma de teselas que contienen
+ * la información vectorial del área que delimitan.
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const MapLibre = 'MapLibre';
+
+/**
  * Tipo MBTiles. Es un formato de archivo para contener conjuntos
  * de imágenes (tilesets) bajo una estructura de base de datos SQLite.
  * @const
@@ -184,6 +194,7 @@ const layertypes = {
   GeoJSON,
   Vector,
   MVT,
+  MapLibre,
   XYZ,
   TMS,
   MBTiles,
@@ -232,6 +243,7 @@ export const know = (type) => {
     WFS,
     WMTS,
     MVT,
+    MapLibre,
     XYZ,
     TMS,
     MBTiles,
