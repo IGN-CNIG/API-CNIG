@@ -200,7 +200,9 @@ export default class BackImgLayerControl extends M.Control {
         sumIndex += 16;
       }
 
-      layer.setZIndex(sumIndex);
+      if (layer.zindex_) {
+        layer.setZIndex(sumIndex);
+      }
     });
 
     e.currentTarget.parentElement.querySelectorAll('div[id^="m-backimglayer-lyr-"]').forEach((imgContainer) => {
