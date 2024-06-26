@@ -445,7 +445,7 @@ class GenericRaster extends LayerBase {
     if (isUndefined(extent)) {
       const tilegrid = this.ol3Layer.getSource().getTileGrid;
       if (!isUndefined(tilegrid)) {
-        extent = this.ol3Layer.getSource().getTileGrid();
+        extent = this.ol3Layer.getSource().getTileGrid().getExtent();
       } else {
         extent = this.ol3Layer.getSource().getImageExtent();
       }
