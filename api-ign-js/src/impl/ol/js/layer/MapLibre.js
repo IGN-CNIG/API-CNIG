@@ -369,6 +369,27 @@ class MapLibre extends LayerBase {
   }
 
   /**
+   * Este método destruye esta capa, limpiando el HTML
+   * y anulando el registro de todos los eventos.
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  destroy() {
+    const olMap = this.map.getMapImpl();
+    if (!isNullOrEmpty(this.ol3Layer)) {
+      olMap.removeLayer(this.ol3Layer);
+      this.ol3Layer = null;
+    }
+    if (!isNullOrEmpty(this.layers)) {
+      this.layers.map(this.map.removeLayers, this.map);
+      this.layers.length = 0;
+    }
+    this.map = null;
+  }
+
+  /**
    * Este método comprueba si un objeto es igual
    * a esta capa.
    *

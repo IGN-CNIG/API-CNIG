@@ -8,6 +8,7 @@ import ControlImpl from 'impl/control/Control';
 import WMS from 'M/layer/WMS';
 import WMTS from 'M/layer/WMTS';
 import TMS from 'M/layer/TMS';
+import MapLibre from 'M/layer/MapLibre';
 import { getQuickLayers } from '../mapea';
 import ControlBase from './Control';
 import { compileSync as compileTemplate } from '../util/Template';
@@ -73,6 +74,8 @@ class BackgroundLayers extends ControlBase {
                 l = new WMTS(l);
               } else if (/TMS.*/.test(l)) {
                 l = new TMS(l);
+              } else if (/MapLibre.*/.test(l)) {
+                l = new MapLibre(l);
               } else {
                 l = new WMS(l);
               }
