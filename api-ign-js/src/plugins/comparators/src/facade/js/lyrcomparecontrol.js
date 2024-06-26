@@ -255,6 +255,10 @@ export default class LyrCompareControl extends M.Control {
     templateResult
       .then((t) => {
         html.querySelector('#m-comparators-contents').appendChild(t);
+
+        setTimeout(() => {
+          document.querySelector('#m-lyrcompare-void').click();
+        }, 1000);
       });
   }
 
@@ -513,6 +517,7 @@ export default class LyrCompareControl extends M.Control {
 
           this.updateControls();
           this.getImpl().setComparisonMode(this.comparisonMode);
+          this.setVisibleLayers_();
         });
       });
     }
@@ -687,6 +692,26 @@ export default class LyrCompareControl extends M.Control {
       );
       this.updateControls();
     }, 1000);
+  }
+
+  setVisibleLayers_() {
+    if (this.comparisonMode === 0) {
+      this.layerSelectedA.setVisible(false);
+      this.layerSelectedB.setVisible(false);
+      if (this.layerSelectedC !== null && this.layerSelectedD !== null) {
+        this.layerSelectedC.setVisible(false);
+        this.layerSelectedD.setVisible(false);
+      }
+    }
+
+    if (this.comparisonMode === 1 || this.comparisonMode === 2) {
+      this.layerSelectedA.setVisible(true);
+      this.layerSelectedB.setVisible(true);
+      if (this.layerSelectedC !== null && this.layerSelectedD !== null) {
+        this.layerSelectedC.setVisible(false);
+        this.layerSelectedD.setVisible(false);
+      }
+    }
   }
 
   /**

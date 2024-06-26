@@ -251,7 +251,6 @@ const CONFIG_IBERPIX_LAYERSWITCHER = {
   order: 12,
 };
 
-
 export default class WindowSyncControl extends M.Control {
   /**
      * @classdesc

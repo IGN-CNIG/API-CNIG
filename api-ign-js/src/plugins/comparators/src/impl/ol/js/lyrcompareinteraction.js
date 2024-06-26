@@ -15,12 +15,9 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     super(options);
     this.layers_ = [];
     this.swipeClicked = false;
-    ol.interaction.Pointer.call(this, {
-      handleDownEvent: this.setPosition,
-      // eslint-disable-next-line no-return-assign
-      handleUpEvent: () => this.swipeClicked = false,
-      handleMoveEvent: this.setPosition,
-    });
+    this.handleDownEvent = this.setPosition;
+    this.handleUpEvent = () => { this.swipeClicked = false; };
+    this.handleMoveEvent = this.setPosition;
 
     // Default options
     const optionsE = options || {};
@@ -279,7 +276,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
         e = [-10000000, -10000000];
       }
 
-      if (this.staticDivision === 2 && e.pointerEvent.buttons !== 1) {
+      if (this.staticDivision === 2 && e.originalEvent.buttons !== 1) {
         const lienzoMapa = this.map_.getSize();
         this.pos = [lienzoMapa[0] / 2, lienzoMapa[1] / 2];
         this.swipeClicked = false;
@@ -373,6 +370,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       ctx.lineTo(tr[0], tr[1]);
       ctx.closePath();
     }
+
     /**
      *
      * e2m: con esto podemos pintar una línea de color para contornear la capa. Pero no queda bien
@@ -572,6 +570,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
   postcomposeD_(e) {
     e.context.restore();
   }
+
   /**
    * Create the swipe indicator
    *

@@ -3,7 +3,6 @@
  */
 import LyrcompareInteraction from 'impl/lyrcompareinteraction';
 
-
 export default class Lyrcomparecontrol extends M.impl.Control {
   /**
    * This function adds the control to the specified map
@@ -135,8 +134,8 @@ export default class Lyrcomparecontrol extends M.impl.Control {
   removeInteraction() {
     this.olMap.getInteractions().forEach((interaction) => {
       if (interaction instanceof ol.interaction.PinchRotate
-        || interaction instanceof ol.interaction.DoubleClickZoom ||
-        interaction instanceof ol.interaction.KeyboardPan) {
+        || interaction instanceof ol.interaction.DoubleClickZoom
+        || interaction instanceof ol.interaction.KeyboardPan) {
         interaction.setActive(false);
       }
     });
