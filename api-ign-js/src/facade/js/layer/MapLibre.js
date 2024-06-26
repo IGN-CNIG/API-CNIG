@@ -317,6 +317,25 @@ class MapLibre extends LayerBase {
       Exception('El tipo de capa debe ser \''.concat(MapLibreType).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
     }
   }
+
+  /**
+   * Este método comprueba si un objeto es igual
+   * a esta capa.
+   *
+   * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {Boolean} Valor verdadero es igual, falso no lo es.
+   * @api
+   */
+  equals(obj) {
+    let equals = false;
+    if (obj instanceof MapLibre) {
+      equals = (this.style === obj.style);
+      equals = equals && (this.name === obj.name);
+    }
+
+    return equals;
+  }
 }
 
 /**
