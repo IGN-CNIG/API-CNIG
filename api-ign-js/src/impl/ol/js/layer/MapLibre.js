@@ -240,6 +240,8 @@ class MapLibre extends LayerBase {
         addAttribute = !includes(this.hiddenAttributes_, key);
       }
 
+      if (key === 'vectorTileFeature') return;
+
       if ((typeof properties[key] === 'object' && properties[key]) && !Array.isArray(properties[key])) {
         const values = this.recursiveExtract_(properties[key], (parentKey) ? `${parentKey} | ${key}` : key);
         attributes.push(...values);
