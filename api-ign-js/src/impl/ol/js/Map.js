@@ -951,6 +951,11 @@ class Map extends MObject {
         if (!includes(this.layers_, layer)) {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
+          layer.setZIndex(layer.getZIndex());
+          if (layer.getZIndex() == null) {
+            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.GeoTIFF];
+            layer.setZIndex(zIndex);
+          }
           if (!existsBaseLayer) {
             this.updateResolutionsFromBaseLayer();
           }

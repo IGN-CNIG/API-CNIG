@@ -341,8 +341,8 @@ class GeoTIFF extends LayerBase {
 
     const olProperties = this.getOL3Layer().getProperties();
     if (olProperties.source.tileGrid) {
-      this.extent_ = olProperties.source.getTileGrid().extent_;
-      this.extentProj_ = olProperties.source.projection.code_;
+      this.extent_ = olProperties.source.getTileGrid().getExtent();
+      this.extentProj_ = olProperties.source.projection.getCode();
       this.extent_ = ImplUtils.transformExtent(this.extent_, this.extentProj_, olProjection);
     } else {
       this.extent_ = olProjection.getExtent();

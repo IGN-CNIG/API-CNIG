@@ -16,6 +16,7 @@ import ImageWMS from 'ol/source/ImageWMS';
 import OLSourceWMTS from 'ol/source/WMTS';
 import OLFormatWMTSCapabilities from 'ol/format/WMTSCapabilities';
 import { get as getRemote } from 'M/util/Remote';
+import { get as getProj } from 'ol/proj';
 
 import LayerBase from './Layer';
 import FormatWMS from '../format/WMS';
@@ -23,6 +24,7 @@ import GetCapabilities from '../util/WMSCapabilities';
 import getLayerExtent from '../util/wmtscapabilities';
 
 import ImplMap from '../Map';
+import ImplUtils from '../util/Utils';
 
 /**
  * @classdesc
@@ -446,6 +448,9 @@ class GenericRaster extends LayerBase {
       const tilegrid = this.ol3Layer.getSource().getTileGrid;
       if (!isUndefined(tilegrid)) {
         extent = this.ol3Layer.getSource().getTileGrid().getExtent();
+        const extentProj = this.ol3Layer.getSource().getProjection().getCode();
+        extent = ImplUtils
+          .transformExtent(extent, extentProj, getProj(this.map.getProjection().code));
       } else {
         extent = this.ol3Layer.getSource().getImageExtent();
       }
