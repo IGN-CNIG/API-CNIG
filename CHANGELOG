@@ -3,6 +3,7 @@
 - Se soluciona problema al obtener la leyenda de las capas
 - Subida de versión de OL a la 8.1
 - Plugin Incicarto: cambio de texto a mostrar al superar el límite de tamaño del fichero a enviar
+- Se soluciona el problema en el plugin backimglayer al cargar las capas como cadena.
 
 29/02/2024 - Versión 4.9.0
 - Plugin comparators: se añade nuevo control windowsync y se añaden traducciones.
