@@ -14,10 +14,8 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
   constructor(options) {
     super(options);
     this.layers_ = [];
-    ol.interaction.Pointer.call(this, {
-      handleDownEvent: this.setPosition,
-      handleMoveEvent: this.setPosition,
-    });
+    this.handleDownEvent = this.setPosition;
+    this.handleMoveEvent = this.setPosition;
 
     // Default options
     const optionsE = options || {};
@@ -26,7 +24,6 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
     this.pos = optionsE.freezeInPosition;
     this.radius = (optionsE.radius || 100);
     this.OLVersion = 'OL6';
-
 
     const layer = [optionsE.layers]
     // eslint-disable-next-line no-shadow
@@ -195,7 +192,6 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
     // ctx.clip();
     // console.log(pointerPos);
 
-
     // Rectangle
     // var ctx = event.context;
     // var pixelRatio = event.frameState.pixelRatio;
@@ -208,31 +204,31 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
 
     // Heart
 
-  // const ctx = event.context;
-  // // calculate the pixel ratio and rotation of the canvas
-  // const matrix = event.inversePixelTransform;
-  // const canvasPixelRatio = Math.sqrt(
-  //   matrix[0] * matrix[0] + matrix[1] * matrix[1]
-  // );
-  // const canvasRotation = -Math.atan2(matrix[1], matrix[0]);
-  // ctx.save();
-  // // center the canvas and remove rotation to position clipping
-  // ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
-  // ctx.rotate(-canvasRotation);
+    // const ctx = event.context;
+    // // calculate the pixel ratio and rotation of the canvas
+    // const matrix = event.inversePixelTransform;
+    // const canvasPixelRatio = Math.sqrt(
+    //   matrix[0] * matrix[0] + matrix[1] * matrix[1]
+    // );
+    // const canvasRotation = -Math.atan2(matrix[1], matrix[0]);
+    // ctx.save();
+    // // center the canvas and remove rotation to position clipping
+    // ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
+    // ctx.rotate(-canvasRotation);
 
-  // ctx.scale(3 * canvasPixelRatio, 3 * canvasPixelRatio);
-  // ctx.translate(-75, -80);
-  // ctx.beginPath();
-  // ctx.moveTo(75, 40);
-  // ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
-  // ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
-  // ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
-  // ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
-  // ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
-  // ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
-  // ctx.clip();
-  // ctx.translate(75, 80);
-  // ctx.scale(1 / 3 / canvasPixelRatio, 1 / 3 / canvasPixelRatio);
+    // ctx.scale(3 * canvasPixelRatio, 3 * canvasPixelRatio);
+    // ctx.translate(-75, -80);
+    // ctx.beginPath();
+    // ctx.moveTo(75, 40);
+    // ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
+    // ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+    // ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
+    // ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+    // ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+    // ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
+    // ctx.clip();
+    // ctx.translate(75, 80);
+    // ctx.scale(1 / 3 / canvasPixelRatio, 1 / 3 / canvasPixelRatio);
 
   // // reapply canvas rotation and position
   // ctx.rotate(canvasRotation);

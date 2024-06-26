@@ -115,6 +115,8 @@ export default class ComparatorsControl extends M.Control {
       true : this.options.windowsyncParams;
 
     this.control = null;
+
+    this.enabledDisplayInLayerSwitcher = this.options.enabledDisplayInLayerSwitcher || false;
   }
 
   /**
@@ -127,20 +129,24 @@ export default class ComparatorsControl extends M.Control {
    */
   createView(map) {
     this.map_ = map;
+
     this.layerDefault = this.map_.getLayers().filter(l => l.getZIndex() !== 0 && l.name !== '__draw__');
     this.layersPlugin = [];
+    this.listLayersString = [];
+    this.saveLayers = [];
+    this.addLayersEventsMap_();
 
     if (this.options.listLayers) {
-      this.layersPlugin = this.options.listLayers
+      this.listLayersString = this.options.listLayers
         .map(l => ((l instanceof Object) ? transformToStringLayers(l, this.map_) : l));
+      this.layersPlugin = this.listLayersString;
     }
 
-    if (this.options.enabledDisplayInLayerSwitcher) {
+    if (this.enabledDisplayInLayerSwitcher === true) {
       this.layersPlugin = this.layersPlugin.concat(this.map_
         .getLayers()
         .filter(l => l.displayInLayerSwitcher && (l.type === 'WMS' || l.type === 'WMTS'))
         .map(l => transformToStringLayers(l, this.map_)));
-      this.addLayersEventsMap_();
       this.removeLayersEventMap_();
       this.defaultLayers_(this.layerDefault);
     }
@@ -154,6 +160,7 @@ export default class ComparatorsControl extends M.Control {
         this.layersPlugin,
         this.map_,
         this.defaultCompareMode,
+        this,
       ],
       controlCreate: param => new MirrorpanelControl(...param),
       control: null,
@@ -166,6 +173,7 @@ export default class ComparatorsControl extends M.Control {
         this.lyrcompareParams,
         this.layersPlugin,
         this.map_,
+        this,
       ],
       controlCreate: param => new LyrCompareControl(...param),
       control: null,
@@ -178,6 +186,7 @@ export default class ComparatorsControl extends M.Control {
         this.transparencyParams,
         this.layersPlugin,
         this.map_,
+        this,
       ],
       controlCreate: param => new TransparencyControl(...param),
       control: null,
@@ -196,7 +205,6 @@ export default class ComparatorsControl extends M.Control {
       active: false,
     },
     ];
-
 
     return new Promise((success, fail) => {
       const translations = {
@@ -234,7 +242,6 @@ export default class ComparatorsControl extends M.Control {
 
       this.accessibilityTab_(this.html);
 
-
       setTimeout(() => {
         this.defaultCompareMode_();
       }, 500);
@@ -260,7 +267,7 @@ export default class ComparatorsControl extends M.Control {
   }
 
   eventActive_() {
-    this.removeLayers_();
+    // this.removeLayers_();
     this.controls.forEach((c) => {
       if (c.controlParam[0]) {
         if (c.active) {
@@ -279,6 +286,10 @@ export default class ComparatorsControl extends M.Control {
             }, 1000);
           }
 
+          if (c.id === 'mirrorpanel') {
+            this.map_.getLayers().forEach(l => !l.isBase && l.setVisible(false));
+          }
+
           const control = c.controlCreate(c.controlParam);
           // eslint-disable-next-line no-param-reassign
           c.control = control;
@@ -292,7 +303,6 @@ export default class ComparatorsControl extends M.Control {
         }
       }
     });
-    this.defaultLayers_();
   }
 
   defaultLayers_() {
@@ -311,44 +321,33 @@ export default class ComparatorsControl extends M.Control {
 
   // Añadir las capas que se van añadiendo
   addLayersEventsMap_() {
+    const enabledControlsPlugins = this.enabledDisplayInLayerSwitcher;
     [M.evt.ADDED_WMTS, M.evt.ADDED_WMS].forEach((evt) => {
       this.map_.on(evt, (layer) => {
-        // mirrror
-        if (this.controls[0].active) {
-          this.addLayersEventMapMirror_(layer);
+        if (enabledControlsPlugins === true) {
+          // mirrror
+          if (this.controls[0].active) {
+            this.addLayersEventMapMirror_(layer);
+          }
+
+          // lyrcompare
+          if (this.controls[1].active) {
+            const selectes = ['m-lyrcompare-lyrA', 'm-lyrcompare-lyrB', 'm-lyrcompare-lyrC', 'm-lyrcompare-lyrD'];
+            this.addNewLayerUpdate_(layer, this.controls[1].control, selectes);
+          }
+
+          // transparency
+          if (this.controls[2].active) {
+            const selectes = ['m-transparency-lyr'];
+            this.addNewLayerUpdate_(layer, this.controls[2].control, selectes);
+          }
         }
 
-        // lyrcompare
-        if (this.controls[1].active) {
-          const selectes = ['m-lyrcompare-lyrA', 'm-lyrcompare-lyrB', 'm-lyrcompare-lyrC', 'm-lyrcompare-lyrD'];
-          this.addNewLayerUpdate_(layer, this.controls[1].control, selectes);
-        }
-
-        // transparency
-        if (this.controls[2].active) {
-          const selectes = ['m-transparency-lyr'];
-          this.addNewLayerUpdate_(layer, this.controls[2].control, selectes);
-        }
-
-        if (!this.controls[0].active && !this.controls[1].active && !this.controls[2].active) {
-          const [, otherLayers] = checkLayers(layer, this.layersPlugin);
-
-          const layersStringDefault = [];
-
-          otherLayers.forEach((l) => {
-            if (l.displayInLayerSwitcher && l.transparent) {
-              layersStringDefault.push(transformToStringLayers(l, this.map_, false));
-            }
-          });
-
-          this.layersPlugin = [...this.layersPlugin, ...layersStringDefault];
-          this.layerDefault = [...this.layerDefault, ...layersStringDefault];
-
-          // eslint-disable-next-line
-          this.controls.forEach(c =>
-            // eslint-disable-next-line
-            c.controlParam[1] = [...c.controlParam[1], ...layersStringDefault]);
-        }
+        layer.forEach((l) => {
+          if (!this.saveLayers.includes(l.name)) {
+            this.saveLayers.push(l.name);
+          }
+        });
       });
     });
   }
@@ -515,12 +514,6 @@ export default class ComparatorsControl extends M.Control {
     html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
   }
 
-  defaultCompareViz_() {
-    if (!this.controls[0].active || !this.options.defaultCompareViz) return;
-    const { defaultCompareViz } = this.options;
-    this.options.modeViz = defaultCompareViz;
-  }
-
   /**
    * This function destroys controls inside this control
    *
@@ -550,7 +543,8 @@ export default class ComparatorsControl extends M.Control {
     this.layersPlugin.forEach((l) => {
       const layerName = getNameString(l);
       const filter = this.map_.getLayers().filter(({ name }) => name === layerName);
-      this.map_.removeLayers(filter);
+      const notLoaded = filter.filter(s => this.saveLayers.includes(s.name));
+      this.map_.removeLayers(notLoaded);
     });
   }
 

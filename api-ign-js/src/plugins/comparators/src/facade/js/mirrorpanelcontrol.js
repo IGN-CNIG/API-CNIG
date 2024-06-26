@@ -18,7 +18,7 @@ export default class MirrorpanelControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(values, controlsLayers, map) {
+  constructor(values, controlsLayers, map, _, comparatorsControls) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(MirrorpanelImplControl)) {
       M.exception(getValue('exception'));
@@ -159,6 +159,8 @@ export default class MirrorpanelControl extends M.Control {
      */
     this.enabledKeyFunctions = values.enabledKeyFunctions;
     if (this.enabledKeyFunctions === undefined) this.enabledKeyFunctions = true;
+
+    this.comparatorsControls = comparatorsControls;
   }
 
   /**
@@ -297,8 +299,8 @@ export default class MirrorpanelControl extends M.Control {
     this.maps.forEach((map) => {
       if (this.layerSelected[map] !== null) {
         const [type, nameWMS, , , nameWMTS] = this.layerSelected[map].split('*');
-        if (type === 'WMS') this.mapL[map].removeWMS(nameWMS);
-        if (type === 'WMTS') this.mapL[map].removeWMTS(nameWMTS);
+        if (type === 'WMS') this.mapL[map].removeWMS({ name: nameWMS });
+        if (type === 'WMTS') this.mapL[map].removeWMTS({ name: nameWMTS });
       }
     });
   }
@@ -651,14 +653,23 @@ export default class MirrorpanelControl extends M.Control {
 
     const mapSelect = this.layerSelected[map];
     if (mapSelect) {
-      const [type, , nameWMS, , nameWMTS] = mapSelect.split('*');
-      if (type === 'WMS') { this.mapL[map].removeWMS(nameWMS); }
-      if (type === 'WMTS') { this.mapL[map].removeWMTS(nameWMTS); }
+      const [type, , , nameWMS, layerWMTS] = mapSelect.split('*');
+      if (type === 'WMS' && this.comparatorsControls.saveLayers.includes(nameWMS)) {
+        this.mapL[map].getWMS(nameWMS)[0].setVisible(false);
+      }
+
+      if (type === 'WMTS' && !this.comparatorsControls.saveLayers.includes(layerWMTS)) { this.mapL[map].removeWMTS(layerWMTS); }
     }
 
     if (value !== 'void') {
-      this.mapL[map].addLayers(value);
-      this.layerSelected[map] = value;
+      const someSaveLayers = this.comparatorsControls.saveLayers.find(l => value.includes(l));
+      const layerFind = this.mapL[map].getLayers().find(l => l.name === someSaveLayers);
+      if (layerFind) {
+        layerFind.setVisible(true);
+      } else {
+        this.mapL[map].addLayers(value);
+        this.layerSelected[map] = value;
+      }
     }
   }
 
