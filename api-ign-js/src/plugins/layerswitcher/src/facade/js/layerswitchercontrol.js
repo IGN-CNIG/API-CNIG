@@ -50,7 +50,7 @@ const SPINER_FATHER = '.m-layerswitcher-search-panel';
 
 const SHOW_BUTTON = [1, 2, 3]; // Añadir más numeros para mostrar más botones
 
-const layersTypes = ['WMTS', 'WFS', 'MBTilesVector', 'MBTiles', 'OSM', 'XYZ', 'TMS', 'GeoJSON', 'KML', 'OGCAPIFeatures', 'Vector', 'GenericRaster', 'GenericVector', 'MVT', 'GeoTIFF'];
+const layersTypes = ['WMTS', 'WFS', 'MBTilesVector', 'MBTiles', 'OSM', 'XYZ', 'TMS', 'GeoJSON', 'KML', 'OGCAPIFeatures', 'Vector', 'GenericRaster', 'GenericVector', 'MVT', 'GeoTIFF', 'MapLibre'];
 
 export default class LayerswitcherControl extends M.Control {
   constructor(options = {}) {
@@ -316,7 +316,7 @@ export default class LayerswitcherControl extends M.Control {
         type: layer.type,
         visible: (layer.isVisible() === true),
         id: layer.name,
-        url: layer.url,
+        url: layer.type === 'MapLibre' ? layer.style : layer.url,
         outOfRange: !layer.inRange(),
         checkedLayer: layer.checkedLayer || 'false',
         opacity: layer.getOpacity(),
@@ -1236,33 +1236,43 @@ export default class LayerswitcherControl extends M.Control {
               }
               metadata = url.replace(orderxyz, 'metadata.json');
             }
-            M.proxy(this.useProxy);
-            M.remote.get(metadata).then((meta) => {
-              if (json && meta.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
-                this.printLayerModal(url, 'geojson');
-              } else {
-                let parse = JSON.parse(meta.text);
-                let url2;
-                if (!M.utils.isNullOrEmpty(parse)) {
-                  if (!M.utils.isNullOrEmpty(parse.json)) {
-                    parse = JSON.parse(parse.json);
-                  }
-                  url2 = metadata.substring(0, metadata.lastIndexOf('/') + 1).concat(orderxyz);
+
+            if (url.indexOf('{z}/{x}/{-y}') >= 0) {
+              this.printLayerModal(url, 'tms');
+            } else if (url.indexOf('{z}/{x}/{y}') >= 0) {
+              this.printLayerModal(url, 'xyz');
+            } else {
+              M.proxy(this.useProxy);
+              M.remote.get(metadata).then((meta) => {
+                if (json && meta.text.indexOf('sources') && meta.text.indexOf('version') && meta.text.indexOf('layers')) {
+                  this.printLayerModal(url, 'maplibre');
+                } else if (json && meta.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
+                  this.printLayerModal(url, 'geojson');
                 } else {
-                  parse = {};
+                  let parse = JSON.parse(meta.text);
+                  let url2;
+                  if (!M.utils.isNullOrEmpty(parse)) {
+                    if (!M.utils.isNullOrEmpty(parse.json)) {
+                      parse = JSON.parse(parse.json);
+                    }
+                    url2 = metadata.substring(0, metadata.lastIndexOf('/') + 1).concat(orderxyz);
+                  } else {
+                    parse = {};
+                  }
+                  let layers = parse.vector_layers || [];
+                  let urlLayer = parse.tileurl || parse.tiles || url2 || url;
+                  if (M.utils.isString(urlLayer)) {
+                    urlLayer = [urlLayer];
+                  }
+                  layers = layers.map((layer) => {
+                    return { name: layer.id };
+                  });
+                  this.printLayerModal(urlLayer[0], 'mvt', layers);
                 }
-                let layers = parse.vector_layers || [];
-                let urlLayer = parse.tileurl || parse.tiles || url2 || url;
-                if (M.utils.isString(urlLayer)) {
-                  urlLayer = [urlLayer];
-                }
-                layers = layers.map((layer) => {
-                  return { name: layer.id };
-                });
-                this.printLayerModal(urlLayer[0], 'mvt', layers);
-              }
-            });
-            M.proxy(this.statusProxy);
+              });
+              M.proxy(this.statusProxy);
+            }
+
             // GeoTIFF
           } else if (url.indexOf('.tif') >= 0) {
             this.printLayerModal(url, 'geotiff');
@@ -2220,6 +2230,8 @@ export default class LayerswitcherControl extends M.Control {
 
   // Plantilla para añadir capas (Generales)
   printLayerModal(url, type, layers) {
+    // eslint-disable-next-line no-console
+    console.log('printLayerModal', url, type, layers);
     const modal = M.template.compileSync(layerModalTemplate, {
       jsonp: true,
       parseToHtml: false,
@@ -2340,6 +2352,12 @@ export default class LayerswitcherControl extends M.Control {
           name,
           legend,
           url,
+        }));
+      } else if (type === 'maplibre') {
+        this.map_.addLayers(new M.layer.MapLibre({
+          name,
+          legend,
+          style: url,
         }));
       }
 
