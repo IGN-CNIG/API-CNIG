@@ -17,13 +17,10 @@ import LayerBase from './Layer';
 
 /**
  * @classdesc
- * Las capas de tipo Vector Tile ofrecen ciertas ventajas en algunos escenarios,
- * debido a su bajo peso y carga rápida,
- * ya que se sirven en forma de teselas que contienen la información vectorial
- * del área que delimitan.
+ * MapLibre ofrecen la posibilidad de cargar styles (.json) de MapLibre.
  *
  * @api
- * @extends {M.impl.layer.Vector}
+ * @extends {M.impl.layer.MapLibre}
  */
 
 class MapLibre extends LayerBase {
@@ -32,17 +29,17 @@ class MapLibre extends LayerBase {
    * con parámetros especificados por el usuario.
    *
    * @constructor
-   * @implements {M.impl.layer.Vector}
+   * @implements {M.impl.layer.MapLibre}
    * @param {M.layer.MapLibre.parameters} parameters Opciones de la fachada, la fachada se refiere a
    * un patrón estructural como una capa de abstracción con un patrón de diseño.
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
-   * - style: Define el estilo de la capa.
    * - minZoom. Zoom mínimo aplicable a la capa.
    * - maxZoom. Zoom máximo aplicable a la capa.
-   * - visibility. Define si la capa es visible o no. Verdadero por defecto.
+   * - minScale. Escala mínima aplicable a la capa.
+   * - maxScale. Escala máxima aplicable a la capa.
+   * - minResolution. Resolución mínima aplicable a la capa.
+   * - maxResolution. Resolución máxima aplicable a la capa.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
-   * - opacity. Opacidad de capa, por defecto 1.
-   * - maxExtent: La medida en que restringe la visualización a una región específica.
    * @param {Object} vendorOptions Opciones para la biblioteca base.
    * @api
    */
@@ -157,6 +154,13 @@ class MapLibre extends LayerBase {
     }
   }
 
+  /**
+   * Este método establece la visibilidad de la capa.
+   * @public
+   * @function
+   * @param {Boolean} visible Visibilidad de la capa.
+   * @api stable
+   */
   setStyleMap(style) {
     const mapLibreMap = this.ol3Layer.mapLibreMap;
     mapLibreMap.setStyle(style);
@@ -185,12 +189,30 @@ class MapLibre extends LayerBase {
     this.ol3Layer.setMinZoom(this.minZoom);
   }
 
+  /**
+   * Este método establece el valor de una propiedad de pintura.
+   * @function
+   * @public
+   * @param {String} layerId Id de la capa.
+   * @param {String} property Propiedad de pintura.
+   * @param {*} value Valor de la propiedad.
+   * @api
+   */
   setPaintProperty(layer, property, value) {
     this.ol3Layer.mapLibreMap.on('style.load', () => {
       this.ol3Layer.mapLibreMap.setPaintProperty(layer, property, value);
     });
   }
 
+  /**
+   * Este método establece el valor de una propiedad de diseño.
+   * @function
+   * @public
+   * @param {String} layerId Id de la capa.
+   * @param {String} property Propiedad de diseño.
+   * @param {*} value Valor de la propiedad.
+   * @api
+   */
   setLayoutProperty(layer, property, value) {
     this.ol3Layer.mapLibreMap.on('style.load', () => {
       this.ol3Layer.mapLibreMap.setLayoutProperty(layer, property, value);

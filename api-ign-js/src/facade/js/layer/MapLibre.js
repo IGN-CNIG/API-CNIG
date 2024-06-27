@@ -17,13 +17,20 @@ import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
- * Las capas de tipo Vector Tile ofrecen ciertas ventajas en algunos escenarios,
- * debido a su bajo peso y carga rápida,
- * ya que se sirven en forma de teselas que contienen la información vectorial
- * del área que delimitan.
+ * Las capas de tipo MapLibre ofrecen la posibilidad de cargar styles (.json) de MapLibre.
  *
  * @property {Boolean} extract Activa la consulta al hacer clic sobre un objeto geográfico,
  * por defecto falso.
+ * @property {String} infoEventType Tipo de evento para mostrar la info de una feature.
+ * @property {Boolean} disableBackgroundColor Desactiva el color de fondo de la capa.
+ * @property {Object} style Estilos de la capa.
+ * @property {String} type Tipo de capa.
+ * @property {String} name Nombre de la capa.
+ * @property {Number} opacity Opacidad de la capa.
+ * @property {Boolean} visibility Verdadero si la capa es visible, falso si queremos que no lo sea.
+ * @property {String} legend Leyenda de la capa.
+ * @property {Object} attribution Atribución de la capa.
+ *
  *
  * @api
  * @extends {M.layer.Vector}
@@ -35,7 +42,7 @@ class MapLibre extends LayerBase {
    *
    * @constructor
    * @param {string|Mx.parameters.MapLibre} parameters Parámetros para la construcción de la capa.
-   * - url: Url del servicio que devuelve los tiles vectoriales.
+   * - style: Url del servicio (.json).
    * - name: Nombre de la capa, debe ser único en el mapa.
    * - opacity: Opacidad de la capa (0-1), por defecto 1.
    * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
@@ -43,11 +50,18 @@ class MapLibre extends LayerBase {
    *   contenidos y aparecería como no visible.
    * - extract: Opcional Activa la consulta por click en el objeto geográfico, por defecto falso.
    * - type: Tipo de la capa.
+   * - infoEventType: Tipo de evento para mostrar la info de una feature.
+   * - disableBackgroundColor: Desactiva el color de fondo de la capa.
+   * - legend: Leyenda de la capa.
+   * - attribution: Atribución de la capa.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - minZoom. Zoom mínimo aplicable a la capa.
    * - maxZoom. Zoom máximo aplicable a la capa.
-   * - visibility. Define si la capa es visible o no. Verdadero por defecto.
+   * - minScale. Escala mínima aplicable a la capa.
+   * - maxScale. Escala máxima aplicable a la capa.
+   * - minResolution. Resolución mínima aplicable a la capa.
+   * - maxResolution. Resolución máxima aplicable a la capa.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * @param {Object} implParam Valores de la implementación por defecto,
    * se pasa un objeto implementación MapLibre.
@@ -115,6 +129,10 @@ class MapLibre extends LayerBase {
     return this.getImpl().extract;
   }
 
+  /**
+   *  Devuelve el style de la capa.
+   * @returns {Object} Estilos de la capa.
+   */
   getStyle() {
     return this.style;
   }
@@ -174,10 +192,7 @@ class MapLibre extends LayerBase {
    *
    * @function
    * @public
-   * @param {M.Style} styleParam Estilos que proporciona el usuario.
-   * @param {Boolean} applyToFeature Verdadero el estilo se aplicará a los objetos geográficos,
-   * por defecto falso.
-   * @param {M.layer.MapLibre.DEFAULT_OPTIONS_STYLE} defaultStyle Estilos por defecto de la capa.
+   * @param {Object} newStyle Estilo de la capa.
    * @api
    */
   setStyle(newStyle) {
@@ -201,10 +216,28 @@ class MapLibre extends LayerBase {
     }
   }
 
+  /**
+   * Este método establece el valor de una propiedad de pintura.
+   * @function
+   * @public
+   * @param {String} layerId Id de la capa.
+   * @param {String} property Propiedad de pintura.
+   * @param {*} value Valor de la propiedad.
+   * @api
+   */
   setPaintProperty(layerId, property, value) {
     this.getImpl().setPaintProperty(layerId, property, value);
   }
 
+  /**
+   * Este método establece el valor de una propiedad de diseño.
+   * @function
+   * @public
+   * @param {String} layerId Id de la capa.
+   * @param {String} property Propiedad de diseño.
+   * @param {*} value Valor de la propiedad.
+   * @api
+   */
   setLayoutProperty(layerId, property, value) {
     this.getImpl().setLayoutProperty(layerId, property, value);
   }
