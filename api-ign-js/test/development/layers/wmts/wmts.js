@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import WMTS from 'M/layer/WMTS';
 
 export const wmts_001 = new WMTS({
@@ -6,8 +7,6 @@ export const wmts_001 = new WMTS({
   legend: 'Modelo Digital de Superficies LiDAR',
   matrixSet: 'GoogleMapsCompatible',
   // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
-  // minZoom: 5,
-  // maxZoom: 10,
   // useCapabilities: false,
   // useCapabilities: true,
   // isBase: false,
@@ -21,8 +20,11 @@ export const wmts_001 = new WMTS({
   //     contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
   //     contentType: 'kml',
   //   },
-},
-{
+  // minZoom: 1,
+  // maxZoom: 5,
+}, {
+  // minZoom: 5,
+  // maxZoom: 10,
   // matrixSet: 'GoogleMapsCompatible',
   // format: 'image/png',
   // useCapabilities: false,
@@ -42,8 +44,7 @@ export const wmts_001 = new WMTS({
   // opacity: 0,
   // opacity: 0.5,
   // opacity: 1,
-},
-{
+}, {
   // capabilitiesMetadata: {
   //  Abstract: '',
   //  Attribution: '',
@@ -51,13 +52,11 @@ export const wmts_001 = new WMTS({
   //  Style: '',
   // },
   // source: {},
-},
-);
+});
 
 // ERROR: No funciona opacity al 0
 
 export const wmts_002 = 'WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*true*image/jpeg*true*true*true';
-
 
 export const wmts_003 = new WMTS({
   url: 'https://servicios.idee.es/wmts/ocupacion-suelo',
@@ -66,7 +65,6 @@ export const wmts_003 = new WMTS({
   matrixSet: 'GoogleMapsCompatible',
   format: 'image/png',
 });
-
 
 export const wmts_004 = new WMTS({
   url: 'https://www.ign.es/wmts/planos?',

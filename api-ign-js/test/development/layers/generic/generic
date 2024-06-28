@@ -2,7 +2,7 @@
 import ImageWMS from 'ol/source/ImageWMS';
 import GenericRaster from 'M/layer/GenericRaster';
 import GenericVector from 'M/layer/GenericVector';
-import Polygon from 'M/style/Polygon';
+import Polygon from 'M/style/Polygon';// eslint-disable-line no-unused-vars
 import { Image, Vector as VectorLayer } from 'ol/layer';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -58,7 +58,11 @@ export const generic_001 = new GenericRaster({
   //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
   //   contentType: 'kml',
   // },
+  // minZoom: 1,
+  // maxZoom: 5,
 }, {
+  // minZoom: 5,
+  // maxZoom: 10,
   visibility: true,
   // visibility: false,
   displayInLayerSwitcher: true,
@@ -104,7 +108,11 @@ export const generic_002 = new GenericVector({
   //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
   //   contentType: 'kml',
   // },
+  // minZoom: 1,
+  // maxZoom: 5,
 }, {
+  // minZoom: 5,
+  // maxZoom: 10,
   // sldBody,
   // cql: "nombre LIKE '%ada%'",
   // attribution: {

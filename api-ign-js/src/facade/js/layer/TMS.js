@@ -117,6 +117,11 @@ class TMS extends LayerBase {
     this.url = parameters.url;
 
     /**
+     * XYZ maxextent: Extensión de visualización
+     */
+    this.userMaxExtent = userParameters.maxExtent;
+
+    /**
      * TMS name: Nombre de la capa.
      */
     this.name = parameters.name;
@@ -127,20 +132,21 @@ class TMS extends LayerBase {
     this.legend = parameters.legend;
 
     /**
-     * TMS minzoom. Zoom mínimo.
-     */
-    this.minZoom = parameters.minZoom;
-
-    /**
-     * TMS maxzoom. Zoom máximo.
-     */
-    this.maxZoom = parameters.maxZoom;
-
-    /**
      * TMS tileGridMaxZoom. Zoom máximo de cuadrícula de mosaico.
      */
     this.tileGridMaxZoom = parameters.tileGridMaxZoom;
 
+    if (isUndefined(this.tileGridMaxZoom)) {
+      /**
+       * TMS minzoom. Zoom mínimo.
+       */
+      this.minZoom = options.minZoom;
+
+      /**
+       * TMS maxzoom. Zoom máximo.
+       */
+      this.maxZoom = options.maxZoom;
+    }
     /**
      * TMS options. Opciones de capa.
      */

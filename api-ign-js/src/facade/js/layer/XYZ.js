@@ -26,6 +26,7 @@ import { getValue } from '../i18n/language';
  * @property {Number} tileGridMaxZoom Zoom máximo de la tesela en forma de rejilla.
  * @property {Object} options Opciones de capa XYZ.
  * @property {Boolean} isbase Define si la capa es base.
+ * @property {Array} maxExtent La medida en que restringe la visualización a una región específica.
  *
  * @api
  * @extends {M.layer}
@@ -94,6 +95,11 @@ class XYZ extends LayerBase {
     this.url = parameters.url;
 
     /**
+     * XYZ maxextent: Extensión de visualización
+     */
+    this.userMaxExtent = userParameters.maxExtent;
+
+    /**
      * XYZ name: Identificador de capa.
      */
     this.name = parameters.name;
@@ -105,13 +111,14 @@ class XYZ extends LayerBase {
     /**
      * XYZ minZoom: Límite del zoom mínimo.
      */
-    this.minZoom = parameters.minZoom;
+    // this.minZoom = parameters.minZoom;
+    this.minZoom = options.minZoom;
 
     /**
      * XYZ maxZoom: Límite del zoom máximo.
      */
-
-    this.maxZoom = parameters.maxZoom;
+    // this.minZoom = parameters.minZoom;
+    this.maxZoom = options.maxZoom;
 
     /**
      * XYZ tileGridMaxZoom: Zoom máximo de la tesela en forma de rejilla.

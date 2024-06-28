@@ -1,12 +1,12 @@
 const path = require('path');
 const fse = require('fs-extra');
 const webpack = require('webpack');
-const AllowMutateEsmExports = require('./AllowMutateEsmExportsPlugin');
 const argv = require('yargs').argv;
 const ESLintPlugin = require('eslint-webpack-plugin');
+const AllowMutateEsmExports = require('./AllowMutateEsmExportsPlugin');
 
 const testName = argv.name;
-const coremin = argv['core-min'];
+// const coremin = argv['core-min']; // no-unused-vars
 if (testName === undefined) {
   const error = new Error('Test name is undefined. Use: npm start -- --name=<test-name>');
   throw error;

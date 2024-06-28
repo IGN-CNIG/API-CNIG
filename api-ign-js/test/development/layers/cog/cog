@@ -1,53 +1,51 @@
+/* eslint-disable camelcase,import/prefer-default-export */
 import COG from 'M/layer/COG';
 
 export const cog_001 = new COG({
-    url: 'http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif',
-    name: 'Nombre cog',
-    legend: 'Leyenda cog',
-    // transparent: false,
-    // isBase: true,
-    // visibility: true,
-    //   attribution: {
-    //   name: 'COG',
-    //   description: 'Mi COG',
-    //   url: 'https://www.ign.es',
-    //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
-    //   contentType: 'kml',
-    // },
+  url: 'http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif',
+  name: 'Nombre cog',
+  legend: 'Leyenda cog',
+  // transparent: false,
+  // isBase: true,
+  // visibility: true,
+  //   attribution: {
+  //   name: 'COG',
+  //   description: 'Mi COG',
+  //   url: 'https://www.ign.es',
+  //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+  //   contentType: 'kml',
+  // },
   // projection: 'EPSG:4326',
-    // maxExtent: [299487.4297775584, 5224273.407288137, 317192.1564541124, 5228878.738242318],
-  },{
-    // minZoom: 11,
-    // maxZoom: 13,
-  //  minScale: 54000,
-  //  maxScale: 217000,
-    // minResolution: 38.21851414258813,
-    // maxResolution: 152.8740565703525,
+  // maxExtent: [299487.4297775584, 5224273.407288137, 317192.1564541124, 5228878.738242318],
+}, {
+  // minZoom: 11,
+  // maxZoom: 13,
+  // minScale: 54000,
+  // maxScale: 217000,
+  // minResolution: 38.21851414258813,
+  // maxResolution: 152.8740565703525,
   // opacity: 0.5,
-
-    // convertToRGB: false,
-    nodata: 0,
-    // bands: [1],
-    // opacity: 0.25,
-    
-    styles: {
-      // color: [
-      //   'interpolate',
-      //   ['linear'],
-      //   ['/', ['+', 
-      //     ['/', ['band', 1], 3000],
-      //     ['/', ['band', 2], 3000],
-      //     ['/', ['band', 3], 3000]
-      //   ], 2],
-      //   0, [255, 255, 255],  // Color blanco en lugar de negro
-      //   1, [255, 0, 0],      // Rojo
-      // ],
-      gamma: 0.5,
-    },
-  }, {
-    // opacity: 0.3
-  }
-)
+  // convertToRGB: false,
+  nodata: 0,
+  // bands: [1],
+  // opacity: 0.25,
+  styles: {
+    // color: [
+    //   'interpolate',
+    //   ['linear'],
+    //   ['/', ['+',
+    //     ['/', ['band', 1], 3000],
+    //     ['/', ['band', 2], 3000],
+    //     ['/', ['band', 3], 3000]
+    //   ], 2],
+    //   0, [255, 255, 255],  // Color blanco en lugar de negro
+    //   1, [255, 0, 0],      // Rojo
+    // ],
+    gamma: 0.5,
+  },
+}, {
+  // opacity: 0.3
+});
 
 // export const cog_002 = 'COG*https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif';
 

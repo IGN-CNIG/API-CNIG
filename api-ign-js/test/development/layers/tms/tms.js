@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import TMS from 'M/layer/TMS';
 
 export const tms_001 = new TMS({
@@ -5,9 +6,7 @@ export const tms_001 = new TMS({
   name: 'TMSBaseIGN',
   projection: 'EPSG:3857',
   legend: 'Capa TMS',
-  minZoom: 5,
-  maxZoom: 9,
-  tileGridMaxZoom: 10,
+  tileGridMaxZoom: 10, // Afecta minZoom y maxZoom.
   // tileSize: 50,
   // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
   // visibility: false,
@@ -27,16 +26,17 @@ export const tms_001 = new TMS({
   crossOrigin: 'anonymous',
   // displayInLayerSwitcher: false,
   // displayInLayerSwitcher: true,
+  // minZoom: 5, // NOT USED
+  // maxZoom: 9, // NOT USED
 }, {
+  // minZoom: 5,
+  // maxZoom: 10,
   // opacity: 0,
   // opacity: 0.5,
   // opacity: 1,
   // displayInLayerSwitcher: false,
   // displayInLayerSwitcher: true,
-}, {
-
-},
-);
+});// , {}
 
 // ERROR: No funcionan los niveles de zooom maximo y minimo
 

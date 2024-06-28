@@ -145,12 +145,12 @@ class WMS extends LayerBase {
     /**
      * WMS minZoom: Limitar el zoom mínimo.
      */
-    this.minZoom = parameters.minZoom;
+    this.minZoom = options.minZoom;
 
     /**
      * WMS maxZoom: Limitar el zoom máximo.
      */
-    this.maxZoom = parameters.maxZoom;
+    this.maxZoom = options.maxZoom;
 
     /**
      * WMS options: Opciones WMS.

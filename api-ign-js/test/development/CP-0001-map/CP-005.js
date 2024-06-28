@@ -582,7 +582,8 @@ const xyz = new XYZ({
   name: 'AtlasDeCresques',
   projection: 'EPSG:3857',
   visibility: true,
-}); // CORS ERROR
+  // minZoom: 3, // maxZoom: 7,
+}, { minZoom: 3, maxZoom: 7 }); // CORS ERROR
 
 // Guardar todos los __proto__ del Objeto "mapa", usando ... para traerse elementos de estos objetos a un objeto común con el que se trabajará
 const mergeObjects = (first, second) => { return { ...first, ...Object.getOwnPropertyDescriptors(second) }; };
