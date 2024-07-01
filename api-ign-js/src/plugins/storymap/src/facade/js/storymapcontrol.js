@@ -299,6 +299,7 @@ export default class StoryMapControl extends M.Control {
           // Evitar que ejecute esto cuando es el ultimo capitulo y el ultimo step
           if (Math.abs(target.scrollHeight - target.clientHeight - target.scrollTop) < 1
             && !(navContent[navContent.length - 1].id === cap.id && `step${cap.childElementCount - 1}` === target.id)) {
+            target.scroll({ top: 10, behavior: 'auto' });
             // eslint-disable-next-line no-param-reassign
             target.style = 'display: none';
             const idStep = Number(step.id.replace('step', '')) + 1;
@@ -326,6 +327,7 @@ export default class StoryMapControl extends M.Control {
             // ***** Atras *****
           } else if (target.scrollTop === 0 && !(cap.id === 'cap0' && target.id === 'step0')) {
             const idStep = Number(step.id.replace('step', '')) - 1;
+            target.scroll({ top: 10, behavior: 'auto' });
             // eslint-disable-next-line no-param-reassign
             target.style = 'display: none';
 
