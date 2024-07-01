@@ -145,7 +145,7 @@ export default class MouseSRS extends M.Plugin {
     this.control_ = new MouseSRSControl(
       this.srs_,
       this.label_,
-      this.precision,
+      this.precision_,
       this.geoDecimalDigits,
       this.utmDecimalDigits,
       this.tooltip_,
@@ -241,7 +241,7 @@ export default class MouseSRS extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    let cadena = `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*${this.precision}`;
+    let cadena = `${this.name}=${this.tooltip_}*${this.srs_}*${this.label_}*${this.precision_}`;
 
     if (this.geoDecimalDigits === undefined || this.geoDecimalDigits == null || this.geoDecimalDigits === '') {
       cadena += '*';

@@ -85,19 +85,6 @@ export default class GeorefImageEpsgControl extends M.Control {
       parameters: {},
     };
 
-    /**
-      * Mapfish options params
-      * @private
-      * @type {String}
-      */
-    this.options_ = {
-      legend: 'false',
-      forceScale: false,
-      dpi: this.dpi_,
-      format: this.format_,
-      layout: this.layout_,
-    };
-
     this.documentRead_ = document.createElement('img');
     this.canvas_ = document.createElement('canvas');
     this.canceled = false;

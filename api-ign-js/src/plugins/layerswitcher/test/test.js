@@ -135,7 +135,7 @@ const capaGeoJSON = new M.layer.GeoJSON({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
   extract: true,
 });
-map.addLayers(capaGeoJSON); window.capaGeoJSON = capaGeoJSON; // */
+// map.addLayers(capaGeoJSON); window.capaGeoJSON = capaGeoJSON; // */
 
 /* / Reemplazo de capa GeoJson 1
 map.getMapImpl().on('moveend', () => {
@@ -179,7 +179,7 @@ const capaGeoJSON2 = new M.layer.GeoJSON({
     },
   },
 });
-map.addLayers(capaGeoJSON2); window.capaGeoJSON2 = capaGeoJSON2; // */
+// map.addLayers(capaGeoJSON2); window.capaGeoJSON2 = capaGeoJSON2; // */
 
 /* / Capa OSM 1
 const capaOSM = new M.layer.OSM({
@@ -209,11 +209,10 @@ const capaMVT = new M.layer.MVT({ // No visible en zooms 0-7, saltan errores 404
   projection: 'EPSG:3857',
   extract: true,
 });
-map.addLayers(capaMVT); window.capaMVT = capaMVT; // */
+// map.addLayers(capaMVT); window.capaMVT = capaMVT; // */
 
-/* / Capa OGCAPIFeatures
 const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
-  url: 'https://api-features.idee.es/collections/', name: 'hidrografia/Falls', // 1 - ERROR 404, no existe realmente, se cambia por uno valido
+  url: 'https://api-features.idee.es/collections/', name: 'falls', 
   legend: 'Capa OGCAPIFeatures L',
   limit: 20,
 }, {
@@ -235,7 +234,7 @@ const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
     radius: 15,
   }),
 });
-map.addLayers(capaOGCAPIFeatures); window.capaOGCAPIFeatures = capaOGCAPIFeatures; // */
+map.addLayers(capaOGCAPIFeatures); window.capaOGCAPIFeatures = capaOGCAPIFeatures;
 
 /* / Capa TMS
 const capaTMS = new M.layer.TMS({
@@ -319,7 +318,7 @@ const capaXYZ = new M.layer.XYZ({
   legend: 'Capa XYZ l',
   projection: 'EPSG:3857',
 },{
-  crossOrigin: false // parece ser necesario para evitar errores de CORS
+  crossOrigin: false
 });
 map.addLayers(capaXYZ); window.capaXYZ = capaXYZ; // */
 
@@ -397,7 +396,7 @@ const mbtileVector = new M.layer.MBTilesVector({
 map.addLayers(mbtileVector); window.mbtileVector = mbtileVector; // */
 
 // Capa COG
-const cog = new M.layer.COG({
+const cog = new M.layer.GeoTIFF({
   url: 'http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif',
   name: 'Nombre cog',
   legend: 'Leyenda cog',
@@ -406,7 +405,7 @@ const cog = new M.layer.COG({
   convertToRGB: 'auto',
   nodata: 0,
 });
-map.addLayers(cog); window.cog = cog; // */
+// map.addLayers(cog); window.cog = cog; // */
 
 /* / Plugin TOC
 const mp3 = new M.plugin.TOC({
@@ -440,15 +439,3 @@ map.addPlugin(mp1);
 window.mp1 = mp1;
 
 // Para pruebas locales, lanzar Tomcat del proyecto y usar "http://localhost:8080" en vez de "https://mapea-lite.desarrollo.guadaltel.es"
-
-// Lista de errores encontrados
-
-// 1 - ERROR, al crear este layer de OGCAPIFeatures, se obtiene un code 404 en "loadInternal_" de "WFS.js", por lo que el text es null, pero se intenta usar. Este error ya se apunto pero solo para los WFS, se debería de incluir que también ocurre en este layer.
-
-// 2 - ERROR, comentario de "// Servicios precargados" repetido en "layerswitcher/src/facade/js/layerswitcher.js" el segundo tiene que describir que se permite usar label como WMS, GeoJson ...
-
-// 3 - ERROR, no se comenta en Readme la existencia del parámetro "useAttributions", tampoco esta en "getAPIRest()" y el JSP de este plugin, parece que necesita el control de "attributions" para poder ver las atribuciones que se añaden por cada uso de añadir capas.
-
-// 4 - ERROR, El botón de "Mostrar información del servicio" de "show_service_info" expande el contenido del popup, pero el popup sigue siendo del mismo tamaño y los elementos añadidos flotan fuera de este. Para encontrar este botón, hay que darle a "añadir" de capas y escoger un grupo de estos, aquí aparecerá el botón.
-
-// 5 - ERROR, en Añadido de capas, en el botón pequeño de binoculares, aparece la capa "Cartografia_Geologica/IGME_Litologias_1M", que parece que en "getRemote(wmsGetCapabilitiesUrl).then((response) => { const getCapabilitiesDocument = response.xml; ..." no tiene el xml, se observa que si tiene "text" que parece tener ese "xml" en formato string, pero si se asigna como tal, terminará lanzando el siguiente error porque "node = wmsNode.querySelector('Layer');" el querySelector no existe sobre el string del supuesto xml intercambiado. Esta de aquí es la URL de capabilities "https://www.ign.es/wms-inspire/unidades-administrativas?request=GetCapabilities&service=WMS&version=1.3.0"

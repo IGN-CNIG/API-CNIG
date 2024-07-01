@@ -219,7 +219,7 @@ export default class Layerswitcher extends M.Plugin {
     // Servicios precargados
     this.precharged = options.precharged || PRECHARGED;
 
-    // Servicios precargados
+    // Mostrar tipo de capa
     this.displayLabel = !M.utils.isUndefined(options.displayLabel) ? options.displayLabel : false;
 
     //  Metadatos

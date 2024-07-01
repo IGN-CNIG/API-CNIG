@@ -15,7 +15,7 @@ export default class HelpControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(map) {
+  constructor(map, managementControl) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(HelpImplControl)) {
       M.exception(getValue('exception'));
@@ -35,6 +35,8 @@ export default class HelpControl extends M.Control {
     this.template = null;
 
     this.closeEventActive_ = false;
+
+    this.managementControl_ = managementControl;
   }
 
   /**

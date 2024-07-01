@@ -49,9 +49,9 @@ export default class PredefinedZoomControl extends M.Control {
           newBtn.setAttribute('id', `m-predefinedzoom-${customZoom.name}`);
           newBtn.setAttribute('title', customZoom.name);
           if (customZoom.bbox !== undefined) {
-            newBtn.addEventListener('click', () => this.zoomToGivenBox(newBtn, customZoom.bbox));
+            newDiv.addEventListener('click', () => this.zoomToGivenBox(newBtn, customZoom.bbox));
           } else if (customZoom.center !== undefined && customZoom.zoom !== undefined) {
-            newBtn.addEventListener('click', () => this.zoomToCenter(newBtn, customZoom.center, customZoom.zoom));
+            newDiv.addEventListener('click', () => this.zoomToCenter(newBtn, customZoom.center, customZoom.zoom));
           }
           const newSpan = document.createElement('span');
           newSpan.classList.add('m-predefinedzoom-namezoom');

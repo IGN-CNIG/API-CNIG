@@ -225,6 +225,8 @@ export default class BackImgLayerControl extends M.Control {
         });
         */
       // }, 1000);
+    } else if (this.empty) {
+      e.currentTarget.parentElement.querySelector('#m-backimglayer-lyr-empty').classList.add('activeBackimglayerDiv');
     }
     this.fire('backimglayer:activeChanges', [{ activeLayerId: this.activeLayer }]);
   }

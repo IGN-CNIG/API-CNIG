@@ -226,8 +226,7 @@ export default class SelectionZoom extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*
-    ${this.ids}*${this.titles}*${this.previews}*${this.bboxs}*${this.zooms}`;
+    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*${this.ids}*${this.titles}*${this.previews}*${this.bboxs}*${this.zooms}`;
   }
 
   /**

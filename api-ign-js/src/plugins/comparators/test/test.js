@@ -19,7 +19,7 @@ const mpLayerswitcher = new M.plugin.Layerswitcher({
 
 map.addPlugin(mpLayerswitcher);
 
-/* // PRUEBA ?, desconozco uso de esta prueba, por si solo sufre errores por insuficiencia de layers al usar transparencia al no existir listLayers. Es limpiado si existe plugin Comparators y se intenta ver menú de transparencia.
+/* // 
  const x = [
   'WMS*Americano 1956-1957*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957',
   'WMS*Interministerial 1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986',
@@ -56,7 +56,7 @@ const WMSObject = x.map((layer) => {
 });
 map.addLayers(WMSObject); // */
 
-/* // PRUEBA ?, desconozco uso de esta prueba, por si solo sufre errores por insuficiencia de layers al usar transparencia al no existir listLayers. Es limpiado si existe plugin Comparators y se intenta ver menú de transparencia.
+/* // PRUEBA ?, 
 const wmtsString = [
   'WMTS*https://www.ign.es/wmts/mapa-raster*MTN*GoogleMapsCompatible*Mapa MTN*image/jpeg',
   'WMTS*https://www.ign.es/wmts/primera-edicion-mtn?*mtn50-edicion1*GoogleMapsCompatible*MTN50 1Edi*image/jpeg',
@@ -79,7 +79,7 @@ const wmtsObject = wmtsString.map((layer) => {
 });
 map.addLayers(wmtsObject); // Falta este addLayers para usarlo igual que WMSObject */
 
-/* // PRUEBA ?, desconozco uso de esta prueba, por si solo sufre errores por insuficiencia de layers al usar transparencia.
+/* // PRUEBA 
 // const objWMTSMapaSoloTextos = new M.layer.WMTS({
 //  url: 'https://www.ign.es/wmts/mapa-raster', name: 'MTN_Fondo',
 //  matrixSet: 'GoogleMapsCompatible', legend: 'MTN Fondo', transparent: true,
@@ -141,7 +141,7 @@ const bkmp = new M.plugin.BackImgLayer({
   ],
 }); map.addPlugin(bkmp); window.bkmp = bkmp; // */
 
-/* // PRUEBA ?, Añado una capa al mapa, desconozco uso de esta prueba, por si solo sufre errores por insuficiencia de layers al usar transparencia al no existir listLayers. Es limpiado si existe plugin Comparators y se intenta ver menú de transparencia.
+/* // PRUEBA ?,
 const ocupacionSuelo = new M.layer.WMTS({
   url: 'https://wmts-mapa-lidar.idee.es/lidar',
   name: 'EL.GridCoverageDSM',
@@ -208,9 +208,9 @@ const mp = new Comparators({
   isDraggable: false,
   enabledDisplayInLayerSwitcher: false,
   // tooltip: 'Plugin Comparators', // Si se evita uso de opciones tooltip, se usa el archivo de traducción por defecto
-  defaultCompareMode: 'mirrorPanelParams', // 2 - ERROR, y 4 - ERROR
-  enabledKeyFunctions: true, // 3 - ERROR, 7 - ERROR MEJORA
-  // lyrsMirrorMinZindex: 10, // 5 - ERROR
+  defaultCompareMode: 'mirrorPanelParams', 
+  enabledKeyFunctions: true, 
+  // lyrsMirrorMinZindex: 10, 
   transparencyParams: {
     radius: 100,
     maxRadius: 200,
@@ -266,33 +266,3 @@ const mp = new Comparators({
 map.addPlugin(mp);
 
 window.mp = mp; // */
-
-// Lista de errores encontrados
-
-// 1 - ERROR Se ha observado que la traducción del "comparators/src/facade/js/i18n/en.json" tiene puesto "exception.fourLayers" y "exception.notLayers" sin traducción correcta comparado con el lenguaje español. Parecen haber sido copiados de "no_layers_plugin".
-
-// 2 - ERROR "transparecyParams"(SIN segunda "n") es mal, tiene que ser "transparencyParams", por lo que hay esta inconsistencia en los textos de README y "plugins/comparators/src/facade/js/comparatorscontrol.js" que se deberían de cambiar.
-// 3 - ERROR enabledKeyFunctions, Los eventos lanzados por esta configuración de "plugins/comparators/src/facade/js/transparencycontrol.js" y "plugins/comparators/src/facade/js/mirrorpanelcontrol.js" se pueden generar de forma duplicada cada vez que se da click a las opciones de comparado. En "transparencycontrol" también se genera aunque si se pone false no debería de haberse generado igual que "mirrorpanelcontrol" que se lo salta en ese caso. Se podría añadir función "addEventKey_" a este también.
-// Con poner el generado de estos dos activate con "if (this.enabledKeyFunctions) {this.functionKeyDown = (zEvent) => {...};document.addEventListener('keydown', this.functionKeyDown);}" y en Deactivate el apartados "document.removeEventListener('keydown', this.functionKeyDown);" Se impide esta acumulación de eventos.
-// Además hay caso de repetidas llamadas a "if" de "zEvent.ctrlKey && zEvent.shiftKey" que se podría unir en un único if antes del siguiente if.
-// Teniendo en cuenta que "combinedKeys === 'Escape'" de "plugins/comparators/src/facade/js/mirrorpanelcontrol.js" se puede simplificar con un solo if de "(zEvent.key === 'Escape' && !(zEvent.ctrlKey || zEvent.shiftKey || zEvent.altKey || zEvent.metaKey))", eliminando también constante "keyStr". Si se combina con el arreglo de antes de "zEvent.ctrlKey && zEvent.shiftKey", se puede saltar en este caso en el "else" estas mismas pruebas de variables.
-
-// 4 - ERROR Parámetro "defaultCompareMode" no parece hacer nada en las pruebas de JSP de este plugin, porque esta configurado a usar valores default simples(ej 'mirror', 'spyeye' ...) que no se utilizan aquí, tienen que ser 'mirrorpanelParams', 'lyrcompareParams', 'transparecyParams', 'windowsyncParams' o 'none' en el select.
-// 5 - ERROR Parámetro 'lyrsMirrorMinZindex' no se usa en comparators, por lo que se tienen que limpiar de estos. Hay que tener cuidado porque parece como si se copiaron de Plugin "comparepanel"
-
-// 6 - ERROR "this.isDraggableE" parece ser un error traído con copiado y pegado, que en realidad debería de ser "this.isDraggable", ocurre en 4 plugins, en las funciones "getApiRest" de estos.
-
-
-//-----------------------
-// 7 - ERROR - MEJORA Parámetro "enabledKeyFunctions".
-// MirrorPanel: La convinación de teclas Ctrl + Shift + [F1-F8] no se corresponde con la posición visual de los modos de visualización (si no estan activas todas las posibilidades) por lo que F4 no activa necesariamente el modo de visualización que aparece en 4ª posicion.
-// En el README dice que la tecla Escape destruye el plugin. Sería más correcto decir que vuelve al modo de visualización por defecto, un unico mapa.
-// Transparency: La combinación de teclas para aumentar/disminuir el radio no respeta los límites establecidos con los parámetros maxRadius si es < 200 y el minRadius si es > 30. En la función del evento tiene los valores literales en vez de los limites establecidos en los parámetros.
-
-// Errores OL
-// 8 - Comparador de capas: Con la opcion dinámico y mixto, aparece el círculo para mover las lineas divisorias pero no se pueden mover.
-// 9 - Transparencia: No aparece el círculo de transparencia
-// 10 - Comparador de capas síncrono: Al abrir una nueva ventana salta un error en una librería. Seguramente no sea problema del plugin en sí, sino un tema de librerías:
-// Script error.
-//    at handleError (webpack-internal:///./node_modules/webpack-dev-server/client/overlay.js:252:58)
-//    at eval (webpack-internal:///./node_modules/webpack-dev-server/client/overlay.js:271:7)

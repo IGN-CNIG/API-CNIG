@@ -277,7 +277,7 @@ export default class PrintViewManagement extends M.Plugin {
    */
   getAPIRest() {
     return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}`
-      + `*${this.serverUrl}*${this.printStatusUrl}*${!M.utils.isNullOrEmpty(this.georefImageEpsg)}*${!M.utils.isNullOrEmpty(this.georefImage)}*${!M.utils.isNullOrEmpty(this.printermap)}*${this.defaultOpenControl}`;
+      + `*${this.serverUrl}*${this.printStatusUrl}*${!!this.georefImageEpsg}*${!!this.georefImage}*${!!this.printermap}*${this.defaultOpenControl}`;
   }
 
   /**

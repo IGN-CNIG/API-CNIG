@@ -28,9 +28,3 @@ const mp = new Rescale({
   // tooltip: 'TOOLTIP TEST Rescale',
 });
 map.addPlugin(mp); window.mp = mp;
-
-// Lista de errores encontrados
-
-// 1 - ERROR, En "rescale/src/facade/js/rescalecontrol.js" zoomToInputScale usa el siguiente transformado "const writtenScale = e.target.value.trim().replace(/ /g, '').replace(/\./g, '').replace(/,/g, '');"
-// Se puede reemplazar por esto que es más rápido "const writtenScale = e.target.value.replace(/1:| |\.|,/g, '');", a la vez que se podría quitar la prueba regex de "1:" dejando solo el regex de cadena de números simples para comprobarlo.
-// Podría no se intencionado el diseño de esto ya que en caso de introducir "3.000,524" se interpreta como "3000524" en vez de "3000" que en este caso es más apropiado. Se podría impedir esto con atributo "pattern" en el input con esos números diseñados por regex, si se añade al css #m-rescale-scaleinput:invalid se puede cambiar el color si es erróneo para que se entienda porque no se pueda lanzar, el problema es que el copiado y pegado no funcionarían bien en ese caso si tienen puntos, comas o otros símbolos.

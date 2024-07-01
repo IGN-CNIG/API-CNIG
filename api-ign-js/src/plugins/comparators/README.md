@@ -65,7 +65,7 @@ Ejemplo:
 
 **Comparador de cortina / lyrcompareParams**: permite comparar varias capas sobre una cartografía base. La extensión de las capas sobre lienzo vienen definidas por la posición del ratón o por el punto medio del lienzo.
 
-**Comparador zonal / transparecyParams**: reducción de la capa comparativa a una zona circular para contratarla con el mapa de fondo.
+**Comparador zonal / transparencyParams**: reducción de la capa comparativa a una zona circular para contratarla con el mapa de fondo.
 
 ## Parámetros
 

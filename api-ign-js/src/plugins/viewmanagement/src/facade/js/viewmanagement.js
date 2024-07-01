@@ -201,8 +201,7 @@ export default class ViewManagement extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggableE}
-    *${this.predefinedzoom}*${this.zoomextent}*${this.viewhistory}*${this.zoompanel}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}*${!!this.predefinedzoom}*${this.zoomextent}*${this.viewhistory}*${this.zoompanel}`;
   }
 
   /**

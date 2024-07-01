@@ -2,8 +2,34 @@
 - Se incluye nuevo tipo de capa COG
 - Se soluciona problema al obtener la leyenda de las capas
 - Subida de versión de OL a la 8.1
-- Plugin Incicarto: cambio de texto a mostrar al superar el límite de tamaño del fichero a enviar
-- Se soluciona el problema en el plugin backimglayer al cargar las capas como cadena.
+- Plugin incicarto: cambio de texto a mostrar al superar el límite de tamaño del fichero a enviar
+- Plugin backimglayer: se soluciona problema al cargar las capas como cadena.
+- Plugin backimglayer: se posiciona foco cuando se selecciona ninguna capa.
+- Plugin comparators: se soluciona problema con traducciones.
+- Plugin comparators: se actualiza método getAPIRest.
+- Plugin comparators: se actualiza método README.
+- Plugin contactlink: se soluciona problemas de visualización con CSS.
+- Plugin help: se actualiza método getAPIRest.
+- Plugin incicarto: se actualiza método getAPIRest.
+- Plugin layerswitcher: mejoras estilos CSS en desbordamiento de contenido en modales.
+- Plugin locator: se actualiza método getAPIRest.
+- Plugin locator: se controla posición TC independientemente del control añadido.
+- Plugin mousesrs: se actualiza método getAPIRest.
+- Plugin mousesrs: se actualiza método getAPIRest.
+- Plugin printviewmanagement: se actualiza valor por defecto de la plantilla de printermap.
+- Plugin printviewmanagement: se actualiza método getAPIRest.
+- Plugin selectionzoom: se mejora visualización según posición.
+- Plugin selectionzoom: se actualiza método getAPIRest.
+- Plugin modal: mejoras estilos CSS en desbordamiento de contenido en modal.
+- Plugin storymap: se actualiza método getAPIRest.
+- Plugin storymap: se actualiza api.json.
+- Plugin stylemanager: se actualizan plantillas con traducciones.
+- Plugin vectorsmanagement: se mejora traducciones.
+- Plugin vectorsmanagement: se soluciona problema con control de ayuda.
+- Plugin vectorsmanagement: se soluciona problema con control de selección.
+- Plugin predefinedzoom: se amplía zona para hacer click sobre botones de predefinedzoom.
+- Plugin predefinedzoom: se actualiza método getAPIRest.
+
 
 29/02/2024 - Versión 4.9.0
 - Plugin comparators: se añade nuevo control windowsync y se añaden traducciones.

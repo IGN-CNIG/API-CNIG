@@ -207,12 +207,7 @@ export default class LocatorControl extends M.Control {
         this.on(M.evt.ADDED_TO_MAP, () => {
           this.ignsearchControl.initializateAddress(html);
           this.control = this.ignsearchControl;
-          if (this.position === 'TC') {
-            if (this.byPlaceAddressPostal_ !== false) {
-              document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc');
-              html.querySelector('#m-locator-ignsearch').click();
-            }
-          }
+          html.querySelector('#m-locator-ignsearch').click();
         });
         html.querySelector('#m-locator-ignsearch').addEventListener('click', () => {
           this.deactive(html, 'ignsearch');
@@ -230,6 +225,11 @@ export default class LocatorControl extends M.Control {
           this.fire('ignsearchlocator:entityFound', [extent]);
         });
       }
+      this.on(M.evt.ADDED_TO_MAP, () => {
+        if (this.position === 'TC') {
+          document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc');
+        }
+      });
       if (this.isDraggable_) {
         M.utils.draggabillyPlugin(this.getPanel(), '#m-locator-title');
       }

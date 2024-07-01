@@ -51,8 +51,3 @@ const mp = new ShareMap({
 
 map.addPlugin(mp); window.mp = mp;
 
-// Lista de errores encontrados
-
-// 1 - ERROR, El icono de share de "twitter" sigue siendo el antiguo, posiblemente se tiene que reemplazar por X.
-
-// 2 - ERROR, Si el mapa es de altura reducida, este panel abierto causa que los elementos internos se salgan de este, se puede ver con el iframe que se puede obtener.

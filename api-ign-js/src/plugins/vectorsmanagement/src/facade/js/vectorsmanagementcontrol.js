@@ -312,7 +312,7 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   addHelpControl(html) {
-    this.helpControl = new HelpControl(this.map_);
+    this.helpControl = new HelpControl(this.map_, this);
     html.querySelector('#m-vectorsmanagement-help').addEventListener('click', (event) => {
       const clickActivate = this.deactive(html, 'help');
       if (!clickActivate) {

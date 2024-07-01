@@ -198,7 +198,7 @@ export default class PrinterMapControl extends M.Control {
       keepView: true,
       format: 'pdf',
       legend: 'false',
-      layout: 'A4 horizontal',
+      layout: 'A4 Horizontal',
     };
 
     this.layoutOptions_ = [];

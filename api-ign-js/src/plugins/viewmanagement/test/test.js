@@ -34,13 +34,3 @@ const mp = new ViewManagement({
 });
 
 map.addPlugin(mp); window.mp = mp;
-
-// Lista de errores encontrados
-
-// 1 - ERROR, Errores anteriormente apuntados de función "getAPIRest" de variable errónea "isDraggableE" y salto de linea no esperado.
-// Ademas los objetos de "predefinedzoom" se escriben como "[object Object]" que posiblemente se tendría que hacer de otra forma. Se podría tener en cuneta que "isDefault: true" esta presente en caso de solo usar el default zoom, por lo que se podría detectar y poner solo "true" y no tener que trabajar con el objeto.
-
-// 2 - ERROR, La interacción de "predefinedZoom" con varias opciones de zoom que usa "newBtn.addEventListener('click', () => ..." posiblemente debería de estar puesto el evento no en el botón de la imagen pero en todo el div del botón para que no haga falta hacer click sobre solo la imagen.
-// Se soluciona cambiando "newBtn" por "newDiv" y parece funcionar bien en este caso.
-
-// 3 - ERROR, En JSP el parámetro de "predefinedZoom" solo puede ser true/false. Podría ser una buena idea añadir "Custom" que activa un input adicional que tenga un ejemplo valido de 2 zooms como mínimo, para que estén todas las pruebas de su comportamiento.

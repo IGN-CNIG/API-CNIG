@@ -207,7 +207,7 @@ export default class Help extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    const cadena = `${this.name_}=${this.position_}*${this.tooltip_}*${this.extendInitialExtraContents_}`;
+    const cadena = `${this.name_}=${this.position_}*${this.tooltip_}*${this.extendInitialExtraContents}`;
     return cadena;
   }
 

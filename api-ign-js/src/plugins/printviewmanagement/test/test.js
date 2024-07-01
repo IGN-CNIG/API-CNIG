@@ -156,7 +156,7 @@ window.fetch('./countries.mbtiles').then((response) => {
 }).catch((e) => { throw e; }); // */
 
 // Capa COG
-const cog = new M.layer.COG({
+const cog = new M.layer.GeoTIFF({
   url: 'http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif',
   name: 'Nombre cog',
   legend: 'Leyenda cog',
@@ -167,13 +167,7 @@ const cog = new M.layer.COG({
 });
 map.addLayers(cog); window.cog = cog; // */
 
-/* / TEST DE LOCATOR PLUGIN, buscar Cádiz para el ejemplo de error "No enum constant" de "GEOMETRYCOLLECTION"
-const locatorAditionalTest = new M.plugin.Locator({
-  collapsible: true, collapsed: false, isDraggable: true, useProxy: false,
-  position: 'TC', pointStyle: 'pinRojo', zoom: 15, order: 1,
-  byPlaceAddressPostal: true, byParcelCadastre: true, byCoordinates: true,
-});
-map.addPlugin(locatorAditionalTest); window.locatorAditionalTest = locatorAditionalTest; // */
+
 
 const mp = new PrintViewManagement({
   collapsible: true,
@@ -184,8 +178,7 @@ const mp = new PrintViewManagement({
   serverUrl: 'https://componentes.cnig.es/geoprint',
   printStatusUrl: 'https://componentes.cnig.es/geoprint/print/status',
   defaultOpenControl: 1, // 1 (printermap), 2 (georefImage), 3 (georefImageEpsg) OR 0 , >=4 (Ninguno) Abre el control indicado inicialmente.
-  printermap: true,
-  /* /
+  // printermap: true,
   printermap: { // serverUrl y printStatusUrl añadidos fuera de este.
     tooltip: 'TEST TOOLTIP printermap', // Tooltip del botón para escoger esta opción
     printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG', // Templates a los cuales se añade este mapa
@@ -195,16 +188,13 @@ const mp = new PrintViewManagement({
     // filterTemplates: ['A3 Horizontal'], // Fuerza que en el selector de papeles solo aparezcan estos
     logo: 'https://www.idee.es/csw-codsi-idee/images/cabecera-CODSI.png', // logo de la esquina superior derecha del template
     credits: "Ejemplo Guadaltel de prueba de Credits", // TEXTO de créditos abajo del template
-    order: 2,
-  }, // */
-  georefImage: true,
-  /* /
+  }, 
+  // georefImage: true,
   georefImage: { // serverUrl y printStatusUrl añadidos fuera de este.
     tooltip: 'TEST TOOLTIP georefImage',
     printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/mapexport',
     printSelector: true, // Activa las opciones de escoger configuraciones de este, si es false se usa "printType" para definir el método default
     printType: 'client', // 'client' | 'server'
-    order: 4, // 8 - ERROR no existe actualmente
   }, // */
   georefImageEpsg: true,
   /* /
@@ -223,43 +213,8 @@ const mp = new PrintViewManagement({
         EPSG: 'EPSG:4258',
       },
     ],
-    order: 3,
   }, // */
   useProxy: true,
   order: 1,
 });
 map.addPlugin(mp); window.mp = mp;
-
-// Para pruebas locales, lanzar Tomcat del proyecto y usar "http://localhost:8080" en vez de "https://mapea-lite.desarrollo.guadaltel.es"
-
-// Lista de errores encontrados
-
-// 1 - ERROR si se usa el copiado de la segunda opción, sale error "TypeError: window.ClipboardItem is not a constructor" de "src/facade/js/util/Utils.js" Esto parece ser porque el "window.ClipboardItem" se añadio en firefox 128 mientras que yo ahora tengo el 125, por lo que mejor tener algo opcional que pueda funcionar con este.
-// Si no me equivoco el Firefox no tiene este write, por lo que copiar la imagen no funcionará con "window.navigator.clipboard.write([item]).then(() => {...", parece que ambos empezarán a funcionar tras este update a firefox 128, que ahora es "Nightly".
-// Podría ser recomendable quitar este botón si no existe esta funcionalidad de copiado de imágenes o indicar que no esta presente y recomendar usar el Chrome.
-
-// 2 - ERROR "getAPIRest() {..." parece devolver los parámetros de "georefImageEpsg", "georefImage" y "printermap" como true si están puestos hasta como "false", porque el detector de nulls detecta que es un booleano y devuelve false, que es invertido a true. posiblemente se puede hacer con pruebas de objetos con "!!".
-
-// 3 - ERROR, en "printviewmanagement/src/facade/js/printermapcontrol.js" hay una linea de código de "layout: 'A4 horizontal'," parece que la opción default es case-sensitive y realmente tiene que tener con mayúscula el horizontal para que sea "layout: 'A4 Horizontal'," para que se detecte realmente.
-// Tras más investigación se puede ver que hay 6 lineas de códigos con este error de usar minúsculas en el mismo tipo de textos 'A4 horizontal', tres de estos en este mismo plugin. Si esto no se configura pues entonces no se puede configurar la selección default de este plugin que se quiere usar en el template HTML del plugin.
-// También el DPI puesto en este default es el 150 ('dpi: 150,'), que no existe, posiblemente se tendría que poner como 120.
-// Se ha observado que existe código "default: format === 'pdf'," que posiblemente tiene que referenciar a esta configuración default de "this.options_.format"
-
-// 4 - ERROR, los elementos generados de "printviewmanagement/src/facade/js/georefimagecontrol.js" cuando se descargan tienen en cuenta el título, formato y DPI actual en vez de usar los valores originales.
-// Se ha probado que cambiando de opción, las descargas no desaparecen, al hacer la descarga de segunda opción sufre error al haberse desaparecido esos inputs originales de esa opción.
-// Parece que se añadieron eventos a "this.downloadPrint.bind(this)", pero se tenía que hacer hecho el lanzado de esta función y dentro de ella hacer los eventos de estos con "createZipFile" con todos los parámetros ya preparados. Esto requerirá hace "this.queueEl" igual que en "printviewmanagement/src/facade/js/georefimageepsgcontrol.js" para poder acceder a el en la función "downloadPrint".
-// Existe "downloadClient" que podría causar problemas si no se tiene en cuenta que reutiliza esa variable y tiene su evento también mal puesto que causará que se escojan los actuales en vez de los que estaban predefinidos en estos, se tendría que mover el parámetro de "evt" que se ocupa del keyDown al listener nuevo.
-// Al final para solucionar esto hay que cambiar "queueEl" por "this.queueEl", excepto en la función "getStatus" que no se tiene que tocar, luego sustituir "queueEl.addEventListener('click', this.downloadPrint.bind(this));queueEl.addEventListener('keydown', this.downloadPrint.bind(this));" por "this.downloadPrint(undefined, 'server');", también sustituir "queueEl.addEventListener('click', (evt) => this.downloadPrint(evt, base64image, 'client'));" por "this.downloadPrint(base64image, 'client');" y terminar con quitar parámetro "evt" de "downloadPrint" eliminando "if (evt.key !== undefined && evt.key !== 'Enter' && evt.key !== ' ') {return;}" y reemplazo final de "createZipFile(files, TYPE_SAVE, titulo);" por "this.queueEl.addEventListener('click', () => createZipFile(files, TYPE_SAVE, titulo));this.queueEl.addEventListener('keydown', (evt) => {if (evt.key !== undefined && evt.key !== 'Enter' && evt.key !== ' ') {return;}createZipFile(files, TYPE_SAVE, titulo);});"
-
-// 5 - ERROR si se crea parámetro "georefImageEpsg" con EPSG puesto, entonces se añade archivo WLD con "createWLD", pero si no esta este parámetro el archivo es siempre vacío. Se podría eliminar su introducción ya que parece sobrante, igual que se hizo con el condicional de "addWLD" pero con "epsgUser".
-
-// 6 - ERROR la función "converterDecimalToDMS" esta hecha de forma complicada innecesariamente y puede causar problemas si las coordenadas no tienen "minutos" o "segundos", marcándolos en ese caso con "NaN", también hay casos de errores si se envian valores no apropiados que podrían causar error, se ha diseñado este cambio para sustituir las funciones antiguas de "converterDecimalToDMS":
-// converterDecimalToDMS(coordinate) {
-//  const aux = ((Math.abs(coordinate) % 1) * 60);
-//  // sign Degrees Minutes Seconds
-//  return `${Math.sign(coordinate) === -1 ? '-' : ''}${Math.trunc(Math.abs(coordinate))}º ${Math.trunc(aux)}' ${Math.trunc((aux % 1) * 60)}'' `;
-// }
-
-// 7 - ERROR la función "getGeorefImageEpsg()" de "printviewmanagement/src/facade/js/printviewmanagement.js" pone el order a 0 y ignora el valor que se introduce a este, podría ser mejor idea configurarlo directamente con 'const { layers, tooltip, order = 0 } = this.options.georefImageEpsg;' eliminando el creado de la constante anterior de orden con comentarios de "¿?"
-
-// 8 - ERROR, El parámetro "georefImage" es el único que no tiene "orden" utilizable, se tendría que entrar en "printviewmanagement/src/facade/js/georefimagecontrol.js" para añadirle la función "accessibilityTab(html)", habrá que también incluir el asignado de "this.orden" y en "active(html)" añadir esta función de "accessibilityTab" igual que en los otros archivos como por ejemplo "printviewmanagement/src/facade/js/printermapcontrol.js".

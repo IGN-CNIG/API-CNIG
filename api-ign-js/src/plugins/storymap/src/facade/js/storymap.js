@@ -204,7 +204,7 @@ export default class StoryMap extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.collapsed}*${this.tooltip}*${this.isDraggableE}*`;
+    return `${this.name}=${this.position}*${this.collapsed}*${this.tooltip}*${this.delay}*${this.isDraggable}`;
   }
 
   /**
