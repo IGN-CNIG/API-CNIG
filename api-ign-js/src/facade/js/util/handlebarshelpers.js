@@ -153,7 +153,7 @@ const helpers = (insecureHandlebars) => {
 
   /**
    * Ayudantes para "Handlebars", si los primeros parámetros son iguales, te
-   * devuelve la inversa de las optiones.
+   * devuelve la inversa de las opciones.
    *
    * @function
    * @param {Object} v1 Valor 1.

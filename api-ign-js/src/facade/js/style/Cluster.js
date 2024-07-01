@@ -143,7 +143,7 @@ class Cluster extends Composite {
   }
 
   /**
-   * Devuelve las optiones del "cluster".
+   * Devuelve las opciones del "cluster".
    * @function
    * @public
    * @return {object} Optiones del "cluster".
