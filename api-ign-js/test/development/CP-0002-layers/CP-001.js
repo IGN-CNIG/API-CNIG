@@ -107,14 +107,19 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
         // geojson_001 ==> "serialize"(if source is 'undefined' returns 'dW5kZWZpbmVk')
         // mvt_001 y mbtileVector_001 ==> "getProjection"
         parameterTest = () => { // singeParameterTest
-          showResult(auxButton, undefined, capaPrueba[auxName]());
+          if (window.mvt && (auxName === 'refresh' || auxName === 'redraw' || auxName === 'toGeoJSON' || auxName === 'getFilter' || auxName === 'removeFilter')) {
+            auxButton.className = 'warningButton';
+            console.error('Not implementable in MVT Layers:', auxName);
+          } else {
+            showResult(auxButton, undefined, capaPrueba[auxName]());
+          }
         };
         appendTo = noParam;
       } else if (auxName.startsWith('get')) {
         // ---------------------------------FUNCIONES GET---------------------------------
         parameterTest = () => { // getParameterTest
           if (auxName === 'getFeatureById') {
-            showResult(auxButton, 'GET_getFeatureById', capaPrueba[auxName]('GRXX0007_00E027_0')); // ID del olFeature.getProperties().id
+            showResult(auxButton, 'GET_getFeatureById', capaPrueba[auxName]('GRXX0114_00E044_0')); // ID del olFeature.getProperties().id
           } else if (auxName === 'getFeatures') {
             showResult(auxButton, 'GET_getFeatures', capaPrueba[auxName]());
           } else if (auxName === 'getFeaturesExtent') {
@@ -129,21 +134,26 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
         // ---------------------------------FUNCIONES ADD---------------------------------
         parameterTest = () => { // addParameterTest
           if (auxName === 'addFeatures') {
-            showResult(auxButton, 'ADD_addFeatures', capaPrueba[auxName]([
-              new Feature('featurePruebaLine0', { type: 'Feature', id: 'featurePruebaLine0',
-                geometry: { type: 'LineString',
-                  coordinates: [[-232910, 4433901], [-290293, 4419678], [-290293, 4433901]],
-                }, geometry_name: 'geometry', properties: { nombre: 'featurePruebaLine0' },
-              }),
-              new Feature('featurePruebaPolygon0', { type: 'Feature', id: 'featurePruebaPolygon0',
-                geometry: { type: 'Polygon',
-                  coordinates: [[
-                    [-353770, 4485361], [-320910, 4431901],
-                    [-378293, 4417678], [-353770, 4485361],
-                  ]],
-                }, geometry_name: 'geometry', properties: { nombre: 'featurePruebaPolygon0' },
-              }),
-            ]));
+            if (window.mvt) {
+              auxButton.className = 'warningButton';
+              console.error('Not implementable in MVT Layers:', auxName);
+            } else {
+              showResult(auxButton, 'ADD_addFeatures', capaPrueba[auxName]([
+                new Feature('featurePruebaLine0', { type: 'Feature', id: 'featurePruebaLine0',
+                  geometry: { type: 'LineString',
+                    coordinates: [[-232910, 4433901], [-290293, 4419678], [-290293, 4433901]],
+                  }, geometry_name: 'geometry', properties: { nombre: 'featurePruebaLine0' },
+                }),
+                new Feature('featurePruebaPolygon0', { type: 'Feature', id: 'featurePruebaPolygon0',
+                  geometry: { type: 'Polygon',
+                    coordinates: [[
+                      [-353770, 4485361], [-320910, 4431901],
+                      [-378293, 4417678], [-353770, 4485361],
+                    ]],
+                  }, geometry_name: 'geometry', properties: { nombre: 'featurePruebaPolygon0' },
+                }),
+              ]));
+            }
           } else {
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_ADD:', auxName);
           }
@@ -153,7 +163,12 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
         // ---------------------------------FUNCIONES REMOVE---------------------------------
         parameterTest = () => { // removeParameterTest
           if (auxName === 'removeFeatures') {
-            showResult(auxButton, 'REMOVE_removeFeatures', capaPrueba[auxName](capaPrueba.getFeatures()));
+            if (window.mvt) {
+              auxButton.className = 'warningButton';
+              console.error('Not implementable in MVT Layers:', auxName);
+            } else {
+              showResult(auxButton, 'REMOVE_removeFeatures', capaPrueba[auxName](capaPrueba.getFeatures()));
+            }
           } else {
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_REMOVE:', auxName);
           }
@@ -165,7 +180,12 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
           if (auxName === 'setCQL') { // ONLY USED IN "wfs_001" and "generic_002"
             showResult(auxButton, 'SET_setCQL', capaPrueba[auxName]('id IN (3,5)')); // window.capaPrueba.impl_.cql
           } else if (auxName === 'setFilter') {
-            showResult(auxButton, 'SET_setFilter', capaPrueba[auxName](new filterFunction.default((feature) => { return feature.impl_.olFeature_.values_.geometry.getType() === 'Polygon'; }))); // Leaves only Polygons from "addFeatures"
+            if (window.mvt) {
+              auxButton.className = 'warningButton';
+              console.error('Not implementable in MVT Layers:', auxName);
+            } else {
+              showResult(auxButton, 'SET_setFilter', capaPrueba[auxName](new filterFunction.default((feature) => { return feature.impl_.olFeature_.values_.geometry.getType() === 'Polygon'; }))); // Leaves only Polygons from "addFeatures"
+            }
           } else if (auxName === 'setImpl') {
             showResult(auxButton, 'SET_setImpl', capaPrueba[auxName](capaPrueba.getImpl()));
           } else if (auxName === 'setLayerGroup') {

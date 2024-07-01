@@ -694,8 +694,7 @@ export default class CreationControl extends M.Control {
    * @function
    * @api stable
    */
-  destroy() {
-  }
+  destroy() {}
 
   /**
    * This function is called on the control activation

@@ -211,9 +211,9 @@ class MVT extends Vector {
    * @function
    * @public
    * @param {String|Number} id - Id objeto geográfico.
-   * @return {Null|M.feature} objeto geográfico: devuelve el objeto geográfico con esa
-   * identificación si se encuentra,
-   * en caso de que no se encuentre o no indique el id devuelve nulo.
+   * @return {Null|Array<M.RenderFeature>} objeto geográfico: devuelve el objeto geográfico con esa
+   * identificación si se encuentra, en caso de que no se encuentre o no indique el id
+   * devuelve array vacío.
    * @api
    */
   getFeatureById(id) {
@@ -221,15 +221,28 @@ class MVT extends Vector {
       dialog.error(getValue('dialog').id_feature);
       return null;
     }
-    if (this.mode === mode.RENDER) {
-      return RenderFeatureImpl.olFeature2Facade(this.getImpl().getFeatureById(id));
-    }
-    if (this.mode === mode.FEATURE) {
-      return FeatureImpl
-        .olFeature2Facade(this.getImpl().getFeatureById(id), undefined, this.getProjection());
-    }
-    return null;
+    const features = this.getImpl().getFeatureById(id);
+    features.map((olFeature) => {
+      if (this.mode === mode.RENDER) {
+        return RenderFeatureImpl.olFeature2Facade(olFeature);
+      }
+      if (this.mode === mode.FEATURE) {
+        return FeatureImpl
+          .olFeature2Facade(olFeature, undefined, this.getProjection());
+      }
+      return null;
+    });
+    return features;
   }
+
+  /**
+   * Devuelve el valor de la propiedad filter.
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getFilter() {}
 
   /**
    * Modifica el filtro.
@@ -239,6 +252,15 @@ class MVT extends Vector {
    * @api
    */
   setFilter() {}
+
+  /**
+   * Elimina valor de la propiedad "filter".
+   *
+   * @function
+   * @public
+   * @api
+   */
+  removeFilter() {}
 
   /**
    * Añade objeto geográficos.

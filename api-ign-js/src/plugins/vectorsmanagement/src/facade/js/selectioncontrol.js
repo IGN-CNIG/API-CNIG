@@ -289,8 +289,7 @@ export default class SelectionControl extends M.Control {
    * @function
    * @api stable
    */
-  destroy() {
-  }
+  destroy() {}
 
   /**
    * Sets the layer selected for management

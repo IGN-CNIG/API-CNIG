@@ -333,6 +333,5 @@ export default class GeorefImageEpsgControl extends M.Control {
  * @function
  * @api
  */
-  destroy() {
-  }
+  destroy() {}
 }

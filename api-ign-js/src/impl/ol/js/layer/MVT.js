@@ -315,16 +315,17 @@ class MVT extends Vector {
    * @function
    * @public
    * @param {string|number} id Identificador del objeto geográfico..
-   * @return {null|M.feature} Objeto Geográfico - Devuelve el objeto geográfico con
-   * ese id si se encuentra, en caso de que no se encuentre o no indique el id devuelve nulo.
+   * @return {Array<M.feature>} Objeto Geográfico - Devuelve el objeto geográfico con
+   * ese id si se encuentra, en caso de que no se encuentre o no indique el id devuelve array vacío.
    * @api stable
    */
   getFeatureById(id) {
+    const features = [];
     if (this.ol3Layer) {
       const tileCache = this.ol3Layer.getSource().tileCache;
       const kk = tileCache.getCount();
       if (kk === 0) {
-        return null;
+        return features;
       }
       const z = fromKey(tileCache.peekFirstKey())[0];
       for (let k = 0; k < kk; k += 1) {
@@ -335,13 +336,13 @@ class MVT extends Vector {
             const olFeature = sourceTiles[i].getFeatures()
               .find((feature2) => feature2.getProperties().id === id); // feature2.getId()
             if (olFeature) {
-              return olFeature;
+              features.push(olFeature);
             }
           }
         }
       }
     }
-    return null;
+    return features;
   }
 
   /**

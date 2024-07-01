@@ -27176,9 +27176,7 @@ class InstancedMesh extends Mesh {
 
 	}
 
-	updateMorphTargets() {
-
-	}
+	updateMorphTargets() {}
 
 	dispose() {
 

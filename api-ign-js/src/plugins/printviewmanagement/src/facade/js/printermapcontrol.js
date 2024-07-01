@@ -913,8 +913,7 @@ export default class PrinterMapControl extends M.Control {
    * @function
    * @api
    */
-  destroy() {
-  }
+  destroy() {}
 }
 
 /**
