@@ -310,6 +310,41 @@ class MVT extends Vector {
   }
 
   /**
+   * Este método devuelve un objeto geográfico por su id.
+   *
+   * @function
+   * @public
+   * @param {string|number} id Identificador del objeto geográfico..
+   * @return {null|M.feature} Objeto Geográfico - Devuelve el objeto geográfico con
+   * ese id si se encuentra, en caso de que no se encuentre o no indique el id devuelve nulo.
+   * @api stable
+   */
+  getFeatureById(id) {
+    if (this.ol3Layer) {
+      const tileCache = this.ol3Layer.getSource().tileCache;
+      const kk = tileCache.getCount();
+      if (kk === 0) {
+        return null;
+      }
+      const z = fromKey(tileCache.peekFirstKey())[0];
+      for (let k = 0; k < kk; k += 1) {
+        const auxValue = tileCache.getValues()[k];
+        if (auxValue.tileCoord[0] === z && auxValue.getState() === TileState.LOADED) {
+          const sourceTiles = auxValue.getSourceTiles();
+          for (let i = 0, ii = sourceTiles.length; i < ii; i += 1) {
+            const olFeature = sourceTiles[i].getFeatures()
+              .find((feature2) => feature2.getProperties().id === id); // feature2.getId()
+            if (olFeature) {
+              return olFeature;
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
    * Este método comprueba si la tesela esta cargada.
    *
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.

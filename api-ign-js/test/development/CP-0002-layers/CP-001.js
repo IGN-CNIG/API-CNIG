@@ -114,7 +114,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
         // ---------------------------------FUNCIONES GET---------------------------------
         parameterTest = () => { // getParameterTest
           if (auxName === 'getFeatureById') {
-            showResult(auxButton, 'GET_getFeatureById', capaPrueba[auxName]('featurePrueba001'));
+            showResult(auxButton, 'GET_getFeatureById', capaPrueba[auxName]('GRXX0007_00E027_0')); // ID del olFeature.getProperties().id
           } else if (auxName === 'getFeatures') {
             showResult(auxButton, 'GET_getFeatures', capaPrueba[auxName]());
           } else if (auxName === 'getFeaturesExtent') {

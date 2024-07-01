@@ -12,8 +12,10 @@ import {
   isString,
 } from '../util/Utils';
 import Exception from '../exception/exception';
+import * as dialog from '../dialog';
 import { MVT as MVTType } from './Type';
 import * as parameter from '../parameter/parameter';
+import { getValue } from '../i18n/language';
 
 /**
  * Posibles modos para la capa MVT.
@@ -201,6 +203,32 @@ class MVT extends Vector {
       }
       return null;
     });
+  }
+
+  /**
+   * Devuelve el objeto geográfico con el id pasado por parámetros.
+   *
+   * @function
+   * @public
+   * @param {String|Number} id - Id objeto geográfico.
+   * @return {Null|M.feature} objeto geográfico: devuelve el objeto geográfico con esa
+   * identificación si se encuentra,
+   * en caso de que no se encuentre o no indique el id devuelve nulo.
+   * @api
+   */
+  getFeatureById(id) {
+    if (isNullOrEmpty(id)) {
+      dialog.error(getValue('dialog').id_feature);
+      return null;
+    }
+    if (this.mode === mode.RENDER) {
+      return RenderFeatureImpl.olFeature2Facade(this.getImpl().getFeatureById(id));
+    }
+    if (this.mode === mode.FEATURE) {
+      return FeatureImpl
+        .olFeature2Facade(this.getImpl().getFeatureById(id), undefined, this.getProjection());
+    }
+    return null;
   }
 
   /**
