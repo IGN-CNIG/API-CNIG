@@ -133,7 +133,7 @@ export default class VectorsManagementControl extends M.Control {
    */
   selectLayerEvent() {
     // eslint-disable-next-line no-underscore-dangle
-    if (this.selectionControl.selectedFeatures_.length > 0) {
+    if (this.selectionControl && this.selectionControl.selectedFeatures_.length > 0) {
       document.querySelector('#m-vectorsmanagement-selection').classList.remove('activated');
       this.selectionControl.deactivate();
     }
@@ -244,9 +244,10 @@ export default class VectorsManagementControl extends M.Control {
       if (!clickActivate) {
         this.creationControl.active(html);
         event.target.classList.add('activated');
-
-        this.selectionControl.deactivate();
-        document.querySelector('#m-vectorsmanagement-selection').classList.remove('activated');
+        if (this.selectionControl) {
+          this.selectionControl.deactivate();
+          document.querySelector('#m-vectorsmanagement-selection').classList.remove('activated');
+        }
       }
     });
   }
@@ -287,7 +288,7 @@ export default class VectorsManagementControl extends M.Control {
     html.querySelector('#m-vectorsmanagement-edition').addEventListener('click', (event) => {
       const $selection = document.querySelector('#m-vectorsmanagement-selection');
 
-      if ($selection.classList.contains('activated')) {
+      if (this.selectionControl && $selection.classList.contains('activated')) {
         this.selectionControl.deactivate();
         $selection.classList.remove('activated');
       }
@@ -296,8 +297,10 @@ export default class VectorsManagementControl extends M.Control {
 
       if (!clickActivate) {
         this.editionControl.active(html);
-        this.selectionControl.active(html);
-        $selection.classList.add('activated');
+        if (this.selectionControl) {
+          this.selectionControl.active(html);
+          $selection.classList.add('activated');
+        }
         event.target.classList.add('activated');
       }
     });

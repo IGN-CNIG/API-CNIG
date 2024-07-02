@@ -913,7 +913,11 @@ export default class EditionControl extends M.Control {
     });
     const table = document.querySelector('#attribute-table');
     table.parentNode.removeChild(table);
-    this.createAttributeTable(Object.keys(features[0].getAttributes()), features);
+    const selectedFeatures = this.managementControl_.getSelectedFeatures();
+    this.createAttributeTable(
+      Object.keys(features[0].getAttributes()),
+      selectedFeatures.length > 0 ? selectedFeatures : features,
+    );
   }
 
   /**
@@ -976,7 +980,8 @@ export default class EditionControl extends M.Control {
   updateFeaturesAttributeName(attributeName, newAttributeName) {
     const features = this.layer_.getFeatures();
     features.forEach((f) => this.updateAttributes(f, attributeName, newAttributeName));
-    this.refreshAttributeTable(features);
+    const selectedFeatures = this.managementControl_.getSelectedFeatures();
+    this.refreshAttributeTable(selectedFeatures.length > 0 ? selectedFeatures : features);
   }
 
   /**

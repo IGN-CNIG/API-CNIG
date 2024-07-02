@@ -29,6 +29,7 @@
 - Plugin vectorsmanagement: se soluciona problema con control de selección.
 - Plugin predefinedzoom: se amplía zona para hacer click sobre botones de predefinedzoom.
 - Plugin predefinedzoom: se actualiza método getAPIRest.
+- Plugin vectorsmanagement: se soluciona problema con control de selección y edición de atributos.
 
 
 29/02/2024 - Versión 4.9.0
