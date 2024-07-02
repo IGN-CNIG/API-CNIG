@@ -268,7 +268,7 @@ export default class GeorefImageEpsgControl extends M.Control {
           const files = [{
             name: titulo.concat(FILE_EXTENSION_GEO),
             // EPSG:3857 -> bbox
-            data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize(), epsgUser, this.map_),
+            data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize(), epsgUser, this.map_, 'server'),
             base64: false,
           },
           {
