@@ -74,6 +74,7 @@ class Map extends MObject {
    *
    * @constructor
    * @param {Object} div Elemento "div" proporcionado por el usuario.
+   * @param {M.Map} facadeMap Fachada del mapa a implementar.
    * @param {Mx.parameters.MapOptions} options Opciones del mapa.
    * - zoom: Nivel de zoom inicial del mapa.
    * - bbox: Encuadre de visualización del mapa.
