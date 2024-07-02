@@ -81,6 +81,20 @@ class Map extends Base {
    * @constructor
    * @extends { M.facade.Base }
    * @param { string | Mx.parameters.Map } userParameters Parámetros.
+   * - bbox: Extensión del mapa.
+   * - center: Centro del mapa.
+   * - container: Contenedor del mapa.
+   * - controls: Controles del mapa.
+   * - label: Etiqueta del mapa.
+   * - layers: Capas del mapa.
+   * - maxExtent: Extensión máxima del mapa.
+   * - maxZoom: Zoom máximo del mapa.
+   * - minZoom: Zoom mínimo del mapa.
+   * - projection: Proyección del mapa.
+   * - resolutions: Resoluciones del mapa.
+   * - viewExtent: Extensión de la vista.
+   * - zoom: Zoom del mapa.
+   * - zoomConstrains: Restricciones de zoom.
    * @param { Mx.parameters.MapOptions } options Opciones personalizadas para la implementación
    * proporcionado por el usuario.
    * @property {object} viewVendorOptions Parámetros para la vista del mapa de la librería base.
