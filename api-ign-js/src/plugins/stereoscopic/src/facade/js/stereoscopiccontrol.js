@@ -195,7 +195,7 @@ export default class StereoscopicControl extends M.Control {
           setTR3(true);
           changeZoom = e.frameState.viewState.zoom;
         } else {
-          setTR3(false);
+          setTR3(true);
         }
     });
 
