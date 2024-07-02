@@ -1,13 +1,7 @@
-import { map as Mmap } from 'M/mapea';
+/* eslint-disable camelcase,import/prefer-default-export */
 import MapLibre from 'M/layer/MapLibre';
 
-const mapa = Mmap({
-  container: 'map',
-  center: [-443273.10081370454, 4757481.749296248],
-  zoom: 6,
-});
-
-const mapLibre = new MapLibre({
+export const maplibre_001 = new MapLibre({
   name: 'Mapa Libre',
   extract: true,
   disableBackgroundColor: false,
@@ -69,47 +63,58 @@ const mapLibre = new MapLibre({
   // maxResolution: 2469.443110945165,
 });
 
-mapa.addLayers([mapLibre]);
+export const maplibre_002 = new MapLibre({
+  name: 'Mapa Libre DEMO',
+  extract: true,
+  disableBackgroundColor: false,
+  style: 'https://demotiles.maplibre.org/style.json', // JSON, URL
+  legend: 'Mapa Libre DEMO Legend',
+});
 
-/*
-mapLibre.setPaintProperty('coastline', 'line-color', '#000');
-mapLibre.setPaintProperty('coastline', 'line-width', 2);
-mapLibre.setPaintProperty('countries-label', 'text-color', 'red');
-*/
-
-/*
-const styles = [
-  {
-    id: 'coastline',
-    paint: [
+export const maplibre_003 = new MapLibre({
+  name: 'Mapa Libre MANUALSTYLE',
+  extract: true,
+  disableBackgroundColor: false,
+  style: {
+    version: 8,
+    sources: {
+      osm: {
+        type: 'raster',
+        tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+        tileSize: 256,
+        attribution: '&copy; OpenStreetMap Contributors',
+        maxzoom: 19,
+      },
+      // Use a different source for terrain and hillshade layers, to improve render quality
+      terrainSource: {
+        type: 'raster-dem',
+        url: 'https://demotiles.maplibre.org/terrain-tiles/tiles.json',
+        tileSize: 256,
+      },
+      hillshadeSource: {
+        type: 'raster-dem',
+        url: 'https://demotiles.maplibre.org/terrain-tiles/tiles.json',
+        tileSize: 256,
+      },
+    },
+    layers: [
       {
-        property: 'line-color',
-        value: '#000',
+        id: 'osm',
+        type: 'raster',
+        source: 'osm',
       },
       {
-        property: 'line-width',
-        value: 2,
+        id: 'hills',
+        type: 'hillshade',
+        source: 'hillshadeSource',
+        layout: { visibility: 'visible' },
+        paint: { 'hillshade-shadow-color': '#473B24' },
       },
     ],
+    terrain: {
+      source: 'terrainSource',
+      exaggeration: 1,
+    },
   },
-  {
-    id: 'countries-label',
-    paint: [
-      {
-        property: 'text-color',
-        value: 'red',
-      },
-    ],
-  },
-]
-
-mapLibre.setStyle(styles);
-*/
-
-mapLibre.setLayoutProperty('fondo', 'visibility', 'visible');
-
-// mapLibre.setStyle('https://demotiles.maplibre.org/style.json');
-
-window.mapLibre = mapLibre; // console.log(mapLibre);
-
-window.mapa = mapa;
+  legend: 'Mapa Libre MANUALSTYLE Legend',
+});

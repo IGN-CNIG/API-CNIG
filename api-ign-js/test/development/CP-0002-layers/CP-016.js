@@ -1,8 +1,8 @@
+/* eslint-disable max-len,camelcase */
 import { map as Mmap } from 'M/mapea';
-//import { cog_001, cog_002, cog_003, cog_004 } from '../layers/cog/cog';
+// import { geotiff_001, geotiff_002, geotiff_003, geotiff_004 } from '../layers/cog/cog';
 import { mvt_001 } from '../layers/mvt/mvt';
 // import { generic_002 } from '../layers/generic/generic';
-
 
 const mapa = Mmap({
   container: 'map',
@@ -11,7 +11,7 @@ const mapa = Mmap({
   // layers: ['OSM'],
   // center: [-443273.10081370454, 4757481.749296248],
   // zoom: 6,
-  // center: [-443273.10081370454, 4757481.749296248],zoom: 6,layers: ['OSM'],controls: ['scale', 'getfeatureinfo'], // COG TEST
+  // center: [-443273.10081370454, 4757481.749296248],zoom: 6,layers: ['OSM'],controls: ['scale', 'getfeatureinfo'], // GeoTIFF TEST
 });
 
 mapa.addLayers([
@@ -24,7 +24,7 @@ mapa.addLayers([
   // ogcAPIFeatures_001,
   // mbtileVector_001
   // generic_002
-  // cog_001, cog_002, cog_003, cog_004 // COG TEST
+  // geotiff_001, geotiff_002, geotiff_003, geotiff_004 // GeoTIFF TEST
 ]);
 
 // ? proyección, si no pone nada 4326 si lo pone el que ponga
@@ -36,7 +36,7 @@ setTimeout(() => {
   // console.log(vector_001.toGeoJSON())
   // console.log('Capa Vector - Feature - getGeoJSON')
   // console.log(vector_001.getFeatures()[0].getGeoJSON())
-  
+
   // Feature sin crs
   // console.log('toGeoJSON -- Capa Vector')
   // console.log(vector_002.toGeoJSON())
@@ -63,13 +63,13 @@ setTimeout(() => {
 
   // ++++++++++++++++ Capa MVT. +++++++++++++++
   // console.log('toGeoJSON -- Capa MVT')
-  // console.log(mvt_001.toGeoJSON()) // ! Método vacío 
+  // console.log(mvt_001.toGeoJSON()) // ! Método vacío
   // console.log('Capa MVT - Feature - getGeoJSON')
   // console.log(mvt_001.getFeatures()[0].getGeoJSON())
-  
+
   // ++++++++++++++++ Capa mbtileVector. +++++++++++++++
   // console.log('toGeoJSON -- Capa mbtileVector')
-  // console.log(mbtileVector_001.toGeoJSON()) // ! Método vacío 
+  // console.log(mbtileVector_001.toGeoJSON()) // ! Método vacío
   // console.log('Capa mbtileVector - Feature - getGeoJSON')
   // console.log(mbtileVector_001.getFeatures()[0].getGeoJSON()) // ! RenderFeatures - es necesario feature (implementar)
 
@@ -85,7 +85,7 @@ setTimeout(() => {
   // console.log('Capa Generic - Feature - getGeoJSON')
   // console.log(generic_002.getFeatures()[0].getGeoJSON())
 
-  // ++++++++++++++++ Capa COG. +++++++++++++++
+  // ++++++++++++++++ Capa GeoTIFF. +++++++++++++++
   // **********************************************
 }, 1000);
 

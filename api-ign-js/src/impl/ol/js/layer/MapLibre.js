@@ -199,9 +199,13 @@ class MapLibre extends LayerBase {
    * @api
    */
   setPaintProperty(layer, property, value) {
-    this.ol3Layer.mapLibreMap.on('style.load', () => {
+    if (this.ol3Layer.mapLibreMap.isStyleLoaded()) {
       this.ol3Layer.mapLibreMap.setPaintProperty(layer, property, value);
-    });
+    } else {
+      this.ol3Layer.mapLibreMap.once('styledata', () => { // style.load(Private)
+        this.ol3Layer.mapLibreMap.setPaintProperty(layer, property, value);
+      });
+    }
   }
 
   /**
@@ -214,9 +218,13 @@ class MapLibre extends LayerBase {
    * @api
    */
   setLayoutProperty(layer, property, value) {
-    this.ol3Layer.mapLibreMap.on('style.load', () => {
+    if (this.ol3Layer.mapLibreMap.isStyleLoaded()) {
       this.ol3Layer.mapLibreMap.setLayoutProperty(layer, property, value);
-    });
+    } else {
+      this.ol3Layer.mapLibreMap.once('styledata', () => { // style.load(Private)
+        this.ol3Layer.mapLibreMap.setLayoutProperty(layer, property, value);
+      });
+    }
   }
 
   // ! TODO

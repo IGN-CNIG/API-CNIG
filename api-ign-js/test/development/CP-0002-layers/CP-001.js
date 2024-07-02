@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle,max-len,camelcase,no-plusplus,no-param-reassign,no-proto,import/newline-after-import,object-property-newline,new-cap,object-curly-newline */
+/* eslint-disable no-console,no-underscore-dangle,max-len,camelcase,no-plusplus,no-param-reassign,no-proto,import/newline-after-import,object-property-newline,new-cap,object-curly-newline */
 import { map as Mmap } from 'M/mapea';
 import Feature from 'M/feature/Feature';
 import Generic from 'M/style/Generic';
@@ -27,9 +27,7 @@ const mapa = Mmap({
   layers: [capaPrueba],
 });
 
-mapa.addLayers([
-  // capaPrueba
-]);
+// mapa.addLayers([capaPrueba]);
 
 window.mapa = mapa;
 
@@ -78,7 +76,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
     return result;
   };
 
-  const checkFunctionArguments = function (func) {
+  const checkFunctionArguments = (func) => {
     let hasArguments = false;
     const functString = func.toString().split('\n').splice(0, 2);
     if (functString[0]) {
@@ -126,6 +124,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
             showResult(auxButton, 'GET_getFeaturesExtent_WITH_FILTER', capaPrueba[auxName]());
             showResult(auxButton, 'GET_getFeaturesExtent_WITHOUT_FILTER', capaPrueba[auxName](true));
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_GET:', auxName);
           }
         };
@@ -155,6 +154,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
               ]));
             }
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_ADD:', auxName);
           }
         };
@@ -170,6 +170,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
               showResult(auxButton, 'REMOVE_removeFeatures', capaPrueba[auxName](capaPrueba.getFeatures()));
             }
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_REMOVE:', auxName);
           }
         };
@@ -232,6 +233,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
           } else if (auxName === 'setZIndex') {
             showResult(auxButton, 'SET_setZIndex', capaPrueba[auxName](101));
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_SET:', auxName);
           }
         };
@@ -288,6 +290,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
               console.error('NO_ONCE_EVENTS_PRESENT_TO_CLEAR:', auxName);
             }
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_OTHER:', auxName);
           }
         };

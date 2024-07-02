@@ -196,6 +196,7 @@ class MapLibre extends LayerBase {
    * @api
    */
   setStyle(newStyle) {
+    if (isNullOrEmpty(newStyle)) return;
     if (Array.isArray(newStyle)) {
       newStyle.forEach(({ id, paint = false, layout = false }) => {
         if (paint) {

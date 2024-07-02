@@ -10,7 +10,8 @@ import MBTiles from 'M/layer/MBTiles';
 import MBTilesVector from 'M/layer/MBTilesVector';
 import OGCAPIFeatures from 'M/layer/OGCAPIFeatures';
 import XYZ from 'M/layer/XYZ';
-import GeoTIFF from 'M/layer/GeoTIFF';
+import GeoTIFF from 'M/layer/GeoTIFF'; // eslint-disable-line no-unused-vars
+import MapLibre from 'M/layer/MapLibre'; // eslint-disable-line no-unused-vars
 
 // Para otras pruebas
 import Polygon from 'M/style/Polygon';
@@ -19,33 +20,32 @@ import Panel from 'M/ui/Panel';
 import Popup from 'M/Popup';
 import Label from '../../../src/facade/js/Label'; // eslint-disable-line no-unused-vars
 
-
 const mapa = Mmap(
   {
-    container: 'map', 
+    container: 'map',
     controls: ['scale'],
-    // controls: ['attributions*<p>EJEMPLO_DE_TEXTO_ATTRIBUTIONS</p>'], 
-    // viewExtent: [-1781344.2275488114, 4283234.297146627, 566801.2813718033, 5456084.059154372], 
-    // minZoom: 4, 
-    // maxZoom: 5, 
-    // center:  [-143777, 4853122], 
-    // zoom: 7, 
-    //resolutions: [156543.03392804097,78271.51696402048,39135.75848201024,19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564,1222.99245256282,611.49622628141,305.748113140705,152.8740565703525,76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032,4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395,0.29858214173896974,0.14929107086948487,0.07464553543474244,0.03732276771737122,0.01866138385868561,0.009330691929342804,0.004665345964671402,0.002332672982335701,0.0011663364911678506,0.0005831682455839253,0.00029158412279196264,0.00014579206139598132,0.00007289603069799066,0.00003644801534899533,0.000018224007674497665,0.000009112003837248832,0.000004556001918624416,0.000002278000959312208,0.000001139000479656104,5.69500239828052e-7,2.84750119914026e-7,1.42375059957013e-7,7.11875299785065e-8,3.559376498925325e-8], 
+    // controls: ['attributions*<p>EJEMPLO_DE_TEXTO_ATTRIBUTIONS</p>'],
+    // viewExtent: [-1781344.2275488114, 4283234.297146627, 566801.2813718033, 5456084.059154372],
+    // minZoom: 4,
+    // maxZoom: 5,
+    // center:  [-143777, 4853122],
+    // zoom: 7,
+    //resolutions: [156543.03392804097,78271.51696402048,39135.75848201024,19567.87924100512,9783.93962050256,4891.96981025128,2445.98490512564,1222.99245256282,611.49622628141,305.748113140705,152.8740565703525,76.43702828517625,38.21851414258813,19.109257071294063,9.554628535647032,4.777314267823516,2.388657133911758,1.194328566955879,0.5971642834779395,0.29858214173896974,0.14929107086948487,0.07464553543474244,0.03732276771737122,0.01866138385868561,0.009330691929342804,0.004665345964671402,0.002332672982335701,0.0011663364911678506,0.0005831682455839253,0.00029158412279196264,0.00014579206139598132,0.00007289603069799066,0.00003644801534899533,0.000018224007674497665,0.000009112003837248832,0.000004556001918624416,0.000002278000959312208,0.000001139000479656104,5.69500239828052e-7,2.84750119914026e-7,1.42375059957013e-7,7.11875299785065e-8,3.559376498925325e-8],
     // label: 'Estoy aquí'
-    // label: {panMapIfOutOfView: true, text:'Texto_de_Prueba_1', coord:[-143777, 4853122]}, 
-    // label: {panMapIfOutOfView: true, text:'Texto_de_Prueba_3', coord:[1, 1]}, 
+    // label: {panMapIfOutOfView: true, text:'Texto_de_Prueba_1', coord:[-143777, 4853122]},
+    // label: {panMapIfOutOfView: true, text:'Texto_de_Prueba_3', coord:[1, 1]},
     // maxExtent: [-1781344.2275488114, 4283234.297146627, 566801.2813718033, 5456084.059154372]
     layers: ['OSM'],
-    // bbox: [-160000, 4800000, -120000, 4860000], 
+    // bbox: [-160000, 4800000, -120000, 4860000],
     // projection: 'EPSG:4326*d',
     // kml: 'KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*true', // OK se ven los puntos de ejemplo este
     // wms: 'WMS*Unidad administrativa*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeUnit*false*true*true*1.3.0*true*true*true', // OK se ve sin transparencia.
     // wmts: 'WMTS*http://wmts-mapa-lidar.idee.es/lidar*EL.GridCoverageDSM*GoogleMapsCompatible*Modelo Digital de Superficies LiDAR*true*image/png*true*true*true', // OK se ve mapa satélite LiDAR
     // layers: ['KML*Delegaciones IGN*https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml*true', 'WMTS*http://wmts-mapa-lidar.idee.es/lidar*EL.GridCoverageDSM*GoogleMapsCompatible*Modelo Digital de Superficies LiDAR*true*image/png*true*true*true'],
-  }, 
+  },
   {
   // viewExtent: [-2658785.5918715713, 4280473.583969865, 2037505.425969658, 5474114.217671178],
-  }
+  },
 );
 
 window.mapa = mapa;
@@ -63,8 +63,8 @@ window.mapa = mapa;
 // ? 06. Caso de uso: Pruebas de center
 
 // ? 11. Caso de uso: Pruebas de label
-window.testLabel1 = {text: 'Texto de prueba1', coord: [0, 0]};
-setTimeout(()=>{mapa.addLabel(window.testLabel1)}, 5000);
+// window.testLabel1 = { text: 'Texto de prueba1', coord: [0, 0] };
+// setTimeout(() => { mapa.addLabel(window.testLabel1); }, 5000);
 // ? 11. Caso de uso: Pruebas de label
 
 // ? 12. Caso de uso: Pruebas de maxExtent
@@ -143,7 +143,7 @@ const xyz = new XYZ({
   projection: 'EPSG:3857',
   visibility: true,
 }, {
-  crossOrigin: 'anonymous'
+  crossOrigin: 'anonymous',
 }); // CORS ERROR
 
 // Guardar todos los __proto__ del Objeto "mapa", usando ... para traerse elementos de estos objetos a un objeto común con el que se trabajará
@@ -215,9 +215,9 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
               auxButton.className = 'warningButton';
               console.error('NO_CONTROL_PRESENT_FOR_SECOND_TEST');
             }
-          } else if (auxName === 'getCOG') {
-            showResult(auxButton, 'GET_COG', mapa[auxName]());
-            showResult(auxButton, 'GET_COG_filter', mapa[auxName]({ name: 'Test_layers' }));
+          } else if (auxName === 'getGeoTIFF') {
+            showResult(auxButton, 'GET_GeoTIFF', mapa[auxName]());
+            showResult(auxButton, 'GET_GeoTIFF_filter', mapa[auxName]({ name: 'Test_layers' }));
           } else if (auxName === 'getControls') {
             showResult(auxButton, 'GET_ALL_CONTORLS', mapa[auxName]());
             showResult(auxButton, 'GET_SCALELINE', mapa[auxName]('scaleline'));
@@ -239,6 +239,9 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
           } else if (auxName === 'getMVT') {
             showResult(auxButton, 'GET_MVT', mapa[auxName]());
             showResult(auxButton, 'GET_MVT_filter', mapa[auxName]({ name: 'Test_layers' }));
+          } else if (auxName === 'getMapLibre') {
+            showResult(auxButton, 'GET_MapLibre', mapa[auxName]());
+            showResult(auxButton, 'GET_MapLibre_filter', mapa[auxName]({ name: 'Test_layers' }));
           } else if (auxName === 'getOGCAPIFeatures') {
             showResult(auxButton, 'GET_OGCAPIFeatures', mapa[auxName]());
             showResult(auxButton, 'GET_OGCAPIFeatures', mapa[auxName]({ name: 'airports' }));
@@ -271,6 +274,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
             showResult(auxButton, 'GET_ZOOM', mapa[auxName]());
             showResult(auxButton, 'GET_ZOOM_NO_CONSTRAINS', mapa[auxName](true));
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_GET:', auxName);
           }
         };
@@ -279,18 +283,18 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
         // ---------------------------------FUNCIONES ADD---------------------------------
         parameterTest = () => { // addParameterTest
           if (auxName === 'addAttribution') {
-            if (mapa.getControls().some(({ name }) => name === 'attributions')){
+            if (mapa.getControls().some(({ name }) => name === 'attributions')) {
               showResult(auxButton, 'ADD_ATTRIBUTION_FALSE', mapa[auxName]({ attribuccion: '<p>EJEMPLO1</p>' }, false));
               showResult(auxButton, 'ADD_ATTRIBUTION_TRUE', mapa[auxName]({ attribuccion: '<p>EJEMPLO2</p>' }, true));
-            }else{
+            } else {
               auxButton.className = 'warningButton';
               console.warn('Control Attributions no añadido previamente');
             }
-          } else if (auxName === 'addCOG') {
-            showResult(auxButton, 'ADD_COG', mapa[auxName](new COG({
+          } else if (auxName === 'addGeoTIFF') {
+            showResult(auxButton, 'ADD_GeoTIFF', mapa[auxName](new GeoTIFF({
               url: 'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif', // REQUEST FAILED IN 'http://ftpcdd.cnig.es/Vuelos_2022/Vuelos_2022/murcia_2022/01.VF/01.08_PNOA_2022_MUR_35cm_VF_img8c_rgb_hu30/h50_0932_fot_011-0034_cog.tif'
-              name: 'Nombre cog',
-              legend: 'Leyenda cog',
+              name: 'Nombre GeoTIFF',
+              legend: 'Leyenda GeoTIFF',
               transparent: true,
             }, {
               minZoom: 5, maxZoom: 15, convertToRGB: 'auto', nodata: 1000,
@@ -310,8 +314,14 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
             showResult(auxButton, 'ADD_MBTilesVector', mapa[auxName](mbtileVector));
           } else if (auxName === 'addMVT') {
             showResult(auxButton, 'ADD_MVT', mapa[auxName]('MVT*https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf*vectortile'));
+          } else if (auxName === 'addMapLibre') {
+            showResult(auxButton, 'ADD_MapLibre', mapa[auxName](new MapLibre({
+              type: 'MapLibre', name: 'Mapa Libre Name', legend: 'Mapa Libre Legend', style: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json', extract: true, disableBackgroundColor: false, visibility: true, transparent: false, displayInLayerSwitcher: false,
+            })));
           } else if (auxName === 'addOGCAPIFeatures') {
-            showResult(auxButton, 'ADD_OGCAPIFeatures', mapa[auxName](new OGCAPIFeatures({url: 'https://api-features.idee.es/collections/', name: 'falls', legend: 'Capa OGCAPIFeatures', limit: 20 })));
+            showResult(auxButton, 'ADD_OGCAPIFeatures', mapa[auxName](new OGCAPIFeatures({
+              url: 'https://api-features.idee.es/collections/', name: 'falls', legend: 'Capa OGCAPIFeatures', limit: 20,
+            })));
           } else if (auxName === 'addPanels') {
             showResult(auxButton, 'ADD_panels', mapa[auxName](new Panel('toolsExtra', {
               collapsible: true, className: 'm-tools', collapsedButtonClass: 'g-cartografia-herramienta', position: '.m-top.m-left',
@@ -342,6 +352,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
           } else if (auxName === 'addXYZ') {
             showResult(auxButton, 'ADD_XYZ', mapa[auxName](xyz)); // CORS ERROR WITH 'XYZ*AtlasDeCresques*https://www.ign.es/web/catalogo-cartoteca/resources/webmaps/data/cresques/{z}/{x}/{y}.jpg*true*true'
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_ADD:', auxName);
           }
         };
@@ -362,8 +373,8 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
               auxButton.className = 'warningButton';
               console.error('NO_ATRIBUTIONS_PRESENT');
             }
-          } else if (auxName === 'removeCOG') {
-            showResult(auxButton, 'REMOVE_COG', mapa[auxName](mapa.getCOG()));
+          } else if (auxName === 'removeGeoTIFF') {
+            showResult(auxButton, 'REMOVE_GeoTIFF', mapa[auxName](mapa.getGeoTIFF()));
           } else if (auxName === 'removeControls') {
             showResult(auxButton, 'REMOVE_SCALELINE', mapa[auxName]('scaleline'));
           } else if (auxName === 'removeFeatures') { // Removes from DrawLayer of Map
@@ -382,6 +393,8 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
             showResult(auxButton, 'REMOVE_MBTilesVector', mapa[auxName](mapa.getMBTilesVector()));
           } else if (auxName === 'removeMVT') {
             showResult(auxButton, 'REMOVE_MVT', mapa[auxName](mapa.getMVT()));
+          } else if (auxName === 'removeMapLibre') {
+            showResult(auxButton, 'REMOVE_MapLibre', mapa[auxName](mapa.getMapLibre()));
           } else if (auxName === 'removeOGCAPIFeatures') {
             showResult(auxButton, 'REMOVE_OGCAPIFeatures', mapa[auxName](mapa.getOGCAPIFeatures()));
           } else if (auxName === 'removePanel') {
@@ -411,6 +424,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
           } else if (auxName === 'removeXYZ') {
             showResult(auxButton, 'REMOVE_XYZ', mapa[auxName](mapa.getXYZs()));
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_REMOVE:', auxName);
           }
         };
@@ -443,6 +457,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
           } else if (auxName === 'setZoomConstrains') {
             showResult(auxButton, 'SET_ZOOM_CONSTRAINS', mapa[auxName](!mapa.getZoomConstrains()));
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_SET:', auxName);
           }
         };
@@ -497,6 +512,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
             showResult(auxButton, 'ZOOM_TO_MAX_EXTENT_NOT_KEEP_USER_ZOOM', mapa[auxName](false));
             // showResult(auxButton, 'ZOOM_TO_MAX_EXTENT_KEEP_USER_ZOOM', mapa[auxName](true));
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_OTHER:', auxName);
           }
         };

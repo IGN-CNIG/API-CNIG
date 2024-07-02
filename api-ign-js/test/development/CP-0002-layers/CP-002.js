@@ -1,22 +1,23 @@
-/* eslint-disable no-underscore-dangle,max-len,camelcase,no-plusplus,no-param-reassign,no-proto,import/newline-after-import */
+/* eslint-disable object-property-newline,no-console,no-underscore-dangle,max-len,camelcase,no-plusplus,no-param-reassign,no-proto,import/newline-after-import */
 import { map as Mmap } from 'M/mapea';
 // Escoger una de estas capas para probarlas.
-import { tms_001 } from '../layers/tms/tms'; const capaPrueba = tms_001; window.tms = tms_001; // STRING ==> import { tms_002 } from '../layers/tms/tms'; const capaPrueba = tms_002; window.tms = tms_002;
+// import { tms_001 } from '../layers/tms/tms'; const capaPrueba = tms_001; window.tms = tms_001; // STRING ==> import { tms_002 } from '../layers/tms/tms'; const capaPrueba = tms_002; window.tms = tms_002;
 // import { wms_001 } from '../layers/wms/wms'; const capaPrueba = wms_001; window.wms = wms_001; // STRING ==> import { wms_002 } from '../layers/wms/wms'; const capaPrueba = wms_002; window.wms = wms_002;
 // import { wmts_001 } from '../layers/wmts/wmts'; const capaPrueba = wmts_001; window.wmts = wmts_001; // STRING ==> import { wmts_002 } from '../layers/wmts/wmts'; const capaPrueba = wmts_002; window.wmts = wmts_002;
 // import { xyz_001 } from '../layers/xyz/xyz'; const capaPrueba = xyz_001; window.xyz = xyz_001; // STRING ==> import { xyz_002 } from '../layers/xyz/xyz'; const capaPrueba = xyz_002; window.xyz = xyz_002;
 // import { osm } from '../layers/osm/osm'; const capaPrueba = osm; window.osm = osm;// STRING ==> import { osm_002 } from '../layers/osm/osm'; const capaPrueba = osm_002; window.osm = osm_002;// STRING ==> import { osm_003 } from '../layers/osm/osm'; const capaPrueba = osm_003; window.osm = osm_003;
 // import { mbtile_01 } from '../layers/mbtiles/mbtiles'; const capaPrueba = mbtile_01; window.mbtile = mbtile_01;
 // import { generic_001 } from '../layers/generic/generic'; const capaPrueba = generic_001; window.generic = generic_001;
-// import { cog_001 } from '../layers/cog/cog'; const capaPrueba = cog_001; window.cog = cog_001;
+// import { geotiff_001 } from '../layers/cog/cog'; const capaPrueba = geotiff_001; window.geotiff = geotiff_001;
+import { maplibre_001 } from '../layers/maplibre/maplibre'; const capaPrueba = maplibre_001; window.maplibre = maplibre_001;
 window.capaPrueba = capaPrueba;
 
 const mapa = Mmap({
   container: 'map',
   projection: 'EPSG:3857*m',
-  // center: [-443273.10081370454, 4757481.749296248], zoom: 6, // Other Tests
-  bbox: [287821.2283355333, 5226384.980194519, 324511.00191241794, 5237544.7863241555],
-  // center: [309697, 5231113], zoom: 14, // COG Test
+  center: [-443273.10081370454, 4757481.749296248], zoom: 6, // Other Tests
+  // bbox: [287821.2283355333, 5226384.980194519, 324511.00191241794, 5237544.7863241555], // GeoTIFF Test
+  // center: [309697, 5231113], zoom: 14, // GeoTIFF Test
   // layers: [capaPrueba]
   controls: ['attributions', 'scale'],
 });
@@ -70,7 +71,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
     return result;
   };
 
-  const checkFunctionArguments = function (func) {
+  const checkFunctionArguments = (func) => {
     let hasArguments = false;
     const functString = func.toString().split('\n').splice(0, 2);
     if (functString[0]) {
@@ -97,7 +98,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
         // ---------------------------------FUNCIONES SIN PARÁMETROS---------------------------------
         // FUNCIÓNES ÚNICAS
         // wms_001 ==> "_updateNoCache", "getCapabilities", "getNoCacheName" y "getNoCacheUrl"
-        // cog_001 ==> "getNoCacheName" y "getNoCacheUrl"
+        // geotiff_001 ==> "getNoCacheName" y "getNoCacheUrl"
         parameterTest = () => { // singeParameterTest
           showResult(auxButton, undefined, capaPrueba[auxName]());
         };
@@ -105,11 +106,14 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
       } else if (auxName.startsWith('get')) {
         // ---------------------------------FUNCIONES GET---------------------------------
         parameterTest = () => { // getParameterTest
-          if (auxName === 'getFeatureInfoUrl') { // ONLY USED IN "wmts_001"
+          if (auxName === 'getFeatureById') { // ONLY USED IN "maplibre_001" (COULD BE UNNEDED others "extends LayerBase" are not using it)
+            showResult(auxButton, 'GET_getFeatureById_NULL', capaPrueba[auxName]('TEST_NO_EXISTENTE'));
+          } else if (auxName === 'getFeatureInfoUrl') { // ONLY USED IN "wmts_001"
             showResult(auxButton, 'GET_getFeatureInfoUrl', capaPrueba[auxName]([-394825, 4657802], 6, 'text/plain'));
           } else if (auxName === 'getTileColTileRow') { // ONLY USED IN "wmts_001"
             showResult(auxButton, 'GET_getTileColTileRow', capaPrueba[auxName]([-394825, 4657802], 6));
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_GET:', auxName);
           }
         };
@@ -120,6 +124,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
           if (auxName === '*NOT_DEFINED*') {
             // showResult(auxButton, "ADD_", capaPrueba[auxName]());
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_ADD:', auxName);
           }
         };
@@ -130,6 +135,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
           if (auxName === '*NOT_DEFINED*') {
             // showResult(auxButton, "ADD_", capaPrueba[auxName]());
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_REMOVE:', auxName);
           }
         };
@@ -137,12 +143,19 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
       } else if (auxName.startsWith('set')) {
         // ---------------------------------FUNCIONES SET---------------------------------
         parameterTest = () => { // setParameterTest
-          if (auxName === 'setFormat') { // ONLY USED IN "wmts_001"
+          if (auxName === 'setFilter') { // ONLY USED IN "maplibre_001"
+            auxButton.className = 'warningButton';
+            console.error('Not implemente in MapLibre Layers:', auxName);
+            // showResult(auxButton, 'SET_setFilter', capaPrueba[auxName]());
+          } else if (auxName === 'setFormat') { // ONLY USED IN "wmts_001"
             showResult(auxButton, 'SET_setFormat', capaPrueba[auxName]('text/html'));
           } else if (auxName === 'setImpl') {
             showResult(auxButton, 'SET_setImpl', capaPrueba[auxName](capaPrueba.getImpl()));
           } else if (auxName === 'setLayerGroup') {
             showResult(auxButton, 'SET_setLayerGroup', capaPrueba[auxName](['OSM', 'OSM']));
+          } else if (auxName === 'setLayoutProperty') { // ONLY USED IN "maplibre_001"
+            // window.maplibre.impl_.ol3Layer.mapLibreMap.setLayoutProperty('cubierta_vegetal_bosque_pol', 'visibility', 'none');
+            showResult(auxButton, 'SET_setLayoutProperty', capaPrueba[auxName]('cubierta_vegetal_bosque_pol', 'visibility', 'none'));
           } else if (auxName === 'setLegend') {
             showResult(auxButton, 'SET_setLegend', capaPrueba[auxName]('PRUEBA_TEXTO_LEYENDA'));
           } else if (auxName === 'setLegendURL') {
@@ -163,6 +176,11 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
             } else {
               showResult(auxButton, 'SET_setOpacity_1', capaPrueba[auxName](1));
             }
+          } else if (auxName === 'setPaintProperty') { // ONLY USED IN "maplibre_001"
+            // window.maplibre.impl_.ol3Layer.mapLibreMap.setPaintProperty('cubierta_vegetal_bosque_pol','fill-color','rgba( 0, 0, 0, 1.00 )');
+            showResult(auxButton, 'SET_setPaintProperty', capaPrueba[auxName]('cubierta_vegetal_bosque_pol', 'fill-color', 'rgba( 0, 0, 0, 1.00 )'));
+          } else if (auxName === 'setStyle') { // ONLY USED IN "maplibre_001"
+            showResult(auxButton, 'SET_setStyle', capaPrueba[auxName]('https://demotiles.maplibre.org/style.json'));
           } else if (auxName === 'setVisible') {
             if (capaPrueba.isVisible()) {
               showResult(auxButton, 'SET_setVisible_false', capaPrueba[auxName](false));
@@ -172,6 +190,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
           } else if (auxName === 'setZIndex') {
             showResult(auxButton, 'SET_setZIndex', capaPrueba[auxName](101));
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_SET:', auxName);
           }
         };
@@ -217,9 +236,10 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
               auxButton.className = 'warningButton';
               console.error('NO_ONCE_EVENTS_PRESENT_TO_CLEAR:', auxName);
             }
-          } else if (auxName === 'updateMinMaxResolution') { // ONLY USED IN "wms_001" and "cog_001"
+          } else if (auxName === 'updateMinMaxResolution') { // ONLY USED IN "wms_001" and "geotiff_001"
             showResult(auxButton, 'updateMinMaxResolution', capaPrueba[auxName](mapa.getProjection())); // "minResolution" y "maxResolution" tienen que estar en este layer
           } else {
+            auxButton.className = 'errorButton';
             console.error('NOT_PREPARED_FUNCTION_TEST_FOR_OTHER:', auxName);
           }
         };
@@ -244,12 +264,13 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
 window.listAllFunctions = listAllFunctions; // Para tener acceso a toda la lista de funciones.
 window.listOnlyShown = listOnlyShown; // Solo las funciones mostradas en las pruebas.
 
-// Resultados de pruebas de funciones // SOME WHERE NOT TESTED because they are STRINGS
-// TMS tms_001          OK
-// WMS wms_001          OK
-// WMTS wmts_001        OK
-// XYZ xyz_001          OK
-// OSM osm              OK
-// MBTile mbtile_01     OK
-// generic generic_001  OK
-// COG cog_001          OK
+// Resultados de pruebas de funciones
+// TMS tms_001           OK
+// WMS wms_001           OK
+// WMTS wmts_001         OK
+// XYZ xyz_001           OK
+// OSM osm               OK
+// MBTile mbtile_01      OK
+// generic generic_001   OK
+// GeoTIFF geotiff_001   OK
+// MapLibre maplibre_001 OK

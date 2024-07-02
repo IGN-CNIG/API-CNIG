@@ -128,14 +128,14 @@ const mp2 = new M.plugin.Vectors({}); map.addPlugin(mp2);
 // M.proxy(false);
 // Todas las CAPAS que se tienen que probar
 
-// Capa GeoJson 1
+/* / Capa GeoJson 1
 const capaGeoJSON = new M.layer.GeoJSON({
   name: 'Capa GeoJSON',
   legend: 'Capa GeoJSON',
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
   extract: true,
 });
-// map.addLayers(capaGeoJSON); window.capaGeoJSON = capaGeoJSON; // */
+map.addLayers(capaGeoJSON); window.capaGeoJSON = capaGeoJSON; // */
 
 /* / Reemplazo de capa GeoJson 1
 map.getMapImpl().on('moveend', () => {
@@ -150,7 +150,7 @@ map.getMapImpl().on('moveend', () => {
   map.addLayers(capaGeoJSON); window.capaGeoJSON = capaGeoJSON;
 }); // */
 
-// Capa GeoJson 2
+/* / Capa GeoJson 2
 const capaGeoJSON2 = new M.layer.GeoJSON({
   name: 'capaJson',
   source: {
@@ -179,7 +179,7 @@ const capaGeoJSON2 = new M.layer.GeoJSON({
     },
   },
 });
-// map.addLayers(capaGeoJSON2); window.capaGeoJSON2 = capaGeoJSON2; // */
+map.addLayers(capaGeoJSON2); window.capaGeoJSON2 = capaGeoJSON2; // */
 
 /* / Capa OSM 1
 const capaOSM = new M.layer.OSM({
@@ -200,7 +200,7 @@ const capaKML = new M.layer.KML({
 });
 map.addLayers(capaKML); window.capaKML = capaKML; // */
 
-// Capa MVT
+/* / Capa MVT
 const capaMVT = new M.layer.MVT({ // No visible en zooms 0-7, saltan errores 404
   url: 'https://www.ign.es/web/resources/mapa-base-xyz/vt/{z}/{x}/{y}.pbf',
   layers: ['provincia_pol', 'camino_lin'], // Se reduce lag por demaciados elementos al solo coger estos
@@ -209,10 +209,10 @@ const capaMVT = new M.layer.MVT({ // No visible en zooms 0-7, saltan errores 404
   projection: 'EPSG:3857',
   extract: true,
 });
-// map.addLayers(capaMVT); window.capaMVT = capaMVT; // */
+map.addLayers(capaMVT); window.capaMVT = capaMVT; // */
 
 const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
-  url: 'https://api-features.idee.es/collections/', name: 'falls', 
+  url: 'https://api-features.idee.es/collections/', name: 'falls',
   legend: 'Capa OGCAPIFeatures L',
   limit: 20,
 }, {
@@ -395,17 +395,17 @@ const mbtileVector = new M.layer.MBTilesVector({
 });
 map.addLayers(mbtileVector); window.mbtileVector = mbtileVector; // */
 
-// Capa COG
-const cog = new M.layer.GeoTIFF({
+/* / Capa GeoTIFF
+const geotiff = new M.layer.GeoTIFF({
   url: 'http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif',
-  name: 'Nombre cog',
-  legend: 'Leyenda cog',
+  name: 'Nombre geotiff',
+  legend: 'Leyenda geotiff',
   transparent: true,
 }, {
   convertToRGB: 'auto',
   nodata: 0,
 });
-// map.addLayers(cog); window.cog = cog; // */
+map.addLayers(geotiff); window.geotiff = geotiff; // */
 
 /* / Plugin TOC
 const mp3 = new M.plugin.TOC({
