@@ -201,6 +201,10 @@ export default class BackImgLayerControl extends M.Control {
         sumIndex += 16;
       }
 
+      if (layer.zindex_) {
+        layer.setZIndex(sumIndex);
+      }
+
       layer.setZIndex(sumIndex);
     });
 

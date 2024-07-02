@@ -341,6 +341,29 @@ export default class ComparatorsControl extends M.Control {
             const selectes = ['m-transparency-lyr'];
             this.addNewLayerUpdate_(layer, this.controls[2].control, selectes);
           }
+
+          if (!this.controls[0].active
+            && !this.controls[1].active
+            && !this.controls[2].active
+            && !this.controls[3].active) {
+            const [, otherLayers] = checkLayers(layer, this.layersPlugin);
+
+            const layersStringDefault = [];
+
+            otherLayers.forEach((l) => {
+              if (l.displayInLayerSwitcher && l.transparent) {
+                layersStringDefault.push(transformToStringLayers(l, this.map_, false));
+              }
+            });
+
+            this.layersPlugin = [...this.layersPlugin, ...layersStringDefault];
+            this.layerDefault = [...this.layerDefault, ...layersStringDefault];
+
+            // eslint-disable-next-line
+            this.controls.forEach((c) => c
+              // eslint-disable-next-line
+              .controlParam[1] = [...c.controlParam[1], ...layersStringDefault]);
+          }
         }
 
         layer.forEach((l) => {
