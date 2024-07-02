@@ -17,7 +17,7 @@ export default class StereoscopicControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(orbitControls = false,  anaglyphActive = false, defaultAnaglyphActive = false) {
+  constructor(orbitControls = false,  anaglyphActive = false, defaultAnaglyphActive = false, maxMaginification) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(StereoscopicImplControl)) {
       M.exception(getValue('exception.impl'));
@@ -31,6 +31,7 @@ export default class StereoscopicControl extends M.Control {
     this.toggle = false;
 
     this.defaultAnaglyphActive = defaultAnaglyphActive;
+    this.maxMaginification = maxMaginification;
   }
 
   /**
@@ -62,6 +63,7 @@ export default class StereoscopicControl extends M.Control {
             orbitControls: this.orbitControls_,
             activate3d: getValue('activate3d'),
             linkGlass: getValue('linkGlass'),
+            maxMagnification: this.maxMaginification,
           },
         },
       });

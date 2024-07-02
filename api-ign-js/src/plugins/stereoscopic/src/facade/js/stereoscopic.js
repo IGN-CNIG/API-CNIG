@@ -71,6 +71,8 @@ export default class Stereoscopic extends M.Plugin {
      this.anaglyphActive_ = (parameters.anaglyphActive) ? true : false;
 
      this.defaultAnaglyphActive = parameters.defaultAnaglyphActive || false;
+
+     this.maxMaginification = parameters.maxMaginification || null;
   }
 
   /**
@@ -82,7 +84,7 @@ export default class Stereoscopic extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    const control = new StereoscopicControl(this.orbitControls_,  this.anaglyphActive_, this.defaultAnaglyphActive);
+    const control = new StereoscopicControl(this.orbitControls_,  this.anaglyphActive_, this.defaultAnaglyphActive, this.maxMaginification);
     this.controls_.push(control);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelStereoscopic', {
