@@ -152,6 +152,17 @@ class MapLibre extends LayerBase {
         }
       });
     }
+
+    if (this.disableBackgroundColor === false) {
+      mapLibreMap.on('load', () => {
+        const layers = mapLibreMap.getStyle().layers;
+        const idBackground = layers.filter(({ type }) => type === 'background')[0].id;
+
+        if (this.disableBackgroundColor === false) {
+          mapLibreMap.setPaintProperty(idBackground, 'background-color', '#f2f2f2');
+        }
+      });
+    }
   }
 
   /**
