@@ -138,6 +138,7 @@ class MapLibre extends LayerBase {
     this.setVisible(this.visibility_);
     this.map.getMapImpl().addLayer(this.ol3Layer);
     this.setDisableBackgroundColor_();
+    this.setOpacity(this.opacity_);
   }
 
   setDisableBackgroundColor_() {
