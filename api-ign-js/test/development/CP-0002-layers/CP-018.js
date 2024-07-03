@@ -12,7 +12,6 @@ const mapLibre = new MapLibre({
   extract: true,
   disableBackgroundColor: false,
   // visibility: true,
-  // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
   style: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json',
   // style: 'https://demotiles.maplibre.org/style.json', // JSON, URL
   /*
