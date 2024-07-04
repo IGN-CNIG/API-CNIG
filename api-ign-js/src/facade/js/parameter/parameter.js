@@ -2748,12 +2748,12 @@ export const maplibre = (userParameters) => {
   return {
     type: LayerType.MapLibre,
     style: urlParams[1] || undefined,
-    disableBackgroundColor: urlParams[2] !== '' ? Boolean(urlParams[2]) : undefined,
+    disableBackgroundColor: urlParams[2] === '' ? undefined : urlParams[2] === 'true',
     legend: urlParams[3] || undefined,
-    transparent: urlParams[4] !== '' ? Boolean(urlParams[4]) : undefined,
-    extract: urlParams[5] !== '' ? Boolean(urlParams[5]) : undefined,
-    displayInLayerSwitcher: urlParams[6] !== '' ? Boolean(urlParams[6]) : undefined,
-    visibility: urlParams[7] !== '' ? Boolean(urlParams[7]) : undefined,
+    transparent: urlParams[4] === '' ? undefined : urlParams[4] === 'true',
+    extract: urlParams[5] === '' ? undefined : urlParams[5] === 'true',
+    displayInLayerSwitcher: urlParams[6] === '' ? undefined : urlParams[6] === 'true',
+    visibility: urlParams[7] !== '' ? undefined : urlParams[7] === 'true',
   };
 };
 
