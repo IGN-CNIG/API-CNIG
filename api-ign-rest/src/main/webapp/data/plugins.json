@@ -225,7 +225,7 @@
     "version": "v1.1.0",
     "url_es": "measurebar.jsp?language=es",
     "url_en": "measurebar.jsp?language=en",
-    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/lyrcompare",
+    "url_git": "https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-js/src/plugins/measurebar",
     "image": "img/api-logo.png",
     "description": "Herramienta de medición de áreas y distancias.",
     "obsolete": false

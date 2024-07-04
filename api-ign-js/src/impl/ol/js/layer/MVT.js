@@ -18,6 +18,7 @@ import Feature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
 import { mode } from 'M/layer/MVT';
 import Vector from './Vector';
+import ImplUtils from '../util/Utils';
 
 /**
  * @classdesc
@@ -373,6 +374,22 @@ class MVT extends Vector {
       this.loaded_ = true;
       this.facadeVector_.fire(EventType.LOAD);
     }
+  }
+
+  getFeaturesExtentPromise(skipFilter, filter) {
+    return new Promise((resolve) => {
+      const codeProj = this.map.getProjection().code;
+      if (this.isLoaded() === true) {
+        const features = this.getFeatures(skipFilter, filter);
+        const extent = ImplUtils.getFeaturesExtent(features, codeProj);
+        resolve(extent);
+      } else {
+        this.requestFeatures_().then((features) => {
+          const extent = ImplUtils.getFeaturesExtent(features, codeProj);
+          resolve(extent);
+        });
+      }
+    });
   }
 
   /**

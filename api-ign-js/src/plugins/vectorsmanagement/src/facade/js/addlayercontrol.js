@@ -73,6 +73,13 @@ export default class AddLayerControl extends M.Control {
     const color = '#71a7d3';
     const dialog = document.querySelector('.m-dialog > div.m-modal > div.m-content');
     dialog.style.minWidth = 'auto';
+    const buttons = dialog.querySelector('.m-button');
+    const cancel = document.createElement('button');
+    cancel.type = 'button';
+    cancel.innerHTML = getValue('cancel');
+    cancel.style.width = 'auto';
+    cancel.style.backgroundColor = '#71a7d3';
+    buttons.appendChild(cancel);
     const title = document.querySelector('.m-modal .m-title');
     title.style.backgroundColor = color;
     const btn = document.querySelector('.m-button button');
@@ -81,6 +88,19 @@ export default class AddLayerControl extends M.Control {
     btn.style.backgroundColor = color;
     btn.addEventListener('click', () => {
       this.addLayer(inputName.value);
+
+      M.toast.info(getValue('creationLayer_done'), null, 6000);
+      // Seleccionar en el desplegable la capa que acabamos de crear
+      const selectionLayer = document.querySelector('#m-selectionlayer');
+      selectionLayer.options.selectedIndex = 1;
+      const changeEvent = document.createEvent('HTMLEvents');
+      changeEvent.initEvent('change');
+      selectionLayer.dispatchEvent(changeEvent);
+    });
+    cancel.addEventListener('click', () => {
+      const modal = document.querySelector('.m-dialog');
+      const parent = modal.parentNode;
+      parent.removeChild(modal);
     });
   }
 

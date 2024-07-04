@@ -17,7 +17,7 @@ export default class TransparencyControl extends M.Control {
     * @extends {M.Control}
     * @api stable
     */
-  constructor(values, controlsLayers, map) {
+  constructor(values, controlsLayers, map, fatherControl) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(TransparencyImplControl)) {
       M.exception(getValue('exception'));
@@ -133,6 +133,8 @@ export default class TransparencyControl extends M.Control {
       * @type {boolean}
       */
     this.freezeSpyEye = false;
+
+    this.fatherControl = fatherControl;
   }
 
   /**
@@ -218,6 +220,11 @@ export default class TransparencyControl extends M.Control {
             // eslint-disable-next-line no-shadow, array-callback-return, consistent-return
             const layer = this.layers.filter((layer) => {
               if (layer.name === evt.target.value) {
+                const mapLayer = this.map_.getLayers().filter(l => l.name === layer.name);
+                if (mapLayer.length > 0) {
+                  this.map_.removeLayers(mapLayer[0]);
+                }
+
                 this.map_.addLayers(layer);
                 return layer;
               }
@@ -283,13 +290,28 @@ export default class TransparencyControl extends M.Control {
     this.template.querySelector('#m-transparency-lock').style.visibility = 'visible';
     this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
     this.activate();
-
-    this.map_.addLayers(this.layers);
   }
 
   setDefaultLayer() {
     // eslint-disable-next-line no-console
     console.log('Activación remota');
+  }
+
+  removeLayers_() {
+    const removeLayer = [];
+    this.map_.getLayers().forEach((l) => {
+      if (this.layers.some(layer => layer.name === l.name)) {
+        removeLayer.push(l);
+      }
+    });
+
+    // filtrar pot this.fatherControl.saveLayers
+
+    removeLayer.forEach((l) => {
+      if (!this.fatherControl.saveLayers.includes(l.name)) {
+        this.map_.removeLayers(l);
+      }
+    });
   }
 
   /**
@@ -300,27 +322,20 @@ export default class TransparencyControl extends M.Control {
     * @api stable
     */
   activate() {
-    this.map_.getLayers().forEach((l) => {
-      if (this.layers.some((layer) => layer.name === l.name)) this.map_.removeLayers(l);
-    });
+    // this.removeLayers_();
 
     if (this.layerSelected === null) {
       this.layerSelected = this.layers[0];
-      this.map_.addLayers(this.layerSelected);
+      const findLayer = this.map_.getLayers().filter(l => l.name === this.layerSelected.name);
+
+      if (findLayer.length > 0) {
+        this.layerSelected = findLayer[0];
+      } else {
+        this.map_.addLayers(this.layerSelected);
+      }
     }
 
-    const names = this.layers.map((layer) => {
-      return layer instanceof Object ? { name: layer.name } : { name: layer };
-    });
-
-    if (names.length >= 1) {
-      this.template.querySelector('#m-transparency-lock').style.visibility = 'visible';
-      this.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
-    }
-
-    setTimeout(() => {
-      this.getImpl().effectSelected(this.layerSelected, this.radius, this.freeze);
-    }, 1000);
+    this.effectSelectedImpl_();
   }
 
   /**
