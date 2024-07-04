@@ -251,7 +251,6 @@ const CONFIG_IBERPIX_LAYERSWITCHER = {
   order: 12,
 };
 
-
 export default class WindowSyncControl extends M.Control {
   /**
      * @classdesc
@@ -364,8 +363,8 @@ export default class WindowSyncControl extends M.Control {
         }
       });
 
-      this.map_.addLayers(this.layers);
-      this.map_.getLayers().forEach(l => !l.isBase && l.setVisible(false));
+    this.map_.addLayers(this.layers);
+    this.map_.getLayers().forEach((l) => !l.isBase && l.setVisible(false));
   }
 
   /**

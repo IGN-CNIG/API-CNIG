@@ -220,7 +220,7 @@ export default class TransparencyControl extends M.Control {
             // eslint-disable-next-line no-shadow, array-callback-return, consistent-return
             const layer = this.layers.filter((layer) => {
               if (layer.name === evt.target.value) {
-                const mapLayer = this.map_.getLayers().filter(l => l.name === layer.name);
+                const mapLayer = this.map_.getLayers().filter((l) => l.name === layer.name);
                 if (mapLayer.length > 0) {
                   this.map_.removeLayers(mapLayer[0]);
                 }
@@ -300,7 +300,7 @@ export default class TransparencyControl extends M.Control {
   removeLayers_() {
     const removeLayer = [];
     this.map_.getLayers().forEach((l) => {
-      if (this.layers.some(layer => layer.name === l.name)) {
+      if (this.layers.some((layer) => layer.name === l.name)) {
         removeLayer.push(l);
       }
     });
@@ -326,7 +326,7 @@ export default class TransparencyControl extends M.Control {
 
     if (this.layerSelected === null) {
       this.layerSelected = this.layers[0];
-      const findLayer = this.map_.getLayers().filter(l => l.name === this.layerSelected.name);
+      const findLayer = this.map_.getLayers().filter((l) => l.name === this.layerSelected.name);
 
       if (findLayer.length > 0) {
         this.layerSelected = findLayer[0];

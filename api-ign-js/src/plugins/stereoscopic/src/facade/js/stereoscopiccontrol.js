@@ -1,3 +1,4 @@
+/* eslint-disable default-param-last */
 /**
  * @module M/control/StereoscopicControl
  */
@@ -18,7 +19,10 @@ export default class StereoscopicControl extends M.Control {
    * @api stable
    */
   constructor(
-    orbitControls = false, anaglyphActive = false, defaultAnaglyphActive = false, maxMaginification
+    orbitControls = false,
+    anaglyphActive = false,
+    defaultAnaglyphActive = false,
+    maxMaginification,
   ) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(StereoscopicImplControl)) {
@@ -128,7 +132,7 @@ export default class StereoscopicControl extends M.Control {
     const newScript = document.createElement('script');
     newScript.type = 'module';
 
-    const url = M.config.MAPEA_URL+'plugins/stereoscopic/'
+    const url = `${M.config.MAPEA_URL}plugins/stereoscopic/`;
 
     const inlineScript = document.createTextNode(` const TR3cfg = new Array();
 
@@ -155,13 +159,13 @@ export default class StereoscopicControl extends M.Control {
     document.getElementById('tools').innerHTML = TR3.setPanel();
 
     const opts = {
-        imgControl: ${this.orbitControls_},	//desvía los controles de manejo de escena a ina imagen externa
-        cursor3d: false,		//visiviliza el cusrso 3D
-        anaglyph: ${this.anaglyphActive_},		//Activa el modo Anaglifo
-        autoRotate: false,	//Activa la rotación
+        imgControl: ${this.orbitControls_},
+        cursor3d: false,
+        anaglyph: ${this.anaglyphActive_},
+        autoRotate: false,
         wireframeMesh: false, //Muestra la malla del terreno
-        tentative: true, 	//Muestra los elelemtos interactivos realzando su tamaño
-        cheapMode: false	//Activa el modo ahorro de rendimiento
+        tentative: true,
+        cheapMode: false
     }
 
     TR3.setOpts(opts);

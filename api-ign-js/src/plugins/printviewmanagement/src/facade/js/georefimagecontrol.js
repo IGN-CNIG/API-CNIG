@@ -320,7 +320,6 @@ export default class GeorefimageControl extends M.Control {
         this.removeSelector();
       }
 
-
       if (this.printType === 'client') {
         this.template_.querySelector(ID_DPI).disabled = true;
       }

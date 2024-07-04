@@ -143,7 +143,7 @@ export default class ComparatorsControl extends M.Control {
 
     if (this.options.listLayers) {
       this.listLayersString = this.options.listLayers
-        .map(l => ((l instanceof Object) ? transformToStringLayers(l, this.map_) : l));
+        .map((l) => ((l instanceof Object) ? transformToStringLayers(l, this.map_) : l));
       this.layersPlugin = this.listLayersString;
     }
 
@@ -168,7 +168,7 @@ export default class ComparatorsControl extends M.Control {
         this.defaultCompareMode,
         this,
       ],
-      controlCreate: param => new MirrorpanelControl(...param),
+      controlCreate: (param) => new MirrorpanelControl(...param),
       control: null,
       active: false,
     },
@@ -181,7 +181,7 @@ export default class ComparatorsControl extends M.Control {
         this.map_,
         this,
       ],
-      controlCreate: param => new LyrCompareControl(...param),
+      controlCreate: (param) => new LyrCompareControl(...param),
       control: null,
       active: false,
     },
@@ -194,7 +194,7 @@ export default class ComparatorsControl extends M.Control {
         this.map_,
         this,
       ],
-      controlCreate: param => new TransparencyControl(...param),
+      controlCreate: (param) => new TransparencyControl(...param),
       control: null,
       active: false,
     },
@@ -206,7 +206,7 @@ export default class ComparatorsControl extends M.Control {
         this.layersPlugin,
         this.map_,
       ],
-      controlCreate: param => new WindowSyncControl(...param),
+      controlCreate: (param) => new WindowSyncControl(...param),
       control: null,
       active: false,
     },
@@ -288,12 +288,12 @@ export default class ComparatorsControl extends M.Control {
 
           if (c.id === 'transparency') {
             setTimeout(() => {
-              this.map_.getLayers().forEach(l => !l.isBase && l.setVisible(false));
+              this.map_.getLayers().forEach((l) => !l.isBase && l.setVisible(false));
             }, 1000);
           }
 
           if (c.id === 'mirrorpanel') {
-            this.map_.getLayers().forEach(l => !l.isBase && l.setVisible(false));
+            this.map_.getLayers().forEach((l) => !l.isBase && l.setVisible(false));
           }
 
           const control = c.controlCreate(c.controlParam);
@@ -574,7 +574,7 @@ export default class ComparatorsControl extends M.Control {
     this.layersPlugin.forEach((l) => {
       const layerName = getNameString(l);
       const filter = this.map_.getLayers().filter(({ name }) => name === layerName);
-      const notLoaded = filter.filter(s => this.saveLayers.includes(s.name));
+      const notLoaded = filter.filter((s) => this.saveLayers.includes(s.name));
       this.map_.removeLayers(notLoaded);
     });
   }

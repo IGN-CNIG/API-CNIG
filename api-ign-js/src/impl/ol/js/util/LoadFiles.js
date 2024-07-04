@@ -13,7 +13,7 @@ import GML3 from 'ol/format/GML3';
 import View from 'ol/View';
 import { transform } from 'ol/proj';
 import OLFeature from 'ol/Feature';
-import ImplUtils from '../util/Utils';
+import ImplUtils from './Utils';
 import Feature from '../feature/Feature';
 
 /**
@@ -47,7 +47,7 @@ class LoadFiles {
     }
   }
 
-/**
+  /**
  * Obtiene los features de un GeoJSON
  * @public
  * @function

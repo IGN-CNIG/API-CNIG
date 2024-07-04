@@ -18,7 +18,7 @@ export default class MirrorpanelControl extends M.Control {
   * @extends {M.Control}
   * @api stable
   */
-  constructor(alues, controlsLayers, map, _, comparatorsControls) {
+  constructor(values, controlsLayers, map, _, comparatorsControls) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(MirrorpanelImplControl)) {
       M.exception(getValue('exception'));
@@ -640,8 +640,8 @@ export default class MirrorpanelControl extends M.Control {
     }
 
     if (value !== 'void') {
-      const someSaveLayers = this.comparatorsControls.saveLayers.find(l => value.includes(l));
-      const layerFind = this.mapL[map].getLayers().find(l => l.name === someSaveLayers);
+      const someSaveLayers = this.comparatorsControls.saveLayers.find((l) => value.includes(l));
+      const layerFind = this.mapL[map].getLayers().find((l) => l.name === someSaveLayers);
       if (layerFind) {
         layerFind.setVisible(true);
       } else {

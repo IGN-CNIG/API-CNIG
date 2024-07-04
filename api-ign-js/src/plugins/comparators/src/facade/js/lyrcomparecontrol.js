@@ -280,7 +280,7 @@ export default class LyrCompareControl extends M.Control {
             || i === this.defaultLyrB
             || i === this.defaultLyrC
             || i === this.defaultLyrD)) {
-          const mapLayer = this.map_.getLayers().filter(l => l.name === layer.name);
+          const mapLayer = this.map_.getLayers().filter((l) => l.name === layer.name);
           if (mapLayer.length > 0) {
             this.map_.removeLayers(mapLayer[0]);
           }
@@ -318,7 +318,6 @@ export default class LyrCompareControl extends M.Control {
     && this.defaultLyrC === 2
     && this.defaultLyrD === 3;
   }
-
 
   /**
    * This function destroys this plugin
@@ -570,11 +569,11 @@ export default class LyrCompareControl extends M.Control {
         // eslint-disable-next-line no-shadow, array-callback-return, consistent-return
         const layer = this.layers.filter((layer) => {
           if (layer.name === evt.target.value) {
-            const mapLayer = this.map_.getLayers().filter(l => l.name === layer.name);
+            const mapLayer = this.map_.getLayers().filter((l) => l.name === layer.name);
             if (mapLayer.length > 0) {
               this.map_.removeLayers(mapLayer[0]);
             }
-            
+
             this.map_.addLayers(layer);
             return layer;
           }

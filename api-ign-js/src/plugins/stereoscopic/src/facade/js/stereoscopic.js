@@ -83,8 +83,12 @@ export default class Stereoscopic extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    const control = new StereoscopicControl(this.orbitControls_, this.anaglyphActive_,
-      this.defaultAnaglyphActive, this.maxMaginification);
+    const control = new StereoscopicControl(
+      this.orbitControls_,
+      this.anaglyphActive_,
+      this.defaultAnaglyphActive,
+      this.maxMaginification,
+    );
 
     this.controls_.push(control);
     this.map_ = map;

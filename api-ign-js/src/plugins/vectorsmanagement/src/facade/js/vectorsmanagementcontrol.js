@@ -518,8 +518,8 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   refreshLayers() {
-    this.layers_ = this.map_.getLayers().filter((l) => (l instanceof M.layer.Vector ||
-      l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
+    this.layers_ = this.map_.getLayers().filter((l) => (l instanceof M.layer.Vector
+      || l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
       return { value: l.name, text: l.legend || l.name, zIndex: l.getZIndex() };
     });
     const selector = this.html.querySelector('#m-selectionlayer');
