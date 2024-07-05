@@ -142,27 +142,28 @@ class MapLibre extends LayerBase {
   }
 
   setDisableBackgroundColor_() {
-    const mapLibreMap = this.ol3Layer.mapLibreMap;
-    if (this.disableBackgroundColor === true) {
-      mapLibreMap.on('load', () => {
-        const layers = mapLibreMap.getStyle().layers;
-        const idBackground = layers.filter(({ type }) => type === 'background')[0].id;
-
-        if (this.disableBackgroundColor === true) {
-          mapLibreMap.setPaintProperty(idBackground, 'background-color', 'transparent');
-        }
+    if (this.ol3Layer.mapLibreMap.isStyleLoaded()) {
+      this.changeDisableBackgroundColor_();
+    } else {
+      this.ol3Layer.mapLibreMap.once('styledata', () => { // style.load(Private)
+        this.changeDisableBackgroundColor_();
       });
+    }
+  }
+
+  changeDisableBackgroundColor_() {
+    const mapLibreMap = this.ol3Layer.mapLibreMap;
+
+    const layers = mapLibreMap.getStyle().layers;
+    const idBackground = layers.filter(({ type }) => type === 'background')[0].id;
+
+    if (this.disableBackgroundColor === true) {
+      mapLibreMap.setPaintProperty(idBackground, 'background-color', 'transparent');
     }
 
     if (this.disableBackgroundColor === false) {
-      mapLibreMap.on('load', () => {
-        const layers = mapLibreMap.getStyle().layers;
-        const idBackground = layers.filter(({ type }) => type === 'background')[0].id;
-
-        if (this.disableBackgroundColor === false) {
-          mapLibreMap.setPaintProperty(idBackground, 'background-color', '#f2f2f2');
-        }
-      });
+      mapLibreMap.setPaintProperty(idBackground, 'background-color', '#f2f2f2');
+      mapLibreMap.setLayoutProperty(idBackground, 'visibility', 'visible');
     }
   }
 
