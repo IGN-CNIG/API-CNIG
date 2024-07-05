@@ -592,6 +592,8 @@ export default class ShareMapControl extends M.Control {
       param = this.getOGCAPIFeatures(layer);
     } else if (layer.type === 'GeoTIFF') {
       param = this.getGeoTIFF(layer);
+    } else if (layer.type === 'MapLibre') {
+      param = this.getMapLibre(layer);
     }
     return param;
   }
@@ -629,6 +631,16 @@ export default class ShareMapControl extends M.Control {
   getOGCAPIFeatures(layer) {
     const style = (layer.getStyle()) ? layer.getStyle().serialize() : '';
     return `OGCAPIFeatures*${layer.legend || layer.name}*${layer.url}*${layer.name}*${layer.limit || ''}*${layer.bbox || ''}*${layer.id || ''}*${layer.offset || ''}*${layer.format || ''}*${style}*${layer.extract || ''}`;
+  }
+
+  /**
+   * This method gets the MapLibre url parameter
+   *
+   * @public
+   * @function
+   */
+  getMapLibre(layer) {
+    return `MapLibre*${layer.style}*${layer.disableBackgroundColor || ''}*${layer.legend || ''}*${layer.transparent || ''}*${layer.extract || ''}*${layer.displayInLayerSwitcher || ''}*${layer.visibility || ''}`;
   }
 
   /**
