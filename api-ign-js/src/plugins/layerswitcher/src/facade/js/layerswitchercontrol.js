@@ -1245,7 +1245,7 @@ export default class LayerswitcherControl extends M.Control {
             } else {
               M.proxy(this.useProxy);
               M.remote.get(metadata).then((meta) => {
-                if (json && meta.text.indexOf('sources') && meta.text.indexOf('version') && meta.text.indexOf('layers')) {
+                if (json && meta.text.indexOf('sources') !== -1 && meta.text.indexOf('version') !== -1 && meta.text.indexOf('layers') !== -1) {
                   this.printLayerModal(url, 'maplibre');
                 } else if (json && meta.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
                   this.printLayerModal(url, 'geojson');
@@ -1268,7 +1268,14 @@ export default class LayerswitcherControl extends M.Control {
                   layers = layers.map((layer) => {
                     return { name: layer.id };
                   });
-                  this.printLayerModal(urlLayer[0], 'mvt', layers);
+
+                  if (JSON.parse(meta.text).format === 'pbf') {
+                    this.printLayerModal(urlLayer[0], 'mvt', layers);
+                  } else if (parse.scheme === 'tms') {
+                    this.printLayerModal(urlLayer[0], 'tms');
+                  } else if (parse.scheme === 'xyz') {
+                    this.printLayerModal(urlLayer[0], 'xyz');
+                  }
                 }
               });
               M.proxy(this.statusProxy);
