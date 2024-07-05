@@ -40,3 +40,16 @@ export const xyz_001 = new XYZ({
 });
 
 export const xyz_002 = 'XYZ*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*true';
+
+export const xyz_003 = new XYZ({
+  url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+  name: 'PNOA-MA',
+  projection: 'EPSG:3857',
+  legend: 'Leyenda XYZ 3',
+  tileGridMaxZoom: 5,
+  visibility: true,
+  transparent: true,
+}, {
+  minZoom: 5,
+  maxZoom: 10,
+}, {});

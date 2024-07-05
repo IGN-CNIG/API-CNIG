@@ -219,7 +219,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
             showResult(auxButton, 'GET_GeoTIFF', mapa[auxName]());
             showResult(auxButton, 'GET_GeoTIFF_filter', mapa[auxName]({ name: 'Test_layers' }));
           } else if (auxName === 'getControls') {
-            showResult(auxButton, 'GET_ALL_CONTORLS', mapa[auxName]());
+            showResult(auxButton, 'GET_ALL_CONTROLS', mapa[auxName]());
             showResult(auxButton, 'GET_SCALELINE', mapa[auxName]('scaleline'));
           } else if (auxName === 'getGeoJSON') {
             showResult(auxButton, 'GET_GeoJSON_ALL', mapa[auxName]());

@@ -56,7 +56,7 @@ for (let acumuladorObjetos = capaPrueba; acumuladorObjetos.__proto__ !== null; a
 
 // Creado Array para manejar más adelante el objectWithAllFunctions y ordenado de este sin funciones de "constructor" y "destroy"
 const listAllFunctions = Object.keys(objectWithAllFunctions).sort();
-listAllFunctions.remove('constructor'); listAllFunctions.remove('destroy');
+listAllFunctions.remove('constructor'); listAllFunctions.remove('destroy'); listAllFunctions.remove('generateName_');
 const listOnlyShown = [];
 
 if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen funciones que se quieren probar

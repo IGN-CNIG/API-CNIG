@@ -18,11 +18,11 @@ const mapa = Mmap({
   center: [-443273.10081370454, 4757481.749296248], zoom: 6, // Other Tests
   // bbox: [287821.2283355333, 5226384.980194519, 324511.00191241794, 5237544.7863241555], // GeoTIFF Test
   // center: [309697, 5231113], zoom: 14, // GeoTIFF Test
-  // layers: [capaPrueba]
+  layers: [capaPrueba],
   controls: ['attributions', 'scale'],
 });
 
-mapa.addLayers([capaPrueba]);
+// mapa.addLayers([capaPrueba]);
 
 window.mapa = mapa;
 
@@ -51,7 +51,7 @@ for (let acumuladorObjetos = capaPrueba; acumuladorObjetos.__proto__ !== null; a
 
 // Creado Array para manejar más adelante el objectWithAllFunctions y ordenado de este sin funciones de "constructor" y "destroy"
 const listAllFunctions = Object.keys(objectWithAllFunctions).sort();
-listAllFunctions.remove('constructor'); listAllFunctions.remove('destroy');
+listAllFunctions.remove('constructor'); listAllFunctions.remove('destroy'); listAllFunctions.remove('generateName_');
 const listOnlyShown = [];
 
 if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen funciones que se quieren probar

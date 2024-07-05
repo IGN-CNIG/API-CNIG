@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import BackImgLayer from 'facade/backimglayer';
 
 M.language.setLang('es');
@@ -17,7 +18,7 @@ const map = M.map({
 const wmtsLayer1 = 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true';
 const wmtsLayer2 = 'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*true';
 const wmtsLayer3 = 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Mapa IGN*true*image/jpeg*false*false*true';
-//const old_restLayer4= 'WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseTodoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue,WMTSasteriscohttps://www.ign.es/wmts/pnoa-ma?asteriscoOI.OrthoimageCoverageasteriscoGoogleMapsCompatibleasteriscoImagen (PNOA)asteriscofalseasteriscoimage/pngasteriscofalseasteriscofalseasteriscotruesumarWMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseOrtoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscotrueasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue'; // Los 'asterisco' no se usan, se debería de ser hecho con '*'
+// const old_restLayer4= 'WMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseTodoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscofalseasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue,WMTSasteriscohttps://www.ign.es/wmts/pnoa-ma?asteriscoOI.OrthoimageCoverageasteriscoGoogleMapsCompatibleasteriscoImagen (PNOA)asteriscofalseasteriscoimage/pngasteriscofalseasteriscofalseasteriscotruesumarWMTSasteriscohttps://www.ign.es/wmts/ign-base?asteriscoIGNBaseOrtoasteriscoGoogleMapsCompatibleasteriscoMapa IGNasteriscotrueasteriscoimage/jpegasteriscofalseasteriscofalseasteriscotrue'; // Los 'asterisco' no se usan, se debería de ser hecho con '*'
 const restLayer4= 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true,WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*Imagen (PNOA)*false*image/png*false*false*truesumarWMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Mapa IGN*true*image/jpeg*false*false*true';
 const pwImg1 = '../src/facade/assets/images/svqimagen.png';
 const pwImg2 = 'https://www.ign.es/iberpix/static/media/raster.c7a904f3.png';
@@ -27,24 +28,25 @@ const pwImg4 = '../src/facade/assets/images/svqhibrid.png';
 // const i = new M.plugin.Information({}); map.addPlugin(i);
 
 const mp = new BackImgLayer({
+  // position: 'BL', // 'TL' | 'TR' | 'BR' | 'BL'
   collapsed: false, // true,
   collapsible: true,
   tooltip: 'Tooltip de texto "Capas de fondo" que aparece al hacer hover sobre él.',
   layerVisibility: false,
-  columnsNumber: 3, 
+  columnsNumber: 3,
   empty: false,
   layerId: 0,
-  /*/ PRUEBA 1 // Cuando no se pasa layerOpts, se usan los parámetros ids, titles, previews y layers
-  position: 'TL', 
+  /* / PRUEBA 1 // Cuando no se pasa layerOpts, se usan los parámetros ids, titles, previews y layers
+  position: 'TL',
   ids: 'mapa,hibrido',
   titles: 'Mapa,Hibrido',
   previews: pwImg1 + ',' + pwImg3,
   layers: wmtsLayer1 + ',' + wmtsLayer2,
   // */
 
-  /*/ PRUEBA 2
-  position: 'TR', 
-  columnsNumber: 3, 
+  /* / PRUEBA 2
+  position: 'TR',
+  columnsNumber: 3,
   //ids: ['mapa', 'hibrido'],
   ids: 'mapa,hibrido',
   // titles: ['Mapa', 'Hibrido'],
@@ -55,10 +57,10 @@ const mp = new BackImgLayer({
   // layers: wmtsLayer1+','+wmtsLayer2 + '+' + wmtsLayer3,
   layers: wmtsLayer1+','+wmtsLayer2 + 'sumar' + wmtsLayer3,
   // ids: 'mapa,hibrido,orto', titles: 'Mapa,Hibrido,Orto', layers: wmtsLayer1+','+wmtsLayer2 + ',' + wmtsLayer3,
-  // layers: wmtsLayer1 + ',' + wmtsLayer2, 
+  // layers: wmtsLayer1 + ',' + wmtsLayer2,
   // */
 
-  /*/ PRUEBA 3
+  /* / PRUEBA 3
   position: 'TR',
   layerOpts: [
     {
@@ -99,8 +101,8 @@ const mp = new BackImgLayer({
   ],
   // */
 
-  /*/ PRUEBA 4 
-  position: 'TL', 
+  /* / PRUEBA 4
+  position: 'TL',
   ids: 'mapa,hibrido',
   titles: 'Mapa,Hibrido',
   previews: pwImg3 + ',' + pwImg4,
@@ -111,7 +113,4 @@ const mp = new BackImgLayer({
 
 map.addPlugin(mp); window.mp = mp; window.BackImgLayer = BackImgLayer;
 
-
-
 window.map = map;
-

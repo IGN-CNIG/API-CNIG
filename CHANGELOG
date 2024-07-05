@@ -1,35 +1,51 @@
 22/05/24 - Versión 5.0.0
-- Se incluye nuevo tipo de capa COG
+- Se incluye nuevo tipo de capa GeoTiff.
+- Se incluye nuevo tipo de capa MapLibre.
 - Se soluciona problema al obtener la leyenda de las capas
+- Se han actualizado todas las versiones de plugins.
+- Se ha incluido nuevo tipo de geometría 'GeometryCollection'.
+- Se ha solucionado problema con getFeatureById, getFilter y removeFilter de capa MVT.
+- Se ha solucionado problemas con minZoom y maxZoom en capas GeoTIFF,TMS,WMS y XYZ.
+- Se ha solucionado problemas con userMaxExtent en capas TMS y XYZ.
+- Se ha solucionado problemas con tileGridMaxZoom en capa TMS.
 - Subida de versión de OL a la 8.1
-- Plugin incicarto: cambio de texto a mostrar al superar el límite de tamaño del fichero a enviar
-- Plugin backimglayer: se soluciona problema al cargar las capas como cadena.
-- Plugin backimglayer: se posiciona foco cuando se selecciona ninguna capa.
-- Plugin comparators: se soluciona problema con traducciones.
-- Plugin comparators: se actualiza método getAPIRest.
-- Plugin comparators: se actualiza método README.
+- Plugin incicarto:
+  - Cambio de texto a mostrar al superar el límite de tamaño del fichero a enviar.
+  - Se actualiza método getAPIRest.
+- Plugin backimglayer:
+  - Se soluciona problema al cargar las capas como cadena.
+  - Se posiciona foco cuando se selecciona ninguna capa.
+- Plugin comparators:
+  - Se soluciona problema con traducciones.
+  - Se actualiza método getAPIRest.
+  - Se actualiza método README.
 - Plugin contactlink: se soluciona problemas de visualización con CSS.
 - Plugin help: se actualiza método getAPIRest.
-- Plugin incicarto: se actualiza método getAPIRest.
 - Plugin layerswitcher: mejoras estilos CSS en desbordamiento de contenido en modales.
-- Plugin locator: se actualiza método getAPIRest.
-- Plugin locator: se controla posición TC independientemente del control añadido.
+- Plugin locator:
+  - Se actualiza método getAPIRest.
+  - se controla posición TC independientemente del control añadido.
 - Plugin mousesrs: se actualiza método getAPIRest.
-- Plugin mousesrs: se actualiza método getAPIRest.
-- Plugin printviewmanagement: se actualiza valor por defecto de la plantilla de printermap.
-- Plugin printviewmanagement: se actualiza método getAPIRest.
-- Plugin selectionzoom: se mejora visualización según posición.
-- Plugin selectionzoom: se actualiza método getAPIRest.
+- Plugin printviewmanagement:
+  - Se actualiza valor por defecto de la plantilla de printermap.
+  - Se actualiza método getAPIRest.
+- Plugin selectionzoom:
+  - Se mejora visualización según posición.
+  - Se actualiza método getAPIRest.
 - Plugin modal: mejoras estilos CSS en desbordamiento de contenido en modal.
-- Plugin storymap: se actualiza método getAPIRest.
-- Plugin storymap: se actualiza api.json.
+- Plugin storymap:
+  - Se actualiza método getAPIRest.
+  - Se actualiza api.json.
+  - Se soluciona problema con selección y progreso de capítulos.
 - Plugin stylemanager: se actualizan plantillas con traducciones.
-- Plugin vectorsmanagement: se mejora traducciones.
-- Plugin vectorsmanagement: se soluciona problema con control de ayuda.
-- Plugin vectorsmanagement: se soluciona problema con control de selección.
-- Plugin predefinedzoom: se amplía zona para hacer click sobre botones de predefinedzoom.
-- Plugin predefinedzoom: se actualiza método getAPIRest.
-- Plugin vectorsmanagement: se soluciona problema con control de selección y edición de atributos.
+- Plugin vectorsmanagement:
+  - Se mejora traducciones.
+  - Se soluciona problema con control de ayuda.
+  - Se soluciona problema con control de selección y edición de atributos.
+- Plugin predefinedzoom:
+  - Se amplía zona para hacer click sobre botones de predefinedzoom.
+  - Se actualiza método getAPIRest.
+- Plugin overviewmap: se soluciona problema con evento postrender y actualizado su visor JSP.
 
 
 29/02/2024 - Versión 4.9.0

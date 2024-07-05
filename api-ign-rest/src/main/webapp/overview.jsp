@@ -112,9 +112,9 @@
             center: [-467062.8225, 4783459.6216],
         });
         let mp;
-        let posicion, fixed, 
+        let posicion = 'BR', fixed = true, 
             baseLayer = "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa_IGN*false*image/jpeg*false*false*true",
-            collapsible,collapsed,baseZoom,tooltip;
+            collapsible = false,collapsed = false,baseZoom,tooltip = 'Mapa de situación';
         crearPlugin(posicion, fixed, baseLayer,baseZoom, collapsed, collapsible,tooltip);
 
         const selectPosicion = document.getElementById("selectPosicion");
