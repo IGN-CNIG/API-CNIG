@@ -719,6 +719,7 @@ export default class GeorefimageControl extends M.Control {
         && layer.type !== 'MBTiles'
         && layer.type !== 'MBTilesVector'
         && layer.type !== 'MVT'
+        && layer.type !== 'MapLibre'
         && mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
     });
 
@@ -731,6 +732,7 @@ export default class GeorefimageControl extends M.Control {
         || layer.type === 'MBTiles'
         || layer.type === 'MBTilesVector'
         || layer.type === 'MVT'
+        || layer.type === 'MapLibre'
       ));
     });
 
