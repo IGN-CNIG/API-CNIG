@@ -91,6 +91,7 @@ class MapLibre extends LayerBase {
     }
 
     opts.type = MapLibreType;
+    optionsVar.displayInLayerSwitcher = opts.displayInLayerSwitcher;
 
     const impl = new MapLibreImpl(opts, optionsVar, vendorOptions);
 
