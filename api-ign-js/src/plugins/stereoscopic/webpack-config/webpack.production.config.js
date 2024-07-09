@@ -1,10 +1,10 @@
 const path = require('path');
 const OptimizeCssAssetsPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const GenerateVersionPlugin = require('./GenerateVersionPlugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopywebpackPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const GenerateVersionPlugin = require('./GenerateVersionPlugin');
 
 const PJSON_PATH = path.resolve(__dirname, '..', 'package.json');
 const pjson = require(PJSON_PATH);
@@ -58,7 +58,7 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
         exclude: /node_modules/,
         type: 'asset/inline',
-      }
+      },
     ],
   },
   optimization: {
@@ -81,7 +81,7 @@ module.exports = {
       filename: '[name].css',
     }),
     new ESLintPlugin({
-      extensions: [`js`, `jsx`],
+      extensions: ['js', 'jsx'],
       // files: 'src/**/*.js',
       exclude: ['**/node_modules/**', '/lib/', '/test/', '/dist/'],
     }),
@@ -93,7 +93,11 @@ module.exports = {
         }, {
           from: 'TR3-pack',
           to: 'TR3-pack',
-        }
+        },
+        {
+          from: 'src/facade/assets/docStereo.pdf',
+          to: 'images',
+        },
       ],
     }),
   ],
