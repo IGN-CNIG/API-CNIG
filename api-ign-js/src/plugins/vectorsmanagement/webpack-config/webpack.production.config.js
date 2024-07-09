@@ -1,11 +1,11 @@
 const path = require('path');
 const OptimizeCssAssetsPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const GenerateVersionPlugin = require('./GenerateVersionPlugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopywebpackPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const webpack = require('webpack');
+const GenerateVersionPlugin = require('./GenerateVersionPlugin');
 
 const PJSON_PATH = path.resolve(__dirname, '..', 'package.json');
 const pjson = require(PJSON_PATH);
@@ -32,7 +32,7 @@ module.exports = {
       fs: false,
       path: false,
       crypto: false,
-      "assert": require.resolve("assert/"),
+      'assert': require.resolve('assert/'),
     },
   },
   module: {
@@ -89,7 +89,7 @@ module.exports = {
       filename: '[name].css',
     }),
     new ESLintPlugin({
-      extensions: [`js`, `jsx`],
+      extensions: ['js', 'jsx'],
       // files: 'src/**/*.js',
       exclude: ['**/node_modules/**', '/lib/', '/test/', '/dist/'],
     }),
@@ -98,7 +98,10 @@ module.exports = {
         {
           from: 'src/api.json',
           to: 'api.json',
-        }
+        }, {
+          from: 'src/facade/assets/images',
+          to: 'images',
+        },
       ],
     }),
   ],
