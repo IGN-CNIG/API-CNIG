@@ -3,7 +3,7 @@
  */
 import '../assets/css/vectorsmanagement';
 import VectorsManagementControl from './vectorsmanagementcontrol';
-
+import myhelp from '../../templates/myhelp';
 import { getValue } from './i18n/language';
 
 import es from './i18n/es';
@@ -258,5 +258,47 @@ export default class VectorsManagement extends M.Plugin {
       return true;
     }
     return false;
+  }
+
+  /**
+   * Obtiene la ayuda del plugin
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getHelp() {
+    return {
+      title: this.name,
+      content: new Promise((success) => {
+        const html = M.template.compileSync(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}plugins/vectorsmanagement/images/`,
+            translations: {
+              help1: getValue('textHelp.help1'),
+              help2: getValue('textHelp.help2'),
+              help3: getValue('textHelp.help3'),
+              help4: getValue('textHelp.help4'),
+              help5: getValue('textHelp.help5'),
+              help6: getValue('textHelp.help6'),
+              help7: getValue('textHelp.help7'),
+              help8: getValue('textHelp.help8'),
+              help9: getValue('textHelp.help9'),
+              help10: getValue('textHelp.help10'),
+              help11: getValue('textHelp.help11'),
+              help12: getValue('textHelp.help12'),
+              help13: getValue('textHelp.help13'),
+              help14: getValue('textHelp.help14'),
+              help15: getValue('textHelp.help15'),
+              help16: getValue('textHelp.help16'),
+              help17: getValue('textHelp.help17'),
+              help18: getValue('textHelp.help18'),
+              help19: getValue('textHelp.help19'),
+            },
+          },
+        });
+        success(html);
+      }),
+    };
   }
 }
