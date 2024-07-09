@@ -1269,12 +1269,12 @@ export default class LayerswitcherControl extends M.Control {
                     return { name: layer.id };
                   });
 
-                  if (JSON.parse(meta.text).format === 'pbf') {
-                    this.printLayerModal(urlLayer[0], 'mvt', layers);
-                  } else if (parse.scheme === 'tms') {
+                  if (urlLayer[0].indexOf('{z}/{x}/{-y}') >= 0) {
                     this.printLayerModal(urlLayer[0], 'tms');
-                  } else if (parse.scheme === 'xyz') {
+                  } else if (urlLayer[0].indexOf('{z}/{x}/{y}') >= 0 && urlLayer[0].indexOf('.pbf') === -1) {
                     this.printLayerModal(urlLayer[0], 'xyz');
+                  } else {
+                    this.printLayerModal(urlLayer[0], 'mvt', layers);
                   }
                 }
               });
@@ -2238,8 +2238,6 @@ export default class LayerswitcherControl extends M.Control {
 
   // Plantilla para añadir capas (Generales)
   printLayerModal(url, type, layers) {
-    // eslint-disable-next-line no-console
-    console.log('printLayerModal', url, type, layers);
     const modal = M.template.compileSync(layerModalTemplate, {
       jsonp: true,
       parseToHtml: false,
