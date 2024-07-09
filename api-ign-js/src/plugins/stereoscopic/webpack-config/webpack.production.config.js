@@ -95,7 +95,7 @@ module.exports = {
           to: 'TR3-pack',
         },
         {
-          from: 'src/facade/assets/docStereo.pdf',
+          from: 'src/assets/docStereo.pdf',
           to: 'images',
         },
       ],
