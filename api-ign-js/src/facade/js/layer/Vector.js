@@ -107,12 +107,12 @@ class Vector extends LayerBase {
     /**
      * Vector minzoom. Zoom mínimo.
      */
-    this.minZoom = optns.minZoom;
+    this.minZoom = optns.minZoom || Number.NEGATIVE_INFINITY;
 
     /**
      * Vector maxzoom. Zoom máximo.
      */
-    this.maxZoom = optns.maxZoom;
+    this.maxZoom = optns.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
      * infoEventType. Tipo de evento para mostrar la info de una feature.

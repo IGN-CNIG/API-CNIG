@@ -4,7 +4,7 @@ import MapLibre from 'M/layer/MapLibre';
 export const maplibre_001 = new MapLibre({
   name: 'Mapa Libre',
   extract: true,
-  disableBackgroundColor: false,
+  // infoEventType: 'click',
   // visibility: true,
   // maxExtent: [-1259872.4694101033, 4359275.566199489, -85799.71494979598, 4620384.454821652],
   style: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json',
@@ -61,20 +61,23 @@ export const maplibre_001 = new MapLibre({
   // maxScale: 7000000,
   // minResolution: 705.5551745557614,
   // maxResolution: 2469.443110945165,
+  // disableBackgroundColor: false, // Color Gris
+  // disableBackgroundColor: true, // Aplicada Transparencia
+  // disableBackgroundColor: undefined, // Color Original
 });
 
 export const maplibre_002 = new MapLibre({
   name: 'Mapa Libre DEMO',
   extract: true,
-  disableBackgroundColor: false,
   style: 'https://demotiles.maplibre.org/style.json', // JSON, URL
   legend: 'Mapa Libre DEMO Legend',
+}, {
+  disableBackgroundColor: false,
 });
 
 export const maplibre_003 = new MapLibre({
   name: 'Mapa Libre MANUALSTYLE',
   extract: true,
-  disableBackgroundColor: false,
   style: {
     version: 8,
     sources: {
@@ -117,4 +120,8 @@ export const maplibre_003 = new MapLibre({
     },
   },
   legend: 'Mapa Libre MANUALSTYLE Legend',
+}, {
+  disableBackgroundColor: false,
 });
+
+export const maplibre_004 = 'MapLibre*https://demotiles.maplibre.org/style.json*false*LEGEND_NAME*false*false*false*true';

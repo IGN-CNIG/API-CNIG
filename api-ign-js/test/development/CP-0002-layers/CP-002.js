@@ -8,7 +8,7 @@ import { map as Mmap } from 'M/mapea';
 // import { osm } from '../layers/osm/osm'; const capaPrueba = osm; window.osm = osm;// STRING ==> import { osm_002 } from '../layers/osm/osm'; const capaPrueba = osm_002; window.osm = osm_002;// STRING ==> import { osm_003 } from '../layers/osm/osm'; const capaPrueba = osm_003; window.osm = osm_003;
 // import { mbtile_01 } from '../layers/mbtiles/mbtiles'; const capaPrueba = mbtile_01; window.mbtile = mbtile_01;
 // import { generic_001 } from '../layers/generic/generic'; const capaPrueba = generic_001; window.generic = generic_001;
-// import { geotiff_001 } from '../layers/cog/cog'; const capaPrueba = geotiff_001; window.geotiff = geotiff_001;
+// import { geotiff_001 } from '../layers/geotiff/geotiff'; const capaPrueba = geotiff_001; window.geotiff = geotiff_001;
 import { maplibre_001 } from '../layers/maplibre/maplibre'; const capaPrueba = maplibre_001; window.maplibre = maplibre_001;
 window.capaPrueba = capaPrueba;
 

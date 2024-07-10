@@ -109,12 +109,12 @@ class GeoTIFF extends LayerBase {
     /**
      * GeoTIFF minZoom: Limitar el zoom mínimo.
      */
-    this.minZoom = options.minZoom;
+    this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
 
     /**
      * GeoTIFF maxZoom: Limitar el zoom máximo.
      */
-    this.maxZoom = options.maxZoom;
+    this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
      * GeoTIFF options: Opciones GeoTIFF.

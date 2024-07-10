@@ -6,6 +6,7 @@
 # Descripción
 
 Plugin que muestra una previsualización de la zona donde está centrado el mapa.
+⚠️ Si la anchura de pantalla es 768 pixeles o menor, el botón y panel del plugin estarán ocultos.
 
 # Dependencias
 

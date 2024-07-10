@@ -39,6 +39,7 @@ class MapLibre extends LayerBase {
    * - maxScale. Escala máxima aplicable a la capa.
    * - minResolution. Resolución mínima aplicable a la capa.
    * - maxResolution. Resolución máxima aplicable a la capa.
+   * - disableBackgroundColor: Desactiva el color de fondo de la capa.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * @param {Object} vendorOptions Opciones para la biblioteca base.
    * @api
@@ -108,7 +109,7 @@ class MapLibre extends LayerBase {
 
     this.vendorOptions = vendorOptions;
 
-    this.disableBackgroundColor = parameters.disableBackgroundColor;
+    this.disableBackgroundColor = options.disableBackgroundColor;
   }
 
   /**
@@ -145,8 +146,8 @@ class MapLibre extends LayerBase {
     if (this.ol3Layer.mapLibreMap.isStyleLoaded()) {
       this.changeDisableBackgroundColor_();
     } else {
-      this.ol3Layer.mapLibreMap.once('styledata', () => { // style.load(Private)
-        this.changeDisableBackgroundColor_();
+      this.ol3Layer.mapLibreMap.once('load', () => { // style.load(Private), styledata, idle, load, (.style data, load)
+        this.setDisableBackgroundColor_();
       });
     }
   }
@@ -176,6 +177,7 @@ class MapLibre extends LayerBase {
    */
   setStyleMap(style) {
     const mapLibreMap = this.ol3Layer.mapLibreMap;
+    mapLibreMap.style._loaded = false;
     mapLibreMap.setStyle(style);
   }
 
@@ -215,8 +217,8 @@ class MapLibre extends LayerBase {
     if (this.ol3Layer.mapLibreMap.isStyleLoaded()) {
       this.ol3Layer.mapLibreMap.setPaintProperty(layer, property, value);
     } else {
-      this.ol3Layer.mapLibreMap.once('styledata', () => { // style.load(Private)
-        this.ol3Layer.mapLibreMap.setPaintProperty(layer, property, value);
+      this.ol3Layer.mapLibreMap.once('load', () => { // style.load(Private), styledata, idle, load, (.style data, load)
+        this.setPaintProperty(layer, property, value);
       });
     }
   }
@@ -234,8 +236,8 @@ class MapLibre extends LayerBase {
     if (this.ol3Layer.mapLibreMap.isStyleLoaded()) {
       this.ol3Layer.mapLibreMap.setLayoutProperty(layer, property, value);
     } else {
-      this.ol3Layer.mapLibreMap.once('styledata', () => { // style.load(Private)
-        this.ol3Layer.mapLibreMap.setLayoutProperty(layer, property, value);
+      this.ol3Layer.mapLibreMap.once('load', () => { // style.load(Private), styledata, idle, load, (.style data, load)
+        this.setLayoutProperty(layer, property, value);
       });
     }
   }

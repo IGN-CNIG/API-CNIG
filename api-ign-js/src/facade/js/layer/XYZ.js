@@ -109,21 +109,21 @@ class XYZ extends LayerBase {
     this.legend = parameters.legend;
 
     /**
-     * XYZ minZoom: Límite del zoom mínimo.
+     * XYZ tileGridMaxZoom. Zoom máximo de cuadrícula de mosaico.
      */
-    // this.minZoom = parameters.minZoom;
-    this.minZoom = options.minZoom;
+    this.tileGridMaxZoom = parameters.tileGridMaxZoom || userParameters.tileGridMaxZoom;
 
-    /**
-     * XYZ maxZoom: Límite del zoom máximo.
-     */
-    // this.minZoom = parameters.minZoom;
-    this.maxZoom = options.maxZoom;
+    if (isUndefined(this.tileGridMaxZoom)) {
+      /**
+       * XYZ minZoom: Límite del zoom mínimo.
+       */
+      this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
 
-    /**
-     * XYZ tileGridMaxZoom: Zoom máximo de la tesela en forma de rejilla.
-     */
-    this.tileGridMaxZoom = parameters.tileGridMaxZoom;
+      /**
+       * XYZ maxZoom: Límite del zoom máximo.
+       */
+      this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
+    }
 
     /**
      * XYZ options: Opciones de la capa.

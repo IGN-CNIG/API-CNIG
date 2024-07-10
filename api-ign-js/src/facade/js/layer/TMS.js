@@ -140,12 +140,12 @@ class TMS extends LayerBase {
       /**
        * TMS minzoom. Zoom mínimo.
        */
-      this.minZoom = options.minZoom;
+      this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
 
       /**
        * TMS maxzoom. Zoom máximo.
        */
-      this.maxZoom = options.maxZoom;
+      this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
     }
     /**
      * TMS options. Opciones de capa.

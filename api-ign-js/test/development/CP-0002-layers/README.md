@@ -44,7 +44,7 @@ CP-015
 Mapa básico con capas OGCAPIFeatures.
 
 CP-016
-Pruebas de la función "toGeoJSON" de las capas y pruebas de la función "getGeoJSON" de los features de estas capas. (Anteriormente "Mapa básico con capas COG GeoTiff.")
+Pruebas de la función "toGeoJSON" de las capas y pruebas de la función "getGeoJSON" de los features de estas capas.
 
 CP-017
 WMS_FULL, capas wms sin nombre
@@ -54,3 +54,6 @@ Mapa básico con capas MapLibre.
 
 CP-019
 Mapa básico con pruebas en todas las capas de parámetros de minZoom, maxZoom y tileGridMaxZoom.
+
+CP-020
+Mapa básico con capas GeoTiff (COG).

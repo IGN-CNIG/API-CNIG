@@ -51,7 +51,6 @@ class MapLibre extends LayerBase {
    * - extract: Opcional Activa la consulta por click en el objeto geográfico, por defecto falso.
    * - type: Tipo de la capa.
    * - infoEventType: Tipo de evento para mostrar la info de una feature.
-   * - disableBackgroundColor: Desactiva el color de fondo de la capa.
    * - legend: Leyenda de la capa.
    * - attribution: Atribución de la capa.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
@@ -62,6 +61,7 @@ class MapLibre extends LayerBase {
    * - maxScale. Escala máxima aplicable a la capa.
    * - minResolution. Resolución mínima aplicable a la capa.
    * - maxResolution. Resolución máxima aplicable a la capa.
+   * - disableBackgroundColor: Desactiva el color de fondo de la capa.
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * @param {Object} implParam Valores de la implementación por defecto,
    * se pasa un objeto implementación MapLibre.
@@ -93,6 +93,10 @@ class MapLibre extends LayerBase {
     opts.type = MapLibreType;
     optionsVar.displayInLayerSwitcher = opts.displayInLayerSwitcher;
 
+    if (opts.disableBackgroundColor !== undefined) {
+      optionsVar.disableBackgroundColor = opts.disableBackgroundColor;
+    }
+
     const impl = new MapLibreImpl(opts, optionsVar, vendorOptions);
 
     // calls the super constructor
@@ -113,8 +117,8 @@ class MapLibre extends LayerBase {
      */
     this.infoEventType = opts.infoEventType || 'click';
 
-    this.disableBackgroundColor = opts.disableBackgroundColor !== undefined
-      ? opts.disableBackgroundColor : undefined;
+    this.disableBackgroundColor = optionsVar.disableBackgroundColor !== undefined
+      ? optionsVar.disableBackgroundColor : undefined;
 
     this.style = opts.style;
   }
