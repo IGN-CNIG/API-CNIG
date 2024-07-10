@@ -78,7 +78,6 @@ export default class AnalysisControl extends M.Control {
     });
 
     html.querySelector('#m-vectorsmanagement-controls').appendChild(this.template);
-    this.initializeLayers();
     this.addEvents();
     this.managementControl_.accessibilityTab(this.template);
 
@@ -226,6 +225,7 @@ export default class AnalysisControl extends M.Control {
       if (selectedFeatures.length > 1) {
         M.dialog.info(getValue('exception.topographic_one_element'));
       } else {
+        this.initializeLayers();
         this.feature = selectedFeatures[0];
         if (this.feature.getGeometry().type !== 'Point') {
           this.getImpl().calculateProfile(this.feature);
@@ -251,6 +251,7 @@ export default class AnalysisControl extends M.Control {
     } else if (selection === 'layer' && this.layer_.getFeatures().length === 0) { // buffer de toda la capa
       M.dialog.info(getValue('exception.emptylayer'));
     } else {
+      this.initializeLayers();
       M.dialog.info(
         `<div id="chooseBuffer">
           <input type="number" id="metreBuffer" value="50" style="width: 10rem;">
