@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'help';
-  src:  url('../fonts/help.eot?blzkhy');
-  src:  url('../fonts/help.eot?blzkhy#iefix') format('embedded-opentype'),
-    url('../fonts/help.ttf?blzkhy') format('truetype'),
-    url('../fonts/help.woff?blzkhy') format('woff'),
-    url('../fonts/help.svg?blzkhy#help') format('svg');
+  src:  url('../fonts/help.eot?dmhqn9');
+  src:  url('../fonts/help.eot?dmhqn9#iefix') format('embedded-opentype'),
+    url('../fonts/help.ttf?dmhqn9') format('truetype'),
+    url('../fonts/help.woff?dmhqn9') format('woff'),
+    url('../fonts/help.svg?dmhqn9#help') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -27,6 +27,5 @@
 
 .m-help-icons-query-support:before {
   font-family: 'help' !important;
-  content: "\e900";
-  font-family: 22px;
+  content: "\e800";
 }
