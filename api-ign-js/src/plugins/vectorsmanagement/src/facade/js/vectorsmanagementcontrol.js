@@ -575,6 +575,10 @@ export default class VectorsManagementControl extends M.Control {
     html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 
+  destroy() {
+    this.analysisControl.destroy();
+  }
+
   /**
    * This function compares controls
    *

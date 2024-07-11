@@ -54,6 +54,22 @@ export default class AnalysisControl extends M.Control {
      * Layer for buffers
      */
     this.bufferLayer = null;
+
+    this.map_.on(M.evt.REMOVED_LAYER, this.destroyLayerBuffer);
+  }
+
+  /**
+   * Esta función destruye la capa buffer
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroyLayerBuffer(layers) {
+    const bufferLayer = layers.filter((l) => { return l.name === 'bufferLayer'; });
+    if (bufferLayer.length > 0) {
+      this.bufferLayer = null;
+    }
   }
 
   /**
@@ -543,7 +559,9 @@ export default class AnalysisControl extends M.Control {
    * @function
    * @api stable
    */
-  destroy() {}
+  destroy() {
+    this.map_.un(M.evt.REMOVED_LAYER, this.destroyLayerBuffer);
+  }
 
   /**
    * This function is called on the control activation
