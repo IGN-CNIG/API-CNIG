@@ -225,7 +225,6 @@ export default class AnalysisControl extends M.Control {
       if (selectedFeatures.length > 1) {
         M.dialog.info(getValue('exception.topographic_one_element'));
       } else {
-        this.initializeLayers();
         this.feature = selectedFeatures[0];
         if (this.feature.getGeometry().type !== 'Point') {
           this.getImpl().calculateProfile(this.feature);
@@ -251,7 +250,6 @@ export default class AnalysisControl extends M.Control {
     } else if (selection === 'layer' && this.layer_.getFeatures().length === 0) { // buffer de toda la capa
       M.dialog.info(getValue('exception.emptylayer'));
     } else {
-      this.initializeLayers();
       M.dialog.info(
         `<div id="chooseBuffer">
           <input type="number" id="metreBuffer" value="50" style="width: 10rem;">
@@ -294,6 +292,7 @@ export default class AnalysisControl extends M.Control {
       btn.parentElement.insertBefore(btn2, btn);
       // btn es cerrar btn2 es aceptar
       btn2.addEventListener('click', (ev) => {
+        this.initializeLayers();
         this.addBuffer_((distance * unit));
         btn.click();
       });
