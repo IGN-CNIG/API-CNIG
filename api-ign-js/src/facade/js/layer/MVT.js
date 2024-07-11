@@ -98,6 +98,20 @@ class MVT extends Vector {
     }
 
     /**
+     * MVT minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * MVT maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
+
+    /**
      * extract: Optional Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */

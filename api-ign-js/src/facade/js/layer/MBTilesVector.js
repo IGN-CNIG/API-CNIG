@@ -99,6 +99,20 @@ class MBTilesVector extends Vector {
     }
 
     /**
+     * MBTilesVector minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * MBTilesVector maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
+
+    /**
      * MBTilesVector extract: Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */

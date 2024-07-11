@@ -141,6 +141,16 @@ class WMTS extends LayerBase {
     this.useCapabilities = parameters.useCapabilities !== false;
 
     /**
+     * WMTS minZoom: Límite del zoom mínimo.
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * WMTS maxZoom: Límite del zoom máximo.
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
+
+    /**
      * WMTS capabilitiesMetadata: Capacidades de metadatos WMTS.
      */
     if (!isNullOrEmpty(vendorOptions.capabilitiesMetadata)) {

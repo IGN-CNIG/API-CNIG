@@ -75,6 +75,7 @@ class MBTiles extends LayerBase {
     }
 
     const parameters = parameter.layer(userParameters, LayerType.MBTiles);
+    const optionsVar = options;
 
     /**
      * Implementación
@@ -109,6 +110,20 @@ class MBTiles extends LayerBase {
      * el MBTiles.
      */
     this.url = parameters.url;
+
+    /**
+     * MBTiles minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * MBTiles maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
      * MBTiles options: Opciones que se mandan a la implementación.

@@ -192,6 +192,20 @@ class OGCAPIFeatures extends Vector {
     this.geometry = parameters.geometry;
 
     /**
+     * OGCAPIFeatures minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * OGCAPIFeatures maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
+
+    /**
      * OGCAPIFeatures opt: Opciones.
      */
     this.opt = opt;

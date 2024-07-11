@@ -52,8 +52,6 @@ class GeoJSON extends LayerVector {
    * - url: Url del fichero o servicio que genera el GeoJSON.
    * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
    * - source: Fuente de la capa.
-   * - minZoom: Zoom mínimo aplicable a la capa.
-   * - maxZoom: Zoom máximo aplicable a la capa.
    * - type: Tipo de la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
@@ -150,6 +148,20 @@ class GeoJSON extends LayerVector {
         };
       }
     }
+
+    /**
+     * GeoJSON minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * GeoJSON maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
      * GeoJSON options: Opciones que se mandan a la implementación.

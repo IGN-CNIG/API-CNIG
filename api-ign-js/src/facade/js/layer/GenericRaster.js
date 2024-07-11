@@ -69,6 +69,8 @@ class GenericRaster extends LayerBase {
    */
   constructor(userParameters = {}, options = {}, vendorOptions = {}) {
     let params = { ...userParameters, ...options };
+    delete params.minZoom;
+    delete params.maxZoom;
     const opts = options;
     let vOptions = vendorOptions;
 
@@ -104,6 +106,21 @@ class GenericRaster extends LayerBase {
 
     // calls the super constructor
     super(params, impl);
+
+    // Los minZoom y minZoom anteriormente se configuraban en "super", por "params".
+    /**
+     * GenericRaster minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = opts.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * GenericRaster maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = opts.maxZoom || Number.POSITIVE_INFINITY;
 
     this.version = params.version || '1.3.0';
 

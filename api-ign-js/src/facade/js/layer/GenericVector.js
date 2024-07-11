@@ -74,6 +74,8 @@ class GenericVector extends Vector {
    */
   constructor(userParameters = {}, options = {}, vendorOptions = {}) {
     let params = { ...userParameters, ...options };
+    delete params.minZoom;
+    delete params.maxZoom;
     const opts = options;
     let vOptions = vendorOptions;
 

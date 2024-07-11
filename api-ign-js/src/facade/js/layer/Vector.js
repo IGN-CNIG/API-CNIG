@@ -42,7 +42,7 @@ class Vector extends LayerBase {
    * con parámetros especificados por el usuario.
    *
    * @constructor
-   * @param {Mx.parameters.Layer} userParameters Parámetros para la construcción de la capa.
+   * @param {Mx.parameters.Layer} parameters Parámetros para la construcción de la capa.
    * - name: Nombre de la capa en la leyenda.
    * - type: Tipo de la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
@@ -107,12 +107,12 @@ class Vector extends LayerBase {
     /**
      * Vector minzoom. Zoom mínimo.
      */
-    this.minZoom = optns.minZoom || Number.NEGATIVE_INFINITY;
+    this.minZoom = optionsVars.minZoom || Number.NEGATIVE_INFINITY; // || optns.minZoom
 
     /**
      * Vector maxzoom. Zoom máximo.
      */
-    this.maxZoom = optns.maxZoom || Number.POSITIVE_INFINITY;
+    this.maxZoom = optionsVars.maxZoom || Number.POSITIVE_INFINITY; // || optns.maxZoom
 
     /**
      * infoEventType. Tipo de evento para mostrar la info de una feature.

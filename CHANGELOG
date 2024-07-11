@@ -5,9 +5,8 @@
 - Se han actualizado todas las versiones de plugins.
 - Se ha incluido nuevo tipo de geometría 'GeometryCollection'.
 - Se ha solucionado problema con getFeatureById, getFilter y removeFilter de capa MVT.
-- Se ha solucionado problemas con minZoom y maxZoom en capas GeoTIFF,TMS,WMS y XYZ.
+- Mejorado funcionamiento de parámetros minZoom, maxZoom y tileGridMaxZoom en todas las capas.
 - Se ha solucionado problemas con userMaxExtent en capas TMS y XYZ.
-- Se ha solucionado problemas con tileGridMaxZoom en capa TMS.
 - Subida de versión de OL a la 8.1
 - Plugin incicarto:
   - Cambio de texto a mostrar al superar el límite de tamaño del fichero a enviar.

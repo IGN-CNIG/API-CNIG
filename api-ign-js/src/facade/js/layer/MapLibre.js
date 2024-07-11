@@ -113,6 +113,20 @@ class MapLibre extends LayerBase {
     this.extract = opts.extract === undefined ? false : opts.extract;
 
     /**
+     * MapLibre minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * MapLibre maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
+
+    /**
      * infoEventType. Tipo de evento para mostrar la info de una feature.
      */
     this.infoEventType = opts.infoEventType || 'click';

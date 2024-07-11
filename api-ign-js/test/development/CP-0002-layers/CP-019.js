@@ -148,6 +148,7 @@ const refreshTableContent = () => {
     testTableBody.append(layerRow);
   });
 };
+window.refreshTableContent = refreshTableContent;
 
 const generateHeadertable = () => {
   const tableHeader = document.createElement('tr');
@@ -527,13 +528,13 @@ const generateLayersTable = () => {
 };
 
 const clearTable = () => {
-  mapa.removeLayers(mapa.getLayers());
   testTableBody.innerHTML = '';
   generateHeadertable();
 };
 
 const refreshTest = () => {
   clearTable();
+  mapa.removeLayers(commonList);
   setTimeout(() => {
     generateLayersTable();
   }, 1000);

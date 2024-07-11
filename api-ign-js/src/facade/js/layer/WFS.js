@@ -149,6 +149,20 @@ class WFS extends Vector {
     this.extract = parameters.extract === undefined ? false : parameters.extract;
 
     /**
+     * WFS minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * WFS maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
+
+    /**
      * options: Opciones WFS.
      */
     this.options = options;
