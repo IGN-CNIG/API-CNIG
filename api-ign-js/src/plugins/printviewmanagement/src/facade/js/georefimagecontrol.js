@@ -32,7 +32,6 @@ const ID_CLIPBOARD = '#m-georefimage-clipboard';
 const SELECTOR_CANVAS = '.ol-layer canvas';
 
 // DEFAULTS PARAMS
-const FILE_EXTENSION_GEO = '.wld'; // .jgw
 const TYPE_SAVE = '.zip';
 
 export default class GeorefimageControl extends M.Control {
@@ -885,8 +884,9 @@ export default class GeorefimageControl extends M.Control {
       base64: true,
     };
 
+    const extension = formatImage === 'jpeg' ? '.jgw' : '.pgw';
     const files = (addWLD) ? [{
-      name: titulo.concat(FILE_EXTENSION_GEO),
+      name: titulo.concat(extension),
       data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize(), null, this.map_, type),
       base64: false,
     },

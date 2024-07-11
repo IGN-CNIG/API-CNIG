@@ -142,7 +142,12 @@ export default class GeorefImageEpsgControl extends M.Control {
       url, name, format, EPSG: epsg, version, legend,
     } = this.layers_[value];
 
-    const title = legend || name;
+    let title = legend || name;
+    const dateNow = new Date();
+    const date = dateNow.toLocaleDateString().replaceAll('/', '');
+    const hour = dateNow.toLocaleTimeString().replaceAll(':', '');
+
+    title = `${title}_${date}_${hour}`;
 
     this.queueEl = innerQueueElement(
       this.html_,
@@ -250,7 +255,7 @@ export default class GeorefImageEpsgControl extends M.Control {
     * @api stable
     */
   downloadPrint(url, bbox, epsgUser, title = '') {
-    const FILE_EXTENSION_GEO = '.wld'; // .jgw
+    const FILE_EXTENSION_GEO = '.jgw'; // .jgw
     const FILE_EXTENSION_IMG = '.jpg';
     const TYPE_SAVE = '.zip';
 
