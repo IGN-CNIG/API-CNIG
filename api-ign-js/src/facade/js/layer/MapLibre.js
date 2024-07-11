@@ -44,7 +44,6 @@ class MapLibre extends LayerBase {
    * @param {string|Mx.parameters.MapLibre} parameters Parámetros para la construcción de la capa.
    * - style: Url del servicio (.json).
    * - name: Nombre de la capa, debe ser único en el mapa.
-   * - opacity: Opacidad de la capa (0-1), por defecto 1.
    * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
    *   En este caso la capa sería detectado por los plugins de tablas de
    *   contenidos y aparecería como no visible.
@@ -55,6 +54,7 @@ class MapLibre extends LayerBase {
    * - attribution: Atribución de la capa.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
+   * - opacity: Opacidad de la capa (0-1), por defecto 1.
    * - minZoom. Zoom mínimo aplicable a la capa.
    * - maxZoom. Zoom máximo aplicable a la capa.
    * - minScale. Escala mínima aplicable a la capa.
@@ -212,7 +212,7 @@ class MapLibre extends LayerBase {
    * @param {Object} newStyle Estilo de la capa.
    * @api
    */
-  setStyle(newStyle) {
+  setMapLibreStyleFromId(newStyle) {
     if (isNullOrEmpty(newStyle)) return;
     if (Array.isArray(newStyle)) {
       newStyle.forEach(({ id, paint = false, layout = false }) => {
@@ -228,10 +228,11 @@ class MapLibre extends LayerBase {
           });
         }
       });
-    } else {
-      // eslint-disable-next-line no-underscore-dangle
-      this.getImpl().setStyleMap(newStyle);
     }
+  }
+
+  getMapLibreStyleFromId(id) {
+    return this.getImpl().getMapLibreStyleFromId(id);
   }
 
   /**

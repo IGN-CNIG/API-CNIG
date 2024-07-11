@@ -33,6 +33,7 @@ class MapLibre extends LayerBase {
    * @param {M.layer.MapLibre.parameters} parameters Opciones de la fachada, la fachada se refiere a
    * un patrón estructural como una capa de abstracción con un patrón de diseño.
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - opacity: Opacidad de la capa (0-1), por defecto 1.
    * - minZoom. Zoom mínimo aplicable a la capa.
    * - maxZoom. Zoom máximo aplicable a la capa.
    * - minScale. Escala mínima aplicable a la capa.
@@ -84,7 +85,7 @@ class MapLibre extends LayerBase {
     /**
      * MapLibre opacity_. Opacidad entre 0 y 1. Por defecto 1.
      */
-    this.opacity_ = parameters.opacity || 1;
+    this.opacity_ = options.opacity || 1;
 
     /**
      * MapLibre visibility_. Indica si la capa es visible.
@@ -195,10 +196,18 @@ class MapLibre extends LayerBase {
     });
   }
 
-  setMapLibreStyleByUrl_() {
-    this.handlerStyleLoad_().then(() => {
-      this.maplibrestyle = this.ol3Layer.mapLibreMap.getStyle();
-    });
+  async setMapLibreStyleByUrl_() {
+    const json = await fetch(this.url).then((response) => response.json());
+    this.maplibrestyle = json;
+  }
+
+  getMapLibreStyleFromId(ids = []) {
+    if (this.ol3Layer) {
+      if (ids.length === 0) {
+        return this.ol3Layer.mapLibreMap.getStyle().layers;
+      }
+      return this.ol3Layer.mapLibreMap.getStyle().layers.filter(({ id }) => ids.includes(id));
+    }
   }
 
   /**
