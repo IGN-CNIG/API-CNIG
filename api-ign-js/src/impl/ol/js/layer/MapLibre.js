@@ -103,7 +103,9 @@ class MapLibre extends LayerBase {
      */
     this.extract = parameters.extract;
 
-    this.style = parameters.style;
+    this.url = parameters.url;
+
+    this.maplibrestyle = parameters.maplibrestyle;
 
     this.options = options;
 
@@ -128,7 +130,7 @@ class MapLibre extends LayerBase {
       ? this.vendorOptions
       : {
         mapLibreOptions: {
-          style: this.style,
+          style: this.url || this.maplibrestyle,
         },
       };
 
@@ -138,34 +140,65 @@ class MapLibre extends LayerBase {
     this.setResolutions_();
     this.setVisible(this.visibility_);
     this.map.getMapImpl().addLayer(this.ol3Layer);
-    this.setDisableBackgroundColor_();
+
+    if (this.disableBackgroundColor !== undefined) {
+      this.changeDisableBackgroundColor_();
+    }
+
     this.setOpacity(this.opacity_);
+    if (this.url && this.maplibrestyle === undefined) {
+      this.setMapLibreStyleByUrl_();
+    }
   }
 
-  setDisableBackgroundColor_() {
-    if (this.ol3Layer.mapLibreMap.isStyleLoaded()) {
-      this.changeDisableBackgroundColor_();
-    } else {
-      this.ol3Layer.mapLibreMap.once('load', () => { // style.load(Private), styledata, idle, load, (.style data, load)
-        this.setDisableBackgroundColor_();
+  handlerLoadMapLibre_() {
+    return new Promise((resolve) => {
+      if (this.ol3Layer.mapLibreMap === undefined) {
+        const handlerMapLibreMap = () => {
+          if (this.ol3Layer.mapLibreMap) {
+            this.ol3Layer.un('change:visible', handlerMapLibreMap);
+            resolve();
+          }
+        };
+        this.ol3Layer.on('change:visible', handlerMapLibreMap);
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  handlerStyleLoad_() {
+    return new Promise((resolve) => {
+      this.handlerLoadMapLibre_().then(() => {
+        this.ol3Layer.mapLibreMap.on('load', () => {
+          resolve();
+        });
       });
-    }
+    });
   }
 
   changeDisableBackgroundColor_() {
-    const mapLibreMap = this.ol3Layer.mapLibreMap;
+    this.handlerStyleLoad_().then(() => {
+      const mapLibreMap = this.ol3Layer.mapLibreMap;
 
-    const layers = mapLibreMap.getStyle().layers;
-    const idBackground = layers.filter(({ type }) => type === 'background')[0].id;
+      const layers = mapLibreMap.getStyle().layers;
+      const idBackground = layers.filter(({ type }) => type === 'background')[0].id;
 
-    if (this.disableBackgroundColor === true) {
-      mapLibreMap.setPaintProperty(idBackground, 'background-color', 'transparent');
-    }
+      if (this.disableBackgroundColor === true) {
+        mapLibreMap.setPaintProperty(idBackground, 'background-color', 'transparent');
+      }
 
-    if (this.disableBackgroundColor === false) {
-      mapLibreMap.setPaintProperty(idBackground, 'background-color', '#f2f2f2');
-      mapLibreMap.setLayoutProperty(idBackground, 'visibility', 'visible');
-    }
+      if (this.disableBackgroundColor === false) {
+        mapLibreMap.setPaintProperty(idBackground, 'background-color', '#f2f2f2');
+        mapLibreMap.setLayoutProperty(idBackground, 'visibility', 'visible');
+      }
+    });
+  }
+
+  setMapLibreStyleByUrl_() {
+    this.handlerStyleLoad_().then(() => {
+      this.maplibrestyle = this.ol3Layer.mapLibreMap.getStyle();
+    });
   }
 
   /**
@@ -176,9 +209,9 @@ class MapLibre extends LayerBase {
    * @api stable
    */
   setStyleMap(style) {
-    const mapLibreMap = this.ol3Layer.mapLibreMap;
-    mapLibreMap.style._loaded = false;
-    mapLibreMap.setStyle(style);
+    this.handlerStyleLoad_().then(() => {
+      this.ol3Layer.mapLibreMap.setStyle(style);
+    });
   }
 
   setResolutions_() {
@@ -214,13 +247,9 @@ class MapLibre extends LayerBase {
    * @api
    */
   setPaintProperty(layer, property, value) {
-    if (this.ol3Layer.mapLibreMap.isStyleLoaded()) {
+    this.handlerStyleLoad_().then(() => {
       this.ol3Layer.mapLibreMap.setPaintProperty(layer, property, value);
-    } else {
-      this.ol3Layer.mapLibreMap.once('load', () => { // style.load(Private), styledata, idle, load, (.style data, load)
-        this.setPaintProperty(layer, property, value);
-      });
-    }
+    });
   }
 
   /**
@@ -233,13 +262,9 @@ class MapLibre extends LayerBase {
    * @api
    */
   setLayoutProperty(layer, property, value) {
-    if (this.ol3Layer.mapLibreMap.isStyleLoaded()) {
+    this.handlerStyleLoad_().then(() => {
       this.ol3Layer.mapLibreMap.setLayoutProperty(layer, property, value);
-    } else {
-      this.ol3Layer.mapLibreMap.once('load', () => { // style.load(Private), styledata, idle, load, (.style data, load)
-        this.setLayoutProperty(layer, property, value);
-      });
-    }
+    });
   }
 
   // ! TODO

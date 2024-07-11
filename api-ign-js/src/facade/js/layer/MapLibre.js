@@ -93,14 +93,12 @@ class MapLibre extends LayerBase {
     opts.type = MapLibreType;
     optionsVar.displayInLayerSwitcher = opts.displayInLayerSwitcher;
 
-    if (opts.disableBackgroundColor !== undefined) {
-      optionsVar.disableBackgroundColor = opts.disableBackgroundColor;
-    }
-
     const impl = new MapLibreImpl(opts, optionsVar, vendorOptions);
 
     // calls the super constructor
     super(opts, impl);
+
+    impl.facade = this;
 
     if (isUndefined(MapLibreImpl)) {
       Exception('La implementación usada no puede crear capas Vector');
@@ -134,7 +132,7 @@ class MapLibre extends LayerBase {
     this.disableBackgroundColor = optionsVar.disableBackgroundColor !== undefined
       ? optionsVar.disableBackgroundColor : undefined;
 
-    this.style = opts.style;
+    this.maplibrestyle = opts.maplibrestyle;
   }
 
   /**
@@ -343,6 +341,32 @@ class MapLibre extends LayerBase {
    * @api
    */
   toGeoJSON() {}
+
+  get maplibrestyle() {
+    return this.getImpl().maplibrestyle;
+  }
+
+  set maplibrestyle(maplibrestyle) {
+    if (!isNullOrEmpty(maplibrestyle)) {
+      this.getImpl().maplibrestyle = maplibrestyle;
+      if (this.getImpl().ol3Layer) {
+        this.getImpl().setStyleMap(maplibrestyle);
+      }
+    }
+  }
+
+  get url() {
+    return this.getImpl().url;
+  }
+
+  set url(url) {
+    if (!isNullOrEmpty(url)) {
+      this.getImpl().url = url;
+      if (this.getImpl().ol3Layer) {
+        this.getImpl().setStyleMap(url);
+      }
+    }
+  }
 
   /**
    * Devuelve el tipo de layer, MabLibre.
