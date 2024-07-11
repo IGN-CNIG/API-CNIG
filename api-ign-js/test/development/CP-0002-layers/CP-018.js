@@ -16,7 +16,7 @@ mapa.addLayers([
 ]);
 
 // Prueba de setLayoutProperty(maplibre_001)
-maplibre_001.setLayoutProperty('fondo', 'visibility', 'visible');
+// maplibre_001.setLayoutProperty('fondo', 'visibility', 'visible');
 
 // Prueba de mapa diferente
 // maplibre_001.setStyle('https://demotiles.maplibre.org/style.json');
@@ -38,11 +38,13 @@ const styles = [{
 }];
 maplibre_001.setStyle(styles); // */
 
-/* / Prueba de setPaintProperty(demotiles.maplibre)
-maplibre_001.setStyle('https://demotiles.maplibre.org/style.json');
+/*
+! TODO
+maplibre_001.url = 'https://demotiles.maplibre.org/style.json';
+maplibre_001.maplibrestyle = {json}
 maplibre_001.setPaintProperty('coastline', 'line-color', '#000');
 maplibre_001.setPaintProperty('coastline', 'line-width', 7);
 maplibre_001.setPaintProperty('countries-label', 'text-color', 'red');
-// */
+*/
 
 window.mapLibre = maplibre_001; // console.log(maplibre_001);
