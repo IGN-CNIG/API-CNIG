@@ -55,7 +55,9 @@ export default class AnalysisControl extends M.Control {
      */
     this.bufferLayer = null;
 
-    this.map_.on(M.evt.REMOVED_LAYER, this.destroyLayerBuffer);
+    this.destroyLayerBufferFN = this.destroyLayerBuffer.bind(this);
+
+    this.map_.on(M.evt.REMOVED_LAYER, this.destroyLayerBufferFN);
   }
 
   /**
@@ -560,7 +562,7 @@ export default class AnalysisControl extends M.Control {
    * @api stable
    */
   destroy() {
-    this.map_.un(M.evt.REMOVED_LAYER, this.destroyLayerBuffer);
+    this.map_.un(M.evt.REMOVED_LAYER, this.destroyLayerBufferFN);
   }
 
   /**
