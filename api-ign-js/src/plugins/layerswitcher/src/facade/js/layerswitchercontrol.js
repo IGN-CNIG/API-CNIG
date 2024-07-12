@@ -428,6 +428,7 @@ export default class LayerswitcherControl extends M.Control {
           if (evt.target.classList.contains('m-layerswitcher-check')) {
             if (layer.transparent === true || !layer.isVisible()) {
               layer.setVisible(!layer.isVisible());
+              this.render();
             }
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'radio') {
