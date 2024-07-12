@@ -23,14 +23,14 @@ import { getValue } from '../i18n/language';
  * por defecto falso.
  * @property {String} infoEventType Tipo de evento para mostrar la info de una feature.
  * @property {Boolean} disableBackgroundColor Desactiva el color de fondo de la capa.
- * @property {Object} style Estilos de la capa.
+ * @property {Object} url Estilos de la capa.
  * @property {String} type Tipo de capa.
  * @property {String} name Nombre de la capa.
  * @property {Number} opacity Opacidad de la capa.
  * @property {Boolean} visibility Verdadero si la capa es visible, falso si queremos que no lo sea.
  * @property {String} legend Leyenda de la capa.
  * @property {Object} attribution Atribución de la capa.
- *
+ * @property {Object} maplibrestyle Objeto del valor de url.
  *
  * @api
  * @extends {M.layer.Vector}
@@ -42,7 +42,7 @@ class MapLibre extends LayerBase {
    *
    * @constructor
    * @param {string|Mx.parameters.MapLibre} parameters Parámetros para la construcción de la capa.
-   * - style: Url del servicio (.json).
+   * - url: Url del servicio (.json).
    * - name: Nombre de la capa, debe ser único en el mapa.
    * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
    *   En este caso la capa sería detectado por los plugins de tablas de
@@ -50,8 +50,10 @@ class MapLibre extends LayerBase {
    * - extract: Opcional Activa la consulta por click en el objeto geográfico, por defecto falso.
    * - type: Tipo de la capa.
    * - infoEventType: Tipo de evento para mostrar la info de una feature.
+   * - name: Nombre de la capa.
    * - legend: Leyenda de la capa.
    * - attribution: Atribución de la capa.
+   * - maplibrestyle: Url (.json) en formato objeto.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - opacity: Opacidad de la capa (0-1), por defecto 1.
@@ -146,13 +148,7 @@ class MapLibre extends LayerBase {
     return this.getImpl().extract;
   }
 
-  /**
-   *  Devuelve el style de la capa.
-   * @returns {Object} Estilos de la capa.
-   */
-  getStyle() {
-    return this.style;
-  }
+  getStyle() {}
 
   /**
    * Devuelve el objeto geográfico con el id pasado por parámetros.
@@ -408,7 +404,7 @@ class MapLibre extends LayerBase {
   equals(obj) {
     let equals = false;
     if (obj instanceof MapLibre) {
-      equals = (this.style === obj.style);
+      equals = (this.url === obj.url);
       equals = equals && (this.name === obj.name);
     }
 

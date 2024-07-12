@@ -2747,13 +2747,15 @@ export const maplibre = (userParameters) => {
   const urlParams = params.split(/\*/);
   return {
     type: LayerType.MapLibre,
-    style: urlParams[1] || undefined,
-    disableBackgroundColor: urlParams[2] === '' ? undefined : urlParams[2] === 'true',
-    legend: urlParams[3] || undefined,
+    legend: urlParams[1] || undefined,
+    url: urlParams[2] || undefined,
+    name: urlParams[3] || undefined,
     transparent: urlParams[4] === '' ? undefined : urlParams[4] === 'true',
     extract: urlParams[5] === '' ? undefined : urlParams[5] === 'true',
-    displayInLayerSwitcher: urlParams[6] === '' ? undefined : urlParams[6] === 'true',
-    visibility: urlParams[7] === '' ? undefined : urlParams[7] === 'true',
+    visibility: urlParams[6] === '' ? undefined : urlParams[6] === 'true',
+    displayInLayerSwitcher: urlParams[7] === '' ? undefined : urlParams[7] === 'true',
+    disableBackgroundColor: urlParams[8] === '' ? undefined : urlParams[8] === 'true',
+    style: urlParams[9] || undefined,
   };
 };
 

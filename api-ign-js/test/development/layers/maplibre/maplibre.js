@@ -1,4 +1,4 @@
-/* eslint-disable camelcase,import/prefer-default-export */
+/* eslint-disable max-len,camelcase,import/prefer-default-export */
 import MapLibre from 'M/layer/MapLibre';
 
 export const maplibre_001 = new MapLibre({
@@ -51,10 +51,10 @@ export const maplibre_001 = new MapLibre({
       exaggeration: 1,
     },
   },
-*/
-  // opacity: 0.2,
+  */
   legend: 'Mapa Libre',
 }, {
+  // opacity: 0.5,
   // minZoom: 5,
   // maxZoom: 7,
   // minScale: 2000000,
@@ -69,7 +69,7 @@ export const maplibre_001 = new MapLibre({
 export const maplibre_002 = new MapLibre({
   name: 'Mapa Libre DEMO',
   extract: true,
-  style: 'https://demotiles.maplibre.org/style.json', // JSON, URL
+  url: 'https://demotiles.maplibre.org/style.json', // JSON, URL
   legend: 'Mapa Libre DEMO Legend',
 }, {
   disableBackgroundColor: false,
@@ -78,7 +78,7 @@ export const maplibre_002 = new MapLibre({
 export const maplibre_003 = new MapLibre({
   name: 'Mapa Libre MANUALSTYLE',
   extract: true,
-  style: {
+  maplibrestyle: {
     version: 8,
     sources: {
       osm: {
@@ -124,4 +124,5 @@ export const maplibre_003 = new MapLibre({
   disableBackgroundColor: false,
 });
 
-export const maplibre_004 = 'MapLibre*https://demotiles.maplibre.org/style.json*false*LEGEND_NAME*false*false*false*true';
+export const maplibre_004 = 'MapLibre*LEGEND_NAME*https://demotiles.maplibre.org/style.json*NAME_TEST*false*false*true*false*false*W3siaWQiOiJjb2FzdGxpbmUiLCJwYWludCI6W3sicHJvcGVydHkiOiJsaW5lLWNvbG9yIiwidmFsdWUiOiIjMDAwIn0seyJwcm9wZXJ0eSI6ImxpbmUtd2lkdGgiLCJ2YWx1ZSI6N31dfSx7ImlkIjoiY291bnRyaWVzLWxhYmVsIiwicGFpbnQiOlt7InByb3BlcnR5IjoidGV4dC1jb2xvciIsInZhbHVlIjoicmVkIn1dfV0=';
+// "estilo" es base64 que hay que deserealizar, en concreto este de aquí: const styles = [{ id: 'coastline', paint: [{ property: 'line-color', value: '#000' }, { property: 'line-width', value: 7 }] }, { id: 'countries-label', paint: [{ property: 'text-color', value: 'red' }] }];

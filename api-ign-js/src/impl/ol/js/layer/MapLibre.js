@@ -7,6 +7,7 @@ import {
   getResolutionFromScale,
   isNullOrEmpty,
   includes,
+  isString,
 } from 'M/util/Utils';
 import geojsonPopupTemplate from 'templates/geojson_popup';
 import { compileSync as compileTemplate } from 'M/util/Template';
@@ -113,6 +114,10 @@ class MapLibre extends LayerBase {
     this.vendorOptions = vendorOptions;
 
     this.disableBackgroundColor = options.disableBackgroundColor;
+
+    if (isString(parameters.style)) {
+      this.deserializedStyle = JSON.parse(decodeURIComponent(escape(window.atob(parameters.style.replace(' ', '+')))));
+    }
   }
 
   /**
@@ -150,20 +155,29 @@ class MapLibre extends LayerBase {
     if (this.url && this.maplibrestyle === undefined) {
       this.setMapLibreStyleByUrl_();
     }
+
+    if (this.deserializedStyle) {
+      this.facade.setMapLibreStyleFromId(this.deserializedStyle);
+    }
   }
 
   handlerLoadMapLibre_() {
     return new Promise((resolve) => {
-      if (this.ol3Layer.mapLibreMap === undefined) {
+      if (this.ol3Layer.mapLibreMap !== undefined && this.ol3Layer.mapLibreMap.loaded()) {
+        resolve();
+      } else {
         const handlerMapLibreMap = () => {
-          if (this.ol3Layer.mapLibreMap) {
+          if (this.ol3Layer.mapLibreMap && this.ol3Layer.mapLibreMap.loaded()) {
             this.ol3Layer.un('change:visible', handlerMapLibreMap);
+            this.ol3Layer.mapLibreMap.off('load', handlerMapLibreMap);
             resolve();
           }
         };
-        this.ol3Layer.on('change:visible', handlerMapLibreMap);
-      } else {
-        resolve();
+        if (this.ol3Layer.mapLibreMap === undefined) {
+          this.ol3Layer.on('change:visible', handlerMapLibreMap);
+        } else {
+          this.ol3Layer.mapLibreMap.on('load', handlerMapLibreMap);
+        }
       }
     });
   }
@@ -171,9 +185,13 @@ class MapLibre extends LayerBase {
   handlerStyleLoad_() {
     return new Promise((resolve) => {
       this.handlerLoadMapLibre_().then(() => {
-        this.ol3Layer.mapLibreMap.on('load', () => {
+        if (this.ol3Layer.mapLibreMap.isStyleLoaded()) {
           resolve();
-        });
+        } else {
+          this.ol3Layer.mapLibreMap.once('style.load', () => {
+            resolve();
+          });
+        }
       });
     });
   }
@@ -219,6 +237,8 @@ class MapLibre extends LayerBase {
    */
   setStyleMap(style) {
     this.handlerStyleLoad_().then(() => {
+      // eslint-disable-next-line no-underscore-dangle
+      this.ol3Layer.mapLibreMap.style._loaded = false;
       this.ol3Layer.mapLibreMap.setStyle(style);
     });
   }
@@ -257,7 +277,13 @@ class MapLibre extends LayerBase {
    */
   setPaintProperty(layer, property, value) {
     this.handlerStyleLoad_().then(() => {
-      this.ol3Layer.mapLibreMap.setPaintProperty(layer, property, value);
+      if (this.ol3Layer.mapLibreMap.isStyleLoaded()) {
+        this.ol3Layer.mapLibreMap.setPaintProperty(layer, property, value);
+      } else {
+        this.ol3Layer.mapLibreMap.once('style.load', () => {
+          this.ol3Layer.mapLibreMap.setPaintProperty(layer, property, value);
+        });
+      }
     });
   }
 
@@ -272,7 +298,13 @@ class MapLibre extends LayerBase {
    */
   setLayoutProperty(layer, property, value) {
     this.handlerStyleLoad_().then(() => {
-      this.ol3Layer.mapLibreMap.setLayoutProperty(layer, property, value);
+      if (this.ol3Layer.mapLibreMap.isStyleLoaded()) {
+        this.ol3Layer.mapLibreMap.setLayoutProperty(layer, property, value);
+      } else {
+        this.ol3Layer.mapLibreMap.once('style.load', () => {
+          this.ol3Layer.mapLibreMap.setLayoutProperty(layer, property, value);
+        });
+      }
     });
   }
 
