@@ -154,10 +154,12 @@ class Choropleth extends StyleComposite {
   setQuantification(quantification) {
     this.quantification_ = quantification;
     if (!this.choroplethStyles_.some((style) => isString(style))) {
-      if (this.choroplethStyles_.length < this.quantification_().length) {
+      const dataValues = this.getValues();
+      if (this.choroplethStyles_.length < this.quantification_(dataValues).length) {
         const [startStyle, endStyle] = this.choroplethStyles_;
-        let startColor = startStyle.get('fill.color');
-        let endColor = endStyle.get('fill.color');
+        const geomType = this.layer_.getGeometryType().toLowerCase();
+        let startColor = startStyle.get('fill.color') ? startStyle.get('fill.color') : startStyle.get(`${geomType}.fill.color`);
+        let endColor = endStyle.get('fill.color') ? endStyle.get('fill.color') : endStyle.get(`${geomType}.fill.color`);
         if (isNullOrEmpty(startColor)) {
           startColor = startStyle.get('stroke.color');
         }
@@ -166,7 +168,8 @@ class Choropleth extends StyleComposite {
         }
         this.choroplethStyles_ = [startColor, endColor];
       } else {
-        this.choroplethStyles_ = this.choroplethStyles_.slice(0, this.quantification_().length);
+        this.choroplethStyles_ = this.choroplethStyles_
+          .slice(0, this.quantification_(dataValues).length);
       }
       this.update_();
       this.refresh();

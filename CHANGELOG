@@ -28,6 +28,7 @@
 - Plugin printviewmanagement:
   - Se actualiza valor por defecto de la plantilla de printermap.
   - Se actualiza método getAPIRest.
+  - Se soluciona error de creación de WLD vacío
 - Plugin selectionzoom:
   - Se mejora visualización según posición.
   - Se actualiza método getAPIRest.
@@ -45,6 +46,7 @@
   - Se amplía zona para hacer click sobre botones de predefinedzoom.
   - Se actualiza método getAPIRest.
 - Plugin overviewmap: se soluciona problema con evento postrender y actualizado su visor JSP.
+- Se soluciona error de estilo Choropleth al llamar al setQuantification
 
 
 29/02/2024 - Versión 4.9.0
