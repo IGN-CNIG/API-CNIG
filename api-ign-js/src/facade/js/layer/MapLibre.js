@@ -73,11 +73,7 @@ class MapLibre extends LayerBase {
   constructor(parameters = {}, options = {}, vendorOptions = {}) {
     let opts = parameter.layer(parameters, MapLibreType);
     const optionsVar = options;
-
-    // ! No API REST
-    if (Object.keys(opts).length === 0) {
-      opts = { ...opts, ...optionsVar };
-    }
+    opts = { ...opts, ...optionsVar };
 
     // ! No se encontro soporte para maxExtent
     if (opts.maxExtent) {
@@ -93,7 +89,6 @@ class MapLibre extends LayerBase {
     }
 
     opts.type = MapLibreType;
-    opts.displayInLayerSwitcher = optionsVar.displayInLayerSwitcher;
 
     const impl = new MapLibreImpl(opts, optionsVar, vendorOptions);
 
