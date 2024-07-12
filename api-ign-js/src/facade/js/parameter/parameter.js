@@ -2753,7 +2753,7 @@ export const maplibre = (userParameters) => {
     transparent: urlParams[4] === '' ? undefined : urlParams[4] === 'true',
     extract: urlParams[5] === '' ? undefined : urlParams[5] === 'true',
     visibility: urlParams[6] === '' ? undefined : urlParams[6] === 'true',
-    displayInLayerSwitcher: urlParams[7] === '' ? undefined : urlParams[7] === 'true',
+    displayInLayerSwitcher: urlParams[7] === '' ? true : urlParams[7] === 'true',
     disableBackgroundColor: urlParams[8] === '' ? undefined : urlParams[8] === 'true',
     style: urlParams[9] || undefined,
   };
