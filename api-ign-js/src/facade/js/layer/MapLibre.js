@@ -148,7 +148,11 @@ class MapLibre extends LayerBase {
     return this.getImpl().extract;
   }
 
+  // ! Style API-CNIG no soportado
   getStyle() {}
+
+  // ! MaxExtent no soportado
+  setMaxExtent() {}
 
   /**
    * Devuelve el objeto geográfico con el id pasado por parámetros.
