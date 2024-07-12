@@ -640,7 +640,7 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getMapLibre(layer) {
-    return `MapLibre*${layer.style}*${layer.disableBackgroundColor || ''}*${layer.legend || ''}*${layer.transparent || ''}*${layer.extract || ''}*${layer.displayInLayerSwitcher || ''}*${layer.visibility || ''}`;
+    return `MapLibre*${layer.legend}*${layer.url}*${layer.name}*${layer.transparent || ''}*${layer.extract || ''}*${layer.visibility || ''}*${layer.displayInLayerSwitcher || ''}*${layer.disableBackgroundColor || ''}`;
   }
 
   /**
