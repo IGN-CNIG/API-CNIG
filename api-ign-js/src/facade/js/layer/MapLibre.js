@@ -77,6 +77,7 @@ class MapLibre extends LayerBase {
 
     if (isString(parameters)) {
       optionsVar.disableBackgroundColor = opts.disableBackgroundColor;
+      optionsVar.displayInLayerSwitcher = opts.displayInLayerSwitcher;
     }
 
     // ! No se encontro soporte para maxExtent
