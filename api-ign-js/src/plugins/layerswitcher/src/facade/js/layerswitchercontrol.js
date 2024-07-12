@@ -316,7 +316,7 @@ export default class LayerswitcherControl extends M.Control {
         type: layer.type,
         visible: (layer.isVisible() === true),
         id: layer.name,
-        url: layer.type === 'MapLibre' ? layer.style : layer.url,
+        url: layer.url,
         outOfRange: !layer.inRange(),
         checkedLayer: layer.checkedLayer || 'false',
         opacity: layer.getOpacity(),
@@ -2363,7 +2363,7 @@ export default class LayerswitcherControl extends M.Control {
         this.map_.addLayers(new M.layer.MapLibre({
           name,
           legend,
-          style: url,
+          url,
         }));
       }
 
