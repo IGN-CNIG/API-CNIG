@@ -27,9 +27,9 @@ Ejemplo:
 El constructor se inicializa con un JSON de options con los siguientes atributos:
 
 - **position**. Indica la posición donde se mostrará el plugin.
-  - 'TL':top left 
+  - 'TL':top left
   - 'TR':top right (por defecto)
-  - 'BL':bottom left 
+  - 'BL':bottom left
   - 'BR':bottom right
 
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.

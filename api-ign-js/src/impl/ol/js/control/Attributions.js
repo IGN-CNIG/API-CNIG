@@ -47,7 +47,6 @@ class Attributions extends Control {
     super.addTo(map, element);
   }
 
-
   /**
    * Register events in ol.Map of M.Map
    * @public

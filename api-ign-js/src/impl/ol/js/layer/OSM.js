@@ -46,7 +46,7 @@ class OSM extends Layer {
    * </code></pre>
    * @api stable
    */
-  constructor(userParameters, options = {}, vendorOptions) {
+  constructor(userParameters, options = {}, vendorOptions = {}) {
     // calls the super constructor
     super(options, vendorOptions);
 
@@ -132,8 +132,11 @@ class OSM extends Layer {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
-    this.ol3Layer =
-        new OLLayerTile(extend({ visible: this.visibility }, this.vendorOptions_, true));
+    this.ol3Layer = new OLLayerTile(extend(
+      { visible: this.visibility },
+      this.vendorOptions_,
+      true,
+    ));
     this.updateSource_();
     if (this.opacity_) {
       this.setOpacity(this.opacity_);
@@ -158,8 +161,12 @@ class OSM extends Layer {
     this.map.getMapImpl().updateSize();
     const size = this.map.getMapImpl().getSize();
     const units = this.map.getProjection().units;
-    this.resolutions_ =
-      generateResolutionsFromExtent(this.facadeLayer_.getMaxExtent(), size, 16, units);
+    this.resolutions_ = generateResolutionsFromExtent(
+      this.facadeLayer_.getMaxExtent(),
+      size,
+      16,
+      units,
+    );
 
     // sets its visibility if it is in range
     if (this.isVisible() && !this.inRange()) {
@@ -211,8 +218,12 @@ class OSM extends Layer {
       const size = this.map.getMapImpl().getSize();
       const units = this.map.getProjection().units;
       const zoomLevels = 16;
-      this.resolutions_ =
-        generateResolutionsFromExtent(this.facadeLayer_.getMaxExtent(), size, zoomLevels, units);
+      this.resolutions_ = generateResolutionsFromExtent(
+        this.facadeLayer_.getMaxExtent(),
+        size,
+        zoomLevels,
+        units,
+      );
     }
     if (!isNullOrEmpty(this.ol3Layer) && isNullOrEmpty(this.vendorOptions_.source)) {
       const extent = this.facadeLayer_.getMaxExtent();

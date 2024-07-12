@@ -229,7 +229,6 @@ class Control extends Base {
     return this.getImpl().getElement();
   }
 
-
   /**
    * Sobrescribe el panel del control.
    *

@@ -84,7 +84,6 @@ export default class Vectors extends M.Plugin {
      */
     this.metadata_ = api.metadata;
 
-
     /**
      *@private
      *@type { Number }
@@ -106,7 +105,6 @@ export default class Vectors extends M.Plugin {
     }
     return M.language.getTranslation(lang).vectors;
   }
-
 
   /**
    * This function adds this plugin into the map

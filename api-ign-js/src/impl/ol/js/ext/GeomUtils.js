@@ -301,8 +301,8 @@ let olExtentIntersection;
     let pt;
     for (let i = pts.length - 1; i > 0; i -= 1) {
       if ((pts[i][0] > x && pts[i - 1][0] < x) || (pts[i][0] < x && pts[i - 1][0] > x)) {
-        pt = [x, (((x - pts[i][0]) / (pts[i - 1][0] - pts[i][0])) *
-          (pts[i - 1][1] - pts[i][1])) + pts[i][1]];
+        pt = [x, (((x - pts[i][0]) / (pts[i - 1][0] - pts[i][0]))
+          * (pts[i - 1][1] - pts[i][1])) + pts[i][1]];
         pts.splice(i, 0, pt);
       }
     }
@@ -312,8 +312,8 @@ let olExtentIntersection;
     let pt;
     for (let i = pts.length - 1; i > 0; i -= 1) {
       if ((pts[i][1] > y && pts[i - 1][1] < y) || (pts[i][1] < y && pts[i - 1][1] > y)) {
-        pt = [(((y - pts[i][1]) / (pts[i - 1][1] - pts[i][1])) *
-          (pts[i - 1][0] - pts[i][0])) + pts[i][0], y];
+        pt = [(((y - pts[i][1]) / (pts[i - 1][1] - pts[i][1]))
+          * (pts[i - 1][0] - pts[i][0])) + pts[i][0], y];
         pts.splice(i, 0, pt);
       }
     }

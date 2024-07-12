@@ -15,7 +15,7 @@ function addDefaultExportPath(obj) {
   obj.forEach((name, index) => {
     const matches = name.match(/module\:([^>|),\.<]|)+/g);
     if (matches) {
-      matches.forEach(module => {
+      matches.forEach((module) => {
         if (!/[~\.]/.test(module)) {
           const checkFile = path.resolve(moduleRoot, module.replace(/^module\:/, ''));
           const file = fs.readFileSync(require.resolve(checkFile), 'utf-8');
@@ -43,12 +43,12 @@ function addDefaultExportPath(obj) {
 function replaceLinks(comment) {
   const matches = comment.match(/\{@link [^\} #]+}/g);
   if (matches) {
-    const modules = matches.map(m => {
+    const modules = matches.map((m) => {
       const mm = m.match(/(module:[^\}]+)}$/);
       if (mm) {
         return mm[1];
       }
-    }).filter(m => !!m);
+    }).filter((m) => !!m);
     const newModules = modules.concat();
     addDefaultExportPath(newModules);
     modules.forEach((module, i) => {
@@ -89,13 +89,13 @@ exports.handlers = {
         addDefaultExportPath(doclet.augments);
       }
       if (doclet.params) {
-        doclet.params.forEach(p => addDefaultExportPath(p.type));
+        doclet.params.forEach((p) => addDefaultExportPath(p.type));
       }
       if (doclet.returns) {
-        doclet.returns.forEach(r => addDefaultExportPath(r.type));
+        doclet.returns.forEach((r) => addDefaultExportPath(r.type));
       }
       if (doclet.properties) {
-        doclet.properties.forEach(p => addDefaultExportPath(p.type));
+        doclet.properties.forEach((p) => addDefaultExportPath(p.type));
       }
       if (doclet.type) {
         addDefaultExportPath(doclet.type);

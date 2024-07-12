@@ -14,6 +14,7 @@ export default class BeautyTOCControl extends M.impl.Control {
   addTo(map, html) {
     super.addTo(map, html);
   }
+
   /**
    * This function sets a new scale to the map.
    * Developed for WGS 84 / Pseudo - Mercator 3857 projection.
@@ -72,6 +73,7 @@ export default class BeautyTOCControl extends M.impl.Control {
     const olView = olMap.getView();
     olView.setResolution(newResolution);
   }
+
   /**
    * This function reprojects given coordinates to given projection.
    * @private
@@ -86,8 +88,8 @@ export default class BeautyTOCControl extends M.impl.Control {
   }
 
   isLayerLoaded(layer) {
-    return layer.getImpl().getOL3Layer() !== null &&
-      layer.getImpl().getOL3Layer().getSource() !== null;
+    return layer.getImpl().getOL3Layer() !== null
+      && layer.getImpl().getOL3Layer().getSource() !== null;
   }
 
   isLayerAvailable(layer) {

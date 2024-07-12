@@ -16,7 +16,7 @@ class GML extends OLFormatGML {
     * leer y escribir datos en formato GML.
     *
     * @constructor
-    * @param {olx.format.GMLOptions} opt_options Opciones del formato GML.
+    * @param {olx.format.GMLOptions} optOptions Opciones del formato GML.
     * - featureNS: Espacio de nombres de los objetos geográficos. Si no se define, se derivará
     * de GML.
     * - featureType: Tipo del objeto geográfico a analizar. Si es necesario configurar varios
@@ -36,10 +36,9 @@ class GML extends OLFormatGML {
     * - hasZ: Indica si las coordenadas tienen un valor Z. Por defecto es falso.
     * @api
     */
-  constructor(opt_options = {}) {
-    super(opt_options);
+  constructor(optOptions = {}) {
+    super(optOptions);
   }
 }
 
 export default GML;
-

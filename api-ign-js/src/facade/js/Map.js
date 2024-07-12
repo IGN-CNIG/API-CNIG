@@ -52,6 +52,8 @@ import GenericVector from './layer/GenericVector';
 import Panel from './ui/Panel';
 import * as Position from './ui/position';
 import GeoJSON from './layer/GeoJSON';
+import GeoTIFF from './layer/GeoTIFF';
+import MapLibre from './layer/MapLibre';
 import StylePoint from './style/Point';
 import MBTiles from './layer/MBTiles';
 import MBTilesVector from './layer/MBTilesVector';
@@ -79,6 +81,20 @@ class Map extends Base {
    * @constructor
    * @extends { M.facade.Base }
    * @param { string | Mx.parameters.Map } userParameters Parámetros.
+   * - bbox: Extensión del mapa.
+   * - center: Centro del mapa.
+   * - container: Contenedor del mapa.
+   * - controls: Controles del mapa.
+   * - label: Etiqueta del mapa.
+   * - layers: Capas del mapa.
+   * - maxExtent: Extensión máxima del mapa.
+   * - maxZoom: Zoom máximo del mapa.
+   * - minZoom: Zoom mínimo del mapa.
+   * - projection: Proyección del mapa.
+   * - resolutions: Resoluciones del mapa.
+   * - viewExtent: Extensión de la vista.
+   * - zoom: Zoom del mapa.
+   * - zoomConstrains: Restricciones de zoom.
    * @param { Mx.parameters.MapOptions } options Opciones personalizadas para la implementación
    * proporcionado por el usuario.
    * @property {object} viewVendorOptions Parámetros para la vista del mapa de la librería base.
@@ -463,8 +479,8 @@ class Map extends Base {
   removeAttribution(id) {
     if (id) {
       const attributions = this.controlAttributions.getAttributions();
-      let filterAttributions = attributions.filter(attribution => attribution.id !== id);
-      filterAttributions = filterAttributions.filter(attribution => attribution.name !== id);
+      let filterAttributions = attributions.filter((attribution) => attribution.id !== id);
+      filterAttributions = filterAttributions.filter((attribution) => attribution.name !== id);
 
       this.controlAttributions.setAttributions(filterAttributions);
     }
@@ -526,7 +542,7 @@ class Map extends Base {
    * @api
    */
   getRootLayers(layersParamVar) {
-    const layers = this.getLayers(layersParamVar).filter(l => isNullOrEmpty(l.group));
+    const layers = this.getLayers(layersParamVar).filter((l) => isNullOrEmpty(l.group));
 
     return layers;
   }
@@ -614,6 +630,9 @@ class Map extends Base {
               case 'GeoJSON':
                 layer = new GeoJSON(parameterVariable, { style: parameterVariable.style });
                 break;
+              case 'GeoTIFF':
+                layer = new GeoTIFF(layerParam);
+                break;
               case 'KML':
                 layer = new KML(layerParam);
                 break;
@@ -650,6 +669,9 @@ class Map extends Base {
               case 'GenericVector':
                 layer = new GenericVector(layerParam);
                 break;
+              case 'MapLibre':
+                layer = new MapLibre(layerParam);
+                break;
               default:
                 Dialog.error(getValue('dialog').invalid_type_layer);
             }
@@ -669,9 +691,8 @@ class Map extends Base {
         // KML and WFS layers handler its features
         if ((layer instanceof Vector)
           /* && !(layer instanceof KML) */
-          &&
-          !(layer instanceof WFS) &&
-          !(layer instanceof OGCAPIFeatures)) {
+          && !(layer instanceof WFS)
+          && !(layer instanceof OGCAPIFeatures)) {
           this.featuresHandler_.addLayer(layer);
         }
 
@@ -681,7 +702,7 @@ class Map extends Base {
       });
 
       // adds the layers
-      this.getImpl().addLayers(layers.filter(element => element !== null));
+      this.getImpl().addLayers(layers.filter((element) => element !== null));
     }
     return this;
   }
@@ -719,10 +740,10 @@ class Map extends Base {
         useCapabilities = l.useCapabilities;
       }
 
-      if (this.collectionCapabilities.filter(u => u.url === url).length > 0) return;
+      if (this.collectionCapabilities.filter((u) => u.url === url).length > 0) return;
 
       if ((type === 'WMS' || type === 'WMTS') && useCapabilities) {
-        if (urlCapabilities.filter(u => u.url === url).length === 0) {
+        if (urlCapabilities.filter((u) => u.url === url).length === 0) {
           this.collectionCapabilities.push({
             type,
             url,
@@ -1146,6 +1167,233 @@ class Map extends Base {
         });
         // removes the layers
         this.getImpl().removeWFS(wfsLayers);
+      }
+    }
+    return this;
+  }
+
+  /**
+   * Este método obtiene las capas GeoTIFF agregadas al mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.WMC>} layersParam Opcional.
+   * - Matriz de capas de nombres, tipo GeoTIFF.
+   * @returns {Array<GeoTIFF>} Matriz de capas, tipo GeoTIFF.
+   * @api
+   */
+  getGeoTIFF(layersParamVar) {
+    let layersParam = layersParamVar;
+    // checks if the implementation can manage layers
+    if (isUndefined(MapImpl.prototype.getGeoTIFF)) {
+      Exception(getValue('exception').getgeotiff_method);
+    }
+
+    // parses parameters to Array
+    if (isNull(layersParam)) {
+      layersParam = [];
+    } else if (!isArray(layersParam)) {
+      layersParam = [layersParam];
+    }
+
+    // gets the parameters as Layer objects to filter
+    let filters = [];
+    if (layersParam.length > 0) {
+      filters = layersParam.map((layerParam) => {
+        return parameter.layer(layerParam, LayerType.GeoTIFF);
+      });
+    }
+
+    // gets the layers
+    const layers = this.getImpl().getGeoTIFF(filters).sort(Map.LAYER_SORT);
+
+    return layers;
+  }
+
+  /**
+ * Este método agrega las capas GeoTIFF al mapa.
+ *
+ * @function
+ * @param {Array<string>|Array<Mx.parameters.GeoTIFF>} layersParam Colección u objeto de capa.
+ * @returns {Map} Devuelve el estado del mapa.
+ * @api
+ */
+  addGeoTIFF(layersParamVar) {
+    let layersParam = layersParamVar;
+    if (!isNullOrEmpty(layersParam)) {
+    // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.addGeoTIFF)) {
+        Exception(getValue('exception').addgeotiff_method);
+      }
+
+      // parses parameters to Array
+      if (!isArray(layersParam)) {
+        layersParam = [layersParam];
+      }
+
+      // gets the parameters as GeoTIFF objects to add
+      const geotiffLayers = [];
+      layersParam.forEach((layerParam) => {
+        let geotiffLayer;
+        if (isObject(layerParam) && (layerParam instanceof GeoTIFF)) {
+          geotiffLayer = layerParam;
+        } else if (!(layerParam instanceof Layer)) {
+          try {
+            geotiffLayer = new GeoTIFF(layerParam, layerParam.options);
+          } catch (err) {
+            Dialog.error(err.toString());
+            throw err;
+          }
+        }
+        geotiffLayers.push(geotiffLayer);
+      });
+
+      // adds the layers
+      this.getImpl().addGeoTIFF(geotiffLayers);
+      this.fire(EventType.ADDED_LAYER, [geotiffLayers]);
+      this.fire(EventType.ADDED_GEOTIFF, [geotiffLayers]);
+    }
+    return this;
+  }
+
+  /**
+ * Este método elimina las capas GeoTIFF del mapa.
+ *
+ * @function
+ * @param {Array<string>|Array<Mx.parameters.GeoTIFF>} layersParam Matriz de capas de nombres que
+ * desea eliminar.
+ * @returns {Map} Devuelve el estado del mapa.
+ * @api
+ */
+  removeGeoTIFF(layersParam) {
+    if (!isNullOrEmpty(layersParam)) {
+    // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.removeGeoTIFF)) {
+        Exception(getValue('exception').removegeotiff_method);
+      }
+
+      // gets the layers
+      const geotiffLayers = this.getGeoTIFF(layersParam);
+      if (geotiffLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [geotiffLayers]);
+        geotiffLayers.forEach((layer) => {
+          this.featuresHandler_.removeLayer(layer);
+        });
+        // removes the layers
+        this.getImpl().removeGeoTIFF(geotiffLayers);
+      }
+    }
+    return this;
+  }
+
+  /**
+   * Este método obtiene las capas MapLibre agregadas al mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.WMC>} layersParam Opcional.
+   * - Matriz de capas de nombres, tipo MapLibre.
+   * @returns {Array<MapLibre>} Matriz de capas, tipo MapLibre.
+   * @api
+   */
+  getMapLibre(layersParamVar) {
+    let layersParam = layersParamVar;
+    // checks if the implementation can manage layers
+    if (isUndefined(MapImpl.prototype.getMapLibre)) {
+      Exception(getValue('exception').mapLibre_method);
+    }
+
+    // parses parameters to Array
+    if (isNull(layersParam)) {
+      layersParam = [];
+    } else if (!isArray(layersParam)) {
+      layersParam = [layersParam];
+    }
+
+    // gets the parameters as Layer objects to filter
+    let filters = [];
+    if (layersParam.length > 0) {
+      filters = layersParam.map((layerParam) => {
+        return parameter.layer(layerParam, LayerType.MapLibre);
+      });
+    }
+
+    // gets the layers
+    const layers = this.getImpl().getMapLibre(filters).sort(Map.LAYER_SORT);
+
+    return layers;
+  }
+
+  /**
+     * Este método agrega las capas MapLibre al mapa.
+     *
+     * @function
+     * @param {Array<string>|Array<Mx.parameters.MapLibre>} layersParam Colección u objeto de capa.
+     * @returns {Map} Devuelve el estado del mapa.
+     * @api
+     */
+  addMapLibre(layersParamVar) {
+    let layersParam = layersParamVar;
+    if (!isNullOrEmpty(layersParam)) {
+      // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.addMapLibre)) {
+        Exception(getValue('exception').addto_method);
+      }
+
+      // parses parameters to Array
+      if (!isArray(layersParam)) {
+        layersParam = [layersParam];
+      }
+
+      // gets the parameters as addMapLibre objects to add
+      const mapLibreLayers = [];
+      layersParam.forEach((layerParam) => {
+        let mapLibreLayer;
+        if (isObject(layerParam) && (layerParam instanceof MapLibre)) {
+          mapLibreLayer = layerParam;
+        } else if (!(layerParam instanceof Layer)) {
+          try {
+            mapLibreLayer = new MapLibre(layerParam, layerParam.options);
+          } catch (err) {
+            Dialog.error(err.toString());
+            throw err;
+          }
+        }
+        this.featuresHandler_.addLayer(mapLibreLayer);
+        mapLibreLayers.push(mapLibreLayer);
+      });
+
+      // adds the layers
+      this.getImpl().addMapLibre(mapLibreLayers);
+      this.fire(EventType.ADDED_LAYER, [mapLibreLayers]);
+      this.fire(EventType.ADDED_MAPLIBRE, [mapLibreLayers]);
+    }
+    return this;
+  }
+
+  /**
+     * Este método elimina las capas MapLibre del mapa.
+     *
+     * @function
+     * @param {Array<string>|Array<Mx.parameters.MapLibre>} layersParam Matriz de capas de nombres
+     * que desea eliminar.
+     * @returns {Map} Devuelve el estado del mapa.
+     * @api
+     */
+  removeMapLibre(layersParam) {
+    if (!isNullOrEmpty(layersParam)) {
+      // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.removeMapLibre)) {
+        Exception(getValue('exception').removelayers_method);
+      }
+
+      // gets the layers
+      const mapLibreLayers = this.getMapLibre(layersParam);
+      if (mapLibreLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [mapLibreLayers]);
+        mapLibreLayers.forEach((layer) => {
+          this.featuresHandler_.removeLayer(layer);
+        });
+        // removes the layers
+        this.getImpl().removeMapLibre(mapLibreLayers);
       }
     }
     return this;
@@ -1615,8 +1863,8 @@ class Map extends Base {
       }
       const mbtilesLayers = [];
       layersParam.forEach((layerParam) => {
-        if (isObject(layerParam) &&
-          (layerParam instanceof MBTilesVector)) {
+        if (isObject(layerParam)
+          && (layerParam instanceof MBTilesVector)) {
           layerParam.setMap(this);
           mbtilesLayers.push(layerParam);
         }
@@ -1743,7 +1991,6 @@ class Map extends Base {
     }
     return this;
   }
-
 
   /**
    * Este método devuelve las capas TMS al mapa.
@@ -2131,7 +2378,7 @@ class Map extends Base {
     return new Promise((resolve) => {
       let maxExtent = this.userMaxExtent;
       if (isNullOrEmpty(maxExtent)) {
-        const calculateExtents = this.getLayers().filter(layer => layer.name !== '__draw__').map(l => l.calculateMaxExtent());
+        const calculateExtents = this.getLayers().filter((layer) => layer.name !== '__draw__').map((l) => l.calculateMaxExtent());
         Promise.all(calculateExtents).then((extents) => {
           maxExtent = getEnvolvedExtent(extents);
           if (isNullOrEmpty(maxExtent)) {
@@ -2148,7 +2395,6 @@ class Map extends Base {
       }
     });
   }
-
 
   /**
    * Este método establece la extensión máxima para esta
@@ -2203,7 +2449,10 @@ class Map extends Base {
   resetMaxExtent() {
     this.userMaxExtent = null;
     this.calculateMaxExtent().then((maxExtentParam) => {
-      const maxExtent = parameter.maxExtent(maxExtentParam);
+      let maxExtent = parameter.maxExtent(maxExtentParam);
+      if (isObject(maxExtent)) {
+        maxExtent = [maxExtent.x.min, maxExtent.y.min, maxExtent.x.max, maxExtent.y.max];
+      }
       this.getImpl().setMaxExtent(maxExtent, true);
     });
     return this;
@@ -2791,7 +3040,7 @@ class Map extends Base {
       // removes controls from their panels
       plugins.forEach((plugin) => {
         plugin.destroy();
-        this._plugins = this._plugins.filter(plugin2 => plugin.name !== plugin2.name);
+        this._plugins = this._plugins.filter((plugin2) => plugin.name !== plugin2.name);
       });
     }
 
@@ -2810,15 +3059,16 @@ class Map extends Base {
   getEnvolvedExtent() {
     return new Promise((resolve) => {
       // 1 check the WMC extent
-      const visibleBaseLayer = this.getBaseLayers().find(layer => layer.isVisible());
+      const visibleBaseLayer = this.getBaseLayers().find((layer) => layer.isVisible());
       if (!isNullOrEmpty(visibleBaseLayer)) {
-        visibleBaseLayer.getMaxExtent(resolve);
+        resolve(visibleBaseLayer.getMaxExtent(resolve));
       } else {
-        const layers = this.getLayers().filter(layer => layer.name !== '__draw__');
-        Promise.all(layers.map(layer => layer.calculateMaxExtent()))
+        const layers = this.getLayers().filter((layer) => layer.name !== '__draw__');
+        Promise.all(layers.map((layer) => layer.calculateMaxExtent()))
           .then((extents) => {
-            const extentsToCalculate =
-              isNullOrEmpty(extents) ? [this.getProjection().getExtent()] : extents;
+            const extentsToCalculate = isNullOrEmpty(extents)
+              ? [this.getProjection().getExtent()]
+              : extents;
             const envolvedMaxExtent = getEnvolvedExtent(extentsToCalculate);
             resolve(envolvedMaxExtent);
           });
@@ -2923,9 +3173,9 @@ class Map extends Base {
    * @api
    */
   addLabel(labelParam, coordParam) {
-    const panMapIfOutOfView = labelParam.panMapIfOutOfView === undefined ?
-      true :
-      labelParam.panMapIfOutOfView;
+    const panMapIfOutOfView = labelParam.panMapIfOutOfView === undefined
+      ? true
+      : labelParam.panMapIfOutOfView;
     // checks if the param is null or empty
     if (isNullOrEmpty(labelParam)) {
       Exception(getValue('exception').no_projection);
@@ -3067,7 +3317,7 @@ class Map extends Base {
         panels = [panels];
       }
       panels.forEach((panel) => {
-        const isIncluded = this._panels.some(panel2 => panel2.equals(panel));
+        const isIncluded = this._panels.some((panel2) => panel2.equals(panel));
         if ((panel instanceof Panel) && !isIncluded) {
           this._panels.push(panel);
           const queryArea = 'div.m-area'.concat(panel.position);
@@ -3092,7 +3342,7 @@ class Map extends Base {
     }
     if (panel instanceof Panel) {
       panel.destroy();
-      this._panels = this._panels.filter(panel2 => !panel2.equals(panel));
+      this._panels = this._panels.filter((panel2) => !panel2.equals(panel));
     }
 
     return this;
@@ -3117,7 +3367,7 @@ class Map extends Base {
         names = [names];
       }
       names.forEach((name) => {
-        const filteredPanels = this._panels.filter(panel => panel.name === name);
+        const filteredPanels = this._panels.filter((panel) => panel.name === name);
         filteredPanels.forEach((panel) => {
           if (!isNullOrEmpty(panel)) {
             panels.push(panel);
@@ -3300,7 +3550,7 @@ class Map extends Base {
   evtSetAttributions_() {
     // getAttributions
     this.on(EventType.ADDED_LAYER, (layersEvt) => {
-      const control = this.getControls().some(c => c.name === 'attributions');
+      const control = this.getControls().some((c) => c.name === 'attributions');
       if (!control) { return; }
 
       let layers = layersEvt;
@@ -3350,7 +3600,7 @@ class Map extends Base {
         if (/<[a-z][\s\S]*>/i.test(attribution)) {
           // eslint-disable-next-line no-underscore-dangle
           const removeAttr = controlAttributions
-            .collectionsAttributions_.filter(attr => attr.attribuccion === attribution);
+            .collectionsAttributions_.filter((attr) => attr.attribuccion === attribution);
           if (removeAttr.length > 0) {
             this.removeAttribution(removeAttr[0].id);
           }
@@ -3360,7 +3610,6 @@ class Map extends Base {
       });
     });
   }
-
 
   /**
    * Esta función actualiza el estado de la instancia del mapa.
@@ -3374,7 +3623,7 @@ class Map extends Base {
     if (!isUndefined(this.getImpl().refresh) && isFunction(this.getImpl().refresh)) {
       this.getImpl().refresh();
     }
-    this.getLayers().forEach(layer => layer.refresh());
+    this.getLayers().forEach((layer) => layer.refresh());
     return this;
   }
 
@@ -3404,9 +3653,9 @@ class Map extends Base {
       const zIndex = (z1 - z2);
       if (zIndex === 0 && !isUndefined(thisClass)) {
         // eslint-disable-next-line no-underscore-dangle
-        const i1 = thisClass.getImpl().layers_.findIndex(element => element.name === layer1.name);
+        const i1 = thisClass.getImpl().layers_.findIndex((element) => element.name === layer1.name);
         // eslint-disable-next-line no-underscore-dangle
-        const i2 = thisClass.getImpl().layers_.findIndex(element => element.name === layer2.name);
+        const i2 = thisClass.getImpl().layers_.findIndex((element) => element.name === layer2.name);
         return i1 - i2;
       }
       return zIndex;

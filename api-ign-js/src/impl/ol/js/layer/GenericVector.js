@@ -52,7 +52,7 @@ class GenericVector extends Vector {
    * </code></pre>
    * @api
    */
-  constructor(options = {}, vendorOptions) {
+  constructor(options = {}, vendorOptions = {}) {
     // calls the super constructor
     super(options, vendorOptions);
     this.options = options;
@@ -66,7 +66,6 @@ class GenericVector extends Vector {
      * WMS zIndex_. Índice de la capa, (+40).
      */
     this.zIndex_ = ImplMap.Z_INDEX[LayerType.GenericVector];
-
 
     this.sldBody = options.sldBody;
 
@@ -150,15 +149,15 @@ class GenericVector extends Vector {
     }
 
     // calculates the resolutions from scales
-    if (!isNull(this.options) &&
-      !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
+    if (!isNull(this.options)
+      && !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
       const units = this.map.getProjection().units;
       this.options.minResolution = getResolutionFromScale(this.options.minScale, units);
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
       this.ol3Layer.setMaxResolution(this.options.maxResolution);
       this.ol3Layer.setMinResolution(this.options.minResolution);
-    } else if (!isNull(this.options) &&
-      !isNull(this.options.minResolution) && !isNull(this.options.maxResolution)) {
+    } else if (!isNull(this.options)
+      && !isNull(this.options.minResolution) && !isNull(this.options.maxResolution)) {
       this.ol3Layer.setMaxResolution(this.options.maxResolution);
       this.ol3Layer.setMinResolution(this.options.minResolution);
     }
@@ -228,7 +227,6 @@ class GenericVector extends Vector {
     }
   }
 
-
   /**
    * Este método desactiva el evento change de la capa.
    * @function
@@ -282,8 +280,8 @@ class GenericVector extends Vector {
    * @api
    */
   setURLService(url) {
-    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-      !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
+    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource)
+      && !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
       this.ol3Layer.getSource().setUrl(url);
     }
   }
@@ -297,8 +295,8 @@ class GenericVector extends Vector {
    */
   getURLService() {
     let url = '';
-    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-      !isNullOrEmpty(this.ol3Layer.getSource())) {
+    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource)
+      && !isNullOrEmpty(this.ol3Layer.getSource())) {
       const source = this.ol3Layer.getSource();
       if (!isNullOrEmpty(source.getUrl)) {
         url = this.ol3Layer.getSource().getUrl();

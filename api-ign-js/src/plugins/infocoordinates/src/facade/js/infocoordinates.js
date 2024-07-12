@@ -127,7 +127,6 @@ export default class Infocoordinates extends M.Plugin {
      * @type {object}
      */
     this.options = options;
-
   }
 
   /**
@@ -154,7 +153,13 @@ export default class Infocoordinates extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    this.control_ = new InfocoordinatesControl(this.decimalGEOcoord_, this.decimalUTMcoord_, this.helpUrl_, this.order, this.outputDownloadFormat_);
+    this.control_ = new InfocoordinatesControl(
+      this.decimalGEOcoord_,
+      this.decimalUTMcoord_,
+      this.helpUrl_,
+      this.order,
+      this.outputDownloadFormat_,
+    );
     this.controls_.push(this.control_);
     this.map_ = map;
     // panel para agregar control - no obligatorio

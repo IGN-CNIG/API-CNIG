@@ -7,14 +7,13 @@ import template from '../../templates/storymap';
 
 // import { getValue } from './i18n/language';
 
-
 export default class StoryMapControl extends M.Control {
   /**
    * @constructor
    * @extends {M.Control}
    * @api
    */
-  constructor(content = {}, delay = 2000, indexInContent, isDraggable_) {
+  constructor(content = {}, delay = 2000, indexInContent = false, isDraggable_ = false) {
     const impl = new StoryMapControlImplControl();
     super(impl, 'StoryMapControl');
     this.content_ = content;
@@ -229,7 +228,6 @@ export default class StoryMapControl extends M.Control {
       }
     });
 
-
     return html;
   }
 
@@ -299,8 +297,9 @@ export default class StoryMapControl extends M.Control {
           if (this.svgArrowScroll) this.arrowScrollEffect();
           // ***** Delante *****
           // Evitar que ejecute esto cuando es el ultimo capitulo y el ultimo step
-          if (Math.abs(target.scrollHeight - target.clientHeight - target.scrollTop) < 1 &&
-            !(navContent[navContent.length - 1].id === cap.id && `step${cap.childElementCount - 1}` === target.id)) {
+          if (Math.abs(target.scrollHeight - target.clientHeight - target.scrollTop) < 1
+            && !(navContent[navContent.length - 1].id === cap.id && `step${cap.childElementCount - 1}` === target.id)) {
+            target.scroll({ top: 10, behavior: 'auto' });
             // eslint-disable-next-line no-param-reassign
             target.style = 'display: none';
             const idStep = Number(step.id.replace('step', '')) + 1;
@@ -328,6 +327,7 @@ export default class StoryMapControl extends M.Control {
             // ***** Atras *****
           } else if (target.scrollTop === 0 && !(cap.id === 'cap0' && target.id === 'step0')) {
             const idStep = Number(step.id.replace('step', '')) - 1;
+            target.scroll({ top: 10, behavior: 'auto' });
             // eslint-disable-next-line no-param-reassign
             target.style = 'display: none';
 
@@ -491,7 +491,6 @@ export default class StoryMapControl extends M.Control {
           // step.scrollTop = 9999999999;
         }
 
-
         if (displayLast === 'block') {
           play.style.display = 'block';
           pause.style.display = 'none';
@@ -513,6 +512,7 @@ export default class StoryMapControl extends M.Control {
   activate() {
     super.activate();
   }
+
   /**
    * This function is called on the control deactivation
    *
@@ -523,6 +523,7 @@ export default class StoryMapControl extends M.Control {
   deactivate() {
     super.deactivate();
   }
+
   /**
    * This function gets activation button
    *

@@ -156,7 +156,7 @@ export default class InformationControl extends M.impl.Control {
    */
   addOnClickEvent_() {
     const olMap = this.facadeMap_.getMapImpl();
-    this.clickEventKey_ = olMap.on('singleclick', e => this.buildUrl_(M.dialog, e));
+    this.clickEventKey_ = olMap.on('singleclick', (e) => this.buildUrl_(M.dialog, e));
     document.querySelector('.m-control.m-container.m-information-container').classList.add('activated');
   }
 
@@ -175,7 +175,7 @@ export default class InformationControl extends M.impl.Control {
     const wmtsInfoURLS = this.buildWMTSInfoURL([...this.facadeMap_.getWMTS(), ...urlsWMTS]);
 
     const layerNamesUrls = [...wmtsInfoURLS, ...wmsInfoURLS]
-      .filter(layer => !M.utils.isNullOrEmpty(layer));
+      .filter((layer) => !M.utils.isNullOrEmpty(layer));
     if (layerNamesUrls.length > 0) {
       this.showInfoFromURL_(layerNamesUrls, evt.coordinate, olMap);
     } else {
@@ -235,7 +235,7 @@ export default class InformationControl extends M.impl.Control {
   }
 
   buildGenericInfoURL() {
-    const layersGeneric = this.facadeMap_.getLayers().filter(layer => layer.type === 'GenericRaster');
+    const layersGeneric = this.facadeMap_.getLayers().filter((layer) => layer.type === 'GenericRaster');
     const urlsWMTS = [];
     const urlsWMS = [];
     layersGeneric.forEach((layer) => {
@@ -496,8 +496,8 @@ export default class InformationControl extends M.impl.Control {
 
       if (attr.length > 0) {
         if (regExs.msNewFeature.test(attr)) {
-          if ((nextAttrValueString.length > 0) &&
-            !regExs.msNewFeature.test(nextAttrValueString)) {
+          if ((nextAttrValueString.length > 0)
+            && !regExs.msNewFeature.test(nextAttrValueString)) {
             // set new header
             html += `<tr><td class='header' colspan='3'>${M.utils.beautifyAttribute(layerName)}</td><td></td></tr>`;
           }
@@ -556,8 +556,8 @@ export default class InformationControl extends M.impl.Control {
       popup.addTab(loadingInfoTab);
       this.facadeMap_.addPopup(popup, coordinate);
     } else {
-      const hasExternalContent =
-        popup.getTabs().some(tab => tab.title !== POPUP_TITLE);
+      const hasExternalContent = popup.getTabs()
+        .some((tab) => tab.title !== POPUP_TITLE);
       if (!hasExternalContent) {
         this.facadeMap_.removePopup();
         popup = new M.Popup();
@@ -611,12 +611,12 @@ export default class InformationControl extends M.impl.Control {
                 selector: '.m-information-content-info div.m-arrow-right',
                 all: true,
                 type: 'click',
-                callback: e => this.toogleSection(e),
+                callback: (e) => this.toogleSection(e),
               }, {
                 selector: '.m-information-content-info div:nth-child(2) p',
                 all: true,
                 type: 'click',
-                callback: e => this.toogleSection(e),
+                callback: (e) => this.toogleSection(e),
               }],
             });
             if (this.opened_ === 'all') {
@@ -640,7 +640,6 @@ export default class InformationControl extends M.impl.Control {
     });
     this.popup_ = popup;
   }
-
 
   /**
    * This functions handle the close/open beahaviour of the sections feature info

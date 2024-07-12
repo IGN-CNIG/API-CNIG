@@ -1,36 +1,38 @@
+/* eslint-disable camelcase */
 import WMS from 'M/layer/WMS';
 
-const sldBody = '<?xml version="1.0" encoding="ISO-8859-1"?>' +
-  '<StyledLayerDescriptor version="1.0.0" ' +
-  'xmlns="http://www.opengis.net/sld" ' +
-  'xmlns:ogc="http://www.opengis.net/ogc" ' +
-  'xmlns:xlink="http://www.w3.org/1999/xlink" ' +
-  'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
-  '<NamedLayer>' +
-  '<Name>tematicos:Municipios</Name>' +
-  '<UserStyle>' +
-  '<FeatureTypeStyle>' +
-  '<Rule>' +
-  '<Name>Rule 1</Name>' +
-  '<Title>RedFill RedOutline</Title>' +
-  '<Abstract>50% transparent red fill with a red outline 1 pixel in width</Abstract>' +
-  '<PolygonSymbolizer>' +
-  '<Fill>' +
-  '<CssParameter name="fill">#1E1BE8</CssParameter>' +
-  '</Fill>' +
-  '<Stroke>' +
-  '<CssParameter name="stroke">#E81B8E</CssParameter>' +
-  '<CssParameter name="stroke-width">1</CssParameter>' +
-  '</Stroke>' +
-  '</PolygonSymbolizer>' +
-  '</Rule>' +
-  '</FeatureTypeStyle>' +
-  '</UserStyle>' +
-  '</NamedLayer>' +
-  '</StyledLayerDescriptor>';
+// eslint-disable-next-line no-unused-vars
+const sldBody = '<?xml version="1.0" encoding="ISO-8859-1"?>'
+  + '<StyledLayerDescriptor version="1.0.0" '
+  + 'xmlns="http://www.opengis.net/sld" '
+  + 'xmlns:ogc="http://www.opengis.net/ogc" '
+  + 'xmlns:xlink="http://www.w3.org/1999/xlink" '
+  + 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
+  + '<NamedLayer>'
+  + '<Name>tematicos:Municipios</Name>'
+  + '<UserStyle>'
+  + '<FeatureTypeStyle>'
+  + '<Rule>'
+  + '<Name>Rule 1</Name>'
+  + '<Title>RedFill RedOutline</Title>'
+  + '<Abstract>50% transparent red fill with a red outline 1 pixel in width</Abstract>'
+  + '<PolygonSymbolizer>'
+  + '<Fill>'
+  + '<CssParameter name="fill">#1E1BE8</CssParameter>'
+  + '</Fill>'
+  + '<Stroke>'
+  + '<CssParameter name="stroke">#E81B8E</CssParameter>'
+  + '<CssParameter name="stroke-width">1</CssParameter>'
+  + '</Stroke>'
+  + '</PolygonSymbolizer>'
+  + '</Rule>'
+  + '</FeatureTypeStyle>'
+  + '</UserStyle>'
+  + '</NamedLayer>'
+  + '</StyledLayerDescriptor>';
 
 export const wms_001 = new WMS({
-  url : 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
+  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
   name: 'tematicos:Municipios',
   legend: 'Capa WMS',
   // url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
@@ -57,9 +59,8 @@ export const wms_001 = new WMS({
   //     url: 'https://www.ign.es',
   //     contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
   //     contentType: 'kml',
-  //   },
-},
-{
+  // },
+}, {
   // minZoom: 5,
   // maxZoom: 10,
   // numZoomLevels: 4,
@@ -83,8 +84,7 @@ export const wms_001 = new WMS({
   // opacity: 0,
   // opacity: 0.5,
   // opacity: 1,
-},
-{
+}, {
   // capabilitiesMetadata: {
   //  Abstract: '',
   //  Attribution: '',
@@ -92,8 +92,7 @@ export const wms_001 = new WMS({
   //  Style: '',
   // },
   // source: {},
-},
-)
+});
 
 // ERROR: No funciona opacity al 0
 
@@ -101,4 +100,4 @@ export const wms_002 = 'WMS*Unidadesadministrativa*http://www.ign.es/wms-inspire
 
 export const wms_003 = new WMS({
   url: 'https://www.ideandalucia.es/wms/mdt_2016?',
-}, )
+});

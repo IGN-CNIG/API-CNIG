@@ -62,7 +62,6 @@ export default class TOC extends M.Plugin {
     this.tooltip_ = options.tooltip || getValue('tooltip');
   }
 
-
   /**
    * Return plugin language
    *

@@ -28,8 +28,8 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
 
     if (optionsE.layers) {
       optionsE.layers = [optionsE.layers];
-      const layer = optionsE.layers.map(layer => layer.getImpl().getOL3Layer())
-        .filter(layer => layer != null);
+      const layer = optionsE.layers.map((l) => l.getImpl().getOL3Layer())
+        .filter((la) => la != null);
       this.addLayer(layer);
     }
   }
@@ -40,8 +40,8 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
     let i;
     if (this.getMap()) {
       for (i = 0; i < this.layers_.length; i += 1) {
-        this.layers_[i].un(['precompose','prerender'], this.precompose_.bind(this));
-        this.layers_[i].un(['postcompose','postrender'], this.postcompose_.bind(this));
+        this.layers_[i].un(['precompose', 'prerender'], this.precompose_.bind(this));
+        this.layers_[i].un(['postcompose', 'postrender'], this.postcompose_.bind(this));
       }
       this.getMap().renderSync();
     }
@@ -50,8 +50,8 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
 
     if (map) {
       for (i = 0; i < this.layers_.length; i += 1) {
-        this.layers_[i].precompose = this.layers_[i].on(['precompose','prerender'], this.precompose_.bind(this));
-        this.layers_[i].postcompose = this.layers_[i].on(['postcompose','postrender'], this.postcompose_.bind(this));
+        this.layers_[i].precompose = this.layers_[i].on(['precompose', 'prerender'], this.precompose_.bind(this));
+        this.layers_[i].postcompose = this.layers_[i].on(['postcompose', 'postrender'], this.postcompose_.bind(this));
       }
       map.renderSync();
     }
@@ -69,16 +69,17 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
   addLayer(layers) {
-    if (!(layers instanceof Array)) layers = [layers];
-    for (let i = 0; i < layers.length; i += 1) {
-      const l = { layer: layers[i] };
+    let layersArr = layers;
+    if (!(layersArr instanceof Array)) layersArr = [layersArr];
+    for (let i = 0; i < layersArr.length; i += 1) {
+      const l = { layer: layersArr[i] };
       if (this.getMap()) {
-        l.precompose = layers[i].on(['precompose','prerender'], this.precompose_.bind(this));
-        l.postcompose = layers[i].on(['postcompose','postrender'], this.postcompose_.bind(this));
+        l.precompose = layersArr[i].on(['precompose', 'prerender'], this.precompose_.bind(this));
+        l.postcompose = layersArr[i].on(['postcompose', 'postrender'], this.postcompose_.bind(this));
         this.getMap().renderSync();
       }
 
-      this.layers_.push(layers[i]);
+      this.layers_.push(layersArr[i]);
     }
   }
 
@@ -86,17 +87,18 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
   removeLayer(layers) {
-    if (!(layers instanceof Array)) layers = [layers];
-    for (let i = 0; i < layers.length; i += 1) {
+    let layersArr = layers;
+    if (!(layersArr instanceof Array)) layersArr = [layersArr];
+    for (let i = 0; i < layersArr.length; i += 1) {
       let k;
       for (k = 0; k < this.layers_.length; k += 1) {
-        if (this.layers_[k] === layers[i]) {
+        if (this.layers_[k] === layersArr[i]) {
           break;
         }
       }
       if (k !== this.layers_.length && this.getMap()) {
-        this.layers_[k].un(['precompose','prerender'], this.precompose_.bind(this));
-        this.layers_[k].un(['postcompose','postrender'], this.postcompose_.bind(this));
+        this.layers_[k].un(['precompose', 'prerender'], this.precompose_.bind(this));
+        this.layers_[k].un(['postcompose', 'postrender'], this.postcompose_.bind(this));
         this.layers_.splice(k, 1);
         this.getMap().renderSync();
       }
@@ -127,8 +129,8 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
     const tr = e.inversePixelTransform;
     if (tr) {
       pt = [
-        (pt[0]*tr[0] - pt[1]*tr[1] + tr[4]),
-        (-pt[0]*tr[2] + pt[1]*tr[3] + tr[5])
+        (pt[0] * tr[0] - pt[1] * tr[1] + tr[4]),
+        (-pt[0] * tr[2] + pt[1] * tr[3] + tr[5]),
       ];
     } else {
       pt[0] *= ratio;
@@ -136,7 +138,7 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
       radius *= ratio;
     }
 
-    ctx.arc (pt[0], pt[1], radius, 0, 2*Math.PI);
+    ctx.arc(pt[0], pt[1], radius, 0, 2 * Math.PI);
     ctx.clip();
   }
 

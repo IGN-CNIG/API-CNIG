@@ -41,12 +41,12 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
    const map = M.map({
      container: 'map'
    });
-  
+
    const mp = new M.plugin.ZoomPanel({
         position: 'TL',
         collapsed: true,
-        collapsible: true,              
-   });   
+        collapsible: true,
+   });
 
    map.addPlugin(mp);
 ```

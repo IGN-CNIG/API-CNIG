@@ -34,7 +34,6 @@ const DRAW_END_EVENT = 'drawend';
  */
 const GEOJSON_FORMAT = new M.impl.format.GeoJSON();
 
-
 /**
  * @module M/impl/control/SelectionDrawControl
  */
@@ -68,7 +67,7 @@ export default class SelectionDrawControl extends M.impl.Control {
   activate(type, btn) {
     btn.classList.add('activated');
     const src = this.map.getProjection().code;
-    const drawLayer = this.map.getLayers().find(l => l.name === '__draw__');
+    const drawLayer = this.map.getLayers().find((l) => l.name === '__draw__');
     if (drawLayer != null) {
       const ol3Layer = drawLayer.getImpl().getOL3Layer();
       ol3Layer.setStyle(POINT_STYLE);
@@ -102,7 +101,7 @@ export default class SelectionDrawControl extends M.impl.Control {
    * @api
    */
   deactivate(listBtn) {
-    listBtn.forEach(btn => btn.classList.remove('activated'));
+    listBtn.forEach((btn) => btn.classList.remove('activated'));
     this.olMap.removeInteraction(this.interaction_);
   }
 }

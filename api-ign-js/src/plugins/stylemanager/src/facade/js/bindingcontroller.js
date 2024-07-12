@@ -9,6 +9,7 @@ import stylechoropleth from 'templates/stylechoropleth';
 import stylecategory from 'templates/stylecategory';
 import styleheatmap from 'templates/styleheatmap';
 import stylechart from 'templates/stylechart';
+import styleflowline from 'templates/styleflowline';
 import { SimpleBinding } from './binding/simplebinding';
 import { ProportionalBinding } from './binding/proportionalbinding';
 import { ClusterBinding } from './binding/clusterbinding';
@@ -17,7 +18,6 @@ import { ChoroplethBinding } from './binding/choroplethbinding';
 import { CategoryBinding } from './binding/categorybinding';
 import { ChartBinding } from './binding/chartbinding';
 import { getValue } from './i18n/language';
-import styleflowline from 'templates/styleflowline';
 import { FlowLineBinding } from './binding/flowlinebinding';
 
 export default class BindingController {
@@ -38,7 +38,7 @@ export default class BindingController {
         styleBinding = style;
       } else if (style instanceof M.style.Composite) {
         const styles = style.getStyles();
-        styleBinding = styles.find(styleEl => styleEl instanceof styleType);
+        styleBinding = styles.find((styleEl) => styleEl instanceof styleType);
       }
     }
     return styleBinding;
@@ -59,7 +59,7 @@ export default class BindingController {
       this.addSelectOnChangeListener();
       this.addEventSubtitle();
     });
-    this.allCompilePromises_ = this.getBindings().map(binding => binding.getCompilePromise());
+    this.allCompilePromises_ = this.getBindings().map((binding) => binding.getCompilePromise());
   }
 
   getAllCompilePromises() {
@@ -67,12 +67,12 @@ export default class BindingController {
   }
 
   renderViewsPromise() {
-    const promises = Object.values(this.bindings_).map(binding => binding.getCompilePromise());
+    const promises = Object.values(this.bindings_).map((binding) => binding.getCompilePromise());
     return Promise.all(promises);
   }
 
   destroyViews() {
-    Object.values(this.bindings_).forEach(binding => binding.destroy());
+    Object.values(this.bindings_).forEach((binding) => binding.destroy());
   }
 
   /**
@@ -86,7 +86,7 @@ export default class BindingController {
    * @function
    */
   setActivePanel(style) {
-    Object.values(this.bindings_).forEach(binding => binding.setActivated(false));
+    Object.values(this.bindings_).forEach((binding) => binding.setActivated(false));
     this.activePanel_ = this.bindings_[style];
     this.activePanel_.setActivated(true);
     if (style === 'stylesimple') {
@@ -100,7 +100,7 @@ export default class BindingController {
    * @function
    */
   getSelectedPanels() {
-    return this.selectedPanels_.map(selected => this.bindings_[selected]);
+    return this.selectedPanels_.map((selected) => this.bindings_[selected]);
   }
 
   /**
@@ -122,7 +122,7 @@ export default class BindingController {
    * @function
    */
   removeSelectedPanel(style) {
-    this.selectedPanels_ = this.selectedPanels_.filter(style2 => style2 !== style);
+    this.selectedPanels_ = this.selectedPanels_.filter((style2) => style2 !== style);
     this.bindings_[style].setSelected(false);
   }
 
@@ -243,7 +243,7 @@ export default class BindingController {
    * @function
    */
   deactivateAll() {
-    this.getBindings().forEach(binding => binding.setActivated(false));
+    this.getBindings().forEach((binding) => binding.setActivated(false));
     this.activePanel_ = null;
   }
 
@@ -251,7 +251,7 @@ export default class BindingController {
    * @function
    */
   unselectAll() {
-    this.getBindings().forEach(binding => binding.setSelected(false));
+    this.getBindings().forEach((binding) => binding.setSelected(false));
     this.selectedPanels_ = [];
   }
 
@@ -259,14 +259,14 @@ export default class BindingController {
    * @function
    */
   enableAll() {
-    this.getKeysBindings().forEach(binding => this.enablePanel(binding));
+    this.getKeysBindings().forEach((binding) => this.enablePanel(binding));
   }
 
   /**
    * @function
    */
   disableAll() {
-    this.getKeysBindings().forEach(binding => this.disablePanel(binding));
+    this.getKeysBindings().forEach((binding) => this.disablePanel(binding));
   }
 
   /**
@@ -294,7 +294,7 @@ export default class BindingController {
     if (styles[0] instanceof M.style.Composite) {
       styles.push(...styles[0].getStyles());
     }
-    const styleNames = styles.map(style => BindingController.parseStyleToName(style));
+    const styleNames = styles.map((style) => BindingController.parseStyleToName(style));
     styleNames.forEach((style) => {
       this.showCompatiblePanel(style);
       this.activeLastSelected(style);
@@ -419,8 +419,8 @@ export default class BindingController {
    * @function
    */
   getMainStyle() {
-    return this.getSelectedPanels().map(binding => binding.generateStyle()).find(style =>
-      style instanceof M.style.Composite);
+    return this.getSelectedPanels().map((binding) => binding.generateStyle())
+      .find((style) => style instanceof M.style.Composite);
   }
 
   /**
@@ -429,8 +429,8 @@ export default class BindingController {
   getIndividualStyles() {
     const mainStyle = this.getMainStyle();
     return this.getSelectedPanels()
-      .filter(style => style != null)
-      .map(binding => binding.generateStyle()).filter(style => !style.equals(mainStyle));
+      .filter((style) => style != null)
+      .map((binding) => binding.generateStyle()).filter((style) => !style.equals(mainStyle));
   }
 
   /**
@@ -438,7 +438,7 @@ export default class BindingController {
    */
   getCompatibles() {
     const compatibles = ['stylesimple', 'stylecluster', 'stylechart', 'styleproportional', 'stylecategory', 'stylechoropleth', 'styleheatmap', 'styleflowline'];
-    return compatibles.filter(style => this.isCompatibleAll(this.selectedPanels_, style));
+    return compatibles.filter((style) => this.isCompatibleAll(this.selectedPanels_, style));
   }
 
   toggleDisplaySubmenu(flag) {

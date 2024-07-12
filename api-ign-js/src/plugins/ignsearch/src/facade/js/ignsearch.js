@@ -202,7 +202,6 @@ export default class IGNSearch extends M.Plugin {
      */
     this.collapsible = options.collapsible || false;
 
-
     /**
      * This variable indicates plugin's position on window
      * @private
@@ -243,6 +242,7 @@ export default class IGNSearch extends M.Plugin {
         Number.parseFloat(geocoderCoords[1]),
       ];
     }
+
     /**
      * Geocoder reverse coordinates
      *

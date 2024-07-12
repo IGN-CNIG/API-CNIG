@@ -77,7 +77,7 @@
   "layers_kml": "(Keyhole Markup Language). KML is an XML-based markup language for representing geographic data in three dimensions.",
   "layer_OGCAPIFeatures": "(OGC API - FEATURES) is an OGC standard that provides the ability to create, modify, and query spatial data on the Web and specifies requirements and recommendations for APIs that want to follow a standard way of sharing feature data.",
   "tooltip_georefimageepsg": "EPSG code of the georeferenced image",
-  "title_map": "Map download",
+  "title_map": "Map printing",
   "title_view": "View georeferenced image download",
   "title_list": "Download georeferenced image from list",
   "available_sources": "Available sources",

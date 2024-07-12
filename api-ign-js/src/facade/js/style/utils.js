@@ -1,9 +1,8 @@
 import chroma from 'chroma-js';
-import StylePoint from '../style/Point';
-import StyleLine from '../style/Line';
-import StylePolygon from '../style/Polygon';
-import StyleGeneric from '../style/Generic';
-
+import StylePoint from './Point';
+import StyleLine from './Line';
+import StylePolygon from './Polygon';
+import StyleGeneric from './Generic';
 
 /**
  * Esta función devuelve el estilo parametrizable.

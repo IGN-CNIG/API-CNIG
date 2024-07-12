@@ -7,9 +7,11 @@
  */
 /* eslint-disable*/
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global.Picker = factory());
+  typeof exports === 'object' && typeof module !== 'undefined'
+    ? module.exports = factory()
+    : typeof define === 'function' && define.amd
+        ? define(factory)
+        : (global.Picker = factory());
 }(this, (function () { 'use strict';
 
   var classCallCheck = function (instance, Constructor) {
@@ -95,7 +97,6 @@
   var Color = function () {
       function Color(r, g, b, a) {
           classCallCheck(this, Color);
-
 
           var that = this;
           function parseString(input) {
@@ -520,7 +521,6 @@
   var Picker = function () {
       function Picker(options) {
           classCallCheck(this, Picker);
-
 
           this.settings = {
 

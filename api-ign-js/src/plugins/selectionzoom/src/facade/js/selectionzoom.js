@@ -71,19 +71,19 @@ export default class SelectionZoom extends M.Plugin {
        * Get layers id's separated by ',' from
        * new parameterization.
        */
-      this.ids = this.layerOpts.map(l => l.id).toString();
+      this.ids = this.layerOpts.map((l) => l.id).toString();
 
       /**
        * Get layers titles separated by ',' from
        * new parameterization.
        */
-      this.titles = this.layerOpts.map(l => l.title).toString();
+      this.titles = this.layerOpts.map((l) => l.title).toString();
 
       /**
        * Get layers previews separated by ',' from
        * new parameterization.
        */
-      this.previews = this.layerOpts.map(l => l.preview).toString();
+      this.previews = this.layerOpts.map((l) => l.preview).toString();
 
       /**
        * Get layers MRE from new parameterization.
@@ -147,7 +147,6 @@ export default class SelectionZoom extends M.Plugin {
 
     this.collapsed = options.collapsed !== undefined ? options.collapsed : true;
     this.collapsible = options.collapsible !== undefined ? options.collapsible : true;
-
 
     /**
      * Metadata from api.json
@@ -227,8 +226,7 @@ export default class SelectionZoom extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*
-    ${this.ids}*${this.titles}*${this.previews}*${this.bboxs}*${this.zooms}`;
+    return `${this.name}=${this.position_}*${this.collapsible}*${this.collapsed}*${this.ids}*${this.titles}*${this.previews}*${this.bboxs}*${this.zooms}`;
   }
 
   /**
@@ -254,7 +252,6 @@ export default class SelectionZoom extends M.Plugin {
     let previews = '';
     let bboxs = '';
     let zooms = '';
-
 
     this.layerOpts.forEach((l) => {
       const backLayerIndex = this.layerOpts.indexOf(l);
@@ -306,6 +303,7 @@ export default class SelectionZoom extends M.Plugin {
     }
     return false;
   }
+
   /**
    * This function gets metadata plugin
    *

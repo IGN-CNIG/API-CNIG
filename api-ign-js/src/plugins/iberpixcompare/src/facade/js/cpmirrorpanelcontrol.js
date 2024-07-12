@@ -50,9 +50,15 @@ export default class CompareMirrorpanel extends M.Control {
     /**
      * Defining mirror maps variables
      */
-    this.mapL = { A: null, B: null, C: null, D: null }
-    this.lyrCursor = { A: null, B: null, C: null, D: null }
-    this.featureLyrCursor = { A: null, B: null, C: null, D: null }
+    this.mapL = {
+      A: null, B: null, C: null, D: null,
+    };
+    this.lyrCursor = {
+      A: null, B: null, C: null, D: null,
+    };
+    this.featureLyrCursor = {
+      A: null, B: null, C: null, D: null,
+    };
     this.oldClass = '';
 
     /**
@@ -115,7 +121,7 @@ export default class CompareMirrorpanel extends M.Control {
       };
     }
 
-    this.mapL['A'] = map;
+    this.mapL.A = map;
     if (this.showCursors) {
       this.addLayerCursor('A');
     }
@@ -144,17 +150,16 @@ export default class CompareMirrorpanel extends M.Control {
       this.template = M.template.compileSync(template, templateOptions);
       this.accessibilityTab(this.template);
 
-
       // Button's click events
       this.template.querySelectorAll('button[id^="set-mirror-"]').forEach((button) => {
         const modeViz = parseInt(button.getAttribute('id').replace('set-mirror-', ''), 10);
-        button.addEventListener('click', evt => {
+        button.addEventListener('click', (evt) => {
           this.manageVisionPanelByCSSGrid(modeViz);
-        })
+        });
 
-        button.addEventListener('keydown', evt => {
-          if(evt.keyCode === 13) this.manageVisionPanelByCSSGrid(modeViz);
-        })
+        button.addEventListener('keydown', (evt) => {
+          if (evt.keyCode === 13) this.manageVisionPanelByCSSGrid(modeViz);
+        });
       });
 
       success(this.template);
@@ -222,55 +227,55 @@ export default class CompareMirrorpanel extends M.Control {
    *
    */
   manageVisionPanelByCSSGrid(modeViz) {
-    let oldModeViz = this.modeViz;
-    let map0 = document.getElementById('mapjs') || document.getElementById('map');
+    const oldModeViz = this.modeViz;
+    const map0 = document.getElementById('mapjs') || document.getElementById('map');
     map0.style.display = 'none';
     document.getElementById('mapjsB').style.display = 'none';
     document.getElementById('mapjsC').style.display = 'none';
     document.getElementById('mapjsD').style.display = 'none';
-    this.template.querySelector('#set-mirror-' + oldModeViz).classList.remove('buttom-pressed');
-    for (let i = 0; i < 10; i++) {
-      document.getElementById('lienzo').classList.remove('modeViz' + i);
+    this.template.querySelector(`#set-mirror-${oldModeViz}`).classList.remove('buttom-pressed');
+    for (let i = 0; i < 10; i += 1) {
+      document.getElementById('lienzo').classList.remove(`modeViz${i}`);
     }
 
-    document.getElementById('lienzo').classList.add('modeViz' + modeViz);
-    //Create map objects by modeviz
+    document.getElementById('lienzo').classList.add(`modeViz${modeViz}`);
+    // Create map objects by modeviz
     if ([1, 2].includes(modeViz)) {
-      if (this.mapL['B'] === null) {
-        this.createMapObjects('B');//Create MapB
+      if (this.mapL.B === null) {
+        this.createMapObjects('B');// Create MapB
       }
     }
 
     if ([3, 7, 8, 9].includes(modeViz)) {
-      if (this.mapL['B'] === null) {
-        this.createMapObjects('B');//Create MapB
+      if (this.mapL.B === null) {
+        this.createMapObjects('B');// Create MapB
       }
 
-      if (this.mapL['C'] === null) {
-        this.createMapObjects('C');//Create MapC
+      if (this.mapL.C === null) {
+        this.createMapObjects('C');// Create MapC
       }
     }
 
     if ([4, 5, 6].includes(modeViz)) {
-      if (this.mapL['B'] === null) {
-        this.createMapObjects('B');//Create MapB
+      if (this.mapL.B === null) {
+        this.createMapObjects('B');// Create MapB
       }
 
-      if (this.mapL['C'] === null) {
-        this.createMapObjects('C');//Create MapC
+      if (this.mapL.C === null) {
+        this.createMapObjects('C');// Create MapC
       }
 
-      if (this.mapL['D'] === null) {
-        this.createMapObjects('D');//Create MapD
+      if (this.mapL.D === null) {
+        this.createMapObjects('D');// Create MapD
       }
     }
 
     this.modeViz = modeViz;
-    this.template.querySelector('#set-mirror-' + modeViz).classList.add('buttom-pressed');
+    this.template.querySelector(`#set-mirror-${modeViz}`).classList.add('buttom-pressed');
     this.map_.refresh();
-    if (this.mapL['B'] !== null) { this.mapL['B'].refresh(); }
-    if (this.mapL['C'] !== null) { this.mapL['C'].refresh(); }
-    if (this.mapL['D'] !== null) { this.mapL['D'].refresh(); }
+    if (this.mapL.B !== null) { this.mapL.B.refresh(); }
+    if (this.mapL.C !== null) { this.mapL.C.refresh(); }
+    if (this.mapL.D !== null) { this.mapL.D.refresh(); }
     if (modeViz !== 0) {
       document.querySelector('#m-cp-mirrorpanel > button').click();
       this.disablePrintButtons();
@@ -311,12 +316,12 @@ export default class CompareMirrorpanel extends M.Control {
    * Create mirror map object synchro with the main map
    */
   createMapObjects(mapLyr) {
-    let plugin4map = null;
-    let mpBILmap = null;
+    const plugin4map = null;
+    const mpBILmap = null;
     this.mapL[mapLyr] = M.map({
-      container: 'mapjs' + mapLyr,
+      container: `mapjs${mapLyr}`,
       center: this.map_.getCenter(),
-      projection: this.map_.getProjection().code + '*' + this.map_.getProjection().units,
+      projection: `${this.map_.getProjection().code}*${this.map_.getProjection().units}`,
       zoom: this.map_.getZoom(),
     });
 
@@ -343,10 +348,10 @@ export default class CompareMirrorpanel extends M.Control {
   addLayerCursor(mapLyr) {
     // Cursor Layer
     this.lyrCursor[mapLyr] = new M.layer.Vector({
-      name: 'Coordenadas centro ' + mapLyr,
+      name: `Coordenadas centro ${mapLyr}`,
     }, { displayInLayerSwitcher: false });
 
-    this.featureLyrCursor[mapLyr] = new M.Feature('Center' + mapLyr, {
+    this.featureLyrCursor[mapLyr] = new M.Feature(`Center${mapLyr}`, {
       type: 'Feature',
       properties: {},
       geometry: {
@@ -361,8 +366,8 @@ export default class CompareMirrorpanel extends M.Control {
     this.mapL[mapLyr].addLayers(this.lyrCursor[mapLyr]);
     this.mapL[mapLyr].getMapImpl().on('pointermove', (event) => {
       this.lyrCursor[mapLyr].setVisible(false);
-      Object.keys(this.featureLyrCursor).forEach(k => {
-        if (k != mapLyr) {
+      Object.keys(this.featureLyrCursor).forEach((k) => {
+        if (k !== mapLyr) {
           if (this.featureLyrCursor[k] !== null) {
             this.lyrCursor[k].setVisible(true);
             this.featureLyrCursor[k].setGeometry({
@@ -379,7 +384,7 @@ export default class CompareMirrorpanel extends M.Control {
     if (M.plugin.BackImgLayer !== undefined && this.backImgLayersConfig.position !== undefined) {
       if (mapLyr === 'B') {
         this.backImgLayersConfig.layerId = 1;
-      } else if (mapLyr === 'C'){
+      } else if (mapLyr === 'C') {
         this.backImgLayersConfig.layerId = 2;
       } else if (mapLyr === 'D') {
         this.backImgLayersConfig.layerId = 3;
@@ -407,9 +412,9 @@ export default class CompareMirrorpanel extends M.Control {
    * @api stable
    */
   removeMaps() {
-    this.mapL['B'] = null;
-    this.mapL['C'] = null;
-    this.mapL['D'] = null;
+    this.mapL.B = null;
+    this.mapL.C = null;
+    this.mapL.D = null;
   }
 
   destroyMapsContainer() {
@@ -442,6 +447,6 @@ export default class CompareMirrorpanel extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 }

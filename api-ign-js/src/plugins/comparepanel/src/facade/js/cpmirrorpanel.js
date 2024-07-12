@@ -5,7 +5,7 @@
 import 'assets/css/cpmirrorpanel';
 import MirrorpanelControl from './cpmirrorpanelcontrol';
 import api from '../../api';
-import { getValue } from './i18n/language';   //e2m: Multilanguage support
+import { getValue } from './i18n/language'; // e2m: Multilanguage support
 
 export default class Mirrorpanel extends M.Plugin {
   /**
@@ -26,7 +26,7 @@ export default class Mirrorpanel extends M.Plugin {
      * @private
      * @type {String}
      */
-    this.name_ = "mirrorpanel";
+    this.name_ = 'mirrorpanel';
 
     /**
      * Facade of the map
@@ -47,7 +47,7 @@ export default class Mirrorpanel extends M.Plugin {
      * @public
      * @type {string}
      */
-    this.className = "m-plugin-mirrorpanel";
+    this.className = 'm-plugin-mirrorpanel';
 
     /**
      * Position of the Plugin
@@ -124,7 +124,7 @@ export default class Mirrorpanel extends M.Plugin {
       if (Array.isArray(options.mirrorLayers)) {
         this.mirrorLayers = options.mirrorLayers;
       } else {
-        this.mirrorLayers = options.mirrorLayers.split(",");
+        this.mirrorLayers = options.mirrorLayers.split(',');
       }
     }
 
@@ -148,7 +148,7 @@ export default class Mirrorpanel extends M.Plugin {
       if (Array.isArray(options.defaultBaseLyrs)) {
         this.defaultBaseLyrs = options.defaultBaseLyrs;
       } else {
-        this.defaultBaseLyrs = options.defaultBaseLyrs.split(",");
+        this.defaultBaseLyrs = options.defaultBaseLyrs.split(',');
       }
     }
 
@@ -165,7 +165,7 @@ export default class Mirrorpanel extends M.Plugin {
      *@private
      *@type { string }
      */
-    this.tooltip_ = options.tooltip || getValue("tooltip");
+    this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
      * Metadata from api.json
@@ -184,7 +184,6 @@ export default class Mirrorpanel extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-
     const pluginOnLeft = !!(['TL', 'BL'].includes(this.position));
     const values = {
       pluginOnLeft,
@@ -198,6 +197,7 @@ export default class Mirrorpanel extends M.Plugin {
       defaultBaseLyrs: this.defaultBaseLyrs,
       lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
       backImgLayersConfig: this.backImgLayersConfig,
+      // eslint-disable-next-line no-underscore-dangle
       target: map.getMapImpl().values_.target,
     };
 
@@ -225,17 +225,18 @@ export default class Mirrorpanel extends M.Plugin {
         return;
       }
 
+      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < 10; i++) {
-        if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'F' + (i + 1)) {  // case sensitive
+        if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === `F${i + 1}`) { // case sensitive
           this.control_.manageVisionPanelByCSSGrid(i);
         }
       }
 
       const keyStr = ['Control', 'Shift', 'Alt', 'Meta'].includes(zEvent.key) ? '' : zEvent.key;
-      const combinedKeys = (zEvent.ctrlKey ? 'Control ' : '') +
-        (zEvent.shiftKey ? 'Shift ' : '') +
-        (zEvent.altKey ? 'Alt ' : '') +
-        (zEvent.metaKey ? 'Meta ' : '') + keyStr;
+      const combinedKeys = (zEvent.ctrlKey ? 'Control ' : '')
+        + (zEvent.shiftKey ? 'Shift ' : '')
+        + (zEvent.altKey ? 'Alt ' : '')
+        + (zEvent.metaKey ? 'Meta ' : '') + keyStr;
       if (combinedKeys === 'Escape') {
         this.control_.manageVisionPanelByCSSGrid(0);
       }
@@ -255,19 +256,21 @@ export default class Mirrorpanel extends M.Plugin {
     this.control_.destroyMapsContainer();
     this.map_.removeControls([this.control_]);
     [
-      this.control_, 
-      this.panel_, 
-      this.map_, 
-      this.collapsible, 
-      this.collapsed, 
-      this.modeViz, 
-      this.enabledPlugins, 
-      this.enabledKeyFunctions, 
-      this.showCursors, 
-      this.mirrorLayers, 
-      this.defaultBaseLyrs, 
-      this.backImgLayersParams, 
-      this.interface] =  [null, null, null, null, null, null, null, null, null, null,null, null, null];
+      this.control_,
+      this.panel_,
+      this.map_,
+      this.collapsible,
+      this.collapsed,
+      this.modeViz,
+      this.enabledPlugins,
+      this.enabledKeyFunctions,
+      this.showCursors,
+      this.mirrorLayers,
+      this.defaultBaseLyrs,
+      this.backImgLayersParams,
+      this.interface] = [
+      null, null, null, null, null, null, null, null, null, null, null, null, null,
+    ];
   }
 
   /**
@@ -281,8 +284,7 @@ export default class Mirrorpanel extends M.Plugin {
     return this.name_;
   }
 
-
-  manageLyrAvailable(lyrList){
+  manageLyrAvailable(lyrList) {
     this.control_.manageLyrAvailable(lyrList);
   }
 

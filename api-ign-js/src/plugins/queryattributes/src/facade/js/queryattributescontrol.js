@@ -168,8 +168,8 @@ export default class QueryAttributesControl extends M.Control {
         },
       });
       const mbtilesvector = this.map.getMBTilesVector();
-      const hasmbtilesvector = mbtilesvector.find(layer =>
-        this.configuration.layer === layer.name);
+      const hasmbtilesvector = mbtilesvector
+        .find((layer) => this.configuration.layer === layer.name);
       if (!hasmbtilesvector && this.hasLayer_(this.configuration.layer)[0]) {
         html.querySelector('#m-queryattributes-options-container').appendChild(this.initialView);
 
@@ -287,7 +287,6 @@ export default class QueryAttributesControl extends M.Control {
         }
         // e2m: ocultamos nuestro spinner de búsqueda.
         this.html.querySelector('#m-queryattributes-searching-results').style.display = 'none';
-
 
         if (!M.utils.isNullOrEmpty(features)) {
           Object.keys(features[0].getAttributes()).forEach((attr) => {
@@ -517,7 +516,6 @@ export default class QueryAttributesControl extends M.Control {
       const buttons = '#m-queryattributes-options-buttons>button';
       document.querySelector(`${buttons}#cleanEmphasis-btn`).style.display = 'block';
 
-
       const html = M.template.compileSync(information, {
         vars: {
           fields,
@@ -619,6 +617,7 @@ export default class QueryAttributesControl extends M.Control {
             block: 'center',
           });
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.error(error);
         }
       }
@@ -660,7 +659,6 @@ export default class QueryAttributesControl extends M.Control {
       });
     }
   }
-
 
   /**
    * e2m:
@@ -803,7 +801,7 @@ export default class QueryAttributesControl extends M.Control {
    */
   isNotAdded(layerName, htmlSelect) {
     const aChildren = [...htmlSelect.children];
-    return !aChildren.some(o => o.innerHTML === layerName);
+    return !aChildren.some((o) => o.innerHTML === layerName);
   }
 
   setBboxFilter() {
@@ -839,7 +837,6 @@ export default class QueryAttributesControl extends M.Control {
     });
   }
 
-
   // e2m: búsqueda por filtro de texto.
   searchFilter() {
     this.html.querySelector('#m-queryattributes-searching-results').style.display = 'block';
@@ -866,7 +863,7 @@ export default class QueryAttributesControl extends M.Control {
      */
     const searchingFields = this.configuration.columns.filter((item) => {
       return item.searchable === true;
-    }).map(field => field.name);
+    }).map((field) => field.name);
 
     const filter = new M.filter.Function((feature) => {
       let res = false;
@@ -882,7 +879,6 @@ export default class QueryAttributesControl extends M.Control {
       });
       return res;
     });
-
 
     this.layer.setFilter(filter);
     this.filtered = true;
@@ -1011,6 +1007,60 @@ export default class QueryAttributesControl extends M.Control {
   }
 
   /**
+    * Este método transforma coordenadas a EPSG:4326.
+    *
+    * @function
+    * @param {String} type Tipo de geometría.
+    * @param {Object} codeProjection Código de proyección actual.
+    * @param {Number|Array} coordinates Coordenadas a transformar.
+    * @return {Array} Coordenadas transformadas.
+    * @public
+    * @api
+    */
+  geometryTypeCoordTransform(type, codeProjection, coordinates) {
+    const newCoordinates = [];
+    switch (type) {
+      case 'Point':
+        return this.getImpl().getTransformedCoordinates(codeProjection, coordinates);
+      case 'MultiPoint':
+      case 'LineString':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const newDot = this.getImpl().getTransformedCoordinates(codeProjection, coordinates[i]);
+          newCoordinates.push(newDot);
+        }
+        return newCoordinates;
+      case 'MultiLineString':
+      case 'Polygon':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const group = [];
+          for (let j = 0; j < coordinates[i].length; j += 1) {
+            const dot = this.getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j]);
+            group.push(dot);
+          }
+          newCoordinates.push(group);
+        }
+        return newCoordinates;
+      case 'MultiPolygon':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const group = [];
+          for (let j = 0; j < coordinates[i].length; j += 1) {
+            const newPolygon = [];
+            const aux = coordinates[i][j];
+            for (let k = 0; k < aux.length; k += 1) {
+              const dot = this.getImpl().getTransformedCoordinates(codeProjection, aux[k]);
+              newPolygon.push(dot);
+            }
+            group.push(newPolygon);
+          }
+          newCoordinates.push(group);
+        }
+        return newCoordinates;
+      default:
+        return newCoordinates;
+    }
+  }
+
+  /**
    * Converts features coordinates on geojson format to 4326.
    * @public
    * @function
@@ -1018,68 +1068,23 @@ export default class QueryAttributesControl extends M.Control {
   geojsonTo4326(featuresAsJSON, codeProjection) {
     const jsonResult = [];
     featuresAsJSON.forEach((featureAsJSON) => {
-      const coordinates = featureAsJSON.geometry.coordinates;
-      let newCoordinates = [];
-      switch (featureAsJSON.geometry.type) {
-        case 'Point':
-          newCoordinates = this.getImpl().getTransformedCoordinates(codeProjection, coordinates);
-          break;
-        case 'MultiPoint':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newDot = this
-              .getImpl().getTransformedCoordinates(codeProjection, coordinates[i]);
-            newCoordinates.push(newDot);
-          }
-          break;
-        case 'LineString':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newDot = this.getImpl().getTransformedCoordinates(
-              codeProjection,
-              coordinates[i],
-            );
-            newCoordinates.push(newDot);
-          }
-          break;
-        case 'MultiLineString':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newLine = [];
-            for (let j = 0; j < coordinates[i].length; j += 1) {
-              const newDot = this
-                .getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j]);
-              newLine.push(newDot);
-            }
-            newCoordinates.push(newLine);
-          }
-          break;
-        case 'Polygon':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newPoly = [];
-            for (let j = 0; j < coordinates[i].length; j += 1) {
-              const newDot = this
-                .getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j]);
-              newPoly.push(newDot);
-            }
-            newCoordinates.push(newPoly);
-          }
-          break;
-        case 'MultiPolygon':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newPolygon = [];
-            for (let j = 0; j < coordinates[i].length; j += 1) {
-              const newPolygonLine = [];
-              for (let k = 0; k < coordinates[i][j].length; k += 1) {
-                const newDot = this
-                  .getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j][k]);
-                newPolygonLine.push(newDot);
-              }
-              newPolygon.push(newPolygonLine);
-            }
-            newCoordinates.push(newPolygon);
-          }
-          break;
-        default:
+      let jsonFeature;
+      if (featureAsJSON.geometry.type !== 'GeometryCollection') {
+        const newCoordinates = this.geometryTypeCoordTransform(
+          featureAsJSON.geometry.type,
+          codeProjection,
+          featureAsJSON.geometry.coordinates,
+        );
+        jsonFeature = this.createGeoJSONFeature(featureAsJSON, newCoordinates);
+      } else {
+        const collection = featureAsJSON.geometry.geometries.map((g) => {
+          return {
+            type: g.type,
+            coordinates: this.geometryTypeCoordTransform(g.type, codeProjection, g.coordinates),
+          };
+        });
+        jsonFeature = { ...featureAsJSON, geometry: { type: 'GeometryCollection', geometries: collection } };
       }
-      const jsonFeature = this.createGeoJSONFeature(featureAsJSON, newCoordinates);
       jsonResult.push(jsonFeature);
     });
     return jsonResult;
@@ -1094,7 +1099,7 @@ export default class QueryAttributesControl extends M.Control {
    */
   toGeoJSON(features) {
     const code = this.map.getProjection().code;
-    const featuresAsJSON = features.map(feature => feature.getGeoJSON());
+    const featuresAsJSON = features.map((feature) => feature.getGeoJSON());
     return { type: 'FeatureCollection', features: this.geojsonTo4326(featuresAsJSON, code) };
   }
 
@@ -1125,14 +1130,14 @@ export default class QueryAttributesControl extends M.Control {
         case 'Poylgon':
         case 'MultiPolygon':
           feature.geometry.coordinates.forEach((coord) => {
-            if (feature.geometry.type === 'Polygon' &&
-              Number.isNaN(coord[0][coord[0].length - 1])) {
+            if (feature.geometry.type === 'Polygon'
+              && Number.isNaN(coord[0][coord[0].length - 1])) {
               coord.map((c) => {
                 c.pop();
                 return c;
               });
-            } else if (feature.geometry.type === 'MultiPolygon' &&
-              Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
+            } else if (feature.geometry.type === 'MultiPolygon'
+              && Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
               coord.forEach((coordsArray) => {
                 coordsArray.map((c) => {
                   c.pop();
@@ -1254,8 +1259,9 @@ export default class QueryAttributesControl extends M.Control {
    */
   isLayerLoaded(layer) {
     let isLoaded = false;
-    const kmlLayerLoaded = this.kmlLayers.find(l => l.layer === layer) ?
-      this.kmlLayers.find(l => l.layer === layer).loaded : false;
+    const kmlLayerLoaded = this.kmlLayers.find((l) => l.layer === layer)
+      ? this.kmlLayers.find((l) => l.layer === layer).loaded
+      : false;
     if (layer.type && layer.type !== 'KML' && layer.getImpl().isLoaded()) {
       isLoaded = true;
     } else if (kmlLayerLoaded) {
@@ -1274,8 +1280,8 @@ export default class QueryAttributesControl extends M.Control {
    */
   hasLayer_(layerSearch) {
     const layersFind = [];
-    if (M.utils.isNullOrEmpty(layerSearch) || (!M.utils.isArray(layerSearch) &&
-        !M.utils.isString(layerSearch) && !(layerSearch instanceof M.Layer))) {
+    if (M.utils.isNullOrEmpty(layerSearch) || (!M.utils.isArray(layerSearch)
+      && !M.utils.isString(layerSearch) && !(layerSearch instanceof M.Layer))) {
       return layersFind;
     }
 

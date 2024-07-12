@@ -13,7 +13,7 @@ const map = M.map({
   },
   projection: 'EPSG:3857*m',
   zoom: 6,
-  /* / Capas precargadas
+  /*/ Capas precargadas
   layers: [
     'WMTS*http://www.ideandalucia.es/geowebcache/service/wmts?*toporaster*SIG-C:25830*WMTS*false',
     'WFS*CampamentosCampamentosCampamentosCampamentos*http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows*sepim:campamentos*POINT***eyJwYXJhbWV0ZXJzIjpbeyJpY29uIjp7ImZvcm0iOiJDSVJDTEUiLCJjbGFzcyI6ImctY2FydG9ncmFmaWEtYmFuZGVyYSIsImZvbnRzaXplIjowLjUsInJhZGl1cyI6MTUsImZpbGwiOiJ3aGl0ZSJ9LCJyYWRpdXMiOjV9XSwiZGVzZXJpYWxpemVkTWV0aG9kIjoiKChzZXJpYWxpemVkUGFyYW1ldGVycykgPT4gTS5zdHlsZS5TaW1wbGUuZGVzZXJpYWxpemUoc2VyaWFsaXplZFBhcmFtZXRlcnMsICdNLnN0eWxlLlBvaW50JykpIn0',
@@ -21,7 +21,7 @@ const map = M.map({
 });
 window.map = map;
 
-/* / Añadimos el BackImgLayer
+/*/ Añadimos el BackImgLayer
 const mpBIL = new M.plugin.BackImgLayer({
   position: 'TR',
   collapsible: true,
@@ -136,7 +136,7 @@ map.addPlugin(mpBIL); // */
 // addWMSLayer('TN.RoadTransportNetwork.RoadLink', 'Vías de comunicación por carretera', 'https://www.ign.es/wms-inspire/ign-base?', '1.3.0', true, { visibility: false, displayInLayerSwitcher: true, queryable: false, zIndex: 506 });
 // addWMSLayer('TN.RailTransportNetwork.RailwayLink', 'Vías de comunicación ferroviarias', 'https://www.ign.es/wms-inspire/ign-base?', '1.3.0', true, { visibility: false, displayInLayerSwitcher: true, queryable: fals
 
-/* / PRUEBA con capas WMS
+/*/ PRUEBA con capas WMS
 const objLyrREDNAP = new M.layer.WMS({ url: 'https://www.ign.es/wms-inspire/redes-geodesicas?',
   name: 'RED_NAP', legend: 'Red de Nivelación de Alta Precisión',
   tiled: false, visibility: false,
@@ -220,7 +220,7 @@ const mp = new Incicarto({
 });
 window.mp = mp;
 
-/* / PRUEBA con múltiples plugins
+/*/ PRUEBA con múltiples plugins
 const mp2 = new M.plugin.Infocoordinates({ position: 'TR', decimalGEOcoord: 4, decimalUTMcoord: 4 });
 const mp3 = new M.plugin.Information({ position: 'TR', buffer: 100 });
 const mp4 = new M.plugin.MeasureBar({ position: 'TR' });
@@ -244,14 +244,3 @@ map.addPlugin(mp4); window.mp4 = mp4; // */
 map.addPlugin(mp);
 // map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
 
-// Lista de errores
-
-// 1 - ERROR Hay HTMLs configurados para el plugin vectors que aquí no es valido:
-// Los "document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = '';" deberían ser "document.querySelector('.m-incicarto .m-incicarto-loading-container').innerHTML = '';"
-// Lo mismo ocurre con "const content = '<p class="m-vectors-loading"><span class="icon-spinner" /></p>';" que tiene que ser "const content = '<p class="m-incicarto-loading"><span class="icon-spinner" /></p>';"
-
-// 2 - ERROR La función "getAPIRest" parece dejar al final un "}" que podría ser que sobra, porque tampoco esta en README.
-
-// 3 - ERROR En JSP, cuando se cambia por ejemplo la posición del plugin y se vuelve a intentar añadir un feature, el "emphasizeSelectedFeature" que rodea el feature seleccionado no aparece ahora. Si se borra el layer "selectionLayer" antes de modificar un parámetro, entonces funciona bien, investigando esto se ha llegado a ver que se puede solucionar poniendo "this.selectionLayer = map.getLayers().find(l => l._type == "Vector" && l.impl_.name == "selectLayer") || this.selectionLayer;" antes de "this.map.addLayers(this.selectionLayer);" para no usar el nuevo "selectionLayer", si no que reutilizar el que estaba antes. Desconozco si causa problemas este cambio más adelante.
-
-// 4 - ERROR No parece que haya traducción al ingles de "incicarto/src/templates/incicarto.html" de los textos de métodos. Hay unas 6 lineas adicionales de "incicarto/src/templates/modalsimple.html" que podrían requerir traducciones.

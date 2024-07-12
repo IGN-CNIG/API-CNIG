@@ -54,8 +54,9 @@ export const show = (message, title, severity, order = 300, configuration = {}) 
     order,
   };
 
-  if (configuration.intelligence === true ||
-    (!isUndefined(configuration.intelligence) && (configuration.intelligence.activate === true))) {
+  if (configuration.intelligence === true
+    || (!isUndefined(configuration.intelligence)
+      && (configuration.intelligence.activate === true))) {
     vars.message = transfomContent(message, configuration.intelligence.sizes);
   }
 
@@ -70,7 +71,7 @@ export const show = (message, title, severity, order = 300, configuration = {}) 
 
   // adds listener to close the dialog
   const okButton = html.querySelector('div.m-button > button');
-  okButton.addEventListener('click', evt => removeElement(html));
+  okButton.addEventListener('click', (evt) => removeElement(html));
   mapeaContainer.appendChild(html);
 };
 

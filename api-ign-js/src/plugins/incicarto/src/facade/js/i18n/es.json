@@ -20,7 +20,7 @@
     "wfs_zoom": "Aumente el nivel de zoom * niveles si quiere añadir este servicio WFS,",
     "error_email": "No se ha podido realizar el envío del email.",
     "error_email_exception": "El mensaje no ha podido ser enviado, posiblemente por el tamaño del archivo adjunto.",
-    "error_email_size": "El tamaño del fichero adjunto es demasiado grande. El tamaño máximo de ficheros permitido para correos electrónicos es 25Mb."
+    "error_email_size": "Se ha excedido el límite de peso para el correo. Disminuya el tamaño del archivo adjunto o póngase en contacto con consulta@cnig.es en el caso de querer enviar el archivo."
   },
   "textHelp": {
     "help1": "La extensión InciCarto permite mandar un objeto geográfico digitalizado o cargado al visualizador en un correo electrónico.",

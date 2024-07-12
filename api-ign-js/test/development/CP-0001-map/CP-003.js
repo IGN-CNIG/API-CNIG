@@ -11,7 +11,8 @@ import { vector_001 } from '../layers/vector/vector';
 import { wfs_001 } from '../layers/wfs/wfs';
 import { geojson_001 } from '../layers/geojson/geojson';
 import { kml_001 } from '../layers/kml/kml';
-import { mvt_001 } from '../layers/mvt/mvt';
+import { mvt_001 } from '../layers/mvt/mvt'; // Mode 'feature'
+// import { mvt_003 } from '../layers/mvt/mvt'; // Mode 'render'
 import { ogcAPIFeatures_001 } from '../layers/ogcApiFeatures/ogcApiFeatures';
 
 
@@ -33,7 +34,9 @@ const layers = [
     vector_001,
     wfs_001,
     geojson_001,
-    kml_001, mvt_001,
+    kml_001,
+    mvt_001,
+    // mvt_003,
     ogcAPIFeatures_001,
 ]
 

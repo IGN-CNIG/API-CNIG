@@ -9,12 +9,10 @@ const map = M.map({
   zoom: 6,
 });
 
-
 const kml = new M.layer.KML({
   url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
   name: 'capaKML',
 });
-
 
 map.addLayers([kml]);
 

@@ -142,7 +142,6 @@ export default class IGNSearchLocator extends M.Plugin {
      */
     this.catastroWMS = options.catastroWMS || 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_RCCOOR';
 
-
     /**
      * This variable sets the maximun results returned by a service
      * (if both services are searched the maximum results will be twice this number)
@@ -283,6 +282,7 @@ export default class IGNSearchLocator extends M.Plugin {
         Number.parseFloat(geocoderCoords[1]),
       ];
     }
+
     /**
      * Geocoder reverse coordinates
      *
@@ -322,7 +322,6 @@ export default class IGNSearchLocator extends M.Plugin {
      * @type {string}
      */
     this.helpUrl = options.helpUrl;
-
 
     /**
      * @private
@@ -365,7 +364,6 @@ export default class IGNSearchLocator extends M.Plugin {
     }
     return M.language.getTranslation(lang).ignsearchlocator;
   }
-
 
   /**
    * This function adds this plugin into the map

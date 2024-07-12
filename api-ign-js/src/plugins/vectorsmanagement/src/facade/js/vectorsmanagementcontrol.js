@@ -45,8 +45,8 @@ export default class VectorsManagementControl extends M.Control {
     this.edition_ = edition;
     this.help_ = help;
     this.style_ = style;
-    this.layers_ = map.getLayers().filter(l => (l instanceof M.layer.Vector ||
-      l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
+    this.layers_ = map.getLayers().filter((l) => (l instanceof M.layer.Vector
+      || l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
       return { value: l.name, text: l.legend || l.name, zIndex: l.getZIndex() };
     }).sort((a, b) => b.zIndex - a.zIndex);
     this.selectedLayer = null;
@@ -133,7 +133,7 @@ export default class VectorsManagementControl extends M.Control {
    */
   selectLayerEvent() {
     // eslint-disable-next-line no-underscore-dangle
-    if (this.selectionControl.selectedFeatures_.length > 0) {
+    if (this.selectionControl && this.selectionControl.selectedFeatures_.length > 0) {
       document.querySelector('#m-vectorsmanagement-selection').classList.remove('activated');
       this.selectionControl.deactivate();
     }
@@ -141,7 +141,7 @@ export default class VectorsManagementControl extends M.Control {
     this.html.querySelector('#m-vectorsmanagement-previews').classList.remove('closed');
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
-    this.selectedLayer = this.map.getLayers().filter(l => l.name === selectedLayerName)[0];
+    this.selectedLayer = this.map.getLayers().filter((l) => l.name === selectedLayerName)[0];
 
     if (this.selectedLayer.type === 'MVT' || this.selectedLayer.type === 'MBTilesVector') {
       M.toast.warning(getValue('exception.typeLayer'), null, 6000);
@@ -244,9 +244,10 @@ export default class VectorsManagementControl extends M.Control {
       if (!clickActivate) {
         this.creationControl.active(html);
         event.target.classList.add('activated');
-
-        this.selectionControl.deactivate();
-        document.querySelector('#m-vectorsmanagement-selection').classList.remove('activated');
+        if (this.selectionControl) {
+          this.selectionControl.deactivate();
+          document.querySelector('#m-vectorsmanagement-selection').classList.remove('activated');
+        }
       }
     });
   }
@@ -287,7 +288,7 @@ export default class VectorsManagementControl extends M.Control {
     html.querySelector('#m-vectorsmanagement-edition').addEventListener('click', (event) => {
       const $selection = document.querySelector('#m-vectorsmanagement-selection');
 
-      if ($selection.classList.contains('activated')) {
+      if (this.selectionControl && $selection.classList.contains('activated')) {
         this.selectionControl.deactivate();
         $selection.classList.remove('activated');
       }
@@ -296,8 +297,10 @@ export default class VectorsManagementControl extends M.Control {
 
       if (!clickActivate) {
         this.editionControl.active(html);
-        this.selectionControl.active(html);
-        $selection.classList.add('activated');
+        if (this.selectionControl) {
+          this.selectionControl.active(html);
+          $selection.classList.add('activated');
+        }
         event.target.classList.add('activated');
       }
     });
@@ -312,7 +315,7 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   addHelpControl(html) {
-    this.helpControl = new HelpControl(this.map_);
+    this.helpControl = new HelpControl(this.map_, this);
     html.querySelector('#m-vectorsmanagement-help').addEventListener('click', (event) => {
       const clickActivate = this.deactive(html, 'help');
       if (!clickActivate) {
@@ -515,13 +518,13 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   refreshLayers() {
-    this.layers_ = this.map_.getLayers().filter(l => (l instanceof M.layer.Vector ||
-      l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
+    this.layers_ = this.map_.getLayers().filter((l) => (l instanceof M.layer.Vector
+      || l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
       return { value: l.name, text: l.legend || l.name, zIndex: l.getZIndex() };
     });
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
-    const layerExists = this.layers_.filter(l => l.value === selectedLayerName).length > 0;
+    const layerExists = this.layers_.filter((l) => l.value === selectedLayerName).length > 0;
 
     const length = selector.children.length;
     for (let i = 0; i < length; i += 1) {
@@ -569,7 +572,11 @@ export default class VectorsManagementControl extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
+  }
+
+  destroy() {
+    this.analysisControl.destroy();
   }
 
   /**

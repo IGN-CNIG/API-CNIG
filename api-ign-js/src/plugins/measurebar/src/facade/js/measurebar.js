@@ -39,7 +39,6 @@ export default class MeasureBar extends M.Plugin {
      */
     this.controls_ = [];
 
-
     /**
      * Position of plugin over map.
      *

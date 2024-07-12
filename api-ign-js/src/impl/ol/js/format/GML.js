@@ -81,18 +81,21 @@ class GML {
     const formatGmlVersion = gmlVersion.replaceAll('"', '');
     if (formatGmlVersion === 'text/xml; subtype=gml/3.1.1') {
       return new OLFormatGML(); // GML y GML3
-    } else if (formatGmlVersion === 'text/xml; subtype=gml/2.1.2') {
+    }
+    if (formatGmlVersion === 'text/xml; subtype=gml/2.1.2') {
       return new OLFormatGML2(); // GML2
-    } else if (formatGmlVersion === 'text/xml; subtype=gml/3.2.1') {
+    }
+    if (formatGmlVersion === 'text/xml; subtype=gml/3.2.1') {
       return new OLFormatGML32(); // GML32
-    } else if (formatGmlVersion === 'gml3') {
+    }
+    if (formatGmlVersion === 'gml3') {
       return new OLFormatGML3(); // GML3
-    } else if (formatGmlVersion === 'gml32') {
+    }
+    if (formatGmlVersion === 'gml32') {
       return new OLFormatGML32(); // GML32
-    } else if (formatGmlVersion === 'GML2') {
+    }
+    if (formatGmlVersion === 'GML2') {
       return new OLFormatGML2(); // GML2
-    } else if (formatGmlVersion === 'gml3') {
-      return new OLFormatGML3(); // GML3
     }
     return new OLFormatGML(); // Default GML
   }

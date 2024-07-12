@@ -80,8 +80,8 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].predefinedzoom = pluginsLanguage.predefinedzoom
       .esPredefinedzoom;
     configuration.translations[lang].printermap = pluginsLanguage.printermap.esPrintermap;
-    configuration.translations[lang].printviewmanagement =
-      pluginsLanguage.printviewmanagement.esPrintviewmanagement;
+    configuration.translations[lang].printviewmanagement = pluginsLanguage.printviewmanagement
+      .esPrintviewmanagement;
     configuration.translations[lang].queryattributes = pluginsLanguage.queryattributes
       .esQueryattributes;
     // configuration.translations[lang].querydatabase = pluginsLanguage
@@ -102,12 +102,12 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].zoomextent = pluginsLanguage.zoomextent.esZoomextent;
     configuration.translations[lang].zoompanel = pluginsLanguage.zoompanel.esZoompanel;
     configuration.translations[lang].viewshed = pluginsLanguage.viewshed.esViewshed;
-    configuration.translations[lang].viewmanagement =
-      pluginsLanguage.viewmanagement.esViewmanagement;
+    configuration.translations[lang].viewmanagement = pluginsLanguage.viewmanagement
+      .esViewmanagement;
     configuration.translations[lang].locator = pluginsLanguage.locator.esLocator;
     configuration.translations[lang].locatorscn = pluginsLanguage.locatorscn.esLocatorscn;
-    configuration.translations[lang].vectorsmanagement =
-      pluginsLanguage.vectorsmanagement.esVectorsmanagement;
+    configuration.translations[lang].vectorsmanagement = pluginsLanguage.vectorsmanagement
+      .esVectorsmanagement;
   } else if (lang === 'en') {
     configuration.translations[lang].attributions = pluginsLanguage.attributions.enAttributions;
     configuration.translations[lang].backimglayer = pluginsLanguage.backimglayer.enBackimglayer;
@@ -161,12 +161,12 @@ export const getTranslation = (lang) => {
     configuration.translations[lang].zoomextent = pluginsLanguage.zoomextent.enZoomextent;
     configuration.translations[lang].zoompanel = pluginsLanguage.zoompanel.enZoompanel;
     configuration.translations[lang].viewshed = pluginsLanguage.viewshed.enViewshed;
-    configuration.translations[lang].viewmanagement =
-      pluginsLanguage.viewmanagement.enViewmanagement;
+    configuration.translations[lang].viewmanagement = pluginsLanguage.viewmanagement
+      .enViewmanagement;
     configuration.translations[lang].locator = pluginsLanguage.locator.enLocator;
     configuration.translations[lang].locatorscn = pluginsLanguage.locatorscn.enLocatorscn;
-    configuration.translations[lang].vectorsmanagement =
-      pluginsLanguage.vectorsmanagement.enVectorsmanagement;
+    configuration.translations[lang].vectorsmanagement = pluginsLanguage.vectorsmanagement
+      .enVectorsmanagement;
   }
   return configuration.translations[lang];
 };

@@ -60,19 +60,18 @@ export default class Stereoscopic extends M.Plugin {
      * @private
      * @type {boolean}
      */
-     this.orbitControls_ = (parameters.orbitControls) ? true : false;
-
+    this.orbitControls_ = parameters.orbitControls || false;
 
     /**
      * Activate anaglyph default
      * @private
      * @type {boolean}
      */
-     this.anaglyphActive_ = (parameters.anaglyphActive) ? true : false;
+    this.anaglyphActive_ = parameters.anaglyphActive || false;
 
-     this.defaultAnaglyphActive = parameters.defaultAnaglyphActive || false;
+    this.defaultAnaglyphActive = parameters.defaultAnaglyphActive || false;
 
-     this.maxMaginification = parameters.maxMaginification || 15;
+    this.maxMaginification = parameters.maxMaginification || 15;
   }
 
   /**
@@ -84,7 +83,13 @@ export default class Stereoscopic extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    const control = new StereoscopicControl(this.orbitControls_,  this.anaglyphActive_, this.defaultAnaglyphActive, this.maxMaginification);
+    const control = new StereoscopicControl(
+      this.orbitControls_,
+      this.anaglyphActive_,
+      this.defaultAnaglyphActive,
+      this.maxMaginification,
+    );
+
     this.controls_.push(control);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panelStereoscopic', {
@@ -99,15 +104,15 @@ export default class Stereoscopic extends M.Plugin {
     map.addPanels(this.panel_);
 
     map.on(M.evt.COMPLETED, () => {
-      let mapProperties = map.getLayers()[0].getImpl().getOL3Layer().getProperties();
-      let mapSource = mapProperties.source;
-      mapSource.crossOrigin = 'anonymous'
+      const mapProperties = map.getLayers()[0].getImpl().getOL3Layer().getProperties();
+      const mapSource = mapProperties.source;
+      mapSource.crossOrigin = 'anonymous';
       mapProperties.source = mapSource;
       map.getLayers()[0].getImpl().getOL3Layer().setProperties(mapProperties);
 
       window.map = this.map_;
       control.addScript();
-    })
+    });
   }
 
   /**

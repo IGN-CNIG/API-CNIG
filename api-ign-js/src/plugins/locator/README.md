@@ -104,7 +104,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **byPlaceAddressPostal**: Indica si el control IGNSearchLocator se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
   - **maxResults**: Número de resultados en la consulta. Por defecto: 20 (para cada servicio).
   - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Admite combinación de 'municipio, poblacion, toponimo, callejero, carretera, portal, provincia, ngbe, expendeduria, comunidad autónoma'. Por defecto: ''.
-  - **countryCode**: Código por defecto del país en la petición a geocoder. Por defecto: 'es'. 
+  - **countryCode**: Código por defecto del país en la petición a geocoder. Por defecto: 'es'.
   - **reverse**: Valor booleano que indica si la funcionalidad obtener dirección en un punto del mapa está activada (true/false). Por defecto: true.
   - **resultVisibility**: Indica si se muestra o no la geometría del elemento localizado (true/false). Por defecto: true.
   - **urlCandidates**: Url del servicio candidates de geocoder. Por defecto: 'http://www.cartociudad.es/geocoder/api/geocoder/candidatesJsonp'.
@@ -112,7 +112,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - **urlReverse**: Url del servicio geocoding inverso. Por defecto: 'http://www.cartociudad.es/geocoder/api/geocoder/reverseGeocode'.
   - **geocoderCoords**: Búsqueda inicial por longitud, latitud, mediante el uso del Servicio REST geocoder-inverso. Se sitúa en la posición indicada al iniciar la extensión. Por defecto: [].
   - **requestStreet**: URL del findJSON de un resultado de búsqueda, para que aparezca cargado al inicio. Por defecto: ''.
-  
+
   ```javascript
   byPlaceAddressPostal: {
     maxResults: 10,
@@ -208,7 +208,7 @@ https://componentes.cnig.es/api-core?locator=TL*true*true*tooltip*16
 https://componentes.cnig.es/api-core?locator=TL*true*true*tooltip*16*pinAzul*true*false*true*true
 ```
 
-### Ejemplo de uso 
+### Ejemplo de uso
 
 Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
 Ejemplo:

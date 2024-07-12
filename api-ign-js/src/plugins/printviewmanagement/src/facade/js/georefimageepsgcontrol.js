@@ -85,19 +85,6 @@ export default class GeorefImageEpsgControl extends M.Control {
       parameters: {},
     };
 
-    /**
-      * Mapfish options params
-      * @private
-      * @type {String}
-      */
-    this.options_ = {
-      legend: 'false',
-      forceScale: false,
-      dpi: this.dpi_,
-      format: this.format_,
-      layout: this.layout_,
-    };
-
     this.documentRead_ = document.createElement('img');
     this.canvas_ = document.createElement('canvas');
     this.canceled = false;
@@ -108,7 +95,6 @@ export default class GeorefImageEpsgControl extends M.Control {
   active(html) {
     this.html_ = html;
     const button = this.html_.querySelector('#m-printviewmanagement-georefImageEpsg');
-
 
     const template = new Promise((resolve, reject) => {
       this.template_ = M.template.compileSync(georefimage2HTML, {
@@ -123,7 +109,6 @@ export default class GeorefImageEpsgControl extends M.Control {
       });
       resolve(this.template_);
     });
-
 
     template.then((t) => {
       if (!button.classList.contains('activated')) {
@@ -157,7 +142,12 @@ export default class GeorefImageEpsgControl extends M.Control {
       url, name, format, EPSG: epsg, version, legend,
     } = this.layers_[value];
 
-    const title = legend || name;
+    let title = legend || name;
+    const dateNow = new Date();
+    const date = dateNow.toLocaleDateString().replaceAll('/', '');
+    const hour = dateNow.toLocaleTimeString().replaceAll(':', '');
+
+    title = `${title}_${date}_${hour}`;
 
     this.queueEl = innerQueueElement(
       this.html_,
@@ -166,7 +156,6 @@ export default class GeorefImageEpsgControl extends M.Control {
     );
 
     this.canceled = false;
-
 
     // Bbox Mapa
     const mapBbox = this.map_.getBbox();
@@ -195,8 +184,15 @@ export default class GeorefImageEpsgControl extends M.Control {
 
       const extString = ext.join(',');
 
-      const urlLayer =
-        this.generateURLLayer_(url, projection, size, extString, format, name, version);
+      const urlLayer = this.generateURLLayer_(
+        url,
+        projection,
+        size,
+        extString,
+        format,
+        name,
+        version,
+      );
       this.downloadPrint(urlLayer, extWLD, true, title);
     } else {
       const projection = this.getUTMZoneProjection();
@@ -215,7 +211,7 @@ export default class GeorefImageEpsgControl extends M.Control {
 
   transformExtentOL(extent, projection) {
     const { def } = M.impl.ol.js.projections.getSupportedProjs()
-      .filter(proj => proj.codes.includes(projection))[0];
+      .filter((proj) => proj.codes.includes(projection))[0];
     const typeCoordinates = def.includes('+proj=longlat');
 
     if (typeCoordinates) {
@@ -259,7 +255,7 @@ export default class GeorefImageEpsgControl extends M.Control {
     * @api stable
     */
   downloadPrint(url, bbox, epsgUser, title = '') {
-    const FILE_EXTENSION_GEO = '.wld'; // .jgw
+    const FILE_EXTENSION_GEO = '.jgw'; // .jgw
     const FILE_EXTENSION_IMG = '.jpg';
     const TYPE_SAVE = '.zip';
 
@@ -327,7 +323,7 @@ export default class GeorefImageEpsgControl extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 
   deactive() {
@@ -342,7 +338,5 @@ export default class GeorefImageEpsgControl extends M.Control {
  * @function
  * @api
  */
-  destroy() {
-  }
+  destroy() {}
 }
-

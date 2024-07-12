@@ -200,7 +200,6 @@ class Vector extends Layer {
       }
     });
 
-
     return attributes;
   }
 
@@ -215,7 +214,7 @@ class Vector extends Layer {
    */
   addFeatures(features, update) {
     features.forEach((newFeature) => {
-      const feature = this.features_.find(feature2 => feature2.equals(newFeature));
+      const feature = this.features_.find((feature2) => feature2.equals(newFeature));
       if (isNullOrEmpty(feature)) {
         this.features_.push(newFeature);
       }
@@ -225,7 +224,6 @@ class Vector extends Layer {
     }
     this.redraw();
   }
-
 
   /**
    * Este método añade los objetos geográficos a la capa y modifica su estilo.
@@ -244,7 +242,6 @@ class Vector extends Layer {
       }
     }
   }
-
 
   /**
    * Este método devuelve todos los objetos geográficos, se le puede pasar un filtro.
@@ -273,7 +270,7 @@ class Vector extends Layer {
    * @api stable
    */
   getFeatureById(id) {
-    return this.features_.filter(feature => feature.getId() === id)[0];
+    return this.features_.filter((feature) => feature.getId() === id)[0];
   }
 
   /**
@@ -285,7 +282,7 @@ class Vector extends Layer {
    * @api stable
    */
   removeFeatures(features) {
-    this.features_ = this.features_.filter(f => !(features.includes(f)));
+    this.features_ = this.features_.filter((f) => !(features.includes(f)));
     this.redraw();
   }
 
@@ -408,7 +405,7 @@ class Vector extends Layer {
     if (oldProj.code !== newProj.code) {
       const srcProj = getProj(oldProj.code);
       const dstProj = getProj(newProj.code);
-      this.facadeVector_.getFeatures().forEach(feature => feature.getImpl()
+      this.facadeVector_.getFeatures().forEach((feature) => feature.getImpl()
         .getOLFeature().getGeometry().transform(srcProj, dstProj));
     }
   }

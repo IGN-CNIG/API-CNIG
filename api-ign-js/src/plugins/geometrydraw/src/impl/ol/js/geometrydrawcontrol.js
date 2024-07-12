@@ -42,9 +42,9 @@ export default class GeometryDrawControl extends M.impl.Control {
    * features should be included in new source
    */
   newVectorSource(featuresIncluded) {
-    return featuresIncluded ?
-      new ol.source.Vector({ features: new ol.Collection([]) }) :
-      new ol.source.Vector();
+    return featuresIncluded
+      ? new ol.source.Vector({ features: new ol.Collection([]) })
+      : new ol.source.Vector();
   }
 
   /**
@@ -91,7 +91,6 @@ export default class GeometryDrawControl extends M.impl.Control {
     newCoordinates[1] = newXY[1];
     return newCoordinates;
   }
-
 
   /**
    * This function adds draw interaction to map.

@@ -80,8 +80,9 @@ class Line extends Simple {
       }
       if (!isNullOrEmpty(label)) {
         const textPathConfig = {
-          text: getValue(label.text, featureVariable) === undefined ?
-            undefined : String(getValue(label.text, featureVariable)),
+          text: getValue(label.text, featureVariable) === undefined
+            ? undefined
+            : String(getValue(label.text, featureVariable)),
           font: getValue(label.font, featureVariable),
           fill: new OLStyleFill({
             color: getValue(label.color || '#000000', featureVariable),
@@ -93,10 +94,12 @@ class Line extends Simple {
           overflow: getValue(label.textoverflow, featureVariable) || false,
           minWidth: getValue(label.minwidth, featureVariable) || 0,
           geometry: getValue(label.geometry, featureVariable),
-          offsetX: getValue(options.label.offset ? options.label.offset[0] :
-            undefined, featureVariable),
-          offsetY: getValue(options.label.offset ? options.label.offset[1] :
-            undefined, featureVariable),
+          offsetX: getValue(options.label.offset
+            ? options.label.offset[0]
+            : undefined, featureVariable),
+          offsetY: getValue(options.label.offset
+            ? options.label.offset[1]
+            : undefined, featureVariable),
         };
         const textPathStyle = new Path(textPathConfig);
         if (!isNullOrEmpty(label.stroke)) {
@@ -114,8 +117,8 @@ class Line extends Simple {
         // we will use a flag into de options object to set pathstyle or ol.text style
         if (typeof applyPath === 'boolean' && applyPath) {
           style.textPath = textPathStyle;
-          if (!isNullOrEmpty(label.smooth) && label.smooth === true &&
-            isFunction(featureVariable.getGeometry)) {
+          if (!isNullOrEmpty(label.smooth) && label.smooth === true
+            && isFunction(featureVariable.getGeometry)) {
             style.setGeometry(featureVariable.getGeometry().cspline());
           }
           textPathStyle.setPlacement('line');
@@ -146,11 +149,12 @@ class Line extends Simple {
 
           fill = new OLStyleStrokePattern({
             pattern: (Simple.getValue(options.fill.pattern.name, featureVariable, this.layer_) || '').toLowerCase(),
-            image: (Simple.getValue(options.fill.pattern.name, featureVariable, this.layer_) === 'Image') ?
-              new OLStyleIcon({
+            image: (Simple.getValue(options.fill.pattern.name, featureVariable, this.layer_) === 'Image')
+              ? new OLStyleIcon({
                 src: Simple.getValue(options.fill.pattern.src, featureVariable, this.layer_),
                 crossOrigin: 'anonymous',
-              }) : undefined,
+              })
+              : undefined,
             color,
             width: widthValue,
             size: Simple.getValue(options.fill.pattern.size, featureVariable, this.layer_),

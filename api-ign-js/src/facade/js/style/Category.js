@@ -3,7 +3,14 @@
  */
 import StyleBase from './Style';
 import Composite from './Composite';
-import { isNullOrEmpty, getImageSize, isArray, extendsObj, stringifyFunctions, defineFunctionFromString } from '../util/Utils';
+import {
+  isNullOrEmpty,
+  getImageSize,
+  isArray,
+  extendsObj,
+  stringifyFunctions,
+  defineFunctionFromString,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import StyleProportional from './Proportional';
 import StyleCluster from './Cluster';
@@ -69,6 +76,7 @@ class Category extends Composite {
     this.layer_ = layer;
     this.update_();
   }
+
   /**
    * Este método devuelve el "AttributeName".
    *
@@ -164,8 +172,9 @@ class Category extends Composite {
    */
   updateCanvas() {
     const canvasImages = [];
-    this.updateCanvasPromise_ = new Promise((success, fail) =>
-      this.loadCanvasImages_(0, canvasImages, success));
+    this.updateCanvasPromise_ = new Promise((success, fail) => {
+      this.loadCanvasImages_(0, canvasImages, success);
+    });
   }
 
   /**
@@ -236,8 +245,8 @@ class Category extends Composite {
    * @api
    */
   drawGeometryToCanvas(canvasImages, callbackFn) {
-    const heights = canvasImages.map(canvasImage => canvasImage.image.height);
-    const widths = canvasImages.map(canvasImage => canvasImage.image.width);
+    const heights = canvasImages.map((canvasImage) => canvasImage.image.height);
+    const widths = canvasImages.map((canvasImage) => canvasImage.image.width);
 
     const vectorContext = this.canvas_.getContext('2d');
     vectorContext.canvas.height = heights.reduce((acc, h) => acc + h + 5);
@@ -355,7 +364,7 @@ class Category extends Composite {
     });
     let options = extendsObj({}, this.getOptions());
     options = stringifyFunctions(options);
-    const compStyles = this.getStyles().map(style => style.serialize());
+    const compStyles = this.getStyles().map((style) => style.serialize());
 
     const parameters = [attributeName, serializedCategoryStyles, options, compStyles];
     const deserializedMethod = 'M.style.Category.deserialize';
@@ -384,8 +393,8 @@ class Category extends Composite {
     /* eslint-enable */
     const deserializedStyle = styleFn(attributeName, categoryStyles, options);
 
-    const compStyles = serializedCompStyles.map(serializedStyle =>
-      StyleBase.deserialize(serializedStyle));
+    const compStyles = serializedCompStyles.map((serializedStyle) => StyleBase
+      .deserialize(serializedStyle));
     deserializedStyle.add(compStyles);
 
     return deserializedStyle;

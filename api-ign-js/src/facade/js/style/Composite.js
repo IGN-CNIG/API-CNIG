@@ -30,6 +30,7 @@ class Composite extends StyleBase {
      */
     this.styles_ = [];
   }
+
   /**
    * Este método aplica el estilo.
    *
@@ -46,6 +47,7 @@ class Composite extends StyleBase {
       this.updateInternal_(layer);
     }
   }
+
   /**
    * Este método añade el estilo.
    *
@@ -62,9 +64,9 @@ class Composite extends StyleBase {
     if (!isArray(styles)) {
       styles = [styles];
     }
-    styles = styles.filter(style => style.constructor !== this.constructor);
+    styles = styles.filter((style) => style.constructor !== this.constructor);
     styles.forEach((style) => {
-      this.styles_ = this.styles_.filter(s => s.constructor !== style.constructor);
+      this.styles_ = this.styles_.filter((s) => s.constructor !== style.constructor);
     });
     this.styles_ = this.styles_.concat(styles);
     if (!isNullOrEmpty(layer)) {
@@ -72,6 +74,7 @@ class Composite extends StyleBase {
     }
     return this;
   }
+
   /**
    * Este método elimina el estilo.
    *
@@ -89,10 +92,11 @@ class Composite extends StyleBase {
     if (!isNullOrEmpty(this.layer_)) {
       this.unapplyInternal(this.layer_);
     }
-    this.styles_ = this.styles_.filter(style => !styles.includes(style));
+    this.styles_ = this.styles_.filter((style) => !styles.includes(style));
     layer.setStyle(this.oldStyle_, true);
     layer.setStyle(this);
   }
+
   /**
    * Este método devuelve el estilo.
    *
@@ -104,6 +108,7 @@ class Composite extends StyleBase {
   getStyles() {
     return this.styles_;
   }
+
   /**
    * Este método devuelve el estilo antiguo.
    *
@@ -115,6 +120,7 @@ class Composite extends StyleBase {
   getOldStyle() {
     return this.oldStyle_;
   }
+
   /**
    * Este método elimina el estilo añadido.
    * @function
@@ -124,6 +130,7 @@ class Composite extends StyleBase {
   clear() {
     this.remove(this.styles_);
   }
+
   /**
    * Este método añade el estilo de forma interna.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -133,14 +140,15 @@ class Composite extends StyleBase {
    * @api
    */
   unapplyInternal(layer) {
-    const styles = this.styles_.concat(this).sort((style, style2) =>
-      styleComparator(style2, style));
+    const styles = this.styles_.concat(this)
+      .sort((style, style2) => styleComparator(style2, style));
     styles.forEach((style) => {
       if (style instanceof Composite) {
         style.unapplySoft(layer);
       }
     });
   }
+
   /**
    * Este método quita el estilo "soft".
    * @function
@@ -149,6 +157,7 @@ class Composite extends StyleBase {
    * @api
    */
   unapplySoft(layer) {}
+
   /**
    * Desaplica el estilo de la capa.
    * @function
@@ -160,6 +169,7 @@ class Composite extends StyleBase {
     this.unapplyInternal(layer);
     this.layer_ = null;
   }
+
   /**
    * Se actualiza el estilo la capa interna.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -169,8 +179,8 @@ class Composite extends StyleBase {
    * @api
    */
   updateInternal_(layer) {
-    const styles = this.styles_.concat(this).sort((style, style2) =>
-      styleComparator(style, style2));
+    const styles = this.styles_.concat(this)
+      .sort((style, style2) => styleComparator(style, style2));
     styles.forEach((style) => {
       if (style instanceof Composite) {
         style.applyInternal(layer);

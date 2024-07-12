@@ -2,7 +2,9 @@
  * @module M/impl/control/PrinterMapControl
  */
 
-import { encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS } from './encoders';
+import {
+  encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS, encodeGeoTIFF,
+} from './encoders';
 
 export default class PrinterMapControl extends M.impl.Control {
   /**
@@ -36,11 +38,7 @@ export default class PrinterMapControl extends M.impl.Control {
    */
   addTo(map, element) {
     this.facadeMap_ = map;
-
-    ol.control.Control.call(this, {
-      element,
-      target: null,
-    });
+    this.element = element;
     map.getMapImpl().addControl(this);
   }
 
@@ -54,10 +52,10 @@ export default class PrinterMapControl extends M.impl.Control {
    */
   getParametrizedLayers(paramName, layers) {
     let others = this.facadeMap_.getMapImpl().getLayers().getArray().filter((layer) => {
-      return !M.utils.isNullOrEmpty(layer.getSource()) &&
+      return !M.utils.isNullOrEmpty(layer.getSource())
         // eslint-disable-next-line no-underscore-dangle
-        !M.utils.isNullOrEmpty(layer.getSource().params_) &&
-        layer.getSource().getParams()[paramName] !== undefined;
+        && !M.utils.isNullOrEmpty(layer.getSource().params_)
+        && layer.getSource().getParams()[paramName] !== undefined;
     });
 
     others = others.filter((layer) => {
@@ -83,9 +81,9 @@ export default class PrinterMapControl extends M.impl.Control {
         // eslint-disable-next-line no-underscore-dangle
         if (layer.type === M.layer.type.KML && layer.getImpl().formater_.extractStyles_ !== false) {
           success(encodeKML(layer, this.facadeMap_));
-        } else if (layer.type === M.layer.type.KML &&
+        } else if (layer.type === M.layer.type.KML
           // eslint-disable-next-line no-underscore-dangle
-          layer.getImpl().formater_.extractStyles_ === false) {
+          && layer.getImpl().formater_.extractStyles_ === false) {
           success(this.encodeWFS(layer));
         } else if (layer.type === M.layer.type.WMS) {
           success(encodeWMS(layer));
@@ -102,14 +100,13 @@ export default class PrinterMapControl extends M.impl.Control {
           // eslint-disable-next-line no-underscore-dangle
         } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
           success(encodeImage(layer));
-        } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type) >
-          -1) {
+        } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type)
+          > -1) {
           success(encodeXYZ(layer));
-        } else if (layer.type === M.layer.type.MVT) {
-          this.errors.push(layer.name);
-          success('');
-        } else if (layer.type === M.layer.type.MBTiles ||
-          layer.type === M.layer.type.MBTilesVector) {
+        } else if (layer.type === M.layer.type.GeoTIFF) {
+          success(encodeGeoTIFF(layer));
+        } else if (layer.type === M.layer.type.MVT
+          || layer.type === M.layer.type.MBTiles || layer.type === M.layer.type.MBTilesVector) {
           this.errors.push(layer.name);
           success('');
         } else {
@@ -156,8 +153,14 @@ export default class PrinterMapControl extends M.impl.Control {
         }
       } else {
         encodedFeature = this.encodeFeature_(
-          layer, feature, style, index,
-          indexText, indexGeom, stylesNames, stylesNamesText,
+          layer,
+          feature,
+          style,
+          index,
+          indexText,
+          indexGeom,
+          stylesNames,
+          stylesNamesText,
         );
 
         if (encodedFeature.geojson !== null) {
@@ -226,13 +229,15 @@ export default class PrinterMapControl extends M.impl.Control {
     if (featureStyle instanceof Array) {
       // SRC style has priority
       if (featureStyle.length > 1) {
-        styleIcon = !M.utils.isNullOrEmpty(featureStyle[1]) &&
-          !M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
-          featureStyle[1].getImage().getGlyph ?
-          featureStyle[1].getImage() : null;
-        featureStyle = (!M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
-            featureStyle[1].getImage().getSrc) ?
-          featureStyle[1] : featureStyle[0];
+        styleIcon = !M.utils.isNullOrEmpty(featureStyle[1])
+          && !M.utils.isNullOrEmpty(featureStyle[1].getImage())
+          && featureStyle[1].getImage().getGlyph
+          ? featureStyle[1].getImage()
+          : null;
+        featureStyle = (!M.utils.isNullOrEmpty(featureStyle[1].getImage())
+          && featureStyle[1].getImage().getSrc)
+          ? featureStyle[1]
+          : featureStyle[0];
       } else {
         featureStyle = featureStyle[0];
       }
@@ -258,24 +263,28 @@ export default class PrinterMapControl extends M.impl.Control {
         parseType = feature.getGeometry().getType().toLowerCase();
       }
 
-      const stroke = M.utils.isNullOrEmpty(image) ?
-        featureStyle.getStroke() : (image.getStroke && image.getStroke());
-      const fill = M.utils.isNullOrEmpty(image) ?
-        featureStyle.getFill() : (image.getFill && image.getFill());
-
+      const stroke = M.utils.isNullOrEmpty(image)
+        ? featureStyle.getStroke()
+        : (image.getStroke && image.getStroke());
+      const fill = M.utils.isNullOrEmpty(image)
+        ? featureStyle.getFill()
+        : (image.getFill && image.getFill());
 
       let styleText;
-      const lineDash = (featureStyle.getStroke() !== null &&
-          featureStyle.getStroke() !== undefined) ?
-        featureStyle.getStroke().getLineDash() : undefined;
+      const lineDash = (featureStyle.getStroke() !== null
+        && featureStyle.getStroke() !== undefined)
+        ? featureStyle.getStroke().getLineDash()
+        : undefined;
       const styleGeom = {
         type: parseType,
         fillColor: M.utils.isNullOrEmpty(fill) || (layer.name.indexOf(' Reverse') > -1 && layer.name.indexOf('Cobertura') > -1) ? '#000000' : M.utils.rgbaToHex(fill.getColor()).slice(0, 7),
-        fillOpacity: M.utils.isNullOrEmpty(fill) ?
-          0 : M.utils.getOpacityFromRgba(fill.getColor()),
+        fillOpacity: M.utils.isNullOrEmpty(fill)
+          ? 0
+          : M.utils.getOpacityFromRgba(fill.getColor()),
         strokeColor: M.utils.isNullOrEmpty(stroke) ? '#000000' : M.utils.rgbaToHex(stroke.getColor()),
-        strokeOpacity: M.utils.isNullOrEmpty(stroke) ?
-          0 : M.utils.getOpacityFromRgba(stroke.getColor()),
+        strokeOpacity: M.utils.isNullOrEmpty(stroke)
+          ? 0
+          : M.utils.getOpacityFromRgba(stroke.getColor()),
         strokeWidth: M.utils.isNullOrEmpty(stroke) ? 0 : (stroke.getWidth && stroke.getWidth()),
         pointRadius: M.utils.isNullOrEmpty(image) ? '' : (image.getRadius && image.getRadius()),
         externalGraphic: M.utils.isNullOrEmpty(image) ? '' : (image.getSrc && image.getSrc()),
@@ -318,8 +327,8 @@ export default class PrinterMapControl extends M.impl.Control {
         }
       }
 
-      const imageIcon = !M.utils.isNullOrEmpty(styleIcon) &&
-        styleIcon.getImage ? styleIcon.getImage() : null;
+      const imageIcon = !M.utils.isNullOrEmpty(styleIcon)
+        && styleIcon.getImage ? styleIcon.getImage() : null;
       if (!M.utils.isNullOrEmpty(imageIcon)) {
         if (styleIcon.getRadius && styleIcon.getRadius()) {
           styleGeom.pointRadius = styleIcon.getRadius && styleIcon.getRadius();
@@ -413,8 +422,8 @@ export default class PrinterMapControl extends M.impl.Control {
       }
 
       nameFeature = `draw${index}`;
-      if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) ||
-        !M.utils.isNullOrEmpty(text)) {
+      if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox))
+        || !M.utils.isNullOrEmpty(text)) {
         const styleStr = JSON.stringify(styleGeom);
         const styleTextStr = JSON.stringify(styleText);
         let styleName = stylesNames[styleStr];
@@ -422,8 +431,8 @@ export default class PrinterMapControl extends M.impl.Control {
         if (M.utils.isUndefined(styleName) || M.utils.isUndefined(styleNameText)) {
           const symbolizers = [];
           let flag = 0;
-          if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) &&
-            M.utils.isUndefined(styleName)) {
+          if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)
+            && M.utils.isUndefined(styleName)) {
             styleName = indexGeom;
             // eslint-disable-next-line no-param-reassign
             stylesNames[styleStr] = styleName;
@@ -465,7 +474,7 @@ export default class PrinterMapControl extends M.impl.Control {
         }
 
         let geoJSONFeature;
-        if (projection.code !== 'EPSG:3857' && this.facadeMap_.getLayers().some(layerParam => (layerParam.type === M.layer.type.OSM || layerParam.type === M.layer.type.Mapbox))) {
+        if (projection.code !== 'EPSG:3857' && this.facadeMap_.getLayers().some((layerParam) => (layerParam.type === M.layer.type.OSM || layerParam.type === M.layer.type.Mapbox))) {
           geoJSONFeature = geoJSONFormat.writeFeatureObject(feature, {
             featureProjection: projection.code,
             dataProjection: 'EPSG:3857',
@@ -530,8 +539,8 @@ export default class PrinterMapControl extends M.impl.Control {
           let styleName = stylesNames[styleStr];
           if (M.utils.isUndefined(styleName)) {
             const symbolizers = [];
-            if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) &&
-              M.utils.isUndefined(styleName)) {
+            if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)
+              && M.utils.isUndefined(styleName)) {
               styleName = indexGeom;
               stylesNames[styleStr] = styleName;
               symbolizers.push(styleStr);

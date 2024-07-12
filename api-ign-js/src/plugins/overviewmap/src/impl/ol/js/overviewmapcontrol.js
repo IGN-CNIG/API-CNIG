@@ -59,6 +59,8 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     this.facadeMap_ = null;
 
     this.order = (options.order) ? options.order : null;
+
+    this.bindedUpdateBox = this.updateBox_.bind(this);
   }
 
   /**
@@ -312,9 +314,8 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
       if (!this.collapsed_ && !ovmap.isRendered()) {
         ovmap.updateSize();
         this.resetExtent_();
-        ovmap.addEventListener('postrender', (event) => {
-          this.updateBox_();
-        });
+        ovmap.removeEventListener('postrender', this.bindedUpdateBox);
+        ovmap.addEventListener('postrender', this.bindedUpdateBox);
       }
     }, this.toggleDelay_);
   }

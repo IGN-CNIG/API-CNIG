@@ -66,7 +66,6 @@
         <select name="layer" id="selectLayer">
             <option value="" selected="selected"></option>
             <option value="points">points</option>
-            <option value="lines">lines</option>
             <option value="polygons">polygons</option>
             <option value="allgeoms">allgeoms</option>
         </select>
@@ -105,13 +104,6 @@
         });
         map.addLayers(points);
 
-        const lines = new M.layer.WFS({
-            url: "http://www.ideandalucia.es/dea100/wfs?",
-            name: "dea100:ie03_gasoducto",
-            legend: "Gasoductos",
-            geometry: 'MLINE',
-        });
-        map.addLayers(lines);
 
         const polygons = new M.layer.WFS({
             url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',

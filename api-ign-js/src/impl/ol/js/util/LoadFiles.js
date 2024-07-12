@@ -13,7 +13,7 @@ import GML3 from 'ol/format/GML3';
 import View from 'ol/View';
 import { transform } from 'ol/proj';
 import OLFeature from 'ol/Feature';
-import ImplUtils from '../util/Utils';
+import ImplUtils from './Utils';
 import Feature from '../feature/Feature';
 
 /**
@@ -24,7 +24,7 @@ import Feature from '../feature/Feature';
  * @api
  */
 class LoadFiles {
-  /**
+/**
  * Centra el mapa en los features obtenidos
  * @public
  * @function
@@ -416,8 +416,8 @@ class LoadFiles {
 
     // En el caso de que no tenga geometrías, comprobamos si es GML 3.2,
     // si lo es tenemos que parsearlo a mano.
-    if ((features.length === 0 || features[0].getGeometry() === undefined) &&
-    newSource.indexOf('gml/3.2') > 0) {
+    if ((features.length === 0 || features[0].getGeometry() === undefined)
+      && newSource.indexOf('gml/3.2') > 0) {
       features = this.gmlParser(newSource, projection);
     }
 

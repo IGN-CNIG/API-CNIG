@@ -26,37 +26,46 @@ module.exports = {
         },
       },
       {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        exclude: [/node_modules/, /lib/, /test/, /dist/],
-      },
-      {
         test: [/\.hbs$/, /\.html$/],
         loader: 'html-loader',
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
-        loader: 'style-loader!css-loader',
+        test: /\.css$/i,
+        use: [
+          {
+            loader: "style-loader",
+            options: {
+              // insert: 'head',
+              injectType: 'singletonStyleTag',
+            },
+          },
+          "css-loader",
+        ],
         exclude: [/node_modules/],
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
         exclude: /node_modules/,
-        loader: 'url-loader?name=fonts/[name].[ext]',
-      }],
+        type: 'asset/inline',
+      },
+    ],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
+    // https: true,
     hot: true,
     open: true,
     port: 6123,
-    openPage: 'test/dev.html',
-    watchOptions: {
-      poll: 1000,
+    open: 'test/dev.html',
+    static: {
+      directory: path.join(__dirname, '/../'),
     },
+  },
+  watchOptions: {
+    poll: 1000,
   },
   devtool: 'eval-source-map',
 };

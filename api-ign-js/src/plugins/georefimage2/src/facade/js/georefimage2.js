@@ -106,7 +106,6 @@ export default class Georefimage2 extends M.Plugin {
      */
     this.printStatusUrl_ = parameters.printStatusUrl || 'https://componentes.cnig.es/geoprint/print/status';
 
-
     /**
      *@private
      *@type { Number }

@@ -14,7 +14,7 @@ let exportedClasses = '';
 let createNS = '';
 
 const getAbsolutePath = (fileNames, fullPath) => {
-  const absolutePaths = fileNames.map(fileName => path.resolve(fullPath, fileName));
+  const absolutePaths = fileNames.map((fileName) => path.resolve(fullPath, fileName));
   absolutePaths.forEach((absolutePath) => {
     if (fs.lstatSync(absolutePath).isDirectory() === true) {
       getAbsolutePath(fs.readdirSync(absolutePath), absolutePath);

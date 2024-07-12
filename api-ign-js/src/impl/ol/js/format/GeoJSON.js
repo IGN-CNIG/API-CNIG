@@ -68,8 +68,8 @@ class GeoJSON extends OLFormatGeoJSON {
       feature.click = geoJSONFeature.click;
     }
     // vendor parameters
-    if (geoJSONFeature.properties && geoJSONFeature.properties.vendor &&
-       geoJSONFeature.properties.vendor.mapea) {
+    if (geoJSONFeature.properties && geoJSONFeature.properties.vendor
+        && geoJSONFeature.properties.vendor.mapea) {
       // icons
       if (geoJSONFeature.properties.vendor.mapea.icon) {
         GeoJSON.applyIcon(feature, geoJSONFeature.properties.vendor.mapea.icon);
@@ -191,7 +191,7 @@ class GeoJSON extends OLFormatGeoJSON {
     * @api
     */
   write(features) {
-    return features.map(feature => this.writeFeatureObject(feature.getImpl().getOLFeature()));
+    return features.map((feature) => this.writeFeatureObject(feature.getImpl().getOLFeature()));
   }
 
   /**
@@ -232,4 +232,3 @@ class GeoJSON extends OLFormatGeoJSON {
 }
 
 export default GeoJSON;
-

@@ -1,16 +1,17 @@
+/* eslint-disable no-underscore-dangle */
 /**
  * @module M/control/CompareMirrorpanel
  */
 import MirrorpanelImplControl from 'impl/cpmirrorpanel';
 import template from 'templates/cpmirrorpanel';
 import { getValue } from './i18n/language';
-import Lyrdropdown from './lyrdropdown';  //e2m: reference LayerDropDown control
+import Lyrdropdown from './lyrdropdown'; // e2m: reference LayerDropDown control
 
-const objWMTSsiose = new M.layer.WMTS({
-  url: "https://servicios.idee.es/wmts/ocupacion-suelo",
-  name: "LC.LandCoverSurfaces",
-  matrixSet: "GoogleMapsCompatible",
-  legend: "CORINE / SIOSE",
+/* const objWMTSsiose = new M.layer.WMTS({
+  url: 'https://servicios.idee.es/wmts/ocupacion-suelo',
+  name: 'LC.LandCoverSurfaces',
+  matrixSet: 'GoogleMapsCompatible',
+  legend: 'CORINE / SIOSE',
   transparent: false,
   displayInLayerSwitcher: false,
   queryable: false,
@@ -114,7 +115,7 @@ const BASE_LAYERS_CONFIG = {
       id: 'hibrido',
       title: 'Híbrido',
       preview: 'https://i.ibb.co/N6jfqwz/hibrido.png',
-      layers: [objTMSPNOA,objTMSIGNBaseSoloTextos],
+      layers: [objTMSPNOA, objTMSIGNBaseSoloTextos],
     },
     {
       id: 'lidar',
@@ -126,7 +127,7 @@ const BASE_LAYERS_CONFIG = {
       id: 'lidar-hibrido',
       title: 'LiDAR híbrido',
       preview: 'https://i.ibb.co/TYZcmkz/lidar.png',
-      layers: [objWMTSLidar,objTMSIGNBaseSoloTextos],
+      layers: [objWMTSLidar, objTMSIGNBaseSoloTextos],
     },
     {
       id: 'SIOSE',
@@ -140,8 +141,8 @@ const BASE_LAYERS_CONFIG = {
       title: 'MTN50 1Edi',
       layers: [objWMTSMTN501Edi],
     },
-  ]
-};
+  ],
+}; */
 export default class CompareMirrorpanel extends M.Control {
   /**
    * @classdesc
@@ -186,9 +187,15 @@ export default class CompareMirrorpanel extends M.Control {
     /**
      * Defining mirror maps variables
      */
-    this.mapL = { A: null, B: null, C: null, D: null }
-    this.lyrCursor = { A: null, B: null, C: null, D: null }
-    this.featureLyrCursor = { A: null, B: null, C: null, D: null }
+    this.mapL = {
+      A: null, B: null, C: null, D: null,
+    };
+    this.lyrCursor = {
+      A: null, B: null, C: null, D: null,
+    };
+    this.featureLyrCursor = {
+      A: null, B: null, C: null, D: null,
+    };
     this.oldClass = '';
     this.reverseLayout = values.reverseLayout;
     this.enabledPlugins = values.enabledPlugins;
@@ -225,7 +232,7 @@ export default class CompareMirrorpanel extends M.Control {
      * @public
      * @type { integer }
      */
-     this.lyrsMirrorMinZindex = values.lyrsMirrorMinZindex
+    this.lyrsMirrorMinZindex = values.lyrsMirrorMinZindex;
 
     /**
      * All layers
@@ -241,12 +248,12 @@ export default class CompareMirrorpanel extends M.Control {
 
     this.lyDropControlA = new Lyrdropdown({
       position: 'TL',
-      collapsible: false, // El botón para desplegar/replegar el plugin no aparece (false) o sí aparece(true)
-      collapsed: true,    // El panel del plugin se muestra desplegado (false) o replegado (true)
+      // El botón para desplegar/replegar el plugin no aparece (false) o sí aparece(true)
+      collapsible: false,
+      collapsed: true, // El panel del plugin se muestra desplegado (false) o replegado (true)
       layers: this.defaultBaseLyrs,
       lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
-
 
     this.lyDropControlB = new Lyrdropdown({
       position: 'TL',
@@ -255,7 +262,6 @@ export default class CompareMirrorpanel extends M.Control {
       layers: this.defaultBaseLyrs,
       lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
     });
-
 
     this.lyDropControlC = new Lyrdropdown({
       position: 'TL',
@@ -307,14 +313,14 @@ export default class CompareMirrorpanel extends M.Control {
       };
     }
 
-    this.mapL['A'] = map;
+    this.mapL.A = map;
     if (this.mirrorLayers.length > 0) {
-      this.mapL['A'].addLayers(this.mirrorLayers);
-      this.mapL['A'].getLayers().forEach((l) => {
+      this.mapL.A.addLayers(this.mirrorLayers);
+      this.mapL.A.getLayers().forEach((l) => {
         if (l.zindex_ !== 0) { l.setVisible(false); }
       });
 
-      this.mapL['A'].addLayers(this.defaultBaseLyrs[0]);
+      this.mapL.A.addLayers(this.defaultBaseLyrs[0]);
     }
 
     if (this.showCursors) {
@@ -346,9 +352,9 @@ export default class CompareMirrorpanel extends M.Control {
 
       // Button's click events
       this.template.querySelectorAll('button[id^="set-mirror-"]').forEach((button, modeViz) => {
-        button.addEventListener('click', evt => {
+        button.addEventListener('click', (evt) => {
           this.manageVisionPanelByCSSGrid(modeViz);
-        })
+        });
       });
 
       success(this.template);
@@ -409,16 +415,20 @@ export default class CompareMirrorpanel extends M.Control {
     bigContainer.appendChild(mapjsD);
   }
 
-  changeViewPluginsGrid(change){
-      M.config.MOBILE_WIDTH =  (change) ? '2000' : '768';
-      let pluginsControls = [];
-      Object.entries(this.mapL).forEach(([_, e]) => {
-        pluginsControls = (e) ? [...pluginsControls, ...e.getControls(), ...e.getPlugins()]
+  changeViewPluginsGrid(change) {
+    M.config.MOBILE_WIDTH = (change) ? '2000' : '768';
+    let pluginsControls = [];
+    Object.entries(this.mapL).forEach(([_, e]) => {
+      pluginsControls = (e)
+        ? [...pluginsControls, ...e.getControls(), ...e.getPlugins()]
         : pluginsControls;
-      })
-      pluginsControls.forEach(e => (e.changeStyleResponsive) ? e.changeStyleResponsive(change) : null);
+    });
+    pluginsControls.forEach((e) => {
+      return (e.changeStyleResponsive)
+        ? e.changeStyleResponsive(change)
+        : null;
+    });
   }
-
 
   /**
    * This function shows/hides panel for differents viz options.
@@ -426,48 +436,49 @@ export default class CompareMirrorpanel extends M.Control {
    *
    */
   manageVisionPanelByCSSGrid(modeViz) {
-    let oldModeViz = this.modeViz;
-    let map0 = document.getElementById(this.target);
+    const oldModeViz = this.modeViz;
+    const map0 = document.getElementById(this.target);
     map0.style.display = 'none';
     document.getElementById('mapjsB').style.display = 'none';
     document.getElementById('mapjsC').style.display = 'none';
     document.getElementById('mapjsD').style.display = 'none';
     document.getElementById('lienzo').classList.remove('reverseMirror');
-    this.template.querySelector('#set-mirror-' + oldModeViz).classList.remove('buttom-pressed');
+    this.template.querySelector(`#set-mirror-${oldModeViz}`).classList.remove('buttom-pressed');
+    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < 10; i++) {
-      document.getElementById('lienzo').classList.remove('modeViz' + i);
+      document.getElementById('lienzo').classList.remove(`modeViz${i}`);
     }
 
-    document.getElementById('lienzo').classList.add('modeViz' + modeViz);
+    document.getElementById('lienzo').classList.add(`modeViz${modeViz}`);
     if (this.reverseLayout) document.getElementById('lienzo').classList.add('reverseMirror');
-    //Create map objects by modeviz
+    // Create map objects by modeviz
     if ([1, 2].includes(modeViz)) {
-      if (this.mapL['B'] === null) {
-        this.createMapObjects('B');//Create MapB
+      if (this.mapL.B === null) {
+        this.createMapObjects('B');// Create MapB
       }
     }
 
     if ([3, 7, 8, 9].includes(modeViz)) {
-      if (this.mapL['B'] === null) {
-        this.createMapObjects('B');//Create MapB
+      if (this.mapL.B === null) {
+        this.createMapObjects('B');// Create MapB
       }
 
-      if (this.mapL['C'] === null) {
-        this.createMapObjects('C');//Create MapC
+      if (this.mapL.C === null) {
+        this.createMapObjects('C');// Create MapC
       }
     }
 
     if ([4, 5, 6].includes(modeViz)) {
-      if (this.mapL['B'] === null) {
-        this.createMapObjects('B');//Create MapB
+      if (this.mapL.B === null) {
+        this.createMapObjects('B');// Create MapB
       }
 
-      if (this.mapL['C'] === null) {
-        this.createMapObjects('C');//Create MapC
+      if (this.mapL.C === null) {
+        this.createMapObjects('C');// Create MapC
       }
 
-      if (this.mapL['D'] === null) {
-        this.createMapObjects('D');//Create MapD
+      if (this.mapL.D === null) {
+        this.createMapObjects('D');// Create MapD
       }
     }
 
@@ -477,13 +488,12 @@ export default class CompareMirrorpanel extends M.Control {
       });
 
       if (toDelete.length > 0) {
-        this.lyDropControlA.deactivate(); /** Se quedaba enganchada la última capa. Ahora parece que va al introducir esta línea */
+        // Se quedaba enganchada la última capa. Ahora parece que va al introducir esta línea
+        this.lyDropControlA.deactivate();
         this.map_.removePlugins(toDelete);
       }
-
-
     } else {
-      //Añado aquí el DropDownLayer del mapa principal
+      // Añado aquí el DropDownLayer del mapa principal
       this.lyDropControlA = new Lyrdropdown({
         position: 'TL',
         collapsible: false,
@@ -492,24 +502,24 @@ export default class CompareMirrorpanel extends M.Control {
         lyrsMirrorMinZindex: this.lyrsMirrorMinZindex,
       });
 
-      this.mapL['A'].addPlugin(this.lyDropControlA);
+      this.mapL.A.addPlugin(this.lyDropControlA);
     }
 
     this.modeViz = modeViz;
-    this.template.querySelector('#set-mirror-' + modeViz).classList.add('buttom-pressed');
+    this.template.querySelector(`#set-mirror-${modeViz}`).classList.add('buttom-pressed');
     this.map_.refresh();
-    if (this.mapL['B'] !== null) { this.mapL['B'].refresh(); }
-    if (this.mapL['C'] !== null) { this.mapL['C'].refresh(); }
-    if (this.mapL['D'] !== null) { this.mapL['D'].refresh(); }
+    if (this.mapL.B !== null) { this.mapL.B.refresh(); }
+    if (this.mapL.C !== null) { this.mapL.C.refresh(); }
+    if (this.mapL.D !== null) { this.mapL.D.refresh(); }
 
-    // e2m: esta manera de cerrar el panel provocaba que se lanzara el evento deactivateAndActivateMirrorPanel
-    //document.querySelector('#m-cp-mirrorpanel > button').click();
+    // e2m: esta manera de cerrar el panel provocaba que se lanzara el evento
+    // deactivateAndActivateMirrorPanel document.querySelector('#m-cp-mirrorpanel > button').click()
     // e2m: de esta manera se oculta el panel y no se lanza el evento, pero es un poco raro
     document.querySelector('#m-cp-mirrorpanel-btn').classList.remove('active');
     document.querySelector('.m-panel-controls .cp-mirrorpanel').classList.remove('hide-panel');
 
     setTimeout(() => {
-      this.changeViewPluginsGrid([3,4,7].includes(modeViz));
+      this.changeViewPluginsGrid([3, 4, 7].includes(modeViz));
     }, 500);
   }
 
@@ -522,9 +532,9 @@ export default class CompareMirrorpanel extends M.Control {
     let pluginVector = null;
 
     this.mapL[mapLyr] = M.map({
-      container: 'mapjs' + mapLyr,
+      container: `mapjs${mapLyr}`,
       center: this.map_.getCenter(),
-      projection: this.map_.getProjection().code + '*' + this.map_.getProjection().units,
+      projection: `${this.map_.getProjection().code}*${this.map_.getProjection().units}`,
       zoom: this.map_.getZoom(),
     });
 
@@ -535,75 +545,85 @@ export default class CompareMirrorpanel extends M.Control {
       const listaPlugs = this.map_.getPlugins();
 
       listaCtrls.forEach((itemCtrl) => {
-        if (itemCtrl.name === 'backgroundlayers'){
+        if (itemCtrl.name === 'backgroundlayers') {
           this.mapL[mapLyr].addControls(['backgroundlayers']);
         }
-
       });
 
       listaPlugs.forEach((itemPlug) => {
         if (itemPlug.metadata_) {
-          //FullTOC
-          if (itemPlug.metadata_.name === "FullTOC") {
+          // FullTOC
+          if (itemPlug.metadata_.name === 'FullTOC') {
             pluginFullTOC4map = new M.plugin.FullTOC({
               position: itemPlug.position,
               collapsed: itemPlug.collapsed,
               collapsible: itemPlug.collapsible,
               http: itemPlug.http,
               https: itemPlug.https,
-              precharged: itemPlug.precharged
+              precharged: itemPlug.precharged,
             });
           }
-          //Vector
-          if (itemPlug.metadata_.name === "Vectors") {
+          // Vector
+          if (itemPlug.metadata_.name === 'Vectors') {
             pluginVector = new M.plugin.Vectors({
               position: itemPlug.position,
               collapsed: itemPlug.collapsed,
               collapsible: itemPlug.collapsible,
             });
           }
-          if (itemPlug.metadata_.name === "backimglayer") {
+          if (itemPlug.metadata_.name === 'backimglayer') {
+          /**
+ * Nota de Jesús: OJO!!
+ * El problema del backimglayer venía porque se usaban los mismos objetos capa en ambos mapas
+ * y eso provocaba los errores.
+ * Se ha sacado una versión específica para el comparador_pnoa con esa definición de capas fija.
+ * Las siguientes líneas se han comentado para subir al plugin.
+ *
+ * ToDO:
+ * Lo ideal sería que se le pasara por parámetro como antiguamente, pero como era una cosa urgente
+ * he optado por eso por ahora.
+ * En el iberpixcompare como todavía se usaba la configuración antigua en la que se le metían las
+ * capas por parámetro no daba ese error.
+ * Para un futuro lo ideal sería eso, meterlas por parámetro. No le borres nada por si hay que
+ * volver a compilar versión con algún cambio.
+ *
+ */
+            /* Para el Comparador PNOA descomentar las dos siguientes líneas y comentar
+// la tercera y comentar la definición posterior
+// BASE_LAYERS_CONFIG.layerId = mapLyr === 'A' ? 0 : mapLyr === 'B' ? 1 : mapLyr == 'C' ? 2 : 3,
+// pluginBackImgLayer4map = new M.plugin.BackImgLayer(BASE_LAYERS_CONFIG); */
 
-            /**
-             * Nota de Jesús: OJO!!
-             * El problema del backimglayer venía porque se usaban los mismos objetos capa en ambos mapas y eso provocaba los errores.
-             * Se ha sacado una versión específica para el comparador_pnoa con esa definición de capas fija.
-             * Las siguientes líneas se han comentado para subir al plugin.
-             *
-             * ToDO:
-             * Lo ideal sería que se le pasara por parámetro como antiguamente, pero como era una cosa urgente he optado por eso por ahora.
-             * En el iberpixcompare como todavía se usaba la configuración antigua en la que se le metían las capas por parámetro no daba ese error.
-             * Para un futuro lo ideal sería eso, meterlas por parámetro. No le borres nada por si hay que volver a compilar versión con algún cambio.
-             *
-             *
-             */
-            // Para el Comparador PNOA descomentar las dos siguientes líneas y comentar la tercera y comentar la definición posterior
-            //BASE_LAYERS_CONFIG.layerId = mapLyr === 'A' ? 0 : mapLyr === 'B' ? 1 : mapLyr == 'C' ? 2 : 3,
-            //pluginBackImgLayer4map = new M.plugin.BackImgLayer(BASE_LAYERS_CONFIG);
-
+            let auxID;
+            if (mapLyr === 'A') {
+              auxID = 0;
+            } else if (mapLyr === 'B') {
+              auxID = 1;
+            } else if (mapLyr === 'C') {
+              auxID = 2;
+            } else {
+              auxID = 3;
+            }
             pluginBackImgLayer4map = new M.plugin.BackImgLayer({
-              layerId: mapLyr === 'A' ? 0 : mapLyr === 'B' ? 1 : mapLyr == 'C' ? 2 : 3,
-              layerVisibility:  itemPlug.layerVisibility,
+              layerId: auxID,
+              layerVisibility: itemPlug.layerVisibility,
               columnsNumber: itemPlug.columnsNumber,
-              layerOpts: itemPlug.layerOpts
+              layerOpts: itemPlug.layerOpts,
             });
           }
-
         }
       });
     }
 
-
-    if (this.lyDropControl !== null){
-      if (mapLyr === 'B'){
+    if (this.lyDropControl !== null) {
+      if (mapLyr === 'B') {
         this.mapL[mapLyr].addPlugin(this.lyDropControlB);
       }
 
-      if (mapLyr === 'C'){
+      if (mapLyr === 'C') {
         this.mapL[mapLyr].addPlugin(this.lyDropControlC);
       }
 
-      if (mapLyr === 'D'){
+      if (mapLyr === 'D') {
         this.mapL[mapLyr].addPlugin(this.lyDropControlD);
       }
     }
@@ -621,7 +641,6 @@ export default class CompareMirrorpanel extends M.Control {
       this.mapL[mapLyr].addPlugin(pluginBackImgLayer4map);
     }
 
-
     if (this.showCursors) { this.addLayerCursor(mapLyr); }
     this.mapL[mapLyr].refresh();
   }
@@ -632,10 +651,10 @@ export default class CompareMirrorpanel extends M.Control {
   addLayerCursor(mapLyr) {
     // Cursor Layer
     this.lyrCursor[mapLyr] = new M.layer.Vector({
-      name: 'Coordenadas centro ' + mapLyr,
+      name: `Coordenadas centro ${mapLyr}`,
     }, { displayInLayerSwitcher: false });
 
-    this.featureLyrCursor[mapLyr] = new M.Feature('Center' + mapLyr, {
+    this.featureLyrCursor[mapLyr] = new M.Feature(`Center${mapLyr}`, {
       type: 'Feature',
       properties: {},
       geometry: {
@@ -650,8 +669,8 @@ export default class CompareMirrorpanel extends M.Control {
     this.mapL[mapLyr].addLayers(this.lyrCursor[mapLyr]);
     this.mapL[mapLyr].getMapImpl().on('pointermove', (event) => {
       this.lyrCursor[mapLyr].setVisible(false);
-      Object.keys(this.featureLyrCursor).forEach(k => {
-        if (k != mapLyr) {
+      Object.keys(this.featureLyrCursor).forEach((k) => {
+        if (k !== mapLyr) {
           if (this.featureLyrCursor[k] !== null) {
             this.lyrCursor[k].setVisible(true);
             this.featureLyrCursor[k].setGeometry({
@@ -664,20 +683,17 @@ export default class CompareMirrorpanel extends M.Control {
     });
   }
 
-
-
-  manageLyrAvailable(lyrList){
-
-    if (this.lyDropControlA.control_!== null){
+  manageLyrAvailable(lyrList) {
+    if (this.lyDropControlA.control_ !== null) {
       this.lyDropControlA.setDisabledLyrs(lyrList);
     }
-    if (this.lyDropControlB.control_!== null){
+    if (this.lyDropControlB.control_ !== null) {
       this.lyDropControlB.setDisabledLyrs(lyrList);
     }
-    if (this.lyDropControlC.control_!== null){
+    if (this.lyDropControlC.control_ !== null) {
       this.lyDropControlC.setDisabledLyrs(lyrList);
     }
-    if (this.lyDropControlD.control_!== null){
+    if (this.lyDropControlD.control_ !== null) {
       this.lyDropControlD.setDisabledLyrs(lyrList);
     }
   }
@@ -690,9 +706,9 @@ export default class CompareMirrorpanel extends M.Control {
    * @api stable
    */
   removeMaps() {
-    this.mapL['B'] = null;
-    this.mapL['C'] = null;
-    this.mapL['D'] = null;
+    this.mapL.B = null;
+    this.mapL.C = null;
+    this.mapL.D = null;
   }
 
   destroyMapsContainer() {

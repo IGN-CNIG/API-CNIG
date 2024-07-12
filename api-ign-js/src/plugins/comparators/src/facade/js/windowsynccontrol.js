@@ -364,9 +364,8 @@ export default class WindowSyncControl extends M.Control {
       });
 
     this.map_.addLayers(this.layers);
-    this.map_.getLayers().forEach(l => !l.isBase && l.setVisible(false));
+    this.map_.getLayers().forEach((l) => !l.isBase && l.setVisible(false));
   }
-
 
   /**
      * Activate Select/Input
@@ -413,7 +412,7 @@ export default class WindowSyncControl extends M.Control {
       if (newWindow.closed) {
         clearInterval(timer);
         // ? Se elimina por el indice para no perder la referencia
-        const index = this.mapsWindows_.findIndex(obj => obj.id === id);
+        const index = this.mapsWindows_.findIndex((obj) => obj.id === id);
         this.mapsWindows_.splice(index, 1);
       }
     }, 1000);
@@ -485,7 +484,7 @@ export default class WindowSyncControl extends M.Control {
     if (elements.length === 0) {
       elements = this.getAPIRestScriptAndLink(type, attr);
     }
-    return elements.map(l => l.outerHTML);
+    return elements.map((l) => l.outerHTML);
   }
 
   getAPIRestScriptAndLink(type, attr) {
@@ -532,8 +531,8 @@ export default class WindowSyncControl extends M.Control {
   }
 
   handlePluginScrips(name) {
-    const style = this.getScriptAndLink('link').some(s => s.includes(`${name.toLowerCase()}.ol.min.css`));
-    const script = this.getScriptAndLink('script').some(s => s.includes(`${name.toLowerCase()}.ol.min.js`));
+    const style = this.getScriptAndLink('link').some((s) => s.includes(`${name.toLowerCase()}.ol.min.css`));
+    const script = this.getScriptAndLink('script').some((s) => s.includes(`${name.toLowerCase()}.ol.min.js`));
 
     const currentUrl = window.location.href;
     if (currentUrl.includes('comparators') && (currentUrl.includes(M.config.MAPEA_URL))) {
@@ -580,4 +579,3 @@ export default class WindowSyncControl extends M.Control {
     return control instanceof WindowSyncControl;
   }
 }
-

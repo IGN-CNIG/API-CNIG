@@ -76,11 +76,7 @@ class DescribeFeatureType {
 
     let describeFeatureTypeResponse;
     if (/json/gi.test(this.outputFormat_)) {
-      try {
-        describeFeatureTypeResponse = JSON.parse(response.text);
-      } catch (err) {
-        throw err;
-      }
+      describeFeatureTypeResponse = JSON.parse(response.text);
     }
 
     if (!describeFeatureTypeResponse) {

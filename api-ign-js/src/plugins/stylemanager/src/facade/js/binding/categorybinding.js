@@ -102,8 +102,8 @@ export class CategoryBinding extends Binding {
       if (typeof callback === 'function') {
         callback();
       }
-      options.forEach(option => this.addEventOptionListener(option, options));
-      options.forEach(option => this.addEventCheckListener(option, options));
+      options.forEach((option) => this.addEventOptionListener(option, options));
+      options.forEach((option) => this.addEventCheckListener(option, options));
       this.deactivateSubmenu();
       this.addEventCheckFromSubmenu();
     });
@@ -254,7 +254,7 @@ export class CategoryBinding extends Binding {
     }
     const attributeExists = !M.utils.isNullOrEmpty(value);
     const values = this.getAllValuesAttribute(value)
-      .filter(val => !(M.utils.isNullOrEmpty(val)))
+      .filter((val) => !(M.utils.isNullOrEmpty(val)))
       .map((valu) => {
         return {
           name: valu,
@@ -315,7 +315,7 @@ export class CategoryBinding extends Binding {
    * @function
    */
   removeCategories() {
-    Object.values(this.styleCategories_).forEach(binding => binding.destroy());
+    Object.values(this.styleCategories_).forEach((binding) => binding.destroy());
     this.styleCategories_ = {};
   }
 
@@ -398,7 +398,7 @@ export class CategoryBinding extends Binding {
     const input = this.querySelectorParent(`[data-buttons-option-category] input[data-apply='${option.id}']`);
     element.addEventListener('click', () => {
       if (input.disabled === false) {
-        options.forEach(opt => this.hideSection(opt.id));
+        options.forEach((opt) => this.hideSection(opt.id));
         this.showSection(option.id);
         this.activeSection(option.id);
       }
@@ -445,7 +445,6 @@ export class CategoryBinding extends Binding {
     });
   }
 
-
   /**
    * @function
    */
@@ -455,7 +454,7 @@ export class CategoryBinding extends Binding {
       if (this.selectedCategory_ != null) {
         this.selectedCategory_[id] = true;
       }
-      options.forEach(option => this.hideSection(option.id));
+      options.forEach((option) => this.hideSection(option.id));
       this.showSection(id);
       this.activeSection(id);
     } else if (this.selectedCategory_ !== null) {
@@ -478,7 +477,7 @@ export class CategoryBinding extends Binding {
    * @function
    */
   activateSubmenu() {
-    this.querySelectorAllForEachParent('[data-buttons-option-category] input', input => input.disabled = false);
+    this.querySelectorAllForEachParent('[data-buttons-option-category] input', (input) => input.disabled = false);
     this.querySelectorAllForEachParent('[data-buttons-option-category] label[data-selector]', (label) => {
       label.classList.remove('check-inactive');
       label.classList.add('check-selected');
@@ -489,7 +488,7 @@ export class CategoryBinding extends Binding {
    * @function
    */
   deactivateSubmenu() {
-    this.querySelectorAllForEachParent('[data-buttons-option-category] input', input => input.disabled = true);
+    this.querySelectorAllForEachParent('[data-buttons-option-category] input', (input) => input.disabled = true);
     this.querySelectorAllForEachParent('[data-buttons-option-category] label[data-selector]', (label) => {
       label.classList.add('check-inactive');
       label.classList.remove('check-selected');
@@ -528,8 +527,8 @@ export class CategoryBinding extends Binding {
    */
   getAllValuesAttribute(attribute) {
     const features = this.layer_.getFeatures();
-    return features.map(feature =>
-      feature.getAttribute(attribute)).filter((elem, pos, arr) => arr.indexOf(elem) === pos);
+    return features.map((feature) => feature.getAttribute(attribute))
+      .filter((elem, pos, arr) => arr.indexOf(elem) === pos);
   }
 
   /**

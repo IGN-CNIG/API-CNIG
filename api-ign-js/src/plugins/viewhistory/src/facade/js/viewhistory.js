@@ -8,7 +8,6 @@ import api from '../../api';
 import es from './i18n/es';
 import en from './i18n/en';
 
-
 export default class ViewHistory extends M.Plugin {
   /**
    * @classdesc

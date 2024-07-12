@@ -190,7 +190,7 @@ export default class InfoCatastroControl extends M.Control {
 
       // Buscar parcela
       const buttonParcelSearch = this.html_.querySelector('button#m-infocatastro-searchParams');
-      buttonParcelSearch.addEventListener('click', e => this.onParamsSearch(e));
+      buttonParcelSearch.addEventListener('click', (e) => this.onParamsSearch(e));
 
       // Limpiar (tab parcela)
       const buttonParcelClean = this.html_.querySelector('button#m-infocatastro-parcela-limpiar');
@@ -264,7 +264,7 @@ export default class InfoCatastroControl extends M.Control {
    */
   initParams() {
     this.selectProvincias = this.html_.querySelector('#m-infocatastro-coordinatesSystemParcela>select#m-searchParamsProvincia-select');
-    this.selectProvincias.addEventListener('change', evt => this.onProvinciaSelect(evt, null));
+    this.selectProvincias.addEventListener('change', (evt) => this.onProvinciaSelect(evt, null));
     if (this.provincecode !== null) {
       this.onProvinciaSelect(null, this.provincecode, this.selectMunicipios);
     }
@@ -291,12 +291,12 @@ export default class InfoCatastroControl extends M.Control {
       this.clearMunicipiosSelect();
       this.inputPoligono.value = null;
       this.inputParcela.value = null;
-      const layer = this.map.getLayers().find(l => l.name === 'coordinateparcel');
+      const layer = this.map.getLayers().find((l) => l.name === 'coordinateparcel');
       this.map.removeLayers(layer);
     }
     if (clearCatastro) {
       this.inputRefCatastral.value = null;
-      const layer = this.map.getLayers().find(l => l.name === 'coordinatecatastro');
+      const layer = this.map.getLayers().find((l) => l.name === 'coordinatecatastro');
       this.map.removeLayers(layer);
       this.map.removePopup(this.map.getPopup());
     }
@@ -313,7 +313,7 @@ export default class InfoCatastroControl extends M.Control {
     if (this.html_ && this.html_.querySelector('button#m-infocatastro-consulRef')) {
       this.html_.querySelector('button#m-infocatastro-consulRef').removeEventListener('click', this.onRCConsult);
     }
-    const layer = this.map.getLayers().filter(l => l.name === 'coordinatecatastro' || l.name === 'coordinateparcel');
+    const layer = this.map.getLayers().filter((l) => l.name === 'coordinatecatastro' || l.name === 'coordinateparcel');
     this.map.removeLayers(layer);
     this.map.removePopup(this.map.getPopup());
   }
@@ -666,7 +666,7 @@ export default class InfoCatastroControl extends M.Control {
     }
     this.coordinatesLayer.setStyle(new M.style.Point(style));
     // Change zIndex value
-    this.coordinatesLayer.setZIndex(9999999999999999999);
+    this.coordinatesLayer.setZIndex(999999999999999);
 
     this.map.addLayers(this.coordinatesLayer);
   }
@@ -752,7 +752,6 @@ export default class InfoCatastroControl extends M.Control {
     const yFloat = parseFloat(y);
     this.map.setCenter(`${xFloat},${yFloat}*false`);
   }
-
 
   /**
    * This function inserts a popup on the map with information about its location.
@@ -864,8 +863,8 @@ export default class InfoCatastroControl extends M.Control {
 
       let popup = this.map.getPopup();
 
-      if (!M.utils.isNullOrEmpty(popup) && popup.getCoordinate()[0] === coordinates[0] &&
-        popup.getCoordinate()[1] === coordinates[1]) {
+      if (!M.utils.isNullOrEmpty(popup) && popup.getCoordinate()[0] === coordinates[0]
+        && popup.getCoordinate()[1] === coordinates[1]) {
         let hasExternalContent = false;
         popup.getTabs().forEach((t) => {
           if (t.title !== this.POPUP_TITLE) {

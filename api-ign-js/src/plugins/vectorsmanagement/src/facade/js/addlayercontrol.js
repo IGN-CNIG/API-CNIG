@@ -80,6 +80,13 @@ export default class AddLayerControl extends M.Control {
     cancel.style.backgroundColor = '#71a7d3';
     buttons.appendChild(cancel);
     dialog.style.minWidth = 'auto';
+    const buttons = dialog.querySelector('.m-button');
+    const cancel = document.createElement('button');
+    cancel.type = 'button';
+    cancel.innerHTML = getValue('cancel');
+    cancel.style.width = 'auto';
+    cancel.style.backgroundColor = '#71a7d3';
+    buttons.appendChild(cancel);
     const title = document.querySelector('.m-modal .m-title');
     title.style.backgroundColor = color;
     const btn = document.querySelector('.m-button button');
@@ -121,7 +128,6 @@ export default class AddLayerControl extends M.Control {
     this.deactivate();
   }
 
-
   /**
    * This function destroys this control
    *
@@ -129,8 +135,7 @@ export default class AddLayerControl extends M.Control {
    * @function
    * @api stable
    */
-  destroy() {
-  }
+  destroy() {}
 
   /**
    * This function is called on the control activation

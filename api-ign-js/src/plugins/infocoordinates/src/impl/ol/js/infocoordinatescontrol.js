@@ -19,10 +19,10 @@ export default class InfocoordinatesControl extends M.impl.Control {
 
   getCoordinates(feature, SRStarget, formatGMS, decimalGEOcoord, decimalUTMcoord) {
     const NODATA = '--';
-    let numPoint = feature.getId();
-    let coordinatesFeature = feature.getAttribute('coordinates');
-    let SRSfeature = feature.getAttribute('EPSGcode');
-    let coordinatesGEOoutput = ol.proj.transform(coordinatesFeature, SRSfeature, 'EPSG:4326');
+    const numPoint = feature.getId();
+    const coordinatesFeature = feature.getAttribute('coordinates');
+    const SRSfeature = feature.getAttribute('EPSGcode');
+    const coordinatesGEOoutput = ol.proj.transform(coordinatesFeature, SRSfeature, 'EPSG:4326');
     const datum = this.datumCalc(SRStarget);
     let res = {
       'NumPoint': numPoint,
@@ -38,13 +38,13 @@ export default class InfocoordinatesControl extends M.impl.Control {
         'datum': NODATA,
         'coordinatesUTM': {
           'coordX': NODATA,
-          'coordY': NODATA
-        }
-      }
+          'coordY': NODATA,
+        },
+      },
     };
 
     if (SRStarget != null) {
-      let coordinatesUTMoutput = ol.proj.transform(coordinatesFeature, SRSfeature, SRStarget);
+      const coordinatesUTMoutput = ol.proj.transform(coordinatesFeature, SRSfeature, SRStarget);
       res = {
         'NumPoint': numPoint,
         'projectionGEO': {
@@ -59,13 +59,13 @@ export default class InfocoordinatesControl extends M.impl.Control {
           'datum': datum,
           'coordinatesUTM': {
             'coordX': coordinatesUTMoutput[0].toFixed(decimalUTMcoord),
-            'coordY': coordinatesUTMoutput[1].toFixed(decimalUTMcoord)
-          }
-        }
-      }
+            'coordY': coordinatesUTMoutput[1].toFixed(decimalUTMcoord),
+          },
+        },
+      };
 
-      if (formatGMS == true) {
-        let coordinateGGMMSS = ol.coordinate.toStringHDMS(coordinatesGEOoutput, 2);
+      if (formatGMS === true) {
+        const coordinateGGMMSS = ol.coordinate.toStringHDMS(coordinatesGEOoutput, 2);
         res.projectionGEO.coordinatesGEO.latitude = coordinateGGMMSS.substr(0, 17);
         res.projectionGEO.coordinatesGEO.longitude = coordinateGGMMSS.substr(17);
       }
@@ -73,7 +73,6 @@ export default class InfocoordinatesControl extends M.impl.Control {
 
     return res;
   }
-
 
   datumCalc(srs) {
     let datum = 'ETRS89';
@@ -88,20 +87,20 @@ export default class InfocoordinatesControl extends M.impl.Control {
 
   readAltitudeFromWCSservice(coord, srcMapa) {
     // 1.- transformo las coordenadas a EPSG4258 ya que el servicio WCS es en ese srs
-    let coordinatesEPSG4528 = ol.proj.transform(coord, srcMapa, 'EPSG:4258')
+    const coordinatesEPSG4528 = ol.proj.transform(coord, srcMapa, 'EPSG:4258');
 
     // 2.- me genero un bbox de las coordenadas
-    let bbox = [
+    const bbox = [
       [coordinatesEPSG4528[0], coordinatesEPSG4528[1]],
-      [coordinatesEPSG4528[0] + 0.000001, coordinatesEPSG4528[1] + 0.000001]
-    ]
+      [coordinatesEPSG4528[0] + 0.000001, coordinatesEPSG4528[1] + 0.000001],
+    ];
 
     // 3.- lanzo el servicio y el método devolverá un texto que lo recogerá una promesa
     const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
-    const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&' +
-      'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
+    const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&'
+      + 'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
     const url = `${PROFILE_URL}${bbox}${PROFILE_URL_SUFFIX}`;
-    return M.remote.get(url)
+    return M.remote.get(url);
   }
 
   transform(box, code, currProj) {

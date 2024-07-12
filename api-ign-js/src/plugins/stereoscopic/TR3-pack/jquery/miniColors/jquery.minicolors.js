@@ -1,3 +1,4 @@
+/* eslint-disable */
 //
 // jQuery MiniColors: A tiny color picker built on jQuery
 //
@@ -183,18 +184,18 @@
       .prop('size', size)
       .wrap(minicolors)
       .after(
-        '<div class="minicolors-panel minicolors-slider-' + settings.control + '">' +
-      '<div class="minicolors-slider minicolors-sprite">' +
-      '<div class="minicolors-picker"></div>' +
-      '</div>' +
-      '<div class="minicolors-opacity-slider minicolors-sprite">' +
-      '<div class="minicolors-picker"></div>' +
-      '</div>' +
-      '<div class="minicolors-grid minicolors-sprite">' +
-      '<div class="minicolors-grid-inner"></div>' +
-      '<div class="minicolors-picker"><div></div></div>' +
-      '</div>' +
-      '</div>'
+        '<div class="minicolors-panel minicolors-slider-' + settings.control + '">'
+        + '<div class="minicolors-slider minicolors-sprite">'
+        + '<div class="minicolors-picker"></div>'
+        + '</div>'
+        + '<div class="minicolors-opacity-slider minicolors-sprite">'
+        + '<div class="minicolors-picker"></div>'
+        + '</div>'
+        + '<div class="minicolors-grid minicolors-sprite">'
+        + '<div class="minicolors-grid-inner"></div>'
+        + '<div class="minicolors-picker"><div></div></div>'
+        + '</div>'
+        + '</div>'
       );
 
     // The swatch
@@ -269,10 +270,10 @@
 
     // Do nothing if uninitialized, disabled, inline, or already open
     if(
-      !input.data('minicolors-initialized') ||
-      input.prop('disabled') ||
-      minicolors.hasClass('minicolors-inline') ||
-      minicolors.hasClass('minicolors-focus')
+      !input.data('minicolors-initialized')
+      || input.prop('disabled')
+      || minicolors.hasClass('minicolors-inline')
+      || minicolors.hasClass('minicolors-focus')
     ) return;
 
     hide();
@@ -924,10 +925,10 @@
   // Converts an RGB string to a hex string
   function rgbString2hex(rgb){
     rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
-    return (rgb && rgb.length === 4) ? '#' +
-    ('0' + parseInt(rgb[1],10).toString(16)).slice(-2) +
-    ('0' + parseInt(rgb[2],10).toString(16)).slice(-2) +
-    ('0' + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
+    return (rgb && rgb.length === 4) ? '#'
+      + ('0' + parseInt(rgb[1],10).toString(16)).slice(-2)
+      + ('0' + parseInt(rgb[2],10).toString(16)).slice(-2)
+      + ('0' + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
   }
 
   // Converts an RGB object to a hex string
@@ -1069,9 +1070,9 @@
         if(rgba === null) {
           value = settings.defaultValue;
         } else if(settings.format === 'rgb') {
-          value = settings.opacity ?
-            parseRgb('rgba(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ',' + input.attr('data-opacity') + ')') :
-            parseRgb('rgb(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ')');
+          value = settings.opacity
+            ? parseRgb('rgba(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ',' + input.attr('data-opacity') + ')')
+            : parseRgb('rgb(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ')');
         } else {
           value = rgb2hex(rgba);
         }

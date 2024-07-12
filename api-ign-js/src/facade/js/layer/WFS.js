@@ -2,7 +2,12 @@
  * @module M/layer/WFS
  */
 import WFSImpl from 'impl/layer/WFS';
-import { isUndefined, isNullOrEmpty, normalize, isString } from '../util/Utils';
+import {
+  isUndefined,
+  isNullOrEmpty,
+  normalize,
+  isString,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';
 import * as LayerType from './Type';
@@ -78,7 +83,7 @@ class WFS extends Vector {
    * </code></pre>
    * @api
    */
-  constructor(userParams = {}, options = {}, vendorOpts = {}, implParam) {
+  constructor(userParams = {}, options = {}, vendorOpts = {}, implParam = undefined) {
     // This layer is of parameters.
     const parameters = parameter.layer(userParams, LayerType.WFS);
 
@@ -88,10 +93,7 @@ class WFS extends Vector {
       optionsVar.maxExtent = userParams.maxExtent;
     }
 
-    let impl = implParam;
-    if (!implParam) {
-      impl = new WFSImpl(optionsVar, vendorOpts);
-    }
+    const impl = implParam || new WFSImpl(optionsVar, vendorOpts);
 
     // calls the super constructor
     super(parameters, optionsVar, undefined, impl);
@@ -135,7 +137,6 @@ class WFS extends Vector {
      */
     this.ids = parameters.ids;
 
-
     /**
      * WFS version: Opcional, versión del estándar a utilizar. El valor predeterminado es 1.0.0.
      */
@@ -146,6 +147,20 @@ class WFS extends Vector {
      * por defecto falso.
      */
     this.extract = parameters.extract === undefined ? false : parameters.extract;
+
+    /**
+     * WFS minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * WFS maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
      * options: Opciones WFS.
@@ -204,31 +219,6 @@ class WFS extends Vector {
   }
 
   /**
-   * Devuelve la leyenda de la capa.
-   * @function
-   * @return {M.layer.WFS.impl.legend} Devuelve la leyenda.
-   * @api
-   */
-  get legend() {
-    return this.getImpl().legend;
-  }
-
-  /**
-   * Sobrescribe la leyenda.
-   * @function
-   * @param {String} newLegend Nueva leyenda.
-   * @api
-   */
-  set legend(newLegend) {
-    if (isNullOrEmpty(newLegend)) {
-      this.getImpl().legend = this.name;
-    } else {
-      this.getImpl().legend = newLegend;
-    }
-  }
-
-
-  /**
    * Devuelve el CQL de la capa.
    * @function
    * @return {M.layer.WFS.impl.cql}  Devuelve el CQL.
@@ -247,7 +237,6 @@ class WFS extends Vector {
   set cql(newCQL) {
     this.getImpl().cql = newCQL;
   }
-
 
   /**
    * Devuelve la geometría de la capa WFS.
@@ -274,7 +263,6 @@ class WFS extends Vector {
       this.getImpl().geometry = parsedGeom;
     }
   }
-
 
   /**
    * Devuelve los ids de la capa.
@@ -323,6 +311,7 @@ class WFS extends Vector {
       this.getImpl().version = '1.0.0'; // default value
     }
   }
+
   /**
    * Este método Sobrescribe el filtro CQL.
    * @function
@@ -359,7 +348,6 @@ class WFS extends Vector {
   setStyle(styleParam, applyToFeature = false, defaultStyle = WFS.DEFAULT_OPTIONS_STYLE) {
     super.setStyle(styleParam, applyToFeature, defaultStyle);
   }
-
 
   /**
    * Este método comprueba si un objeto es igual

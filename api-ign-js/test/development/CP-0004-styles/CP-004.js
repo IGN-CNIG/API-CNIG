@@ -726,9 +726,9 @@ const addTestFunctions = () => {
 };
 
 
-/////////////////////
-// ERRORES develop //
-/////////////////////
+//////////////////////////
+// ERRORES develop y ol //
+//////////////////////////
 
 // "TypeError: layer is null" en "remove Composite.js:93" NO ES ERROR si no se ha dejado tiempo al layer a cargar antes de lanzar la función responsable.
 

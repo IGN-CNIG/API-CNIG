@@ -143,7 +143,7 @@ https://componentes.cnig.es/api-core?locatorscn=TL*true*true*tooltip*16
 https://componentes.cnig.es/api-core?locatorscn=TL*true*true*tooltip*16*pinAzul*true
 ```
 
-### Ejemplo de uso 
+### Ejemplo de uso
 
 Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
 Ejemplo:

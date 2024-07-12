@@ -43,12 +43,10 @@ export default class LyrCompare extends M.Plugin {
     if (options.layers === undefined || options.layers.length < 2) {
       M.dialog.error(getValue('no_layers_plugin'), 'lyrcompare');
       this.error_ = true;
+    } else if (Array.isArray(options.layers)) {
+      this.layers = options.layers;
     } else {
-      if (Array.isArray(options.layers)) {
-        this.layers = options.layers;
-      } else {
-        this.layers = options.layers.split(',');
-      }
+      this.layers = options.layers.split(',');
     }
 
     /**
@@ -66,7 +64,6 @@ export default class LyrCompare extends M.Plugin {
     this.map_ = null;
 
     if (this.error_ === false) {
-
       /**
        * Position of the Plugin
        * @public
@@ -94,7 +91,9 @@ export default class LyrCompare extends M.Plugin {
        * @type {number}
        * @public
        */
-      this.staticDivision = options.staticDivision === undefined ? 1 : parseInt(options.staticDivision);
+      this.staticDivision = options.staticDivision === undefined
+        ? 1
+        : parseInt(options.staticDivision, 10);
 
       /**
        * Opacity
@@ -105,7 +104,7 @@ export default class LyrCompare extends M.Plugin {
       if (options.opacityVal === undefined) {
         this.opacityVal = 100;
       } else {
-        this.opacityVal = parseInt(options.opacityVal);
+        this.opacityVal = parseInt(options.opacityVal, 10);
         if (this.opacityVal <= 0) {
           this.opacityVal = 0;
         } else if (this.opacityVal >= 100) {
@@ -122,7 +121,7 @@ export default class LyrCompare extends M.Plugin {
       if (options.comparisonMode === undefined) {
         this.comparisonMode = 0;
       } else {
-        this.comparisonMode = parseInt(options.comparisonMode);
+        this.comparisonMode = parseInt(options.comparisonMode, 10);
         if (this.comparisonMode <= 0 || this.comparisonMode > 3) {
           this.comparisonMode = 0;
         }
@@ -155,7 +154,7 @@ export default class LyrCompare extends M.Plugin {
       if (options.defaultLyrA === undefined) {
         this.defaultLyrA = 0;
       } else {
-        this.defaultLyrA = parseInt(options.defaultLyrA);
+        this.defaultLyrA = parseInt(options.defaultLyrA, 10);
       }
 
       /**
@@ -166,7 +165,7 @@ export default class LyrCompare extends M.Plugin {
       if (options.defaultLyrB === undefined) {
         this.defaultLyrB = this.defaultLyrA !== 0 ? 0 : 1;
       } else {
-        this.defaultLyrB = parseInt(options.defaultLyrB);
+        this.defaultLyrB = parseInt(options.defaultLyrB, 10);
       }
 
       if (this.defaultLyrA === this.defaultLyrB) {
@@ -182,7 +181,7 @@ export default class LyrCompare extends M.Plugin {
       if (options.defaultLyrC === undefined) {
         this.defaultLyrC = 2;
       } else {
-        this.defaultLyrC = parseInt(options.defaultLyrC);
+        this.defaultLyrC = parseInt(options.defaultLyrC, 10);
       }
 
       if ((this.defaultLyrA === this.defaultLyrC) || (this.defaultLyrB === this.defaultLyrC)) {
@@ -198,10 +197,11 @@ export default class LyrCompare extends M.Plugin {
       if (options.defaultLyrD === undefined) {
         this.defaultLyrD = 3;
       } else {
-        this.defaultLyrD = parseInt(options.defaultLyrD);
+        this.defaultLyrD = parseInt(options.defaultLyrD, 10);
       }
 
-      if ((this.defaultLyrA === this.defaultLyrD) || (this.defaultLyrB === this.defaultLyrD) || (this.defaultLyrC === this.defaultLyrD)) {
+      if ((this.defaultLyrA === this.defaultLyrD) || (this.defaultLyrB === this.defaultLyrD)
+        || (this.defaultLyrC === this.defaultLyrD)) {
         M.dialog.error(getValue('repeated_layers'), 'lyrcompare');
         this.error_ = true;
       }
@@ -236,7 +236,7 @@ export default class LyrCompare extends M.Plugin {
     this.controls_.push(this.control_);
     if (this.error_) {
       const plugin = map.getPlugins('lyrcompare');
-      if (plugin.length !== 0) map.removePlugins(map.getPlugins('lyrcompare'))
+      if (plugin.length !== 0) map.removePlugins(map.getPlugins('lyrcompare'));
     } else {
       if (this.interface) {
         this.panel_ = new M.ui.Panel('panelLyrcompare', {
@@ -261,7 +261,6 @@ export default class LyrCompare extends M.Plugin {
     }
   }
 
-
   /**
    * This function destroys this plugin
    *
@@ -278,10 +277,12 @@ export default class LyrCompare extends M.Plugin {
 
     this.map_.removeControls([this.control_]);
     this.control_.removeCurtainLayers(this.control_.getLayersNames());
-    [this.name_, this.error_, this.layers, this.controls_, this.map_, this.position, this.collapsed, this.collapsible,
-      this.staticDivision, this.opacityVal, this.comparisonMode, this.metadata_, this.tooltip_, this.interface, this.defaultLyrA,
-      this.defaultLyrB, this.defaultLyrC, this.defaultLyrD
-    ] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
+    [this.name_, this.error_, this.layers, this.controls_, this.map_, this.position,
+      this.collapsed, this.collapsible, this.staticDivision, this.opacityVal, this.comparisonMode,
+      this.metadata_, this.tooltip_, this.interface, this.defaultLyrA, this.defaultLyrB,
+      this.defaultLyrC, this.defaultLyrD] = [
+      null, null, null, null, null, null, null, null, null, null, null, null, null,
+      null, null, null, null, null];
   }
 
   /**
@@ -295,7 +296,7 @@ export default class LyrCompare extends M.Plugin {
     return this.name_;
   }
 
-  manageLyrAvailable(lyrList){
+  manageLyrAvailable(lyrList) {
     this.control_.manageLyrAvailable(lyrList);
   }
 
@@ -341,13 +342,9 @@ export default class LyrCompare extends M.Plugin {
    * @api
    * @return {Boolean}
    */
-   isActive() {
-
-    return this.control_.comparisonMode===0 ? false : true;
-
+  isActive() {
+    return !this.control_.comparisonMode === 0;
   }
-
-
 
   /**
    * This

@@ -88,7 +88,6 @@ export default class PrinterMap extends M.Plugin {
 
     this.serverUrl_ = parameters.serverUrl || 'https://componentes.cnig.es/geoprint';
 
-
     /**
      * Mapfish template url
      * @private
@@ -146,7 +145,6 @@ export default class PrinterMap extends M.Plugin {
     this.headerLegend_ = parameters.headerLegend || '';
 
     this.filterTemplates_ = parameters.filterTemplates || [];
-
 
     /**
      *@private

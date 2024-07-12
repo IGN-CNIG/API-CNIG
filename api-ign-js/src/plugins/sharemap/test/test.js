@@ -29,7 +29,7 @@ const geoJSON = new M.layer.GeoJSON({
 }); map.addLayers(geoJSON); // */
 
 const mp = new ShareMap({
-  position: 'TL', // 'TL' | 'TR' | 'BR' | 'BL'
+  position: 'BL', // 'TL' | 'TR' | 'BR' | 'BL'
   // title: 'TEST TITULO', // Texto título de compartir URL
   // copyBtn: 'TEST COPIAR BOTÓN', // Texto del botón de copiado de URL
   // text: 'TEST TEXTO', // Texto título de HTML embebido
@@ -37,8 +37,8 @@ const mp = new ShareMap({
   // btn: 'TEST BOTÓN', // Botón de cerrado con texto "OK"
   // tooltip: 'TEST TOOLTIP', // Mensaje del Tooltip que confirma que se ha copiado elementos
   baseUrl: 'https://componentes.cnig.es/api-core/',
-  urlAPI: false, // Controla si baseUrl se tiene que usar o si se usa la URL actual.
-  minimize: true, // Solo se usa si "urlAPI" esta puesto a true, cambia el formato de URL o HTML a copiar.
+  urlAPI: true, // Controla si baseUrl se tiene que usar o si se usa la URL actual.
+  minimize: false, // Solo se usa si "urlAPI" esta puesto a true, cambia el formato de URL o HTML a copiar.
   shareLayer: true, // Solo se usa si "urlAPI" es false, incluye los layers presentes en URL o HTML si esta puesto a true
   filterLayers: [], // ['cosas1_poligono'], // Solo se usa si "shareLayer" es false o undefined, aplica filtro de layers para incluir solo los nombrados aquí en URL o HTML.
   overwriteStyles: true, // Controla si se aplica o no el estilo aportado en "styles".
@@ -51,8 +51,3 @@ const mp = new ShareMap({
 
 map.addPlugin(mp); window.mp = mp;
 
-// Lista de errores encontrados
-
-// 1 - ERROR, El icono de share de "twitter" sigue siendo el antiguo, posiblemente se tiene que reemplazar por X.
-
-// 2 - ERROR, Si el mapa es de altura reducida, este panel abierto causa que los elementos internos se salgan de este, se puede ver con el iframe que se puede obtener.

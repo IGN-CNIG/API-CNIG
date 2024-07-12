@@ -43,8 +43,8 @@ export default class IGNSearchLocatorControl extends M.impl.Control {
    */
   wrapComplexFeature(feature) {
     const featureGeom = feature.getGeometry();
-    if ((featureGeom.getType() === M.geom.wkt.type.POLYGON) ||
-      (featureGeom.getType() === M.geom.wkt.type.MULTI_POLYGON)) {
+    if ((featureGeom.getType() === M.geom.wkt.type.POLYGON)
+      || (featureGeom.getType() === M.geom.wkt.type.MULTI_POLYGON)) {
       let centroid;
       if (featureGeom.getType() === M.geom.wkt.type.POLYGON) {
         centroid = featureGeom.getInteriorPoint();
@@ -111,8 +111,8 @@ export default class IGNSearchLocatorControl extends M.impl.Control {
    */
   containsExtentView(extent) {
     const size = this.facadeMap_.getMapImpl().getSize();
-    const viewExtent =
-      this.facadeMap_.getMapImpl().getView().calculateExtent(size);
+    const viewExtent = this.facadeMap_.getMapImpl()
+      .getView().calculateExtent(size);
     return ol.extent.containsExtent(viewExtent, extent);
   }
 }

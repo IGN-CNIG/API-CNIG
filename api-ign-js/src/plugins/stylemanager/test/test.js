@@ -497,6 +497,20 @@ const wfs2 = new M.layer.WFS({
   geometry: 'Point',
 });
 map.addWFS(wfs2); window.wfs2 = wfs2; // */
+
+let estilo2 = new M.style.Point({
+    radius: 5, 
+    fill: {  
+      color: 'green',
+      opacity: 0.5
+    },
+    stroke: {
+      color: '#FF0000'
+    }
+});
+
+wfs2.setStyle(estilo2);
+
 /* / Estilado de WF2
 const estilo = new M.style.Point({
   // fill: { color: "#67af13", opacity: 0.4 },
@@ -546,107 +560,6 @@ const mp = new StyleManager({
   // tooltip: 'TEST TOOLTIP StyleManager',
 
   // Seleccion de la capa default que ya estará seleccionada en el inicio.
-  // layer: wfs3, // Capas presentes en este test.js points | lines | polygons | generic | wfs1 | wfs2 | wfs3 | layerMunicipio
+  // layer: wfs2, // Capas presentes en este test.js points | lines | polygons | generic | wfs1 | wfs2 | wfs3 | layerMunicipio
 });
 map.addPlugin(mp); window.mp = mp;
-
-// Lista de errores encontrados
-
-// 1 - ERROR Si se añade el parámetro "layer" al plugin, salta el error "Uncaught (in promise) TypeError: this.bindings_[style] is undefined" en "addSelectedPanel bindingcontroller.js:112" en diferentes partes del código según el uso.
-// La causa parece ser por obtener un null de "layer.getStyle()" de la función "initBindings(layer)", que se interpreta como cadena vacía en los nombres a usar de estilos.
-// Se puede obtener el estado del layer con "layer.impl_.loaded_" para saber si ha acabado su generado(Se hicieron pruebas de setTimeout que lo arreglaban) y si se puede obtener ahora el estilo. Pero añadirlo a "initBindings" no es suficiente, porque tampoco es capaz de aplicar los valores defaul a los inputs de editado.
-// Para solucionar esto habrá que cambiar estas dos funciones en "plugins/stylemanager/src/facade/js/bindingcontroller.js"
-// change(layer) {
-//   // eslint-disable-next-line no-underscore-dangle
-//   if (layer.impl_.loaded_ === false) {
-//     layer.once(M.evt.LOAD, () => { this.change(layer); });
-//   } else {
-//     this.destroyViews();
-//     this.renderViews(layer);
-//     this.renderViewsPromise().then(() => {
-//       this.setLayer(layer);
-//       this.resetOptions();
-//       this.setCompatiblePanels();
-//       this.initBindings(layer);
-//     });
-//   }
-// }
-// initBindings(layer) {
-//   const AuxFuncBind = () => {
-//     const styles = [layer.getStyle()];
-//     if (styles[0] instanceof M.style.Composite) {
-//       styles.push(...styles[0].getStyles());
-//    }
-//     const styleNames = styles.map(style => BindingController.parseStyleToName(style));
-//     styleNames.forEach((style) => {
-//       this.showCompatiblePanel(style);
-//       this.activeLastSelected(style);
-//     });
-//   };
-//   if (layer.getStyle() === null) {
-//     this.bindings_['stylesimple'].setGeometry(this.geometry_).setLayer(layer);
-//     layer.once(M.evt.CHANGE_STYLE, AuxFuncBind);
-//   } else {
-//     AuxFuncBind();
-//   }
-// }
-// Parece que es también necesario en "plugins/stylemanager/src/facade/js/stylemanagerControl.js" reemplazar esta función, podría hasta no ser necesario el cambio de "change" indicado antes, porque en casos de layers que tardan en ser cargados pueden sufrir error por falta de features:
-// renderOptionsLayerParam(htmlSelect, html, layers) {
-//   if (this.layer_ instanceof M.layer.Vector) {
-//     Promise.all(this.bindinController_.getAllCompilePromises()).then(() => {
-//       const auxFunctRender = () => {
-//         this.renderOptions(htmlSelect, html, this.layer_);
-//         const htmlRes = M.template.compileSync(selectlayer, {
-//           vars: {
-//             layers: layers.map((layer) => {
-//               return {
-//                 name: layer.name,
-//                 selected: this.layer_.name,
-//               };
-//             }),
-//           },
-//         });
-//         htmlSelect.innerHTML = htmlRes.innerHTML;
-//       };
-//       // eslint-disable-next-line no-underscore-dangle
-//       if (this.layer_.impl_.loaded_ === false) {
-//         this.layer_.once(M.evt.LOAD, () => { auxFunctRender(); });
-//       } else {
-//         auxFunctRender();
-//       }
-//     });
-//   }
-// }
-
-// 2 - ERROR, Click sobre los iconos de "✔"(Tick) es inconsistente, porque este esta hecho con una rotación, por lo que las esquinas de antes, ahora no son clicks validos, (Las esquinas de los checkbox de antes no se pueden usar como referencia por esto).
-// Se ha podido encontrar un reemplazo sencillo que cambia el formato de este tick, cambiando este CSS de "plugins/stylemanager/src/facade/assets/css/stylemanager.css":
-// input[type="checkbox"].m-input:checked+label:before, input[type="checkbox"].m-input:checked+label.check-selected:before, input[type="checkbox"].m-input:checked+label.check-inactive:before {...
-// Cambiando los valores antiguos de este por estos de aquí: { font-family: g-cartografia; content: '\e801'; color: #000; text-align: center; border-color: transparent; scale: 1.4; }
-// En este mismo archivo "stylemanager/src/facade/assets/css/stylemanager.css", me he encontrado con estos errores adicionales, escoge mal color con "#white"(Sobra #) y asigna mal padding "+padding-right: 0px;"(Sobra "+"), parecen ser errores de escritura. No se si arreglar estos causará algún error o no cuando funcionen bien, con algunas prueba no parecen serlo.
-
-// 3 - ERROR, Si se pone en puntos la opción de añadir proporcionalidad, este muestra estos valores según el relleno de configurado simple, pero si se quita el proporcionado, el relleno no se puede modificar porque la proporción de antes retiene en memoria el color y su estilo aun aplicado.
-// No puedo encontrar la causa de esto, podría ser que el clear del style no limpia esto o que el obtener de estilos simples incluye el resto de elementos que se quedaron en estilos, sin limpiar esta proporcionalidad.
-
-// 4 - ERROR, La función "serializedStyle" de "plugins/stylemanager/src/facade/js/stylemanagerControl.js" puede no tener un "style" valido, por lo que sale null.
-// Con poner "if (!style) return;" tras "const style = this.bindinController_.getStyle();" se impide este error y se ve el mensaje de popup explicativo.
-
-// 5 - ERROR, La función "activateOptionsStyle" de "plugins/stylemanager/src/facade/js/binding/simplebinding.js", puede tener un error de undefined al listar los posibles estilos. El if "if (options['point']['fill'] != null || options['line']['fill'] != null || options['polygon']['fill'] != null) {..." no prevé los casos de point, line o polygon, no existiendo.
-// Se ha intentado añadir a todos los apartados un check de "!== undefined" de estos, pero parece que el error concretamente fue causado por enviar un M.Style.Point, que esta aplicación creo que solo espera que sea el Generic que tiene los tres elementos.
-// Desconozco que se podría hacer con estos apartados para que no de error si se aporta un layer que no tiene el estilo deseado que no cause error.
-
-// 6 - ERROR, Si el estilo inicial tiene una imagen form con "class", no se consigue retener el "class" (por ejemplo "fa-heart") que se ocupa de la imagen final. En "generateOptions() {..." de "plugins/stylemanager/src/facade/js/binding/simplebinding.js" parece ser el lugar que hay que arreglar, solo se obtienen los valores que fueron puestos en el HTML del icon, el input de class esta pero no se incluye, posiblemente porque requiere también configurar font-family en ese caso.
-// He conseguido que se pueda ver esta imagen de clase si se incluye tras "styleOpts['options'] = {..." el "styleOpts.options.point.icon.class = 'fa-heart';" con esto se pudo ver en el mapa los puntos con esta imagen deseada, se tendría que ver como se puede hacer de forma correcta.
-// Se observa que posiblemente se tiene que tratar en "Fuente" en vez de "icon" para este caso, no se incluyo la familia "Font Awesome" y escogido ahí el "fa-haert", porque realmente existe esta configuración y se puede trabajar con ella, pero por alguna razón no se añade aquí a los inputs en caso de ser introducido con este parámetro.
-
-// 7 - ERROR, Si se escoge en la prueba la capa de "campamentos", se puede ver que sufre un error 404 al llamar a una URL en el apartado de "categorías"(Para entrar en este apartado hay que apagar "simple" y escoger "categorías" luego cuando deja de ser inactivo), se ve en "plugins/stylemanager/src/templates/categorystyles.html" que se añade esa imagen si se edita algo, pero desconozco porque pone esa configuración default que no existe, si se configurá el aspecto se modifica a una base64 que no da error entonces.
-
-// 8 - ERROR de traducciones. En "Fuente" de estas categorías, no hay textos de traducciones. Creo que el propio template se asigna aquí "new SimpleCategoryBinding(simpleoptions"
-// Se ha podido encontrar la causa de este error "{{translation.***}}" esto es incorrecto ya que la variable "translation" no existe y tiene que ser "translations".
-// Además en "{{translation.rotate}}" o "{{translations.rotate}}" este "rotate" tampoco existe, tiene que ser al final "{{translations.rotation}}"
-// Podrían hacer falta adicionales traducciones por ejemplo para "bkColor:", "Linedash:", "Linedash Offset:", "Line Cap"(Falta también ":"), "Line Join"(Falta también ":"), "Offset:", "Escala:", "Snap to pixel" ..., se puede fácilmente encontrar todos estos con esta búsqueda de "</span>".
-// Habrá que tener en cuenta todos los posibles errores, hay hasta veces que solo se usa un lenguaje, 2 formas distintas de indicar lo mismo con un adicional espacio o no, otras veces faltan ":". Si se quiere añadir más traducciones en el futuro los apartados de "color" que ahora son validos para Ingles y Español podrían dejar de serlo por lo que habrá que añadir posiblemente traducciones de estos también.
-// También esta el caso de "translations.range" que no existe y tiene que ser "translations.rank" en "stylemanager/src/templates/stylecluster.html".
-
-// 9 - ERROR, me he encontrado con un error general que creo que no se ha apuntado antes de "Uncaught (in promise) TypeError: Cannot read properties of null (reading 'indexOf')"" en "WFS.js:92:34", en concreto es el "response.text.indexOf('featureId and cql_filter')" porque el text es null o undefined por lo que no tiene indexOf.
-
-// 10 - ERROR, en JSP de pruebas de este plugin, hay una capa "dea100:ie03_gasoducto" que parece que nunca carga ningún feature.

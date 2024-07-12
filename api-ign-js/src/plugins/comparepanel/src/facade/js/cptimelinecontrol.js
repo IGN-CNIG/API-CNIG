@@ -48,10 +48,9 @@ export default class TimelineControl extends M.Control {
    * @api stable
    */
   createView(map) {
-
     this.map = map;
     return new Promise((success, fail) => {
-      let intervals = [];
+      const intervals = [];
       this.intervals.forEach((interval, k) => {
         const layer = this.transformToLayers(interval[2]);
         const copy = this.getMapLayer(layer);
@@ -61,11 +60,11 @@ export default class TimelineControl extends M.Control {
 
         // this.map.addLayers(layer);
 
-        let iv = {
+        const iv = {
           number: k,
           name: interval[0],
           tag: interval[1],
-          service: layer
+          service: layer,
         };
         intervals.push(iv);
       });
@@ -81,8 +80,9 @@ export default class TimelineControl extends M.Control {
       });
 
       this.intervals.forEach((interval, k) => {
-        let tag = document.createElement('div');
-        if (k != 0 && k != this.intervals.length - 1 && k != parseInt(this.intervals.length / 2)) {
+        const tag = document.createElement('div');
+        if (k !== 0 && k !== this.intervals.length - 1
+          && k !== parseInt(this.intervals.length / 2, 10)) {
           tag.dataset.tag = '';
         } else {
           tag.dataset.tag = interval.tag;
@@ -104,18 +104,16 @@ export default class TimelineControl extends M.Control {
       });
       const play = this.template.querySelector('#m-timeline-play');
       play.addEventListener('click', (e) => {
-        //e.target.classList.remove('cp-control-siguiente');
-        //e.target.classList.add('cp-control-pausa');
+        // e.target.classList.remove('cp-control-siguiente');
+        // e.target.classList.add('cp-control-pausa');
         this.running = !this.running;
-        if (this.running){
+        if (this.running) {
           this.playTimeline(this.running);
         }
       });
       success(this.template);
-
     });
   }
-
 
   /**
    * Transform StringLayers to Mapea M.Layer
@@ -137,7 +135,7 @@ export default class TimelineControl extends M.Control {
         if (urlLayer[0].toUpperCase() === 'WMS') {
           newLayer = new M.layer.WMS({
             url: urlLayer[2],
-            name: urlLayer[3]
+            name: urlLayer[3],
           });
         } else if (urlLayer[0].toUpperCase() === 'WMTS') {
           newLayer = new M.layer.WMTS({
@@ -149,24 +147,21 @@ export default class TimelineControl extends M.Control {
           });
         }
       } else {
-        const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[0];
+        const layerByName = this.map.getLayers().filter((l) => layer.includes(l.name))[0];
         newLayer = this.isValidLayer(layerByName) ? layerByName : null;
       }
     } else if (layer instanceof Object) {
-      const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[0];
+      const layerByObject = this.map.getLayers().filter((l) => layer.name.includes(l.name))[0];
       newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
     }
 
     if (newLayer !== null) {
       newLayer.displayInLayerSwitcher = false;
       newLayer.setVisible(false);
-      return newLayer
-    } else {
-      this.map.removeLayers(layer);
+      return newLayer;
     }
+    this.map.removeLayers(layer);
   }
-
-  
 
   /** This function change layers and show layer name when slider moves
    *
@@ -176,50 +171,49 @@ export default class TimelineControl extends M.Control {
    * @return
    */
   changeSlider(elem) {
-    
     document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
     const left = (((elem.value - elem.min) / (elem.max - elem.min)) * ((256 - 5) - 5)) + 5;
-    document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 'px');
-    if(this.animation || this.intervals[0].name !== ''){
+    document.querySelector('.div-m-timeline-slider').style.setProperty('--left', `${left}px`);
+    if (this.animation || this.intervals[0].name !== '') {
       document.querySelector('.m-timeline-names').style.display = 'block';
     }
     if (this.animation) {
       document.querySelector('.m-timeline-button').style.display = 'block';
     }
 
-    let step = parseFloat(elem.value);
+    const step = parseFloat(elem.value);
     this.intervals.forEach((interval) => {
       this.getMapLayer(interval.service).setVisible(false);
       document.querySelector('.m-timeline-names').innerHTML = '';
     });
     if (step % 1 === 0) {
-      document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 20 + 'px');
+      document.querySelector('.div-m-timeline-slider').style.setProperty('--left', `${left + 20}px`);
       this.getMapLayer(this.intervals[step].service).setVisible(true);
       document.querySelector('.m-timeline-names').innerHTML = this.intervals[step].name;
-      document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this.intervals[step].tag + '"')
+      document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', `"${this.intervals[step].tag}"`);
       if (this.intervals[step].tag !== '') {
         document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '1');
       } else {
         document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
       }
     } else {
-      this.getMapLayer(this.intervals[parseInt(step)].service).setVisible(true);
-      this.getMapLayer(this.intervals[parseInt(step) + 1].service).setVisible(true);
-      if (this.intervals[parseInt(step)].tag !== '' && this.intervals[parseInt(step) + 1].tag !== '') {
-        document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 'px');
+      const auxStep = parseInt(step, 10);
+      this.getMapLayer(this.intervals[auxStep].service).setVisible(true);
+      this.getMapLayer(this.intervals[auxStep + 1].service).setVisible(true);
+      if (this.intervals[auxStep].tag !== '' && this.intervals[auxStep + 1].tag !== '') {
+        document.querySelector('.div-m-timeline-slider').style.setProperty('--left', `${left}px`);
         document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '1');
-        document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this.intervals[parseInt(step)].tag + ' - ' + this.intervals[parseInt(step) + 1].tag + '"');
-        document.querySelector('.m-timeline-names').innerHTML = this.intervals[parseInt(step)].name + ' y ' + this.intervals[parseInt(step) + 1].name;
-      } else if (this.intervals[parseInt(step)].tag === '' && this.intervals[parseInt(step) + 1].tag === '') {
+        document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', `"${this.intervals[auxStep].tag} - ${this.intervals[auxStep + 1].tag}"`);
+        document.querySelector('.m-timeline-names').innerHTML = `${this.intervals[auxStep].name} y ${this.intervals[auxStep + 1].name}`;
+      } else if (this.intervals[auxStep].tag === '' && this.intervals[auxStep + 1].tag === '') {
         document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
       } else {
-        document.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 20 + 'px');
+        document.querySelector('.div-m-timeline-slider').style.setProperty('--left', `${left + 20}px`);
         document.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '10');
-        document.querySelector('.m-timeline-names').innerHTML = this.intervals[parseInt(step)].name + this.intervals[parseInt(step) + 1].name;
-        document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this.intervals[parseInt(step)].tag + this.intervals[parseInt(step) + 1].tag + '"');
+        document.querySelector('.m-timeline-names').innerHTML = this.intervals[auxStep].name + this.intervals[auxStep + 1].name;
+        document.querySelector('.div-m-timeline-panel').style.setProperty('--valor', `"${this.intervals[auxStep].tag}${this.intervals[auxStep + 1].tag}"`);
       }
     }
-
   }
 
   /** This function search a layer in the map
@@ -230,49 +224,48 @@ export default class TimelineControl extends M.Control {
    * @return
    */
   getMapLayer(layerSearch) {
-    return this.map.getLayers().filter(layer => layer.getImpl().legend === layerSearch.getImpl().legend)[0];
+    return this.map.getLayers().filter((layer) => layer
+      .getImpl().legend === layerSearch.getImpl().legend)[0];
   }
 
   /** This function set default layer shown when plugin is activated
-   * 
+   *
    * @param {integer} indexLyr /** Index layer in intervals array
-   * @returns 
+   * @returns
    */
   setDefaultLayer(indexLyr) {
-
+    // eslint-disable-next-line no-underscore-dangle
     const this_ = this;
     const html = this_.template;
     const slider = html.querySelector('#input-slider');
-    const initialLyr = indexLyr<this_.intervals.length ? indexLyr:0;
+    const initialLyr = indexLyr < this_.intervals.length ? indexLyr : 0;
 
     slider.value = initialLyr;
     html.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
     const left = (((slider.value - slider.min) / (slider.max - slider.min)) * ((256 - 5) - 5)) + 5;
-    html.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 'px');
-    if(this_.animation || this_.intervals[0].name !== ''){
+    html.querySelector('.div-m-timeline-slider').style.setProperty('--left', `${left}px`);
+    if (this_.animation || this_.intervals[0].name !== '') {
       html.querySelector('.m-timeline-names').style.display = 'block';
     }
     if (this_.animation) {
       html.querySelector('.m-timeline-button').style.display = 'block';
     }
 
-    let step = parseFloat(slider.value);
+    const step = parseFloat(slider.value);
     this_.intervals.forEach((interval) => {
       this_.getMapLayer(interval.service).setVisible(false);
       html.querySelector('.m-timeline-names').innerHTML = '';
     });
 
-    html.querySelector('.div-m-timeline-slider').style.setProperty('--left', left + 20 + 'px');
+    html.querySelector('.div-m-timeline-slider').style.setProperty('--left', `${left + 20}px`);
     this_.getMapLayer(this_.intervals[step].service).setVisible(true);
     html.querySelector('.m-timeline-names').innerHTML = this_.intervals[step].name;
-    html.querySelector('.div-m-timeline-panel').style.setProperty('--valor', '"' + this_.intervals[step].tag + '"')
+    html.querySelector('.div-m-timeline-panel').style.setProperty('--valor', `"${this_.intervals[step].tag}"`);
     if (this_.intervals[step].tag !== '') {
       html.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '1');
     } else {
       html.querySelector('.div-m-timeline-slider').style.setProperty('--opacity', '0');
     }
-
-
   }
 
   /** This function make the play animation
@@ -283,16 +276,14 @@ export default class TimelineControl extends M.Control {
    * @return
    */
   playTimeline(next) {
-
     const start = 0;
     const end = this.intervals.length - 1;
     const slider = document.querySelector('#input-slider');
-    let step = parseInt(slider.value);
+    let step = parseInt(slider.value, 10);
     if (this.running) {
       document.querySelector('.m-timeline-button button').classList.remove('cp-control-siguiente');
       document.querySelector('.m-timeline-button button').classList.add('cp-control-pausa');
-
-    }else{
+    } else {
       document.querySelector('.m-timeline-button button').classList.add('cp-control-siguiente');
       document.querySelector('.m-timeline-button button').classList.remove('cp-control-pausa');
       clearTimeout(this.running);
@@ -321,7 +312,7 @@ export default class TimelineControl extends M.Control {
       step = start;
     }
 
-    if (!this.running){
+    if (!this.running) {
       return;
     }
     slider.value = parseFloat(slider.value) + 1;
@@ -340,7 +331,7 @@ export default class TimelineControl extends M.Control {
     clearInterval(this.running);
     this.intervals.forEach((interval) => {
       this.map.removeLayers(this.getMapLayer(interval.service));
-    })
+    });
   }
 
   /**
@@ -369,16 +360,15 @@ export default class TimelineControl extends M.Control {
       clearInterval(this.running);
       this.running = false;
       this.intervals.forEach((interval) => {
-        if (interval.service.zIndex_ !== undefined){
+        // eslint-disable-next-line no-underscore-dangle
+        if (interval.service.zIndex_ !== undefined) {
           this.getMapLayer(interval.service).setVisible(false);
         }
       });
     } catch (error) {
-      /* eslint-disable */
+      // eslint-disable-next-line no-console
       console.error(`e2m (1): ${error}`);
-      /* eslint-enable */
     }
-
   }
 
   /**

@@ -47,6 +47,7 @@ export default class MouseSRS extends M.Plugin {
     this.tooltip_ = options.tooltip || getValue('tooltip');
 
     this.epsgFormat = options.epsgFormat === true;
+
     /**
      * Shown coordinates SRS
      *
@@ -144,7 +145,7 @@ export default class MouseSRS extends M.Plugin {
     this.control_ = new MouseSRSControl(
       this.srs_,
       this.label_,
-      this.precision,
+      this.precision_,
       this.geoDecimalDigits,
       this.utmDecimalDigits,
       this.tooltip_,
@@ -178,7 +179,6 @@ export default class MouseSRS extends M.Plugin {
     this.control_ = null;
     this.panel_ = null;
   }
-
 
   /**
    * Name of the plugin
@@ -241,7 +241,7 @@ export default class MouseSRS extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    let cadena = `${this.name}=${this.tooltip_}*${this.srs}*${this.label}*${this.precision}`;
+    let cadena = `${this.name}=${this.tooltip_}*${this.srs_}*${this.label_}*${this.precision_}`;
 
     if (this.geoDecimalDigits === undefined || this.geoDecimalDigits == null || this.geoDecimalDigits === '') {
       cadena += '*';
@@ -259,6 +259,7 @@ export default class MouseSRS extends M.Plugin {
 
     return cadena;
   }
+
   /**
    * Gets the API REST Parameters in base64 of the plugin
    *

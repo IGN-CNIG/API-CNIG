@@ -3,7 +3,15 @@
  */
 import HeatmapImpl from 'impl/style/Heatmap';
 import Style from './Style';
-import { isString, isFunction, isArray, inverseColor, isNullOrEmpty, generateIntervals, defineFunctionFromString } from '../util/Utils';
+import {
+  isString,
+  isFunction,
+  isArray,
+  inverseColor,
+  isNullOrEmpty,
+  generateIntervals,
+  defineFunctionFromString,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 
@@ -52,14 +60,16 @@ class Heatmap extends Style {
       options.gradient.push(inverseColorParam);
     }
 
-    options.blur = isNullOrEmpty(options.blur) ?
-      Heatmap.DEFAULT_OPTIONS.blur : parseFloat(options.blur);
-    options.radius = isNullOrEmpty(options.radius) ?
-      Heatmap.DEFAULT_OPTIONS.radius : parseFloat(options.radius);
+    options.blur = isNullOrEmpty(options.blur)
+      ? Heatmap.DEFAULT_OPTIONS.blur
+      : parseFloat(options.blur);
+    options.radius = isNullOrEmpty(options.radius)
+      ? Heatmap.DEFAULT_OPTIONS.radius
+      : parseFloat(options.radius);
     options.weight = attribute;
-    vendorOptions.opacity = Number.isNaN(parseFloat(vendorOptions.opacity)) ?
-      1 : parseFloat(vendorOptions.opacity);
-
+    vendorOptions.opacity = Number.isNaN(parseFloat(vendorOptions.opacity))
+      ? 1
+      : parseFloat(vendorOptions.opacity);
 
     const impl = new HeatmapImpl(attribute, options, vendorOptions);
 

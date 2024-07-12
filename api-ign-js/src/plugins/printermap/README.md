@@ -40,7 +40,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
 - **tooltip**. Tooltip que se muestra sobre el plugin. Por defecto: Impresión del mapa.
-- **serverUrl**: URL del servidor Geoprint. Por defecto: https://componentes.cnig.es/geoprint. 
+- **serverUrl**: URL del servidor Geoprint. Por defecto: https://componentes.cnig.es/geoprint.
 - **printTemplateUrl**: URL con las plantillas a utilizar. Por defecto: https://componentes.cnig.es/geoprint/print/CNIG.
 - **printStatusUrl**: URL para consultar el estado de la impresión. Por defecto: https://componentes.cnig.es/geoprint/print/status.
 - **printTemplateGeoUrl**: URL de las plantillas a utilizar para Geoprint. Por defecto: https://componentes.cnig.es/geoprint/print/mapexport.
@@ -48,7 +48,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **georefActive**: Valor booleano que indica si abrir plugin con opciones de descarga de imagen georreferenciada o no  (true/false). Por defecto: true.
 - **fototeca**: Valor booleano que indica si añadir por defecto un texto a la descripción específico de fototeca sin posibilidad de edición (true/false). Por defecto: false.
 - **logo**: URL de una imagen para añadir como logo en la esquina superior derecha
-- **headerLegend**: URL de una imagen para añadir como leyenda en la parte central de la cabecera. 
+- **headerLegend**: URL de una imagen para añadir como leyenda en la parte central de la cabecera.
 - **filterTemplates**: Listado de nombres de plantillas que queremos tener disponibles, si no se manda el parámetro aparecerán todas por defecto.
 
 # API-REST
@@ -193,8 +193,8 @@ mapajs.addPlugin(new M.plugin.PrinterMap({
   position: 'TR',
   collapsed: false,
   collapsible: false,
-  serverUrl: 'https://componentes.cnig.es', 
-  printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG', 
+  serverUrl: 'https://componentes.cnig.es',
+  printTemplateUrl: 'https://componentes.cnig.es/geoprint/print/CNIG',
   printStatusUrl: 'https://componentes.cnig.es/geoprint/print/CNIG/status',
 }));
 ```

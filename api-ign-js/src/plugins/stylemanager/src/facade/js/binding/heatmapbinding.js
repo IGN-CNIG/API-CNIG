@@ -100,11 +100,11 @@ export class HeatmapBinding extends Binding {
       options['attribute'] = this.style_.getAttributeName();
       options['radius'] = this.style_.getRadius();
       options['blur'] = this.style_.getBlurSize();
-      options['gradient'] = this.style_.getGradient().map(el => chroma(el).hex());
+      options['gradient'] = this.style_.getGradient().map((el) => chroma(el).hex());
     }
     if (this.layer_ != null) {
       options['attributes'] = this.getAttributes();
-      options['attributes'].forEach(attribute => attribute['selected'] = options.attribute);
+      options['attributes'].forEach((attribute) => attribute['selected'] = options.attribute);
     }
     return options;
   }

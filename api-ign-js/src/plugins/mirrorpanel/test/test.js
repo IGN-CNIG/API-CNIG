@@ -1,7 +1,8 @@
-import Mirrorpanel from 'facade/mirrorpanel'; //Importación del plugin que desarrollamos para trabajar
+/* eslint-disable max-len */
+import Mirrorpanel from 'facade/mirrorpanel'; // Importación del plugin que desarrollamos para trabajar
 
-M.language.setLang('es'); //Español
-//M.language.setLang('en');//Inglés
+M.language.setLang('es'); // Español
+// M.language.setLang('en');// Inglés
 
 /**
  * Definimos las capas con notación API-REST
@@ -20,7 +21,7 @@ const map = M.map({
     y: 4493011.77,
   },
   controls: ['scale', 'location'],
-  projection: "EPSG:3857*m",
+  projection: 'EPSG:3857*m',
   zoom: 15,
 });
 
@@ -73,7 +74,7 @@ const mpFullTOC = new M.plugin.FullTOC({
 
 map.addPlugin(mpFullTOC); // Puede reducir el rendimiento si se le define muchas capas en el atributo mirrorLayers.
 
-let backImgLayerParams = {
+const backImgLayerParams = {
   position: 'TR',
   collapsible: true,
   collapsed: true,
@@ -153,14 +154,13 @@ let backImgLayerParams = {
         queryable: false,
         visible: true,
         format: 'image/png',
-      })
+      }),
       ],
     },
   ],
-}
+};
 const mpBIL = new M.plugin.BackImgLayer(backImgLayerParams);
 map.addPlugin(mpBIL);
-
 
 const mpMirrorPanel = new Mirrorpanel({
   position: 'TR',
@@ -171,7 +171,7 @@ const mpMirrorPanel = new Mirrorpanel({
   mirrorLayers: capasPNOA, // Array de capas para los mapas espejo en formato StringAPICNIG
   enabledKeyFunctions: true, // Están habilitadas los comandos por teclado
   showCursors: true, // Se muestran los cursores
-  backImgLayersParams: backImgLayerParams
+  backImgLayersParams: backImgLayerParams,
 });
 
 map.addPlugin(mpMirrorPanel);

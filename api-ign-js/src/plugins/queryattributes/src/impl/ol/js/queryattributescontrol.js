@@ -26,7 +26,6 @@ export default class QueryAttributesControl extends M.impl.Control {
     this.vectorSource = this.newVectorSource(false);
   }
 
-
   /**
      * Creates new OpenLayers vector source
      * @public
@@ -36,16 +35,15 @@ export default class QueryAttributesControl extends M.impl.Control {
      * features should be included in new source
      */
   newVectorSource(featuresIncluded) {
-    return featuresIncluded ?
-      new ol.source.Vector({ features: new ol.Collection([]) }) :
-      new ol.source.Vector();
+    return featuresIncluded
+      ? new ol.source.Vector({ features: new ol.Collection([]) })
+      : new ol.source.Vector();
   }
-
 
   // e2m: al pulsar en Buscar por área añadimos la interacción
   addDrawInteraction(callback) {
     this.removeDrawInteraction_();
-    const drawLayer = this.facadeMap.getLayers().filter(layer => layer.name === '__draw__')[0];
+    const drawLayer = this.facadeMap.getLayers().filter((layer) => layer.name === '__draw__')[0];
     drawLayer.clear();
     const draw = new ol.interaction.Draw({
       source: drawLayer.getImpl().getOL3Layer().getSource(),
@@ -98,7 +96,7 @@ export default class QueryAttributesControl extends M.impl.Control {
   }
 
   getPolygonFromDrawnFeature() {
-    const drawLayer = this.facadeMap.getLayers().filter(layer => layer.name === '__draw__')[0];
+    const drawLayer = this.facadeMap.getLayers().filter((layer) => layer.name === '__draw__')[0];
     const olFeature = drawLayer.getImpl().getOL3Layer().getSource().getFeatures()[0];
     const feature = new M.Feature('featuredraw.1', {
       geometry: {

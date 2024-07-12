@@ -76,7 +76,7 @@ https://componentes.cnig.es/api-core?buffer=TR*true*true*buffer%20plugin
 ```
 https://componentes.cnig.es/api-core?buffer=TL
 ```
-### Ejemplos de uso 
+### Ejemplos de uso
 
 Para la codificación en base64 del objeto con los parámetros del plugin podemos hacer uso de la utilidad M.utils.encodeBase64.
 Ejemplo:
@@ -84,7 +84,7 @@ Ejemplo:
 M.utils.encodeBase64(obj_params);
 ```
 
-Ejemplo de constructor del plugin: 
+Ejemplo de constructor del plugin:
 ```javascript
 {
   position: "TL",

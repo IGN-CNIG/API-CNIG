@@ -11,7 +11,8 @@ import { getValue } from './i18n/language';
  */
 const listenAll = (html, selector, type, callback) => {
   const nodeList = html.querySelectorAll(selector);
-  Array.prototype.forEach.call(nodeList, node => node.addEventListener(type, evt => callback(evt)));
+  Array.prototype.forEach.call(nodeList, (node) => node
+    .addEventListener(type, (evt) => callback(evt)));
 };
 
 export default class TOCControl extends M.Control {
@@ -44,7 +45,7 @@ export default class TOCControl extends M.Control {
       });
       this.panelHTML_ = html;
       success(html);
-      listenAll(this.panelHTML_, 'li', 'click', e => this.toogleVisible(e));
+      listenAll(this.panelHTML_, 'li', 'click', (e) => this.toogleVisible(e));
     });
   }
 
@@ -55,18 +56,19 @@ export default class TOCControl extends M.Control {
    */
   getTemplateVariables() {
     // const layers = this.map_.getWMS().concat(this.map_.getWMTS())
-    //   .filter(layer => layer.transparent !== false && layer.displayInLayerSwitcher === true);
+    //   .filter((layer) => layer.transparent !== false && layer.displayInLayerSwitcher === true);
     const layers = this.map_.getLayers()
-      .filter(layer => layer.name !== undefined && layer.transparent !== false &&
-        layer.displayInLayerSwitcher === true &&
-        layer.name !== 'infocoordinatesLayerFeatures')
+      .filter((layer) => layer.name !== undefined && layer.transparent !== false
+        && layer.displayInLayerSwitcher === true
+        && layer.name !== 'infocoordinatesLayerFeatures')
       .reverse();
     const layersOpts = layers.map((layer) => {
       return {
-        outOfRange: layer instanceof M.layer.TMS || layer instanceof M.layer.XYZ ?
-          true : !layer.inRange(),
-        visible: (layer instanceof M.layer.WMTS ? (layer.options.visibility === true ||
-          layer.visibility === true) : layer.isVisible()),
+        outOfRange: layer instanceof M.layer.TMS || layer instanceof M.layer.XYZ
+          ? true
+          : !layer.inRange(),
+        visible: (layer instanceof M.layer.WMTS ? (layer.options.visibility === true
+          || layer.visibility === true) : layer.isVisible()),
         id: layer.name,
         title: layer.legend || layer.name,
       };
@@ -95,7 +97,7 @@ export default class TOCControl extends M.Control {
       vars: templateVars,
     });
     this.panelHTML_.innerHTML = html.innerHTML;
-    listenAll(this.panelHTML_, 'li', 'click', e => this.toogleVisible(e));
+    listenAll(this.panelHTML_, 'li', 'click', (e) => this.toogleVisible(e));
     if (scroll !== undefined) {
       document.querySelector('.m-panel.m-plugin-toc.opened ul.m-toc-content').scrollTop = scroll;
     }
@@ -109,8 +111,8 @@ export default class TOCControl extends M.Control {
   toogleVisible(evt) {
     const layerName = evt.currentTarget.querySelector('.m-check').dataset.layerName;
     const layerFound = this.map_.getLayers({ name: layerName })[0];
-    const visibility = layerFound instanceof M.layer.WMTS ? layerFound.options.visibility :
-      layerFound.isVisible();
+    const visibility = layerFound instanceof M.layer.WMTS ? layerFound.options.visibility
+      : layerFound.isVisible();
     layerFound.setVisible(!visibility);
     layerFound.visibility = !visibility;
     if (layerFound.options !== undefined) {
@@ -130,6 +132,7 @@ export default class TOCControl extends M.Control {
   activate() {
     super.activate();
   }
+
   /**
    * This function is called on the control deactivation
    *
@@ -140,6 +143,7 @@ export default class TOCControl extends M.Control {
   deactivate() {
     super.deactivate();
   }
+
   /**
    * This function gets activation button
    *

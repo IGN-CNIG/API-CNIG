@@ -1,19 +1,21 @@
-/*	Copyright (c) 2016 Jean-Marc VIGLINO,
-	released under the CeCILL-B license (French BSD license)
-	(http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
+/*  Copyright (c) 2016 Jean-Marc VIGLINO,
+  released under the CeCILL-B license (French BSD license)
+  (http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt).
 */
-/*eslint no-constant-condition: ["error", { "checkLoops": false }]*/
+/* eslint no-constant-condition: ["error", { "checkLoops": false }] */
 
-/*import ol_ext_inherits from '../util/ext'
+/* import ol_ext_inherits from '../util/ext'
 import { getDistance as ol_sphere_getDistance } from 'ol/sphere'
 import { transform as ol_proj_transform } from 'ol/proj'
 import ol_control_Control from 'ol/control/Control'
-import ol_Feature from 'ol/Feature'*/
+import ol_Feature from 'ol/Feature' */
 
 import { getValue } from '../../../facade/js/i18n/language';
 
 const inherits = (child, parent) => {
+  // eslint-disable-next-line no-param-reassign
   child.prototype = Object.create(parent.prototype);
+  // eslint-disable-next-line no-param-reassign
   child.prototype.constructor = child;
 };
 
@@ -21,19 +23,17 @@ const inherits = (child, parent) => {
  * @api stable
  */
 const info = {
-  "zmin": "Zmin",
-  "zmax": "Zmax",
-  "ytitle": "Altitude (m)",
-  "xtitle": "Distance (km)",
-  "time": "Time",
-  "altitude": "Altitude",
-  "distance": "Distance",
-  "altitudeUnits": "m",
-  "distanceUnitsM": "m",
-  "distanceUnitsKM": "km",
+  'zmin': 'Zmin',
+  'zmax': 'Zmax',
+  'ytitle': 'Altitude (m)',
+  'xtitle': 'Distance (km)',
+  'time': 'Time',
+  'altitude': 'Altitude',
+  'distance': 'Distance',
+  'altitudeUnits': 'm',
+  'distanceUnitsM': 'm',
+  'distanceUnitsKM': 'km',
 };
-
-
 
 /*eslint-disable*/
 
@@ -132,10 +132,7 @@ var Profil = function(opt_options) {
   div_to_canvas.addEventListener("click", function(e) { self.onMove(e); });
   div_to_canvas.addEventListener("mousemove", function(e) { self.onMove(e); });
 
-  ol.control.Control.call(this, {
-    element: element,
-    target: options.target
-  });
+  this.element = element;
 
   // Offset in px
   this.margin_ = { top: 25 * ratio, left: 55 * ratio, bottom: 45 * ratio, right: 25 * ratio };
@@ -223,8 +220,8 @@ Profil.prototype.onMove = function(e) {
   var dx = e.pageX - pos.left;
   var dy = e.pageY - pos.top;
   var ratio = this.ratio;
-  if (dx > this.margin_.left / ratio && dx < (this.canvas_.width - this.margin_.right) / ratio &&
-    dy > this.margin_.top / ratio && dy < (this.canvas_.height - this.margin_.bottom) / ratio) {
+  if (dx > this.margin_.left / ratio && dx < (this.canvas_.width - this.margin_.right) / ratio
+    && dy > this.margin_.top / ratio && dy < (this.canvas_.height - this.margin_.bottom) / ratio) {
     this.bar_.style.left = dx + "px";
     this.bar_.style.display = "block";
     var d = (dx * ratio - this.margin_.left) / this.scale_[0];
@@ -248,7 +245,7 @@ Profil.prototype.onMove = function(e) {
     this.element.querySelector(".point-info .time").textContent = p[2];
     if (dx > this.canvas_.width / ratio / 2) this.popup_.classList.add('ol-left');
     else this.popup_.classList.remove('ol-left');
-    this.dispatchEvent({ type: 'over', click: e.type == "click", coord: p[3], time: p[2], distance: p[0] });
+    this.dispatchEvent({ type: 'over', click: e.type === "click", coord: p[3], time: p[2], distance: p[0] });
   } else {
     if (this.bar_.parentElement.classList.contains("over")) {
       this.bar_.style.display = 'none';
@@ -266,6 +263,7 @@ Profil.prototype.show = function() {
   this.element.classList.remove("ol-collapsed");
   this.dispatchEvent({ type: 'show', show: true });
 }
+
 /** Hide panel
  * @api stable
  */
@@ -273,6 +271,7 @@ Profil.prototype.hide = function() {
   this.element.classList.add("ol-collapsed");
   this.dispatchEvent({ type: 'show', show: false });
 }
+
 /** Toggle panel
  * @api stable
  */
@@ -281,6 +280,7 @@ Profil.prototype.toggle = function() {
   var b = this.element.classList.contains("ol-collapsed");
   this.dispatchEvent({ type: 'show', show: !b });
 }
+
 /** Is panel visible
  */
 Profil.prototype.isShown = function() {
@@ -334,17 +334,15 @@ Profil.prototype.setGeometry = function(g, options) {
 
   function dist2d(p1, p2) {
     const distancia = ol.sphere.getDistance(
-      ol.proj.transform(p1.map(coord => parseFloat(coord)), 'EPSG:4326', 'EPSG:4326'),
-      ol.proj.transform(p2.map(coord => parseFloat(coord)), 'EPSG:4326', 'EPSG:4326'));
+      ol.proj.transform(p1.map((coord) => parseFloat(coord)), 'EPSG:4326', 'EPSG:4326'),
+      ol.proj.transform(p2.map((coord) => parseFloat(coord)), 'EPSG:4326', 'EPSG:4326'));
 
     return distancia;
 
   }*/
 
-
   // Distance beetween 2 coords
   var proj = options.projection || this.getMap().getView().getProjection();
-
 
   function dist2d(p1, p2) {
     return ol.sphere.getDistance(
@@ -384,7 +382,7 @@ Profil.prototype.setGeometry = function(g, options) {
     z = p[2];
     if (z < zmin) zmin = z;
     if (z > zmax) zmax = z;
-    if (i == 0) d = 0;
+    if (i === 0) d = 0;
     else d += dist2d(c[i - 1], p);
     ti = getTime(c[0][3], p[3]);
     t.push([d, z, ti, p]);
@@ -412,8 +410,8 @@ Profil.prototype.setGeometry = function(g, options) {
   }
 
   // Set amplitude
-  if (typeof(options.zmin) == 'number' && zmin > options.zmin) zmin = options.zmin;
-  if (typeof(options.zmax) == 'number' && zmax < options.zmax) zmax = options.zmax;
+  if (typeof(options.zmin) === 'number' && zmin > options.zmin) zmin = options.zmin;
+  if (typeof(options.zmax) === 'number' && zmax < options.zmax) zmax = options.zmax;
   var amplitude = options.amplitude;
   if (amplitude) {
     zmax = Math.max(zmin + amplitude, zmax);
@@ -455,7 +453,7 @@ Profil.prototype.setGeometry = function(g, options) {
     else step = d;
   }
   for (i = 0; i <= d; i += step) {
-    var txt = (unit == "m") ? i : (i / 1000);
+    var txt = (unit === "m") ? i : (i / 1000);
     //if (i+step>d) txt += " "+ (options.zunits || "km");
     ctx.fillText(Math.round(txt * 10) / 10, i * scx, 4 * ratio);
     ctx.moveTo(i * scx, 2 * ratio);
@@ -476,7 +474,7 @@ Profil.prototype.setGeometry = function(g, options) {
   ctx.setLineDash([]);
   ctx.beginPath();
   for (i = 0; p = t[i]; i++) {
-    if (i == 0) ctx.moveTo(p[0] * scx, p[1] * scy + dy);
+    if (i === 0) ctx.moveTo(p[0] * scx, p[1] * scy + dy);
     else ctx.lineTo(p[0] * scx, p[1] * scy + dy);
   }
   ctx.stroke();

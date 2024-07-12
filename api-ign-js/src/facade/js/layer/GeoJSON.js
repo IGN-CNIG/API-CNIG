@@ -4,7 +4,13 @@
 import GeoJSONImpl from 'impl/layer/GeoJSON';
 import LayerVector from './Vector';
 import { GeoJSON as GeoJSONType } from './Type';
-import { isString, isNullOrEmpty, isUndefined, isArray, normalize } from '../util/Utils';
+import {
+  isString,
+  isNullOrEmpty,
+  isUndefined,
+  isArray,
+  normalize,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 
@@ -20,7 +26,17 @@ import { getValue } from '../i18n/language';
  * @property {Boolean} extract Activa la consulta al hacer clic sobre un objeto geográfico,
  * por defecto falso.
  * @property {Object} options Opciones GeoJSON.
- *
+ * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
+ * <pre><code>
+ * import OLSourceVector from 'ol/source/Vector';
+ * {
+ *  opacity: 0.1,
+ *  source: new OLSourceVector({
+ *    attributions: 'geojson',
+ *    ...
+ *  })
+ * }
+ * </code></pre>
  * @api
  * @extends {M.layer.Vector}
  */
@@ -36,8 +52,6 @@ class GeoJSON extends LayerVector {
    * - url: Url del fichero o servicio que genera el GeoJSON.
    * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
    * - source: Fuente de la capa.
-   * - minZoom: Zoom mínimo aplicable a la capa.
-   * - maxZoom: Zoom máximo aplicable a la capa.
    * - type: Tipo de la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
@@ -51,20 +65,9 @@ class GeoJSON extends LayerVector {
    * - opacity: Opacidad de capa, por defecto 1.
    * - style: Define el estilo de la capa.
    * - predefinedStyles: Estilos predefinidos para la capa.
-   * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
-   * <pre><code>
-   * import OLSourceVector from 'ol/source/Vector';
-   * {
-   *  opacity: 0.1,
-   *  source: new OLSourceVector({
-   *    attributions: 'geojson',
-   *    ...
-   *  })
-   * }
-   * </code></pre>
    * @api
    */
-  constructor(parameters = {}, options = {}, vendorOptions) {
+  constructor(parameters = {}, options = {}, vendorOptions = {}) {
     const optionsVar = options;
 
     if (typeof parameters !== 'string') {
@@ -145,6 +148,20 @@ class GeoJSON extends LayerVector {
         };
       }
     }
+
+    /**
+     * GeoJSON minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * GeoJSON maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
      * GeoJSON options: Opciones que se mandan a la implementación.

@@ -103,7 +103,6 @@ function process(doclet) {
   });
 }
 
-
 exports.handlers = {
   newDoclet: function(e) {
     process(e.doclet);

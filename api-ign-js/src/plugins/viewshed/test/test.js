@@ -2,7 +2,6 @@ import ViewShed from 'facade/viewshed';
 
 M.language.setLang('es');
 
-
 const map = M.map({
   container: 'mapjs',
 });

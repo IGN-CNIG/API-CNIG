@@ -68,7 +68,7 @@ class WMTS extends LayerBase {
    * </code></pre>
    * @api stable
    */
-  constructor(options = {}, vendorOptions) {
+  constructor(options = {}, vendorOptions = {}) {
     // calls the super constructor
     super(options, vendorOptions);
 
@@ -128,13 +128,12 @@ class WMTS extends LayerBase {
     this.fire(EventType.ADDED_TO_MAP);
 
     // calculates the resolutions from scales
-    if (!isNull(this.options) &&
-      !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
+    if (!isNull(this.options)
+      && !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
       const units = this.map.getMapImpl().getView().getProjection().getUnits();
       this.options.minResolution = getResolutionFromScale(this.options.minScale, units);
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
     }
-
 
     if (this.useCapabilities) {
       this.capabilitiesOptionsPromise = this.getCapabilitiesOptions_();
@@ -166,7 +165,6 @@ class WMTS extends LayerBase {
     }
     return this.maxExtent;
   }
-
 
   /**
    * Devuelve la extensión máxima de la capa.
@@ -231,8 +229,8 @@ class WMTS extends LayerBase {
     if ((visibility === true) && (this.isBase === true)) {
       // hides all base layers
       this.map.getBaseLayers()
-        .filter(layer => !layer.equals(this.facadeLayer_) && layer.isVisible())
-        .forEach(layer => layer.setVisible(false));
+        .filter((layer) => !layer.equals(this.facadeLayer_) && layer.isVisible())
+        .forEach((layer) => layer.setVisible(false));
 
       // set this layer visible
       if (!isNullOrEmpty(this.ol3Layer)) {
@@ -249,6 +247,7 @@ class WMTS extends LayerBase {
       this.ol3Layer.setVisible(visibility);
     }
   }
+
   /**
    * Este método agrega esta capa como capa única.
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -317,7 +316,6 @@ class WMTS extends LayerBase {
       const maxResolution = this.options.maxResolution;
       const format = (this.options.format) ? this.options.format : 'image/png';
 
-
       const size = getWidth(extent) / 256;
       const resolutions = new Array(19);
       const matrixIds = new Array(19);
@@ -325,7 +323,7 @@ class WMTS extends LayerBase {
       for (let z = 0; z < 19; ++z) {
         // generate resolutions and matrixIds arrays for this WMTS
         // eslint-disable-next-line no-restricted-properties
-        resolutions[z] = size / Math.pow(2, z);
+        resolutions[z] = size / (2 ** z);
         matrixIds[z] = z;
       }
 
@@ -407,7 +405,7 @@ class WMTS extends LayerBase {
     }
     let capabilitiesLayer = capabilities.Contents.Layer;
     if (isArray(capabilitiesLayer)) {
-      capabilitiesLayer = capabilitiesLayer.filter(l => l.Identifier === this.facadeLayer_.name)[0];
+      capabilitiesLayer = capabilitiesLayer.filter((l) => l.Identifier === this.facadeLayer_.name)[0];
     }
 
     if (capabilitiesLayer.Style.length > 0 && capabilitiesLayer.Style[0].LegendURL !== undefined) {
@@ -490,7 +488,7 @@ class WMTS extends LayerBase {
             parsedCapabilities.Contents.Layer.forEach((l) => {
               const name = l.Identifier;
               l.Style.forEach((s) => {
-                const layerText = response.text.split('Layer>').filter(text => text.indexOf(`Identifier>${name}<`) > -1)[0];
+                const layerText = response.text.split('Layer>').filter((text) => text.indexOf(`Identifier>${name}<`) > -1)[0];
                 /* eslint-disable no-param-reassign */
                 s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
               });

@@ -99,6 +99,7 @@ export default class MouseSRSControl extends M.impl.Control {
       coordinateFormat: ol.coordinate.createStringXY(this.getDecimalUnits()), // this.precision_),
       projection: this.srs_,
       label: (this.epsgFormat) ? this.formatEPSG(this.label_) : this.label_,
+      placeholder: '',
       undefinedHTML: '',
       className: 'm-mouse-srs',
       target: this.html_,
@@ -136,7 +137,6 @@ export default class MouseSRSControl extends M.impl.Control {
     });
 
     if (this.epsgFormat) { this.formatEPSGs(content); }
-
     M.dialog.info(content.outerHTML, getValue('select_srs'), this.order);
     setTimeout(() => {
       document.querySelector('.m-dialog>div.m-modal>div.m-content').style.minWidth = '260px';
@@ -160,7 +160,6 @@ export default class MouseSRSControl extends M.impl.Control {
     });
   }
 
-
   formatEPSGs(html) {
     // GET EPSG of Selectors
     const query = [...html.querySelectorAll('select option')];
@@ -176,7 +175,7 @@ export default class MouseSRSControl extends M.impl.Control {
     const supportedProjs = M.impl.ol.js.projections.getSupportedProjs();
 
     // Find EPSG in supportedProjs
-    const find = supportedProjs.find(p => p.codes.includes(epsg));
+    const find = supportedProjs.find((p) => p.codes.includes(epsg));
 
     if (!find) return epsg;
 

@@ -1,59 +1,51 @@
+/* eslint-disable no-console */
+console.log('Arranco2)');
 
-console.log("Arranco2)");
+postRequest.addEventListener('click', () => {
+  const newPost = {
+    title: 'A new Post',
+    body: 'Lorem ipsum sec nector aldsjaljdf askdjaljd lksjdlakjdla',
+    userId: 1,
+  };
 
-postRequest.addEventListener('click',()=>{
+  console.log(newPost);
+  console.log(JSON.stringify(newPost));
 
-const newPost = {
-  title:'A new Post',
-  body:'Lorem ipsum sec nector aldsjaljdf askdjaljd lksjdlakjdla',
-  userId: 1
-}
-
-console.log(newPost);
-console.log(JSON.stringify(newPost));
-
-fetch('https://jsonplaceholder.typicode.com/posts',{
+  fetch('https://jsonplaceholder.typicode.com/posts', {
     method: 'POST',
     body: JSON.stringify(newPost),
     headers: {
-      "Content-type":"application/json"
-    }
-  }).then(res => {
+      'Content-type': 'application/json',
+    },
+  }).then((res) => {
     return res.json();
-  })
-  .then(data => {
+  }).then((data) => {
     console.log(data);
-  })
-  .catch(error=>{
+  }).catch((error) => {
     console.log(error);
-  })
-
-
-
-
+  });
 });
-
 
 /*
 fetch('https://pokeapi.co/api/v2/pokemon/')
-  .then(res => {
+  .then((res) => {
     return res.json();
   })
-  .then(data => {
+  .then((data) => {
     console.log(data.results);
-    data.results.forEach(element => {
+    data.results.forEach((element) => {
       console.log(element.name);
     });
   })
   .catch(error=>{
     console.log(error);
-  })*/
+  }) */
 
 /**
  * Async / await
  */
 // Await funciona dentro de una función async
-/*const getPokemones=async()=>{
+/* const getPokemones=async()=>{
   try{
     const respuesta = await fetch('https://pokeapi.co/api/v2/pokemon/');
     const data = await respuesta.json();
@@ -64,4 +56,4 @@ fetch('https://pokeapi.co/api/v2/pokemon/')
   }
 }
 
-getPokemones();*/
+getPokemones(); */

@@ -34,7 +34,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 
 - **position**.  Ubicación del plugin sobre el mapa.
   - 'TL':top left (default)
-  - 'TR':top right 
+  - 'TR':top right
 - **collapsed**. Indica si el plugin aparece por defecto colapsado o no.
 
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: Gestión de la vista.
@@ -49,13 +49,14 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 ```
 - **delay**. Valor tipo Number, determina el tiempo de cada step cuando se hace clic en el botón "play". Por defecto dura 2s (1000 = 1s).
 - **content**.  Recibe un objeto con JSON, se define los idomas.
-  
+
 ```javascript
    content: {
         es: StoryMapJSON,
         en: StoryMapJSON
       },
 ```
+- **isDraggable**: "True" para que el plugin se pueda desplazar, por defecto false.
 
 ##### JSON Content StoryMap
 Cada JSON "StoryMapJSON", contiene un JSON con la historia que se mostrará en el Story Map.
@@ -97,7 +98,7 @@ Para crear interacciones con el mapa es necesario llamar a map o mapjs y el uso 
 # API-REST
 
 ```javascript
-URL_API?storymap=position*collapsed*collapsible*tooltip*delay
+URL_API?storymap=position*collapsed*collapsible*tooltip*delay*isDraggable
 ```
 
 <table>
@@ -141,13 +142,18 @@ URL_API?storymap=position*collapsed*collapsible*tooltip*delay
     <td>Objeto</td>
     <td>Base64 ✔️ | Separador ❌</td>
   </tr>
+  <tr>
+    <td>isDraggable</td>
+    <td>Objeto</td>
+    <td>Base64 ✔️ | Separador ✔️</td>
+  </tr>
 </table>
 (*) Este parámetro podrá ser enviado por API-REST con los valores true o false. Si es true indicará al plugin que se añada el control con los valores por defecto. Para añadir los zooms deseados en los que se podrá centrar el mapa se deberá realizar mediante API-REST en base64.
 
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?storymap=TL*true*true*tooltip
+https://componentes.cnig.es/api-core?storymap=TL*true*true*tooltip*delay*isDraggable
 ```
 
 ### Ejemplos de uso API-REST en base64

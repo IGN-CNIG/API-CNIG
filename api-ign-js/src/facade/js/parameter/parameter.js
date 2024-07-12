@@ -2,7 +2,17 @@
  * @module M/parameter
  * @example import parameter from 'M/parameter';
  */
-import { isNullOrEmpty, isString, isNull, isFunction, normalize, isArray, isObject, isUrl, isUndefined } from '../util/Utils';
+import {
+  isNullOrEmpty,
+  isString,
+  isNull,
+  isFunction,
+  normalize,
+  isArray,
+  isObject,
+  isUrl,
+  isUndefined,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from '../layer/Type';
 import Layer from '../layer/Layer';
@@ -286,8 +296,8 @@ export const maxExtent = (maxExtentParam) => {
       Exception(`El parámetro no es de un tipo soportado: ${typeof maxExtentParameter}`);
     }
 
-    if (Number.isNaN(maxExtentVar.x.min) || Number.isNaN(maxExtentVar.y.min) ||
-      Number.isNaN(maxExtentVar.x.max) || Number.isNaN(maxExtentVar.y.max)) {
+    if (Number.isNaN(maxExtentVar.x.min) || Number.isNaN(maxExtentVar.y.min)
+      || Number.isNaN(maxExtentVar.x.max) || Number.isNaN(maxExtentVar.y.max)) {
       Exception(getValue('exception').invalid_maxextent_param);
     }
   }
@@ -329,8 +339,8 @@ export const projection = (projectionParameter) => {
   } else if (isObject(projectionParameter)) {
     // object
     // y max
-    if (!isNull(projectionParameter.code) &&
-      !isNull(projectionParameter.units)) {
+    if (!isNull(projectionParameter.code)
+      && !isNull(projectionParameter.units)) {
       projectionVar.code = projectionParameter.code;
       projectionVar.units = normalize(projectionParameter.units.substring(0, 1));
     } else {
@@ -550,7 +560,6 @@ export const getNameKML = (parameter) => {
   return name;
 };
 
-
 /**
  * Analiza el parámetro de capas KML especificado y devuelve el "extract" de la capa.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -664,7 +673,6 @@ export const getLegendKML = (parameter) => {
   }
   return legend;
 };
-
 
 /**
  * Analiza el parámetro para obtener la URL del servicio.
@@ -938,8 +946,8 @@ export const getCQLWFS = (parameter) => {
       params = parameter.split(/\*/);
       cql = params[6].trim();
     }
-  } else if ((isObject(parameter) &&
-      !isNullOrEmpty(parameter.cql)) || (!isNullOrEmpty(parameter.ecql))) {
+  } else if ((isObject(parameter)
+    && !isNullOrEmpty(parameter.cql)) || (!isNullOrEmpty(parameter.ecql))) {
     cql = parameter.cql ? parameter.cql.trim() : parameter.ecql.trim();
   } else if (!isObject(parameter)) {
     Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
@@ -1219,7 +1227,6 @@ export const wfs = (userParameters) => {
   return layers;
 };
 
-
 /**
  * Analiza el parámetro para obtener la leyenda de la capa GeoJSON.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -1389,7 +1396,6 @@ export const getStyleGeoJSON = (parameter) => {
   }
   return style;
 };
-
 
 /**
  * Analiza los parámetros para la capa GeoJSON especificados por el usuario.
@@ -2061,6 +2067,251 @@ export const wms = (userParameters) => {
   return layers;
 };
 
+/**
+ * Analiza el parámetro para obtener el nombre de la capa GeoTIFF.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * el nombre de la capa GeoTIFF.
+ * @returns {string} Nombre de la capa.
+ * @throws {Exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getNameGeoTIFF = (parameter) => {
+  let name;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 4) {
+      const value = params[3];
+      name = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.name)) {
+    name = parameter.name.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return name;
+};
+
+/**
+ * Analiza el parámetro para obtener la URL del servicio de la capa GeoTIFF.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener la
+ * URL del servicio de la capa GeoTIFF.
+ * @returns {string} URL del servicio.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getURLGeoTIFF = (parameter) => {
+  let url;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 3) {
+      const value = params[2];
+      url = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.url)) {
+    url = parameter.url.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return url;
+};
+
+/**
+ * Analiza el parámetro para obtener la proyeccion de la capa GeoTIFF.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * la proyeccion de la capa GeoTIFF.
+ * @returns {string} Conjunto de matrices.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getProjectionGeoTIFF = (parameter) => {
+  let projectionGeoTIFF;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 6) {
+      const value = params[5];
+      projectionGeoTIFF = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.projection)) {
+    projectionGeoTIFF = parameter.projection.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return projectionGeoTIFF;
+};
+
+/**
+ * Analiza el parámetro para obtener la leyenda de la capa GeoTIFF.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * la leyenda de la capa GeoTIFF.
+ * @returns {string} Leyenda de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getLegendGeoTIFF = (parameter) => {
+  let legend;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 2) {
+      const value = params[1];
+      legend = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.legend)) {
+    legend = parameter.legend.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return legend;
+};
+
+/**
+ * Analiza el parámetro para obtener la transparencia de la capa GeoTIFF.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * la transparencia de la capa GeoTIFF.
+ * @returns {boolean} Devuelve verdadero si la capa es transparente, falso
+ * si no.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getTransparentGeoTIFF = (parameter) => {
+  let transparent;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 5) {
+      const value = params[4];
+      transparent = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.transparent)) {
+    transparent = parameter.transparent;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  if (!isNullOrEmpty(transparent)) {
+    transparent = /^1|(true)$/i.test(transparent);
+  }
+  return transparent;
+};
+
+/**
+ * Analiza los parámetros para obtener el conjunto de capas GeoTIFF.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * el conjunto de capas GeoTIFF.
+ * @returns {string} Conjunto de capas.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getDisplayInLayerSwitcherGeoTIFF = (parameter) => {
+  let displayInLayerSwitcher;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 7) {
+      const value = params[6];
+      displayInLayerSwitcher = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.displayInLayerSwitcher)) {
+    displayInLayerSwitcher = parameter.displayInLayerSwitcher;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  if (!isNullOrEmpty(displayInLayerSwitcher)) {
+    displayInLayerSwitcher = /^1|(true)$/i.test(displayInLayerSwitcher);
+  }
+  return displayInLayerSwitcher;
+};
+
+/**
+ * Analiza el parámetro para obtener la visibilidad de la capa GeoTIFF.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * la visibilidad de la capa GeoTIFF.
+ * @returns {boolean} Visibilidad de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getVisibilityGeoTIFF = (parameter) => {
+  let visibility;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 8) {
+      const value = params[7];
+      visibility = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.visibility)) {
+    visibility = parameter.visibility;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  if (!isNullOrEmpty(visibility)) {
+    visibility = /^1|(true)$/i.test(visibility);
+  }
+  return visibility;
+};
+
+/**
+ * Analiza el parámetro para obtener la normalización de los datos de la capa GeoTIFF.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener
+ * la normalización de la capa GeoTIFF.
+ * @returns {boolean} Normalización de los datos.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getNormalizeGeoTIFF = (parameter) => {
+  let normalizeParam;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 8) {
+      const value = params[7];
+      normalizeParam = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.normalize)) {
+    normalizeParam = parameter.normalize;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return normalizeParam;
+};
 
 /**
  * Analiza el parámetro para obtener el nombre de la capa WMTS.
@@ -2419,6 +2670,94 @@ export const getUseCapabilitiesWMTS = (parameter) => {
   return useCapabilities;
 };
 
+/**
+ * Analiza los parámetros especificados por el usuario para la capa GeoTIFF.
+ *
+ * @param {string|Mx.parameters.GeoTIFF} userParameters Parámetros para la capa GeoTIFF.
+ * @returns {Mx.parameters.GeoTIFF|Array<Mx.parameters.GeoTIFF>} Parámetros de la capa GeoTIFF.
+ * @public
+ * @function
+ * @api
+ */
+export const geotiff = (userParameters) => {
+  let layers = [];
+
+  // checks if the param is null or empty
+  if (isNullOrEmpty(userParameters)) {
+    Exception(getValue('exception').no_param);
+  }
+
+  // checks if the parameter is an array
+  let userParametersArray = userParameters;
+  if (!isArray(userParametersArray)) {
+    userParametersArray = [userParametersArray];
+  }
+
+  layers = userParametersArray.map((userParam) => {
+    const layerObj = {};
+
+    // gets the layer type
+    layerObj.type = LayerType.GeoTIFF;
+
+    // gets the legend
+    layerObj.legend = getLegendGeoTIFF(userParam);
+
+    // gets the URL
+    layerObj.url = getURLGeoTIFF(userParam);
+
+    // gets the name
+    layerObj.name = getNameGeoTIFF(userParam);
+
+    // gets transparent
+    layerObj.transparent = getTransparentGeoTIFF(userParam);
+
+    // gets the matrix set
+    layerObj.projection = getProjectionGeoTIFF(userParam);
+
+    // get displayInLayerSwitcher
+    layerObj.displayInLayerSwitcher = getDisplayInLayerSwitcherGeoTIFF(userParam);
+
+    // get visibility
+    layerObj.visibility = getVisibilityGeoTIFF(userParam);
+
+    // get normalize
+    layerObj.normalize = getNormalizeGeoTIFF(userParam);
+
+    layerObj.isBase = (layerObj.transparent === undefined)
+      ? userParam.isBase
+      : !layerObj.transparent;
+
+    return layerObj;
+  });
+
+  if (!isArray(userParameters)) {
+    layers = layers[0];
+  }
+
+  return layers;
+};
+
+export const maplibre = (userParameters) => {
+  const params = userParameters;
+
+  if (!isString(params)) {
+    return userParameters;
+  }
+
+  const urlParams = params.split(/\*/);
+  return {
+    type: LayerType.MapLibre,
+    legend: urlParams[1] || undefined,
+    url: urlParams[2] || undefined,
+    name: urlParams[3] || undefined,
+    transparent: urlParams[4] === '' ? undefined : urlParams[4] === 'true',
+    extract: urlParams[5] === '' ? undefined : urlParams[5] === 'true',
+    visibility: urlParams[6] === '' ? undefined : urlParams[6] === 'true',
+    displayInLayerSwitcher: urlParams[7] === '' ? true : urlParams[7] === 'true',
+    disableBackgroundColor: urlParams[8] === '' ? undefined : urlParams[8] === 'true',
+    style: urlParams[9] || undefined,
+  };
+};
 
 /**
  * Analiza el parámetro para obtener el nombre de la capa XYZ.
@@ -2462,7 +2801,6 @@ export const getNameXYZ = (parameter) => {
   }
   return name;
 };
-
 
 /**
  * Analiza el parámetro para obtener la URL del servicio
@@ -2536,7 +2874,6 @@ export const getExtraParameter = (parameter, defaultValue, position, nameVariabl
   return extraParam;
 };
 
-
 /**
  * Analiza los parámetros especificados por el usuario para la capa XYZ.
  *
@@ -2596,7 +2933,6 @@ export const xyz = (userParamer) => {
   return layersVar;
 };
 
-
 /**
  * Analiza el parámetro para obtener el nombre de la capa TMS.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -2639,7 +2975,6 @@ export const getNameTMS = (parameter) => {
   }
   return name;
 };
-
 
 /**
  * Analiza los parámetros especificados por el usuario para la capa TMS.
@@ -2707,7 +3042,6 @@ export const tms = (userParamer) => {
 
   return layersVar;
 };
-
 
 /**
  * Analiza los parámetros especificados por el usuario para la capa WMTS.
@@ -2914,7 +3248,6 @@ export const getNameMBTiles = (parameter) => {
   return name;
 };
 
-
 /**
  * Analiza el parámetro para obtener la transparencia de la capa MBTiles.
  *  - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -3067,7 +3400,7 @@ export const getMaxExtentMBTiles = (parameter) => {
       if (!isNullOrEmpty(value)) {
         value = value.split(';');
         if (!isNullOrEmpty(value) && value.length === 4) {
-          value = value.map(ext => parseFloat(ext.trim()));
+          value = value.map((ext) => parseFloat(ext.trim()));
           extent = value;
         }
       } else {
@@ -3901,7 +4234,6 @@ export const ogcapifeatures = (userParameters) => {
   return layers;
 };
 
-
 const generic = (userParameters, type) => {
   const params = userParameters;
 
@@ -3957,6 +4289,8 @@ const parameterFunction = {
   wfs,
   osm,
   wms,
+  geotiff,
+  maplibre,
   wmts,
   geojson,
   mvt,
@@ -3968,7 +4302,6 @@ const parameterFunction = {
   genericvector,
   genericraster,
 };
-
 
 /**
  * Analiza los parámetros de capa de usuario especificados en un objeto.

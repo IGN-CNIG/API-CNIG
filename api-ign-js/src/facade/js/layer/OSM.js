@@ -132,8 +132,8 @@ class OSM extends LayerBase {
    * @api
    */
   set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== LayerType.OSM)) {
+    if (!isUndefined(newType)
+      && !isNullOrEmpty(newType) && (newType !== LayerType.OSM)) {
       Exception('El tipo de capa debe ser \''.concat(LayerType.OSM).concat('\' pero se ha especificado \'').concat(newType).concat('\''));
     }
   }

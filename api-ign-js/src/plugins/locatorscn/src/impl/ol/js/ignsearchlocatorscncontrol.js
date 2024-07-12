@@ -42,8 +42,8 @@ export default class IGNSearchLocatorscnControl extends M.impl.Control {
    */
   wrapComplexFeature(feature) {
     const featureGeom = feature.getGeometry();
-    if ((featureGeom.getType() === M.geom.wkt.type.POLYGON) ||
-      (featureGeom.getType() === M.geom.wkt.type.MULTI_POLYGON)) {
+    if ((featureGeom.getType() === M.geom.wkt.type.POLYGON)
+      || (featureGeom.getType() === M.geom.wkt.type.MULTI_POLYGON)) {
       let centroid;
       if (featureGeom.getType() === M.geom.wkt.type.POLYGON) {
         centroid = featureGeom.getInteriorPoint();

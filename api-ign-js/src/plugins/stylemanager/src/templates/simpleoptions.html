@@ -128,7 +128,7 @@
             <div class="group-row">
 
                 <div class="style-col-1">
-                    <span>Line Cap</span>
+                    <span>Line Cap:</span>
                     <select data-style-options="stroke.linecap">
                         <option value="">{{translations.none}}</option>
                         {{#each linecapstroke}}
@@ -138,7 +138,7 @@
                 </div>
 
                 <div class="style-col-2">
-                    <span>Line Join</span>
+                    <span>Line Join:</span>
                     <select data-style-options="stroke.linejoin">
                         <option value="">{{translations.none}}</option>
                         {{#each linejoinstroke}}
@@ -623,12 +623,12 @@
             <div data-pointfont class="group-row">
 
                 <div class="style-col-1">
-                    <span>{{translation.radius}}:</span>
+                    <span>{{translations.radius}}:</span>
                     <input type="number" min="1" max="100" value="20" data-style-options="form.radius" value="{{icon.radius}}">
                 </div>
 
                 <div class="style-col-2">
-                    <span>{{translation.iconSize}}:</span>
+                    <span>{{translations.iconSize}}:</span>
                     <input type="number" step="0.1" min=0 max=100 data-style-options="form.fontsize" value="{{icon.fontsize}}">
                 </div>
 
@@ -638,12 +638,12 @@
             <div data-pointfont class="group-row">
 
                 <div class="style-col-1 input-reverse">
-                    <span>{{translation.gradient}}</span>
+                    <span>{{translations.gradient}}</span>
                     <input type="checkbox" data-style-options="form.gradient" {{#if icon.gradient}}checked{{/if}}>
                 </div>
 
                 <div class="style-col-2">
-                    <span>{{translation.iconColor}}:</span>
+                    <span>{{translations.iconColor}}:</span>
                     <input type="color" data-style-options="form.color" value="{{icon.color}}">
                 </div>
             </div>
@@ -659,7 +659,7 @@
                 </div>
 
                 <div class="style-col-2">
-                    <span>{{translation.opacity}}:</span>
+                    <span>{{translations.opacity}}:</span>
                     <input value="{{icon.opacity}}" type="number" step="0.1" min=0 max=1 data-style-options="form.opacity">
                 </div>
             </div>
@@ -667,12 +667,12 @@
             <div data-common-icon class="group-row">
 
                 <div class="style-col-1 input-reverse">
-                    <span>{{translation.enableRotation}}</span>
+                    <span>{{translations.enableRotation}}</span>
                     <input {{#if icon.rotate}}checked {{/if}} type="checkbox" data-style-options="form.rotate">
                 </div>
 
                 <div class="style-col-2">
-                    <span>{{translation.rotate}}:</span>
+                    <span>{{translations.rotation}}:</span>
                     <input value="{{icon.rotation}}" type="number" min=0 max=360 data-style-options="form.rotation">
                 </div>
 

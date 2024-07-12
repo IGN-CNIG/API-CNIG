@@ -65,7 +65,7 @@ https://componentes.cnig.es/api-core/?vectorsmanagement=TR*true*true
 const map = M.map({
     container: 'map'
 });
-  
+
 const mp = new M.plugin.VectorsManagement({
     position: 'TR',
     collapsible: true,

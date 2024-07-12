@@ -13,7 +13,7 @@ export class ChartBinding extends Binding {
     super(html, htmlParent, styleType, styleParams, layer);
     this.variables_ = [];
     if (styleParams != null) {
-      this.variables_ = styleParams.getOptions().variables.map(variable => variable.attribute);
+      this.variables_ = styleParams.getOptions().variables.map((variable) => variable.attribute);
     }
     this.compilePromise_.then(() => {
       this.addKeyEnterListener();
@@ -42,7 +42,7 @@ export class ChartBinding extends Binding {
    * @param {string}
    */
   removeAttribute(attr) {
-    this.variables_ = this.variables_.filter(attr2 => attr2 !== attr);
+    this.variables_ = this.variables_.filter((attr2) => attr2 !== attr);
   }
 
   addAttributeFromParamenter(attribute) {
@@ -124,7 +124,7 @@ export class ChartBinding extends Binding {
       variables = this.style_.getOptions().variables;
     }
     if (variables.length !== 0) {
-      variable = variables.find(vari => vari.attribute === attribute);
+      variable = variables.find((vari) => vari.attribute === attribute);
       if (variable != null) {
         legend = variable.legend;
         label = variable.label;
@@ -420,7 +420,7 @@ export class ChartBinding extends Binding {
     if (this.style_ != null) {
       const scheme = this.style_.getOptions()['scheme'];
       const schemesChart = M.style.chart.schemes;
-      nameAux = Object.keys(schemesChart).find(name => arrayEquals(scheme, schemesChart[name]));
+      nameAux = Object.keys(schemesChart).find((name) => arrayEquals(scheme, schemesChart[name]));
     }
     return nameAux;
   }

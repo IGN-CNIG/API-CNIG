@@ -19,7 +19,12 @@
  * @api
  */
 
-import { addParameters, generateRandom, isNullOrEmpty, isObject } from './Utils';
+import {
+  addParameters,
+  generateRandom,
+  isNullOrEmpty,
+  isObject,
+} from './Utils';
 import { useproxy } from '../mapea';
 import Response from './Response';
 
@@ -199,8 +204,8 @@ const ajax = (urlVar, dataVar, methodType, useProxy) => {
 export const get = (url, data, options) => {
   let req;
 
-  const useProxy = ((isNullOrEmpty(options) || (options.jsonp !== false)) &&
-    useproxy !== false);
+  const useProxy = ((isNullOrEmpty(options) || (options.jsonp !== false))
+    && useproxy !== false);
 
   if (useProxy === true) {
     req = jsonp(url, data, options);

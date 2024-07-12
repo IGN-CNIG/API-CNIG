@@ -40,13 +40,12 @@ export const addTranslation = (lang, json) => {
  * @public
  * @api
  */
- export const getTranslation = (lang) => {
+export const getTranslation = (lang) => {
   if (lang === 'es' || lang === 'en') {
     return translations[lang];
   }
   return M.language.getTranslation(lang).comparepanel;
 };
-
 
 /**
  * This function gets a language value from key

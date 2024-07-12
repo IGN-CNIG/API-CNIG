@@ -7,32 +7,12 @@ import * as LayerModule from 'ol/layer/Layer';
 import OLFormatGML3 from 'ol/format/GML3';
 // import OLInteractionPointer from 'ol/interaction/Pointer';
 import { writeStringTextNode } from 'ol/format/xsd';
-import { find, findIndex, includes } from 'ol/array';
 import { get as getProjection } from 'ol/proj';
 import { createFromCapabilitiesMatrixSet } from 'ol/tilegrid/WMTS';
-import WMTSRequestEncoding from 'ol/source/WMTSRequestEncoding';
+// import WMTSRequestEncoding from 'ol/source/WMTSRequestEncoding';
 
 // import { POINTERUP, POINTERDOWN, POINTERDRAG } from 'ol/MapBrowserEventType';
 // import { getValues } from 'ol/obj';
-
-
-/**
- * Devuelve verdadero si la capa es visible y si la resolución aprobada es
- * entre "minResolution" y "maxResolution" de la capa. La comparacion es
- * inclusiva para "minResolution" y exclusiva para "maxResolution".
- * 
- * Parche: Comparación de resoluciones máximas inclusiva para mostrar capas con 
- * la misma resolución que su resolución máxima.
- * @param {ol.layer.LayerState} layerState Estado de la capa.
- * @param {number} resolution Resolución.
- * @return {boolean} La capa es visible en la resolución dada.
- * @function
- * @api
- */
-LayerModule.visibleAtResolution = (layerState, resolution) => {
-  return layerState.visible && resolution >= layerState.minResolution &&
-    resolution <= layerState.maxResolution;
-};
 
 /**
  * Parche: deshabilita la configuración del orden de los ejes.
@@ -114,7 +94,7 @@ OLFormatGML3.prototype.getCoords_ = (point, optSRSName) => {
  */
 export const optionsFromCapabilities = (wmtsCap, config) => {
   const layers = wmtsCap['Contents']['Layer'];
-  const l = find(layers, function(elt, index, array) {
+  const l = layers.find(function(elt) {
     return elt['Identifier'] == config['layer'];
   });
   if (l === null) {
@@ -124,9 +104,9 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
   let idx;
   if (l['TileMatrixSetLink'].length > 1) {
     if ('projection' in config) {
-      idx = findIndex(l['TileMatrixSetLink'],
+      idx = l['TileMatrixSetLink'].findIndex(
         function(elt, index, array) {
-          const tileMatrixSet = find(tileMatrixSets, function(el) {
+          const tileMatrixSet = tileMatrixSets.find(function(el) {
             return el['Identifier'] == elt['TileMatrixSet'];
           });
           const supportedCRS = tileMatrixSet['SupportedCRS'];
@@ -140,7 +120,7 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
           }
         });
     } else {
-      idx = findIndex(l['TileMatrixSetLink'],
+      idx = l['TileMatrixSetLink'].findIndex(
         function(elt, index, array) {
           return elt['TileMatrixSet'] == config['matrixSet'];
         });
@@ -160,7 +140,7 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
   if ('format' in config) {
     format = config['format'];
   }
-  idx = findIndex(l['Style'], function(elt, index, array) {
+  idx = l['Style'].findIndex(function(elt) {
     if ('style' in config) {
       return elt['Title'] == config['style'];
     } else {
@@ -185,7 +165,7 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
   }
 
   const matrixSets = wmtsCap['Contents']['TileMatrixSet'];
-  const matrixSetObj = find(matrixSets, function(elt, index, array) {
+  const matrixSetObj = matrixSets.find(function(elt) {
     return elt['Identifier'] == matrixSet;
   });
 
@@ -239,7 +219,7 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
 
     for (let i = 0, ii = gets.length; i < ii; ++i) {
       if (gets[i]['Constraint']) {
-        const constraint = find(gets[i]['Constraint'], function(element) {
+        const constraint = gets[i]['Constraint'].find(function(element) {
           return element['name'] == 'GetEncoding';
         });
         const encodings = constraint['AllowedValues']['Value'];
@@ -248,21 +228,21 @@ export const optionsFromCapabilities = (wmtsCap, config) => {
           // requestEncoding not provided, use the first encoding from the list
           requestEncoding = encodings[0];
         }
-        if (requestEncoding === WMTSRequestEncoding.KVP) {
-          if (includes(encodings, WMTSRequestEncoding.KVP)) {
+        if (requestEncoding === 'KVP') {
+          if (encodings.includes('KVP')) {
             urls.push( /** @type {string} */ (gets[i]['href']));
           }
         } else {
           break;
         }
       } else if (gets[i]['href']) {
-        requestEncoding = WMTSRequestEncoding.KVP;
+        requestEncoding = 'KVP';
         urls.push( /** @type {string} */ (gets[i]['href']));
       }
     }
   }
   if (urls.length === 0) {
-    requestEncoding = WMTSRequestEncoding.REST;
+    requestEncoding = 'REST';
     l['ResourceURL'].forEach(function(element) {
       if (element['resourceType'] === 'tile') {
         format = element['format'];

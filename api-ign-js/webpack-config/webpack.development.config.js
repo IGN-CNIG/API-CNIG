@@ -1,11 +1,12 @@
 const path = require('path');
 const fse = require('fs-extra');
 const webpack = require('webpack');
-const AllowMutateEsmExports = require('./AllowMutateEsmExportsPlugin');
 const argv = require('yargs').argv;
+const ESLintPlugin = require('eslint-webpack-plugin');
+const AllowMutateEsmExports = require('./AllowMutateEsmExportsPlugin');
 
 const testName = argv.name;
-const coremin = argv['core-min'];
+// const coremin = argv['core-min']; // no-unused-vars
 if (testName === undefined) {
   const error = new Error('Test name is undefined. Use: npm start -- --name=<test-name>');
   throw error;
@@ -34,9 +35,9 @@ entrypoint.config = config;
 
 module.exports = {
   mode: 'development',
-  node: {
-    fs: 'empty',
-  },
+  // node: {
+  //   fs: 'empty',
+  // },
   entry: entrypoint,
   output: {
     filename: '[name].js',
@@ -55,9 +56,16 @@ module.exports = {
       patches: path.resolve(__dirname, '../src/impl/ol/js/patches_dev.js'),
     },
     extensions: ['.wasm', '.mjs', '.js', '.json', '.css', '.hbs', '.html', '.jpg'],
+    fallback: {
+      fs: false,
+      path: false,
+      crypto: false,
+      'buffer': require.resolve('buffer/'),
+    },
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.js$/,
         exclude: /(node_modules\/(?!ol)|bower_components)/,
         use: {
@@ -68,41 +76,67 @@ module.exports = {
         },
       },
       {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        exclude: [/node_modules/, /lib/, /test/, /dist/],
-      },
-      {
         test: [/\.hbs$/, /\.html$/],
         loader: 'html-loader',
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
-        loader: 'style-loader!css-loader',
-        exclude: [/node_modules/],
+        test: /\.css$/i,
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              // insert: 'head',
+              injectType: 'singletonStyleTag',
+            },
+          },
+          'css-loader',
+        ],
+        exclude: [/node_modules\/(?!ol)/],
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg|jpg)$/,
         exclude: /node_modules/,
-        loader: 'url-loader?name=fonts/[name].[ext]',
-      }
+        type: 'asset/inline',
+      },
+      {
+        test: /node_modules\/@geoblocks\/.*\.m?js/,
+        type: 'javascript/auto',
+      },
+      {
+        test: /node_modules\/@geoblocks\/.*\.m?js/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
     ],
   },
   plugins: [
     new AllowMutateEsmExports(),
     new webpack.HotModuleReplacementPlugin(),
+    new ESLintPlugin({
+      // extensions: [`js`, `jsx`],
+      files: 'src/**/*.js',
+      exclude: ['**/node_modules/**', '/lib/', '/test/', '/dist/'],
+    }),
   ],
   devServer: {
     // https: true,
-    hot: true,
+    // hot: true,
     // host: '0.0.0.0',
-    open: true,
+    // open: true,
     // port: 6123,
-    openPage: `test/development/${testName}.html`,
-    watchOptions: {
-      poll: 1000,
+    open: `test/development/${testName}.html`,
+    static: {
+      directory: path.join(__dirname, '/../'),
+      watch: {
+        ignored: '**/node_modules',
+        usePolling: false,
+      },
     },
+  },
+  watchOptions: {
+    poll: 1000,
   },
   devtool: 'eval-source-map',
 };

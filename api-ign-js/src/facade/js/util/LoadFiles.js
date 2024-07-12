@@ -10,7 +10,6 @@ import * as Dialog from '../dialog';
 import { getValue } from '../i18n/language';
 import Vector from '../layer/Vector';
 
-
 /**
  * Esta función añade al mapa una capa vector con los features
  * de un fichero
@@ -87,4 +86,3 @@ export const addFileToMap = (map, file) => {
 };
 
 export default {};
-

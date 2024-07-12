@@ -6,7 +6,7 @@ const map = M.map({
   layers: ['TMS*MTN*https://tms-mapa-raster.ign.es/1.0.0/mapa-raster/{z}/{x}/{-y}.jpeg*true*false*19'],
   center: [-428106.86611520057, 4884472.25393817],
   minZoom: 8,
-  zoom: 8
+  zoom: 8,
 });
 
 window.mapjs = map;
@@ -22,4 +22,3 @@ const mp = new Stereoscopic({
 });
 
 map.addPlugin(mp);
-

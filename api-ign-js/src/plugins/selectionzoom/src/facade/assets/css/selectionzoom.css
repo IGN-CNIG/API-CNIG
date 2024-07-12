@@ -85,7 +85,7 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
 
 .m-bottom.m-left>.m-plugin-selectionzoom.opened>.m-panel-btn {
     position: relative;
-    right: -40px;
+    /* right: -40px; */
 }
 
 .m-areas>div.m-area>div.m-panel.opened.m-plugin-selectionzoom {
@@ -95,7 +95,7 @@ div[id^="m-selectionzoom-lyr-"]:hover>span {
 }
 
 .m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.m-plugin-selectionzoom>div.m-panel-controls>div.m-control.m-container.m-selectionzoom {
-    padding-right: 40px;
+    /* padding-right: 40px; */
 }
 
 .m-areas>div.m-area.m-bottom.m-right>div.m-panel.opened.no-collapsible.m-plugin-selectionzoom>div.m-panel-controls>div.m-control.m-container.m-selectionzoom {

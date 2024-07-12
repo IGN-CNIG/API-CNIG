@@ -74,6 +74,8 @@ class GenericVector extends Vector {
    */
   constructor(userParameters = {}, options = {}, vendorOptions = {}) {
     let params = { ...userParameters, ...options };
+    delete params.minZoom;
+    delete params.maxZoom;
     const opts = options;
     let vOptions = vendorOptions;
 
@@ -97,7 +99,6 @@ class GenericVector extends Vector {
       opts.legend = Utils.addFacadeLegend(vOptions) || params.name;
       params.legend = params.legend || opts.legend;
     }
-
 
     params.infoEventType = userParameters.infoEventType || 'click';
     opts.userMaxExtent = params.maxExtent || opts.userMaxExtent;
@@ -171,7 +172,7 @@ class GenericVector extends Vector {
     * @api
     */
   calculateMaxExtent() {
-    return new Promise(resolve => resolve(this.getMaxExtent(false)));
+    return new Promise((resolve) => { resolve(this.getMaxExtent(false)); });
   }
 
   /**
@@ -360,7 +361,6 @@ class GenericVector extends Vector {
     }
     return new Generic(this.constructor.DEFAULT_OPTIONS_STYLE);
   }
-
 
   /**
    * Este método comprueba si un objeto es igual

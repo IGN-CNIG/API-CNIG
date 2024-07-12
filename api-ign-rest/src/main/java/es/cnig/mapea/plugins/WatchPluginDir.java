@@ -25,11 +25,11 @@ public class WatchPluginDir extends Thread {
 
    private static Logger log = Logger.getLogger(WatchPluginDir.class);
    private static WatchPluginDir instance;
-   
+
    private WatchService watcher;
    private Map<WatchKey, Path> keys;
    private Path pluginsDir;
-   
+
    private WatchPluginDir(Path pluginsDir) {
       try {
          this.watcher = FileSystems.getDefault().newWatchService();
@@ -41,13 +41,13 @@ public class WatchPluginDir extends Thread {
                + e.getLocalizedMessage());
       }
    }
-   
+
    @Override
    public void run () {
       try {
          // register directory and sub-directories
          registerEvents(pluginsDir);
-         
+
          // proccess events
          processEvents();
       }

@@ -92,12 +92,12 @@ div.m-areas>div.m-area>div.m-panel-modal.opened {
 
 @font-face {
     font-family: 'modal';
-    src: url('../fonts/modal.eot?5386345');
-    src: url('../fonts/modal.eot?5386345#iefix') format('embedded-opentype'),
-        url('../fonts/modal.woff2?5386345') format('woff2'),
-        url('../fonts/modal.woff?5386345') format('woff'),
-        url('../fonts/modal.ttf?5386345') format('truetype'),
-        url('../fonts/modal.svg?5386345#modal') format('svg');
+    src: url('../fonts/modal.eot?55776326');
+    src: url('../fonts/modal.eot?55776326#iefix') format('embedded-opentype'),
+        url('../fonts/modal.woff2?55776326') format('woff2'),
+        url('../fonts/modal.woff?55776326') format('woff'),
+        url('../fonts/modal.ttf?55776326') format('truetype'),
+        url('../fonts/modal.svg?55776326#modal') format('svg');
     font-weight: normal;
     font-style: normal;
 }

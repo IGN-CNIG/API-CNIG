@@ -10,8 +10,8 @@ const MERCATOR = 'EPSG:900913';
 const PLUS_ZINDEX = 1000;
 const GML_FORMAT = 'text/xml; subtype="gml/3.1.1"';
 const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
-const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&' +
-  'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
+const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&'
+  + 'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
 const NO_DATA_VALUE = 'NODATA_value -9999.000';
 const WFS_EXCEPTIONS = [
   'https://servicios.idee.es/wfs-inspire/hidrografia?',
@@ -128,9 +128,9 @@ export default class VectorsControl extends M.impl.Control {
    * features should be included in new source
    */
   newVectorSource(featuresIncluded) {
-    return featuresIncluded ?
-      new ol.source.Vector({ features: new ol.Collection([]) }) :
-      new ol.source.Vector();
+    return featuresIncluded
+      ? new ol.source.Vector({ features: new ol.Collection([]) })
+      : new ol.source.Vector();
   }
 
   /**
@@ -458,8 +458,8 @@ export default class VectorsControl extends M.impl.Control {
 
     // En el caso de que no tenga geometrías, comprobamos si es GML 3.2,
     // si lo es tenemos que parsearlo a mano.
-    if ((features.length === 0 || features[0].getGeometry() === undefined) &&
-      newSource.indexOf('gml/3.2') > 0) {
+    if ((features.length === 0 || features[0].getGeometry() === undefined)
+      && newSource.indexOf('gml/3.2') > 0) {
       features = this.gmlParser(newSource);
     }
 
@@ -823,7 +823,6 @@ export default class VectorsControl extends M.impl.Control {
 
     return superficies;
   }
-
 
   /**
    * Loads GeoJSON layer
@@ -1493,8 +1492,9 @@ export default class VectorsControl extends M.impl.Control {
     let res;
     let points = '';
     if (distance >= 50) {
-      const distPoint = (distance / this.distance_ > this.distance_) ?
-        distance / this.distance_ : this.distance_;
+      const distPoint = (distance / this.distance_ > this.distance_)
+        ? distance / this.distance_
+        : this.distance_;
       for (let i = 0; i <= distance / distPoint; i += 1) {
         if (angle >= 0 && angle <= 90) {
           [addX, addY] = [1, 1];
@@ -1519,8 +1519,9 @@ export default class VectorsControl extends M.impl.Control {
 
       res = points;
     } else {
-      const distPoint = (distance / this.distance_ > this.distance_) ?
-        distance / this.distance_ : this.distance_;
+      const distPoint = (distance / this.distance_ > this.distance_)
+        ? distance / this.distance_
+        : this.distance_;
       if (angle >= 0 && angle <= 90) {
         [addX, addY] = [1, 1];
       } else if (angle >= 90) {
@@ -1544,7 +1545,6 @@ export default class VectorsControl extends M.impl.Control {
 
     return res;
   }
-
 
   getDistBetweenPoints(firstPoint, secondPoint) {
     const srs = this.facadeMap_.getProjection().code;
@@ -1634,8 +1634,8 @@ export default class VectorsControl extends M.impl.Control {
   removeMapOverlays(map) {
     const overlays = map.getMapImpl().getOverlays().getArray();
     overlays.forEach((item) => {
-      if (item.getKeys().indexOf('element') > -1 &&
-        item.element.innerHTML.indexOf('m-measure') < 0) {
+      if (item.getKeys().indexOf('element') > -1
+        && item.element.innerHTML.indexOf('m-measure') < 0) {
         map.getMapImpl().removeOverlay(item);
       }
     });
@@ -1663,8 +1663,8 @@ export default class VectorsControl extends M.impl.Control {
 
           const bbox = map.getBbox();
           const extent = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-          const wfsURL = `${url}service=WFS&version=2.0.0&request=GetFeature&typename=${name}&` +
-            `outputFormat=${encodeURIComponent(GML_FORMAT)}&srsName=${srs}&bbox=${extent.join(',')},${srs}`;
+          const wfsURL = `${url}service=WFS&version=2.0.0&request=GetFeature&typename=${name}&`
+            + `outputFormat=${encodeURIComponent(GML_FORMAT)}&srsName=${srs}&bbox=${extent.join(',')},${srs}`;
           const layer = new M.layer.Vector({ name, legend, extract: true });
           M.remote.get(wfsURL).then((response) => {
             if (!cancelFlag) {
@@ -1734,10 +1734,10 @@ export default class VectorsControl extends M.impl.Control {
     const map = this.facadeMap_;
     const srs = map.getProjection().code;
     const filtered = map.getLayers().filter((layer) => {
-      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 && layer.isVisible() &&
-        layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.updatable &&
-        layer.name === layerName && layer.url === layerURL && layer.name !== 'coordinateresult' &&
-        layer.name !== 'searchresult' && layer.name !== 'infocoordinatesLayerFeatures';
+      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 && layer.isVisible()
+        && layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.updatable
+        && layer.name === layerName && layer.url === layerURL && layer.name !== 'coordinateresult'
+        && layer.name !== 'searchresult' && layer.name !== 'infocoordinatesLayerFeatures';
     });
 
     if (filtered.length > 0) {
@@ -1760,8 +1760,8 @@ export default class VectorsControl extends M.impl.Control {
 
           const bbox = map.getBbox();
           const extent = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-          const wfsURL = `${layer.url}service=WFS&version=2.0.0&request=GetFeature&typename=${layer.name}&` +
-            `outputFormat=${encodeURIComponent(GML_FORMAT)}&srsName=${srs}&bbox=${extent.join(',')},${srs}`;
+          const wfsURL = `${layer.url}service=WFS&version=2.0.0&request=GetFeature&typename=${layer.name}&`
+            + `outputFormat=${encodeURIComponent(GML_FORMAT)}&srsName=${srs}&bbox=${extent.join(',')},${srs}`;
           M.remote.get(wfsURL).then((response) => {
             if (!cancelFlag) {
               const responseWFS = response.text.replace(/wfs:member/gi, 'gml:featureMember');
@@ -1817,8 +1817,9 @@ export default class VectorsControl extends M.impl.Control {
 
   waitLayerLoadedAsync(layer) {
     return new Promise((resolve) => {
-      const geometry = !M.utils.isNullOrEmpty(layer.geometry) ?
-        layer.geometry : layer.getGeometryType();
+      const geometry = !M.utils.isNullOrEmpty(layer.geometry)
+        ? layer.geometry
+        : layer.getGeometryType();
 
       if (geometry === null) {
         setTimeout(() => {

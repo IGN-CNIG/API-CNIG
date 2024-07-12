@@ -1,3 +1,54 @@
+22/05/24 - Versión 5.0.0
+- Se incluye nuevo tipo de capa GeoTiff.
+- Se incluye nuevo tipo de capa MapLibre.
+- Se soluciona problema al obtener la leyenda de las capas
+- Se han actualizado todas las versiones de plugins.
+- Se ha incluido nuevo tipo de geometría 'GeometryCollection'.
+- Se ha solucionado problema con getFeatureById, getFilter y removeFilter de capa MVT.
+- Mejorado funcionamiento de parámetros minZoom, maxZoom y tileGridMaxZoom en todas las capas.
+- Se ha solucionado problemas con userMaxExtent en capas TMS y XYZ.
+- Subida de versión de OL a la 8.1
+- Plugin incicarto:
+  - Cambio de texto a mostrar al superar el límite de tamaño del fichero a enviar.
+  - Se actualiza método getAPIRest.
+- Plugin backimglayer:
+  - Se soluciona problema al cargar las capas como cadena.
+  - Se posiciona foco cuando se selecciona ninguna capa.
+- Plugin comparators:
+  - Se soluciona problema con traducciones.
+  - Se actualiza método getAPIRest.
+  - Se actualiza método README.
+- Plugin contactlink: se soluciona problemas de visualización con CSS.
+- Plugin help: se actualiza método getAPIRest.
+- Plugin layerswitcher: mejoras estilos CSS en desbordamiento de contenido en modales.
+- Plugin locator:
+  - Se actualiza método getAPIRest.
+  - se controla posición TC independientemente del control añadido.
+- Plugin mousesrs: se actualiza método getAPIRest.
+- Plugin printviewmanagement:
+  - Se actualiza valor por defecto de la plantilla de printermap.
+  - Se actualiza método getAPIRest.
+  - Se soluciona error de creación de WLD vacío
+- Plugin selectionzoom:
+  - Se mejora visualización según posición.
+  - Se actualiza método getAPIRest.
+- Plugin modal: mejoras estilos CSS en desbordamiento de contenido en modal.
+- Plugin storymap:
+  - Se actualiza método getAPIRest.
+  - Se actualiza api.json.
+  - Se soluciona problema con selección y progreso de capítulos.
+- Plugin stylemanager: se actualizan plantillas con traducciones.
+- Plugin vectorsmanagement:
+  - Se mejora traducciones.
+  - Se soluciona problema con control de ayuda.
+  - Se soluciona problema con control de selección y edición de atributos.
+- Plugin predefinedzoom:
+  - Se amplía zona para hacer click sobre botones de predefinedzoom.
+  - Se actualiza método getAPIRest.
+- Plugin overviewmap: se soluciona problema con evento postrender y actualizado su visor JSP.
+- Se soluciona error de estilo Choropleth al llamar al setQuantification
+
+
 29/02/2024 - Versión 4.9.0
 - Plugin comparators: se añade nuevo control windowsync y se añaden traducciones.
 - Plugin contactlink: para visor estereoscopico enviará como parámetro el centro, zoom y proyección del mapa.

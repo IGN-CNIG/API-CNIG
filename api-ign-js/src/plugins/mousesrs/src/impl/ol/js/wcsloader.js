@@ -51,6 +51,7 @@ export default class WCSLoader {
       }
     }).catch((error) => {
       M.proxy(true);
+      // eslint-disable-next-line no-console
       console.error(`Error received in request: ${error.message}`);
     });
   }
@@ -73,11 +74,11 @@ export default class WCSLoader {
     }
 
     const ext = this.getVisibleExtent(extent, epsgCode);
-    if (ext && this.visibleExtent && this.mdtData &&
-      ext[0] === this.visibleExtent[0] &&
-      ext[1] === this.visibleExtent[1] &&
-      ext[2] === this.visibleExtent[2] &&
-      ext[3] === this.visibleExtent[3]
+    if (ext && this.visibleExtent && this.mdtData
+      && ext[0] === this.visibleExtent[0]
+      && ext[1] === this.visibleExtent[1]
+      && ext[2] === this.visibleExtent[2]
+      && ext[3] === this.visibleExtent[3]
     ) {
       return;
     }
@@ -114,6 +115,7 @@ export default class WCSLoader {
       innerThis.mdtData = mdtData;
     }).catch((error) => {
       M.proxy(true);
+      // eslint-disable-next-line no-console
       console.error(`Error received in request: ${error.message}`);
     });
   }
@@ -129,23 +131,25 @@ export default class WCSLoader {
         newCoords = [pt.x, pt.y];
       }
 
-      if (this.coverageExtension &&
-        newCoords[0] > this.coverageExtension[0] &&
-        newCoords[0] < this.coverageExtension[2] &&
-        newCoords[1] > this.coverageExtension[1] &&
-        newCoords[1] < this.coverageExtension[3]) {
+      if (this.coverageExtension
+          && newCoords[0] > this.coverageExtension[0]
+          && newCoords[0] < this.coverageExtension[2]
+          && newCoords[1] > this.coverageExtension[1]
+          && newCoords[1] < this.coverageExtension[3]) {
         const x = this.visibleExtent[0] - newCoords[0];
         const y = this.visibleExtent[3] - newCoords[1];
         const col = Math.floor(Math.abs((x / this.dx)));
         const row = Math.floor(Math.abs((y / this.dy)));
-        const h1 = this.mdtData[row] && this.mdtData[row][col] && this.mdtData[row][col] !==
-          this.noDataValue ? this.mdtData[row][col] : 0;
-        const h2 = this.mdtData[row] && this.mdtData[row][col + 1] && this.mdtData[row][col + 1] !==
-          this.noDataValue ? this.mdtData[row][col + 1] : 0;
-        const h3 = this.mdtData[row + 1] && this.mdtData[row + 1][col] &&
-          this.mdtData[row + 1][col] !== this.noDataValue ? this.mdtData[row + 1][col] : 0;
-        const h4 = this.mdtData[row + 1] && this.mdtData[row + 1][col + 1] &&
-          this.mdtData[row + 1][col + 1] !== this.noDataValue ? this.mdtData[row + 1][col + 1] : 0;
+        const h1 = this.mdtData[row] && this.mdtData[row][col]
+          && this.mdtData[row][col] !== this.noDataValue ? this.mdtData[row][col] : 0;
+        const h2 = this.mdtData[row] && this.mdtData[row][col + 1]
+          && this.mdtData[row][col + 1] !== this.noDataValue ? this.mdtData[row][col + 1] : 0;
+        const h3 = this.mdtData[row + 1] && this.mdtData[row + 1][col]
+          && this.mdtData[row + 1][col] !== this.noDataValue ? this.mdtData[row + 1][col] : 0;
+        const h4 = this.mdtData[row + 1] && this.mdtData[row + 1][col + 1]
+          && this.mdtData[row + 1][col + 1] !== this.noDataValue
+          ? this.mdtData[row + 1][col + 1]
+          : 0;
         const xs = ((this.visibleExtent[0] - newCoords[0]) - (Math.floor((x / this.dx)) * this.dx))
           / this.dx;
         const ys = ((this.visibleExtent[3] - newCoords[1]) - (Math.floor((y / this.dy)) * this.dy))
@@ -200,6 +204,7 @@ export default class WCSLoader {
 
   getCoverageResponse(error, response, userData) {
     if (error) {
+      // eslint-disable-next-line no-console
       console.error(`Error received in DescribeCoverage request: ${error.message}`);
       return;
     }
@@ -244,8 +249,8 @@ export default class WCSLoader {
   }
 
   bilinealInterpolation(g00, g10, g01, g11, xs, ys) {
-    return (g00 * (1 - xs) * (1 - ys)) + (g10 * xs * (1 - ys)) +
-      (g01 * (1 - xs) * ys) + (g11 * xs * ys);
+    return (g00 * (1 - xs) * (1 - ys)) + (g10 * xs * (1 - ys))
+      + (g01 * (1 - xs) * ys) + (g11 * xs * ys);
   }
 
   assignOptions(obj, opts) {

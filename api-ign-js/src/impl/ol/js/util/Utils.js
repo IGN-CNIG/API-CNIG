@@ -8,7 +8,6 @@ import { getWidth, extend } from 'ol/extent';
 import { get as getProj, getTransform, transformExtent } from 'ol/proj';
 import OLFeature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
-import GeometryType from 'ol/geom/GeometryType';
 import Point from 'ol/geom/Point';
 import LineString from 'ol/geom/LineString';
 import LinearRing from 'ol/geom/LinearRing';
@@ -110,6 +109,60 @@ const createGeoJSONFeature = (previousFeature, coordinates) => {
 };
 
 /**
+  * Este método transforma coordenadas a EPSG:4326.
+  *
+  * @function
+  * @param {String} type Tipo de geometría.
+  * @param {Object} codeProjection Código de proyección actual.
+  * @param {Number|Array} coordinates Coordenadas a transformar.
+  * @return {Array} Coordenadas transformadas.
+  * @public
+  * @api
+  */
+const geometryTypeCoordTransform = (type, codeProjection, coordinates) => {
+  const newCoordinates = [];
+  switch (type) {
+    case 'Point':
+      return getTransformedCoordinates(codeProjection, coordinates);
+    case 'MultiPoint':
+    case 'LineString':
+      for (let i = 0; i < coordinates.length; i += 1) {
+        const newDot = getTransformedCoordinates(codeProjection, coordinates[i]);
+        newCoordinates.push(newDot);
+      }
+      return newCoordinates;
+    case 'MultiLineString':
+    case 'Polygon':
+      for (let i = 0; i < coordinates.length; i += 1) {
+        const group = [];
+        for (let j = 0; j < coordinates[i].length; j += 1) {
+          const dot = getTransformedCoordinates(codeProjection, coordinates[i][j]);
+          group.push(dot);
+        }
+        newCoordinates.push(group);
+      }
+      return newCoordinates;
+    case 'MultiPolygon':
+      for (let i = 0; i < coordinates.length; i += 1) {
+        const newPolygon = [];
+        for (let j = 0; j < coordinates[i].length; j += 1) {
+          const newPolygonLine = [];
+          const aux = coordinates[i][j];
+          for (let k = 0; k < aux.length; k += 1) {
+            const dot = getTransformedCoordinates(codeProjection, aux[k]);
+            newPolygonLine.push(dot);
+          }
+          newPolygon.push(newPolygonLine);
+        }
+        newCoordinates.push(newPolygon);
+      }
+      return newCoordinates;
+    default:
+      return newCoordinates;
+  }
+};
+
+/**
   * Este método transforma coordenadas de objetos geográficos como GeoJSON a EPSG:4326.
   *
   * @function
@@ -123,64 +176,23 @@ const createGeoJSONFeature = (previousFeature, coordinates) => {
 export const geojsonTo4326 = (featuresAsJSON, codeProjection) => {
   const jsonResult = [];
   featuresAsJSON.forEach((featureAsJSON) => {
-    const coordinates = featureAsJSON.geometry.coordinates;
-    let newCoordinates = [];
-    switch (featureAsJSON.geometry.type) {
-      case 'Point':
-        newCoordinates = getTransformedCoordinates(codeProjection, coordinates);
-        break;
-      case 'MultiPoint':
-        for (let i = 0; i < coordinates.length; i += 1) {
-          const newDot = getTransformedCoordinates(codeProjection, coordinates[i]);
-          newCoordinates.push(newDot);
-        }
-        break;
-      case 'LineString':
-        for (let i = 0; i < coordinates.length; i += 1) {
-          const newDot = getTransformedCoordinates(
-            codeProjection,
-            coordinates[i],
-          );
-          newCoordinates.push(newDot);
-        }
-        break;
-      case 'MultiLineString':
-        for (let i = 0; i < coordinates.length; i += 1) {
-          const newLine = [];
-          for (let j = 0; j < coordinates[i].length; j += 1) {
-            const newDot = getTransformedCoordinates(codeProjection, coordinates[i][j]);
-            newLine.push(newDot);
-          }
-          newCoordinates.push(newLine);
-        }
-        break;
-      case 'Polygon':
-        for (let i = 0; i < coordinates.length; i += 1) {
-          const newPoly = [];
-          for (let j = 0; j < coordinates[i].length; j += 1) {
-            const newDot = getTransformedCoordinates(codeProjection, coordinates[i][j]);
-            newPoly.push(newDot);
-          }
-          newCoordinates.push(newPoly);
-        }
-        break;
-      case 'MultiPolygon':
-        for (let i = 0; i < coordinates.length; i += 1) {
-          const newPolygon = [];
-          for (let j = 0; j < coordinates[i].length; j += 1) {
-            const newPolygonLine = [];
-            for (let k = 0; k < coordinates[i][j].length; k += 1) {
-              const newDot = getTransformedCoordinates(codeProjection, coordinates[i][j][k]);
-              newPolygonLine.push(newDot);
-            }
-            newPolygon.push(newPolygonLine);
-          }
-          newCoordinates.push(newPolygon);
-        }
-        break;
-      default:
+    let jsonFeature;
+    if (featureAsJSON.geometry.type !== 'GeometryCollection') {
+      const newCoordinates = geometryTypeCoordTransform(
+        featureAsJSON.geometry.type,
+        codeProjection,
+        featureAsJSON.geometry.coordinates,
+      );
+      jsonFeature = createGeoJSONFeature(featureAsJSON, newCoordinates);
+    } else {
+      const collection = featureAsJSON.geometry.geometries.map((g) => {
+        return {
+          type: g.type,
+          coordinates: geometryTypeCoordTransform(g.type, codeProjection, g.coordinates),
+        };
+      });
+      jsonFeature = { ...featureAsJSON, geometry: { type: 'GeometryCollection', geometries: collection } };
     }
-    const jsonFeature = createGeoJSONFeature(featureAsJSON, newCoordinates);
     jsonResult.push(jsonFeature);
   });
   return jsonResult;
@@ -286,13 +298,14 @@ class Utils {
 
   static addFacadeName(facadeName, olLayer) {
     const ol3layer = olLayer;
-    if (isNullOrEmpty(facadeName) && !isNullOrEmpty(ol3layer.getSource()) &&
-        !isNullOrEmpty(ol3layer.getSource().getParams) &&
-        !isNullOrEmpty(ol3layer.getSource().getParams().LAYERS)) {
+    if (isNullOrEmpty(facadeName) && !isNullOrEmpty(ol3layer.getSource())
+      && !isNullOrEmpty(ol3layer.getSource().getParams)
+      && !isNullOrEmpty(ol3layer.getSource().getParams().LAYERS)) {
       return ol3layer.getSource().getParams().LAYERS;
-    } else if (isNullOrEmpty(facadeName) && !isNullOrEmpty(ol3layer.getSource()) &&
-        !isNullOrEmpty(ol3layer.getSource().getUrl) &&
-        !isNullOrEmpty(ol3layer.getSource().getUrl()) && typeof ol3layer.getSource().getUrl() !== 'function') {
+    }
+    if (isNullOrEmpty(facadeName) && !isNullOrEmpty(ol3layer.getSource())
+      && !isNullOrEmpty(ol3layer.getSource().getUrl)
+      && !isNullOrEmpty(ol3layer.getSource().getUrl()) && typeof ol3layer.getSource().getUrl() !== 'function') {
       const url = ol3layer.getSource().getUrl();
       let result = null;
       const typeName = url.split('&typeName=')[1];
@@ -304,9 +317,11 @@ class Utils {
         // facadeLayer.namespace = result[0];
       }
       return generateRandom('layer_');
-    } else if (ol3layer.getSource().getLayer) {
+    }
+    if (ol3layer.getSource().getLayer) {
       return ol3layer.getSource().getLayer();
-    } else if (isNullOrEmpty(facadeName)) {
+    }
+    if (isNullOrEmpty(facadeName)) {
       return generateRandom('layer_');
     }
     return facadeName;
@@ -414,7 +429,7 @@ class Utils {
     * @api
     */
   static getFeaturesExtent(features, projectionCode) {
-    const olFeatures = features.map(f => (f instanceof Feature ? f.getImpl().getOLFeature() : f));
+    const olFeatures = features.map((f) => (f instanceof Feature ? f.getImpl().getOLFeature() : f));
     let extents = [];
     olFeatures.forEach((feature) => {
       if (feature.getGeometry()) {
@@ -588,8 +603,13 @@ class Utils {
     const clonedFlatCoordinates = [...flatCoordinates];
     const clonedProperties = Object.assign(properties);
     const clonedEnds = [...ends];
-    const clonedOLRenderFeature =
-       new RenderFeature(type, clonedFlatCoordinates, clonedEnds, clonedProperties, id);
+    const clonedOLRenderFeature = new RenderFeature(
+      type,
+      clonedFlatCoordinates,
+      clonedEnds,
+      clonedProperties,
+      id,
+    );
     return clonedOLRenderFeature;
   }
 
@@ -610,32 +630,32 @@ class Utils {
     const endss = olRenderFeature.getEndss();
     const type = olRenderFeature.getType();
     switch (type) {
-      case GeometryType.POINT:
+      case 'Point':
         geometry = new Point(coordinates);
         break;
-      case GeometryType.LINE_STRING:
+      case 'LineString':
         geometry = new LineString(coordinates);
         break;
-      case GeometryType.LINEAR_RING:
+      case 'LinearRing':
         geometry = new LinearRing(coordinates);
         break;
-      case GeometryType.POLYGON:
+      case 'Polygon':
         geometry = new Polygon(coordinates);
         break;
-      case GeometryType.MULTI_POINT:
+      case 'MultiPoint':
         geometry = new MultiPoint(coordinates);
         break;
-      case GeometryType.MULTI_LINE_STRING:
+      case 'MultiLineString':
         geometry = new MultiLineString(coordinates, undefined, ends);
         break;
-      case GeometryType.MULTI_POLYGON:
+      case 'MultiPolygon':
         geometry = new MultiPolygon(coordinates, undefined, endss);
         break;
-      case GeometryType.GEOMETRY_COLLECTION:
+      case 'GeometryCollection':
         const geometries = olRenderFeature.getGeometries();
         geometry = new GeometryCollection(geometries);
         break;
-      case GeometryType.CIRCLE:
+      case 'Circle':
         const center = olRenderFeature.getFlatInteriorPoint();
         geometry = new Circle(center);
         break;

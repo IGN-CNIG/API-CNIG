@@ -818,9 +818,9 @@ const init = () => {
 // Esperamos para que el mapa cargue la capa y el estilo por defecto
 setTimeout(init, 1000);
 
-/////////////////////
-// ERRORES develop //
-/////////////////////
+//////////////////////////
+// ERRORES develop y ol //
+//////////////////////////
 /*
 + applyToFeature --> Cannot read properties of null (reading 'getOptions')  //El feature no tiene estilo
 + Linea "label smooth" parece causar error de tipo "TypeError: featureVariable.getGeometry().cspline is not a function" en "getLineStyle builder.js:551", ocurre si anteriormente se ha activado "label path" y solo entonces haciendo click en "label smooth" causa esto. Si no se quita(dando más al botón "label smooth"), se muestra este mismo error constantemente.

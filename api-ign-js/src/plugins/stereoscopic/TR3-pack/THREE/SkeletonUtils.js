@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
 	AnimationClip,
 	AnimationMixer,
@@ -568,7 +569,6 @@ class SkeletonUtils {
 	}
 
 }
-
 
 function parallelTraverse( a, b, callback ) {
 

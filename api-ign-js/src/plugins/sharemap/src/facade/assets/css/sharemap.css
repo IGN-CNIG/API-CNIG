@@ -46,6 +46,8 @@
     color: #71a7d3;
     border: 1px solid #71a7d3;
     box-shadow: 0 2px 4px #71a7d3, 0 -1px 0px #71a7d3;
+    overflow: auto;
+    height: 50vh;
 }
 
 

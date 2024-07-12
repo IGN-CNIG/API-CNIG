@@ -95,7 +95,7 @@ export const isNullOrEmpty = (obj) => {
   } else if (isArray(obj)) {
     nullOrEmpty = true;
     if (obj.length > 0) {
-      nullOrEmpty = !obj.some(objElem => !isNullOrEmpty(objElem));
+      nullOrEmpty = !obj.some((objElem) => !isNullOrEmpty(objElem));
     }
   } else if (typeof obj === 'string' && obj.trim()
     .length === 0) {
@@ -169,7 +169,6 @@ export const isUrl = (obj) => {
   return isUrlParam;
 };
 
-
 /**
  * Devuelve un texto normalizado (sin espacios y en mayúsculas o minúsculas).
  * @function
@@ -182,9 +181,9 @@ export const normalize = (stringToNormalize, upperCase) => {
   let normalizedString = stringToNormalize;
   if (!isNullOrEmpty(normalizedString) && isString(normalizedString)) {
     normalizedString = normalizedString.trim();
-    normalizedString = upperCase ?
-      normalizedString.toUpperCase() :
-      normalizedString.toLowerCase();
+    normalizedString = upperCase
+      ? normalizedString.toUpperCase()
+      : normalizedString.toLowerCase();
   }
   return normalizedString;
 };
@@ -386,9 +385,9 @@ export const getResolutionFromScale = (scale, unitsParam) => {
       units = 'degrees';
     }
     // normalize scale
-    const normScale = (scale > 1.0) ?
-      (1.0 / scale) :
-      scale;
+    const normScale = (scale > 1.0)
+      ? (1.0 / scale)
+      : scale;
     resolution = 1 / (normScale * INCHES_PER_UNIT[units] * DOTS_PER_INCH);
   }
   return resolution;
@@ -755,13 +754,7 @@ export const enableTouchScroll = (elem) => {
  * @api
  */
 export const rgbToHex = (rgbColor) => {
-  let hexColor;
-  try {
-    hexColor = chroma(rgbColor)
-      .hex();
-  } catch (err) {
-    throw err;
-  }
+  const hexColor = chroma(rgbColor).hex();
   return hexColor;
 };
 
@@ -774,13 +767,7 @@ export const rgbToHex = (rgbColor) => {
  * @api
  */
 export const rgbaToHex = (rgbaColor) => {
-  let hexColor;
-  try {
-    hexColor = chroma(rgbaColor)
-      .hex();
-  } catch (err) {
-    throw err;
-  }
+  const hexColor = chroma(rgbaColor).hex();
   return hexColor;
 };
 
@@ -798,11 +785,7 @@ export const getOpacityFromRgba = (rgbaColor) => {
   const rgbaRegExp = /^rgba\s*\((\s*\d+\s*,){3}\s*([\d.]+)\s*\)$/;
   if (rgbaRegExp.test(rgbaColor)) {
     opacity = rgbaColor.replace(rgbaRegExp, '$2');
-    try {
-      opacity = parseFloat(opacity);
-    } catch (err) {
-      throw err;
-    }
+    opacity = parseFloat(opacity);
   }
 
   return opacity;
@@ -927,7 +910,6 @@ export const inverseColor = (color) => {
 
   return inverseColorParam;
 };
-
 
 /**
  * Esta función devuelve el color RGBA.
@@ -1084,7 +1066,6 @@ export const defineFunctionFromString = (objParam) => {
   return obj;
 };
 
-
 /**
  * Esta función devuelve verdadero si algún valor de objeto es función o "{{*}}".
  * @function
@@ -1096,7 +1077,7 @@ export const defineFunctionFromString = (objParam) => {
 export const isDynamic = (obj) => {
   let flag = false;
   if (!Array.isArray(obj) && typeof obj === 'object' && !isNullOrEmpty(obj)) {
-    flag = Object.values(obj).some(val => isDynamic(val));
+    flag = Object.values(obj).some((val) => isDynamic(val));
   } else if (typeof obj === 'function' || (typeof obj === 'string' && /\{\{.*\}\}/.test(obj))) {
     flag = true;
   }
@@ -1164,7 +1145,6 @@ export const getEnvolvedExtent = (extents) => {
 
   return envolvedExtent;
 };
-
 
 /**
  * Esta función transforma "bytes" a Base64.
@@ -1280,12 +1260,14 @@ export const modifySVG = (url, options) => {
   return remoteGet(url).then((response) => {
     let result = '';
     try {
-      const tags = (options.icon.tag) ?
-        options.icon.tag : ['path', 'circle', 'ellipse', 'line', 'polygon', 'polyline', 'rect', 'foreignObject'];
+      const tags = (options.icon.tag)
+        ? options.icon.tag
+        : ['path', 'circle', 'ellipse', 'line', 'polygon', 'polyline', 'rect', 'foreignObject'];
 
       const svg = Array.from(response.xml.getElementsByTagName('svg'))[0];
-      const strokeMiddle = options.icon.stroke && options.icon.stroke.width ?
-        options.icon.stroke.width : 1;
+      const strokeMiddle = options.icon.stroke && options.icon.stroke.width
+        ? options.icon.stroke.width
+        : 1;
       let width = svg.getAttribute('width') ? svg.getAttribute('width').replace(/[^0-9.]/g, '') : null;
       let height = svg.getAttribute('height') ? svg.getAttribute('height').replace(/[^0-9.]/g, '') : null;
       if (svg.getAttribute('viewBox')) {
@@ -1541,15 +1523,11 @@ const joinCanvas = (map, imageType = 'image/jpeg') => {
  * @api
  * @returns {String} Imagen en base64
  */
-export const getImageMap = (map, type = 'image/jpeg', canva) => {
+export const getImageMap = (map, type = 'image/jpeg', canva = undefined) => {
   const canvas = canva || joinCanvas(map, type);
   let img = null;
   if (canvas) {
-    try {
-      img = canvas.toDataURL(type);
-    } catch (e) {
-      throw e;
-    }
+    img = canvas.toDataURL(type);
   }
   return img;
 };
@@ -1564,22 +1542,18 @@ export const getImageMap = (map, type = 'image/jpeg', canva) => {
 export const copyImageClipBoard = (map, canva) => {
   const canvas = canva || joinCanvas(map, 'image/png');
   if (canvas) {
-    try {
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const item = new window.ClipboardItem({ 'image/png': blob });
-          window.navigator.clipboard.write([item]).then(() => {
-            // eslint-disable-next-line no-console
-            console.log('Image copied to clipboard');
-          }).catch((err) => {
-            // eslint-disable-next-line no-console
-            console.error('Error copying image to clipboard:', err);
-          });
-        }
-      });
-    } catch (e) {
-      throw e;
-    }
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const item = new window.ClipboardItem({ 'image/png': blob });
+        window.navigator.clipboard.write([item]).then(() => {
+          // eslint-disable-next-line no-console
+          console.log('Image copied to clipboard');
+        }).catch((err) => {
+          // eslint-disable-next-line no-console
+          console.error('Error copying image to clipboard:', err);
+        });
+      }
+    });
   }
 };
 
@@ -1655,7 +1629,7 @@ export const transfomContent = (text, pSizes = {}) => {
  */
 export const ObjectToArrayExtent = (bbox, epsg) => {
   const { def } = M.impl.ol.js.projections.getSupportedProjs()
-    .filter(proj => proj.codes.includes(epsg))[0];
+    .filter((proj) => proj.codes.includes(epsg))[0];
 
   const typeCoordinates = def.includes('+proj=longlat');
 

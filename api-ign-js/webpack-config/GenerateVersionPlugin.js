@@ -14,6 +14,7 @@ class GenerateVersionPlugin {
     this.aliasRoot = opt.aliasRoot;
     this.override = opt.override;
   }
+
   /**
    * This function apply the logic plugin.
    * @function

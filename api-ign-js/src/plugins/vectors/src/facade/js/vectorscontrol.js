@@ -213,16 +213,17 @@ export default class VectorsControl extends M.Control {
 
   renderLayers() {
     const filtered = this.map.getLayers().filter((layer) => {
-      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 &&
-        layer.name !== undefined && layer.displayInLayerSwitcher === true;
+      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1
+        && layer.name !== undefined && layer.displayInLayerSwitcher === true;
     });
 
     let layers = [];
     filtered.forEach((layer) => {
       if (!(layer.type.toLowerCase() === 'kml' && layer.name.toLowerCase() === 'attributions')) {
         const newLayer = layer;
-        const geometry = !M.utils.isNullOrEmpty(layer.geometry) ?
-          layer.geometry : layer.getGeometryType();
+        const geometry = !M.utils.isNullOrEmpty(layer.geometry)
+          ? layer.geometry
+          : layer.getGeometryType();
 
         if (geometry === null) {
           this.impl_.waitLayerLoadedAsync(layer).then(() => {
@@ -332,10 +333,10 @@ export default class VectorsControl extends M.Control {
     this.accessibilityTab(this.drawingTools);
     this.currentColor = this.drawingTools.querySelector('#colorSelector').value;
     this.currentThickness = this.drawingTools.querySelector('#thicknessSelector').value;
-    this.drawingTools.querySelector('.collapsor').addEventListener('click', e => this.toogleCollapse(e));
-    this.drawingTools.querySelector('.collapsor').addEventListener('keydown', e => (e.keyCode === 13) && this.toogleCollapse(e));
-    this.drawingTools.querySelector('#colorSelector').addEventListener('change', e => this.styleChange(e));
-    this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', e => this.styleChange(e));
+    this.drawingTools.querySelector('.collapsor').addEventListener('click', (e) => this.toogleCollapse(e));
+    this.drawingTools.querySelector('.collapsor').addEventListener('keydown', (e) => (e.keyCode === 13) && this.toogleCollapse(e));
+    this.drawingTools.querySelector('#colorSelector').addEventListener('change', (e) => this.styleChange(e));
+    this.drawingTools.querySelector('#thicknessSelector').addEventListener('change', (e) => this.styleChange(e));
     this.drawingTools.querySelector('button.m-vector-layer-delete-feature').addEventListener('click', () => this.deleteSingleFeature());
     this.drawingTools.querySelector('button.m-vector-layer-add-points').addEventListener('click', () => this.activeAddPoints());
     this.drawingTools.querySelector('button.m-vector-layer-profile').addEventListener('click', () => this.getProfile());
@@ -436,10 +437,10 @@ export default class VectorsControl extends M.Control {
     const inputFile = this.uploadingTemplate.querySelector('#vectors-uploading>input');
     const fromURL = this.uploadingTemplate.querySelector('#vectors-uploading #uploadFromURL');
     const labelFileInput = this.uploadingTemplate.querySelector('#labelFileInput');
-    inputFile.addEventListener('change', evt => this.changeFile(evt, inputFile.files[0]));
-    labelFileInput.addEventListener('keydown', evt => (evt.keyCode === 13) && evt.target.click());
+    inputFile.addEventListener('change', (evt) => this.changeFile(evt, inputFile.files[0]));
+    labelFileInput.addEventListener('keydown', (evt) => (evt.keyCode === 13) && evt.target.click());
     fromURL.addEventListener('click', () => this.openFromURL());
-    fromURL.addEventListener('keydown', evt => (evt.keyCode === 13) && this.openFromURL());
+    fromURL.addEventListener('keydown', (evt) => (evt.keyCode === 13) && this.openFromURL());
   }
 
   openFromURL() {
@@ -581,7 +582,7 @@ export default class VectorsControl extends M.Control {
     M.dialog.info(addWFS, getValue('add_wfs_layer'), this.order);
     setTimeout(() => {
       if (document.querySelector('#m-vectors-addwfs-list-btn') !== null) {
-        document.querySelector('#m-vectors-addwfs-list-btn').addEventListener('click', e => this.showSuggestions(e));
+        document.querySelector('#m-vectors-addwfs-list-btn').addEventListener('click', (e) => this.showSuggestions(e));
       }
 
       document.querySelector('#m-vectors-addwfs-search-input').addEventListener('keyup', (e) => {
@@ -589,15 +590,15 @@ export default class VectorsControl extends M.Control {
         document.querySelector('#m-vectors-addwfs-search-input').value = url;
       });
 
-      document.querySelector('#m-vectors-addwfs-search-btn').addEventListener('click', e => this.readWFSCapabilities(e));
-      document.querySelector('#m-vectors-addwfs-search-btn').addEventListener('keydown', e => (e.keyCode === 13) && this.readWFSCapabilities(e));
+      document.querySelector('#m-vectors-addwfs-search-btn').addEventListener('click', (e) => this.readWFSCapabilities(e));
+      document.querySelector('#m-vectors-addwfs-search-btn').addEventListener('keydown', (e) => (e.keyCode === 13) && this.readWFSCapabilities(e));
       document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
       const button = document.querySelector('div.m-dialog.info div.m-button > button');
       button.innerHTML = getValue('close');
       button.style.width = '75px';
       button.style.backgroundColor = '#71a7d3';
       document.querySelectorAll('#m-vectors-addwfs-suggestions .m-vectors-addwfs-suggestion').forEach((elem) => {
-        elem.addEventListener('click', e => this.loadSuggestion(e));
+        elem.addEventListener('click', (e) => this.loadSuggestion(e));
       });
     }, 10);
   }
@@ -716,7 +717,7 @@ export default class VectorsControl extends M.Control {
     document.querySelector('#m-vectors-addwfs-results').innerHTML = '';
     document.querySelector('#m-vectors-addwfs-results').appendChild(selectWFS);
     const selector = '#m-vectors-select-wfs .m-vectors-common-btn';
-    document.querySelector(selector).addEventListener('click', e => this.openWFSFilters(e, services));
+    document.querySelector(selector).addEventListener('click', (e) => this.openWFSFilters(e, services));
     const elem = document.querySelector('#m-vectors-select-wfs .m-vectors-wfs-show-capabilities');
     if (elem !== null) {
       elem.addEventListener('click', () => {
@@ -972,14 +973,14 @@ export default class VectorsControl extends M.Control {
         case 'Poylgon':
         case 'MultiPolygon':
           feature.geometry.coordinates.forEach((coord) => {
-            if (feature.geometry.type === 'Polygon' &&
-              Number.isNaN(coord[0][coord[0].length - 1])) {
+            if (feature.geometry.type === 'Polygon'
+              && Number.isNaN(coord[0][coord[0].length - 1])) {
               coord.map((c) => {
                 c.pop();
                 return c;
               });
-            } else if (feature.geometry.type === 'MultiPolygon' &&
-              Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
+            } else if (feature.geometry.type === 'MultiPolygon'
+              && Number.isNaN(coord[0][0][coord[0][0].length - 1])) {
               coord.forEach((coordsArray) => {
                 coordsArray.map((c) => {
                   c.pop();
@@ -1060,7 +1061,7 @@ export default class VectorsControl extends M.Control {
    */
   toGeoJSON(layer) {
     const code = this.map.getProjection().code;
-    const featuresAsJSON = layer.getFeatures().map(feature => feature.getGeoJSON());
+    const featuresAsJSON = layer.getFeatures().map((feature) => feature.getGeoJSON());
     return { type: 'FeatureCollection', features: this.geojsonTo4326(featuresAsJSON, code) };
   }
 
@@ -1234,6 +1235,60 @@ export default class VectorsControl extends M.Control {
   }
 
   /**
+    * Este método transforma coordenadas a EPSG:4326.
+    *
+    * @function
+    * @param {String} type Tipo de geometría.
+    * @param {Object} codeProjection Código de proyección actual.
+    * @param {Number|Array} coordinates Coordenadas a transformar.
+    * @return {Array} Coordenadas transformadas.
+    * @public
+    * @api
+    */
+  geometryTypeCoordTransform(type, codeProjection, coordinates) {
+    const newCoordinates = [];
+    switch (type) {
+      case 'Point':
+        return this.getImpl().getTransformedCoordinates(codeProjection, coordinates);
+      case 'MultiPoint':
+      case 'LineString':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const newDot = this.getImpl().getTransformedCoordinates(codeProjection, coordinates[i]);
+          newCoordinates.push(newDot);
+        }
+        return newCoordinates;
+      case 'MultiLineString':
+      case 'Polygon':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const group = [];
+          for (let j = 0; j < coordinates[i].length; j += 1) {
+            const dot = this.getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j]);
+            group.push(dot);
+          }
+          newCoordinates.push(group);
+        }
+        return newCoordinates;
+      case 'MultiPolygon':
+        for (let i = 0; i < coordinates.length; i += 1) {
+          const group = [];
+          for (let j = 0; j < coordinates[i].length; j += 1) {
+            const newPolygon = [];
+            const aux = coordinates[i][j];
+            for (let k = 0; k < aux.length; k += 1) {
+              const dot = this.getImpl().getTransformedCoordinates(codeProjection, aux[k]);
+              newPolygon.push(dot);
+            }
+            group.push(newPolygon);
+          }
+          newCoordinates.push(group);
+        }
+        return newCoordinates;
+      default:
+        return newCoordinates;
+    }
+  }
+
+  /**
    * Converts features coordinates on geojson format to 4326.
    * @public
    * @function
@@ -1241,68 +1296,23 @@ export default class VectorsControl extends M.Control {
   geojsonTo4326(featuresAsJSON, codeProjection) {
     const jsonResult = [];
     featuresAsJSON.forEach((featureAsJSON) => {
-      const coordinates = featureAsJSON.geometry.coordinates;
-      let newCoordinates = [];
-      switch (featureAsJSON.geometry.type) {
-        case 'Point':
-          newCoordinates = this.getImpl().getTransformedCoordinates(codeProjection, coordinates);
-          break;
-        case 'MultiPoint':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newDot = this
-              .getImpl().getTransformedCoordinates(codeProjection, coordinates[i]);
-            newCoordinates.push(newDot);
-          }
-          break;
-        case 'LineString':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newDot = this.getImpl().getTransformedCoordinates(
-              codeProjection,
-              coordinates[i],
-            );
-            newCoordinates.push(newDot);
-          }
-          break;
-        case 'MultiLineString':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newLine = [];
-            for (let j = 0; j < coordinates[i].length; j += 1) {
-              const newDot = this
-                .getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j]);
-              newLine.push(newDot);
-            }
-            newCoordinates.push(newLine);
-          }
-          break;
-        case 'Polygon':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newPoly = [];
-            for (let j = 0; j < coordinates[i].length; j += 1) {
-              const newDot = this
-                .getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j]);
-              newPoly.push(newDot);
-            }
-            newCoordinates.push(newPoly);
-          }
-          break;
-        case 'MultiPolygon':
-          for (let i = 0; i < coordinates.length; i += 1) {
-            const newPolygon = [];
-            for (let j = 0; j < coordinates[i].length; j += 1) {
-              const newPolygonLine = [];
-              for (let k = 0; k < coordinates[i][j].length; k += 1) {
-                const newDot = this
-                  .getImpl().getTransformedCoordinates(codeProjection, coordinates[i][j][k]);
-                newPolygonLine.push(newDot);
-              }
-              newPolygon.push(newPolygonLine);
-            }
-            newCoordinates.push(newPolygon);
-          }
-          break;
-        default:
+      let jsonFeature;
+      if (featureAsJSON.geometry.type !== 'GeometryCollection') {
+        const newCoordinates = this.geometryTypeCoordTransform(
+          featureAsJSON.geometry.type,
+          codeProjection,
+          featureAsJSON.geometry.coordinates,
+        );
+        jsonFeature = this.createGeoJSONFeature(featureAsJSON, newCoordinates);
+      } else {
+        const collection = featureAsJSON.geometry.geometries.map((g) => {
+          return {
+            type: g.type,
+            coordinates: this.geometryTypeCoordTransform(g.type, codeProjection, g.coordinates),
+          };
+        });
+        jsonFeature = { ...featureAsJSON, geometry: { type: 'GeometryCollection', geometries: collection } };
       }
-      const jsonFeature = this.createGeoJSONFeature(featureAsJSON, newCoordinates);
       jsonResult.push(jsonFeature);
     });
     return jsonResult;
@@ -1323,7 +1333,8 @@ export default class VectorsControl extends M.Control {
     this.style = undefined;
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
-    this.feature = MFeatures.filter(f => f.getImpl().getOLFeature() === olFeature)[0] || undefined;
+    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+      || undefined;
     this.geometry = this.feature.getGeometry().type;
     const selector = `#m-vector-list li[name="${this.drawLayer.name}"] div.m-vector-layer-actions-container`;
     document.querySelector(selector).appendChild(this.drawingTools);
@@ -1363,7 +1374,7 @@ export default class VectorsControl extends M.Control {
     let render = false;
     if (!M.utils.isNullOrEmpty(layerName)) {
       evt.stopPropagation();
-      const layer = this.map.getLayers().filter(l => l.name === layerName && (l.url === layerURL || layerURL === ''))[0];
+      const layer = this.map.getLayers().filter((l) => l.name === layerName && (l.url === layerURL || layerURL === ''))[0];
       if (evt.target.classList.contains('m-vector-layer-legend-change')) {
         const changeName = M.template.compileSync(changeNameTemplate, {
           jsonp: true,
@@ -1806,8 +1817,8 @@ export default class VectorsControl extends M.Control {
 
   //  Esta función ordena todas las capas por zindex
   reorderLayers(layers) {
-    const result = layers.sort((layer1, layer2) => layer1.getZIndex() -
-        layer2.getZIndex()).reverse();
+    const result = layers.sort((layer1, layer2) => layer1.getZIndex()
+      - layer2.getZIndex()).reverse();
     return result;
   }
 
@@ -1823,6 +1834,6 @@ export default class VectorsControl extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 }

@@ -4,7 +4,6 @@ import Comparators from 'facade/comparators';
 M.language.setLang('es');
 // M.proxy(false);
 
-
 const map = M.map({
   container: 'mapjs',
   zoom: 6,
@@ -156,7 +155,6 @@ window.fetch('./prueba1.mbtiles').then((response) => {
 });
 */
 
-
 const mbtileVector = new M.layer.MBTilesVector({
   name: 'mbtilesvector',
   legend: 'Capa personalizada MBTilesVector',
@@ -188,4 +186,3 @@ const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
 });
 
 // map.addLayers(capaOGCAPIFeatures);
-

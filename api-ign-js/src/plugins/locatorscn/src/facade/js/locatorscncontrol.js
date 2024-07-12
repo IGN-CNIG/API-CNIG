@@ -17,8 +17,14 @@ export default class LocatorscnControl extends M.Control {
    * @api
    */
   constructor(
-    isDraggable, zoom, pointStyle, searchOptions,
-    order, useProxy, statusProxy, position,
+    isDraggable,
+    zoom,
+    pointStyle,
+    searchOptions,
+    order,
+    useProxy,
+    statusProxy,
+    position,
   ) {
     if (M.utils.isUndefined(LocatorscnImpl)) {
       M.exception(getValue('exception.impl'));
@@ -194,7 +200,7 @@ export default class LocatorscnControl extends M.Control {
    * @api
    */
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 
   /**

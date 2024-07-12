@@ -32,7 +32,6 @@ const ID_CLIPBOARD = '#m-georefimage-clipboard';
 const SELECTOR_CANVAS = '.ol-layer canvas';
 
 // DEFAULTS PARAMS
-const FILE_EXTENSION_GEO = '.wld'; // .jgw
 const TYPE_SAVE = '.zip';
 
 export default class GeorefimageControl extends M.Control {
@@ -340,7 +339,7 @@ export default class GeorefimageControl extends M.Control {
     this.elementFieldset_.remove();
 
     // if (this.printType === 'client') {
-    //   this.template_.querySelector('.georefimage-jgwKeppview').remove(); #7452
+    //  this.template_.querySelector('.georefimage-jgwKeppview').remove();
     // }
 
     const format = document.createElement('h3');
@@ -452,7 +451,7 @@ export default class GeorefimageControl extends M.Control {
           const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
           this.getStatus(
             statusURL,
-            e => removeLoadQueueElement(e),
+            (e) => removeLoadQueueElement(e),
             queueEl,
           );
 
@@ -496,7 +495,7 @@ export default class GeorefimageControl extends M.Control {
 
     try {
       const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
-      queueEl.addEventListener('click', evt => this.downloadPrint(evt, base64image, 'client'));
+      queueEl.addEventListener('click', (evt) => this.downloadPrint(evt, base64image, 'client'));
     } catch (exceptionVar) {
       queueEl.parentElement.remove();
       M.toast.error('Error CrossOrigin', null, 6000);
@@ -685,12 +684,13 @@ export default class GeorefimageControl extends M.Control {
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
       if (map.getProjection().code !== projection) {
         printData.attributes.map.bbox = transformExt(
-          printData.attributes.map.bbox, this.map_.getProjection().code,
+          printData.attributes.map.bbox,
+          this.map_.getProjection().code,
           projection,
         );
       }
 
-      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM))) {
+      if (projection !== 'EPSG:3857' && this.map_.getLayers().some((layer) => (layer.type === M.layer.type.OSM))) {
         printData.attributes.map.projection = 'EPSG:3857';
         printData.attributes.map.bbox = transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
       }
@@ -710,31 +710,33 @@ export default class GeorefimageControl extends M.Control {
     // and that doesn't have Cluster style.
     const mapZoom = this.map_.getZoom();
     let layers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' &&
-        layer.name !== 'empty_layer' &&
-        layer.name !== '__draw__' &&
-        layer.type !== 'GenericRaster' &&
-        layer.type !== 'GenericVector' &&
-        layer.type !== 'MBTiles' &&
-        layer.type !== 'MBTilesVector' &&
-        layer.type !== 'MVT' &&
-        mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer'
+        && layer.name !== 'empty_layer'
+        && layer.name !== '__draw__'
+        && layer.type !== 'GenericRaster'
+        && layer.type !== 'GenericVector'
+        && layer.type !== 'MBTiles'
+        && layer.type !== 'MBTilesVector'
+        && layer.type !== 'MVT'
+        && layer.type !== 'MapLibre'
+        && mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
     });
 
     const errorLayers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' &&
-        layer.name !== 'empty_layer' &&
-        layer.name !== '__draw__' && (
-        layer.type === 'GenericRaster' ||
-        layer.type === 'GenericVector' ||
-        layer.type === 'MBTiles' ||
-        layer.type === 'MBTilesVector' ||
-        layer.type === 'MVT'
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer'
+        && layer.name !== 'empty_layer'
+        && layer.name !== '__draw__' && (
+        layer.type === 'GenericRaster'
+        || layer.type === 'GenericVector'
+        || layer.type === 'MBTiles'
+        || layer.type === 'MBTilesVector'
+        || layer.type === 'MVT'
+        || layer.type === 'MapLibre'
       ));
     });
 
     if (errorLayers.length !== 0) {
-      M.toast.warning(getValue('exception.error_layers') + errorLayers.map(l => l.name).join(', '), null, 6000);
+      M.toast.warning(getValue('exception.error_layers') + errorLayers.map((l) => l.name).join(', '), null, 6000);
     }
 
     if (mapZoom === 20) {
@@ -836,7 +838,6 @@ export default class GeorefimageControl extends M.Control {
     }));
   }
 
-
   /**
    * This function downloads printed map.
    *
@@ -883,9 +884,9 @@ export default class GeorefimageControl extends M.Control {
       base64: true,
     };
 
-
+    const extension = formatImage === 'jpeg' ? '.jgw' : '.pgw';
     const files = (addWLD) ? [{
-      name: titulo.concat(FILE_EXTENSION_GEO),
+      name: titulo.concat(extension),
       data: createWLD(bbox, dpi, this.map_.getMapImpl().getSize(), null, this.map_, type),
       base64: false,
     },

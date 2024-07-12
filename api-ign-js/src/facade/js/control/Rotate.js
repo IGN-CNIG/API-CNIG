@@ -81,7 +81,6 @@ class Rotate extends ControlBase {
     };
   }
 
-
   /**
    * Este método comprueba si un objeto es igual
    * a este control.

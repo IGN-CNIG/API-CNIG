@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const fse = require('fs-extra');
 const argv = require('yargs').argv;
 

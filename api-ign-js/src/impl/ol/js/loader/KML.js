@@ -93,7 +93,7 @@ class KML extends MObject {
         if (!isUndefined(layers)) {
           const folders = xmlDoc.getElementsByTagName('Folder');
           let count = -1;
-          const foldersArray = [...folders].map(folder => folder.cloneNode(true));
+          const foldersArray = [...folders].map((folder) => folder.cloneNode(true));
 
           if (removeFolderChildren) {
             foldersArray.map((folder) => {

@@ -55,7 +55,7 @@ class TMS extends MXYZ {
    * </code></pre>
    * @api stable
    */
-  constructor(userParameters, options = {}, vendorOptions) {
+  constructor(userParameters, options = {}, vendorOptions = {}) {
     super(userParameters, options, vendorOptions);
 
     /**

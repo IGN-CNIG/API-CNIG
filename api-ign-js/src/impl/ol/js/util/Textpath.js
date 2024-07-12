@@ -57,11 +57,13 @@ class TextPath {
         pos = newPath.length - 2;
       }
 
-      const x = !dt ? newPath[pos - 2] :
-        (newPath[pos - 2] + (((newPath[pos] - newPath[pos - 2]) * dt) / di));
+      const x = !dt
+        ? newPath[pos - 2]
+        : (newPath[pos - 2] + (((newPath[pos] - newPath[pos - 2]) * dt) / di));
 
-      const y = !dt ? newPath[pos - 1] :
-        (newPath[pos - 1] + (((newPath[pos + 1] - newPath[pos - 1]) * dt) / di));
+      const y = !dt
+        ? newPath[pos - 1]
+        : (newPath[pos - 1] + (((newPath[pos + 1] - newPath[pos - 1]) * dt) / di));
 
       const a = Math.atan2(newPath[pos + 1] - newPath[pos - 1], newPath[pos] - newPath[pos - 2]);
 
@@ -86,8 +88,8 @@ class TextPath {
       do {
         nbspace = newText.split(' ').length - 1;
         newText = newText.slice(0, newText.length - 1);
-      } while (newText && d < ctx.measureText(newText + overflow).width +
-         ((newText.length + (overflow.length - 1) + nbspace) * letterPadding));
+      } while (newText && d < ctx.measureText(newText + overflow).width
+        + ((newText.length + (overflow.length - 1) + nbspace) * letterPadding));
       newText += overflow;
     }
     switch (ctx.textJustify || ctx.textAlign) {
@@ -204,23 +206,23 @@ class TextPath {
     ctx.textBaseline = textStyle.getTextBaseline();
     ctx.textAlign = textStyle.getTextAlign();
 
-    ctx.lineWidth = textStyle.getStroke() ?
-      (textStyle.getStroke().getWidth() || TextPath.DEFAULT.lineWidth) :
-      TextPath.DEFAULT.lineWidth;
+    ctx.lineWidth = textStyle.getStroke()
+      ? (textStyle.getStroke().getWidth() || TextPath.DEFAULT.lineWidth)
+      : TextPath.DEFAULT.lineWidth;
 
-    ctx.strokeStyle = textStyle.getStroke() ?
-      (textStyle.getStroke().getColor() || TextPath.DEFAULT.lineColor) :
-      TextPath.DEFAULT.lineColor;
+    ctx.strokeStyle = textStyle.getStroke()
+      ? (textStyle.getStroke().getColor() || TextPath.DEFAULT.lineColor)
+      : TextPath.DEFAULT.lineColor;
 
-    ctx.fillStyle = textStyle.getFill() ?
-      textStyle.getFill().getColor() || TextPath.DEFAULT.fillColor :
-      TextPath.DEFAULT.fillColor;
+    ctx.fillStyle = textStyle.getFill()
+      ? textStyle.getFill().getColor() || TextPath.DEFAULT.fillColor
+      : TextPath.DEFAULT.fillColor;
     // New params
     ctx.textJustify = textStyle.getTextAlign() === 'justify';
 
-    ctx.textOverflow = textStyle.getTextOverflow ?
-      textStyle.getTextOverflow() :
-      TextPath.DEFAULT.textOverflow;
+    ctx.textOverflow = textStyle.getTextOverflow
+      ? textStyle.getTextOverflow()
+      : TextPath.DEFAULT.textOverflow;
     ctx.minWidth = textStyle.getMinWidth ? textStyle.getMinWidth() : TextPath.DEFAULT.minWidth;
     // Draw textpath
     if (typeof ctx.textPath === 'function') {

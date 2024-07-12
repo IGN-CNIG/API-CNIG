@@ -17,7 +17,6 @@ import Layer from './Layer';
 import FormatGeoJSON from '../format/GeoJSON';
 import Map from '../Map';
 
-
 /**
  * @classdesc
  * La capa se utiliza para la representación de entidades.
@@ -219,12 +218,9 @@ class Draw extends Layer {
       const olSource = this.ol3Layer.getSource();
 
       features.forEach((feature) => {
-        try {
-          olSource.removeFeature(feature);
-        } catch (err) {
-          throw err;
-          // the feature does not exist in the source
-        }
+        // try { // Eslint no-useless-catch fix
+        olSource.removeFeature(feature);
+        // } catch (err) { throw err; /* the feature does not exist in the source */}
       });
     }
   }

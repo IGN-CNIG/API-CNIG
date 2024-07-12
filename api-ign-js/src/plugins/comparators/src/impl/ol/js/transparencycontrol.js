@@ -4,7 +4,6 @@
  */
 import TransparentInteraction from 'impl/transparentInteraction';
 
-
 export default class TransparencyControl extends M.impl.Control {
   /**
    * This function adds the control to the specified map

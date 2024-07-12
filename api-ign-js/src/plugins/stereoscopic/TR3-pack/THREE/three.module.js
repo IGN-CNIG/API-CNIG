@@ -3,6 +3,7 @@
  * Copyright 2010-2021 Three.js Authors
  * SPDX-License-Identifier: MIT
  */
+/* eslint-disable */
 const REVISION = '129';
 const MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
 const TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
@@ -299,7 +300,6 @@ for ( let i = 0; i < 256; i ++ ) {
 
 let _seed = 1234567;
 
-
 const DEG2RAD = Math.PI / 180;
 const RAD2DEG = 180 / Math.PI;
 
@@ -310,10 +310,10 @@ function generateUUID() {
 	const d1 = Math.random() * 0xffffffff | 0;
 	const d2 = Math.random() * 0xffffffff | 0;
 	const d3 = Math.random() * 0xffffffff | 0;
-	const uuid = _lut[ d0 & 0xff ] + _lut[ d0 >> 8 & 0xff ] + _lut[ d0 >> 16 & 0xff ] + _lut[ d0 >> 24 & 0xff ] + '-' +
-			_lut[ d1 & 0xff ] + _lut[ d1 >> 8 & 0xff ] + '-' + _lut[ d1 >> 16 & 0x0f | 0x40 ] + _lut[ d1 >> 24 & 0xff ] + '-' +
-			_lut[ d2 & 0x3f | 0x80 ] + _lut[ d2 >> 8 & 0xff ] + '-' + _lut[ d2 >> 16 & 0xff ] + _lut[ d2 >> 24 & 0xff ] +
-			_lut[ d3 & 0xff ] + _lut[ d3 >> 8 & 0xff ] + _lut[ d3 >> 16 & 0xff ] + _lut[ d3 >> 24 & 0xff ];
+	const uuid = _lut[ d0 & 0xff ] + _lut[ d0 >> 8 & 0xff ] + _lut[ d0 >> 16 & 0xff ] + _lut[ d0 >> 24 & 0xff ] + '-'
+		+ _lut[ d1 & 0xff ] + _lut[ d1 >> 8 & 0xff ] + '-' + _lut[ d1 >> 16 & 0x0f | 0x40 ] + _lut[ d1 >> 24 & 0xff ] + '-'
+		+ _lut[ d2 & 0x3f | 0x80 ] + _lut[ d2 >> 8 & 0xff ] + '-' + _lut[ d2 >> 16 & 0xff ] + _lut[ d2 >> 24 & 0xff ]
+		+ _lut[ d3 & 0xff ] + _lut[ d3 >> 8 & 0xff ] + _lut[ d3 >> 16 & 0xff ] + _lut[ d3 >> 24 & 0xff ];
 
 	// .toUpperCase() here flattens concatenated strings to save heap memory space.
 	return uuid.toUpperCase();
@@ -1742,9 +1742,9 @@ Texture.prototype.isTexture = true;
 
 function serializeImage( image ) {
 
-	if ( ( typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement ) ||
-		( typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement ) ||
-		( typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap ) ) {
+	if ( ( typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement )
+		|| ( typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement )
+		|| ( typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap ) ) {
 
 		// default images
 
@@ -2087,18 +2087,18 @@ class Vector4 {
 			m21 = te[ 1 ], m22 = te[ 5 ], m23 = te[ 9 ],
 			m31 = te[ 2 ], m32 = te[ 6 ], m33 = te[ 10 ];
 
-		if ( ( Math.abs( m12 - m21 ) < epsilon ) &&
-		     ( Math.abs( m13 - m31 ) < epsilon ) &&
-		     ( Math.abs( m23 - m32 ) < epsilon ) ) {
+		if ( ( Math.abs( m12 - m21 ) < epsilon )
+			&& ( Math.abs( m13 - m31 ) < epsilon )
+			&& ( Math.abs( m23 - m32 ) < epsilon ) ) {
 
 			// singularity found
 			// first check for identity matrix which must have +1 for all terms
 			// in leading diagonal and zero in other terms
 
-			if ( ( Math.abs( m12 + m21 ) < epsilon2 ) &&
-			     ( Math.abs( m13 + m31 ) < epsilon2 ) &&
-			     ( Math.abs( m23 + m32 ) < epsilon2 ) &&
-			     ( Math.abs( m11 + m22 + m33 - 3 ) < epsilon2 ) ) {
+			if ( ( Math.abs( m12 + m21 ) < epsilon2 )
+				&& ( Math.abs( m13 + m31 ) < epsilon2 )
+				&& ( Math.abs( m23 + m32 ) < epsilon2 )
+				&& ( Math.abs( m11 + m22 + m33 - 3 ) < epsilon2 ) ) {
 
 				// this singularity is identity matrix so angle = 0
 
@@ -2183,9 +2183,9 @@ class Vector4 {
 
 		// as we have reached here there are no singularities so we can handle normally
 
-		let s = Math.sqrt( ( m32 - m23 ) * ( m32 - m23 ) +
-			( m13 - m31 ) * ( m13 - m31 ) +
-			( m21 - m12 ) * ( m21 - m12 ) ); // used to normalize
+		let s = Math.sqrt( ( m32 - m23 ) * ( m32 - m23 )
+			+ ( m13 - m31 ) * ( m13 - m31 )
+			+ ( m21 - m12 ) * ( m21 - m12 ) ); // used to normalize
 
 		if ( Math.abs( s ) < 0.001 ) s = 1;
 
@@ -4254,17 +4254,17 @@ class Box3 {
 
 	containsPoint( point ) {
 
-		return point.x < this.min.x || point.x > this.max.x ||
-			point.y < this.min.y || point.y > this.max.y ||
-			point.z < this.min.z || point.z > this.max.z ? false : true;
+		return point.x < this.min.x || point.x > this.max.x
+			|| point.y < this.min.y || point.y > this.max.y
+			|| point.z < this.min.z || point.z > this.max.z ? false : true;
 
 	}
 
 	containsBox( box ) {
 
-		return this.min.x <= box.min.x && box.max.x <= this.max.x &&
-			this.min.y <= box.min.y && box.max.y <= this.max.y &&
-			this.min.z <= box.min.z && box.max.z <= this.max.z;
+		return this.min.x <= box.min.x && box.max.x <= this.max.x
+			&& this.min.y <= box.min.y && box.max.y <= this.max.y
+			&& this.min.z <= box.min.z && box.max.z <= this.max.z;
 
 	}
 
@@ -4291,9 +4291,9 @@ class Box3 {
 	intersectsBox( box ) {
 
 		// using 6 splitting planes to rule out intersections.
-		return box.max.x < this.min.x || box.min.x > this.max.x ||
-			box.max.y < this.min.y || box.min.y > this.max.y ||
-			box.max.z < this.min.z || box.min.z > this.max.z ? false : true;
+		return box.max.x < this.min.x || box.min.x > this.max.x
+			|| box.max.y < this.min.y || box.min.y > this.max.y
+			|| box.max.z < this.min.z || box.min.z > this.max.z ? false : true;
 
 	}
 
@@ -5729,24 +5729,24 @@ class Matrix4 {
 				 + n12 * n24 * n33
 				 + n13 * n22 * n34
 				 - n12 * n23 * n34
-			) +
-			n42 * (
+			)
+			+ n42 * (
 				+ n11 * n23 * n34
 				 - n11 * n24 * n33
 				 + n14 * n21 * n33
 				 - n13 * n21 * n34
 				 + n13 * n24 * n31
 				 - n14 * n23 * n31
-			) +
-			n43 * (
+			)
+			+ n43 * (
 				+ n11 * n24 * n32
 				 - n11 * n22 * n34
 				 - n14 * n21 * n32
 				 + n12 * n21 * n34
 				 + n14 * n22 * n31
 				 - n12 * n24 * n31
-			) +
-			n44 * (
+			)
+			+ n44 * (
 				- n13 * n22 * n31
 				 - n11 * n23 * n32
 				 + n11 * n22 * n33
@@ -6941,7 +6941,6 @@ class Object3D extends EventDispatcher {
 		this.children.length = 0;
 
 		return this;
-
 
 	}
 
@@ -8629,7 +8628,6 @@ class Color {
 
 		}
 
-
 		let m;
 
 		if ( m = /^((?:rgb|hsl)a?)\(([^\)]*)\)/.exec( style ) ) {
@@ -10198,10 +10196,10 @@ class BufferGeometry extends EventDispatcher {
 		// based on http://www.terathon.com/code/tangent.html
 		// (per vertex tangents)
 
-		if ( index === null ||
-			 attributes.position === undefined ||
-			 attributes.normal === undefined ||
-			 attributes.uv === undefined ) {
+		if ( index === null
+			|| attributes.position === undefined
+			|| attributes.normal === undefined
+			|| attributes.uv === undefined ) {
 
 			console.error( 'THREE.BufferGeometry: .computeTangents() failed. Missing required attributes (index, position, normal or uv)' );
 			return;
@@ -11444,10 +11442,10 @@ function cloneUniforms( src ) {
 
 			const property = src[ u ][ p ];
 
-			if ( property && ( property.isColor ||
-				property.isMatrix3 || property.isMatrix4 ||
-				property.isVector2 || property.isVector3 || property.isVector4 ||
-				property.isTexture || property.isQuaternion ) ) {
+			if ( property && ( property.isColor
+				|| property.isMatrix3 || property.isMatrix4
+				|| property.isVector2 || property.isVector3 || property.isVector4
+				|| property.isTexture || property.isQuaternion ) ) {
 
 				dst[ u ][ p ] = property.clone();
 
@@ -13759,9 +13757,9 @@ function WebGLBackground( renderer, cubemaps, state, objects, premultipliedAlpha
 			boxMesh.material.uniforms.envMap.value = background;
 			boxMesh.material.uniforms.flipEnvMap.value = ( background.isCubeTexture && background._needsFlipEnvMap ) ? - 1 : 1;
 
-			if ( currentBackground !== background ||
-				currentBackgroundVersion !== background.version ||
-				currentTonemapping !== renderer.toneMapping ) {
+			if ( currentBackground !== background
+				|| currentBackgroundVersion !== background.version
+				|| currentTonemapping !== renderer.toneMapping ) {
 
 				boxMesh.material.needsUpdate = true;
 
@@ -13819,9 +13817,9 @@ function WebGLBackground( renderer, cubemaps, state, objects, premultipliedAlpha
 
 			planeMesh.material.uniforms.uvTransform.value.copy( background.matrix );
 
-			if ( currentBackground !== background ||
-				currentBackgroundVersion !== background.version ||
-				currentTonemapping !== renderer.toneMapping ) {
+			if ( currentBackground !== background
+				|| currentBackgroundVersion !== background.version
+				|| currentTonemapping !== renderer.toneMapping ) {
 
 				planeMesh.material.needsUpdate = true;
 
@@ -13830,7 +13828,6 @@ function WebGLBackground( renderer, cubemaps, state, objects, premultipliedAlpha
 				currentTonemapping = renderer.toneMapping;
 
 			}
-
 
 			// push to the pre-sorted opaque render list
 			renderList.unshift( planeMesh, planeMesh.geometry, planeMesh.material, 0, 0, null );
@@ -13911,9 +13908,9 @@ function WebGLBindingStates( gl, extensions, attributes, capabilities ) {
 
 			const wireframe = ( material.wireframe === true );
 
-			if ( currentState.geometry !== geometry.id ||
-				currentState.program !== program.id ||
-				currentState.wireframe !== wireframe ) {
+			if ( currentState.geometry !== geometry.id
+				|| currentState.program !== program.id
+				|| currentState.wireframe !== wireframe ) {
 
 				currentState.geometry = geometry.id;
 				currentState.program = program.id;
@@ -14549,8 +14546,8 @@ function WebGLCapabilities( gl, extensions, parameters ) {
 
 		if ( precision === 'highp' ) {
 
-			if ( gl.getShaderPrecisionFormat( 35633, 36338 ).precision > 0 &&
-				gl.getShaderPrecisionFormat( 35632, 36338 ).precision > 0 ) {
+			if ( gl.getShaderPrecisionFormat( 35633, 36338 ).precision > 0
+				&& gl.getShaderPrecisionFormat( 35632, 36338 ).precision > 0 ) {
 
 				return 'highp';
 
@@ -14562,8 +14559,8 @@ function WebGLCapabilities( gl, extensions, parameters ) {
 
 		if ( precision === 'mediump' ) {
 
-			if ( gl.getShaderPrecisionFormat( 35633, 36337 ).precision > 0 &&
-				gl.getShaderPrecisionFormat( 35632, 36337 ).precision > 0 ) {
+			if ( gl.getShaderPrecisionFormat( 35633, 36337 ).precision > 0
+				&& gl.getShaderPrecisionFormat( 35632, 36337 ).precision > 0 ) {
 
 				return 'mediump';
 
@@ -14576,8 +14573,8 @@ function WebGLCapabilities( gl, extensions, parameters ) {
 	}
 
 	/* eslint-disable no-undef */
-	const isWebGL2 = ( typeof WebGL2RenderingContext !== 'undefined' && gl instanceof WebGL2RenderingContext ) ||
-		( typeof WebGL2ComputeRenderingContext !== 'undefined' && gl instanceof WebGL2ComputeRenderingContext );
+	const isWebGL2 = ( typeof WebGL2RenderingContext !== 'undefined' && gl instanceof WebGL2RenderingContext )
+		|| ( typeof WebGL2ComputeRenderingContext !== 'undefined' && gl instanceof WebGL2ComputeRenderingContext );
 	/* eslint-enable no-undef */
 
 	let precision = parameters.precision !== undefined ? parameters.precision : 'highp';
@@ -14662,13 +14659,12 @@ function WebGLClipping( properties ) {
 
 	this.init = function ( planes, enableLocalClipping, camera ) {
 
-		const enabled =
-			planes.length !== 0 ||
-			enableLocalClipping ||
+		const enabled = planes.length !== 0
+			|| enableLocalClipping
 			// enable state of previous frame - the clipping code has to
 			// run another frame in order to reset the state:
-			numGlobalPlanes !== 0 ||
-			localClippingEnabled;
+			|| numGlobalPlanes !== 0
+			|| localClippingEnabled;
 
 		localClippingEnabled = enableLocalClipping;
 
@@ -14739,7 +14735,6 @@ function WebGLClipping( properties ) {
 			this.numPlanes += nGlobal;
 
 		}
-
 
 	};
 
@@ -16051,7 +16046,6 @@ function setValueV4ui( gl, v ) {
 
 }
 
-
 // Single texture (2D / Cube)
 
 function setValueT1( gl, v, textures ) {
@@ -16171,7 +16165,6 @@ function getSingularSetter( type ) {
 
 }
 
-
 // Array of scalars
 
 function setValueV1fArray( gl, v ) {
@@ -16287,7 +16280,6 @@ function setValueV4uiArray( gl, v ) {
 	gl.uniform4uiv( this.addr, v );
 
 }
-
 
 // Array of textures (2D / Cube)
 
@@ -16471,9 +16463,9 @@ function parseUniform( activeInfo, addr, container ) {
 
 			// bare name or "pure" bottom-level array "[0]" suffix
 
-			addUniform( container, subscript === undefined ?
-				new SingleUniform( id, activeInfo, addr ) :
-				new PureArrayUniform( id, activeInfo, addr ) );
+			addUniform( container, subscript === undefined
+				? new SingleUniform( id, activeInfo, addr )
+				: new PureArrayUniform( id, activeInfo, addr ) );
 
 			break;
 
@@ -16534,7 +16526,6 @@ WebGLUniforms.prototype.setOptional = function ( gl, object, name ) {
 	if ( v !== undefined ) this.setValue( gl, name, v );
 
 };
-
 
 // Static interface
 
@@ -16967,7 +16958,6 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 	const envMapTypeDefine = generateEnvMapTypeDefine( parameters );
 	const envMapModeDefine = generateEnvMapModeDefine( parameters );
 	const envMapBlendingDefine = generateEnvMapBlendingDefine( parameters );
-
 
 	const gammaFactorDefine = ( renderer.gammaFactor > 0 ) ? renderer.gammaFactor : 1.0;
 
@@ -17933,7 +17923,6 @@ function reversePainterSortStable( a, b ) {
 
 }
 
-
 function WebGLRenderList( properties ) {
 
 	const renderItems = [];
@@ -18262,8 +18251,6 @@ function ShadowUniformsCache() {
 
 }
 
-
-
 let nextVersion = 0;
 
 function shadowCastingLightsFirst( lightA, lightB ) {
@@ -18532,14 +18519,14 @@ function WebGLLights( extensions, capabilities ) {
 
 		const hash = state.hash;
 
-		if ( hash.directionalLength !== directionalLength ||
-			hash.pointLength !== pointLength ||
-			hash.spotLength !== spotLength ||
-			hash.rectAreaLength !== rectAreaLength ||
-			hash.hemiLength !== hemiLength ||
-			hash.numDirectionalShadows !== numDirectionalShadows ||
-			hash.numPointShadows !== numPointShadows ||
-			hash.numSpotShadows !== numSpotShadows ) {
+		if ( hash.directionalLength !== directionalLength
+			|| hash.pointLength !== pointLength
+			|| hash.spotLength !== spotLength
+			|| hash.rectAreaLength !== rectAreaLength
+			|| hash.hemiLength !== hemiLength
+			|| hash.numDirectionalShadows !== numDirectionalShadows
+			|| hash.numPointShadows !== numPointShadows
+			|| hash.numSpotShadows !== numSpotShadows ) {
 
 			state.directional.length = directionalLength;
 			state.spot.length = spotLength;
@@ -19213,9 +19200,9 @@ function WebGLShadowMap( _renderer, _objects, _capabilities ) {
 
 		}
 
-		if ( _renderer.localClippingEnabled &&
-				material.clipShadows === true &&
-				material.clippingPlanes.length !== 0 ) {
+		if ( _renderer.localClippingEnabled
+				&& material.clipShadows === true
+				&& material.clippingPlanes.length !== 0 ) {
 
 			// in this case we need a unique material instance reflecting the
 			// appropriate state
@@ -19575,9 +19562,9 @@ function WebGLState( gl, extensions, capabilities ) {
 
 			setFunc: function ( stencilFunc, stencilRef, stencilMask ) {
 
-				if ( currentStencilFunc !== stencilFunc ||
-				     currentStencilRef !== stencilRef ||
-				     currentStencilFuncMask !== stencilMask ) {
+				if ( currentStencilFunc !== stencilFunc
+					|| currentStencilRef !== stencilRef
+					|| currentStencilFuncMask !== stencilMask ) {
 
 					gl.stencilFunc( stencilFunc, stencilRef, stencilMask );
 
@@ -19591,9 +19578,9 @@ function WebGLState( gl, extensions, capabilities ) {
 
 			setOp: function ( stencilFail, stencilZFail, stencilZPass ) {
 
-				if ( currentStencilFail !== stencilFail ||
-				     currentStencilZFail !== stencilZFail ||
-				     currentStencilZPass !== stencilZPass ) {
+				if ( currentStencilFail !== stencilFail
+					|| currentStencilZFail !== stencilZFail
+					|| currentStencilZPass !== stencilZPass ) {
 
 					gl.stencilOp( stencilFail, stencilZFail, stencilZPass );
 
@@ -20431,9 +20418,9 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 		// Use OffscreenCanvas when available. Specially needed in web workers
 
-		return useOffscreenCanvas ?
-			new OffscreenCanvas( width, height ) :
-			document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' );
+		return useOffscreenCanvas
+			? new OffscreenCanvas( width, height )
+			: document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' );
 
 	}
 
@@ -20455,9 +20442,9 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 			// only perform resize for certain image types
 
-			if ( ( typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement ) ||
-				( typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement ) ||
-				( typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap ) ) {
+			if ( ( typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement )
+				|| ( typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement )
+				|| ( typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap ) ) {
 
 				const floor = needsPowerOfTwo ? floorPowerOfTwo : Math.floor;
 
@@ -20508,15 +20495,15 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 		if ( isWebGL2 ) return false;
 
-		return ( texture.wrapS !== ClampToEdgeWrapping || texture.wrapT !== ClampToEdgeWrapping ) ||
-			( texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter );
+		return ( texture.wrapS !== ClampToEdgeWrapping || texture.wrapT !== ClampToEdgeWrapping )
+			|| ( texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter );
 
 	}
 
 	function textureNeedsGenerateMipmaps( texture, supportsMips ) {
 
-		return texture.generateMipmaps && supportsMips &&
-			texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter;
+		return texture.generateMipmaps && supportsMips
+			&& texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter;
 
 	}
 
@@ -20568,8 +20555,8 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 		}
 
-		if ( internalFormat === 33325 || internalFormat === 33326 ||
-			internalFormat === 34842 || internalFormat === 34836 ) {
+		if ( internalFormat === 33325 || internalFormat === 33326
+			|| internalFormat === 34842 || internalFormat === 34836 ) {
 
 			extensions.get( 'EXT_color_buffer_float' );
 
@@ -21326,7 +21313,6 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 			}
 
-
 			_gl.framebufferRenderbuffer( 36160, 33306, 36161, renderbuffer );
 
 		} else {
@@ -21371,9 +21357,9 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 		}
 
 		// upload an empty depth texture with framebuffer size
-		if ( ! properties.get( renderTarget.depthTexture ).__webglTexture ||
-				renderTarget.depthTexture.image.width !== renderTarget.width ||
-				renderTarget.depthTexture.image.height !== renderTarget.height ) {
+		if ( ! properties.get( renderTarget.depthTexture ).__webglTexture
+				|| renderTarget.depthTexture.image.width !== renderTarget.width
+				|| renderTarget.depthTexture.image.height !== renderTarget.height ) {
 
 			renderTarget.depthTexture.image.width = renderTarget.width;
 			renderTarget.depthTexture.image.height = renderTarget.height;
@@ -21546,7 +21532,6 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 					state.bindFramebuffer( 36160, null );
 
-
 				} else {
 
 					console.warn( 'THREE.WebGLRenderer: WebGLMultisampleRenderTarget can only be used with WebGL2.' );
@@ -21706,8 +21691,9 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 	function getRenderTargetSamples( renderTarget ) {
 
-		return ( isWebGL2 && renderTarget.isWebGLMultisampleRenderTarget ) ?
-			Math.min( maxSamples, renderTarget.samples ) : 0;
+		return ( isWebGL2 && renderTarget.isWebGLMultisampleRenderTarget )
+			? Math.min( maxSamples, renderTarget.samples )
+			: 0;
 
 	}
 
@@ -21764,7 +21750,6 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 			texture = texture.texture;
 
 		}
-
 
 		setTextureCube( texture, slot );
 
@@ -21843,8 +21828,8 @@ function WebGLUtils( gl, extensions, capabilities ) {
 		if ( p === RGBIntegerFormat ) return 36248;
 		if ( p === RGBAIntegerFormat ) return 36249;
 
-		if ( p === RGB_S3TC_DXT1_Format || p === RGBA_S3TC_DXT1_Format ||
-			p === RGBA_S3TC_DXT3_Format || p === RGBA_S3TC_DXT5_Format ) {
+		if ( p === RGB_S3TC_DXT1_Format || p === RGBA_S3TC_DXT1_Format
+			|| p === RGBA_S3TC_DXT3_Format || p === RGBA_S3TC_DXT5_Format ) {
 
 			extension = extensions.get( 'WEBGL_compressed_texture_s3tc' );
 
@@ -21863,8 +21848,8 @@ function WebGLUtils( gl, extensions, capabilities ) {
 
 		}
 
-		if ( p === RGB_PVRTC_4BPPV1_Format || p === RGB_PVRTC_2BPPV1_Format ||
-			p === RGBA_PVRTC_4BPPV1_Format || p === RGBA_PVRTC_2BPPV1_Format ) {
+		if ( p === RGB_PVRTC_4BPPV1_Format || p === RGB_PVRTC_2BPPV1_Format
+			|| p === RGBA_PVRTC_4BPPV1_Format || p === RGBA_PVRTC_2BPPV1_Format ) {
 
 			extension = extensions.get( 'WEBGL_compressed_texture_pvrtc' );
 
@@ -21912,16 +21897,16 @@ function WebGLUtils( gl, extensions, capabilities ) {
 
 		}
 
-		if ( p === RGBA_ASTC_4x4_Format || p === RGBA_ASTC_5x4_Format || p === RGBA_ASTC_5x5_Format ||
-			p === RGBA_ASTC_6x5_Format || p === RGBA_ASTC_6x6_Format || p === RGBA_ASTC_8x5_Format ||
-			p === RGBA_ASTC_8x6_Format || p === RGBA_ASTC_8x8_Format || p === RGBA_ASTC_10x5_Format ||
-			p === RGBA_ASTC_10x6_Format || p === RGBA_ASTC_10x8_Format || p === RGBA_ASTC_10x10_Format ||
-			p === RGBA_ASTC_12x10_Format || p === RGBA_ASTC_12x12_Format ||
-			p === SRGB8_ALPHA8_ASTC_4x4_Format || p === SRGB8_ALPHA8_ASTC_5x4_Format || p === SRGB8_ALPHA8_ASTC_5x5_Format ||
-			p === SRGB8_ALPHA8_ASTC_6x5_Format || p === SRGB8_ALPHA8_ASTC_6x6_Format || p === SRGB8_ALPHA8_ASTC_8x5_Format ||
-			p === SRGB8_ALPHA8_ASTC_8x6_Format || p === SRGB8_ALPHA8_ASTC_8x8_Format || p === SRGB8_ALPHA8_ASTC_10x5_Format ||
-			p === SRGB8_ALPHA8_ASTC_10x6_Format || p === SRGB8_ALPHA8_ASTC_10x8_Format || p === SRGB8_ALPHA8_ASTC_10x10_Format ||
-			p === SRGB8_ALPHA8_ASTC_12x10_Format || p === SRGB8_ALPHA8_ASTC_12x12_Format ) {
+		if ( p === RGBA_ASTC_4x4_Format || p === RGBA_ASTC_5x4_Format || p === RGBA_ASTC_5x5_Format
+			|| p === RGBA_ASTC_6x5_Format || p === RGBA_ASTC_6x6_Format || p === RGBA_ASTC_8x5_Format
+			|| p === RGBA_ASTC_8x6_Format || p === RGBA_ASTC_8x8_Format || p === RGBA_ASTC_10x5_Format
+			|| p === RGBA_ASTC_10x6_Format || p === RGBA_ASTC_10x8_Format || p === RGBA_ASTC_10x10_Format
+			|| p === RGBA_ASTC_12x10_Format || p === RGBA_ASTC_12x12_Format
+			|| p === SRGB8_ALPHA8_ASTC_4x4_Format || p === SRGB8_ALPHA8_ASTC_5x4_Format || p === SRGB8_ALPHA8_ASTC_5x5_Format
+			|| p === SRGB8_ALPHA8_ASTC_6x5_Format || p === SRGB8_ALPHA8_ASTC_6x6_Format || p === SRGB8_ALPHA8_ASTC_8x5_Format
+			|| p === SRGB8_ALPHA8_ASTC_8x6_Format || p === SRGB8_ALPHA8_ASTC_8x8_Format || p === SRGB8_ALPHA8_ASTC_10x5_Format
+			|| p === SRGB8_ALPHA8_ASTC_10x6_Format || p === SRGB8_ALPHA8_ASTC_10x8_Format || p === SRGB8_ALPHA8_ASTC_10x10_Format
+			|| p === SRGB8_ALPHA8_ASTC_12x10_Format || p === SRGB8_ALPHA8_ASTC_12x12_Format ) {
 
 			extension = extensions.get( 'WEBGL_compressed_texture_astc' );
 
@@ -24136,7 +24121,6 @@ function WebGLRenderer( parameters ) {
 
 	}
 
-
 	function releaseMaterialProgramReferences( material ) {
 
 		const programs = properties.get( material ).programs;
@@ -24974,9 +24958,8 @@ function WebGLRenderer( parameters ) {
 
 			if ( _localClippingEnabled === true || camera !== _currentCamera ) {
 
-				const useCache =
-					camera === _currentCamera &&
-					material.id === _currentMaterialId;
+				const useCache = camera === _currentCamera
+					&& material.id === _currentMaterialId;
 
 				// we might want to call this function with some ClippingGroup
 				// object instead of the material, once it becomes feasible
@@ -25025,9 +25008,9 @@ function WebGLRenderer( parameters ) {
 
 				needsProgramChange = true;
 
-			} else if ( materialProperties.numClippingPlanes !== undefined &&
-				( materialProperties.numClippingPlanes !== clipping.numPlanes ||
-				materialProperties.numIntersection !== clipping.numIntersection ) ) {
+			} else if ( materialProperties.numClippingPlanes !== undefined
+					&& ( materialProperties.numClippingPlanes !== clipping.numPlanes
+						|| materialProperties.numIntersection !== clipping.numIntersection ) ) {
 
 				needsProgramChange = true;
 
@@ -25104,11 +25087,11 @@ function WebGLRenderer( parameters ) {
 			// load material specific uniforms
 			// (shader material also gets them for the sake of genericity)
 
-			if ( material.isShaderMaterial ||
-				material.isMeshPhongMaterial ||
-				material.isMeshToonMaterial ||
-				material.isMeshStandardMaterial ||
-				material.envMap ) {
+			if ( material.isShaderMaterial
+				|| material.isMeshPhongMaterial
+				|| material.isMeshToonMaterial
+				|| material.isMeshStandardMaterial
+				|| material.envMap ) {
 
 				const uCamPos = p_uniforms.map.cameraPosition;
 
@@ -25121,25 +25104,25 @@ function WebGLRenderer( parameters ) {
 
 			}
 
-			if ( material.isMeshPhongMaterial ||
-				material.isMeshToonMaterial ||
-				material.isMeshLambertMaterial ||
-				material.isMeshBasicMaterial ||
-				material.isMeshStandardMaterial ||
-				material.isShaderMaterial ) {
+			if ( material.isMeshPhongMaterial
+				|| material.isMeshToonMaterial
+				|| material.isMeshLambertMaterial
+				|| material.isMeshBasicMaterial
+				|| material.isMeshStandardMaterial
+				|| material.isShaderMaterial ) {
 
 				p_uniforms.setValue( _gl, 'isOrthographic', camera.isOrthographicCamera === true );
 
 			}
 
-			if ( material.isMeshPhongMaterial ||
-				material.isMeshToonMaterial ||
-				material.isMeshLambertMaterial ||
-				material.isMeshBasicMaterial ||
-				material.isMeshStandardMaterial ||
-				material.isShaderMaterial ||
-				material.isShadowMaterial ||
-				object.isSkinnedMesh ) {
+			if ( material.isMeshPhongMaterial
+				|| material.isMeshToonMaterial
+				|| material.isMeshLambertMaterial
+				|| material.isMeshBasicMaterial
+				|| material.isMeshStandardMaterial
+				|| material.isShaderMaterial
+				|| material.isShadowMaterial
+				|| object.isSkinnedMesh ) {
 
 				p_uniforms.setValue( _gl, 'viewMatrix', camera.matrixWorldInverse );
 
@@ -25260,9 +25243,9 @@ function WebGLRenderer( parameters ) {
 
 	function materialNeedsLights( material ) {
 
-		return material.isMeshLambertMaterial || material.isMeshToonMaterial || material.isMeshPhongMaterial ||
-			material.isMeshStandardMaterial || material.isShadowMaterial ||
-			( material.isShaderMaterial && material.lights === true );
+		return material.isMeshLambertMaterial || material.isMeshToonMaterial || material.isMeshPhongMaterial
+			|| material.isMeshStandardMaterial || material.isShadowMaterial
+			|| ( material.isShaderMaterial && material.lights === true );
 
 	}
 
@@ -26432,7 +26415,6 @@ function transformVertex( vertexPosition, mvPosition, center, scale, sin, cos ) 
 
 	}
 
-
 	vertexPosition.copy( mvPosition );
 	vertexPosition.x += _rotatedPosition.x;
 	vertexPosition.y += _rotatedPosition.y;
@@ -27194,9 +27176,7 @@ class InstancedMesh extends Mesh {
 
 	}
 
-	updateMorphTargets() {
-
-	}
+	updateMorphTargets() {}
 
 	dispose() {
 
@@ -27238,7 +27218,6 @@ class LineBasicMaterial extends Material {
 		this.setValues( parameters );
 
 	}
-
 
 	copy( source ) {
 
@@ -27932,7 +27911,6 @@ class DepthTexture extends Texture {
 
 	}
 
-
 }
 
 DepthTexture.prototype.isDepthTexture = true;
@@ -28583,7 +28561,6 @@ class PolyhedronGeometry extends BufferGeometry {
 
 		}
 
-
 		// Angle above the XZ plane.
 
 		function inclination( vector ) {
@@ -28981,8 +28958,8 @@ function isEar( ear ) {
 
 	while ( p !== ear.prev ) {
 
-		if ( pointInTriangle( a.x, a.y, b.x, b.y, c.x, c.y, p.x, p.y ) &&
-			area( p.prev, p, p.next ) >= 0 ) return false;
+		if ( pointInTriangle( a.x, a.y, b.x, b.y, c.x, c.y, p.x, p.y )
+			&& area( p.prev, p, p.next ) >= 0 ) return false;
 		p = p.next;
 
 	}
@@ -29015,14 +28992,14 @@ function isEarHashed( ear, minX, minY, invSize ) {
 	// look for points inside the triangle in both directions
 	while ( p && p.z >= minZ && n && n.z <= maxZ ) {
 
-		if ( p !== ear.prev && p !== ear.next &&
-			pointInTriangle( a.x, a.y, b.x, b.y, c.x, c.y, p.x, p.y ) &&
-			area( p.prev, p, p.next ) >= 0 ) return false;
+		if ( p !== ear.prev && p !== ear.next
+			&& pointInTriangle( a.x, a.y, b.x, b.y, c.x, c.y, p.x, p.y )
+			&& area( p.prev, p, p.next ) >= 0 ) return false;
 		p = p.prevZ;
 
-		if ( n !== ear.prev && n !== ear.next &&
-			pointInTriangle( a.x, a.y, b.x, b.y, c.x, c.y, n.x, n.y ) &&
-			area( n.prev, n, n.next ) >= 0 ) return false;
+		if ( n !== ear.prev && n !== ear.next
+			&& pointInTriangle( a.x, a.y, b.x, b.y, c.x, c.y, n.x, n.y )
+			&& area( n.prev, n, n.next ) >= 0 ) return false;
 		n = n.nextZ;
 
 	}
@@ -29030,9 +29007,9 @@ function isEarHashed( ear, minX, minY, invSize ) {
 	// look for remaining points in decreasing z-order
 	while ( p && p.z >= minZ ) {
 
-		if ( p !== ear.prev && p !== ear.next &&
-			pointInTriangle( a.x, a.y, b.x, b.y, c.x, c.y, p.x, p.y ) &&
-			area( p.prev, p, p.next ) >= 0 ) return false;
+		if ( p !== ear.prev && p !== ear.next
+			&& pointInTriangle( a.x, a.y, b.x, b.y, c.x, c.y, p.x, p.y )
+			&& area( p.prev, p, p.next ) >= 0 ) return false;
 		p = p.prevZ;
 
 	}
@@ -29040,9 +29017,9 @@ function isEarHashed( ear, minX, minY, invSize ) {
 	// look for remaining points in increasing z-order
 	while ( n && n.z <= maxZ ) {
 
-		if ( n !== ear.prev && n !== ear.next &&
-			pointInTriangle( a.x, a.y, b.x, b.y, c.x, c.y, n.x, n.y ) &&
-			area( n.prev, n, n.next ) >= 0 ) return false;
+		if ( n !== ear.prev && n !== ear.next
+			&& pointInTriangle( a.x, a.y, b.x, b.y, c.x, c.y, n.x, n.y )
+			&& area( n.prev, n, n.next ) >= 0 ) return false;
 		n = n.nextZ;
 
 	}
@@ -29222,8 +29199,8 @@ function findHoleBridge( hole, outerNode ) {
 
 	do {
 
-		if ( hx >= p.x && p.x >= mx && hx !== p.x &&
-				pointInTriangle( hy < my ? hx : qx, hy, mx, my, hy < my ? qx : hx, hy, p.x, p.y ) ) {
+		if ( hx >= p.x && p.x >= mx && hx !== p.x
+				&& pointInTriangle( hy < my ? hx : qx, hy, mx, my, hy < my ? qx : hx, hy, p.x, p.y ) ) {
 
 			tan = Math.abs( hy - p.y ) / ( hx - p.x ); // tangential
 
@@ -29377,9 +29354,9 @@ function getLeftmost( start ) {
 // check if a point lies within a convex triangle
 function pointInTriangle( ax, ay, bx, by, cx, cy, px, py ) {
 
-	return ( cx - px ) * ( ay - py ) - ( ax - px ) * ( cy - py ) >= 0 &&
-			( ax - px ) * ( by - py ) - ( bx - px ) * ( ay - py ) >= 0 &&
-			( bx - px ) * ( cy - py ) - ( cx - px ) * ( by - py ) >= 0;
+	return ( cx - px ) * ( ay - py ) - ( ax - px ) * ( cy - py ) >= 0
+		&& ( ax - px ) * ( by - py ) - ( bx - px ) * ( ay - py ) >= 0
+		&& ( bx - px ) * ( cy - py ) - ( cx - px ) * ( by - py ) >= 0;
 
 }
 
@@ -29445,8 +29422,8 @@ function intersectsPolygon( a, b ) {
 	let p = a;
 	do {
 
-		if ( p.i !== a.i && p.next.i !== a.i && p.i !== b.i && p.next.i !== b.i &&
-				intersects( p, p.next, a, b ) ) return true;
+		if ( p.i !== a.i && p.next.i !== a.i && p.i !== b.i && p.next.i !== b.i
+			&& intersects( p, p.next, a, b ) ) return true;
 		p = p.next;
 
 	} while ( p !== a );
@@ -29458,9 +29435,9 @@ function intersectsPolygon( a, b ) {
 // check if a polygon diagonal is locally inside the polygon
 function locallyInside( a, b ) {
 
-	return area( a.prev, a, a.next ) < 0 ?
-		area( a, b, a.next ) >= 0 && area( a, a.prev, b ) >= 0 :
-		area( a, b, a.prev ) < 0 || area( a, a.next, b ) < 0;
+	return area( a.prev, a, a.next ) < 0
+		? area( a, b, a.next ) >= 0 && area( a, a.prev, b ) >= 0
+		: area( a, b, a.prev ) < 0 || area( a, a.next, b ) < 0;
 
 }
 
@@ -29473,8 +29450,8 @@ function middleInside( a, b ) {
 		py = ( a.y + b.y ) / 2;
 	do {
 
-		if ( ( ( p.y > py ) !== ( p.next.y > py ) ) && p.next.y !== p.y &&
-				( px < ( p.next.x - p.x ) * ( py - p.y ) / ( p.next.y - p.y ) + p.x ) )
+		if ( ( ( p.y > py ) !== ( p.next.y > py ) ) && p.next.y !== p.y
+			&& ( px < ( p.next.x - p.x ) * ( py - p.y ) / ( p.next.y - p.y ) + p.x ) )
 			inside = ! inside;
 		p = p.next;
 
@@ -29823,7 +29800,6 @@ class ExtrudeGeometry extends BufferGeometry {
 
 			}
 
-
 			const faces = ShapeUtils.triangulateShape( vertices, holes );
 
 			/* Vertices */
@@ -29838,7 +29814,6 @@ class ExtrudeGeometry extends BufferGeometry {
 
 			}
 
-
 			function scalePt2( pt, vec, size ) {
 
 				if ( ! vec ) console.error( 'THREE.ExtrudeGeometry: vec does not exist' );
@@ -29849,9 +29824,7 @@ class ExtrudeGeometry extends BufferGeometry {
 
 			const vlen = vertices.length, flen = faces.length;
 
-
 			// Find directions for point movement
-
 
 			function getBevelVec( inPt, inPrev, inNext ) {
 
@@ -29896,9 +29869,9 @@ class ExtrudeGeometry extends BufferGeometry {
 
 					// scaling factor for v_prev to intersection point
 
-					const sf = ( ( ptNextShift_x - ptPrevShift_x ) * v_next_y -
-							( ptNextShift_y - ptPrevShift_y ) * v_next_x ) /
-						( v_prev_x * v_next_y - v_prev_y * v_next_x );
+					const sf = ( ( ptNextShift_x - ptPrevShift_x ) * v_next_y
+						- ( ptNextShift_y - ptPrevShift_y ) * v_next_x )
+						/ ( v_prev_x * v_next_y - v_prev_y * v_next_x );
 
 					// vector from inPt to intersection point
 
@@ -29976,7 +29949,6 @@ class ExtrudeGeometry extends BufferGeometry {
 
 			}
 
-
 			const contourMovements = [];
 
 			for ( let i = 0, il = contour.length, j = il - 1, k = i + 1; i < il; i ++, j ++, k ++ ) {
@@ -30014,7 +29986,6 @@ class ExtrudeGeometry extends BufferGeometry {
 				verticesMovements = verticesMovements.concat( oneHoleMovements );
 
 			}
-
 
 			// Loop bevelSegments, 1 for the front, 1 for the back
 
@@ -30112,7 +30083,6 @@ class ExtrudeGeometry extends BufferGeometry {
 
 			}
 
-
 			// Add bevel segments planes
 
 			//for ( b = 1; b <= bevelSegments; b ++ ) {
@@ -30167,7 +30137,6 @@ class ExtrudeGeometry extends BufferGeometry {
 			// Sides faces
 
 			buildSideFaces();
-
 
 			/////  Internal functions
 
@@ -30246,9 +30215,7 @@ class ExtrudeGeometry extends BufferGeometry {
 
 				}
 
-
 				scope.addGroup( start, verticesArray.length / 3 - start, 1 );
-
 
 			}
 
@@ -30290,7 +30257,6 @@ class ExtrudeGeometry extends BufferGeometry {
 
 			}
 
-
 			function f3( a, b, c ) {
 
 				addVertex( a );
@@ -30316,7 +30282,6 @@ class ExtrudeGeometry extends BufferGeometry {
 				addVertex( c );
 				addVertex( d );
 
-
 				const nextIndex = verticesArray.length / 3;
 				const uvs = uvgen.generateSideWallUV( scope, verticesArray, nextIndex - 6, nextIndex - 3, nextIndex - 2, nextIndex - 1 );
 
@@ -30337,7 +30302,6 @@ class ExtrudeGeometry extends BufferGeometry {
 				verticesArray.push( placeholder[ index * 3 + 2 ] );
 
 			}
-
 
 			function addUV( vector2 ) {
 
@@ -30537,7 +30501,6 @@ class LatheGeometry extends BufferGeometry {
 				uv.y = j / ( points.length - 1 );
 
 				uvs.push( uv.x, uv.y );
-
 
 			}
 
@@ -30933,7 +30896,6 @@ class ShapeGeometry extends BufferGeometry {
 		this.setAttribute( 'position', new Float32BufferAttribute( vertices, 3 ) );
 		this.setAttribute( 'normal', new Float32BufferAttribute( normals, 3 ) );
 		this.setAttribute( 'uv', new Float32BufferAttribute( uvs, 2 ) );
-
 
 		// helper functions
 
@@ -32737,7 +32699,6 @@ class MeshMatcapMaterial extends Material {
 
 	}
 
-
 	copy( source ) {
 
 		super.copy( source );
@@ -32878,8 +32839,8 @@ const AnimationUtils = {
 
 	isTypedArray: function ( object ) {
 
-		return ArrayBuffer.isView( object ) &&
-			! ( object instanceof DataView );
+		return ArrayBuffer.isView( object )
+			&& !( object instanceof DataView );
 
 	},
 
@@ -33223,8 +33184,9 @@ class Interpolant {
 		this.parameterPositions = parameterPositions;
 		this._cachedIndex = 0;
 
-		this.resultBuffer = resultBuffer !== undefined ?
-			resultBuffer : new sampleValues.constructor( sampleSize );
+		this.resultBuffer = resultBuffer !== undefined
+			? resultBuffer
+			: new sampleValues.constructor( sampleSize );
 		this.sampleValues = sampleValues;
 		this.valueSize = sampleSize;
 
@@ -33572,11 +33534,10 @@ class CubicInterpolant extends Interpolant {
 
 		for ( let i = 0; i !== stride; ++ i ) {
 
-			result[ i ] =
-					sP * values[ oP + i ] +
-					s0 * values[ o0 + i ] +
-					s1 * values[ o1 + i ] +
-					sN * values[ oN + i ];
+			result[ i ] = sP * values[ oP + i ]
+				+ s0 * values[ o0 + i ]
+				+ s1 * values[ o1 + i ]
+				+ sN * values[ oN + i ];
 
 		}
 
@@ -33608,9 +33569,8 @@ class LinearInterpolant extends Interpolant {
 
 		for ( let i = 0; i !== stride; ++ i ) {
 
-			result[ i ] =
-					values[ offset0 + i ] * weight0 +
-					values[ offset1 + i ] * weight1;
+			result[ i ] = values[ offset0 + i ] * weight0
+				+ values[ offset1 + i ] * weight1;
 
 		}
 
@@ -33745,8 +33705,8 @@ class KeyframeTrack {
 
 		if ( factoryMethod === undefined ) {
 
-			const message = 'unsupported interpolation for ' +
-				this.ValueTypeName + ' keyframe track named ' + this.name;
+			const message = 'unsupported interpolation for '
+				+ this.ValueTypeName + ' keyframe track named ' + this.name;
 
 			if ( this.createInterpolant === undefined ) {
 
@@ -33997,8 +33957,8 @@ class KeyframeTrack {
 
 						const value = values[ offset + j ];
 
-						if ( value !== values[ offsetP + j ] ||
-							value !== values[ offsetN + j ] ) {
+						if ( value !== values[ offsetP + j ]
+							|| value !== values[ offsetN + j ] ) {
 
 							keep = true;
 							break;
@@ -34207,7 +34167,6 @@ class AnimationClip {
 		}
 
 	}
-
 
 	static parse( json ) {
 
@@ -35606,7 +35565,6 @@ class DataTextureLoader extends Loader {
 
 		}, onProgress, onError );
 
-
 		return texture;
 
 	}
@@ -35758,9 +35716,9 @@ class Curve {
 
 	getLengths( divisions = this.arcLengthDivisions ) {
 
-		if ( this.cacheArcLengths &&
-			( this.cacheArcLengths.length === divisions + 1 ) &&
-			! this.needsUpdate ) {
+		if ( this.cacheArcLengths
+			&& ( this.cacheArcLengths.length === divisions + 1 )
+			&& !this.needsUpdate ) {
 
 			return this.cacheArcLengths;
 
@@ -35965,7 +35923,6 @@ class Curve {
 
 		normals[ 0 ].crossVectors( tangents[ 0 ], vec );
 		binormals[ 0 ].crossVectors( tangents[ 0 ], normals[ 0 ] );
-
 
 		// compute the slowly-varying normal and binormal vectors for each segment on the curve
 
@@ -36237,7 +36194,6 @@ ArcCurve.prototype.isArcCurve = true;
  * curve.type accepts centripetal(default), chordal and catmullrom
  * curve.tension is used for catmullrom which defaults to 0.5
  */
-
 
 /*
 Based on an optimized c++ solution in
@@ -36516,8 +36472,8 @@ function QuadraticBezierP2( t, p ) {
 
 function QuadraticBezier( t, p0, p1, p2 ) {
 
-	return QuadraticBezierP0( t, p0 ) + QuadraticBezierP1( t, p1 ) +
-		QuadraticBezierP2( t, p2 );
+	return QuadraticBezierP0( t, p0 ) + QuadraticBezierP1( t, p1 )
+		+ QuadraticBezierP2( t, p2 );
 
 }
 
@@ -36551,8 +36507,8 @@ function CubicBezierP3( t, p ) {
 
 function CubicBezier( t, p0, p1, p2, p3 ) {
 
-	return CubicBezierP0( t, p0 ) + CubicBezierP1( t, p1 ) + CubicBezierP2( t, p2 ) +
-		CubicBezierP3( t, p3 );
+	return CubicBezierP0( t, p0 ) + CubicBezierP1( t, p1 ) + CubicBezierP2( t, p2 )
+		+ CubicBezierP3( t, p3 );
 
 }
 
@@ -39629,7 +39585,6 @@ class ObjectLoader extends Loader {
 
 						break;
 
-
 					case 'ExtrudeGeometry':
 					case 'ExtrudeBufferGeometry':
 
@@ -40599,8 +40554,8 @@ class ShapePath {
 					// parallel or collinear
 					if ( inPt.y !== edgeLowPt.y ) 		continue;			// parallel
 					// edge lies on the same horizontal line as inPt
-					if ( ( ( edgeHighPt.x <= inPt.x ) && ( inPt.x <= edgeLowPt.x ) ) ||
-						 ( ( edgeLowPt.x <= inPt.x ) && ( inPt.x <= edgeHighPt.x ) ) )		return	true;	// inPt: Point on contour !
+					if ( ( ( edgeHighPt.x <= inPt.x ) && ( inPt.x <= edgeLowPt.x ) )
+						|| ( ( edgeLowPt.x <= inPt.x ) && ( inPt.x <= edgeHighPt.x ) ) )		return	true;	// inPt: Point on contour !
 					// continue;
 
 				}
@@ -40617,7 +40572,6 @@ class ShapePath {
 		if ( subPaths.length === 0 ) return [];
 
 		if ( noHoles === true )	return	toShapesNoHoles( subPaths );
-
 
 		let solid, tmpPath, tmpShape;
 		const shapes = [];
@@ -40677,7 +40631,6 @@ class ShapePath {
 
 		// only Holes? -> probably all Shapes with wrong orientation
 		if ( ! newShapes[ 0 ] )	return	toShapesNoHoles( subPaths );
-
 
 		if ( newShapes.length > 1 ) {
 
@@ -41107,9 +41060,9 @@ class StereoCamera {
 
 		const cache = this._cache;
 
-		const needsUpdate = cache.focus !== camera.focus || cache.fov !== camera.fov ||
-			cache.aspect !== camera.aspect * this.aspect || cache.near !== camera.near ||
-			cache.far !== camera.far || cache.zoom !== camera.zoom || cache.eyeSep !== this.eyeSep;
+		const needsUpdate = cache.focus !== camera.focus || cache.fov !== camera.fov
+			|| cache.aspect !== camera.aspect * this.aspect || cache.near !== camera.near
+			|| cache.far !== camera.far || cache.zoom !== camera.zoom || cache.eyeSep !== this.eyeSep;
 
 		if ( needsUpdate ) {
 
@@ -41893,7 +41846,6 @@ class AudioAnalyser {
 
 	}
 
-
 	getFrequencyData() {
 
 		this.analyser.getByteFrequencyData( this.data );
@@ -42170,7 +42122,6 @@ class PropertyMixer {
 
 	}
 
-
 	// mix functions
 
 	_select( buffer, dstOffset, srcOffset, t, stride ) {
@@ -42351,7 +42302,6 @@ class PropertyBinding {
 		this.setValue = this._setValue_unbound;
 
 	}
-
 
 	static create( root, path, parsedPath ) {
 
@@ -42744,7 +42694,6 @@ class PropertyBinding {
 
 			}
 
-
 			if ( objectIndex !== undefined ) {
 
 				if ( targetObject[ objectIndex ] === undefined ) {
@@ -42767,8 +42716,8 @@ class PropertyBinding {
 
 			const nodeName = parsedPath.nodeName;
 
-			console.error( 'THREE.PropertyBinding: Trying to update property for track: ' + nodeName +
-				'.' + propertyName + ' but it wasn\'t found.', targetObject );
+			console.error( 'THREE.PropertyBinding: Trying to update property for track: ' + nodeName
+				+ '.' + propertyName + ' but it wasn\'t found.', targetObject );
 			return;
 
 		}
@@ -42821,7 +42770,6 @@ class PropertyBinding {
 						propertyIndex = targetObject.morphTargetDictionary[ propertyIndex ];
 
 					}
-
 
 				} else {
 
@@ -43092,8 +43040,8 @@ class AnimationObjectGroup {
 
 			} else if ( objects[ index ] !== knownObject ) {
 
-				console.error( 'THREE.AnimationObjectGroup: Different objects with the same UUID ' +
-					'detected. Clean the caches or recreate your infrastructure when reloading scenes.' );
+				console.error( 'THREE.AnimationObjectGroup: Different objects with the same UUID '
+					+ 'detected. Clean the caches or recreate your infrastructure when reloading scenes.' );
 
 			} // else the object is already where we want it to be
 
@@ -43418,8 +43366,8 @@ class AnimationAction {
 
 	isRunning() {
 
-		return this.enabled && ! this.paused && this.timeScale !== 0 &&
-			this._startTime === null && this._mixer._isActiveAction( this );
+		return this.enabled && ! this.paused && this.timeScale !== 0
+			&& this._startTime === null && this._mixer._isActiveAction( this );
 
 	}
 
@@ -44176,12 +44124,10 @@ class AnimationMixer extends EventDispatcher {
 		// 	actionByRoot: AnimationAction - lookup
 		// }
 
-
 		this._bindings = []; // 'nActiveBindings' followed by inactive ones
 		this._nActiveBindings = 0;
 
 		this._bindingsByRootAndName = {}; // inside: Map< name, PropertyMixer >
-
 
 		this._controlInterpolants = []; // same game as above
 		this._nActiveControlInterpolants = 0;
@@ -44288,14 +44234,12 @@ class AnimationMixer extends EventDispatcher {
 
 		action._cacheIndex = null;
 
-
 		const clipUuid = action._clip.uuid,
 			actionsByClip = this._actionsByClip,
 			actionsForClip = actionsByClip[ clipUuid ],
 			knownActionsForClip = actionsForClip.knownActions,
 
-			lastKnownAction =
-				knownActionsForClip[ knownActionsForClip.length - 1 ],
+			lastKnownAction = knownActionsForClip[ knownActionsForClip.length - 1 ],
 
 			byClipCacheIndex = action._byClipCacheIndex;
 
@@ -44304,7 +44248,6 @@ class AnimationMixer extends EventDispatcher {
 		knownActionsForClip.pop();
 
 		action._byClipCacheIndex = null;
-
 
 		const actionByRoot = actionsForClip.actionByRoot,
 			rootUuid = ( action._localRoot || this._root ).uuid;
@@ -44468,7 +44411,6 @@ class AnimationMixer extends EventDispatcher {
 
 	}
 
-
 	// Memory management of Interpolants for weight and time scale
 
 	_lendControlInterpolant() {
@@ -44580,8 +44522,9 @@ class AnimationMixer extends EventDispatcher {
 		const root = optionalRoot || this._root,
 			rootUuid = root.uuid,
 
-			clipObject = typeof clip === 'string' ?
-				AnimationClip.findByName( root, clip ) : clip,
+			clipObject = typeof clip === 'string'
+				? AnimationClip.findByName( root, clip )
+				: clip,
 
 			clipUuid = clipObject ? clipObject.uuid : clip,
 
@@ -45274,15 +45217,15 @@ class Box2 {
 
 	containsPoint( point ) {
 
-		return point.x < this.min.x || point.x > this.max.x ||
-			point.y < this.min.y || point.y > this.max.y ? false : true;
+		return point.x < this.min.x || point.x > this.max.x
+			|| point.y < this.min.y || point.y > this.max.y ? false : true;
 
 	}
 
 	containsBox( box ) {
 
-		return this.min.x <= box.min.x && box.max.x <= this.max.x &&
-			this.min.y <= box.min.y && box.max.y <= this.max.y;
+		return this.min.x <= box.min.x && box.max.x <= this.max.x
+			&& this.min.y <= box.min.y && box.max.y <= this.max.y;
 
 	}
 
@@ -45309,8 +45252,8 @@ class Box2 {
 
 		// using 4 splitting planes to rule out intersections
 
-		return box.max.x < this.min.x || box.min.x > this.max.x ||
-			box.max.y < this.min.y || box.min.y > this.max.y ? false : true;
+		return box.max.x < this.min.x || box.min.x > this.max.x
+			|| box.max.y < this.min.y || box.min.y > this.max.y ? false : true;
 
 	}
 
@@ -45623,7 +45566,6 @@ const _vector$2 = /*@__PURE__*/ new Vector3();
 const _boneMatrix = /*@__PURE__*/ new Matrix4();
 const _matrixWorldInv = /*@__PURE__*/ new Matrix4();
 
-
 class SkeletonHelper extends LineSegments {
 
 	constructor( object ) {
@@ -45708,7 +45650,6 @@ class SkeletonHelper extends LineSegments {
 
 }
 
-
 function getBoneList( object ) {
 
 	const boneList = [];
@@ -45749,7 +45690,6 @@ class PointLightHelper extends Mesh {
 		this.matrixAutoUpdate = false;
 
 		this.update();
-
 
 		/*
 	// TODO: delete this comment?
@@ -46265,7 +46205,6 @@ class CameraHelper extends LineSegments {
 
 }
 
-
 function setPoint( point, pointMap, geometry, camera, x, y, z ) {
 
 	_vector.set( x, y, z ).unproject( camera );
@@ -46360,7 +46299,6 @@ class BoxHelper extends LineSegments {
 		position.needsUpdate = true;
 
 		this.geometry.computeBoundingSphere();
-
 
 	}
 
@@ -46949,7 +46887,6 @@ class PMREMGenerator {
 			useSolidColor = true;
 
 		}
-
 
 		for ( let i = 0; i < 6; i ++ ) {
 
@@ -48475,8 +48412,8 @@ SkinnedMesh.prototype.initBones = function () {
 
 PerspectiveCamera.prototype.setLens = function ( focalLength, filmGauge ) {
 
-	console.warn( 'THREE.PerspectiveCamera.setLens is deprecated. ' +
-			'Use .setFocalLength and .filmGauge for a photographic setup.' );
+	console.warn( 'THREE.PerspectiveCamera.setLens is deprecated. '
+		+ 'Use .setFocalLength and .filmGauge for a photographic setup.' );
 
 	if ( filmGauge !== undefined ) this.filmGauge = filmGauge;
 	this.setFocalLength( focalLength );
@@ -49356,7 +49293,6 @@ Audio.prototype.load = function ( file ) {
 	return this;
 
 };
-
 
 AudioAnalyser.prototype.getData = function () {
 

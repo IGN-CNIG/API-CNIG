@@ -65,8 +65,6 @@ capaMVT.setStyle(estilo);
 
 map.addLayers(capaMVT);
 
-
-
 //map.refresh();
 
 window.map = map;

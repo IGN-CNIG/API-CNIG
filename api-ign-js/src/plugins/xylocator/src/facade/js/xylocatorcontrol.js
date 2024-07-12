@@ -85,8 +85,8 @@ export default class XYLocatorControl extends M.Control {
       });
       this.template_.querySelector('#m-xylocator-coordinatesSystem').appendChild(compiledOptions);
       this.template_.querySelector('button#m-xylocator-limpiar').addEventListener('click', () => this.clear_());
-      this.template_.querySelector('select#m-xylocator-srs').addEventListener('change', evt => this.manageInputs_(evt));
-      this.template_.querySelector('button#m-xylocator-loc').addEventListener('click', evt => this.calculate_(evt));
+      this.template_.querySelector('select#m-xylocator-srs').addEventListener('change', (evt) => this.manageInputs_(evt));
+      this.template_.querySelector('button#m-xylocator-loc').addEventListener('click', (evt) => this.calculate_(evt));
       this.map = map;
       success(html);
     });
@@ -130,7 +130,7 @@ export default class XYLocatorControl extends M.Control {
     const xFloat = parseFloat(x);
     const yFloat = parseFloat(y);
     this.map.removeLayers(this.coordinatesLayer);
-    if (!isNaN(xFloat) && !isNaN(yFloat)) {
+    if (!Number.isNaN(xFloat) && !Number.isNaN(yFloat)) {
       this.map.setCenter(`${xFloat},${yFloat}*false`);
       this.map.setZoom(this.zoom);
       this.fire('xylocator:locationCentered', [{
@@ -240,10 +240,10 @@ export default class XYLocatorControl extends M.Control {
         const ssLat = document.querySelector('div#m-xylocator-dms input#LATSS').value;
         const dirLat = document.querySelector('div#m-xylocator-dms input[name="LATDIR"]:checked').value;
 
-        if (this.checkDegreeValue_(mmLon) && this.checkDegreeValue_(ssLon) &&
-          this.checkDegreeValue_(mmLat) && this.checkDegreeValue_(ssLat) &&
-          parseFloat(hhLon) >= 0 && parseFloat(hhLon) <= 180 &&
-          parseFloat(hhLat) >= 0 && parseFloat(hhLat) <= 180) {
+        if (this.checkDegreeValue_(mmLon) && this.checkDegreeValue_(ssLon)
+          && this.checkDegreeValue_(mmLat) && this.checkDegreeValue_(ssLat)
+          && parseFloat(hhLon) >= 0 && parseFloat(hhLon) <= 180
+          && parseFloat(hhLat) >= 0 && parseFloat(hhLat) <= 180) {
           try {
             x = parseFloat(hhLon) + (parseFloat(mmLon) / 60) + (parseFloat(ssLon) / 3600);
             y = parseFloat(hhLat) + (parseFloat(mmLat) / 60) + (parseFloat(ssLat) / 3600);

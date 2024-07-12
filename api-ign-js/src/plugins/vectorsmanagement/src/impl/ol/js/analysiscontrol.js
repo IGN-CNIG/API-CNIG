@@ -8,8 +8,8 @@ import { getValue } from '../../../facade/js/i18n/language';
 const WGS84 = 'EPSG:4326';
 const MERCATOR = 'EPSG:900913';
 const PROFILE_URL = 'https://servicios.idee.es/wcs-inspire/mdt?request=GetCoverage&bbox=';
-const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&' +
-  'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
+const PROFILE_URL_SUFFIX = '&service=WCS&version=1.0.0&coverage=Elevacion4258_5&'
+  + 'interpolationMethod=bilinear&crs=EPSG%3A4258&format=ArcGrid&width=2&height=2';
 const NO_DATA_VALUE = 'NODATA_value -9999.000';
 
 const formatNumber = (x, decimals) => {
@@ -127,7 +127,7 @@ export default class Analysiscontrol extends M.impl.Control {
       coordinates = [].concat(feature.getGeometry().coordinates[0]);
       coordinates.pop();
     } else if (feature.getGeometry().type === 'MultiPolygon') {
-      const polygonsCoords = [].concat(...feature.getGeometry().coordinates.map(c => c[0]));
+      const polygonsCoords = [].concat(...feature.getGeometry().coordinates.map((c) => c[0]));
       coordinates = polygonsCoords;
     } else {
       coordinates = [].concat(feature.getGeometry().coordinates);
@@ -156,7 +156,6 @@ export default class Analysiscontrol extends M.impl.Control {
       const url = `${PROFILE_URL}${bbox}${PROFILE_URL_SUFFIX}`;
       promises.push(M.remote.get(url));
     });
-
 
     const codeProj = this.facadeMap_.getProjection().code;
 
@@ -223,7 +222,8 @@ export default class Analysiscontrol extends M.impl.Control {
       geographic: {
         coordinates: ol.proj.transform(
           feature.getGeometry().coordinates,
-          this.facadeMap_.getProjection().code, WGS84,
+          this.facadeMap_.getProjection().code,
+          WGS84,
         ),
         projection: WGS84,
       },
@@ -339,8 +339,8 @@ export default class Analysiscontrol extends M.impl.Control {
     let res;
     let points = '';
     if (distance >= 50) {
-      const distPoint = (distance / this.distance_ > this.distance_) ?
-        distance / this.distance_ : this.distance_;
+      const distPoint = (distance / this.distance_ > this.distance_)
+        ? distance / this.distance_ : this.distance_;
       for (let i = 0; i <= distance / distPoint; i += 1) {
         if (angle >= 0 && angle <= 90) {
           [addX, addY] = [1, 1];
@@ -365,8 +365,8 @@ export default class Analysiscontrol extends M.impl.Control {
 
       res = points;
     } else {
-      const distPoint = (distance / this.distance_ > this.distance_) ?
-        distance / this.distance_ : this.distance_;
+      const distPoint = (distance / this.distance_ > this.distance_)
+        ? distance / this.distance_ : this.distance_;
       if (angle >= 0 && angle <= 90) {
         [addX, addY] = [1, 1];
       } else if (angle >= 90) {
@@ -557,4 +557,3 @@ export default class Analysiscontrol extends M.impl.Control {
     });
   }
 }
-

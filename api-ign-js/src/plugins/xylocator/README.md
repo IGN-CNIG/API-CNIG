@@ -48,7 +48,7 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
   - 'TR': (top right) - Arriba a la derecha.
   - 'BL': (bottom left) - Abajo a la izquierda.
   - 'BR': (bottom right) - Abajo a la derecha.
-- **zoom**. Zoom que se aplica cuando se realiza una búsqueda. 
+- **zoom**. Zoom que se aplica cuando se realiza una búsqueda.
 - **tooltip**. Valor a usar para mostrar en el tooltip del plugin.
 
 # Eventos
@@ -69,7 +69,7 @@ mp.on('xylocator:locationCentered', (data) => {
    const map = M.map({
      container: 'map'
    });
-  
+
    const mp = new M.plugin.XYLocator({
         postition: 'TL',
       });

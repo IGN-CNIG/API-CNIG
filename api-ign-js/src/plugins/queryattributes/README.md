@@ -136,9 +136,9 @@ M.utils.encodeBase64(obj_params);
 ```
 
 En este ejemplo se utiliza el parámetro *configuration* para que la tabla muestre los atributos de la capa *vertices*.
-Se le pasa la capa vertices por url añadiendo lo siguiente: ``` &layers=GeoJSON*vertices*https://projects.develmap.com/attributestable/roivertexcenterred.geojson*true ``` 
+Se le pasa la capa vertices por url añadiendo lo siguiente: ``` &layers=GeoJSON*vertices*https://projects.develmap.com/attributestable/roivertexcenterred.geojson*true ```
 
-Ejemplo de constructor del plugin: 
+Ejemplo de constructor del plugin:
 ``` javascript
 {
   position: 'TL',

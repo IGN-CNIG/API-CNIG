@@ -152,8 +152,8 @@ class MVT extends Vector {
     });
 
     // register events in order to fire the LOAD event
-    source.on(TileEventType.TILELOADERROR, evt => this.checkAllTilesLoaded_(evt));
-    // source.on(TileEventType.TILELOADEND, evt => this.checkAllTilesLoaded_(evt));
+    source.on(TileEventType.TILELOADERROR, (evt) => this.checkAllTilesLoaded_(evt));
+    // source.on(TileEventType.TILELOADEND, (evt) => this.checkAllTilesLoaded_(evt));
 
     this.ol3Layer = new OLLayerVectorTile(extend({
       source,
@@ -191,8 +191,9 @@ class MVT extends Vector {
 
     setTimeout(() => {
       const filtered = this.map.getLayers().filter((l) => {
-        const checkLayers = l.getImpl().layers_ !== undefined ?
-          l.getImpl().layers_ === this.layers_ : true;
+        const checkLayers = l.getImpl().layers_ !== undefined
+          ? l.getImpl().layers_ === this.layers_
+          : true;
         return l.url === this.url && checkLayers;
       });
 
@@ -310,6 +311,42 @@ class MVT extends Vector {
   }
 
   /**
+   * Este método devuelve un objeto geográfico por su id.
+   *
+   * @function
+   * @public
+   * @param {string|number} id Identificador del objeto geográfico..
+   * @return {Array<M.feature>} Objeto Geográfico - Devuelve el objeto geográfico con
+   * ese id si se encuentra, en caso de que no se encuentre o no indique el id devuelve array vacío.
+   * @api stable
+   */
+  getFeatureById(id) {
+    const features = [];
+    if (this.ol3Layer) {
+      const tileCache = this.ol3Layer.getSource().tileCache;
+      const kk = tileCache.getCount();
+      if (kk === 0) {
+        return features;
+      }
+      const z = fromKey(tileCache.peekFirstKey())[0];
+      for (let k = 0; k < kk; k += 1) {
+        const auxValue = tileCache.getValues()[k];
+        if (auxValue.tileCoord[0] === z && auxValue.getState() === TileState.LOADED) {
+          const sourceTiles = auxValue.getSourceTiles();
+          for (let i = 0, ii = sourceTiles.length; i < ii; i += 1) {
+            const olFeature = sourceTiles[i].getFeatures()
+              .find((feature2) => feature2.getProperties().id === id); // feature2.getId()
+            if (olFeature) {
+              features.push(olFeature);
+            }
+          }
+        }
+      }
+    }
+    return features;
+  }
+
+  /**
    * Este método comprueba si la tesela esta cargada.
    *
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -327,9 +364,9 @@ class MVT extends Vector {
     const loaded = tileImages.every((tile) => {
       const tileCoord = tile.getTileCoord();
       const tileState = tile.getState();
-      const sameTile = (currTileCoord[0] === tileCoord[0] &&
-        currTileCoord[1] === tileCoord[1] &&
-        currTileCoord[2] === tileCoord[2]);
+      const sameTile = (currTileCoord[0] === tileCoord[0]
+        && currTileCoord[1] === tileCoord[1]
+        && currTileCoord[2] === tileCoord[2]);
       const tileLoaded = sameTile || (tileState !== TileState.LOADING);
       return tileLoaded;
     });
@@ -337,6 +374,22 @@ class MVT extends Vector {
       this.loaded_ = true;
       this.facadeVector_.fire(EventType.LOAD);
     }
+  }
+
+  getFeaturesExtentPromise(skipFilter, filter) {
+    return new Promise((resolve) => {
+      const codeProj = this.map.getProjection().code;
+      if (this.isLoaded() === true) {
+        const features = this.getFeatures(skipFilter, filter);
+        const extent = ImplUtils.getFeaturesExtent(features, codeProj);
+        resolve(extent);
+      } else {
+        this.requestFeatures_().then((features) => {
+          const extent = ImplUtils.getFeaturesExtent(features, codeProj);
+          resolve(extent);
+        });
+      }
+    });
   }
 
   /**

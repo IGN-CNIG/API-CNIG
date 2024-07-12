@@ -12,7 +12,7 @@ class Centroid extends OLStyle {
    * Constructor principal de la clase.
    * @constructor
    * @struct
-   * @param {olx.style.StyleOptions=} opt_options Opciones:
+   * @param {olx.style.StyleOptions=} optOptions Opciones:
    * - geometry: Geometría.
    * - fill: Relleno.
    * - image: Imagen ("ImageStyle").
@@ -22,8 +22,8 @@ class Centroid extends OLStyle {
    * - zIndex: Indice.
    * @api
    */
-  constructor(opt_options = {}) {
-    super(opt_options);
+  constructor(optOptions = {}) {
+    super(optOptions);
   }
 
   /**

@@ -2,8 +2,8 @@
  * @module M/impl/control/StereoscopicControl
  */
 
- export default class StereoscopicControl extends M.impl.Control {
- /**
+export default class StereoscopicControl extends M.impl.Control {
+  /**
     * @classdesc
     * Main constructor of the class. Creates a StereoscopicControl
     * control
@@ -12,12 +12,13 @@
     * @extends {M.impl.Control}
     * @api stable
     */
-   constructor() {
-     super();
-   }
+  /*
+  constructor() {
+    super();
+  }
+  */
 
-
-   /**
+  /**
     * This function adds the control to the specified map
     *
     * @public
@@ -26,7 +27,7 @@
     * @param {HTMLElement} html of the plugin
     * @api stable
     */
-   addTo(map, html) {
-     super.addTo(map, html);
-   }
- }
+  addTo(map, html) {
+    super.addTo(map, html);
+  }
+}

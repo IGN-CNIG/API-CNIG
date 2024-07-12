@@ -8,20 +8,20 @@
 # Descripción
 
 Plugin que permite la gestión de la simbología de las capas vectoriales del mapa.
- 
-Los tipos de simbología soportada son: 
+
+Los tipos de simbología soportada son:
 - simple (polígono, línea, punto).
 - coropletas.
-- símbolos proporcionales. 
-- categorías. 
-- estadísticos. 
+- símbolos proporcionales.
+- categorías.
+- estadísticos.
 - cluster.
-- mapas de calor. 
+- mapas de calor.
 
-La capa a modificar se selecciona desde el propio plugin, que mantendrá activos únicamente los tipos de simbología compatibles con la capa según su geometría.  
+La capa a modificar se selecciona desde el propio plugin, que mantendrá activos únicamente los tipos de simbología compatibles con la capa según su geometría.
 ![Imagen](./docs/images/StyleManager3.PNG)
- 
-La simbología puede ser compuesta, y a medida que se van aplicando simbologías concretas, la interfaz desactiva las que no son compatibles.  
+
+La simbología puede ser compuesta, y a medida que se van aplicando simbologías concretas, la interfaz desactiva las que no son compatibles.
 ![Imagen](./docs/images/StyleManager4.PNG)
 En dispositivos móviles, la interfaz se adaptará para ocupar la pantalla completa.
 
@@ -61,7 +61,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **tooltip**: Texto que se muestra al dejar el ratón encima del plugin. Por defecto: 'Gestor de estilos'.
 - **layer**: Capa pre seleccionada (se mostrará seleccionada en el selector de capas del plugin).
 Como requisito para usar este parámetro la capa debe de estar cargada en el mapa (ver ejemplo de uso). Además dicha capa debe de tener features (no puede estar vacía).
-En caso de que no se cumpla las condiciones anteriores lanzará un error. 
+En caso de que no se cumpla las condiciones anteriores lanzará un error.
 (Válido sólo para creación del plugin por JS).
 
 # API-REST
@@ -121,7 +121,7 @@ Ejemplo:
 M.utils.encodeBase64(obj_params);
 ```
 
-Ejemplo de constructor del plugin: 
+Ejemplo de constructor del plugin:
 ```javascript
 {
   position:'TR',
@@ -151,7 +151,7 @@ capaVectorial.on(M.evt.LOAD, function() {
   });
   map.addPlugin(mp);
 });
-```  
+```
 
 
 # 👨‍💻 Desarrollo

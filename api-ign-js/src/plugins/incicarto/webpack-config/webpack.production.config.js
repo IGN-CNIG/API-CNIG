@@ -1,9 +1,11 @@
 const path = require('path');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const GenerateVersionPlugin = require('./GenerateVersionPlugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopywebpackPlugin = require('copy-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+const webpack = require('webpack');
 
 const PJSON_PATH = path.resolve(__dirname, '..', 'package.json');
 const pjson = require(PJSON_PATH);
@@ -26,9 +28,17 @@ module.exports = {
       facade: path.resolve(__dirname, '../src/facade/js'),
     },
     extensions: ['.wasm', '.mjs', '.js', '.json', '.css', '.hbs', '.html'],
+    fallback: {
+      fs: false,
+      path: false,
+      crypto: false,
+      "buffer": require.resolve("buffer/"),
+      "assert": require.resolve("assert/"),
+    },
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.js$/,
         exclude: /(node_modules\/(?!ol)|bower_components)/,
         use: {
@@ -39,11 +49,6 @@ module.exports = {
         },
       },
       {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/,
-      },
-      {
         test: [/\.hbs$/, /\.html$/],
         loader: 'html-loader',
         exclude: /node_modules/,
@@ -51,26 +56,25 @@ module.exports = {
       {
         test: /\.css$/,
         loader: MiniCssExtractPlugin.loader,
-        exclude: /node_modules/,
       }, {
         test: /\.css$/,
         loader: 'css-loader',
-        exclude: /node_modules/,
-
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
         exclude: /node_modules/,
-        loader: 'url-loader?name=fonts/[name].[ext]',
-      }
+        type: 'asset/inline',
+      },
     ],
   },
   optimization: {
-    noEmitOnErrors: true,
+    emitOnErrors: false,
     minimizer: [
       new OptimizeCssAssetsPlugin(),
       new TerserPlugin({
-        sourceMap: true,
+        terserOptions: {
+          sourceMap: true,
+        },
       }),
     ],
   },
@@ -79,16 +83,28 @@ module.exports = {
     //   version: pjson.version,
     //   regex: /([A-Za-z]+)(\..*)/,
     // }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
-    new CopywebpackPlugin([{
-      from: 'src/api.json',
-      to: 'api.json',
-    }, {
-      from: 'src/facade/assets/images',
-      to: 'images',
-    }]),
+    new ESLintPlugin({
+      extensions: [`js`, `jsx`],
+      // files: 'src/**/*.js',
+      exclude: ['**/node_modules/**', '/lib/', '/test/', '/dist/'],
+    }),
+    new CopywebpackPlugin({
+      patterns: [
+        {
+          from: 'src/api.json',
+          to: 'api.json',
+        }, {
+          from: 'src/facade/assets/images',
+          to: 'images',
+        }
+      ],
+    }),
   ],
   devtool: 'source-map',
 };

@@ -48,7 +48,6 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
     ],
 ```
 
-  
 # Ejemplos de uso
 
 ```javascript

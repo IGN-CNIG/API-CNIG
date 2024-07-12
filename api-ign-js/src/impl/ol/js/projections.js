@@ -54,7 +54,6 @@ const proj3857 = {
   coordRefSys: 'http://www.opengis.net/def/crs/EPSG/0/3857',
 };
 
-
 /**
  * EPSG:25828 ETRS89 UTM Huso 28 es una proyección cartográfica en la que se divide la
  * Tierra en 60 husos de 6 grados de longitud. El huso 28 se extiende desde los 0 grados de

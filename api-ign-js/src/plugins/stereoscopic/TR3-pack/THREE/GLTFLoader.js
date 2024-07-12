@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
 	AnimationClip,
 	Bone,
@@ -1350,7 +1351,6 @@ class GLTFMeshStandardSGMaterial extends MeshStandardMaterial {
 	}
 
 }
-
 
 class GLTFMaterialsPbrSpecularGlossinessExtension {
 
@@ -3121,10 +3121,10 @@ class GLTFParser {
 
 				const material = materials[ i ];
 
-				if ( primitive.mode === WEBGL_CONSTANTS.TRIANGLES ||
-						primitive.mode === WEBGL_CONSTANTS.TRIANGLE_STRIP ||
-						primitive.mode === WEBGL_CONSTANTS.TRIANGLE_FAN ||
-						primitive.mode === undefined ) {
+				if ( primitive.mode === WEBGL_CONSTANTS.TRIANGLES
+						|| primitive.mode === WEBGL_CONSTANTS.TRIANGLE_STRIP
+						|| primitive.mode === WEBGL_CONSTANTS.TRIANGLE_FAN
+						|| primitive.mode === undefined ) {
 
 					// .isSkinnedMesh isn't in glTF spec. See ._markDefs()
 					mesh = meshDef.isSkinnedMesh === true
@@ -3824,7 +3824,6 @@ function computeBounds( geometry, primitiveDef, parser ) {
 					vector.setY( Math.max( Math.abs( min[ 1 ] ), Math.abs( max[ 1 ] ) ) );
 					vector.setZ( Math.max( Math.abs( min[ 2 ] ), Math.abs( max[ 2 ] ) ) );
 
-
 					if ( accessor.normalized ) {
 
 						const boxScale = getNormalizedComponentScale( WEBGL_COMPONENT_TYPES[ accessor.componentType ] );
@@ -3989,7 +3988,6 @@ function toTrianglesDrawMode( geometry, drawMode ) {
 				newIndices.push( index.getX( i ) );
 				newIndices.push( index.getX( i + 1 ) );
 				newIndices.push( index.getX( i + 2 ) );
-
 
 			} else {
 

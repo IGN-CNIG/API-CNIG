@@ -5,10 +5,17 @@ import MVTTileImpl from 'impl/layer/MVT';
 import RenderFeatureImpl from 'impl/feature/RenderFeature';
 import FeatureImpl from 'impl/feature/Feature';
 import Vector from './Vector';
-import { isUndefined, isNullOrEmpty, normalize, isString } from '../util/Utils';
+import {
+  isUndefined,
+  isNullOrEmpty,
+  normalize,
+  isString,
+} from '../util/Utils';
 import Exception from '../exception/exception';
+import * as dialog from '../dialog';
 import { MVT as MVTType } from './Type';
 import * as parameter from '../parameter/parameter';
+import { getValue } from '../i18n/language';
 
 /**
  * Posibles modos para la capa MVT.
@@ -75,7 +82,7 @@ class MVT extends Vector {
    * </code></pre>
    * @api
    */
-  constructor(parameters = {}, options = {}, vendorOptions = {}, implParam) {
+  constructor(parameters = {}, options = {}, vendorOptions = {}, implParam = undefined) {
     let opts = parameter.layer(parameters, MVTType);
     const optionsVar = options;
     if (typeof parameters !== 'string') {
@@ -89,6 +96,20 @@ class MVT extends Vector {
     if (isUndefined(MVTTileImpl)) {
       Exception('La implementación usada no puede crear capas Vector');
     }
+
+    /**
+     * MVT minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * MVT maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
      * extract: Optional Activa la consulta al hacer clic sobre un objeto geográfico,
@@ -190,12 +211,52 @@ class MVT extends Vector {
     return features.map((olFeature) => {
       if (this.mode === mode.RENDER) {
         return RenderFeatureImpl.olFeature2Facade(olFeature);
-      } else if (this.mode === mode.FEATURE) {
+      }
+      if (this.mode === mode.FEATURE) {
         return FeatureImpl.olFeature2Facade(olFeature, undefined, this.getProjection());
       }
       return null;
     });
   }
+
+  /**
+   * Devuelve el objeto geográfico con el id pasado por parámetros.
+   *
+   * @function
+   * @public
+   * @param {String|Number} id - Id objeto geográfico.
+   * @return {Null|Array<M.RenderFeature>} objeto geográfico: devuelve el objeto geográfico con esa
+   * identificación si se encuentra, en caso de que no se encuentre o no indique el id
+   * devuelve array vacío.
+   * @api
+   */
+  getFeatureById(id) {
+    if (isNullOrEmpty(id)) {
+      dialog.error(getValue('dialog').id_feature);
+      return null;
+    }
+    const features = this.getImpl().getFeatureById(id);
+    features.map((olFeature) => {
+      if (this.mode === mode.RENDER) {
+        return RenderFeatureImpl.olFeature2Facade(olFeature);
+      }
+      if (this.mode === mode.FEATURE) {
+        return FeatureImpl
+          .olFeature2Facade(olFeature, undefined, this.getProjection());
+      }
+      return null;
+    });
+    return features;
+  }
+
+  /**
+   * Devuelve el valor de la propiedad filter.
+   *
+   * @function
+   * @public
+   * @api
+   */
+  getFilter() {}
 
   /**
    * Modifica el filtro.
@@ -205,6 +266,15 @@ class MVT extends Vector {
    * @api
    */
   setFilter() {}
+
+  /**
+   * Elimina valor de la propiedad "filter".
+   *
+   * @function
+   * @public
+   * @api
+   */
+  removeFilter() {}
 
   /**
    * Añade objeto geográficos.

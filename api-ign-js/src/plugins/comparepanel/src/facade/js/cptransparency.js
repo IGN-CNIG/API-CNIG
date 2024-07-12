@@ -61,8 +61,8 @@ export default class Transparency extends M.Plugin {
      * @type {boolean}
      * @public
      */
-     this.enabledKeyFunctions = options.enabledKeyFunctions;
-     if (this.enabledKeyFunctions === undefined) this.enabledKeyFunctions = true;
+    this.enabledKeyFunctions = options.enabledKeyFunctions;
+    if (this.enabledKeyFunctions === undefined) this.enabledKeyFunctions = true;
 
     /**
      * Layer names that will have effects
@@ -73,12 +73,10 @@ export default class Transparency extends M.Plugin {
     if (options.layers === undefined || options.layers === '') {
       M.dialog.error(getValue('errorLayer'));
       this.layers = [];
+    } else if (Array.isArray(options.layers)) {
+      this.layers = options.layers;
     } else {
-      if (Array.isArray(options.layers)) {
-        this.layers = options.layers;
-      } else {
-        this.layers = options.layers.split(',');
-      }
+      this.layers = options.layers.split(',');
     }
 
     /**
@@ -88,9 +86,9 @@ export default class Transparency extends M.Plugin {
      * @public
      */
 
-    if (!isNaN(parseInt(options.radius))) {
+    if (!Number.isNaN(parseInt(options.radius, 10))) {
       if (options.radius >= 30 && options.radius <= 200) {
-        this.radius = parseInt(options.radius);
+        this.radius = parseInt(options.radius, 10);
       } else if (options.radius > 200) {
         this.radius = 200;
       } else if (options.radius < 30) {
@@ -159,45 +157,38 @@ export default class Transparency extends M.Plugin {
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
 
-
     document.addEventListener('keydown', (zEvent) => {
       if (!this.enabledKeyFunctions) {
         return;
       }
-      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'ArrowUp') {  // case sensitive
-        if (this.control_.radius>=200) return;
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'ArrowUp') { // case sensitive
+        if (this.control_.radius >= 200) return;
         this.control_.radius += 20;
         this.control_.getImpl().setRadius(this.control_.radius);
-        this.control_.template.querySelector('#input-transparent-radius').value=this.control_.radius;
+        this.control_.template.querySelector('#input-transparent-radius').value = this.control_.radius;
       }
-      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'ArrowDown') {  // case sensitive
-        if (this.control_.radius<=32) return;
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'ArrowDown') { // case sensitive
+        if (this.control_.radius <= 32) return;
         this.control_.radius -= 20;
         this.control_.getImpl().setRadius(this.control_.radius);
-        this.control_.template.querySelector('#input-transparent-radius').value=this.control_.radius;
+        this.control_.template.querySelector('#input-transparent-radius').value = this.control_.radius;
       }
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === 'Enter') {
-        this.control_.freeze= !this.control_.freeze;
+        this.control_.freeze = !this.control_.freeze;
         this.control_.getImpl().setFreeze(this.control_.freeze);
-        if (this.control_.freeze){
+        if (this.control_.freeze) {
           this.control_.template.querySelector('#m-transparency-lock').style.visibility = 'hidden';
           this.control_.template.querySelector('#m-transparency-unlock').style.visibility = 'visible';
-        }else{  
+        } else {
           this.control_.template.querySelector('#m-transparency-lock').style.visibility = 'visible';
           this.control_.template.querySelector('#m-transparency-unlock').style.visibility = 'hidden';
         }
       }
-
     });
-
   }
 
-
-
-  manageLyrAvailable(lyrAvailable){
-
+  manageLyrAvailable(lyrAvailable) {
     this.control_.manageLyrAvailable(lyrAvailable);
-
   }
 
   /**
@@ -211,7 +202,8 @@ export default class Transparency extends M.Plugin {
     this.control_.removeEffects();
     this.control_.removeTransparencyLayers(this.control_.getLayersNames());
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.layers, this.radius] = [null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.layers, this.radius] = [
+      null, null, null, null, null];
   }
 
   /**
@@ -237,11 +229,9 @@ export default class Transparency extends M.Plugin {
     return this.metadata_;
   }
 
-  setDefaultLayer(){
+  setDefaultLayer() {
     this.control_.setDefaultLayer();
   }
-
-
 
   /**
    * Activate plugin SpyEye

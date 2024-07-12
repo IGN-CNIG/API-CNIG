@@ -34,7 +34,6 @@ export default class LyrCompare extends M.Plugin {
      */
     this.controls_ = [];
 
-
     /**
      * Facade of the map
      * @private
@@ -135,7 +134,6 @@ export default class LyrCompare extends M.Plugin {
     this.defaultLyrD = 3;
 
     this.order = options.order;
-
   }
 
   /**
@@ -159,7 +157,7 @@ export default class LyrCompare extends M.Plugin {
       defaultLyrC: this.defaultLyrC,
       defaultLyrD: this.defaultLyrD,
       interface: this.interface,
-      order: this.order
+      order: this.order,
     };
 
     this.control_ = new LyrCompareControl(values);
@@ -186,7 +184,6 @@ export default class LyrCompare extends M.Plugin {
     map.addPanels(this.panel_);
   }
 
-
   /**
    * This function destroys this plugin
    *
@@ -204,9 +201,11 @@ export default class LyrCompare extends M.Plugin {
     this.map_.removeControls([this.control_]);
     this.control_.removeCurtainLayers(this.control_.getLayersNames());
     [this.name_, this.controls_, this.map_, this.position, this.collapsed, this.collapsible,
-      this.staticDivision, this.opacityVal, this.comparisonMode, this.metadata_, this.tooltip_, this.interface, this.defaultLyrA,
-      this.defaultLyrB, this.defaultLyrC, this.defaultLyrD
-    ] = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
+      this.staticDivision, this.opacityVal, this.comparisonMode,
+      this.metadata_, this.tooltip_, this.interface, this.defaultLyrA,
+      this.defaultLyrB, this.defaultLyrC, this.defaultLyrD,
+    ] = [null, null, null, null, null, null, null, null,
+      null, null, null, null, null, null, null, null];
   }
 
   /**
@@ -231,7 +230,6 @@ export default class LyrCompare extends M.Plugin {
   getMetadata() {
     return this.metadata_;
   }
-
 
   /**
    * Activate plugin

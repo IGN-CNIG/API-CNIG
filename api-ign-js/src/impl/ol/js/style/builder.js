@@ -65,10 +65,10 @@ export const getFill = (options, featureVariable, layer) => {
 export const getStroke = (options, featureVariable, layer) => {
   let stroke;
   if (!isNullOrEmpty(options.stroke)) {
-    const strokeColorValue =
-      Simple.getValue(options.stroke.color, featureVariable, layer);
-    let strokeOpacityValue =
-      Simple.getValue(options.stroke.opacity, featureVariable, layer);
+    const strokeColorValue = Simple
+      .getValue(options.stroke.color, featureVariable, layer);
+    let strokeOpacityValue = Simple
+      .getValue(options.stroke.opacity, featureVariable, layer);
     if (!strokeOpacityValue && strokeOpacityValue !== 0) {
       strokeOpacityValue = 1;
     }
@@ -121,11 +121,12 @@ export const getStrokePatern = (options, featureVariable, layer) => {
     width: Simple.getValue(options.stroke.width, featureVariable, layer),
     size: Simple.getValue(options.stroke.pattern.size, featureVariable, layer),
     spacing: Simple.getValue(options.stroke.pattern.spacing, featureVariable, layer),
-    image: (Simple.getValue(options.stroke.pattern.name, featureVariable, layer) === 'Image') ?
-      new OLStyleIcon({
+    image: (Simple.getValue(options.stroke.pattern.name, featureVariable, layer) === 'Image')
+      ? new OLStyleIcon({
         src: Simple.getValue(options.stroke.pattern.src, featureVariable, layer),
         crossOrigin: 'anonymous',
-      }) : undefined,
+      })
+      : undefined,
     angle: Simple.getValue(options.stroke.pattern.rotation, featureVariable, layer),
     scale: Simple.getValue(options.stroke.pattern.scale, featureVariable, layer),
     offset: Simple.getValue(options.stroke.pattern.offset, featureVariable, layer),
@@ -164,10 +165,12 @@ export const getLabel = (options, featureVariable, layer) => {
       font: Simple.getValue(options.label.font, featureVariable, layer),
       rotateWithView: Simple.getValue(options.label.rotate, featureVariable, layer),
       scale: Simple.getValue(options.label.scale, featureVariable, layer),
-      offsetX: Simple.getValue(options.label.offset ?
-        options.label.offset[0] : undefined, featureVariable, layer),
-      offsetY: Simple.getValue(options.label.offset ?
-        options.label.offset[1] : undefined, featureVariable, layer),
+      offsetX: Simple.getValue(options.label.offset
+        ? options.label.offset[0]
+        : undefined, featureVariable, layer),
+      offsetY: Simple.getValue(options.label.offset
+        ? options.label.offset[1]
+        : undefined, featureVariable, layer),
       fill: new OLStyleFill({
         color: Simple.getValue(options.label.color || DEFAULT_LABEL_COLOR, featureVariable, layer),
       }),
@@ -233,9 +236,9 @@ export const getIconSrc = (options, featureVariable, layer) => {
   const anchorOrigin = Simple.getValue(options.icon.anchororigin, featureVariable, layer);
   const size = Simple.getValue(options.icon.size, featureVariable, layer);
 
-  const index = src + anchor + anchorXUnits + anchorYUnits + opacity +
-    scale + rotation + rotateWithView + snapToPixel +
-    offsetOrigin + offset + crossOrigin + anchorOrigin + anchorOrigin + size;
+  const index = src + anchor + anchorXUnits + anchorYUnits + opacity
+    + scale + rotation + rotateWithView + snapToPixel
+    + offsetOrigin + offset + crossOrigin + anchorOrigin + anchorOrigin + size;
   let styleIcon = iconCache[index];
 
   if (!styleIcon) {
@@ -259,7 +262,6 @@ export const getIconSrc = (options, featureVariable, layer) => {
   }
   return styleIcon;
 };
-
 
 /**
  * Esta función devuelve la forma del icono.
@@ -287,10 +289,12 @@ export const getIconForm = (options, featureVariable, layer) => {
     radius: Simple.getValue(options.icon.radius, featureVariable, layer),
     rotation: Simple.getValue(options.icon.rotation, featureVariable, layer),
     rotateWithView: Simple.getValue(options.icon.rotate, featureVariable, layer),
-    offsetX: Simple.getValue(options.icon.offset ?
-      options.icon.offset[0] : undefined, featureVariable, layer),
-    offsetY: Simple.getValue(options.icon.offset ?
-      options.icon.offset[1] : undefined, featureVariable, layer),
+    offsetX: Simple.getValue(options.icon.offset
+      ? options.icon.offset[0]
+      : undefined, featureVariable, layer),
+    offsetY: Simple.getValue(options.icon.offset
+      ? options.icon.offset[1]
+      : undefined, featureVariable, layer),
     fill: new OLStyleFill({
       color: Simple.getValue(options.icon.fill !== undefined ? options.icon.fill : '#FFFFFF', featureVariable, layer),
     }),
@@ -347,11 +351,12 @@ export const getFillPatern = (options, featureVariable, layer, fill) => {
       width: Simple.getValue(options.fill.width, featureVariable, layer),
       size: Simple.getValue(options.fill.pattern.size, featureVariable, layer),
       spacing: Simple.getValue(options.fill.pattern.spacing, featureVariable, layer),
-      image: (Simple.getValue(options.fill.pattern.name, featureVariable, layer) === 'Image') ?
-        new OLStyleIcon({
+      image: (Simple.getValue(options.fill.pattern.name, featureVariable, layer) === 'Image')
+        ? new OLStyleIcon({
           src: Simple.getValue(options.fill.pattern.src, featureVariable, layer),
           crossOrigin: 'anonymous',
-        }) : undefined,
+        })
+        : undefined,
       angle: Simple.getValue(options.fill.pattern.rotation, featureVariable, layer),
       scale: Simple.getValue(options.fill.pattern.scale, featureVariable, layer),
       offset: Simple.getValue(options.fill.pattern.offset, featureVariable, layer),
@@ -365,10 +370,11 @@ export const getFillPatern = (options, featureVariable, layer, fill) => {
       color,
       size: Simple.getValue(options.fill.pattern.size, featureVariable, layer),
       spacing: Simple.getValue(options.fill.pattern.spacing, featureVariable, layer),
-      image: (Simple.getValue(options.fill.pattern.name, featureVariable, layer) === 'IMAGE') ?
-        new OLStyleIcon({
+      image: (Simple.getValue(options.fill.pattern.name, featureVariable, layer) === 'IMAGE')
+        ? new OLStyleIcon({
           src: Simple.getValue(options.fill.pattern.src, featureVariable, layer),
-        }) : undefined,
+        })
+        : undefined,
       angle: Simple.getValue(options.fill.pattern.rotation, featureVariable, layer),
       scale: Simple.getValue(options.fill.pattern.scale, featureVariable, layer),
       offset: Simple.getValue(options.fill.pattern.offset, featureVariable, layer),
@@ -433,8 +439,9 @@ export const getLineText = (options, featureVariable, layer) => {
   let textPathStyle;
   if (!isNullOrEmpty(label)) {
     const textPathConfig = {
-      text: Simple.getValue(label.text, featureVariable) === undefined ?
-        undefined : String(Simple.getValue(label.text, featureVariable)),
+      text: Simple.getValue(label.text, featureVariable) === undefined
+        ? undefined
+        : String(Simple.getValue(label.text, featureVariable)),
       font: Simple.getValue(label.font, featureVariable),
       fill: new OLStyleFill({
         color: Simple.getValue(label.color || LABEL_FILL_COLOR, featureVariable),
@@ -446,10 +453,14 @@ export const getLineText = (options, featureVariable, layer) => {
       overflow: Simple.getValue(label.textoverflow, featureVariable) || false,
       minWidth: Simple.getValue(label.minwidth, featureVariable) || 0,
       geometry: Simple.getValue(label.geometry, featureVariable),
-      offsetX: Simple.getValue(options.label.offset ? options.label.offset[0] :
-        undefined, featureVariable),
-      offsetY: Simple.getValue(options.label.offset ? options.label.offset[1] :
-        undefined, featureVariable),
+      offsetX: Simple.getValue(
+        options.label.offset ? options.label.offset[0] : undefined,
+        featureVariable,
+      ),
+      offsetY: Simple.getValue(
+        options.label.offset ? options.label.offset[1] : undefined,
+        featureVariable,
+      ),
     };
     textPathStyle = new Path(textPathConfig);
     if (!isNullOrEmpty(label.stroke)) {
@@ -546,8 +557,8 @@ export const getLineStyle = (options, featureVariable, layer) => {
     const applyPath = Simple.getValue(optionsVar.label.path, featureVariable);
     if (applyPath === true) {
       style.textPath = label;
-      if (!isNullOrEmpty(optionsVar.label.smooth) && optionsVar.label.smooth === true &&
-        isFunction(featureVariable.getGeometry)) {
+      if (!isNullOrEmpty(optionsVar.label.smooth) && optionsVar.label.smooth === true
+        && isFunction(featureVariable.getGeometry)) {
         style.setGeometry(featureVariable.getGeometry().cspline());
       }
       label.setPlacement('line');

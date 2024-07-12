@@ -43,11 +43,11 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **layerId**: Índice de la capa que se quiera cargar por defecto. Por ejemplo, si se pasa el número 2 se mostrará la capa que se encuentre en la segunda posición. Por defecto: 0
 - **columnsNumber**: Número de columnas que parametrizan la tabla de capas de fondo disponibles. Por defecto: 2
 - **layerVisibility**: Valor que indica si se muestra la capa cargada o no. Por defecto: true
-- **layerOpts**: Array con las capas que se quieren utilizar como opciones para capa de fondo. Puede ser undefined (Por ejemplo cuando se accede por API-REST), en este caso, se cogen los valores de ids,previews, titles. 
-    - **id**: Identificador de la capa. 
-    - **preview**: Ruta a la imagen de previsualización que se muestra. 
-    - **title**: Nombre identificativo de la capa que se mostrará sobre la previsualización. 
-    - **layers**: Array con las capas que se quieren cargar al seleccionar esta opción. 
+- **layerOpts**: Array con las capas que se quieren utilizar como opciones para capa de fondo. Puede ser undefined (Por ejemplo cuando se accede por API-REST), en este caso, se cogen los valores de ids,previews, titles.
+    - **id**: Identificador de la capa.
+    - **preview**: Ruta a la imagen de previsualización que se muestra.
+    - **title**: Nombre identificativo de la capa que se mostrará sobre la previsualización.
+    - **layers**: Array con las capas que se quieren cargar al seleccionar esta opción.
        - [Como añadir las capas y qué parámetros se tienen que usar](https://github.com/IGN-CNIG/API-CNIG/wiki/Capas)
 - **empty**: Habilita la posibilidad de mostrar el mapa sin las capas de fondo cargadas del plugin (capa de fondo "vacía"). Verdadero "true", se activa esta funcionalidad. Falso por defecto.
 
@@ -193,7 +193,7 @@ pluginbackimglayer.on('backimglayer:activeChanges', (data) => {
 const map = M.map({
     container: 'map'
 });
-  
+
 const mp = new M.plugin.BackImgLayer({
     position: 'TR',
     collapsible: true,
