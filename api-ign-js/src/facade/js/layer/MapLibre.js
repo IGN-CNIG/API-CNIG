@@ -75,6 +75,10 @@ class MapLibre extends LayerBase {
     const optionsVar = options;
     opts = { ...opts, ...optionsVar };
 
+    if (isString(parameters)) {
+      optionsVar.disableBackgroundColor = opts.disableBackgroundColor;
+    }
+
     // ! No se encontro soporte para maxExtent
     if (opts.maxExtent) {
       opts.maxExtent = undefined;
