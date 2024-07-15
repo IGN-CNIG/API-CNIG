@@ -319,7 +319,6 @@ export default class LyrCompareControl extends M.Control {
     && this.defaultLyrD === 3;
   }
 
-
   /**
    * This function destroys this plugin
    *
@@ -808,8 +807,6 @@ export default class LyrCompareControl extends M.Control {
       }
       selectC.selectedIndex = this.defaultLyrC;
       selectC.options[this.defaultLyrC].setAttribute('selected', '');
-
-
       selectC.selectedIndex = this.defaultLyrC;
       selectC.options[this.defaultLyrC].setAttribute('selected', '');
 

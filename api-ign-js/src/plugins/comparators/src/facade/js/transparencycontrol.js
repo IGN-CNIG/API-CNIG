@@ -314,23 +314,6 @@ export default class TransparencyControl extends M.Control {
     });
   }
 
-  removeLayers_() {
-    const removeLayer = [];
-    this.map_.getLayers().forEach((l) => {
-      if (this.layers.some(layer => layer.name === l.name)) {
-        removeLayer.push(l);
-      }
-    });
-
-    // filtrar pot this.fatherControl.saveLayers
-
-    removeLayer.forEach((l) => {
-      if (!this.fatherControl.saveLayers.includes(l.name)) {
-        this.map_.removeLayers(l);
-      }
-    });
-  }
-
   effectSelectedImpl_() {
     setTimeout(() => {
       this.getImpl().effectSelected(this.layerSelected, this.radius, this.freeze);

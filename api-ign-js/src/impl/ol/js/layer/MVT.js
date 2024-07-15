@@ -376,22 +376,6 @@ class MVT extends Vector {
     }
   }
 
-  getFeaturesExtentPromise(skipFilter, filter) {
-    return new Promise((resolve) => {
-      const codeProj = this.map.getProjection().code;
-      if (this.isLoaded() === true) {
-        const features = this.getFeatures(skipFilter, filter);
-        const extent = ImplUtils.getFeaturesExtent(features, codeProj);
-        resolve(extent);
-      } else {
-        this.requestFeatures_().then((features) => {
-          const extent = ImplUtils.getFeaturesExtent(features, codeProj);
-          resolve(extent);
-        });
-      }
-    });
-  }
-
   /**
    * Este método devuelve la extensión de todas los objetos geográficos
    * o discrimina por el filtro, asíncrono.
