@@ -21,6 +21,9 @@ const PRECHARGED = {
   }, {
     type: 'WMS', name: 'Planimetrías',
     url: 'https://www.ign.es/wms/minutas-cartograficas',
+  }, {
+    name: 'Mapa Libre', legend: 'Mapa Libre',
+    url: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json',
   }],
   groups: [{
     name: 'Cartografía',
@@ -211,7 +214,7 @@ const capaMVT = new M.layer.MVT({ // No visible en zooms 0-7, saltan errores 404
 });
 map.addLayers(capaMVT); window.capaMVT = capaMVT; // */
 
-// Capa OGCAPIFeatures
+/* / Capa OGCAPIFeatures
 const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
   url: 'https://api-features.idee.es/collections/', name: 'falls',
   legend: 'Capa OGCAPIFeatures L',
@@ -410,6 +413,15 @@ map.addLayers(geotiff); window.geotiff = geotiff; // */
 // map.addGeoTIFF('GeoTIFF*LEG_GeoTIFF*http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif*NOM_GeoTIFF*true**true*true');
 // map.addLayers('GeoTIFF*LEG_GeoTIFF*http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif*NOM_GeoTIFF*true**false*true'); // false for not in layerswitcher
 // */
+
+/* / Capa MapLibre
+const mapLibre = new M.layer.MapLibre({
+  name: 'Mapa Libre', legend: 'Mapa Libre',
+  url: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json',
+  extract: true,
+  disableBackgroundColor: false,
+});
+map.addLayers(mapLibre); window.mapLibre = mapLibre; // */
 
 /* / Plugin TOC
 const mp3 = new M.plugin.TOC({

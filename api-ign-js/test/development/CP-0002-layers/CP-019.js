@@ -493,7 +493,7 @@ const generateLayersTable = () => {
   // Capa MapLibre // Muchos console
   const maplibre1 = {
     name: 'Mapa Libre', legend: 'Mapa Libre',
-    style: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json',
+    url: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json',
     extract: true,
     disableBackgroundColor: false,
     ...applyParam1, // minZoom, maxZoom
