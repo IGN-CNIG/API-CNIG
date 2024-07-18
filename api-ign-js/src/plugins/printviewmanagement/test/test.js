@@ -167,6 +167,23 @@ const geotiff = new M.layer.GeoTIFF({
 });
 map.addLayers(geotiff); window.geotiff = geotiff; // */
 
+/* / Capa MapLibre 1
+const mapLibre1 = new M.layer.MapLibre({
+  name: 'MapaLibre_1_NAME', legend: 'MapaLibre_1_LEGEND',
+  url: 'https://demotiles.maplibre.org/style.json',
+  extract: false,
+  disableBackgroundColor: true,
+}, { opacity: 0.7 });// , { mapLibreOptions: { style: 'https://demotiles.maplibre.org/style.json', preserveDrawingBuffer: true } });
+map.addLayers(mapLibre1); window.mapLibre1 = mapLibre1; // */
+/* / Capa MapLibre 2
+const mapLibre2 = new M.layer.MapLibre({
+  name: 'MapaLibre_2_NAME', legend: 'MapaLibre_2_LEGEND',
+  url: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json',
+  extract: true,
+  disableBackgroundColor: false,
+}, { opacity: 0.7 });// , { mapLibreOptions: { style: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json', preserveDrawingBuffer: true } });
+map.addLayers(mapLibre2); window.mapLibre2 = mapLibre2; // */
+
 const mp = new PrintViewManagement({
   collapsible: true,
   collapsed: true,

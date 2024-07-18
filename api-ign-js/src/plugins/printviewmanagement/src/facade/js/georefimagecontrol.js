@@ -494,8 +494,11 @@ export default class GeorefimageControl extends M.Control {
     );
 
     try {
-      const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
-      queueEl.addEventListener('click', (evt) => this.downloadPrint(evt, base64image, 'client'));
+      // const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
+      // queueEl.addEventListener('click', (evt) => this.downloadPrint(evt, base64image, 'client'));
+      M.utils.getImageMap(this.map_, `image/${format}`, undefined, true).then((base64image) => {
+        queueEl.addEventListener('click', (evt) => this.downloadPrint(evt, base64image, 'client'));
+      });
     } catch (exceptionVar) {
       queueEl.parentElement.remove();
       M.toast.error('Error CrossOrigin', null, 6000);

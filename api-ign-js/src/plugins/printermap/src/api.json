@@ -74,7 +74,7 @@
     "name": "PrinterMap",
     "description": "Prints map",
     "text": "Prints current map using Mapfish in pdf, jpeg or png formats",
-    "version": "1.1.0",
+    "version": "2.0.0",
     "date": "",
     "author": "",
     "org": "",

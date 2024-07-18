@@ -71,6 +71,7 @@ export default class StereoscopicControl extends M.Control {
             linkGlass: getValue('linkGlass'),
             maxMagnification: this.maxMaginification,
           },
+          url: `${M.config.MAPEA_URL}plugins/stereoscopic/images/docStereo.pdf`,
         },
       });
       this.addEvent(html, this.map_);

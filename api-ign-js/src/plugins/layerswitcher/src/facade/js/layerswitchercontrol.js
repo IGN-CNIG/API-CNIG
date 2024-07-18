@@ -2365,6 +2365,7 @@ export default class LayerswitcherControl extends M.Control {
           name,
           legend,
           url,
+          extract: true,
         }));
       }
 

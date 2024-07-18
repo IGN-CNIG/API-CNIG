@@ -1515,15 +1515,109 @@ const joinCanvas = (map, imageType = 'image/jpeg') => {
 };
 
 /**
+ * Esta función devuelve una captura de pantalla del mapa en una promesa
+ * @function
+ * @param {M.Map} map mapa del que se obtiene el canvas
+ * @param {String} type formato de la imagen resultante
+ * @api
+ * @returns {String} Imagen en base64 o Promesa con esta
+ */
+const getImageMapReplacementWithJoin = (map, type = 'image/jpeg') => { // getImageMap and joinCanvas combined
+  return new Promise((resolve) => {
+    const canvasList = map.getMapImpl().getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer, canvas.maplibregl-canvas');
+    const resultFunc = (canvasResult) => {
+      if (canvasResult) {
+        resolve(canvasResult.toDataURL(type));
+      } else {
+        throw new Error('No obtenido canvas para el generado de Print');
+      }
+    };
+    if (canvasList.length === 1) {
+      resultFunc(canvasList[0]);
+    } else {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      [canvas.width, canvas.height] = map.getMapImpl().getSize();
+      if (/jp.*g$/.test(type)) {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      const canvasCombine = (c, opacity) => {
+        if (c.width) {
+          ctx.save();
+          if (opacity === '0') return; // opacity
+
+          ctx.globalAlpha = parseFloat(opacity) || 1;
+          // Blend mode & filter (OPENLAYERS format, not suitable for MAPLIBRE)
+          const auxParNodSty = c.parentNode.style;
+          ctx.globalCompositeOperation = auxParNodSty.mixBlendMode;
+          ctx.filter = auxParNodSty.filter;
+          // transform (OPENLAYERS format, not suitable for MAPLIBRE)
+          let tr = c.style.transform || c.style.webkitTransform;
+          if (/^matrix/.test(tr)) {
+            tr = tr.replace(/^matrix\(|\)$/g, '').split(',');
+            tr.forEach((t, i) => {
+              tr[i] = parseFloat(t);
+            });
+            ctx.transform(tr[0], tr[1], tr[2], tr[3], tr[4], tr[5]);
+            ctx.drawImage(c, 0, 0);
+          } else {
+            ctx.drawImage(c, 0, 0, c.width, c.height);
+          }
+          ctx.restore();
+        }
+      };
+
+      let checkIfKeepGoing;
+      let i = 0;
+      const ii = canvasList.length;
+      const allMapLibre = map.getMapLibre();
+      const maplibreForFunc = (ind) => {
+        const auxCanvas = canvasList[ind];
+        if (auxCanvas.className === 'maplibregl-canvas') { // MapLibre
+          let auxMapLibre = allMapLibre.find((l) => l.type === 'MapLibre' && l.getImpl()
+            .getOL3Layer().mapLibreMap.getCanvas() === auxCanvas);
+          if (auxMapLibre) {
+            auxMapLibre = auxMapLibre.getImpl().getOL3Layer().mapLibreMap;
+            auxMapLibre.once('render', () => { // MapLibre render
+              canvasCombine(auxCanvas, auxCanvas.style.opacity); // MapLibre opacity
+              checkIfKeepGoing(1);
+            });
+            auxMapLibre.triggerRepaint(); // Trigger render
+          } else {
+            checkIfKeepGoing(1); // In case Maplibre canvas not found
+          }
+        } else {
+          canvasCombine(auxCanvas, auxCanvas.parentNode.style.opacity); // OpenLayers opacity
+          checkIfKeepGoing(1);
+        }
+      };
+      checkIfKeepGoing = (add) => {
+        i += add;
+        if (i < ii) {
+          maplibreForFunc(i);
+        } else {
+          resultFunc(canvas);
+        }
+      };
+      checkIfKeepGoing(0); // Start with "In case canvasList.length is 0"
+    }
+  });
+};
+
+/**
  * Esta función devuelve una captura de pantalla del mapa
  * @function
  * @param {M.Map} map mapa del que se obtiene el canvas
  * @param {String} type formato de la imagen resultante
  * @param {HTMLCanvasElement} canva elemento canvas
+ * @param {Boolean} isPromise si tiene que devolver una promesa (MapLibre)
  * @api
- * @returns {String} Imagen en base64
+ * @returns {String} Imagen en base64 o Promesa con la imagen en base64
  */
-export const getImageMap = (map, type = 'image/jpeg', canva = undefined) => {
+export const getImageMap = (map, type = 'image/jpeg', canva = undefined, isPromise = false) => {
+  if (isPromise) return getImageMapReplacementWithJoin(map, type); // Promise
+
   const canvas = canva || joinCanvas(map, type);
   let img = null;
   if (canvas) {
