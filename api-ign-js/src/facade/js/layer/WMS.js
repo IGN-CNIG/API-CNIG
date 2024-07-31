@@ -43,25 +43,26 @@ class WMS extends LayerBase {
    * con parámetros especificados por el usuario.
    * @constructor
    * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
+   * - attribution: Atribución de la capa.
    * - name: nombre de la capa en el servidor.
-   * - url: url del servicio WFS.
-   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
-   * - transparent: Falso si es una capa base, verdadero en caso contrario.
-   * - tiled: Verdadero si queremos dividir la capa en tiles, falso en caso contrario.
-   * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
-   *   En este caso la capa sería detectado por los plugins de tablas de contenidos
-   *   y aparecería como no visible.
-   * - version: Versión WMS.
-   * - type: Tipo de la capa.
    * - isBase: Indica si la capa es base.
-   * - useCapabilities: Define si se utilizará el capabilities para generar la capa.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
+   * En este caso la capa sería detectado por los plugins de tablas de contenidos
+   * y aparecería como no visible.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - url: url del servicio WFS.
+   * - queryable: Indica si la capa es consultable.
+   * - version: Versión WMS.
+   * - tiled: Verdadero si queremos dividir la capa en tiles, falso en caso contrario.
+   * - type: Tipo de la capa.
+   * - useCapabilities: Define si se utilizará el capabilities para generar la capa.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
    * - opacity: Opacidad de capa, por defecto 1.
-   * - visibility: Indica la visibilidad de la capa.
    * - singleTile: Indica si la tesela es única o no.
-   * - numZoomLevels: Número de niveles de zoom.
    * - animated: Define si la capa está animada,
    * el valor predeterminado es falso.
    * - format: Formato de la capa, por defecto image/png.
@@ -69,13 +70,10 @@ class WMS extends LayerBase {
    * - sldBody: Parámetros "ol.source.ImageWMS"
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
-   * - queryable: Indica si la capa es consultable.
    * - minScale: Escala mínima.
    * - maxScale: Escala máxima.
    * - minResolution: Resolución mínima.
    * - maxResolution: Resolución máxima.
-   * - animated: Define si la capa está animada,
-   * el valor predeterminado es falso.
    * - ratio: determina el tamaño de las solicitudes de las imágenes. 1 significa que tienen el
    * tamaño de la ventana, 2 significa que tienen el doble del tamaño de la ventana,
    * y así sucesivamente. Debe ser 1 o superior. Por defecto es 1.

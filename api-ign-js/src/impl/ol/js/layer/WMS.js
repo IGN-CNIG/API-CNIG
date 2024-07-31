@@ -51,9 +51,8 @@ class WMS extends LayerBase {
    * @constructor
    * @implements {M.impl.Layer}
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
-   * - visibility: Indica la visibilidad de la capa.
+   * - opacity: Opacidad de capa, por defecto 1.
    * - singleTile: Indica si la tesela es única o no.
-   * - numZoomLevels: Número de niveles de zoom.
    * - animated: Define si la capa está animada,
    * el valor predeterminado es falso.
    * - format: Formato de la capa, por defecto image/png.
@@ -61,17 +60,14 @@ class WMS extends LayerBase {
    * - sldBody: Parámetros "ol.source.ImageWMS"
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
-   * - queryable: Indica si la capa es consultable.
    * - minScale: Escala mínima.
    * - maxScale: Escala máxima.
    * - minResolution: Resolución mínima.
    * - maxResolution: Resolución máxima.
-   * - animated: Define si la capa está animada,
-   * el valor predeterminado es falso.
-   * - ratio: determina el tamaño de las solicitudes de las imágenes.1 significa que tienen el *
+   * - ratio: determina el tamaño de las solicitudes de las imágenes. 1 significa que tienen el
    * tamaño de la ventana, 2 significa que tienen el doble del tamaño de la ventana,
-   * y así sucesivamente.Debe ser 1 o superior.Por defecto es 1.
-   * - crossOrigin: atributo crossOrigin para las imágenes cargadas.
+   * y así sucesivamente. Debe ser 1 o superior. Por defecto es 1.
+   * crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * - isWMSfull: establece si la capa es WMS_FULL.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>

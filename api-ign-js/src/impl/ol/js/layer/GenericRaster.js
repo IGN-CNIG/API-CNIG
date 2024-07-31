@@ -39,6 +39,8 @@ class GenericRaster extends LayerBase {
    * @constructor
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
+   * - version: Versión GenericRaster.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - visibility: Indica la visibilidad de la capa.
    * - opacity: Opacidad de capa, por defecto 1.
    * - format: Formato de la capa, por defecto image/png.
@@ -51,7 +53,7 @@ class GenericRaster extends LayerBase {
    * - maxScale: Escala máxima.
    * - minResolution: Resolución mínima.
    * - maxResolution: Resolución máxima.
-   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileWMS from 'ol/source/TileWMS';
