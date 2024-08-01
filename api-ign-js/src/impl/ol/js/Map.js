@@ -42,7 +42,6 @@ import FormatWMS from './format/WMS';
  *
  * @property {M.Map} facadeMap_ Fachada del mapa a implementar.
  * @property {ol.Collection<M.Layer>} layers_ Capas añadidas al mapa.
- * @property {Array<M.layer.Group>} layerGroups_ Grupos añadidos al mapa.
  * @property {Array<M.Control>} controls_ Controles añadidos al mapa.
  * @property {Boolean} initZoom_ Indica si el zoom inicial fue calculado. Por defecto verdadero.
  * @property {Array<Number>} userResolutions_ Resoluciones asociadas a cada nivel
@@ -105,13 +104,6 @@ class Map extends MObject {
      * @type {ol.Collection<M.Layer>}
      */
     this.layers_ = [];
-
-    /**
-     * Grupos añadidos al mapa.
-     * @private
-     * @type {Array<M.layer.Group>}
-     */
-    this.layerGroups_ = [];
 
     /**
      * Controles añadidos al mapa.
@@ -260,6 +252,7 @@ class Map extends MObject {
     const mbtilesVectorLayers = this.getMBTilesVector(filters);
     const xyzLayers = this.getXYZs(filters);
     const tmsLayers = this.getTMS(filters);
+    const layersGroup = this.getLayerGroups(filters);
     const unknowLayers = this.getUnknowLayers_(filters);
 
     return kmlLayers.concat(wmsLayers)
@@ -273,6 +266,7 @@ class Map extends MObject {
       .concat(mbtilesVectorLayers)
       .concat(xyzLayers)
       .concat(tmsLayers)
+      .concat(layersGroup)
       .concat(unknowLayers);
   }
 
@@ -337,6 +331,8 @@ class Map extends MObject {
         this.facadeMap_.addXYZ(layer);
       } else if (layer.type === LayerType.TMS) {
         this.facadeMap_.addTMS(layer);
+      } else if (layer.type === LayerType.LayerGroup) {
+        this.facadeMap_.addLayerGroups(layer);
       } else if (!LayerType.know(layer.type)) {
         this.addUnknowLayers_([layer]);
         // eslint-disable-next-line no-underscore-dangle
@@ -378,6 +374,7 @@ class Map extends MObject {
       this.removeMBTilesVector(knowLayers);
       this.removeXYZ(knowLayers);
       this.removeTMS(knowLayers);
+      this.removeLayerGroups(knowLayers);
     }
 
     if (unknowLayers.length > 0) {
@@ -385,6 +382,149 @@ class Map extends MObject {
     }
 
     this.facadeMap_.fire(EventType.REMOVED_LAYER, [layers]);
+
+    return this;
+  }
+
+  /**
+   * TODO
+   *
+   * @public
+   * @function
+   * @returns {Array<M.layer.Group>} layers from the map
+   * @api stable
+   */
+  getLayerGroups(filtersParam) {
+    let foundLayers = [];
+    let filters = filtersParam;
+    const groupLayers = this.layers_.filter((layer) => layer.type === LayerType.LayerGroup);
+
+    // parse to Array
+    if (isNullOrEmpty(filters)) {
+      filters = [];
+    }
+    if (!isArray(filters)) {
+      filters = [filters];
+    }
+
+    if (filters.length === 0) {
+      foundLayers = groupLayers;
+    } else {
+      filters.forEach((filterLayer) => {
+        const filteredGroupLayers = groupLayers.filter((groupLayer) => {
+          let layerMatched = true;
+          // checks if the layer is not in selected layers
+          if (!foundLayers.includes(groupLayer)) {
+            // type
+            if (!isNullOrEmpty(filterLayer.type)) {
+              layerMatched = (layerMatched && (filterLayer.type === groupLayer.type));
+            }
+            // name
+            if (!isNullOrEmpty(filterLayer.name)) {
+              layerMatched = (layerMatched && (filterLayer.name === groupLayer.name));
+            }
+          } else {
+            layerMatched = false;
+          }
+          return layerMatched;
+        });
+        foundLayers = foundLayers.concat(filteredGroupLayers);
+      });
+    }
+    return foundLayers;
+  }
+
+  /**
+     * Retrieves all layers which are in some LayerGroup
+     *
+     * @public
+     * @function
+     * @returns {Array<M.Layer>} grouped layers from the map
+     * @api stable
+     */
+  getGroupedLayers() {
+    const groupedLayers = [];
+    const groups = this.getLayerGroups();
+    groupedLayers.push(...groups);
+
+    // recursividad y añadir intance layerGroup en groupedLayers
+    const getLayersFromGroup = (group) => {
+      group.getLayers().forEach((layer) => {
+        if (layer.type === LayerType.LayerGroup) {
+          groupedLayers.push(layer);
+          getLayersFromGroup(layer);
+        }
+      });
+    };
+
+    groups.forEach((group) => {
+      getLayersFromGroup(group);
+    });
+
+    return groupedLayers;
+  }
+
+  getAllLayerInGroup() {
+    const layers = [];
+    const groups = this.getGroupedLayers();
+    groups.forEach((group) => {
+      group.getLayers().forEach((layer) => {
+        if (layer.type !== LayerType.LayerGroup) {
+          layers.push(layer);
+        }
+      });
+    });
+    return layers;
+  }
+
+  /**
+     * TODO
+     *
+     * @public
+     * @function
+     * @param {Array<M.layer.Group>} layers
+     * @returns {M.impl.Map}
+     */
+  addLayerGroups(groups = []) {
+    let groupsArray = groups;
+
+    if (groups.length === 0) {
+      Exception('No ha especificado ningun grupo');
+    }
+
+    if (!Array.isArray(groupsArray)) {
+      groupsArray = [groups];
+    }
+
+    groupsArray.forEach((group) => {
+      if (group.type === LayerType.LayerGroup) {
+        if (!includes(this.layers_, group)) { // ! TODO WORK ?
+          group.getImpl().addTo(this.facadeMap_);
+          this.layers_.push(group);
+          if (group.getZIndex() == null) {
+            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.LayerGroup];
+            group.setZIndex(zIndex);
+          }
+        }
+      }
+    }, this);
+  }
+
+  /**
+     * TODO
+     *
+     * @function
+     * @param {Array<M.layer.Group>} layers to remove
+     * @returns {M.impl.Map}
+     * @api stable
+     */
+  removeLayerGroups(layers) {
+    const layerGroupMapLayers = this.getLayerGroups(layers);
+    layerGroupMapLayers.forEach((layerGroup) => {
+      layerGroup.fire(EventType.REMOVED_FROM_MAP, [layerGroup]);
+      this.layers_ = this.layers_.filter((layer) => !layerGroup.equals(layer));
+      layerGroup.getImpl().destroy();
+    });
 
     return this;
   }
@@ -3064,5 +3204,6 @@ Map.Z_INDEX[LayerType.TMS] = 40;
 Map.Z_INDEX[LayerType.OGCAPIFeatures] = 40;
 Map.Z_INDEX[LayerType.GenericVector] = 40;
 Map.Z_INDEX[LayerType.GenericRaster] = 40;
+Map.Z_INDEX[LayerType.LayerGroup] = 40;
 
 export default Map;

@@ -234,7 +234,7 @@ class MBTiles extends Layer {
    * @param {M.Map} map Mapa.
    * @api
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     const { code } = this.map.getProjection();
     const projection = getProj(code);
@@ -258,7 +258,9 @@ class MBTiles extends Layer {
             });
             this.ol3Layer.setMaxZoom(this.maxZoom);
             this.ol3Layer.setMinZoom(this.minZoom);
-            this.map.getMapImpl().addLayer(this.ol3Layer);
+            if (addLayer) {
+              this.map.getMapImpl().addLayer(this.ol3Layer);
+            }
           });
         });
       });
@@ -273,7 +275,9 @@ class MBTiles extends Layer {
       });
       this.ol3Layer.setMaxZoom(this.maxZoom);
       this.ol3Layer.setMinZoom(this.minZoom);
-      this.map.getMapImpl().addLayer(this.ol3Layer);
+      if (addLayer) {
+        this.map.getMapImpl().addLayer(this.ol3Layer);
+      }
     }
   }
 

@@ -2759,6 +2759,31 @@ export const maplibre = (userParameters) => {
   };
 };
 
+export const layergroup = (userParameters) => {
+  let params = userParameters;
+
+  if (!isString(params)) {
+    params.type = LayerType.LayerGroup;
+    return userParameters;
+  }
+
+  params = decodeURI(params);
+
+  // eslint-disable-next-line no-eval
+  const layes = eval(params.substring(params.indexOf('[')));
+  const urlParams = params.split(/\*/);
+
+  return {
+    type: LayerType.LayerGroup,
+    name: urlParams[1] || undefined,
+    legend: urlParams[2] || undefined,
+    visibility: urlParams[3] === '' ? undefined : urlParams[3] === 'true',
+    transparent: urlParams[4] === '' ? undefined : urlParams[4] === 'true',
+    displayInLayerSwitcher: urlParams[5] === '' ? true : urlParams[5] === 'true',
+    layers: layes,
+  };
+};
+
 /**
  * Analiza el parámetro para obtener el nombre de la capa XYZ.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -4291,6 +4316,7 @@ const parameterFunction = {
   wms,
   geotiff,
   maplibre,
+  layergroup,
   wmts,
   geojson,
   mvt,

@@ -99,7 +99,7 @@ class Vector extends Layer {
    * @param {M.impl.Map} map Implementación del mapa.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
     map.on(EventType.CHANGE_PROJ, this.setProjection_.bind(this), this);
@@ -109,8 +109,11 @@ class Vector extends Layer {
       this.setOpacity(this.opacity_);
     }
     this.setVisible(this.visibility);
-    const olMap = this.map.getMapImpl();
-    olMap.addLayer(this.ol3Layer);
+    if (addLayer) {
+      const olMap = this.map.getMapImpl();
+      olMap.addLayer(this.ol3Layer);
+    }
+
     this.ol3Layer.setMaxZoom(this.maxZoom);
     this.ol3Layer.setMinZoom(this.minZoom);
     this.ol3Layer.setExtent(this.maxExtent_);

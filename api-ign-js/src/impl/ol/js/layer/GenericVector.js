@@ -95,7 +95,7 @@ class GenericVector extends Vector {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
 
     this.facadeVector_ = this.facadeLayer_;
@@ -162,7 +162,10 @@ class GenericVector extends Vector {
       this.ol3Layer.setMinResolution(this.options.minResolution);
     }
 
-    map.getMapImpl().addLayer(this.ol3Layer);
+    if (addLayer) {
+      map.getMapImpl().addLayer(this.ol3Layer);
+    }
+
     const source = this.ol3Layer.getSource();
 
     // ? Capas con features ya cargados

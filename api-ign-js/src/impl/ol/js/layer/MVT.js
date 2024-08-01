@@ -129,7 +129,7 @@ class MVT extends Vector {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
     if (this.layers_ !== undefined) {
@@ -164,7 +164,10 @@ class MVT extends Vector {
 
     this.setOpacity(this.opacity_);
     this.setVisible(this.visibility_);
-    this.map.getMapImpl().addLayer(this.ol3Layer);
+
+    if (addLayer) {
+      this.map.getMapImpl().addLayer(this.ol3Layer);
+    }
 
     // clear features when zoom changes
     this.map.on(EventType.CHANGE_ZOOM, () => {

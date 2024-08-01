@@ -128,7 +128,7 @@ class MapLibre extends LayerBase {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
@@ -145,7 +145,10 @@ class MapLibre extends LayerBase {
     this.setZooms_();
     this.setResolutions_();
     this.setVisible(this.visibility_);
-    this.map.getMapImpl().addLayer(this.ol3Layer);
+
+    if (addLayer) {
+      this.map.getMapImpl().addLayer(this.ol3Layer);
+    }
 
     if (this.disableBackgroundColor !== undefined) {
       this.changeDisableBackgroundColor_();

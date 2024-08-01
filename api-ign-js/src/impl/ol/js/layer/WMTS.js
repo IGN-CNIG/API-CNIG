@@ -123,7 +123,8 @@ class WMTS extends LayerBase {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
+    this.addLayerToMap_ = addLayer;
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
@@ -134,6 +135,13 @@ class WMTS extends LayerBase {
       this.options.minResolution = getResolutionFromScale(this.options.minScale, units);
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
     }
+
+    this.ol3Layer = new OLLayerTile(extend({
+      visible: this.visibility,
+      minResolution: this.options.minResolution,
+      maxResolution: this.options.maxResolution,
+      extent: this.userMaxExtent,
+    }, this.vendorOptions_, true));
 
     if (this.useCapabilities) {
       this.capabilitiesOptionsPromise = this.getCapabilitiesOptions_();
@@ -261,8 +269,6 @@ class WMTS extends LayerBase {
       const extent = this.facadeLayer_.getMaxExtent();
       // gets resolutions from defined min/max resolutions
       const capabilitiesOptionsVariable = capabilitiesOptions;
-      const minResolution = this.options.minResolution;
-      const maxResolution = this.options.maxResolution;
       capabilitiesOptionsVariable.format = this.options.format || capabilitiesOptions.format;
       const wmtsSource = new OLSourceWMTS(extend(capabilitiesOptionsVariable, {
         // tileGrid: new OLTileGridWMTS({
@@ -275,18 +281,15 @@ class WMTS extends LayerBase {
       }, true));
 
       this.facadeLayer_.setFormat(capabilitiesOptionsVariable.format);
-      this.ol3Layer = new OLLayerTile(extend({
-        visible: this.visibility,
-        source: wmtsSource,
-        minResolution,
-        maxResolution,
-        extent: this.userMaxExtent,
-        opacity: this.opacity_,
-      }, this.vendorOptions_, true));
+      this.ol3Layer.setSource(wmtsSource);
 
       // keeps z-index values before ol resets
       const zIndex = this.zIndex_;
-      this.map.getMapImpl().addLayer(this.ol3Layer);
+
+      if (this.addLayerToMap_) {
+        this.map.getMapImpl().addLayer(this.ol3Layer);
+      }
+
       this.ol3Layer.setMaxZoom(this.maxZoom);
       this.ol3Layer.setMinZoom(this.minZoom);
 
@@ -311,9 +314,6 @@ class WMTS extends LayerBase {
   addLayerNotCapabilities_() {
     if (!isNullOrEmpty(this.map)) {
       const extent = this.facadeLayer_.getMaxExtent();
-
-      const minResolution = this.options.minResolution;
-      const maxResolution = this.options.maxResolution;
       const format = (this.options.format) ? this.options.format : 'image/png';
 
       const size = getWidth(extent) / 256;
@@ -344,13 +344,7 @@ class WMTS extends LayerBase {
       }, extent, true);
 
       this.facadeLayer_.setFormat(format);
-      this.ol3Layer = new OLLayerTile(extend({
-        visible: this.visibility,
-        source: wmtsSource,
-        minResolution,
-        maxResolution,
-        extent: this.userMaxExtent,
-      }, this.vendorOptions_, true));
+      this.ol3Layer.setSource(wmtsSource);
 
       // keeps z-index values before ol resets
       const zIndex = this.zIndex_;

@@ -267,7 +267,8 @@ class WMS extends LayerBase {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
+    this.addLayerToMap_ = addLayer;
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
@@ -277,6 +278,12 @@ class WMS extends LayerBase {
       const units = this.map.getProjection().units;
       this.options.minResolution = getResolutionFromScale(this.options.minScale, units);
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
+    }
+
+    if (this.tiled === true) {
+      this.ol3Layer = new OLLayerTile(this.paramsOLLayers());
+    } else {
+      this.ol3Layer = new OLLayerImage(this.paramsOLLayers());
     }
 
     if (this.useCapabilities || this.isWMSfull) {
@@ -299,6 +306,16 @@ class WMS extends LayerBase {
         // EXCEPTIONS: 'image/png',
       });
     }
+  }
+
+  paramsOLLayers() {
+    return extend({
+      visible: this.visibility && (this.options.visibility !== false),
+      minResolution: this.options.minResolution,
+      maxResolution: this.options.maxResolution,
+      opacity: this.opacity_,
+      zIndex: this.zIndex_,
+    }, this.vendorOptions_, true);
   }
 
   /**
@@ -355,10 +372,7 @@ class WMS extends LayerBase {
 
     const minResolution = this.options.minResolution;
     const maxResolution = this.options.maxResolution;
-    const opacity = this.opacity_;
     const zIndex = this.zIndex_;
-    const visible = this.visibility && (this.options.visibility !== false);
-
     let resolutions = this.map.getResolutions();
     if (isNullOrEmpty(resolutions) && !isNullOrEmpty(this.resolutions_)) {
       resolutions = this.resolutions_;
@@ -375,28 +389,11 @@ class WMS extends LayerBase {
     }
 
     const source = this.createOLSource_(resolutions, minResolution, maxResolution, extent);
-    if (this.tiled === true) {
-      this.ol3Layer = new OLLayerTile(extend({
-        visible,
-        source,
-        extent,
-        minResolution,
-        maxResolution,
-        opacity,
-        zIndex,
-      }, this.vendorOptions_, true));
-    } else {
-      this.ol3Layer = new OLLayerImage(extend({
-        visible,
-        source,
-        extent,
-        minResolution,
-        maxResolution,
-        opacity,
-        zIndex,
-      }, this.vendorOptions_, true));
+    this.ol3Layer.setSource(source);
+
+    if (this.addLayerToMap_) {
+      this.map.getMapImpl().addLayer(this.ol3Layer);
     }
-    this.map.getMapImpl().addLayer(this.ol3Layer);
 
     this.setVisible(this.visibility);
 

@@ -214,8 +214,9 @@ class GeoTIFF extends LayerBase {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
+    this.addLayerToMap_ = addLayer;
     this.createOLLayer_(null);
     this.fire(EventType.ADDED_TO_MAP);
   }
@@ -250,7 +251,9 @@ class GeoTIFF extends LayerBase {
     }, this.vendorOptions_, true);
     this.ol3Layer = new TileLayer(properties);
 
-    this.map.getMapImpl().addLayer(this.ol3Layer);
+    if (this.addLayerToMap_) {
+      this.map.getMapImpl().addLayer(this.ol3Layer);
+    }
 
     this.fire(EventType.ADDED_TO_MAP);
 

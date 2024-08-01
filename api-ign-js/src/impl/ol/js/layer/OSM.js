@@ -137,7 +137,7 @@ class OSM extends Layer {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
@@ -150,7 +150,10 @@ class OSM extends Layer {
     if (this.opacity_) {
       this.setOpacity(this.opacity_);
     }
-    this.map.getMapImpl().addLayer(this.ol3Layer);
+
+    if (addLayer) {
+      this.map.getMapImpl().addLayer(this.ol3Layer);
+    }
 
     this.map.getImpl().getMapImpl().getControls().getArray()
       .forEach((cont) => {

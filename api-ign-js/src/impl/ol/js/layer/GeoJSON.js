@@ -109,14 +109,14 @@ class GeoJSON extends Vector {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.formater_ = new GeoJSONFormat({
       defaultDataProjection: getProj(map.getProjection().code),
     });
     if (!isNullOrEmpty(this.url)) {
       this.loader_ = new JSONPLoader(map, this.url, this.formater_);
     }
-    super.addTo(map);
+    super.addTo(map, addLayer);
   }
 
   /**

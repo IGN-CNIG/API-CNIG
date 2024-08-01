@@ -113,7 +113,7 @@ class GenericRaster extends LayerBase {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
 
     if (!isNullOrEmpty(this.visibility)) {
@@ -222,8 +222,9 @@ class GenericRaster extends LayerBase {
       this.ol3Layer.setMaxResolution(this.options.maxResolution);
       this.ol3Layer.setMinResolution(this.options.minResolution);
     }
-
-    map.getMapImpl().addLayer(this.ol3Layer);
+    if (addLayer) {
+      map.getMapImpl().addLayer(this.ol3Layer);
+    }
   }
 
   /**

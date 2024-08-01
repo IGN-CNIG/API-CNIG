@@ -166,7 +166,7 @@ class XYZ extends Layer {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     const projection = getProj('EPSG:3857');
     const extent = projection.getExtent();
@@ -176,7 +176,11 @@ class XYZ extends Layer {
       zIndex: this.zIndex_,
       extent: this.userMaxExtent || extent,
     }, this.vendorOptions_, true));
-    this.map.getMapImpl().addLayer(this.ol3Layer);
+
+    if (addLayer) {
+      this.map.getMapImpl().addLayer(this.ol3Layer);
+    }
+
     const source = new XYZSource({
       projection: this.map.getProjection().code,
       url: this.url,
