@@ -182,10 +182,9 @@ class LayerGroup extends Layer {
     if (!isNullOrEmpty(this.ol3Layer)) {
       olMap.removeLayer(this.ol3Layer);
       this.ol3Layer = null;
-    }
-    if (!isNullOrEmpty(this.layers)) {
-      this.layers.map(this.map.removeLayers, this.map);
-      this.layers.length = 0;
+
+      // eslint-disable-next-line no-underscore-dangle
+      this.map.getImpl().layers_ = this.map.getImpl().layers_.filter((l) => this.name !== l.name);
     }
     this.map = null;
   }
