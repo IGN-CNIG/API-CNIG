@@ -37,6 +37,8 @@ class LayerGroup extends LayerBase {
     super(parameters, impl);
 
     this.layers = parameters.layers;
+
+    this.display = parameters.display || true;
   }
 
   /**
