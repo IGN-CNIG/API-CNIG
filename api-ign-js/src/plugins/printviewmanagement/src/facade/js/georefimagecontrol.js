@@ -882,7 +882,7 @@ export default class GeorefimageControl extends M.Control {
 
     // CONTENT ZIP
     const fileIMG = {
-      name: titulo.concat(`.${formatImage}`),
+      name: titulo.concat(`.${formatImage === 'jpeg' ? 'jpg' : formatImage}`),
       data: base64image,
       base64: true,
     };
