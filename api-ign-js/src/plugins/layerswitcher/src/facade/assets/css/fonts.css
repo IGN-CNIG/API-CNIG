@@ -33,6 +33,11 @@
   content: "\e94f";
 }
 
+.m-layerswitcher-icons-layer-group:before { 
+  content: '\f114'; 
+  font-weight: bold;
+}
+
 .m-layerswitcher-icons-spinner:before {
   content: "\e953";
 }

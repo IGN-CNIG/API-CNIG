@@ -55,8 +55,10 @@ class LayerGroup extends Layer {
     });
 
     this.ol3Layer.on('change:zIndex', () => {
-      this.layers.forEach((layer) => {
-        layer.setZIndex(this.ol3Layer.getZIndex());
+      this.layers.forEach((layer, i) => {
+        // eslint-disable-next-line no-console
+        console.log('layer', this.ol3Layer.getZIndex() + i);
+        layer.setZIndex(this.ol3Layer.getZIndex() + i);
       });
     });
   }
