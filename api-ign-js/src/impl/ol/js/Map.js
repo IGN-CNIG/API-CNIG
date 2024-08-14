@@ -386,6 +386,12 @@ class Map extends MObject {
     return this;
   }
 
+  getLengthZIndex_() {
+    const layersGroup = this.getAllLayerInGroup().length;
+    const layers = this.layers_.length;
+    return layersGroup + layers;
+  }
+
   /**
    * TODO
    *
@@ -502,7 +508,7 @@ class Map extends MObject {
           group.getImpl().addTo(this.facadeMap_);
           this.layers_.push(group);
           if (group.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.LayerGroup];
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.LayerGroup];
             group.setZIndex(zIndex);
           }
         }
@@ -609,7 +615,7 @@ class Map extends MObject {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
           if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.KML];
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.KML];
             layer.setZIndex(zIndex);
           }
           if (!existsBaseLayer) {
@@ -758,7 +764,7 @@ class Map extends MObject {
             existsBaseLayer = true;
             layer.setZIndex(Map.Z_INDEX_BASELAYER);
           } else if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.WMS];
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.WMS];
             layer.setZIndex(zIndex);
           }
         }
@@ -958,7 +964,7 @@ class Map extends MObject {
           this.layers_.push(layer);
           layer.setZIndex(layer.getZIndex());
           if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.WFS];
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.WFS];
             layer.setZIndex(zIndex);
           }
           if (!existsBaseLayer) {
@@ -1094,7 +1100,7 @@ class Map extends MObject {
           this.layers_.push(layer);
           layer.setZIndex(layer.getZIndex());
           if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.GeoTIFF];
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.GeoTIFF];
             layer.setZIndex(zIndex);
           }
           if (!existsBaseLayer) {
@@ -1223,7 +1229,7 @@ class Map extends MObject {
           this.layers_.push(layer);
           layer.setZIndex(layer.getZIndex());
           if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.OGCAPIFeatures];
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.OGCAPIFeatures];
             layer.setZIndex(zIndex);
           }
           if (!existsBaseLayer) {
@@ -1353,7 +1359,9 @@ class Map extends MObject {
             layer.setZIndex(Map.Z_INDEX_BASELAYER);
           } else {
             if (layer.getZIndex() == null) {
-              const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.WMTS];
+              // eslint-disable-next-line no-console
+              console.log(this.getLengthZIndex_());
+              const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.WMTS];
               layer.setZIndex(zIndex);
             }
 
@@ -1474,7 +1482,7 @@ class Map extends MObject {
             existsBaseLayer = true;
             layer.setZIndex(Map.Z_INDEX_BASELAYER);
           } else if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX.MBTiles;
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX.MBTiles;
             layer.setZIndex(zIndex);
           }
         }
@@ -1586,7 +1594,7 @@ class Map extends MObject {
           this.layers_.push(layer);
           layer.setZIndex(layer.getZIndex());
           if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX.MBTilesVector;
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX.MBTilesVector;
             layer.setZIndex(zIndex);
           }
           if (!existsBaseLayer) {
@@ -1706,7 +1714,7 @@ class Map extends MObject {
         } else {
           layer.setZIndex(layer.getZIndex());
           if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[layer.type];
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[layer.type];
             layer.setZIndex(zIndex);
           }
           // recalculates resolution if there are not
@@ -1839,7 +1847,7 @@ class Map extends MObject {
           this.layers_.push(layer);
           layer.setZIndex(layer.getZIndex());
           if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.MVT];
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.MVT];
             layer.setZIndex(zIndex);
           }
           if (!existsBaseLayer) {
@@ -1939,7 +1947,7 @@ class Map extends MObject {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
           if (layer.transparent === true) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.MapLibre];
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.MapLibre];
             layer.setZIndex(zIndex);
           } else {
             layer.setZIndex(0);
@@ -2020,7 +2028,7 @@ class Map extends MObject {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
           if (layer.transparent === true) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.XYZ];
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.XYZ];
             layer.setZIndex(zIndex);
           } else {
             layer.setZIndex(0);
@@ -2121,7 +2129,7 @@ class Map extends MObject {
           layer.getImpl().addTo(this.facadeMap_);
           this.layers_.push(layer);
           if (layer.transparent === true) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.TMS];
+            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.TMS];
             layer.setZIndex(zIndex);
           } else {
             layer.setZIndex(0);

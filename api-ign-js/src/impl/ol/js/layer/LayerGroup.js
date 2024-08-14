@@ -56,9 +56,7 @@ class LayerGroup extends Layer {
 
     this.ol3Layer.on('change:zIndex', () => {
       this.layers.forEach((layer, i) => {
-        // eslint-disable-next-line no-console
-        console.log('layer', this.ol3Layer.getZIndex() + i);
-        layer.setZIndex(this.ol3Layer.getZIndex() + i);
+        layer.setZIndex(this.ol3Layer.getZIndex() - i - 1);
       });
     });
   }
@@ -176,7 +174,9 @@ class LayerGroup extends Layer {
   }
 
   getLayers() {
-    return this.layers;
+    // ? TODO ¿?
+    // ? Se ordena por zIndex, reverse por -1 en zIndex
+    return this.layers.reverse();
   }
 
   destroy() {
