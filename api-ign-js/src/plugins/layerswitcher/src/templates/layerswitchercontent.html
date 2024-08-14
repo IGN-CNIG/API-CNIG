@@ -1,6 +1,6 @@
 {{#*inline "layerswitcherLayer"}}
     {{#each layers}}
-        <li tabindex="0" class="m-layerswitcher-sectionPanel" aria-label="{{translations.layers}}" data-layer-name="{{id}}">
+        <li tabindex="0" class="m-layerswitcher-sectionPanel" aria-label="{{translations.layers}}" data-layer-name="{{id}}" data-layer-type="{{type}}" data-layer-url="{{url}}" data-order="{{dataOrder}}">
             <div class="m-layerswitcher-title-layer">
                 {{#if ../isEyes}}
                     <div class="m-layerswitcher-visible-control">

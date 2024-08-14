@@ -22,6 +22,8 @@ import customQueryFiltersTemplate from '../../templates/customqueryfilters';
 import generateSortable from './sortable';
 import { displayLayers, getAllLayersGroup } from './groupLayers';
 import { removeLayersInLayerSwitcher } from './removeLayers';
+import { showHideLayersRadio } from './typeSelectLayer';
+import { reorderLayers } from './utils';
 
 const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
 const CODSI_CATALOG = 'https://www.idee.es/csw-inspire-idee/srv/spa/q?_content_type=json&bucket=s101&facet.q=type%2Fservice&fast=index&from=*1&keyword=WMS%20or%20Web%20Map%20Service%20or%20WMTS%20or%20Web%20Map%20Tile%20Service%20or%20TMS%20or%20MVT%20or%20Features%20WFS&resultType=details&sortBy=title&sortOrder=asc&to=*2';
@@ -204,8 +206,6 @@ export default class LayerswitcherControl extends M.Control {
 
     return new Promise((success) => {
       this.getTemplateVariables(map).then((templateVars) => {
-        // eslint-disable-next-line no-console
-        console.log('++++++', templateVars);
         const html = M.template.compileSync(template, {
           vars: templateVars,
         });
@@ -255,14 +255,12 @@ export default class LayerswitcherControl extends M.Control {
   getTemplateVariables(map) {
     return new Promise((success, fail) => {
       if (!M.utils.isNullOrEmpty(map)) {
-        this.overlayLayers = map.getRootLayers().filter((layer) => {
+        this.overlayLayers = map.getLayers().filter((layer) => {
           const isTransparent = (layer.transparent === true);
           const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
           const isLayerGroup = (layer instanceof M.layer.LayerGroup);
           return isTransparent && displayInLayerSwitcher && !isLayerGroup;
         });
-
-        this.overlayLayers = this.reorderLayers(this.overlayLayers);
 
         const overlayLayersPromise = Promise
           .all(this.overlayLayers.map(this.parseLayerForTemplate_.bind(this)));
@@ -307,13 +305,6 @@ export default class LayerswitcherControl extends M.Control {
     };
   }
 
-  //  Esta función ordena todas las capas por zindex
-  reorderLayers(layers) {
-    const result = layers.sort((layer1, layer2) => layer1.getZIndex()
-      - layer2.getZIndex()).reverse();
-    return result;
-  }
-
   // Esta función monta objeto con propiedades de la capa para la plantilla
   parseLayerForTemplate_(layer) {
     const layerTitle = layer.legend || layer.name;
@@ -334,6 +325,7 @@ export default class LayerswitcherControl extends M.Control {
       const layerVarTemplate = {
         title: layerTitle,
         type: layer.type,
+        dataOrder: layer.getZIndex(),
         visible: (layer.isVisible() === true),
         id: layer.name,
         url: layer.url,
@@ -369,10 +361,8 @@ export default class LayerswitcherControl extends M.Control {
               ...this.getTemplateVariablesValues(),
             },
           });
-          // eslint-disable-next-line no-console
-          console.log('4.- *****', layer.display);
 
-          const layerPromises = layer.getLayers().map((sublayer) => {
+          const layerPromises = reorderLayers(layer.getLayers()).map((sublayer) => {
             if (sublayer instanceof M.layer.LayerGroup) {
               return this.recursiveLayerGroupTemplate_(sublayer).then((subLayerGroupHTML) => {
                 html.querySelector('.m-layerswitcher-ullayersGroup').appendChild(subLayerGroupHTML);
@@ -427,10 +417,9 @@ export default class LayerswitcherControl extends M.Control {
       this.template_.querySelector('.m-layerswitcher-content').style.display = 'block';
     }
 
-    // eslint-disable-next-line no-console
-    console.log('RENDER.- template ->', html, templateVars);
-
     await this.generateTemplateLayerGroup();
+
+    this.orderLayers();
 
     // si el modo de selección es radio y no se ha seleccionado ninguna capa se marca la primera
     if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === false) {
@@ -444,9 +433,7 @@ export default class LayerswitcherControl extends M.Control {
     const layerList = this.template_.querySelector('.m-layerswitcher-ullayers');
 
     if (layerList !== null && this.isMoveLayers) { // ??¿?¿ isMoveLayers
-      // eslint-disable-next-line no-console
-      console.log('layerList', layerList, this.isMoveLayers);
-      generateSortable(this.map_);
+      generateSortable(this.map_, this.overlayLayers);
     }
     if (scroll !== undefined) {
       const aux = document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers');
@@ -454,6 +441,17 @@ export default class LayerswitcherControl extends M.Control {
         aux.scrollTop = scroll;
       }
     }
+  }
+
+  orderLayers() {
+    const ulContainer = this.template_.querySelector('.m-layerswitcher-ullayers');
+    const items = [...ulContainer.children];
+
+    items.sort((a, b) => b.dataset.order - a.dataset.order);
+
+    ulContainer.innerHTML = '';
+
+    items.forEach((item) => ulContainer.appendChild(item));
   }
 
   // Controla el registro de evento rendercomplete si está abierto o cerrado el plugin
@@ -473,8 +471,6 @@ export default class LayerswitcherControl extends M.Control {
     const layerURL = evt.target.getAttribute('data-layer-url') || undefined;
     const layerType = evt.target.getAttribute('data-layer-type');
     const selectLayer = evt.target.getAttribute('data-select-type');
-    // eslint-disable-next-line no-console
-    console.log('selectLayer', layerName);
     if (evt.target.id === 'm-layerswitcher-hsalllayers') {
       this.showHideAllLayers();
     } else if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericRaster' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles' || layerType === 'LayerGroup')))
@@ -491,15 +487,7 @@ export default class LayerswitcherControl extends M.Control {
             }
           }
         } else if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'radio') {
-          this.overlayLayers.forEach((l) => {
-            if (l.name === layerName && l.type === layerType && (l.url === layerURL || layerURL === 'noURL')) {
-              l.checkedLayer = 'true';
-              l.setVisible(true);
-            } else {
-              l.checkedLayer = 'false';
-              l.setVisible(false);
-            }
-          });
+          showHideLayersRadio(layer, this.map_, this.overlayLayers, layerName, layerType, layerURL);
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-image') > -1) {
           const legend = evt.target.parentElement.parentElement.parentElement.querySelector('.m-layerswitcher-legend');
           if (legend.style.display !== 'block') {
@@ -862,8 +850,6 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   eventIconTarget_(layerType, layer) {
-    // eslint-disable-next-line no-console
-    console.log('++', layerType);
     if (layerType === 'WMS') {
       layer.getMaxExtent((me) => {
         this.map_.setBbox(me);
