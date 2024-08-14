@@ -6,18 +6,17 @@ export const getAllLayersGroup = (map) => {
     if (group.displayInLayerSwitcher) {
       allLayers.push(group);
       group.getLayers().forEach((layer) => {
-        allLayers.push(layer);
+        if (layer.type !== 'LayerGroup') {
+          allLayers.push(layer);
+        }
       });
     }
   });
-
   return allLayers;
 };
 
 export const displayLayers = ({ target }, targetName, map) => {
   if (target.classList.contains('m-layerswitcher-groupDisplay')) {
-    // eslint-disable-next-line no-console
-    console.log('--', target.parentElement.parentElement);
     const groupLayer = map.getLayerGroup()
       .filter((layerGroup) => layerGroup.name === targetName)[0];
 
@@ -27,14 +26,10 @@ export const displayLayers = ({ target }, targetName, map) => {
     if (target.classList.contains('m-layerswitcher-icons-desplegar')) {
       target.classList.remove('m-layerswitcher-icons-desplegar');
       target.classList.add('m-layerswitcher-icons-colapsar');
-      // eslint-disable-next-line no-console
-      console.log('groupLayer', groupLayer);
       groupLayer.display = true;
     } else {
       target.classList.remove('m-layerswitcher-icons-colapsar');
       target.classList.add('m-layerswitcher-icons-desplegar');
-      // eslint-disable-next-line no-console
-      console.log('groupLayer', groupLayer);
       groupLayer.display = false;
     }
   }
