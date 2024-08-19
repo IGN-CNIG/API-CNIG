@@ -116,8 +116,8 @@ class LayerGroup extends Layer {
     // ! VER LO QUE HACE OL
 
     if (!this.layers.includes(layer)) {
-      this.setOLLayerToLayer_(layer);
       const impl = layer.getImpl();
+      this.setOLLayerToLayer_(layer);
 
       this.addRootLayerGroup(impl);
       this.layers.push(layer);
@@ -143,35 +143,34 @@ class LayerGroup extends Layer {
     // ? en el getLayers
     const id = layer.getImpl().ol3Layer.ol_uid;
     this.layers = this.layers.filter((l) => l.getImpl().ol3Layer.ol_uid !== id);
+    this.layersParams_.remove(layer);
   }
 
-  ungroup(layer) {
+  ungroup(layer, upToMap = false) {
+    this.removeLayers_(layer);
+
     if (layer.getImpl().rootGroup === null) {
       return;
     }
 
-    this.removeLayers_(layer);
-
     const layerOl = layer.getImpl().ol3Layer;
     const remove = this.layersCollection.remove(layerOl);
-
-    if (this.rootGroup !== null) {
-      this.setRootGroup_(layer);
+    if (upToMap === false && this.rootGroup !== null) {
+      this.setRootGroup_(layer, this.rootGroup);
       this.rootGroup.layers.push(layer);
       this.rootGroup.layersCollection.push(remove);
     } else {
-      this.setRootGroup_(layer);
+      this.setRootGroup_(layer, null);
       // eslint-disable-next-line no-underscore-dangle
       this.map.getImpl().layers_.push(layer);
       this.map.getMapImpl().addLayer(remove);
     }
   }
 
-  setRootGroup_(layer) {
+  setRootGroup_(layer, rootGroup) {
     const facadeLayer = layer;
-
     if (facadeLayer.getImpl() instanceof LayerGroup) {
-      facadeLayer.getImpl().rootGroup = this.rootGroup;
+      facadeLayer.getImpl().rootGroup = rootGroup;
     }
   }
 

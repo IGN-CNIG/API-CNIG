@@ -88,14 +88,14 @@ class LayerGroup extends LayerBase {
    * @param {M.LayerBase|M.LayerGroup} child
    * @api
    */
-  ungroup(layers) {
+  ungroup(layers, upToMap = false) {
     let arrLayers = layers;
     if (!Array.isArray(arrLayers)) {
       arrLayers = [arrLayers];
     }
 
     arrLayers.forEach((layer) => {
-      this.getImpl().ungroup(layer);
+      this.getImpl().ungroup(layer, upToMap);
     });
 
     // ! ¿? Se actualiza this.layers

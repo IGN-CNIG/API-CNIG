@@ -4,44 +4,44 @@ import { getAllLayersGroup } from './groupLayers';
 const LAYER_NOT_URL = ['OSM', 'GeoJSON', 'MBTilesVector', 'MBTiles', 'LayerGroup'];
 
 const handleOnAdd = (map) => (evt) => {
+  // De mapa a mapa (no se hace nada)
   if (evt.to.classList.contains('m-layerswitcher-ullayers')
         && evt.from.classList.contains('m-layerswitcher-ullayers')) {
     return;
   }
 
-  const from = evt.from.getAttribute('data-layer-name');
-  const nameFrom = evt.item.getAttribute('data-layer-name');
+  const nameFrom = evt.from.getAttribute('data-layer-name');
+  const itemName = evt.item.getAttribute('data-layer-name');
   const nameTo = evt.to.getAttribute('data-layer-name');
 
+  // De grupo a mapa
   const isToMap = (evt.to.classList.contains('m-layerswitcher-ullayers')
       && evt.from.classList.contains('m-layerswitcher-ullayersGroup'));
 
-  const layerTo = isToMap
-    ? map
-    : getAllLayersGroup(map).find((layer) => layer.name === nameTo);
-
+  // De mapa a grupo
   const isFromMap = (evt.from.classList.contains('m-layerswitcher-ullayers')
       && evt.to.classList.contains('m-layerswitcher-ullayersGroup'));
 
-  const layerFrom = isFromMap
-    ? map.getLayers().find((layer) => layer.name === nameFrom)
-    : getAllLayersGroup(map).find((layer) => layer.name === nameFrom);
+  // De grupo a grupo
+  const isGroupToGroup = (evt.from.classList.contains('m-layerswitcher-ullayersGroup')
+      && evt.to.classList.contains('m-layerswitcher-ullayersGroup'));
 
-  if (isFromMap) {
-    map.getLayers().forEach((layer) => {
-      if (layer.name === nameFrom) {
-        map.removeLayers(layer);
-      }
-    });
-  } else {
-    map.getImpl().getGroupedLayers().forEach((group) => {
-      if (group.name === from) {
-        group.removeLayers(layerFrom);
-      }
-    });
+  const groupFrom = isToMap || isGroupToGroup
+    ? map.getLayerGroup().find((g) => g.name === nameFrom) : null;
+  const groupTo = isFromMap || isGroupToGroup
+    ? map.getLayerGroup().find((g) => g.name === nameTo) : null;
+
+  const item = isToMap || isGroupToGroup
+    ? groupFrom.getLayers().find((l) => l.name === itemName)
+    : map.getLayers().find((l) => l.name === itemName);
+
+  if (isToMap || isGroupToGroup) {
+    groupFrom.ungroup(item, true);
   }
-
-  layerTo.addLayers(layerFrom);
+  if (isFromMap || isGroupToGroup) {
+    map.removeLayers(item);
+    groupTo.addLayers(item);
+  }
 };
 
 const handleOnEnd = (map, overlayLayers) => (evt) => {
