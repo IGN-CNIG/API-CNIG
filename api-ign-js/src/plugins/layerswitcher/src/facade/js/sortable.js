@@ -66,6 +66,11 @@ const handleOnAdd = (map) => (evt) => {
     ? groupFrom.getLayers().find((l) => l.name === itemName)
     : map.getLayers().find((l) => l.name === itemName);
 
+  if (item.checkedLayer === 'true') {
+    item.checkedLayer = 'false';
+    item.setVisible(false);
+  }
+
   if (isToMap || isGroupToGroup) {
     groupFrom.ungroup(item, true);
   }
