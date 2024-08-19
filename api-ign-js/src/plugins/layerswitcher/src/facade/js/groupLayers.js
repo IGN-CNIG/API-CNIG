@@ -34,3 +34,23 @@ export const displayLayers = ({ target }, targetName, map) => {
     }
   }
 };
+
+export const fiendLayerInGroup = (layer, map) => {
+  let group = null;
+
+  const findRecursiveGroup = (layerGroup) => {
+    layerGroup.getLayers().forEach((subLayer) => {
+      if (subLayer.name === layer.name) {
+        group = layerGroup;
+      } else if (subLayer.type === 'LayerGroup') {
+        findRecursiveGroup(subLayer);
+      }
+    });
+  };
+
+  map.getLayerGroup().forEach((subLayer) => {
+    findRecursiveGroup(subLayer);
+  });
+
+  return group;
+};

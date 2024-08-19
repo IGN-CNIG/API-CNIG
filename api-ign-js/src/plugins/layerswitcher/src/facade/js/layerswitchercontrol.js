@@ -22,7 +22,7 @@ import customQueryFiltersTemplate from '../../templates/customqueryfilters';
 import generateSortable from './sortable';
 import { displayLayers, getAllLayersGroup } from './groupLayers';
 import { removeLayersInLayerSwitcher } from './removeLayers';
-import { showHideLayersRadio } from './typeSelectLayer';
+import { selectDefaultRange, showHideLayersRadio } from './typeSelectLayer';
 import { reorderLayers } from './utils';
 
 const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
@@ -357,6 +357,7 @@ export default class LayerswitcherControl extends M.Control {
           const html = M.template.compileSync(layerGroupTemplate, {
             vars: {
               displayGroup: layer.display === undefined ? true : layer.display,
+              nameRadio: layer.getImpl().rootGroup === null ? 'm-layerswitcher-radioLayers' : layer.getImpl().rootGroup.name,
               ...varsGroup,
               ...this.getTemplateVariablesValues(),
             },
@@ -371,6 +372,7 @@ export default class LayerswitcherControl extends M.Control {
             return this.parseLayerForTemplate_(sublayer).then((varsSubLayer) => {
               const li = M.template.compileSync(layerGroupChildTemplate, {
                 vars: {
+                  nameRadio: layer.name,
                   ...varsSubLayer,
                   ...this.getTemplateVariablesValues(),
                 },
@@ -421,15 +423,6 @@ export default class LayerswitcherControl extends M.Control {
 
     this.orderLayers();
 
-    // si el modo de selección es radio y no se ha seleccionado ninguna capa se marca la primera
-    if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === false) {
-      const radioButtons = this.template_.querySelectorAll('input[type=radio]');
-      if (radioButtons.length > 0) {
-        this.isCheckedLayerRadio = true;
-        radioButtons[0].click();
-      }
-    }
-
     const layerList = this.template_.querySelector('.m-layerswitcher-ullayers');
 
     if (layerList !== null && this.isMoveLayers) { // ??¿?¿ isMoveLayers
@@ -439,6 +432,21 @@ export default class LayerswitcherControl extends M.Control {
       const aux = document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers');
       if (aux !== null) {
         aux.scrollTop = scroll;
+      }
+    }
+
+    // si el modo de selección es radio y no se ha seleccionado ninguna capa se marca la primera
+    this.defaultRangeSelect_();
+  }
+
+  defaultRangeSelect_() {
+    if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === false) {
+      const radioButtons = this.template_.querySelectorAll('input[type=radio]');
+
+      if (radioButtons.length > 0) {
+        this.isCheckedLayerRadio = true;
+
+        selectDefaultRange(radioButtons, this.map_);
       }
     }
   }

@@ -15,7 +15,7 @@
                 tabindex="0" {{#eq checkedLayer "true" }}checked{{/eq}} type="radio" data-select-type="radio"
                 data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}"
                 class="m-layerswitcher-check {{#if outOfRange}}m-layerswitcher-outOfRange-input{{/if}}"
-                name="m-layerswitcher-radioLayers" value="{{type}}-{{id}}">
+                name="{{nameRadio}}" value="{{type}}-{{id}}">
             {{/if}}
 
             <p tabindex="0" class="m-layerswitcher-sectionPanel-header-text">

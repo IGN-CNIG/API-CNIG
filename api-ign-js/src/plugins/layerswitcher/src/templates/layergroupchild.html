@@ -8,7 +8,17 @@
         {{/if}}
         {{#if isRadio}}
             <div class="m-layerswitcher-visible-control m-layerswitcher-radio">
-                <input aria-label="{{#if visible}}{{../translations.hide_service}}{{^}}{{../translations.show_service}}{{/if}}" tabindex="0" {{#eq checkedLayer "true"}}checked{{/eq}} type="radio" data-select-type="radio" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}" class="m-layerswitcher-check {{#if outOfRange}}m-layerswitcher-outOfRange-input{{/if}}" name="m-layerswitcher-radioLayers" value="{{type}}-{{id}}">
+                <input 
+                aria-label="{{#if visible}}{{../translations.hide_service}}{{^}}{{../translations.show_service}}{{/if}}" 
+                tabindex="0" {{#eq checkedLayer "true"}}checked{{/eq}} 
+                type="radio" 
+                data-select-type="radio" 
+                data-layer-type="{{type}}" data-layer-name="{{id}}" 
+                data-layer-url="{{url}}" 
+                class="m-layerswitcher-check {{#if outOfRange}}m-layerswitcher-outOfRange-input{{/if}}" 
+                value="{{type}}-{{id}}"
+                name="{{nameRadio}}"
+                >
             </div>
         {{/if}}
         <div class="m-layerswitcher-visible-typeContent">
