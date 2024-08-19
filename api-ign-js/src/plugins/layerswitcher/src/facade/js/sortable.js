@@ -3,6 +3,37 @@ import { getAllLayersGroup } from './groupLayers';
 
 const LAYER_NOT_URL = ['OSM', 'GeoJSON', 'MBTilesVector', 'MBTiles', 'LayerGroup'];
 
+const setZIndex = (maxZIndex, parentElem, layers) => {
+  let zindex = maxZIndex;
+  const children = parentElem.children;
+  if (children && children.length > 0) {
+    [...children].forEach((c) => {
+      if (!c.classList.contains('m-layerswitcher-sectionPanel-header')) {
+        if (c.getAttribute('data-layer-type') === 'LayerGroup'
+        || c.classList.contains('m-layerswitcher-ullayersGroup')) {
+          zindex = setZIndex(zindex, c, layers);
+        } else {
+          const name = c.getAttribute('data-layer-name');
+          const url = c.getAttribute('data-layer-url') || undefined;
+          const type = c.getAttribute('data-layer-type');
+
+          const filtered = layers.filter((layer) => {
+            return layer.name === name && (layer.url === url
+              || (layer.url === undefined && LAYER_NOT_URL.includes(layer.type)))
+                && layer.type === type;
+          });
+          if (filtered.length > 0) {
+            filtered[0].setZIndex(zindex);
+            zindex -= 1;
+          }
+        }
+      }
+    });
+  }
+
+  return zindex;
+};
+
 const handleOnAdd = (map) => (evt) => {
   // De mapa a mapa (no se hace nada)
   if (evt.to.classList.contains('m-layerswitcher-ullayers')
@@ -45,10 +76,8 @@ const handleOnAdd = (map) => (evt) => {
 };
 
 const handleOnEnd = (map, overlayLayers) => (evt) => {
-  const to = evt.to;
-  const layers = (to.classList.contains('m-layerswitcher-ullayersGroup'))
-    ? getAllLayersGroup(map).concat(overlayLayers)
-    : map.getLayers();
+  // const to = evt.to;
+  const layers = map.getLayers().concat(getAllLayersGroup(map));
 
   let maxZIndex = 0;
 
@@ -57,22 +86,8 @@ const handleOnEnd = (map, overlayLayers) => (evt) => {
   maxZIndex = Math.max(...(filterLayers.map((l) => {
     return l.getZIndex();
   })));
-
-  [...to.children].forEach((elem) => {
-    const name = elem.getAttribute('data-layer-name');
-    const url = elem.getAttribute('data-layer-url') || undefined;
-    const type = elem.getAttribute('data-layer-type');
-
-    const filtered = layers.filter((layer) => {
-      return layer.name === name && (layer.url === url
-        || (layer.url === undefined && LAYER_NOT_URL.includes(layer.type)))
-          && layer.type === type;
-    });
-    if (filtered.length > 0) {
-      filtered[0].setZIndex(maxZIndex);
-      maxZIndex -= 1;
-    }
-  });
+  const root = document.querySelector('.m-layerswitcher-ullayers');
+  setZIndex(maxZIndex, root, filterLayers);
 };
 
 const generateSortable = (map, overlayLayers) => {
