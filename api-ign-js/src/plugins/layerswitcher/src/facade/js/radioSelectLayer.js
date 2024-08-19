@@ -3,34 +3,40 @@
 
 import { fiendLayerInGroup } from './groupLayers';
 
+export const hideLayers = (layer) => {
+  layer.checkedLayer = 'false';
+  layer.setVisible(false);
+};
+
+export const showLayers = (layer) => {
+  layer.checkedLayer = 'true';
+  layer.setVisible(true);
+};
+
 const showHideLayersInLayerGroup = (layer, map) => {
   const group = fiendLayerInGroup(layer, map);
 
   if (group) {
     group.getLayers().forEach((subLayer) => {
       if (subLayer.name === layer.name) {
-        subLayer.checkedLayer = 'true';
-        subLayer.setVisible(true);
+        showLayers(subLayer);
       } else {
-        subLayer.setVisible(false);
-        subLayer.checkedLayer = 'false';
+        hideLayers(subLayer);
       }
     });
   }
 };
 
-export const showHideLayersRadio = (layer, map, overlayLayers, layerName, layerType, layerURL) => {
+export const showHideLayersRadio = (layer, map, layerName, layerType, layerURL) => {
   const layers = map.getLayers().filter((l) => l.displayInLayerSwitcher === true);
   const layerMap = layers.filter((l) => l.name === layerName && l.type === layerType && l.url === layerURL)[0];
 
   if (layerMap) {
     layers.forEach((l) => {
       if (l.name === layerName && l.type === layerType && (l.url === layerURL || layerURL === 'noURL')) {
-        l.checkedLayer = 'true';
-        l.setVisible(true);
+        showLayers(l);
       } else {
-        l.checkedLayer = 'false';
-        l.setVisible(false);
+        hideLayers(l);
       }
     });
   } else {

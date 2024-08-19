@@ -21,9 +21,11 @@ import layerModalTemplate from '../../templates/layermodal';
 import customQueryFiltersTemplate from '../../templates/customqueryfilters';
 import generateSortable from './sortable';
 import { displayLayers, getAllLayersGroup } from './groupLayers';
-import { removeLayersInLayerSwitcher } from './removeLayers';
-import { selectDefaultRange, showHideLayersRadio } from './typeSelectLayer';
+import { removeLayersInLayerSwitcher } from './utils';
+import { selectDefaultRange, showHideLayersRadio } from './radioSelectLayer';
 import { reorderLayers } from './utils';
+import { showHideLayersEye } from './eyeSelectLayer';
+import { legendInfo } from './legendLayers';
 
 const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
 const CODSI_CATALOG = 'https://www.idee.es/csw-inspire-idee/srv/spa/q?_content_type=json&bucket=s101&facet.q=type%2Fservice&fast=index&from=*1&keyword=WMS%20or%20Web%20Map%20Service%20or%20WMTS%20or%20Web%20Map%20Tile%20Service%20or%20TMS%20or%20MVT%20or%20Features%20WFS&resultType=details&sortBy=title&sortOrder=asc&to=*2';
@@ -488,62 +490,11 @@ export default class LayerswitcherControl extends M.Control {
         layer = layer[0];
         // show hide layers
         if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'eye') {
-          if (evt.target.classList.contains('m-layerswitcher-check')) {
-            if (layer.transparent === true || !layer.isVisible()) {
-              layer.setVisible(!layer.isVisible());
-              this.render();
-            }
-          }
+          showHideLayersEye(evt, layer, this);
         } else if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'radio') {
-          showHideLayersRadio(layer, this.map_, this.overlayLayers, layerName, layerType, layerURL);
+          showHideLayersRadio(layer, this.map_, layerName, layerType, layerURL);
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-image') > -1) {
-          const legend = evt.target.parentElement.parentElement.parentElement.querySelector('.m-layerswitcher-legend');
-          if (legend.style.display !== 'block') {
-            const legendUrl = layer.getLegendURL();
-            if (legendUrl instanceof Promise) {
-              legendUrl.then((url) => {
-                if (url.indexOf('assets/img/legend-default.png') === -1) {
-                  legend.querySelector('img').src = url;
-                } else {
-                  this.errorLegendLayer(layer).then((newLegend) => {
-                    if (newLegend !== '') {
-                      legend.querySelector('img').src = newLegend;
-                    } else {
-                      legend.querySelector('img').src = url;
-                    }
-                  });
-                }
-              });
-            } else if (legendUrl.indexOf('assets/img/legend-default.png') >= 0) {
-              this.errorLegendLayer(layer).then((newLegend) => {
-                if (newLegend === 'error legend') {
-                  const img = legend.querySelector('img');
-                  const messageError = document.createElement('p');
-                  const icon = document.createElement('span');
-                  icon.classList.add('m-layerswitcher-icons-cancel');
-                  messageError.classList.add('m-layerswitcher-legend-error');
-                  messageError.appendChild(icon);
-                  const text = document.createTextNode(getValue('legend_error'));
-                  messageError.appendChild(text);
-                  img.parentNode.insertBefore(messageError, img);
-                } else if (newLegend !== '') {
-                  legend.querySelector('img').src = newLegend;
-                } else {
-                  legend.querySelector('img').src = legendUrl;
-                }
-              });
-            } else {
-              legend.querySelector('img').src = legendUrl;
-            }
-            legend.style.display = 'block';
-          } else {
-            const img = legend.querySelector('img');
-            const p = img.parentElement.querySelector('p');
-            if (!M.utils.isNullOrEmpty(p)) {
-              p.remove();
-            }
-            legend.style.display = 'none';
-          }
+          legendInfo(evt, layer);
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
           this.eventIconTarget_(layerType, layer);
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-info') > -1) {
