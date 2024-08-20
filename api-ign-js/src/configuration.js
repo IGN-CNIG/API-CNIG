@@ -4,7 +4,6 @@
  * Date ${build.timestamp}
  */
 
-
 const backgroundlayersOpts = [{
   id: 'mapa',
   title: 'Callejero',
@@ -45,8 +44,16 @@ params.forEach((param) => {
     const value = param.split('=')[1];
     srs = value;
   } else if (param.indexOf('layers') > -1) {
-    const value = param.substring(param.indexOf('=') + 1, param.length);
-    layers = value.split(',');
+    let value = param.substring(param.indexOf('=') + 1, param.length);
+
+    let layerGroups = [];
+    const regex = /LayerGroup\*.*?!/g;
+    if (value.match(regex) !== null) {
+      layerGroups = value.match(regex).map((item) => item.slice(0, -1));
+      value = value.replace(regex, '');
+    }
+
+    layers = value.split(',').filter((item) => item !== '').concat(layerGroups);
   }
 });
 
