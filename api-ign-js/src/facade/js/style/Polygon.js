@@ -33,19 +33,22 @@ class Polygon extends Simple {
    * - renderer: Renderizado.
    *     - property: Propiedades.
    *     - stoke (color y width).
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base. // #FIX_ST_OP
    * @api
    */
-  constructor(optionsParam = {}) {
+  constructor(optionsParam = {}, vendorOptions = undefined) { // #FIX_ST_OP
     let options = optionsParam;
-
-    const impl = new PolygonImpl(options);
-
-    super(options, impl);
-
-    if (isNullOrEmpty(options)) {
-      options = Polygon.DEFAULT_NULL;
+    if (vendorOptions) { // #FIX_ST_OP
+      options = {};
+    } else {
+      if (isNullOrEmpty(options)) {
+        options = Polygon.DEFAULT_NULL;
+      }
+      options = extendsObj({}, options);
     }
-    options = extendsObj({}, options);
+
+    const impl = new PolygonImpl(options, vendorOptions);
+    super(options, impl);
   }
 
   /**

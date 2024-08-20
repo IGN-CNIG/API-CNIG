@@ -8,7 +8,7 @@ import * as Align from 'M/style/Align';
 import OLStyleStroke from 'ol/style/Stroke';
 import OLStyleText from 'ol/style/Text';
 import OLGeomPolygon from 'ol/geom/Polygon';
-import { isNullOrEmpty } from 'M/util/Utils';
+import { isArray, isNullOrEmpty } from 'M/util/Utils'; // #FIX_ST_OP
 import OLStyleIcon from 'ol/style/Icon';
 import OLStyleFill from 'ol/style/Fill';
 import { toContext as toContextRender } from 'ol/render';
@@ -47,11 +47,15 @@ class Polygon extends Simple {
    * - renderer: Renderizado.
    *     - property: Propiedades.
    *     - stoke (color y width).
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base. // #FIX_ST_OP
    * @api stable
    */
-  constructor(options) {
+  constructor(options, vendorOptions) { // #FIX_ST_OP
     super(options);
-    this.olStyleFn_ = this.updateFacadeOptions(options);
+    this.olStyleFn_ = this.updateFacadeOptions(options, vendorOptions); // #FIX_ST_OP
+    // NO SE AÑADE IGUAL QUE EN LOS OTROS, (*** TO DO ***)
+    // COMPROBAR SI por esto se PONE PERMANENTEMENTE EL VENDOROPTIONS y por ello,
+    // si causa errores en adelante en funciones que esperan otros resultados de este.
   }
 
   /**
@@ -64,8 +68,14 @@ class Polygon extends Simple {
    * @return {Array<object>} Estilo de la fachada.
    * @api stable
    */
-  updateFacadeOptions(options) {
+  updateFacadeOptions(options, vendorOptions) { // #FIX_ST_OP
     return (feature) => {
+      if (vendorOptions) { // #FIX_ST_OP
+        if (isArray(vendorOptions)) {
+          return vendorOptions;
+        }
+        return [vendorOptions];
+      }
       let featureVariable = feature;
       if (!(featureVariable instanceof OLFeature || feature instanceof RenderFeature)) {
         featureVariable = this;

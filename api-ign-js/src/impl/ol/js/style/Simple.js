@@ -21,11 +21,13 @@ class Simple extends Style {
    * @constructor
    * @param {Object} options Opciones de la clase.
    * - icon (src): Ruta del icono.
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base. // #FIX_ST_OP
    * @api stable
    */
-  constructor(options = {}) {
+  constructor(options = {}, vendorOptions = undefined) { // #FIX_ST_OP
     super(options);
-    this.updateFacadeOptions(options);
+    this.vendorOptions = vendorOptions; // #FIX_ST_OP
+    this.updateFacadeOptions(options, vendorOptions);
   }
 
   /**

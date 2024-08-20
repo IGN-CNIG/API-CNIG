@@ -10,7 +10,7 @@
 - Sustituido funciones "filter" de arrays por "find" o "some" en caso de no utilizar array entero.
 - Eliminado condiciones sobrantes de comprobación de clases.
 - Previsto uso de "applyToFeature" si el estilo aun no fue aplicado.
-
+- Añadido vendorOptions a estilos Point, Line, Polygon y Generic. // #FIX_ST_OP
 - Limpiado o reemplazados eslint-disable completos sobrantes o utilizados para solo una línea.
 - Eliminado variables no usadas en estilos que fueron anteriormente deprecados.
 - Simplificado y mejorado rendimiento de funciones utils con imports ordenados.

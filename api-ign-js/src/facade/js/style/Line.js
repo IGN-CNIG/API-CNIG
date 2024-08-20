@@ -32,16 +32,21 @@ class Line extends Simple {
    *    - color: Color.
    *    - opacity: Opacidad.
    *    - pattern: Propiedades (name, src, color, size, spacing, rotation, scale, offset)
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base. // #FIX_ST_OP
    * @api
    */
-  constructor(optionsVar) {
+  constructor(optionsVar, vendorOptions) { // #FIX_ST_OP
     let options = optionsVar;
-    if (isNullOrEmpty(options)) {
-      options = Line.DEFAULT_NULL;
+    if (vendorOptions) { // #FIX_ST_OP
+      options = {};
+    } else {
+      if (isNullOrEmpty(options)) {
+        options = Line.DEFAULT_NULL;
+      }
+      options = extendsObj({}, options);
     }
-    options = extendsObj({}, options);
 
-    const impl = new StyleLineImpl(options);
+    const impl = new StyleLineImpl(options, vendorOptions); // #FIX_ST_OP
     super(options, impl);
   }
 

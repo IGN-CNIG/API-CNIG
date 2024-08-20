@@ -1,7 +1,7 @@
 /**
  * @module M/impl/style/Line
  */
-import { isNullOrEmpty, isFunction } from 'M/util/Utils';
+import { isArray, isNullOrEmpty, isFunction } from 'M/util/Utils'; // #FIX_ST_OP
 import OLFeature from 'ol/Feature';
 import OLStyleStroke from 'ol/style/Stroke';
 import OLStyleFill from 'ol/style/Fill';
@@ -33,11 +33,15 @@ class Line extends Simple {
    * @param {Object} options Opciones de la clase.
    * - icon (src): Ruta del icono.
    * @implements {M.impl.style.Simple}
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base. // #FIX_ST_OP
    * @api stable
    */
-  constructor(options) {
+  constructor(options, vendorOptions) { // #FIX_ST_OP
     super(options);
-    this.olStyleFn_ = this.updateFacadeOptions(options);
+    this.olStyleFn_ = this.updateFacadeOptions(options, vendorOptions); // #FIX_ST_OP
+    // NO SE AÑADE IGUAL QUE EN LOS OTROS, (*** TO DO ***)
+    // COMPROBAR SI por esto se PONE PERMANENTEMENTE EL VENDOROPTIONS y por ello,
+    // si causa errores en adelante en funciones que esperan otros resultados de este.
   }
 
   /**
@@ -50,8 +54,14 @@ class Line extends Simple {
    * @function
    * @api stable
    */
-  updateFacadeOptions(options) {
+  updateFacadeOptions(options, vendorOptions) { // #FIX_ST_OP
     return (feature) => {
+      if (vendorOptions) { // #FIX_ST_OP
+        if (isArray(vendorOptions)) {
+          return vendorOptions;
+        }
+        return [vendorOptions];
+      }
       let featureVariable = feature;
       if (!(featureVariable instanceof OLFeature || feature instanceof RenderFeature)) {
         featureVariable = this;

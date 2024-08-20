@@ -19,18 +19,23 @@ class Point extends Simple {
    * - fill: Color de fondo.
    * - stroke: Color del borde.
    * - icon: URL.
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base. // #FIX_ST_OP
    * @api
    */
-  constructor(optionsVar) {
+  constructor(optionsVar, vendorOptions) { // #FIX_ST_OP
     let options = optionsVar;
-    if (isNullOrEmpty(options)) {
-      options = Point.DEFAULT_NULL;
+    if (vendorOptions) { // #FIX_ST_OP
+      options = extendsObj({}, Point.DEFAULT);
     } else {
-      options = extendsObj(options, Point.DEFAULT);
+      if (isNullOrEmpty(options)) {
+        options = Point.DEFAULT_NULL;
+      } else {
+        options = extendsObj(options, Point.DEFAULT);
+      }
+      options = extendsObj({}, options);
     }
-    options = extendsObj({}, options);
 
-    const impl = new StylePointImpl(options);
+    const impl = new StylePointImpl(options, vendorOptions); // #FIX_ST_OP
     super(options, impl);
   }
 

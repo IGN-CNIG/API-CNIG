@@ -130,8 +130,15 @@ class Point extends Simple {
    * @function
    * @api stable
    */
-  updateFacadeOptions(options) {
+  updateFacadeOptions(options, vendorOptions) { // #FIX_ST_OP
     this.olStyleFn_ = (feature) => {
+      if (vendorOptions) { // #FIX_ST_OP
+        if (isArray(vendorOptions)) {
+          return vendorOptions;
+        }
+        return [vendorOptions];
+      }
+
       let featureVariable = feature;
       if (!(featureVariable instanceof OLFeature || feature instanceof RenderFeature)) {
         featureVariable = this;
