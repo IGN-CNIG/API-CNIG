@@ -1,7 +1,6 @@
 /**
  * @module M/control/ComparatorsControl
  */
-
 import template from '../../templates/comparators';
 import ComparatorsImpl from '../../impl/ol/js/comparators';
 import { getValue } from './i18n/language';
@@ -9,12 +8,8 @@ import MirrorpanelControl from './mirrorpanelcontrol';
 import LyrCompareControl from './lyrcomparecontrol';
 import TransparencyControl from './transparencycontrol';
 import WindowSyncControl from './windowsynccontrol';
-
 import {
-  transformToStringLayers,
-  checkLayers,
-  getNameString,
-  formatearID,
+  getNameString, checkLayers, transformToStringLayers, formatearID,
 } from './utils';
 
 export default class ComparatorsControl extends M.Control {

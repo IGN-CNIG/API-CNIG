@@ -558,7 +558,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     const text = listElement.querySelector('#info').innerHTML;
     this.html_.querySelector('#m-ignsearchlocator-search-input').value = text;
     const candidates = isRecentElement ? JSON.parse(window.localStorage.getItem('recents')) : this.allCandidates;
-    const selectedObject = candidates.filter((element) => element.id === this.currentElement.getAttribute('id'))[0];
+    const selectedObject = candidates.find((element) => element.id === this.currentElement.getAttribute('id'));
     this.setRecents(selectedObject);
     this.createGeometryStyles();
     // if item comes from geocoder

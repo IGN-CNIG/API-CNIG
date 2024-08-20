@@ -551,8 +551,7 @@ export default class EditionControl extends M.Control {
     const MFeatures = this.layer_.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
-      || undefined;
+    this.feature = MFeatures.find((f) => f.getImpl().getOLFeature() === olFeature);
 
     this.geometry = this.feature.getGeometry().type;
     this.emphasizeSelectedFeature();

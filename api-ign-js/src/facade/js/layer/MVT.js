@@ -6,10 +6,7 @@ import RenderFeatureImpl from 'impl/feature/RenderFeature';
 import FeatureImpl from 'impl/feature/Feature';
 import Vector from './Vector';
 import {
-  isUndefined,
-  isNullOrEmpty,
-  normalize,
-  isString,
+  isUndefined, isNullOrEmpty, isString, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as dialog from '../dialog';

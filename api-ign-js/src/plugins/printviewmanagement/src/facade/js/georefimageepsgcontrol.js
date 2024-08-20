@@ -5,15 +5,9 @@ import Georefimage2ControlImpl from '../../impl/ol/js/georefimageepsgcontrol';
 import { reproject } from '../../impl/ol/js/utils';
 import georefimage2HTML from '../../templates/georefimageepsg';
 import { getValue } from './i18n/language';
-
 import {
-  innerQueueElement,
-  removeLoadQueueElement,
-  getQueueContainer,
-  createWLD,
-  getBase64Image,
-  generateTitle,
-  createZipFile,
+  getQueueContainer, innerQueueElement, removeLoadQueueElement, createWLD, createZipFile,
+  generateTitle, getBase64Image,
 } from './utils';
 
 export default class GeorefImageEpsgControl extends M.Control {
@@ -211,7 +205,7 @@ export default class GeorefImageEpsgControl extends M.Control {
 
   transformExtentOL(extent, projection) {
     const { def } = M.impl.ol.js.projections.getSupportedProjs()
-      .filter((proj) => proj.codes.includes(projection))[0];
+      .find((proj) => proj.codes.includes(projection));
     const typeCoordinates = def.includes('+proj=longlat');
 
     if (typeCoordinates) {

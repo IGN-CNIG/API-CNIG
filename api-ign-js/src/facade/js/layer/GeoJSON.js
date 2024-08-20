@@ -5,11 +5,7 @@ import GeoJSONImpl from 'impl/layer/GeoJSON';
 import LayerVector from './Vector';
 import { GeoJSON as GeoJSONType } from './Type';
 import {
-  isString,
-  isNullOrEmpty,
-  isUndefined,
-  isArray,
-  normalize,
+  isUndefined, isArray, isNullOrEmpty, isString, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';

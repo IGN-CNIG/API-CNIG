@@ -6,10 +6,7 @@ import PopupImpl from 'impl/Popup';
 import 'assets/css/popup';
 import popupTemplate from 'templates/popup';
 import {
-  isNullOrEmpty,
-  isUndefined,
-  returnPositionHtmlElement,
-  transfomContent,
+  isUndefined, isNullOrEmpty, returnPositionHtmlElement, transfomContent,
 } from './util/Utils';
 import Base from './Base';
 import { compileSync as compileTemplate } from './util/Template';
@@ -302,7 +299,7 @@ class Popup extends Base {
    */
   addEvents(htmlParam) {
     const html = htmlParam;
-
+    html.addEventListener('pointermove', (evt) => { evt.stopImmediatePropagation(); evt.preventDefault(); });
     // adds tabs events
     let touchstartY;
     const tabs = html.querySelectorAll('div.m-tab');

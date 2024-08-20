@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import stylemanager from 'templates/stylemanager';
 import StyleManagerImplControl from 'impl/stylemanagerControl';
 import selectlayer from 'templates/selectlayer';
@@ -96,6 +94,7 @@ export default class StyleManagerControl extends M.Control {
             }),
           },
         });
+        // eslint-disable-next-line no-param-reassign
         htmlSelect.innerHTML = htmlRes.innerHTML;
       });
     }
@@ -239,6 +238,7 @@ export default class StyleManagerControl extends M.Control {
       const features = this.layer_.getFeatures();
       if (features.length === 0) {
         M.dialog.error(getValue('exception.layerNoFeaturesLoad'), 'Error');
+        // eslint-disable-next-line no-param-reassign
         htmlSelect.selectedIndex = 0;
       } else {
         this.bindinController_.change(this.layer_);

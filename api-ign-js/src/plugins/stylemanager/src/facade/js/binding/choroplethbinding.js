@@ -1,7 +1,4 @@
-/* eslint-disable  dot-notation */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-return-assign */
+/* eslint-disable dot-notation,no-prototype-builtins,no-return-assign */
 import colorchoropleth from 'templates/colorchoropleth';
 import { Binding } from './binding';
 import { getValue } from '../i18n/language';
@@ -114,6 +111,7 @@ export class ChoroplethBinding extends Binding {
     }
     if (this.layer_ != null) {
       options['attributes'] = this.getAttributes();
+      // eslint-disable-next-line no-param-reassign
       options['attributes'].forEach((attribute) => attribute['selected'] = options.attribute);
     }
     return options;

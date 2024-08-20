@@ -2,12 +2,7 @@
  * @module M/Parameters
  */
 import {
-  isString,
-  isNullOrEmpty,
-  getParameterValue,
-  isObject,
-  isUndefined,
-  isArray,
+  isUndefined, isArray, isNullOrEmpty, isObject, isString, getParameterValue,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';

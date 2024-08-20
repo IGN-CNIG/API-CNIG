@@ -3,11 +3,7 @@
  */
 import Base from '../Base';
 import {
-  isNullOrEmpty,
-  isArray,
-  isObject,
-  extendsObj,
-  stringifyFunctions,
+  isArray, isNullOrEmpty, isObject, extendsObj, stringifyFunctions,
 } from '../util/Utils';
 import * as EventType from '../event/eventtype';
 

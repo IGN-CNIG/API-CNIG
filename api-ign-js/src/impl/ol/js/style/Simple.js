@@ -3,9 +3,11 @@
  */
 import OLFeature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
-import { isFunction, isNullOrEmpty } from 'M/util/Utils';
+import { isNullOrEmpty, isFunction } from 'M/util/Utils';
 import Style from './Style';
 import Feature from '../feature/Feature';
+
+const templateRegexp = /^\{\{([^}]+)\}\}$/;
 
 /**
  * @classdesc
@@ -73,32 +75,30 @@ class Simple extends Style {
    * @public
    * @function
    * @param {string|number|function} attr Atributo o función.
-   * @param {ol.Feature}  feature Objeto geográfico de OpenLayers.
+   * @param {ol.Feature} olFeature Objeto geográfico de OpenLayers.
    * @param {M.layer.Vector} layer Capas.
    * @api stable
    */
   static getValue(attr, olFeature, layer) {
-    const templateRegexp = /^\{\{([^}]+)\}\}$/;
+    if (isNullOrEmpty(attr)) return undefined;
     let attrFeature = attr;
-    if (templateRegexp.test(attr) || isFunction(attr)) {
-      if (!(olFeature instanceof OLFeature || olFeature instanceof RenderFeature)) {
-        attrFeature = undefined;
-      } else {
+    if (isFunction(attr)) {
+      if (olFeature instanceof OLFeature || olFeature instanceof RenderFeature) {
         const feature = Feature.olFeature2Facade(olFeature, false);
-        if (templateRegexp.test(attr)) {
-          const keyFeature = attr.replace(templateRegexp, '$1');
-          attrFeature = feature.getAttribute(keyFeature);
-        } else if (isFunction(attr)) {
-          let facadeMap;
-          if (!isNullOrEmpty(layer)) {
-            facadeMap = layer.getImpl().getMap();
-          }
-          attrFeature = attr(feature, facadeMap);
-        }
+        attrFeature = attr(feature, isNullOrEmpty(layer) ? undefined : layer.getImpl().getMap());
+        if (isNullOrEmpty(attrFeature)) return undefined;
+      } else {
+        return undefined;
       }
-    }
-    if (isNullOrEmpty(attrFeature)) {
-      attrFeature = undefined;
+    } else if (templateRegexp.test(attr)) {
+      if (olFeature instanceof OLFeature || olFeature instanceof RenderFeature) {
+        const feature = Feature.olFeature2Facade(olFeature, false);
+        const keyFeature = attr.replace(templateRegexp, '$1');
+        attrFeature = feature.getAttribute(keyFeature);
+        if (isNullOrEmpty(attrFeature)) return undefined;
+      } else {
+        return undefined;
+      }
     }
     return attrFeature;
   }

@@ -1,14 +1,9 @@
-/* eslint-disable max-len */
 /**
  * @module M/impl/layer/WMTS
  */
 import {
-  isNullOrEmpty,
-  isNull,
-  getResolutionFromScale,
-  getWMTSGetCapabilitiesUrl,
+  isNull, isArray, isNullOrEmpty, addParameters, getWMTSGetCapabilitiesUrl, getResolutionFromScale,
   extend,
-  addParameters,
 } from 'M/util/Utils';
 import { default as OLSourceWMTS } from 'ol/source/WMTS';
 import OLFormatWMTSCapabilities from 'ol/format/WMTSCapabilities';
@@ -18,7 +13,6 @@ import { get as getRemote } from 'M/util/Remote';
 import * as EventType from 'M/event/eventtype';
 import { get as getProj } from 'ol/proj';
 import OLLayerTile from 'ol/layer/Tile';
-import { isArray } from 'M/util/Utils';
 import { optionsFromCapabilities } from 'patches';
 import LayerBase from './Layer';
 import getLayerExtent from '../util/wmtscapabilities';
@@ -161,7 +155,8 @@ class WMTS extends LayerBase {
     const defaultExtent = this.map.getMaxExtent();
 
     if (!isNull(contents)) {
-      this.maxExtent = getLayerExtent(contents, this.name, this.map.getProjection().code, defaultExtent);
+      this.maxExtent = getLayerExtent(contents, this.name, this.map
+        .getProjection().code, defaultExtent);
     }
     return this.maxExtent;
   }
@@ -405,7 +400,7 @@ class WMTS extends LayerBase {
     }
     let capabilitiesLayer = capabilities.Contents.Layer;
     if (isArray(capabilitiesLayer)) {
-      capabilitiesLayer = capabilitiesLayer.filter((l) => l.Identifier === this.facadeLayer_.name)[0];
+      capabilitiesLayer = capabilitiesLayer.find((l) => l.Identifier === this.facadeLayer_.name);
     }
 
     if (capabilitiesLayer.Style.length > 0 && capabilitiesLayer.Style[0].LegendURL !== undefined) {
@@ -488,13 +483,12 @@ class WMTS extends LayerBase {
             parsedCapabilities.Contents.Layer.forEach((l) => {
               const name = l.Identifier;
               l.Style.forEach((s) => {
-                const layerText = response.text.split('Layer>').filter((text) => text.indexOf(`Identifier>${name}<`) > -1)[0];
-                /* eslint-disable no-param-reassign */
+                const layerText = response.text.split('Layer>').find((text) => text.indexOf(`Identifier>${name}<`) > -1);
+                // eslint-disable-next-line no-param-reassign
                 s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
               });
             });
-            /* eslint-disable no-empty */
-          } catch (err) {}
+          } catch (err) { /* Continue */ }
           success.call(this, parsedCapabilities);
         });
       });

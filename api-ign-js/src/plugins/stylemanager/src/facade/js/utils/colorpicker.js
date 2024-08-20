@@ -1,6 +1,4 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax,guard-for-in */
 // eslint-disable-next-line
 export class ColorPickerPolyfill {
   static apply(window) {
@@ -105,6 +103,7 @@ export class ColorPickerPolyfill {
       },
 
       off: (input) => {
+        // eslint-disable-next-line no-param-reassign
         input.onfocus = null;
         this.css(input, {
           backgroundColor: '',
@@ -146,12 +145,14 @@ export class ColorPickerPolyfill {
       // set css properties
       css: (el, props) => {
         for (const prop in props) {
+          // eslint-disable-next-line no-param-reassign
           el.style[prop] = props[prop];
         }
       },
     };
 
     // expose to global
+    // eslint-disable-next-line no-param-reassign
     window.nativeColorPicker = nativeColorPicker;
   }
 }

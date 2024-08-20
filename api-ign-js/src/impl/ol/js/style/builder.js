@@ -2,7 +2,7 @@
  * @module M/impl/style/builder
  */
 import chroma from 'chroma-js';
-import { isNullOrEmpty, isFunction, isUndefined } from 'M/util/Utils';
+import { isUndefined, isNullOrEmpty, isFunction } from 'M/util/Utils';
 import * as Align from 'M/style/Align';
 import * as Baseline from 'M/style/Baseline';
 import OLStyle from 'ol/style/Style';

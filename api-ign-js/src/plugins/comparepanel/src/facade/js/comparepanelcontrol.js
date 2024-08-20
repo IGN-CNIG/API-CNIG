@@ -294,12 +294,10 @@ export default class ComparepanelControl extends M.Control {
               useCapabilities: urlLayer[4] === 'true' || false,
             });
 
-            if (map.getLayers().filter((l) => newLayer.name.includes(l.name)).length > 0) {
-              newLayer = map.getLayers().filter((l) => newLayer.name.includes(l.name))[0];
+            if (map.getLayers().some((l) => newLayer.name.includes(l.name))) {
+              newLayer = map.getLayers().find((l) => newLayer.name.includes(l.name));
               newLayer.legend = urlLayer[1] || newLayer.name;
-            } else {
-              // this.map.addLayers(newLayer);
-            }
+            } // else { this.map.addLayers(newLayer); }
           } else if (urlLayer[0].toUpperCase() === 'WMTS') {
             /* newLayer = new M.layer.WMTS({
               url: urlLayer[2] + '?',
@@ -329,11 +327,11 @@ export default class ComparepanelControl extends M.Control {
             // this.map.addLayers(newLayer);
           }
         } else {
-          const layerByName = map.getLayers().filter((l) => layer.includes(l.name))[0];
+          const layerByName = map.getLayers().find((l) => layer.includes(l.name));
           newLayer = this.isValidLayer(layerByName) ? layerByName : null;
         }
       } else if (layer instanceof Object) {
-        const layerByObject = map.getLayers().filter((l) => layer.name.includes(l.name))[0];
+        const layerByObject = map.getLayers().find((l) => layer.name.includes(l.name));
         newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
       }
 

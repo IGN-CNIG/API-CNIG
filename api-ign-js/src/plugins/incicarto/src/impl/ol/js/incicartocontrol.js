@@ -1504,15 +1504,20 @@ export default class IncicartoControl extends M.impl.Control {
       }
 
       const layers = [];
+      let auxMapLayers;
       map.getMapImpl().forEachFeatureAtPixel(evt.pixel, (feature) => {
-        if (feature.getId() !== undefined && feature.getId() !== null) {
-          const filtered = map.getLayers().filter((l) => {
-            return ['kml', 'geojson', 'wfs', 'vector'].indexOf(l.type.toLowerCase()) > -1 && l.getFeatureById(feature.getId()) !== undefined;
+        if (!M.utils.isNull(feature.getId())) {
+          if (!auxMapLayers) {
+            auxMapLayers = map.getLayers().filter((l) => {
+              return ['kml', 'geojson', 'wfs', 'vector'].indexOf(l.type.toLowerCase()) > -1;
+            });
+          }
+          const foundLayer = auxMapLayers.find((l) => {
+            return !M.utils.isNull(l.getFeatureById(feature.getId()));
           });
 
-          if (filtered.length > 0) {
-            const layer = filtered[0];
-            const name = layer.legend || layer.name;
+          if (foundLayer) {
+            const name = foundLayer.legend || foundLayer.name;
             if (layers.indexOf(name) < 0) {
               layers.push(name);
             }
@@ -1654,16 +1659,16 @@ export default class IncicartoControl extends M.impl.Control {
 
   reloadFeaturesUpdatables(layerName, layerURL) {
     const map = this.facadeMap_;
-    const srs = map.getProjection().code;
-    const filtered = map.getLayers().filter((layer) => {
-      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 && layer.isVisible()
+    const found = map.getLayers().find((layer) => {
+      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1
+        && layer.name === layerName && layer.url === layerURL && layer.isVisible()
         && layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.updatable
-        && layer.name === layerName && layer.url === layerURL && layer.name !== 'coordinateresult'
-        && layer.name !== 'searchresult' && layer.name !== 'infocoordinatesLayerFeatures';
+        && layer.name !== 'coordinateresult' && layer.name !== 'searchresult' && layer.name !== 'infocoordinatesLayerFeatures';
     });
 
-    if (filtered.length > 0) {
-      const layer = filtered[0];
+    if (found) {
+      const layer = found;
+      const srs = map.getProjection().code;
       const facadeControl = this.facadeControl;
       if (map.getZoom() >= facadeControl.wfszoom) {
         let cancelFlag = false;

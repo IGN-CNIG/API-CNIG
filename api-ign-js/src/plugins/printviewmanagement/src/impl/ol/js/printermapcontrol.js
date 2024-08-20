@@ -1,9 +1,8 @@
 /**
  * @module M/impl/control/PrinterMapControl
  */
-
 import {
-  encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS, encodeGeoTIFF,
+  encodeKML, encodeWMS, encodeImage, encodeGeoTIFF, encodeXYZ, encodeWMTS,
 } from './encoders';
 
 export default class PrinterMapControl extends M.impl.Control {

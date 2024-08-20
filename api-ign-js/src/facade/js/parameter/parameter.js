@@ -3,15 +3,7 @@
  * @example import parameter from 'M/parameter';
  */
 import {
-  isNullOrEmpty,
-  isString,
-  isNull,
-  isFunction,
-  normalize,
-  isArray,
-  isObject,
-  isUrl,
-  isUndefined,
+  isUndefined, isNull, isArray, isNullOrEmpty, isFunction, isObject, isString, isUrl, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from '../layer/Type';
@@ -4329,7 +4321,7 @@ export const layer = (userParameters, forcedType) => {
 
   layers = userParametersArray.map((userParam) => {
     let layerObj = null;
-    if (isObject(userParam) && (userParam instanceof Layer)) {
+    if (userParam instanceof Layer) {
       layerObj = userParam;
     } else {
       // gets the layer type

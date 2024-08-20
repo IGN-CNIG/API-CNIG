@@ -221,10 +221,7 @@ export default class MeasureBar extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    if (plugin instanceof MeasureBar) {
-      return true;
-    }
-    return false;
+    return plugin instanceof MeasureBar;
   }
 
   /**

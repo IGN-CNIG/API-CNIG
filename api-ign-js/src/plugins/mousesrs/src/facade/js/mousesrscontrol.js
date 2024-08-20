@@ -32,7 +32,7 @@ export default class MouseSRSControl extends M.Control {
     if (M.utils.isUndefined(MouseSRSImplControl)) {
       M.exception(getValue('exception.impl'));
     }
-    /* eslint-disable-next-line max-len */
+    // eslint-disable-next-line max-len
     const impl = new MouseSRSImplControl(srs, label, precision, geoDD, utmDD, tooltip, activeZ, helpUrl, order, draggableDialog, epsgFormat);
     super(impl, 'MouseSRS');
     this.tooltip_ = tooltip;

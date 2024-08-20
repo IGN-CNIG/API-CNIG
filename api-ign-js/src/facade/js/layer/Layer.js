@@ -5,16 +5,8 @@ import Exception from '../exception/exception';
 import * as parserParameter from '../parameter/parameter';
 import Base from '../Base';
 import {
-  isNullOrEmpty,
-  concatUrlPaths,
-  isUndefined,
-  normalize,
-  isString,
-  isFunction,
-  generateRandom,
-  isBoolean,
-  isArray,
-  isObject,
+  isUndefined, isBoolean, isArray, isNullOrEmpty, isFunction, isObject, isString,
+  normalize, generateRandom, concatUrlPaths,
 } from '../util/Utils';
 import { getValue } from '../i18n/language';
 

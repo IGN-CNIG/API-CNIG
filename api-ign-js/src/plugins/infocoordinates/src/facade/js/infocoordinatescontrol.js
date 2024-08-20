@@ -339,8 +339,7 @@ export default class InfocoordinatesControl extends M.Control {
       document.getElementsByClassName('contenedorPuntoSelect')[0].classList.replace('contenedorPuntoSelect', 'contenedorPunto');
       try {
         document.getElementsByClassName('contenedorPunto')[document.getElementsByClassName('contenedorPunto').length - numPoint].classList.replace('contenedorPunto', 'contenedorPuntoSelect');
-        /* eslint-disable no-empty */
-      } catch (err) {}
+      } catch (err) { /* Continue */ }
 
       // Eliminamos las etiquetas de los puntos
       if (document.getElementsByClassName('icon-displayON').length === 0 && this.map_.getMapImpl().getOverlays().getLength() > 0) {

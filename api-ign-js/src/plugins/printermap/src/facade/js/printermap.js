@@ -276,7 +276,7 @@ export default class PrinterMap extends M.Plugin {
   }
 
   /**
-   * This function compare if pluging recieved by param is instance of   M.plugin.PrinterMap
+   * This function compare if pluging recieved by param is instance of M.plugin.PrinterMap
    *
    * @public
    * @function
@@ -284,10 +284,7 @@ export default class PrinterMap extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    if (plugin instanceof PrinterMap) {
-      return true;
-    }
-    return false;
+    return plugin instanceof PrinterMap;
   }
 }
 

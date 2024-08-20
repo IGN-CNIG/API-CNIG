@@ -4,8 +4,7 @@
  */
 import GeoTIFFImpl from 'impl/layer/GeoTIFF';
 import {
-  isNullOrEmpty,
-  isUndefined,
+  isUndefined, isNullOrEmpty,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';

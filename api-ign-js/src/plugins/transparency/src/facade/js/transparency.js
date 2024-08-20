@@ -257,9 +257,6 @@ export default class Transparency extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    if (plugin instanceof Transparency) {
-      return true;
-    }
-    return false;
+    return plugin instanceof Transparency;
   }
 }

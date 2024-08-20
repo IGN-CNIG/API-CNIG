@@ -5,10 +5,7 @@ import ClusterImpl from 'impl/style/Cluster';
 import Style from './Style';
 import Composite from './Composite';
 import {
-  extendsObj,
-  isNullOrEmpty,
-  stringifyFunctions,
-  defineFunctionFromString,
+  isNullOrEmpty, extendsObj, stringifyFunctions, defineFunctionFromString,
 } from '../util/Utils';
 
 /**

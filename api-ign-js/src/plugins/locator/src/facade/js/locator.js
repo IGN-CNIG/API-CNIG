@@ -319,10 +319,7 @@ export default class Locator extends M.Plugin {
    * @api
    */
   equals(plugin) {
-    if (plugin instanceof Locator) {
-      return true;
-    }
-    return false;
+    return plugin instanceof Locator;
   }
 
   /**

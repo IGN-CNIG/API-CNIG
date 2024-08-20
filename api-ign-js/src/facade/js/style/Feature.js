@@ -44,12 +44,13 @@ class Feature extends StyleBase {
    */
   applyToFeature(feature) {
     this.feature_ = feature;
-    let options = feature.getStyle().getOptions();
+    const style = feature.getStyle() ? feature.getStyle() : this.layer_.getStyle();
+    let options = style.getOptions();
     if (options.point) {
       options = options.point;
     }
-    if (options.icon && options.icon.src && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg')
-      && (options.icon.fill || options.icon.stroke)) {
+    if (options.icon && (options.icon.fill || options.icon.stroke) && options.icon.src
+      && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg')) {
       modifySVG(options.icon.src, options).then((resp) => {
         options.icon.src = resp;
         this.applyToFeature(this.feature_);

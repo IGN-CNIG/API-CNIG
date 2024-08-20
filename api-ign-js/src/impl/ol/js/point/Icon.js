@@ -48,10 +48,10 @@ class Icon extends OLStyleIcon {
       offset: !options.offset ? undefined : options.offset.slice(),
       offsetOrigin: options.offsetOrigin,
       size: !options.size ? undefined : options.size.slice(),
-      imgSize: options.imgSize,
+      // imgSize: options.imgSize,
       opacity: options.opacity,
       scale: options.scale,
-      snapToPixel: options.snapToPixel,
+      // snapToPixel: options.snapToPixel,
       rotation: options.rotation,
       rotateWithView: options.rotateWithView,
     });

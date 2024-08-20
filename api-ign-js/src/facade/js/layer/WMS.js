@@ -3,14 +3,8 @@
  * @module M/layer/WMS
  */
 import WMSImpl from 'impl/layer/WMS';
-
 import {
-  isNullOrEmpty,
-  isUndefined,
-  sameUrl,
-  isString,
-  normalize,
-  isFunction,
+  isUndefined, isNullOrEmpty, isFunction, isString, normalize, sameUrl,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';

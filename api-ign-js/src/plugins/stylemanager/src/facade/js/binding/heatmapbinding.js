@@ -1,7 +1,4 @@
-/* eslint-disable  dot-notation */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-return-assign */
+/* eslint-disable dot-notation,no-prototype-builtins,no-return-assign */
 import * as chroma from 'chroma-js';
 import { Binding } from './binding';
 import * as htmlgradient from '../../../templates/gradientheatmap';
@@ -104,6 +101,7 @@ export class HeatmapBinding extends Binding {
     }
     if (this.layer_ != null) {
       options['attributes'] = this.getAttributes();
+      // eslint-disable-next-line no-param-reassign
       options['attributes'].forEach((attribute) => attribute['selected'] = options.attribute);
     }
     return options;

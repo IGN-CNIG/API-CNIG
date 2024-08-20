@@ -3,7 +3,7 @@
  */
 import MObject from 'M/Object';
 import { get as getRemote } from 'M/util/Remote';
-import { isNullOrEmpty, isUndefined } from 'M/util/Utils';
+import { isUndefined, isNullOrEmpty } from 'M/util/Utils';
 import FacadeFeature from 'M/feature/Feature';
 import Exception from 'M/exception/exception';
 import { getValue } from 'M/i18n/language';

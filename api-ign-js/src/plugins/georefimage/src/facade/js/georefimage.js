@@ -195,7 +195,7 @@ export default class Georefimage extends M.Plugin {
   }
 
   /**
-   * This function compare if pluging recieved by param is instance of   M.plugin.Georefimage
+   * This function compare if pluging recieved by param is instance of M.plugin.Georefimage
    *
    * @public
    * @function
@@ -203,10 +203,7 @@ export default class Georefimage extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    if (plugin instanceof Georefimage) {
-      return true;
-    }
-    return false;
+    return plugin instanceof Georefimage;
   }
 }
 

@@ -1,7 +1,7 @@
 /**
  * @module M/impl/layer/MBTilesVector
  */
-import { isNullOrEmpty, extend, isFunction } from 'M/util/Utils';
+import { isNullOrEmpty, isFunction, extend } from 'M/util/Utils';
 import { compileSync as compileTemplate } from 'M/util/Template';
 import Popup from 'M/Popup';
 import geojsonPopupTemplate from 'templates/geojson_popup';

@@ -240,13 +240,11 @@ export default class BackImgLayerControl extends M.Control {
   removeLayers() {
     try {
       this.map.removeLayers(this.flattedLayers);
-      /* eslint-disable no-empty */
-    } catch (err) {}
+    } catch (err) { /* Continue */ }
 
     try {
       this.map.removeLayers(this.map.getBaseLayers());
-      /* eslint-disable no-empty */
-    } catch (err) {}
+    } catch (err) { /* Continue */ }
   }
 
   /**
@@ -257,7 +255,7 @@ export default class BackImgLayerControl extends M.Control {
    * @api
    */
   listen(html) {
-    /* eslint-disable no-param-reassign */
+    // eslint-disable-next-line no-param-reassign
     html.querySelector('#m-backimglayer-previews').style.width = this.numeroColumnas;
     html.querySelectorAll('div[id^="m-backimglayer-lyr-"]').forEach((b, i) => {
       if (b.id === 'm-backimglayer-lyr-empty') {

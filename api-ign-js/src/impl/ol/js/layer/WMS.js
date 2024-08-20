@@ -1,18 +1,10 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable max-len */
 /**
  * @module M/impl/layer/WMS
  */
 import {
-  isNullOrEmpty,
-  isNull,
-  getResolutionFromScale,
-  addParameters,
-  concatUrlPaths,
-  getWMSGetCapabilitiesUrl,
-  extend,
-  fillResolutions,
-  generateResolutionsFromExtent,
+  isNull, isNullOrEmpty, addParameters, getWMSGetCapabilitiesUrl, fillResolutions,
+  getResolutionFromScale, generateResolutionsFromExtent, concatUrlPaths, extend,
 } from 'M/util/Utils';
 import FacadeLayerBase from 'M/layer/Layer';
 import * as LayerType from 'M/layer/Type';
@@ -419,22 +411,24 @@ class WMS extends LayerBase {
   formatCapabilities_(capabilites, selff) {
     let capabilitiesLayer = capabilites;
     for (let i = 0, ilen = capabilitiesLayer.length; i < ilen; i += 1) {
-      if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name !== undefined && capabilitiesLayer[i].Name === selff.facadeLayer_.name) {
+      if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name !== undefined
+        && capabilitiesLayer[i].Name === selff.facadeLayer_.name) {
         capabilitiesLayer = capabilitiesLayer[i];
 
         try {
           this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
-          // this.legendUrl_ = capabilitiesLayer.Style.find((s) => s.Name === this.styles).LegendURL[0].OnlineResource;
-          /* eslint-disable no-empty */
-        } catch (err) {}
+          // this.legendUrl_ = capabilitiesLayer.Style
+          // .find((s) => s.Name === this.styles).LegendURL[0].OnlineResource;
+        } catch (err) { /* Continue */ }
       } else if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Layer !== undefined) {
-        if (capabilitiesLayer[i].Layer.filter((l) => l.Name === selff.facadeLayer_.name)[0] !== undefined) {
-          capabilitiesLayer = capabilitiesLayer[i].Layer.filter((l) => l.Name === selff.facadeLayer_.name)[0];
+        if (capabilitiesLayer[i].Layer.some((l) => l.Name === selff.facadeLayer_.name)) {
+          capabilitiesLayer = capabilitiesLayer[i].Layer
+            .find((l) => l.Name === selff.facadeLayer_.name);
           try {
             this.legendUrl_ = capabilitiesLayer.Style[0].LegendURL[0].OnlineResource;
-            // this.legendUrl_ = capabilitiesLayer.Style.find((s) => s.Name === this.styles).LegendURL[0].OnlineResource;
-            /* eslint-disable no-empty */
-          } catch (err) {}
+            // this.legendUrl_ = capabilitiesLayer.Style
+            // .find((s) => s.Name === this.styles).LegendURL[0].OnlineResource;
+          } catch (err) { /* Continue */ }
         }
       }
     }

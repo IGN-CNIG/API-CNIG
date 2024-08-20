@@ -253,9 +253,6 @@ export default class Locatorscn extends M.Plugin {
    * @api
    */
   equals(plugin) {
-    if (plugin instanceof Locatorscn) {
-      return true;
-    }
-    return false;
+    return plugin instanceof Locatorscn;
   }
 }

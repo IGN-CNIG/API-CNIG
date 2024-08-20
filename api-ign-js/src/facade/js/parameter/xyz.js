@@ -3,11 +3,7 @@
  * @example import xyzParameter from 'M/parameter/xyz';
  */
 import {
-  isNullOrEmpty,
-  isString,
-  normalize,
-  isArray,
-  isObject,
+  isArray, isNullOrEmpty, isObject, isString, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { XYZ } from '../layer/Type';

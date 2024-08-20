@@ -500,7 +500,7 @@ export default class ShareMapControl extends M.Control {
           const index = resolvedControls.indexOf('scale');
           resolvedControls[index] = exactScale === true ? 'scale*true' : 'scale';
         }
-        const backgroundlayers = this.map_.getControls().filter((c) => c.name === 'backgroundlayers')[0];
+        const backgroundlayers = this.map_.getControls().find((c) => c.name === 'backgroundlayers');
         let backgroundlayersAPI;
         if (!M.utils.isNullOrEmpty(backgroundlayers)) {
           const { visible, activeLayer } = backgroundlayers;

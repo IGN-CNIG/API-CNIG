@@ -76,12 +76,12 @@ class Polygon extends Simple {
         if (!isNullOrEmpty(options.stroke.color)) {
           const fillColorValue = Simple
             .getValue(options.stroke.color, featureVariable, this.layer_);
-          let fillOpacityValue = Simple
-            .getValue(options.stroke.opacity, featureVariable, this.layer_);
-          if (!fillOpacityValue && fillOpacityValue !== 0) {
-            fillOpacityValue = 1;
-          }
           if (!isNullOrEmpty(fillColorValue)) {
+            let fillOpacityValue = Simple
+              .getValue(options.stroke.opacity, featureVariable, this.layer_);
+            if (!fillOpacityValue && fillOpacityValue !== 0) {
+              fillOpacityValue = 1;
+            }
             fill = new OLStyleFill({
               color: chroma(fillColorValue).alpha(fillOpacityValue).css(),
             });
@@ -175,12 +175,13 @@ class Polygon extends Simple {
       }
       if (!isNullOrEmpty(options.fill)) {
         const fillColorValue = Simple.getValue(options.fill.color, featureVariable, this.layer_);
-        let fillOpacityValue = Simple.getValue(options.fill.opacity, featureVariable, this.layer_);
-        if (!fillOpacityValue && fillOpacityValue !== 0) {
-          fillOpacityValue = 1;
-        }
         let fill;
         if (!isNullOrEmpty(fillColorValue)) {
+          let fillOpacityValue = Simple
+            .getValue(options.fill.opacity, featureVariable, this.layer_);
+          if (!fillOpacityValue && fillOpacityValue !== 0) {
+            fillOpacityValue = 1;
+          }
           fill = new OLStyleFill({
             color: chroma(fillColorValue).alpha(fillOpacityValue).css(),
           });

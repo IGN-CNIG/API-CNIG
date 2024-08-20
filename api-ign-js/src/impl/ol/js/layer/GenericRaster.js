@@ -4,12 +4,8 @@
 import * as LayerType from 'M/layer/Type';
 import { getValue } from 'M/i18n/language';
 import {
-  isNullOrEmpty,
-  isNull,
+  isUndefined, isNull, isNullOrEmpty, getWMSGetCapabilitiesUrl, getWMTSGetCapabilitiesUrl,
   getResolutionFromScale,
-  isUndefined,
-  getWMSGetCapabilitiesUrl,
-  getWMTSGetCapabilitiesUrl,
 } from 'M/util/Utils';
 import TileWMS from 'ol/source/TileWMS';
 import ImageWMS from 'ol/source/ImageWMS';
@@ -300,13 +296,12 @@ class GenericRaster extends LayerBase {
           parsedCapabilities.Contents.Layer.forEach((l) => {
             const name = l.Identifier;
             l.Style.forEach((s) => {
-              const layerText = response.text.split('Layer>').filter((text) => text.indexOf(`Identifier>${name}<`) > -1)[0];
-              /* eslint-disable no-param-reassign */
+              const layerText = response.text.split('Layer>').find((text) => text.indexOf(`Identifier>${name}<`) > -1);
+              // eslint-disable-next-line no-param-reassign
               s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
             });
           });
-          /* eslint-disable no-empty */
-        } catch (err) {}
+        } catch (err) { /* Continue */ }
         success.call(this, parsedCapabilities);
       });
     });

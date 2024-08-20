@@ -8,10 +8,7 @@ import StyleSimple from './Simple';
 import StyleGeneric from './Generic';
 import StyleChoropleth from './Choropleth';
 import {
-  isNullOrEmpty,
-  stringifyFunctions,
-  extendsObj,
-  defineFunctionFromString,
+  isNullOrEmpty, extendsObj, stringifyFunctions, defineFunctionFromString,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
@@ -404,7 +401,7 @@ class Proportional extends StyleComposite {
   updateCanvas() {
     this.updateCanvasPromise_ = new Promise((success, fail) => {
       if (!isNullOrEmpty(this.layer_)) {
-        const styleSimple = this.styles_.filter((style) => style instanceof StyleSimple)[0];
+        const styleSimple = this.styles_.find((style) => style instanceof StyleSimple);
         let style = !isNullOrEmpty(styleSimple) ? styleSimple : this.layer_.getStyle();
         style = !isNullOrEmpty(style) ? style : this.style_;
 

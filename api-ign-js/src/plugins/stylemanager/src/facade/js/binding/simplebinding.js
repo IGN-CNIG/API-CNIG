@@ -1,8 +1,4 @@
-/* eslint-disable  dot-notation */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-param-reassign */
-/* eslint-disable quote-props */
-
+/* eslint-disable dot-notation,no-prototype-builtins,quote-props */
 import * as chroma from 'chroma-js';
 import buttonoptions from 'templates/buttonoptions';
 import { Binding } from './binding';
@@ -247,10 +243,12 @@ export class SimpleBinding extends Binding {
     }
     const childs = document.querySelectorAll('.style-grid-item');
     childs.forEach((elem) => {
+      // eslint-disable-next-line no-param-reassign
       elem.style.display = 'none';
     });
     const childsSelected = document.querySelectorAll(`.style-grid-item[class*='${ev.target.value}']`);
     childsSelected.forEach((elem) => {
+      // eslint-disable-next-line no-param-reassign
       elem.style.display = 'inherit';
     });
   }
@@ -271,6 +269,7 @@ export class SimpleBinding extends Binding {
    */
   togglePathSection(flag) {
     this.querySelectorAllForEach('[data-textpath]', (element) => {
+      // eslint-disable-next-line no-param-reassign
       element.disabled = flag === true ? flag : false;
     });
   }

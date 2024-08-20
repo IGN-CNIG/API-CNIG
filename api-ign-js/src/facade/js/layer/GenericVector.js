@@ -4,13 +4,7 @@
 import GenericVectorImpl from 'impl/layer/GenericVector';
 import Utils from 'impl/util/Utils';
 import {
-  isNullOrEmpty,
-  isUndefined,
-  isFunction,
-  isArray,
-  normalize,
-  isString,
-  isObject,
+  isUndefined, isArray, isNullOrEmpty, isFunction, isObject, isString, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';

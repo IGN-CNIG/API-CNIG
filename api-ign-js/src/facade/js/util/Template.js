@@ -6,9 +6,10 @@
 import Handlebars from 'handlebars';
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
 import { get as remoteGet } from 'M/util/Remote';
-import { isNullOrEmpty } from 'M/util/Utils';
 import registerHelpers from './handlebarshelpers';
-import { extendsObj, isUndefined, stringToHtml } from './Utils';
+import {
+  isUndefined, isNullOrEmpty, stringToHtml, extendsObj,
+} from './Utils';
 
 /**
  * Plantilla.

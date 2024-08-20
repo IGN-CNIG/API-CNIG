@@ -22,7 +22,7 @@ const PRECHARGED = {
     type: 'WMS', name: 'Planimetrías',
     url: 'https://www.ign.es/wms/minutas-cartograficas',
   }, {
-    name: 'Mapa Libre', legend: 'Mapa Libre',
+    type: 'MapLibre', name: 'Mapa Libre', legend: 'Mapa Libre',
     url: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json',
   }],
   groups: [{

@@ -5,17 +5,9 @@ import GeorefimageControlImpl from '../../impl/ol/js/georefimagecontrol';
 import { reproject, transformExt } from '../../impl/ol/js/utils';
 import georefimageHTML from '../../templates/georefimage';
 import { getValue } from './i18n/language';
-
 import {
-  innerQueueElement,
-  removeLoadQueueElement,
-  getQueueContainer,
-  createWLD,
-  createZipFile,
-  LIST_SERVICES,
-  generateTitle,
-  formatImageBase64,
-  getBase64Image,
+  getQueueContainer, innerQueueElement, removeLoadQueueElement, createWLD, createZipFile,
+  generateTitle, getBase64Image, formatImageBase64, LIST_SERVICES,
 } from './utils';
 
 // ID ELEMENTS

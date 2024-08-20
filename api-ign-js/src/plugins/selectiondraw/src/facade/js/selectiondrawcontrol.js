@@ -73,8 +73,8 @@ export default class SelectionDrawControl extends M.Control {
         const evtobj = window.event ? event : e;
         if (evtobj.keyCode === 90 && evtobj.ctrlKey) {
           const numeroFeatures = drawLayer.getImpl().getOL3Layer().getSource().getFeatures().length;
-          // eslint-disable-next-line max-len
-          drawLayer.getImpl().getOL3Layer().getSource().removeFeature(drawLayer.getImpl().getOL3Layer().getSource().getFeatures()[numeroFeatures - 1]);
+          drawLayer.getImpl().getOL3Layer().getSource().removeFeature(drawLayer
+            .getImpl().getOL3Layer().getSource().getFeatures()[numeroFeatures - 1]);
         }
       }
       document.onkeydown = retroceso;

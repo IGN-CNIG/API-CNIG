@@ -15,7 +15,7 @@ class Point extends Simple {
   /**
    * Constructor principal de la clase.
    * @constructor
-   * @param {Object} options Opciones de los estilos.
+   * @param {Object} optionsVar Opciones de los estilos.
    * - fill: Color de fondo.
    * - stroke: Color del borde.
    * - icon: URL.

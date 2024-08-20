@@ -3,11 +3,7 @@
  * @example import tmsParameter from 'M/parameter/tms';
  */
 import {
-  isNullOrEmpty,
-  isString,
-  normalize,
-  isArray,
-  isObject,
+  isArray, isNullOrEmpty, isObject, isString, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { TMS } from '../layer/Type';

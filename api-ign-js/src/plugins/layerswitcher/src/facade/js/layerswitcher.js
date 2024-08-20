@@ -354,10 +354,7 @@ export default class Layerswitcher extends M.Plugin {
 
   // Esta función devuelve si el plugin recibido por parámetro es instancia de Layerswitcher
   equals(plugin) {
-    if (plugin instanceof Layerswitcher) {
-      return true;
-    }
-    return false;
+    return plugin instanceof Layerswitcher;
   }
 
   /**

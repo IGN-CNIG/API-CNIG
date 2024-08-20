@@ -323,7 +323,7 @@ export default class BackImgLayer extends M.Plugin {
   }
 
   /**
-   * This function compare if pluging recieved by param is instance of   M.plugin.Printer
+   * This function compare if pluging recieved by param is instance of M.plugin.BackImgLayer
    *
    * @public
    * @function
@@ -331,10 +331,7 @@ export default class BackImgLayer extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    if (plugin instanceof BackImgLayer) {
-      return true;
-    }
-    return false;
+    return plugin instanceof BackImgLayer;
   }
 
   /**

@@ -2,7 +2,7 @@
  * @module M/Plugin
  */
 import Base from './Base';
-import { isNullOrEmpty, isUndefined } from './util/Utils';
+import { isUndefined, isNullOrEmpty } from './util/Utils';
 import Exception from './exception/exception';
 import * as EventType from './event/eventtype';
 import { getValue } from './i18n/language';

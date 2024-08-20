@@ -712,17 +712,17 @@ export default class LyrCompareControl extends M.Control {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
           const name = urlLayer[3];
-          const layerByUrl = this.map.getLayers().filter((l) => name.includes(l.name))[this.map
-            .getLayers().filter((l) => name.includes(l.name)).length - 1];
+          const layerByUrl = this.map.getLayers()
+            .filter((l) => name.includes(l.name)).pop();
           this.map.removeLayers(layerByUrl);
         } else {
-          const layerByName = this.map.getLayers().filter((l) => layer.includes(l.name))[this.map
-            .getLayers().filter((l) => layer.includes(l.name)).length - 1];
+          const layerByName = this.map.getLayers()
+            .filter((l) => layer.includes(l.name)).pop();
           this.map.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
-        const layerByObject = this.map.getLayers().filter((l) => layer.name.includes(l.name))[this
-          .map.getLayers().filter((l) => layer.name.includes(l.name)).length - 1];
+        const layerByObject = this.map.getLayers()
+          .filter((l) => layer.name.includes(l.name)).pop();
         this.map.removeLayers(layerByObject);
       }
     });

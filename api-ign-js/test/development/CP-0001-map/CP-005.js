@@ -316,7 +316,7 @@ if (listAllFunctions && listAllFunctions.length > 0) { // Confirmar que existen 
             showResult(auxButton, 'ADD_MVT', mapa[auxName]('MVT*https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf*vectortile'));
           } else if (auxName === 'addMapLibre') {
             showResult(auxButton, 'ADD_MapLibre', mapa[auxName](new MapLibre({
-              type: 'MapLibre', name: 'Mapa Libre Name', legend: 'Mapa Libre Legend', style: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json', extract: true, disableBackgroundColor: false, visibility: true, transparent: false, displayInLayerSwitcher: false,
+              type: 'MapLibre', name: 'Mapa Libre Name', legend: 'Mapa Libre Legend', url: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json', extract: true, disableBackgroundColor: false, visibility: true, transparent: false, displayInLayerSwitcher: false,
             })));
           } else if (auxName === 'addOGCAPIFeatures') {
             showResult(auxButton, 'ADD_OGCAPIFeatures', mapa[auxName](new OGCAPIFeatures({

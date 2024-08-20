@@ -174,11 +174,11 @@ export default class TimelineControl extends M.Control {
           });
         }
       } else {
-        const layerByName = this.map.getLayers().filter((l) => layer.includes(l.name))[0];
+        const layerByName = this.map.getLayers().find((l) => layer.includes(l.name));
         newLayer = this.isValidLayer(layerByName) ? layerByName : null;
       }
     } else if (layer instanceof Object) {
-      const layerByObject = this.map.getLayers().filter((l) => layer.name.includes(l.name))[0];
+      const layerByObject = this.map.getLayers().find((l) => layer.name.includes(l.name));
       newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
     }
     if (newLayer !== null) {
@@ -249,7 +249,7 @@ export default class TimelineControl extends M.Control {
    */
   getMapLayer(layerSearch) {
     return this.map.getLayers()
-      .filter((layer) => layer.getImpl().legend === layerSearch.getImpl().legend)[0];
+      .find((layer) => layer.getImpl().legend === layerSearch.getImpl().legend);
   }
 
   /** This function make the play animation
@@ -455,7 +455,7 @@ export default class TimelineControl extends M.Control {
    * @function
   */
   searchLayerDinamic(layer) {
-    return this.intervals.filter(({ id }) => layer.id === id)[0];
+    return this.intervals.find(({ id }) => layer.id === id);
   }
 
   /**

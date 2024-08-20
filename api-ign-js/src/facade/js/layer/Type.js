@@ -1,7 +1,7 @@
 /**
  * @module M/layer/type
  */
-import { normalize, isString } from '../util/Utils';
+import { isString, normalize } from '../util/Utils';
 
 /**
  * Tipo KML (Keyhole Markup Language). Es un lenguaje de

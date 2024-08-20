@@ -13,11 +13,7 @@ import OLGeomPoint from 'ol/geom/Point';
 import Generic from 'M/style/Generic';
 import FacadeCluster from 'M/style/Cluster';
 import {
-  inverseColor,
-  extendsObj,
-  isFunction,
-  isNullOrEmpty,
-  isArray,
+  isArray, isNullOrEmpty, isFunction, inverseColor, extendsObj,
 } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
 import ClusteredFeature from 'M/feature/Clustered';

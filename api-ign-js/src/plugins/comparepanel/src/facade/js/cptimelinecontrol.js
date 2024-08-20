@@ -147,11 +147,11 @@ export default class TimelineControl extends M.Control {
           });
         }
       } else {
-        const layerByName = this.map.getLayers().filter((l) => layer.includes(l.name))[0];
+        const layerByName = this.map.getLayers().find((l) => layer.includes(l.name));
         newLayer = this.isValidLayer(layerByName) ? layerByName : null;
       }
     } else if (layer instanceof Object) {
-      const layerByObject = this.map.getLayers().filter((l) => layer.name.includes(l.name))[0];
+      const layerByObject = this.map.getLayers().find((l) => layer.name.includes(l.name));
       newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
     }
 
@@ -224,8 +224,8 @@ export default class TimelineControl extends M.Control {
    * @return
    */
   getMapLayer(layerSearch) {
-    return this.map.getLayers().filter((layer) => layer
-      .getImpl().legend === layerSearch.getImpl().legend)[0];
+    return this.map.getLayers().find((layer) => layer
+      .getImpl().legend === layerSearch.getImpl().legend);
   }
 
   /** This function set default layer shown when plugin is activated

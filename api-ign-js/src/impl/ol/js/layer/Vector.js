@@ -270,7 +270,7 @@ class Vector extends Layer {
    * @api stable
    */
   getFeatureById(id) {
-    return this.features_.filter((feature) => feature.getId() === id)[0];
+    return this.features_.find((feature) => feature.getId() === id);
   }
 
   /**

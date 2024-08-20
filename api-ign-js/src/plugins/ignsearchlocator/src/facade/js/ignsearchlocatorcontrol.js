@@ -1198,7 +1198,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   findClickedItem(listElement, allCandidates) {
-    const elementClicked = allCandidates.filter((element) => element.id === listElement.getAttribute('id'))[0];
+    const elementClicked = allCandidates.find((element) => element.id === listElement.getAttribute('id'));
     this.setRecents(elementClicked);
     return elementClicked;
   }

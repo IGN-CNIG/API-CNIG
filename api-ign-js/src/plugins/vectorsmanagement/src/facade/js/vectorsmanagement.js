@@ -246,7 +246,7 @@ export default class VectorsManagement extends M.Plugin {
   }
 
   /**
-   * This function compare if pluging recieved by param is instance of   M.plugin.Printer
+   * This function compare if pluging recieved by param is instance of M.plugin.VectorsManagement
    *
    * @public
    * @function
@@ -254,10 +254,7 @@ export default class VectorsManagement extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    if (plugin instanceof VectorsManagement) {
-      return true;
-    }
-    return false;
+    return plugin instanceof VectorsManagement;
   }
 
   /**

@@ -185,8 +185,7 @@ export default class SelectionControl extends M.Control {
     this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
     this.removeSelectedFeatures();
     olFeatures.forEach((olFeature) => {
-      this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
-        || undefined;
+      this.feature = MFeatures.find((f) => f.getImpl().getOLFeature() === olFeature);
       if (this.feature) {
         this.addFeatureToSelection(this.feature);
       }

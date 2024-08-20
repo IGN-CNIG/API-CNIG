@@ -2,7 +2,7 @@
  * @module M/impl/layer/Draw
  */
 import Exception from 'M/exception/exception';
-import { isFunction, isArray, isNullOrEmpty } from 'M/util/Utils';
+import { isArray, isNullOrEmpty, isFunction } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
 import OLLayerVector from 'ol/layer/Vector';
 import OLSourceVector from 'ol/source/Vector';

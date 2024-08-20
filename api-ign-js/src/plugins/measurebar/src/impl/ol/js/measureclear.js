@@ -73,19 +73,13 @@ export default class MeasureClear extends M.impl.Control {
    * @api
    */
   deactivateOtherBtns() {
-    const measureLength = this.facadeMap_.getControls().filter((control) => {
-      return (control instanceof FacadeMeasureLength);
-    })[0];
-
-    if (measureLength) {
-      measureLength.deactivate();
-    }
-    const measureArea = this.facadeMap_.getControls().filter((control) => {
-      return (control instanceof FacadeMeasureArea);
-    })[0];
-    if (measureArea) {
-      measureArea.deactivate();
-    }
+    this.facadeMap_.getControls().forEach((control) => {
+      if (control instanceof FacadeMeasureLength) { // measureLength
+        control.deactivate();
+      } else if (control instanceof FacadeMeasureArea) { // measureArea
+        control.deactivate();
+      }
+    });
   }
 
   /**

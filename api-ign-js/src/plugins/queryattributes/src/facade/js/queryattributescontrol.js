@@ -1259,7 +1259,7 @@ export default class QueryAttributesControl extends M.Control {
    */
   isLayerLoaded(layer) {
     let isLoaded = false;
-    const kmlLayerLoaded = this.kmlLayers.find((l) => l.layer === layer)
+    const kmlLayerLoaded = this.kmlLayers.some((l) => l.layer === layer)
       ? this.kmlLayers.find((l) => l.layer === layer).loaded
       : false;
     if (layer.type && layer.type !== 'KML' && layer.getImpl().isLoaded()) {

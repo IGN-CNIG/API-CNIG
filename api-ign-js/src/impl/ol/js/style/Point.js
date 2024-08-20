@@ -2,13 +2,9 @@
  * @module M/impl/style/Point
  */
 import {
-  isNullOrEmpty,
-  concatUrlPaths,
-  addParameters,
-  isDynamic,
-  drawDynamicStyle,
-  isArray,
-} from 'M/util/Utils';
+  isUndefined, isArray, isNullOrEmpty, addParameters, concatUrlPaths, isDynamic, drawDynamicStyle,
+  modifySVG,
+} from 'M/util/Utils'; // from '../../../../facade/js/util/Utils';
 import chroma from 'chroma-js';
 import OLStyleImage from 'ol/style/Image';
 import OLFeature from 'ol/Feature';
@@ -30,7 +26,6 @@ import Centroid from './Centroid';
 import PointFontSymbol from '../point/FontSymbol';
 import PointIcon from '../point/Icon';
 import PointCircle from '../point/Circle';
-import { isUndefined, modifySVG } from '../../../../facade/js/util/Utils';
 
 /**
  * @classdesc
@@ -60,22 +55,22 @@ class Point extends Simple {
       if (isNullOrEmpty(this.olStyleFn_)) {
         return null;
       }
-      let style = this.olStyleFn_()[1];
-      if (style.getImage && style.getImage() != null && style.getImage() instanceof OLStyleImage) {
+      const auxOlStyleFn = this.olStyleFn_();
+      let styleImg = auxOlStyleFn[1].getImage ? auxOlStyleFn[1].getImage() : undefined;
+      if (styleImg instanceof OLStyleImage) {
         // see https://github.com/openlayers/openlayers/blob/master/src/ol/style/regularshape.js#L205
-        if (style.getImage() instanceof PointFontSymbol) {
-          const imageCanvas = style.getImage().getImage();
+        if (styleImg instanceof PointFontSymbol) {
+          const imageCanvas = styleImg.getImage();
           if (imageCanvas != null && imageCanvas) {
             image = imageCanvas.toDataURL();
           }
-        } else if (style.getImage() instanceof PointIcon) {
-          const imageStyle = style.getImage();
-          // let canvasSize = this.getCanvasSize();
+        } else if (styleImg instanceof PointIcon) {
+          // let canvasSize = this.getCanvasSize(styleImg);
           // canvasSize[0] / size[0]) * size[0]
-          // let [size, scale] = [imageStyle.getSize(), imageStyle.getScale()];
-          // ctx.drawImage(imageStyle.getImage(), 0, 0, ctx.canvas.height, ctx.canvas.width);
-          if (!isNullOrEmpty(imageStyle)) {
-            image = imageStyle.getSrc();
+          // let [size, scale] = [styleImg.getSize(), styleImg.getScale()];
+          // ctx.drawImage(styleImg.getImage(), 0, 0, ctx.canvas.height, ctx.canvas.width);
+          if (!isNullOrEmpty(styleImg)) {
+            image = styleImg.getSrc();
             if (!image.startsWith(window.location.origin)) {
               const proxyImageURL = concatUrlPaths([M.config.PROXY_URL, '/image']);
               image = addParameters(proxyImageURL, {
@@ -85,20 +80,45 @@ class Point extends Simple {
           }
         }
       } else {
-        style = this.olStyleFn_()[0];
-        if (style.getImage() != null && style.getImage().getStroke() != null) {
-          if (style.getImage().getStroke().getWidth() > Point.DEFAULT_WIDTH_POINT) {
-            style.getImage().getStroke().setWidth(Point.DEFAULT_WIDTH_POINT);
+        styleImg = auxOlStyleFn[0].getImage();
+        if (styleImg != null && styleImg.getStroke() != null) {
+          if (styleImg.getStroke().getWidth() > Point.DEFAULT_WIDTH_POINT) {
+            styleImg.getStroke().setWidth(Point.DEFAULT_WIDTH_POINT);
           }
-          style.getImage().render();
+          styleImg.render();
         }
-        const imageCanvas = style.getImage().getImage();
+        const imageCanvas = styleImg.getImage();
         if (imageCanvas != null) {
           image = imageCanvas.toDataURL();
         }
       }
     }
     return image;
+  }
+
+  /**
+   * Este método regenera el feature OpenLayers
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @public
+   * @param {object} olFeature Feature OpenLayers.
+   * @function
+   * @api stable
+   */
+  geometryCoordFunc_(olFeature) {
+    if (olFeature.getGeometry().getType() === 'MultiPoint' || (olFeature.getGeometry().getType() === 'Point' && olFeature instanceof RenderFeature)) {
+      if (olFeature instanceof RenderFeature) {
+        const coodOriginal = olFeature.getFlatCoordinates();
+        const coordinates = [];
+        const splt = 2;
+        for (let i = 0; i < coodOriginal.length; i += splt) {
+          coordinates.push(coodOriginal.slice(i, i + splt));
+        }
+        return new OLGeomMultiPoint(coordinates);
+      }
+      return new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
+    }
+    const center = Utils.getCentroid(olFeature.getGeometry());
+    return new OLGeomPoint(center);
   }
 
   /**
@@ -119,61 +139,25 @@ class Point extends Simple {
 
       const style = new Centroid({
         zIndex: Simple.getValue(options.zindex, featureVariable, this.layer_),
-        geometry: (olFeature) => {
-          const center = Utils.getCentroid(olFeature.getGeometry());
-          let geom = new OLGeomPoint(center);
-          if (olFeature.getGeometry().getType() === 'MultiPoint' || (olFeature.getGeometry().getType() === 'Point' && olFeature instanceof RenderFeature)) {
-            if (olFeature instanceof RenderFeature) {
-              const coodOriginal = olFeature.getFlatCoordinates();
-              const coordinates = [];
-              const splt = 2;
-              for (let i = 0; i < coodOriginal.length; i += splt) {
-                coordinates.push(coodOriginal.slice(i, i + splt));
-              }
-              geom = new OLGeomMultiPoint(coordinates);
-            } else {
-              geom = new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
-            }
-          }
-
-          return geom;
-        },
+        geometry: this.geometryCoordFunc_,
       });
 
       const styleIcon = new Centroid({
         zIndex: Simple.getValue(options.zindex, featureVariable, this.layer_),
-        geometry: (olFeature) => {
-          const center = Utils.getCentroid(olFeature.getGeometry());
-          let geom = new OLGeomPoint(center);
-          if (olFeature.getGeometry().getType() === 'MultiPoint' || (olFeature.getGeometry().getType() === 'Point' && olFeature instanceof RenderFeature)) {
-            if (olFeature instanceof RenderFeature) {
-              const coodOriginal = olFeature.getFlatCoordinates();
-              const coordinates = [];
-              const splt = 2;
-              for (let i = 0; i < coodOriginal.length; i += splt) {
-                coordinates.push(coodOriginal.slice(i, i + splt));
-              }
-              geom = new OLGeomMultiPoint(coordinates);
-            } else {
-              geom = new OLGeomMultiPoint(olFeature.getGeometry().getCoordinates());
-            }
-          }
-
-          return geom;
-        },
+        geometry: this.geometryCoordFunc_,
       });
 
       let fill;
       if (!isNullOrEmpty(options.fill)) {
         const fillColorValue = Simple.getValue(options.fill.color, featureVariable, this.layer_);
-        let fillOpacityValue = Simple.getValue(options.fill.opacity, featureVariable, this.layer_);
-        if (!fillOpacityValue && fillOpacityValue !== 0) {
-          fillOpacityValue = 1;
-        }
         if (!isNullOrEmpty(fillColorValue)) {
+          let fillOpacityValue = Simple
+            .getValue(options.fill.opacity, featureVariable, this.layer_);
+          if (!fillOpacityValue && fillOpacityValue !== 0) {
+            fillOpacityValue = 1;
+          }
           fill = new OLStyleFill({
-            color: chroma(fillColorValue)
-              .alpha(fillOpacityValue).css(),
+            color: chroma(fillColorValue).alpha(fillOpacityValue).css(),
           });
         }
       }
@@ -181,12 +165,12 @@ class Point extends Simple {
       if (!isNullOrEmpty(options.stroke)) {
         const strokeColorValue = Simple
           .getValue(options.stroke.color, featureVariable, this.layer_);
-        let strokeOpacityValue = Simple
-          .getValue(options.stroke.opacity, featureVariable, this.layer_);
-        if (!strokeOpacityValue && strokeOpacityValue !== 0) {
-          strokeOpacityValue = 1;
-        }
         if (!isNullOrEmpty(strokeColorValue)) {
+          let strokeOpacityValue = Simple
+            .getValue(options.stroke.opacity, featureVariable, this.layer_);
+          if (!strokeOpacityValue && strokeOpacityValue !== 0) {
+            strokeOpacityValue = 1;
+          }
           const { linedashoffset } = options.stroke;
           stroke = new OLStyleStroke({
             color: chroma(strokeColorValue).alpha(strokeOpacityValue).css(),
@@ -239,7 +223,8 @@ class Point extends Simple {
       let radius = Simple.getValue(options.radius, featureVariable, this.layer_);
       if (isArray(options.radius)) {
         const func = (f, map) => {
-          let col = options.radius.find((element) => element.zoom === map.getZoom());
+          const auxZoom = map.getZoom();
+          let col = options.radius.find((element) => element.zoom === auxZoom);
           if (isUndefined(col)) {
             col = options.radius.find((element) => element.zoom === 'default');
           }
@@ -252,8 +237,6 @@ class Point extends Simple {
         fill,
         stroke,
         radius,
-        snapToPixel: Simple.getValue(options.snapToPixel, featureVariable, this.layer_),
-        // forceGeometryRender: options.forceGeometryRender
       }));
       if (!isNullOrEmpty(options.icon)) {
         if (!isNullOrEmpty(options.icon.src)) {
@@ -266,7 +249,6 @@ class Point extends Simple {
             scale: Simple.getValue(options.icon.scale, featureVariable, this.layer_),
             rotation: Simple.getValue(options.icon.rotation, featureVariable, this.layer_),
             rotateWithView: Simple.getValue(options.icon.rotate, featureVariable, this.layer_),
-            snapToPixel: Simple.getValue(options.icon.snaptopixel, featureVariable, this.layer_),
             offsetOrigin: Simple.getValue(options.icon.offsetorigin, featureVariable, this.layer_),
             offset: Simple.getValue(options.icon.offset, featureVariable, this.layer_),
             crossOrigin: Simple.getValue(options.icon.crossorigin, featureVariable, this.layer_),
@@ -282,12 +264,6 @@ class Point extends Simple {
             radius: Simple.getValue(options.icon.radius, featureVariable, this.layer_),
             rotation: Simple.getValue(options.icon.rotation, featureVariable, this.layer_),
             rotateWithView: Simple.getValue(options.icon.rotate, featureVariable, this.layer_),
-            offsetX: Simple.getValue(options.icon.offset
-              ? options.icon.offset[0]
-              : undefined, featureVariable, this.layer_),
-            offsetY: Simple.getValue(options.icon.offset
-              ? options.icon.offset[1]
-              : undefined, featureVariable, this.layer_),
             fill: new OLStyleFill({
               color: Simple.getValue(options.icon.fill !== undefined ? options.icon.fill : '#FFFFFF', featureVariable, this.layer_),
             }),
@@ -295,19 +271,9 @@ class Point extends Simple {
               color: Simple.getValue(options.icon.color, featureVariable, this.layer_),
               width: 1,
             }) : undefined,
-            anchor: Simple.getValue(options.icon.anchor, featureVariable, this.layer_),
-            anchorXUnits: Simple.getValue(options.icon.anchorxunits, featureVariable, this.layer_),
-            anchorYUnits: Simple.getValue(options.icon.anchoryunits, featureVariable, this.layer_),
-            src: Simple.getValue(options.icon.src, featureVariable, this.layer_),
             opacity: Simple.getValue(options.icon.opacity, featureVariable, this.layer_),
-            scale: Simple.getValue(options.icon.scale, featureVariable, this.layer_),
-            snapToPixel: Simple.getValue(options.icon.snaptopixel, featureVariable, this.layer_),
-            offsetOrigin: Simple.getValue(options.icon.offsetorigin, featureVariable, this.layer_),
             offset: Simple.getValue(options.icon.offset, featureVariable, this.layer_),
-            crossOrigin: Simple.getValue(options.icon.crossorigin, featureVariable, this.layer_),
-            anchorOrigin: Simple.getValue(options.icon.anchororigin, featureVariable, this.layer_),
-            size: Simple.getValue(options.icon.size, featureVariable, this.layer_),
-            // forceGeometryRender: options.forceGeometryRender
+            // color: ¿No enviado?
           }));
         }
       }
@@ -323,13 +289,15 @@ class Point extends Simple {
    * @param {Object} vectorContext Vector que se dibujará en el "canvas".
    * @api stable
    */
-  drawGeometryToCanvas(vectorContext) {
-    if (this.olStyleFn_()[1].getImage() instanceof OLStyleFontsSymbol) {
+  drawGeometryToCanvas(vectorContext, auxOlStyle) {
+    const auxOlStyleFn = auxOlStyle || this.olStyleFn_();
+    if (auxOlStyleFn[1].getImage() instanceof OLStyleFontsSymbol) {
       vectorContext.drawGeometry(new OLGeomPoint([10, 10]));
     } else {
-      vectorContext.drawCircle(new OLGeomCircle([this.getCanvasSize()[0] / 2,
-        this.getCanvasSize()[1] / 2,
-      ], this.getRadius_()));
+      const auxCanvasSize = this.getCanvasSize(auxOlStyleFn[1].getImage());
+      vectorContext.drawCircle(new OLGeomCircle([auxCanvasSize[0] / 2,
+        auxCanvasSize[1] / 2,
+      ], this.getRadius_(auxOlStyleFn[0].getImage())));
     }
   }
 
@@ -346,32 +314,35 @@ class Point extends Simple {
     if (options.point) {
       options = options.point;
     }
-    if (options.icon && options.icon.src && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg')
-      && (options.icon.fill || options.icon.stroke)) {
+    if (options.icon && (options.icon.fill || options.icon.stroke) && options.icon.src
+      && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg')) {
       modifySVG(options.icon.src, options).then(() => {
         this.updateCanvas(canvas);
       });
     } else {
       this.updateFacadeOptions(options);
       if (!isDynamic(options)) {
-        const canvasSize = this.getCanvasSize();
+        const auxOlStyleFn = this.olStyleFn_();
+        const oneExist = !isNullOrEmpty(auxOlStyleFn[1]); // Should always exist
+        const canvasSize = this.getCanvasSize(oneExist
+          ? auxOlStyleFn[1].getImage()
+          : undefined);
         const vectorContext = toContextRender(canvas.getContext('2d'), {
           size: canvasSize,
         });
-        let applyStyle = this.olStyleFn_()[0];
+        let applyStyle = auxOlStyleFn[0];
         if (!isNullOrEmpty(applyStyle.getText())) {
           applyStyle.setText(null);
         }
-        if (!isNullOrEmpty(this.olStyleFn_()[1])
-          && this.olStyleFn_()[1].getImage() instanceof OLStyleFontsSymbol) {
-          applyStyle = this.olStyleFn_()[1];
+        if (oneExist && auxOlStyleFn[1].getImage() instanceof OLStyleFontsSymbol) {
+          applyStyle = auxOlStyleFn[1];
         }
         const stroke = applyStyle.getImage().getStroke();
         if (!isNullOrEmpty(stroke) && !isNullOrEmpty(stroke.getWidth())) {
           stroke.setWidth(3);
         }
         vectorContext.setStyle(applyStyle);
-        this.drawGeometryToCanvas(vectorContext);
+        this.drawGeometryToCanvas(vectorContext, auxOlStyleFn);
       }
     }
   }
@@ -384,14 +355,14 @@ class Point extends Simple {
    * @returns {Array} Tamaño.
    * @api stable
    */
-  getCanvasSize() {
-    const image = this.olStyleFn_()[1].getImage();
+  getCanvasSize(defaultImage) {
+    const image = defaultImage || this.olStyleFn_()[1].getImage();
     let size;
     if (image instanceof OLStyleFontsSymbol) {
       size = [90, 90];
     } else {
-      const radius = this.getRadius_(image);
-      size = [(radius * 2) + 4, (radius * 2) + 4];
+      const radius = (this.getRadius_(image) * 2) + 4;
+      size = [radius, radius];
     }
     return size;
   }

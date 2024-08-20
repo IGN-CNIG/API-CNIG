@@ -35,7 +35,7 @@
     "name": "ViewShed",
     "description": "Muestra el área visible calculada a partir de un punto con un análisis de visibilidad.",
     "text": "Muestra área visible mediante análisis de visibilidad a partir de un click",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "date": "12/07/2020",
     "author": "Guadaltel",
     "org": "CNIG",

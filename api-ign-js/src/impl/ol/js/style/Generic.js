@@ -2,10 +2,7 @@
  * @module M/impl/style/Generic
  */
 import {
-  isFunction,
-  isUndefined,
-  isDynamic,
-  drawDynamicStyle,
+  isUndefined, isFunction, isDynamic, drawDynamicStyle,
 } from 'M/util/Utils';
 import OLFeature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
@@ -40,7 +37,7 @@ class Generic extends Simple {
   /**
    * Constructor principal de la clase.
    * @constructor
-   * @param {Object} optionsVar Opciones del estilo.
+   * @param {Object} options Opciones del estilo.
    * - Point. Punto.
    * - Polygon. Polígono.
    * - Line. Linea.

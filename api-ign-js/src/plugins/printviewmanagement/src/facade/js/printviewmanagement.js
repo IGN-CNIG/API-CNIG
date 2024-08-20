@@ -315,10 +315,7 @@ export default class PrintViewManagement extends M.Plugin {
    * @api
    */
   equals(plugin) {
-    if (plugin instanceof PrintViewManagement) {
-      return true;
-    }
-    return false;
+    return plugin instanceof PrintViewManagement;
   }
 
   /**

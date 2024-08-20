@@ -4,11 +4,7 @@
 import GenericRasterImpl from 'impl/layer/GenericRaster';
 import Utils from 'impl/util/Utils';
 import {
-  isNullOrEmpty,
-  isUndefined,
-  isFunction,
-  isObject,
-  isArray,
+  isUndefined, isArray, isNullOrEmpty, isFunction, isObject,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';

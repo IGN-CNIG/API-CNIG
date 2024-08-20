@@ -20,10 +20,7 @@
  */
 
 import {
-  addParameters,
-  generateRandom,
-  isNullOrEmpty,
-  isObject,
+  addParameters, generateRandom, isNullOrEmpty, isObject,
 } from './Utils';
 import { useproxy } from '../mapea';
 import Response from './Response';

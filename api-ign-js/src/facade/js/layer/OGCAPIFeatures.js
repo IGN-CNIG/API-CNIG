@@ -2,12 +2,8 @@
  * @module M/layer/OGCAPIFeatures
  */
 import OGCAPIFeaturesImpl from 'impl/layer/OGCAPIFeatures';
-
 import {
-  isUndefined,
-  isNullOrEmpty,
-  isString,
-  normalize,
+  isUndefined, isNullOrEmpty, isString, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';

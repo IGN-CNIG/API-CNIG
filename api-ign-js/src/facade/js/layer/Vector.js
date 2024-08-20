@@ -5,12 +5,7 @@ import VectorImpl from 'impl/layer/Vector';
 import { geojsonTo4326 } from 'impl/util/Utils';
 import projAPI from 'impl/projections';
 import {
-  isUndefined,
-  isArray,
-  isNullOrEmpty,
-  isString,
-  modifySVG,
-  normalize,
+  isUndefined, isArray, isNullOrEmpty, isString, normalize, modifySVG,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
@@ -82,13 +77,17 @@ class Vector extends LayerBase {
     }
 
     // calls the super constructor
-    const impl = implParam || new VectorImpl(optionsVars, vendorOptions);
-    super(optns, impl);
-
-    // checks if the implementation can create Vector
-    if (isUndefined(VectorImpl)) {
-      Exception(getValue('exception').vectorlayer_method);
+    let impl;
+    if (implParam) {
+      impl = implParam;
+    } else {
+      // checks if the implementation can create Vector
+      if (isUndefined(VectorImpl)) {
+        Exception(getValue('exception').vectorlayer_method);
+      }
+      impl = new VectorImpl(optionsVars, vendorOptions);
     }
+    super(optns, impl);
 
     /**
      * Vector style_. Estilo de la capa.
@@ -401,14 +400,14 @@ class Vector extends LayerBase {
       if (options.point) {
         options = options.point;
       }
-      if (options.icon && options.icon.src && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg')
-        && (options.icon.fill || options.icon.stroke)) {
+      if (options.icon && (options.icon.fill || options.icon.stroke) && options.icon.src
+        && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg')) {
         modifySVG(options.icon.src, options).then((resp) => {
           options.icon.src = resp;
           this.applyStyle_(styleParam, applyToFeature);
         });
       } else if (style instanceof Style) {
-        if (!isNullOrEmpty(this.style_) && this.style_ instanceof Style) {
+        if (this.style_ instanceof Style) {
           this.style_.unapply(this);
         }
         style.apply(this, applyToFeature);
@@ -546,7 +545,7 @@ class Vector extends LayerBase {
     const code = this.map_.getProjection().code;
     const featuresAsJSON = this.getFeatures().map((feature) => feature.getGeoJSON());
     const projection = projAPI.getSupportedProjs()
-      .filter((proj) => proj.codes.includes('EPSG:4326'))[0];
+      .find((proj) => proj.codes.includes('EPSG:4326'));
     return {
       type: 'FeatureCollection',
       crs: {

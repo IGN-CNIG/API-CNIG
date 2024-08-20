@@ -290,7 +290,7 @@ export default class SelectionZoom extends M.Plugin {
   }
 
   /**
-   * This function compare if pluging recieved by param is instance of   M.plugin.Printer
+   * This function compare if pluging recieved by param is instance of M.plugin.SelectionZoom
    *
    * @public
    * @function
@@ -298,10 +298,7 @@ export default class SelectionZoom extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    if (plugin instanceof SelectionZoom) {
-      return true;
-    }
-    return false;
+    return plugin instanceof SelectionZoom;
   }
 
   /**

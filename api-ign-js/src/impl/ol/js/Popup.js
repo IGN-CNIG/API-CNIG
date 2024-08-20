@@ -2,7 +2,7 @@
  * @module M/impl/Popup
  */
 import OLOverlay from 'ol/Overlay';
-import { enableTouchScroll, isFunction, isNullOrEmpty } from 'M/util/Utils';
+import { isNullOrEmpty, isFunction, enableTouchScroll } from 'M/util/Utils';
 import FacadePopup from 'M/Popup';
 import FacadeWindow from 'M/util/Window';
 
@@ -178,29 +178,32 @@ class Popup extends OLOverlay {
   panIntoView(coord) {
     // it waits for the previous animation in order to execute this
     this.panIntoSynchronizedAnim_().then(() => {
-      this.isAnimating_ = true;
-      // if (FacadeWindow.WIDTH > 768) {
-      const tabHeight = 30; // 30px for tabs
-      const popupElement = this.element.querySelector('.m-popup');
-      const popupWidth = popupElement.clientWidth + 20;
-      const popupHeight = popupElement.clientHeight + 20 + tabHeight;
-      const mapSize = this.getMap().getSize();
+      const overlayMap = this.getMap();
+      if (isNullOrEmpty(overlayMap)) return; // Comprueba si overlay fue borrado
 
-      const center = this.getMap().getView().getCenter();
-      const tailHeight = 20;
-      const tailOffsetLeft = 60;
-      const tailOffsetRight = popupWidth - tailOffsetLeft;
-      const popOffset = this.getOffset();
-      const popPx = this.getMap().getPixelFromCoordinate(coord);
-
+      const popPx = overlayMap.getPixelFromCoordinate(coord);
       if (!isNullOrEmpty(popPx)) {
+        this.isAnimating_ = true;
+        // if (FacadeWindow.WIDTH > 768) {
+        const tabHeight = 30; // 30px for tabs
+        const popupElement = this.element.querySelector('.m-popup');
+        const popupWidth = popupElement.clientWidth + 20;
+        const popupHeight = popupElement.clientHeight + 20 + tabHeight;
+        const mapSize = overlayMap.getSize();
+
+        const center = overlayMap.getView().getCenter();
+        const tailHeight = 20;
+        const tailOffsetLeft = 60;
+        const tailOffsetRight = popupWidth - tailOffsetLeft;
+        const popOffset = this.getOffset();
+
         const fromLeft = (popPx[0] - tailOffsetLeft);
         const fromRight = mapSize[0] - (popPx[0] + tailOffsetRight);
 
         const fromTop = popPx[1] - (popupHeight + popOffset[1]);
         const fromBottom = mapSize[1] - (popPx[1] + tailHeight) - popOffset[1];
 
-        const curPix = this.getMap().getPixelFromCoordinate(center);
+        const curPix = overlayMap.getPixelFromCoordinate(center);
         const newPx = curPix.slice();
 
         if (fromRight < 0) {
@@ -218,16 +221,16 @@ class Popup extends OLOverlay {
         // if (this.ani && this.ani_opts) {
         if (!isNullOrEmpty(this.ani_opts) && isNullOrEmpty(this.ani_opts.source)) {
           this.ani_opts.source = center;
-          this.getMap().getView().animate(this.ani_opts);
+          overlayMap.getView().animate(this.ani_opts);
         }
 
         if (newPx[0] !== curPix[0] || newPx[1] !== curPix[1]) {
-          this.getMap().getView().setCenter(this.getMap().getCoordinateFromPixel(newPx));
+          overlayMap.getView().setCenter(overlayMap.getCoordinateFromPixel(newPx));
         }
+        // }
+        // The animation ended
+        this.isAnimating_ = false;
       }
-      // }
-      // the animation ended
-      this.isAnimating_ = false;
     });
 
     return this.getMap().getView().getCenter();

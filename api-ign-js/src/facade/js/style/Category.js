@@ -4,12 +4,7 @@
 import StyleBase from './Style';
 import Composite from './Composite';
 import {
-  isNullOrEmpty,
-  getImageSize,
-  isArray,
-  extendsObj,
-  stringifyFunctions,
-  defineFunctionFromString,
+  isArray, isNullOrEmpty, extendsObj, getImageSize, stringifyFunctions, defineFunctionFromString,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import StyleProportional from './Proportional';

@@ -405,20 +405,17 @@ export default class TransparencyControl extends M.Control {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
           const name = urlLayer[3];
-          const layerByUrl = this.map_
-            .getLayers()
-            .filter((l) => name.includes(l.name))[0];
+          const layerByUrl = this.map_.getLayers()
+            .find((l) => name.includes(l.name));
           this.map_.removeLayers(layerByUrl);
         } else {
-          const layerByName = this.map_
-            .getLayers()
-            .filter((l) => layer.includes(l.name))[0];
+          const layerByName = this.map_.getLayers()
+            .find((l) => layer.includes(l.name));
           this.map_.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
-        const layerByObject = this.map_
-          .getLayers()
-          .filter((l) => layer.name.includes(l.name))[0];
+        const layerByObject = this.map_.getLayers()
+          .find((l) => layer.name.includes(l.name));
         this.map_.removeLayers(layerByObject);
       }
     });

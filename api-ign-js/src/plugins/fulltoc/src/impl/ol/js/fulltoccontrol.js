@@ -190,11 +190,11 @@ export default class FullTOCControl extends M.impl.Control {
 
     if (!M.utils.isNullOrEmpty(layer.id)) {
       layer.url = `${layer.url}${layer.id}?`;
-      /* eslint-disable-next-line max-len */
-      fUrl = M.utils.addParameters(M.utils.addParameters(layer.url, getFeatureParams), layer.getFeatureVendor);
+      fUrl = M.utils.addParameters(M.utils
+        .addParameters(layer.url, getFeatureParams), layer.getFeatureVendor);
     } else {
       layer.url = `${layer.url}?`;
-
+      /* eslint-enable no-param-reassign */
       if (!M.utils.isNullOrEmpty(layer.limit)) {
         getFeatureParams.limit = layer.limit;
       }
@@ -206,9 +206,8 @@ export default class FullTOCControl extends M.impl.Control {
       if (!M.utils.isNullOrEmpty(layer.bbox)) {
         getFeatureParams.bbox = layer.bbox;
       }
-      /* eslint-disable-next-line max-len */
-      fUrl = M.utils.addParameters(M.utils.addParameters(layer.url, getFeatureParams), layer.getFeatureVendor);
-
+      fUrl = M.utils.addParameters(M.utils
+        .addParameters(layer.url, getFeatureParams), layer.getFeatureVendor);
       if (!M.utils.isNullOrEmpty(layer.conditional)) {
         let text = '';
         Object.keys(layer.conditional).forEach((key) => {

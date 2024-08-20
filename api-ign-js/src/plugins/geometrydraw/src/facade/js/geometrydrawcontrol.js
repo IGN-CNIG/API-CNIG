@@ -836,9 +836,9 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   initializeLayers() {
-    this.drawLayer = this.map.getLayers()[this.map.getLayers().length - 1];
+    this.drawLayer = this.map.getLayers().pop();
     // popup desactivated
-    this.map.getLayers()[this.map.getLayers().length - 1].getImpl().extract = false;
+    this.drawLayer.getImpl().extract = false;
     this.map.addLayers(this.selectionLayer);
     this.selectionLayer.setZIndex(this.selectionLayer.getZIndex() + 8);
     this.getImpl().setImplSource();
@@ -982,7 +982,7 @@ export default class GeometryDrawControl extends M.Control {
       document.querySelector('.m-geometrydraw #drawingtools button').style.display = 'block';
     }
 
-    this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
+    this.map.getLayers().pop().addFeatures(this.feature);
 
     this.emphasizeSelectedFeature();
     this.showFeatureInfo();
@@ -1698,8 +1698,7 @@ export default class GeometryDrawControl extends M.Control {
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
-      || undefined;
+    this.feature = MFeatures.find((f) => f.getImpl().getOLFeature() === olFeature);
 
     this.geometry = this.feature.getGeometry().type;
 

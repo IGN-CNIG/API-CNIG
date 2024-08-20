@@ -4,7 +4,7 @@ import Polygon from 'M/style/Polygon';
 import Point from 'M/style/Point';
 import Cluster from 'M/style/Cluster';
 import Clustered from 'M/feature/Clustered';
-import { LOAD as LoadEvt, SELECT_FEATURES as SelectFeaturesEvt } from 'M/event/eventtype';
+import { SELECT_FEATURES as SelectFeaturesEvt, LOAD as LoadEvt } from 'M/event/eventtype';
 
 const mapjs = Mmap({
   container: 'map',

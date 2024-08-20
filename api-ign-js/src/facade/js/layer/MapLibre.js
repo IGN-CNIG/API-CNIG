@@ -4,10 +4,7 @@
 import MapLibreImpl from 'impl/layer/MapLibre';
 import LayerBase from './Layer';
 import {
-  isUndefined,
-  isNullOrEmpty,
-  normalize,
-  isString,
+  isUndefined, isNullOrEmpty, isString, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { MapLibre as MapLibreType } from './Type';

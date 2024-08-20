@@ -1,6 +1,5 @@
 import { map as Mmap } from 'M/mapea';
-import { LOAD } from 'M/event/eventtype';
-import { SELECT_FEATURES } from 'M/event/eventtype';
+import { SELECT_FEATURES, LOAD } from 'M/event/eventtype';
 import { MARKER } from 'M/style/Form';
 import { get as getProjection, transform } from 'ol/proj';
 import KML from 'M/layer/KML';

@@ -1010,7 +1010,7 @@ export default class IncicartoControl extends M.Control {
       const index = resolvedControls.indexOf('scale');
       resolvedControls[index] = exactScale === true ? 'scale*true' : 'scale';
     }
-    const backgroundlayers = this.map_.getControls().filter((c) => c.name === 'backgroundlayers')[0];
+    const backgroundlayers = this.map_.getControls().find((c) => c.name === 'backgroundlayers');
     let backgroundlayersAPI;
     if (!M.utils.isNullOrEmpty(backgroundlayers)) {
       const { visible, activeLayer } = backgroundlayers;
@@ -1983,8 +1983,7 @@ export default class IncicartoControl extends M.Control {
     this.style = undefined;
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
-    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
-      || undefined;
+    this.feature = MFeatures.find((f) => f.getImpl().getOLFeature() === olFeature);
     this.geometry = this.feature.getGeometry().type;
     const selector = `#m-incicarto-list li[name="${this.drawLayer.name}"] div.m-incicarto-layer-actions-container`;
     document.querySelector(selector).appendChild(this.drawingTools);
@@ -2020,11 +2019,13 @@ export default class IncicartoControl extends M.Control {
   clickLayer(evtParameter) {
     const evt = (evtParameter || window.event);
     const layerName = evt.target.getAttribute('data-layer-name');
-    const layerURL = evt.target.getAttribute('data-layer-url');
     let render = false;
     if (!M.utils.isNullOrEmpty(layerName)) {
       evt.stopPropagation();
-      const layer = this.map.getLayers().filter((l) => l.name === layerName && (l.url === layerURL || layerURL === ''))[0];
+      const layerURL = evt.target.getAttribute('data-layer-url');
+      const isEmptyURL = layerURL === '';
+      const layer = this.map.getLayers()
+        .find((l) => l.name === layerName && (l.url === layerURL || isEmptyURL));
       if (evt.target.classList.contains('m-incicarto-layer-legend-change')) {
         const changeName = M.template.compileSync(changeNameTemplate, {
           jsonp: true,
@@ -2203,12 +2204,12 @@ export default class IncicartoControl extends M.Control {
     const selector = '.m-incicarto #m-incicarto-list div.m-incicarto-layer-actions-container';
     const selector2 = '#m-incicarto-list div.m-incicarto-layer-actions span';
     document.querySelectorAll(selector).forEach((elem) => {
-      /* eslint-disable no-param-reassign */
+      // eslint-disable-next-line no-param-reassign
       elem.innerHTML = '';
     });
 
     document.querySelectorAll(selector2).forEach((elem) => {
-      /* eslint-disable no-param-reassign */
+      // eslint-disable-next-line no-param-reassign
       elem.classList.remove('active-tool');
     });
 
@@ -2422,12 +2423,12 @@ export default class IncicartoControl extends M.Control {
     const selector = '.m-incicarto #m-incicarto-list div.m-incicarto-layer-actions-container';
     const selector2 = '#m-incicarto-list div.m-incicarto-layer-actions span';
     document.querySelectorAll(selector).forEach((elem) => {
-      /* eslint-disable no-param-reassign */
+      // eslint-disable-next-line no-param-reassign
       elem.innerHTML = '';
     });
 
     document.querySelectorAll(selector2).forEach((elem) => {
-      /* eslint-disable no-param-reassign */
+      // eslint-disable-next-line no-param-reassign
       elem.classList.remove('active-tool');
     });
     this.getImpl().removeSelectInteraction();

@@ -74,9 +74,9 @@ export default class MeasureArea extends MeasureImpl {
   }
 
   activate() {
-    const measureLength = this.facadeMap_.getControls().filter((control) => {
+    const measureLength = this.facadeMap_.getControls().find((control) => {
       return (control instanceof FacadeMeasureLength);
-    })[0];
+    });
 
     if (measureLength) {
       measureLength.deactivate();

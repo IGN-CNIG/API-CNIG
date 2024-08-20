@@ -265,12 +265,10 @@ export default class LyrdropdownControl extends M.Control {
               useCapabilities: urlLayer[4] === 'true' || false,
             });
 
-            if (this.map.getLayers().filter((l) => newLayer.name.includes(l.name)).length > 0) {
-              newLayer = this.map.getLayers().filter((l) => newLayer.name.includes(l.name))[0];
+            if (this.map.getLayers().some((l) => newLayer.name.includes(l.name))) {
+              newLayer = this.map.getLayers().find((l) => newLayer.name.includes(l.name));
               newLayer.legend = urlLayer[1] || newLayer.name;
-            } else {
-              // this.map.addLayers(newLayer);
-            }
+            } // else { this.map.addLayers(newLayer); }
           } else if (urlLayer[0].toUpperCase() === 'WMTS') {
             /* newLayer = new M.layer.WMTS({
               url: urlLayer[2] + '?',
@@ -300,11 +298,11 @@ export default class LyrdropdownControl extends M.Control {
             // this.map.addLayers(newLayer);
           }
         } else {
-          const layerByName = this.map.getLayers().filter((l) => layer.includes(l.name))[0];
+          const layerByName = this.map.getLayers().find((l) => layer.includes(l.name));
           newLayer = this.isValidLayer(layerByName) ? layerByName : null;
         }
       } else if (layer instanceof Object) {
-        const layerByObject = this.map.getLayers().filter((l) => layer.name.includes(l.name))[0];
+        const layerByObject = this.map.getLayers().find((l) => layer.name.includes(l.name));
         newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
       }
 

@@ -204,12 +204,12 @@ class Feature extends Base {
    * @api
    */
   setStyle(style) {
-    if (!isNullOrEmpty(style) && style instanceof StyleFeature) {
-      this.style_ = style;
-      this.style_.applyToFeature(this);
-    } else if (isNullOrEmpty(style)) {
+    if (isNullOrEmpty(style)) {
       this.style_ = null;
       this.getImpl().clearStyle();
+    } else if (style instanceof StyleFeature) {
+      this.style_ = style;
+      this.style_.applyToFeature(this);
     }
     this.fire(EventType.CHANGE_STYLE, [style, this]);
   }

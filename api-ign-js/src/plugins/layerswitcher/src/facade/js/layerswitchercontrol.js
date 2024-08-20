@@ -415,7 +415,6 @@ export default class LayerswitcherControl extends M.Control {
     const layerName = evt.target.getAttribute('data-layer-name');
     const layerURL = evt.target.getAttribute('data-layer-url') || undefined;
     const layerType = evt.target.getAttribute('data-layer-type');
-    const selectLayer = evt.target.getAttribute('data-select-type');
     if (evt.target.id === 'm-layerswitcher-hsalllayers') {
       this.showHideAllLayers();
     } else if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericRaster' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles')))
@@ -423,6 +422,7 @@ export default class LayerswitcherControl extends M.Control {
       let layer = this.findLayer(evt);
       if (layer.length > 0) {
         layer = layer[0];
+        const selectLayer = evt.target.getAttribute('data-select-type');
         // show hide layers
         if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'eye') {
           if (evt.target.classList.contains('m-layerswitcher-check')) {
@@ -1371,8 +1371,7 @@ export default class LayerswitcherControl extends M.Control {
                         this.capabilities.forEach((layer) => {
                           try {
                             this.getParents(getCapabilities, layer);
-                            /* eslint-disable no-empty */
-                          } catch (err) {}
+                          } catch (err) { /* Continue */ }
                         });
                       }
                       // WFS
@@ -2225,8 +2224,7 @@ export default class LayerswitcherControl extends M.Control {
       if (group.localName === 'tbody') {
         this.filterName = 'none';
       }
-      /* eslint-disable no-empty */
-    } catch (err) {}
+    } catch (err) { /* Continue */ }
     document.querySelector(SEARCH_INPUT).value = url;
 
     this.readCapabilities(evt);
@@ -2500,7 +2498,7 @@ export default class LayerswitcherControl extends M.Control {
     buttonClose.addEventListener('click', () => {
       try {
         document.querySelector('div.m-dialog.info').parentNode.removeChild(document.querySelector('div.m-dialog.info'));
-      } catch (error) {}
+      } catch (error) { /* Continue */ }
     });
   }
 
@@ -2605,7 +2603,7 @@ export default class LayerswitcherControl extends M.Control {
               document.querySelector('#m-layerswitcher-ogc-check-results').innerHTML = '';
             }
           });
-        } catch (error) {}
+        } catch (error) { /* Continue */ }
         const urlInput = document.querySelector(SEARCH_INPUT).value;
 
         const customQueryTemplate = M.template.compileSync(customQueryFiltersTemplate, {
@@ -2810,8 +2808,8 @@ export default class LayerswitcherControl extends M.Control {
     // Procesar los checkboxes agrupados
     Object.keys(checkboxes).forEach((name) => {
       const checkboxGroup = checkboxes[name];
-      /* eslint-disable-next-line max-len */
-      const checkedValues = checkboxGroup.filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+      const checkedValues = checkboxGroup
+        .filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
 
       if (checkedValues.length === 1) {
         // Si solo hay un checkbox marcado, establecer el valor correspondiente en formData
@@ -2883,11 +2881,11 @@ export default class LayerswitcherControl extends M.Control {
 
     if (!M.utils.isNullOrEmpty(layer.id)) {
       layer.url = `${layer.url}${layer.id}?`;
-      /* eslint-disable-next-line max-len */
-      fUrl = M.utils.addParameters(M.utils.addParameters(layer.url, getFeatureParams), layer.getFeatureVendor);
+      fUrl = M.utils.addParameters(M.utils
+        .addParameters(layer.url, getFeatureParams), layer.getFeatureVendor);
     } else {
       layer.url = `${layer.url}?`;
-
+      /* eslint-enable no-param-reassign */
       if (!M.utils.isNullOrEmpty(layer.limit)) {
         getFeatureParams.limit = layer.limit;
       }
@@ -2899,9 +2897,8 @@ export default class LayerswitcherControl extends M.Control {
       if (!M.utils.isNullOrEmpty(layer.bbox)) {
         getFeatureParams.bbox = layer.bbox;
       }
-      /* eslint-disable-next-line max-len */
-      fUrl = M.utils.addParameters(M.utils.addParameters(layer.url, getFeatureParams), layer.getFeatureVendor);
-
+      fUrl = M.utils.addParameters(M.utils
+        .addParameters(layer.url, getFeatureParams), layer.getFeatureVendor);
       if (!M.utils.isNullOrEmpty(layer.conditional)) {
         let text = '';
         Object.keys(layer.conditional).forEach((key) => {

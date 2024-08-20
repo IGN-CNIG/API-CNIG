@@ -1,5 +1,4 @@
-/* eslint-disable  dot-notation */
-/* eslint-disable no-param-reassign */
+/* eslint-disable dot-notation */
 import * as chroma from 'chroma-js';
 import { Binding } from './binding';
 
@@ -148,6 +147,7 @@ export class ClusterBinding extends Binding {
 
       if (element != null) {
         element.classList.add('m-page-active');
+        // eslint-disable-next-line no-param-reassign
         element.dataset['pageActive'] = '';
         const id = element.dataset['pageSelector'];
         const newRange = this.querySelector(`[data-page='${id}']`);

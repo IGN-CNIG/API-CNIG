@@ -12,3 +12,6 @@ Parámetros view en vendor
 
 CP-005
 Parámetros mapa
+
+CP-006
+Prueba con dos mapas

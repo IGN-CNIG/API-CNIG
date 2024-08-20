@@ -128,13 +128,13 @@ class Line extends Simple {
       let fill;
       if (!isNullOrEmpty(options.fill)) {
         const fillColorValue = Simple.getValue(options.fill.color, featureVariable, this.layer_);
-        let fillOpacityValue = Simple.getValue(options.fill.opacity, featureVariable, this.layer_);
-        if (!fillOpacityValue && fillOpacityValue !== 0) {
-          fillOpacityValue = 1;
-        }
         const widthValue = Simple.getValue(options.fill.width, featureVariable, this.layer_);
-
         if (!isNullOrEmpty(fillColorValue)) {
+          let fillOpacityValue = Simple
+            .getValue(options.fill.opacity, featureVariable, this.layer_);
+          if (!fillOpacityValue && fillOpacityValue !== 0) {
+            fillOpacityValue = 1;
+          }
           fill = new OLStyleStroke({
             color: chroma(fillColorValue).alpha(fillOpacityValue).css(),
             width: widthValue,
@@ -142,10 +142,9 @@ class Line extends Simple {
         }
 
         if (!isNullOrEmpty(options.fill.pattern)) {
-          let color = 'rgba(0,0,0,1)';
-          if (!isNullOrEmpty(options.fill.pattern.color)) {
-            color = Simple.getValue(options.fill.pattern.color, featureVariable, this.layer_);
-          }
+          const color = isNullOrEmpty(options.fill.pattern.color)
+            ? 'rgba(0,0,0,1)'
+            : Simple.getValue(options.fill.pattern.color, featureVariable, this.layer_);
 
           fill = new OLStyleStrokePattern({
             pattern: (Simple.getValue(options.fill.pattern.name, featureVariable, this.layer_) || '').toLowerCase(),
@@ -251,14 +250,15 @@ class Line extends Simple {
       size: canvasSize,
     });
     let optionsStyle;
-    const style = this.olStyleFn_()[1];
+    const auxOlStyleFn = this.olStyleFn_();
+    const style = auxOlStyleFn[1];
     if (!isNullOrEmpty(style) && !isNullOrEmpty(style.getStroke())) {
       optionsStyle = {
         color: style.getStroke().getColor(),
         width: 1,
       };
     }
-    const applyStyle = this.olStyleFn_()[0];
+    const applyStyle = auxOlStyleFn[0];
     if (!isNullOrEmpty(applyStyle.getText())) {
       applyStyle.setText(null);
     }

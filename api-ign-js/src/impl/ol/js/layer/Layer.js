@@ -1,7 +1,7 @@
 /**
  * @module M/impl/Layer
  */
-import { isNullOrEmpty, concatUrlPaths, isString } from 'M/util/Utils';
+import { isNullOrEmpty, isString, concatUrlPaths } from 'M/util/Utils';
 import MObject from 'M/Object';
 import FacadeLayer from 'M/layer/Layer';
 /**

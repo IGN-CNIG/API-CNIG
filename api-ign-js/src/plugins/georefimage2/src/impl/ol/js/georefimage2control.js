@@ -876,13 +876,12 @@ export default class Georefimage2Control extends M.impl.Control {
           parsedCapabilities.Contents.Layer.forEach((l) => {
             const name = l.Identifier;
             l.Style.forEach((s) => {
-              const layerText = response.text.split('Layer>').filter((text) => text.indexOf(`Identifier>${name}<`) > -1)[0];
-              /* eslint-disable no-param-reassign */
+              const layerText = response.text.split('Layer>').find((text) => text.indexOf(`Identifier>${name}<`) > -1);
+              // eslint-disable-next-line no-param-reassign
               s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
             });
           });
-        /* eslint-disable no-empty */
-        } catch (err) {}
+        } catch (err) { /* Continue */ }
         success.call(this, parsedCapabilities);
       });
     });

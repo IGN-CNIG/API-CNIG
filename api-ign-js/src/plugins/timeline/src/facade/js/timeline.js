@@ -10,6 +10,8 @@ import myhelp from '../../templates/myhelp';
 import es from './i18n/es';
 import en from './i18n/en';
 
+const typesTimeline = ['absoluteSimple', 'absolute', 'relative'];
+
 export default class Timeline extends M.Plugin {
   /**
    * @classdesc
@@ -74,6 +76,7 @@ export default class Timeline extends M.Plugin {
         this.intervals = options.intervals;
       } else {
         // M.dialog.error(getValue('intervals_error'));
+        this.intervals = [];
       }
     }
 
@@ -174,12 +177,11 @@ export default class Timeline extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    const typesTimeline = ['absoluteSimple', 'absolute', 'relative'];
     if (!this.timelineType || !typesTimeline.includes(this.timelineType)) {
       throw new Error('Add correct typesTimeline, (absoluteSimple', 'absolute', 'relative)');
     }
 
-    if (this.typesTimeline === 'absolute' || this.typesTimeline === 'relative') {
+    if (this.timelineType === 'absolute' || this.timelineType === 'relative') {
       this.intervals = this.intervals.filter(({ layer }) => {
         if (typeof layer === 'string') {
           return !layer.includes('GenericRaster') || !layer.includes('GenericVector');
@@ -274,7 +276,7 @@ export default class Timeline extends M.Plugin {
    */
   getAPIRest() {
     const intervals = JSON.stringify(this.intervals).replace(/\[/g, '!!').replace(/\]/g, '¡¡');
-    return `${this.name}=${this.position}*!${intervals}*!${this.animation}*!${this.speed}`;
+    return `${this.name}=${this.position}*!${intervals}*!${this.animation}*!${this.speed}*!${this.timelineType}`;
   }
 
   /**
@@ -310,10 +312,7 @@ export default class Timeline extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    if (plugin instanceof Timeline) {
-      return true;
-    }
-    return false;
+    return plugin instanceof Timeline;
   }
 
   /**

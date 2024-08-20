@@ -4,7 +4,7 @@
  */
 import 'assets/css/dialog';
 import dialogTemplate from 'templates/dialog';
-import { isNullOrEmpty, isUndefined, transfomContent } from './util/Utils';
+import { isUndefined, isNullOrEmpty, transfomContent } from './util/Utils';
 import { compileSync as compileTemplate } from './util/Template';
 import { getValue } from './i18n/language';
 

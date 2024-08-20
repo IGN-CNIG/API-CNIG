@@ -1,14 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable max-len */
 /**
  * @module M/impl/layer/GeoTIFF
  */
 import {
-  isNullOrEmpty,
-  extend,
-  isNull,
-  isUndefined,
-  getResolutionFromScale,
+  isUndefined, isNull, isNullOrEmpty, getResolutionFromScale, extend,
 } from 'M/util/Utils';
 import * as LayerType from 'M/layer/Type';
 import * as EventType from 'M/event/eventtype';
@@ -22,7 +17,7 @@ import ImplUtils from '../util/Utils';
 /**
  * @classdesc
  * El formato ráster GeoTIFF aprovecha un formato de archivo independiente de plataforma (TIFF)
- * maduro añadiendo los metadatos necesarios para describir y utilizar datos de imágenes geográficas.
+ * maduro añadiendo metadatos necesarios para describir y utilizar datos de imágenes geográficas.
  * Estos metadatos sirven para georreferenciar el archivo ráster, por lo que a demás de los datos,
  * el archivo contiene metadatos necesarios para su utilización.
  *

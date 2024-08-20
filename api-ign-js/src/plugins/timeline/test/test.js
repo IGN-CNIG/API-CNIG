@@ -178,6 +178,8 @@ const pluginTimeline = new Timeline({
       attributeParam: 'date',
     },
   ],
+  // intervals: undefined, // interumpe funcionamiento
+  // intervals: [], // getAPIRest() "timeline=TR*!!!¡¡*!false*!1"
   animation: false, // No hace nada con timelineType: 'absolute' | 'relative'
   speed: 1,
   // tooltip: 'TEST TOOLTIP Timeline',

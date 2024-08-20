@@ -210,8 +210,7 @@ export default class AnalysisControl extends M.Control {
     const MFeatures = this.layer_.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
-      || undefined;
+    this.feature = MFeatures.find((f) => f.getImpl().getOLFeature() === olFeature);
 
     this.calculateAnalysis();
   }
@@ -375,11 +374,11 @@ export default class AnalysisControl extends M.Control {
       document.body.removeChild(this.pointTemplate);
     }
     const mapProj = M.impl.ol.js.projections.getSupportedProjs()
-      .filter((p) => p.codes.includes(pointXYZ.map.projection))[0];
+      .find((p) => p.codes.includes(pointXYZ.map.projection));
     const mapUnit = mapProj.units === 'm' ? 'm' : '°';
     const mapLabels = mapProj.units === 'm' ? ['X', 'Y'] : [getValue('creationLongitude'), getValue('creationLatitude')];
     const geographicProj = M.impl.ol.js.projections.getSupportedProjs()
-      .filter((p) => p.codes.includes(pointXYZ.geographic.projection))[0];
+      .find((p) => p.codes.includes(pointXYZ.geographic.projection));
     const dist = mapProj.codes[0] !== geographicProj.codes[0];
     this.pointTemplate = M.template.compileSync(pointProfileTemplate, {
       vars: {

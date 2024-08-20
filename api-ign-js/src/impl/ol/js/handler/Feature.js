@@ -27,10 +27,12 @@ export const getFacadeFeature = (feature, layer) => {
   if (!isNullOrEmpty(featureId)) {
     mFeature = layer.getFeatureById(featureId);
   }
-  if (isNullOrEmpty(mFeature) && (feature instanceof RenderFeature)) {
-    mFeature = RenderFeatureImpl.olFeature2Facade(feature);
-  } else if (isNullOrEmpty(mFeature) && (feature instanceof olFeature)) {
-    mFeature = FeatureImpl.olFeature2Facade(feature);
+  if (isNullOrEmpty(mFeature)) {
+    if (feature instanceof RenderFeature) {
+      mFeature = RenderFeatureImpl.olFeature2Facade(feature);
+    } else if (feature instanceof olFeature) {
+      mFeature = FeatureImpl.olFeature2Facade(feature);
+    }
   }
   return mFeature;
 };
@@ -88,10 +90,11 @@ class Feature {
    */
   getFeaturesByLayer(evt, layer) {
     const features = [];
-    const olLayer = layer.getImpl().getOL3Layer();
-    const userMaxExtent = layer.userMaxExtent;
+    const olLayer = !isNullOrEmpty(layer) && layer.isVisible()
+      ? layer.getImpl().getOL3Layer() : null;
 
-    if (!isNullOrEmpty(layer) && layer.isVisible() && !isNullOrEmpty(olLayer)) {
+    if (!isNullOrEmpty(olLayer)) {
+      const userMaxExtent = layer.userMaxExtent;
       this.map_.getMapImpl().forEachFeatureAtPixel(evt.pixel, (feature, layerFrom) => {
         if (userMaxExtent && !this.handleFeatureInExtent(userMaxExtent, evt.pixel)) {
           return;
@@ -117,13 +120,11 @@ class Feature {
         }
       }, {
         layerFilter: (l) => {
-          let passFilter = false;
-          if (layer.getStyle() instanceof Cluster
-            && layer.getStyle().getOptions().selectInteraction) {
-            passFilter = (l === layer.getStyle().getImpl().selectClusterInteraction.getLayer());
-          }
-          passFilter = passFilter || l === olLayer;
-          return passFilter;
+          if (l === olLayer) return true;
+          const auxstyle = layer.getStyle();
+          return (auxstyle instanceof Cluster
+            && auxstyle.getOptions().selectInteraction
+            && auxstyle.getImpl().selectClusterInteraction.getLayer() === l);
         },
       });
     }

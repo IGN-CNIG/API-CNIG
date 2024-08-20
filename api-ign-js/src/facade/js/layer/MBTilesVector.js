@@ -6,10 +6,7 @@ import RenderFeatureImpl from 'impl/feature/RenderFeature';
 import Vector from './Vector';
 import * as LayerType from './Type';
 import {
-  isUndefined,
-  isNullOrEmpty,
-  isString,
-  normalize,
+  isUndefined, isNullOrEmpty, isString, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';

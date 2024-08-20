@@ -8,8 +8,7 @@ import PrinterMapControlImpl from '../../impl/ol/js/printermapcontrol';
 import { reproject, transformExt } from '../../impl/ol/js/utils';
 import printermapHTML from '../../templates/printermap';
 import { getValue } from './i18n/language';
-
-import { getBase64Image, removeLoadQueueElement, innerQueueElement } from './utils';
+import { innerQueueElement, removeLoadQueueElement, getBase64Image } from './utils';
 
 export default class PrinterMapControl extends M.Control {
   /**

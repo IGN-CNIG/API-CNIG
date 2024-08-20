@@ -4,12 +4,7 @@
 import HeatmapImpl from 'impl/style/Heatmap';
 import Style from './Style';
 import {
-  isString,
-  isFunction,
-  isArray,
-  inverseColor,
-  isNullOrEmpty,
-  generateIntervals,
+  isArray, isNullOrEmpty, isFunction, isString, inverseColor, generateIntervals,
   defineFunctionFromString,
 } from '../util/Utils';
 import Exception from '../exception/exception';

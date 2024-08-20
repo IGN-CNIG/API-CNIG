@@ -4,10 +4,7 @@
 import 'assets/css/lyrcompare';
 import LyrCompareControl from './lyrcomparecontrol';
 import api from '../../api';
-import {
-  getValue,
-} from './i18n/language';
-
+import { getValue } from './i18n/language';
 import es from './i18n/es';
 import en from './i18n/en';
 
@@ -354,9 +351,6 @@ export default class LyrCompare extends M.Plugin {
    * @api stable
    */
   equals(plugin) {
-    if (plugin instanceof LyrCompare) {
-      return true;
-    }
-    return false;
+    return plugin instanceof LyrCompare;
   }
 }

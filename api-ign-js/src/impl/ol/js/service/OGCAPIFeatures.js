@@ -2,7 +2,7 @@
  * @module M/impl/service/OGCAPIFeatures
  */
 import { get as getRemote } from 'M/util/Remote';
-import { addParameters, isNullOrEmpty } from 'M/util/Utils';
+import { isNullOrEmpty, addParameters } from 'M/util/Utils';
 import Featuretype from '../format/wfs/DescribeFeatureType';
 
 /**

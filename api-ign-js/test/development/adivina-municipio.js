@@ -2,7 +2,7 @@ import { map as Mmap } from 'M/mapea';
 import WFS from 'M/layer/WFS';
 import Polygon from 'M/style/Polygon';
 import Category from 'M/style/Category';
-import { LOAD as LoadEvt, SELECT_FEATURES as SelectFeaturesEvt } from 'M/event/eventtype';
+import { SELECT_FEATURES as SelectFeaturesEvt, LOAD as LoadEvt } from 'M/event/eventtype';
 
 const mapajs = Mmap({
   container: 'map',

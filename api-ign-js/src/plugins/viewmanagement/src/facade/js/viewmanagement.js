@@ -239,10 +239,7 @@ export default class ViewManagement extends M.Plugin {
    * @api
    */
   equals(plugin) {
-    if (plugin instanceof ViewManagement) {
-      return true;
-    }
-    return false;
+    return plugin instanceof ViewManagement;
   }
 
   /**

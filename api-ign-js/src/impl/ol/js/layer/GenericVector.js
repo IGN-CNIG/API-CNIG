@@ -7,10 +7,7 @@ import { compileSync as compileTemplate } from 'M/util/Template';
 import Popup from 'M/Popup';
 import { getValue } from 'M/i18n/language';
 import {
-  isNullOrEmpty,
-  isNull,
-  getResolutionFromScale,
-  isUndefined,
+  isUndefined, isNull, isNullOrEmpty, getResolutionFromScale,
 } from 'M/util/Utils';
 import geojsonPopupTemplate from 'templates/geojson_popup';
 import Vector from './Vector';

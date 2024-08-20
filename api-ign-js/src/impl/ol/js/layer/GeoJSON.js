@@ -1,7 +1,7 @@
 /**
  * @module M/impl/layer/GeoJSON
  */
-import { isNullOrEmpty, isObject, isFunction } from 'M/util/Utils';
+import { isNullOrEmpty, isFunction, isObject } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
 import Popup from 'M/Popup';
 import { compileSync as compileTemplate } from 'M/util/Template';

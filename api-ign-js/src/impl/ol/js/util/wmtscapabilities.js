@@ -4,7 +4,7 @@
  * @module M/impl/util/wmtscapabilities
  */
 import WMTS from 'M/layer/WMTS';
-import { isNullOrEmpty, isArray, isObject } from 'M/util/Utils';
+import { isArray, isNullOrEmpty, isObject } from 'M/util/Utils';
 import { get as getProj } from 'ol/proj';
 import ImplUtils from './Utils';
 

@@ -12,7 +12,7 @@ import MapLibre from 'M/layer/MapLibre';
 import { getQuickLayers } from '../mapea';
 import ControlBase from './Control';
 import { compileSync as compileTemplate } from '../util/Template';
-import { LOAD, ADDED_TO_MAP } from '../event/eventtype';
+import { ADDED_TO_MAP, LOAD } from '../event/eventtype';
 import { getValue } from '../i18n/language';
 
 /**
