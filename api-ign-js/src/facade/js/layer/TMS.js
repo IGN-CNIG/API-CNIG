@@ -48,23 +48,22 @@ class TMS extends LayerBase {
    * @constructor
    * @extends {M.Layer}
    * @param {string|Mx.parameters.TMS} userParameters Parámetros para la construcción de la capa.
-   * - name: Nombre de la capa en la leyenda.
-   * - url: Urlque genera la capa TMS.
+   * - attribution: Atribución de la capa.
+   * - name: Nombre de la capa.
+   * - isBase: Indica si la capa es base.
    * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
-   * - maxExtent: La medida en que restringe la visualización a una región específica,
-   * [x.min, y.min, x.max, y.max].
-   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
-   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
-   * - displayInLayerSwitcher:  Indica si la capa se muestra en el selector de capas.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - visibility: Indica si la capa estará por defecto visible o no.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - url: URL del servicio XYZ.
+   * - type: Tipo de la capa.
    * - tileGridMaxZoom: Zoom máximo de cuadrícula de mosaico.
-   * - isBase: Indica si la capa es base o no.
-   * - tileSize: Tamaño de la tesela, por defecto 256.
-   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
-   * la implementación de la capa.
+   * - tileSize: Tamaño de la tesela
+   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
-   * - opacity: Opacidad de capa, por defecto 1.
-   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>

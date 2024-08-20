@@ -143,6 +143,8 @@
             ]
             }
         </textarea>
+        <label for="initialIndex">Sección inicial</label>
+        <input id="initialIndex" type="number" min="0" value="0">
         <input type="button" value="Eliminar Plugin" name="eliminar" id="botonEliminar">
     </div>
 
@@ -371,6 +373,7 @@
         const areaHeader = document.getElementById("areaHeader");
         const areaInitial = document.getElementById("areaInitial");
         const areaFinal = document.getElementById("areaFinal");
+        const initialIndex = document.getElementById("initialIndex");
         const botonEliminar = document.getElementById("botonEliminar");
 
         selectPosition.addEventListener('change', cambiarTest);
@@ -379,6 +382,7 @@
         areaHeader.addEventListener('change', cambiarTest);
         areaInitial.addEventListener('change', cambiarTest);
         areaFinal.addEventListener('change', cambiarTest);
+        initialIndex.addEventListener('change', cambiarTest);
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
@@ -392,6 +396,7 @@
             areaHeader.value !== "" ? objeto.header = JSON.parse(areaHeader.value.trim()) : objeto.header = [];
             areaInitial.value !== "" ? objeto.initialExtraContents = JSON.parse(areaInitial.value.trim()) : objeto.initialExtraContents = [];
             areaFinal.value !== "" ? objeto.finalExtraContents = JSON.parse(areaFinal.value.trim()) : objeto.finalExtraContents = [];
+            objeto.initialIndex = Number.parseInt(initialIndex.value, 10);
             if (mp !== null) {
                 map.removePlugins(mp);
             }

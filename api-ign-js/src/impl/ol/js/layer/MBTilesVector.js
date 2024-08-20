@@ -183,7 +183,7 @@ class MBTilesVector extends Vector {
    * @param {M.Map} map Mapa.
    * @api
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     const { code } = this.map.getProjection();
     const projection = getProj(code);
@@ -226,7 +226,9 @@ class MBTilesVector extends Vector {
               });
               this.ol3Layer.setMaxZoom(this.maxZoom);
               this.ol3Layer.setMinZoom(this.minZoom);
-              this.map.getMapImpl().addLayer(this.ol3Layer);
+              if (addLayer) {
+                this.map.getMapImpl().addLayer(this.ol3Layer);
+              }
             });
           });
         });
@@ -256,7 +258,9 @@ class MBTilesVector extends Vector {
       });
       this.ol3Layer.setMaxZoom(this.maxZoom);
       this.ol3Layer.setMinZoom(this.minZoom);
-      this.map.getMapImpl().addLayer(this.ol3Layer);
+      if (addLayer) {
+        this.map.getMapImpl().addLayer(this.ol3Layer);
+      }
     }
   }
 

@@ -179,6 +179,15 @@ export const GenericVector = 'GenericVector';
 export const GenericRaster = 'GenericRaster';
 
 /**
+ * Tipo LayerGroup. Es un tipo de capa que permite agrupas capas.
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const LayerGroup = 'LayerGroup';
+
+/**
  * Todos los tipos de capas
  * @const
  * @type {object}
@@ -202,6 +211,7 @@ const layertypes = {
   OGCAPIFeatures,
   GenericRaster,
   GenericVector,
+  LayerGroup,
 };
 
 /**
@@ -249,6 +259,7 @@ export const know = (type) => {
     MBTiles,
     MBTilesVector,
     OGCAPIFeatures,
+    LayerGroup,
   ];
   return (knowTypes.indexOf(parse(type)) !== -1);
 };

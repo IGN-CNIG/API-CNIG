@@ -35,14 +35,19 @@ class XYZ extends Layer {
    * con parámetros especificados por el usuario.
    *
    * @constructor
-   * @param {Mx.parameters.TMS} userParameters Parámetros para la construcción de la capa.
-   * - URL: Url del servicio XYZ.
-   * - tileSize: Tamaño de la tesela, por defecto 256.
-   * - visibility: Define si la capa es visible o no.
-   * - minZoom: Limitar el zoom mínimo.
-   * - maxZoom: Limitar el zoom máximo.
-   * - tileGridMaxZoom: Zoom máximo de la tesela en forma de rejilla.
-   * - displayInLayerSwitcher: Mostrar en el selector de capas.
+   * @param {Mx.parameters.XYZ} userParameters Parámetros para la construcción de la capa.
+   * - attribution: Atribución de la capa.
+   * - name: Nombre de la capa.
+   * - isBase: Indica si la capa es base.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - visibility: Indica si la capa estará por defecto visible o no.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - url: URL del servicio XYZ.
+   * - type: Tipo de la capa.
+   * - tileGridMaxZoom: Zoom máximo de cuadrícula de mosaico.
+   * - tileSize: Tamaño de la tesela
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - opacity: Opacidad de capa, por defecto 1.
@@ -161,7 +166,7 @@ class XYZ extends Layer {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     const projection = getProj('EPSG:3857');
     const extent = projection.getExtent();
@@ -171,7 +176,11 @@ class XYZ extends Layer {
       zIndex: this.zIndex_,
       extent: this.userMaxExtent || extent,
     }, this.vendorOptions_, true));
-    this.map.getMapImpl().addLayer(this.ol3Layer);
+
+    if (addLayer) {
+      this.map.getMapImpl().addLayer(this.ol3Layer);
+    }
+
     const source = new XYZSource({
       projection: this.map.getProjection().code,
       url: this.url,

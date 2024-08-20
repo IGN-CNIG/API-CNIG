@@ -38,16 +38,18 @@ class XYZ extends LayerBase {
    *
    * @constructor
    * @param {string|Mx.parameters.XYZ} userParameters Parámetros para la construcción de la capa.
-   * - url: URL del servicio XYZ.
-   * - name: Identificador de la capa.
-   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
-   * - projection: La proyección destino de la capa.
-   * - visibility: Indica si la capa estará por defecto visible o no.
-   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
-   * - type: Tipo de la capa.
+   * - attribution: Atribución de la capa.
+   * - name: Nombre de la capa.
    * - isBase: Indica si la capa es base.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - visibility: Indica si la capa estará por defecto visible o no.
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - url: URL del servicio XYZ.
+   * - type: Tipo de la capa.
+   * - tileGridMaxZoom: Zoom máximo de cuadrícula de mosaico.
+   * - tileSize: Tamaño de la tesela
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
    * - opacity: Opacidad de capa, por defecto 1.
    * - minZoom: Zoom mínimo aplicable a la capa.

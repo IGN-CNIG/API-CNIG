@@ -50,6 +50,7 @@ import MBTilesVector from './layer/MBTilesVector';
 import XYZ from './layer/XYZ';
 import TMS from './layer/TMS';
 import OSM from './layer/OSM';
+import LayerGroup from './layer/LayerGroup';
 import Attributions from './control/Attributions';
 
 /**
@@ -608,66 +609,7 @@ class Map extends Base {
           layer = layerParam;
         } else {
           // try {
-          const parameterVariable = parameter.layer(layerParam);
-          if (!isNullOrEmpty(parameterVariable.type)) {
-            switch (parameterVariable.type) {
-              case 'WFS':
-                layer = new WFS(layerParam, { style: parameterVariable.style });
-                break;
-              case 'WMS':
-                layer = new WMS(layerParam);
-                break;
-              case 'GeoJSON':
-                layer = new GeoJSON(parameterVariable, { style: parameterVariable.style });
-                break;
-              case 'GeoTIFF':
-                layer = new GeoTIFF(layerParam);
-                break;
-              case 'KML':
-                layer = new KML(layerParam);
-                break;
-              case 'Vector':
-                layer = new Vector(layerParam);
-                break;
-              case 'WMTS':
-                layer = new WMTS(layerParam);
-                break;
-              case 'MVT':
-                layer = new MVT(layerParam);
-                break;
-              case 'MBTiles':
-                layer = new MBTiles(parameterVariable);
-                break;
-              case 'MBTilesVector':
-                layer = new MBTilesVector(parameterVariable, { style: parameterVariable.style });
-                break;
-              case 'XYZ':
-                layer = new XYZ(parameterVariable);
-                break;
-              case 'TMS':
-                layer = new TMS(parameterVariable, { crossOrigin: parameterVariable.crossOrigin });
-                break;
-              case 'OSM':
-                layer = new OSM(layerParam);
-                break;
-              case 'OGCAPIFeatures':
-                layer = new OGCAPIFeatures(layerParam, { style: parameterVariable.style });
-                break;
-              case 'GenericRaster':
-                layer = new GenericRaster(layerParam);
-                break;
-              case 'GenericVector':
-                layer = new GenericVector(layerParam);
-                break;
-              case 'MapLibre':
-                layer = new MapLibre(layerParam);
-                break;
-              default:
-                Dialog.error(getValue('dialog').invalid_type_layer);
-            }
-          } else {
-            Dialog.error(getValue('dialog').invalid_type_layer);
-          }
+          layer = this.getLayerByString(layerParam);
           // }
           // catch (err) {
           //   Dialog.error('El formato de la capa (' + layerParam + ') no se reconoce');
@@ -695,6 +637,75 @@ class Map extends Base {
       this.getImpl().addLayers(layers.filter((element) => element !== null));
     }
     return this;
+  }
+
+  getLayerByString(layerParam) {
+    let layer = null;
+    const parameterVariable = parameter.layer(layerParam);
+    if (!isNullOrEmpty(parameterVariable.type)) {
+      switch (parameterVariable.type) {
+        case 'WFS':
+          layer = new WFS(layerParam, { style: parameterVariable.style });
+          break;
+        case 'WMS':
+          layer = new WMS(layerParam);
+          break;
+        case 'GeoJSON':
+          layer = new GeoJSON(parameterVariable, { style: parameterVariable.style });
+          break;
+        case 'GeoTIFF':
+          layer = new GeoTIFF(layerParam);
+          break;
+        case 'KML':
+          layer = new KML(layerParam);
+          break;
+        case 'Vector':
+          layer = new Vector(layerParam);
+          break;
+        case 'WMTS':
+          layer = new WMTS(layerParam);
+          break;
+        case 'MVT':
+          layer = new MVT(layerParam);
+          break;
+        case 'MBTiles':
+          layer = new MBTiles(parameterVariable);
+          break;
+        case 'MBTilesVector':
+          layer = new MBTilesVector(parameterVariable, { style: parameterVariable.style });
+          break;
+        case 'XYZ':
+          layer = new XYZ(parameterVariable);
+          break;
+        case 'TMS':
+          layer = new TMS(parameterVariable, { crossOrigin: parameterVariable.crossOrigin });
+          break;
+        case 'OSM':
+          layer = new OSM(layerParam);
+          break;
+        case 'OGCAPIFeatures':
+          layer = new OGCAPIFeatures(layerParam, { style: parameterVariable.style });
+          break;
+        case 'GenericRaster':
+          layer = new GenericRaster(layerParam);
+          break;
+        case 'GenericVector':
+          layer = new GenericVector(layerParam);
+          break;
+        case 'MapLibre':
+          layer = new MapLibre(layerParam);
+          break;
+        case 'LayerGroup':
+          layer = new LayerGroup(layerParam);
+          break;
+        default:
+          Dialog.error(getValue('dialog').invalid_type_layer);
+      }
+    } else {
+      Dialog.error(getValue('dialog').invalid_type_layer);
+    }
+
+    return layer;
   }
 
   /**
@@ -774,6 +785,55 @@ class Map extends Base {
       this.getImpl().removeLayers(layers);
     }
 
+    return this;
+  }
+
+  /**
+   * TODO
+   *
+   * @function
+   * @returns {Array<M.layer.Group>}
+   * @api stable
+   */
+  getLayerGroup() {
+    // checks if the implementation can manage layers
+    if (isUndefined(MapImpl.prototype.getLayerGroups)) {
+      Exception('La implementación usada no posee el método getLayerGroups');
+    }
+    return this.getImpl().getGroupedLayers().sort(Map.LAYER_SORT);
+  }
+
+  /**
+   * @function
+   * @param {Array<M.layer.Group>} layerGroups
+   * @returns {M.Map}
+   * @api stable
+   */
+  addLayerGroups(layerGroups) {
+    this.getImpl().addLayerGroups(layerGroups);
+    return this;
+  }
+
+  /**
+   * TODO
+   *
+   * @function
+   * @param {Array<M.layer.Group>} layerGroups
+   * specified by the user
+   * @returns {M.Map}
+   * @api stable
+   */
+  removeLayerGroup(layerGroups) {
+    // checks if the parameter is null or empty
+    if (isNull(layerGroups)) {
+      Exception('No ha especificado ningun grupo a eliminar');
+    }
+    // checks if the implementation can manage groups
+    if (isUndefined(this.getImpl().removeLayerGroups)) {
+      Exception('La implementación usada no posee el método removeGroups');
+    }
+    // removes the layers
+    this.getImpl().removeLayerGroups(layerGroups);
     return this;
   }
 

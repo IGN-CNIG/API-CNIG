@@ -704,20 +704,19 @@ export default class GeorefimageControl extends M.Control {
     // Filters WMS and WMTS visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     const mapZoom = this.map_.getZoom();
-    let layers = this.map_.getLayers().filter((layer) => {
+    const layerFilter = (layer) => {
       return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer'
-        && layer.name !== 'empty_layer'
-        && layer.name !== '__draw__'
-        && layer.type !== 'GenericRaster'
-        && layer.type !== 'GenericVector'
-        && layer.type !== 'MBTiles'
-        && layer.type !== 'MBTilesVector'
-        && layer.type !== 'MVT'
-        && layer.type !== 'MapLibre'
-        && mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
-    });
-
-    const errorLayers = this.map_.getLayers().filter((layer) => {
+      && layer.name !== 'empty_layer'
+      && layer.name !== '__draw__'
+      && layer.type !== 'GenericRaster'
+      && layer.type !== 'GenericVector'
+      && layer.type !== 'MBTiles'
+      && layer.type !== 'MBTilesVector'
+      && layer.type !== 'MVT'
+      && layer.type !== 'MapLibre'
+      && mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
+    };
+    const errorLayerFilter = (layer) => {
       return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer'
         && layer.name !== 'empty_layer'
         && layer.name !== '__draw__' && (
@@ -728,7 +727,12 @@ export default class GeorefimageControl extends M.Control {
         || layer.type === 'MVT'
         || layer.type === 'MapLibre'
       ));
-    });
+    };
+    let layers = this.map_.getLayers().filter((layer) => layer.type !== 'LayerGroup' && layerFilter(layer))
+      .concat(this.map_.getImpl().getAllLayerInGroup().filter((layer) => layerFilter(layer)));
+
+    const errorLayers = this.map_.getLayers().filter((layer) => layer.type !== 'LayerGroup' && errorLayerFilter(layer))
+      .concat(this.map_.getImpl().getAllLayerInGroup().filter((layer) => errorLayerFilter(layer)));
 
     if (errorLayers.length !== 0) {
       M.toast.warning(getValue('exception.error_layers') + errorLayers.map((l) => l.name).join(', '), null, 6000);
@@ -874,7 +878,7 @@ export default class GeorefimageControl extends M.Control {
 
     // CONTENT ZIP
     const fileIMG = {
-      name: titulo.concat(`.${formatImage}`),
+      name: titulo.concat(`.${formatImage === 'jpeg' ? 'jpg' : formatImage}`),
       data: base64image,
       base64: true,
     };

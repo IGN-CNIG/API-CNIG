@@ -8,7 +8,6 @@ import {
 } from 'M/util/Utils';
 import FacadeLayerBase from 'M/layer/Layer';
 import * as LayerType from 'M/layer/Type';
-import FacadeWMS from 'M/layer/WMS';
 import { get as getRemote } from 'M/util/Remote';
 import * as EventType from 'M/event/eventtype';
 import OLLayerTile from 'ol/layer/Tile';
@@ -44,9 +43,8 @@ class WMS extends LayerBase {
    * @constructor
    * @implements {M.impl.Layer}
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
-   * - visibility: Indica la visibilidad de la capa.
+   * - opacity: Opacidad de capa, por defecto 1.
    * - singleTile: Indica si la tesela es única o no.
-   * - numZoomLevels: Número de niveles de zoom.
    * - animated: Define si la capa está animada,
    * el valor predeterminado es falso.
    * - format: Formato de la capa, por defecto image/png.
@@ -54,17 +52,15 @@ class WMS extends LayerBase {
    * - sldBody: Parámetros "ol.source.ImageWMS"
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
-   * - queryable: Indica si la capa es consultable.
    * - minScale: Escala mínima.
    * - maxScale: Escala máxima.
    * - minResolution: Resolución mínima.
    * - maxResolution: Resolución máxima.
-   * - animated: Define si la capa está animada,
-   * el valor predeterminado es falso.
-   * - ratio: determina el tamaño de las solicitudes de las imágenes.1 significa que tienen el *
+   * - ratio: determina el tamaño de las solicitudes de las imágenes. 1 significa que tienen el
    * tamaño de la ventana, 2 significa que tienen el doble del tamaño de la ventana,
-   * y así sucesivamente.Debe ser 1 o superior.Por defecto es 1.
-   * - crossOrigin: atributo crossOrigin para las imágenes cargadas.
+   * y así sucesivamente. Debe ser 1 o superior. Por defecto es 1.
+   * crossOrigin: Atributo crossOrigin para las imágenes cargadas.
+   * - isWMSfull: establece si la capa es WMS_FULL.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileWMS from 'ol/source/TileWMS';
@@ -93,7 +89,7 @@ class WMS extends LayerBase {
     this.options = options;
 
     /**
-     * WMS layers. Capas.
+     * WMS name layers. Capas.
      */
     this.layers = [];
 
@@ -203,9 +199,11 @@ class WMS extends LayerBase {
     /**
      * CrossOrigin. Atributo crossOrigin para las imágenes cargadas.
      */
-
     this.crossOrigin = (options.crossOrigin === null || options.crossOrigin === false) ? undefined : 'anonymous';
 
+    /**
+     * isWMSfull. Determina si es WMS_FULL.
+     */
     this.isWMSfull = options.isWMSfull;
   }
 
@@ -261,7 +259,8 @@ class WMS extends LayerBase {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
+    this.addLayerToMap_ = addLayer;
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
@@ -273,10 +272,13 @@ class WMS extends LayerBase {
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
     }
 
-    // checks if it is a WMS_FULL
-    if (this.isWMSfull) {
-      this.addAllLayers_(); // WMS_FULL (add all wms layers)
-    } else if (this.useCapabilities) {
+    if (this.tiled === true) {
+      this.ol3Layer = new OLLayerTile(this.paramsOLLayers());
+    } else {
+      this.ol3Layer = new OLLayerImage(this.paramsOLLayers());
+    }
+
+    if (this.useCapabilities || this.isWMSfull) {
       // just one WMS layer and useCapabilities
       this.getCapabilities().then((capabilities) => {
         this.addSingleLayer_(capabilities);
@@ -286,7 +288,7 @@ class WMS extends LayerBase {
       this.addSingleLayer_(null);
     }
 
-    if (this.legendUrl_ === concatUrlPaths([M.config.THEME_URL, FacadeLayerBase.LEGEND_DEFAULT])) {
+    if (!this.isWMSfull && this.legendUrl_ === concatUrlPaths([M.config.THEME_URL, FacadeLayerBase.LEGEND_DEFAULT])) {
       this.legendUrl_ = addParameters(this.url, {
         SERVICE: 'WMS',
         VERSION: this.version,
@@ -296,6 +298,16 @@ class WMS extends LayerBase {
         // EXCEPTIONS: 'image/png',
       });
     }
+  }
+
+  paramsOLLayers() {
+    return extend({
+      visible: this.visibility && (this.options.visibility !== false),
+      minResolution: this.options.minResolution,
+      maxResolution: this.options.maxResolution,
+      opacity: this.opacity_,
+      zIndex: this.zIndex_,
+    }, this.vendorOptions_, true);
   }
 
   /**
@@ -334,6 +346,11 @@ class WMS extends LayerBase {
     if (capabilities) {
       const capabilitiesLayer = capabilities.capabilities.Capability.Layer.Layer;
       if (isArray(capabilitiesLayer)) {
+        if (this.isWMSfull) {
+          capabilitiesLayer.forEach(({ Name }) => {
+            this.layers.push(Name);
+          });
+        }
         const formatCapabilities = this.formatCapabilities_(capabilitiesLayer, selff);
         this.addCapabilitiesMetadata(formatCapabilities);
       }
@@ -347,9 +364,7 @@ class WMS extends LayerBase {
 
     const minResolution = this.options.minResolution;
     const maxResolution = this.options.maxResolution;
-    const opacity = this.opacity_;
     const zIndex = this.zIndex_;
-    const visible = this.visibility && (this.options.visibility !== false);
     let resolutions = this.map.getResolutions();
     if (isNullOrEmpty(resolutions) && !isNullOrEmpty(this.resolutions_)) {
       resolutions = this.resolutions_;
@@ -366,28 +381,11 @@ class WMS extends LayerBase {
     }
 
     const source = this.createOLSource_(resolutions, minResolution, maxResolution, extent);
-    if (this.tiled === true) {
-      this.ol3Layer = new OLLayerTile(extend({
-        visible,
-        source,
-        extent,
-        minResolution,
-        maxResolution,
-        opacity,
-        zIndex,
-      }, this.vendorOptions_, true));
-    } else {
-      this.ol3Layer = new OLLayerImage(extend({
-        visible,
-        source,
-        extent,
-        minResolution,
-        maxResolution,
-        opacity,
-        zIndex,
-      }, this.vendorOptions_, true));
+    this.ol3Layer.setSource(source);
+
+    if (this.addLayerToMap_) {
+      this.map.getMapImpl().addLayer(this.ol3Layer);
     }
-    this.map.getMapImpl().addLayer(this.ol3Layer);
 
     this.setVisible(this.visibility);
 
@@ -478,7 +476,7 @@ class WMS extends LayerBase {
     let olSource = this.vendorOptions_.source;
     if (isNullOrEmpty(this.vendorOptions_.source)) {
       const layerParams = {
-        LAYERS: this.name,
+        LAYERS: isNullOrEmpty(this.layers) ? this.name : this.layers,
         VERSION: this.version,
         TRANSPARENT: this.transparent,
         FORMAT: this.format,
@@ -532,51 +530,6 @@ class WMS extends LayerBase {
       }
     }
     return olSource;
-  }
-
-  /**
-   * Este método agrega todas las capas definidas en el servidor.
-   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
-   * @public
-   * @function
-   * @api stable
-   */
-  addAllLayers_() {
-    this.getCapabilities().then((getCapabilities) => {
-      if (this.useCapabilities) {
-        const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
-          return cap.url === this.url;
-        }) || { capabilities: false };
-
-        capabilitiesInfo.capabilites = getCapabilities;
-      }
-
-      getCapabilities.getLayers().forEach((layer) => {
-        const wmsLayer = new FacadeWMS({
-          url: this.url,
-          name: layer.name,
-          version: layer.version,
-          tiled: this.tiled,
-          useCapabilities: this.useCapabilities,
-        }, this.vendorOptions_);
-        this.layers.push(wmsLayer);
-      });
-
-      // if no base layers was specified then it stablishes
-      // the first layer as base
-      // if (this.map.getBaseLayers().length === 0) {
-      //    this.layers[0].transparent = false;
-      // }
-
-      this.map.addWMS(this.layers);
-
-      // updates the z-index of the layers
-      let baseLayersIdx = this.layers.length;
-      this.layers.forEach((layer) => {
-        layer.setZIndex(ImplMap.Z_INDEX[LayerType.WMS] + baseLayersIdx);
-        baseLayersIdx += 1;
-      });
-    });
   }
 
   /**

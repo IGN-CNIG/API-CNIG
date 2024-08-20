@@ -121,6 +121,16 @@ export default class Help extends M.Plugin {
     this.order = options.order >= -1 ? options.order : null;
 
     /**
+     * Index de la sección a mostrar por defecto
+     * @private
+     * @type {Number}
+     */
+    this.initialIndex = 0;
+    if (options.initialIndex && options.initialIndex > 0) {
+      this.initialIndex = options.initialIndex;
+    }
+
+    /**
      * Parámetros del plugin
      * @public
      * @type {object}
@@ -162,6 +172,7 @@ export default class Help extends M.Plugin {
         extendInitialExtraContents: this.extendInitialExtraContents,
         headerImages: this.headerImages_,
         headerTitle: this.headerTitle_,
+        initialIndex: this.initialIndex,
         controls,
       });
       this.controls_.push(this.ctrl);

@@ -84,6 +84,8 @@ export default class HelpControl extends M.Control {
       }
     }
 
+    this.initialIndex = options.initialIndex;
+
     this.helpsContent = [];
   }
 
@@ -190,10 +192,22 @@ export default class HelpControl extends M.Control {
             }
           });
         });
+        this.showDefaultContent(windowHelp, this.initialIndex);
       });
 
       this.helpsContent = [];
     });
+  }
+
+  showDefaultContent(windowHelp, contentIndex) {
+    const links = windowHelp.document.querySelectorAll('.indexLink');
+    for (let i = 0; i < links.length; i += 1) {
+      const a = links.item(i);
+      if (a.tabIndex === contentIndex) {
+        a.click();
+        break;
+      }
+    }
   }
 
   /**

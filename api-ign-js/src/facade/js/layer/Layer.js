@@ -33,8 +33,15 @@ class LayerBase extends Base {
    * @constructor
    * @extends {M.facade.Base}
    * @param {string|Mx.parameters.Layer} userParameters Parámetros proporcionados por el usuario.
+   * - attribution: Atribución de la capa.
+   * - name: Nombre de la capa.
    * - isBase: Indica si la capa es base.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - minZoom. Zoom mínimo aplicable a la capa.
+   * - maxZoom. Zoom máximo aplicable a la capa.
+   * - url: url del servicio.
    * @param {Object} impl Implementación.
    * @api
    */
