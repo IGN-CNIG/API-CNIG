@@ -6,6 +6,13 @@ const LAYER_NOT_URL = ['OSM', 'GeoJSON', 'MBTilesVector', 'MBTiles', 'LayerGroup
 const setZIndex = (maxZIndex, parentElem, layers) => {
   let zindex = maxZIndex;
   const children = parentElem.children;
+  if (parentElem.getAttribute('data-layer-type') === 'LayerGroup') {
+    const name = parentElem.getAttribute('data-layer-name');
+    const filtered = layers.filter((layer) => layer.name === name);
+    if (filtered.length > 0) {
+      filtered[0].setZIndex(zindex);
+    }
+  }
   if (children && children.length > 0) {
     [...children].forEach((c) => {
       if (!c.classList.contains('m-layerswitcher-sectionPanel-header')) {
