@@ -728,10 +728,14 @@ export default class PrinterMapControl extends M.Control {
     // Filters visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     const mapZoom = this.map_.getZoom();
-    let layers = this.map_.getLayers().filter((layer) => {
+    const layerFilter = (layer) => {
       return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer'
-        && mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
-    });
+      && mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
+    };
+
+    let layers = this.map_.getLayers().filter((layer) => layer.type !== 'LayerGroup' && layerFilter(layer))
+      .concat(this.map_.getImpl().getAllLayerInGroup()
+        .filter((layer) => layerFilter(layer)));
 
     if (mapZoom === 20) {
       let contains = false;

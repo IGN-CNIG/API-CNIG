@@ -52,7 +52,7 @@ export default class GeorefimageControl extends M.impl.Control {
    */
   getParametrizedLayers(facadeMap, paramName, layers) {
     let others = facadeMap.getMapImpl().getLayers().getArray().filter((layer) => {
-      return !M.utils.isNullOrEmpty(layer.getSource())
+      return layer.getSource && !M.utils.isNullOrEmpty(layer.getSource())
         // eslint-disable-next-line no-underscore-dangle
         && !M.utils.isNullOrEmpty(layer.getSource().params_)
         && layer.getSource().getParams()[paramName] !== undefined;
