@@ -21,9 +21,8 @@ import layerModalTemplate from '../../templates/layermodal';
 import customQueryFiltersTemplate from '../../templates/customqueryfilters';
 import generateSortable from './sortable';
 import { displayLayers, getAllLayersGroup } from './groupLayers';
-import { removeLayersInLayerSwitcher } from './utils';
+import { removeLayersInLayerSwitcher, reorderLayers } from './utils';
 import { selectDefaultRange, showHideLayersRadio } from './radioSelectLayer';
-import { reorderLayers } from './utils';
 import { showHideLayersEye } from './eyeSelectLayer';
 import { legendInfo } from './legendLayers';
 
@@ -347,6 +346,11 @@ export default class LayerswitcherControl extends M.Control {
       if (layer instanceof M.layer.LayerGroup) {
         // eslint-disable-next-line no-await-in-loop
         const layerGroupHTML = await this.recursiveLayerGroupTemplate_(layer);
+
+        [...layerGroupHTML.querySelectorAll('.m-layerswitcher-ullayersGroup')].forEach((group) => {
+          this.orderLayers(group);
+        });
+
         this.template_.querySelector('.m-layerswitcher-ullayers').appendChild(layerGroupHTML);
       }
     }
@@ -423,7 +427,8 @@ export default class LayerswitcherControl extends M.Control {
 
     await this.generateTemplateLayerGroup();
 
-    this.orderLayers();
+    const ulContainer = this.template_.querySelector('.m-layerswitcher-ullayers');
+    this.orderLayers(ulContainer);
 
     const layerList = this.template_.querySelector('.m-layerswitcher-ullayers');
 
@@ -453,8 +458,7 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
-  orderLayers() {
-    const ulContainer = this.template_.querySelector('.m-layerswitcher-ullayers');
+  orderLayers(ulContainer) {
     const items = [...ulContainer.children];
 
     items.sort((a, b) => b.dataset.order - a.dataset.order);
