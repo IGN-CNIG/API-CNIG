@@ -53,6 +53,7 @@
   "change": "Change",
   "url_service": "Include URL of the service to load",
   "query": "Consult",
+  "group": "Add layer group",
   "loaded_services": "Preloaded geographic information layers",
   "codsi_services": "Services Catalog",
   "clean": "Clean search",

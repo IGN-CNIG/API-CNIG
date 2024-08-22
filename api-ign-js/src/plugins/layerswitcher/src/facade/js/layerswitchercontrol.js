@@ -1486,6 +1486,7 @@ export default class LayerswitcherControl extends M.Control {
         translations: {
           url_service: getValue('url_service'),
           query: getValue('query'),
+          group: getValue('group'),
           loaded_services: getValue('loaded_services'),
           clean: getValue('clean'),
           availables: getValue('availables'),

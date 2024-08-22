@@ -53,6 +53,7 @@
   "change": "Cambiar",
   "url_service": "Incluir URL del servicio a cargar",
   "query": "Consultar",
+  "group": "Añadir un grupo de capa",
   "loaded_services": "Capas de información geográfica",
   "codsi_services": "Catálogo de Servicios",
   "clean": "Limpiar búsqueda",
