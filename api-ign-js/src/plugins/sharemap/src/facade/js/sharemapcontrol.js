@@ -729,6 +729,9 @@ export default class ShareMapControl extends M.Control {
     let layers = group.getLayers();
     const comilla = parent ? '"' : "'";
     layers = layers.map((layer) => {
+      if (this.layerToParam(layer, false) === undefined) {
+        return null;
+      }
       return `${comilla}${this.layerToParam(layer, false)}${comilla}`;
     })
       .filter((param) => param != null);
