@@ -120,7 +120,8 @@ export default class HelpControl extends M.Control {
    * @function
    * @api
    */
-  showHelp() {
+  showHelp(initialIndex = 0) {
+    this.initialIndex = initialIndex;
     let allContents = [...this.initialExtraContents];
     allContents.push({
       title: getValue('tools'),
