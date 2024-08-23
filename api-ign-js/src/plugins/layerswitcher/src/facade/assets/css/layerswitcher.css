@@ -320,6 +320,34 @@ ul.m-layerswitcher-ullayers .m-layerswitcher-sectionPanel-colorPanel .m-layerswi
     border: 2px solid #6abe47;
 }
 
+.m-layerswitcher-change-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.m-layerswitcher-change-name p {
+    text-align: center;
+    width: 100%;
+}
+
+.m-layerswitcher-change-name p input {
+    width: 70%;
+}
+
+.m-layerswitcher-change-name button {
+    width: 90px;
+    background-color: rgb(113, 167, 211);
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+    font-weight: 700;
+    margin-top: 10px;
+    padding: 5px;
+}
+
 
 .m-layerswitcher-sectionPanel-header div input[type="radio"] {
     margin-right: 5px;
