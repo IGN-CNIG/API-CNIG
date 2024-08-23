@@ -25,6 +25,7 @@ import { removeLayersInLayerSwitcher, reorderLayers } from './utils';
 import { selectDefaultRange, showHideLayersRadio } from './radioSelectLayer';
 import { showHideLayersEye } from './eyeSelectLayer';
 import { legendInfo } from './legendLayers';
+import { showModalChangeName } from './changeName';
 
 const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
 const CODSI_CATALOG = 'https://www.idee.es/csw-inspire-idee/srv/spa/q?_content_type=json&bucket=s101&facet.q=type%2Fservice&fast=index&from=*1&keyword=WMS%20or%20Web%20Map%20Service%20or%20WMTS%20or%20Web%20Map%20Tile%20Service%20or%20TMS%20or%20MVT%20or%20Features%20WFS&resultType=details&sortBy=title&sortOrder=asc&to=*2';
@@ -492,8 +493,11 @@ export default class LayerswitcherControl extends M.Control {
       let layer = this.findLayer(evt);
       if (layer.length > 0) {
         layer = layer[0];
-        // show hide layers
-        if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'eye') {
+
+        if (evt.target.className.indexOf('m-layerswitcher-title-box') > -1
+      || evt.target.className.indexOf('m-layerswitcher-sectionPanel-header-text') > -1) {
+          showModalChangeName(layer, evt.target, this.order);
+        } else if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'eye') {
           showHideLayersEye(evt, layer, this);
         } else if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'radio') {
           showHideLayersRadio(layer, this.map_, layerName, layerType, layerURL);
