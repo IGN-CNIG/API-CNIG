@@ -2,7 +2,7 @@
  * @module M/impl/style/Generic
  */
 import {
-  isUndefined, isArray, isFunction, isDynamic, drawDynamicStyle, // #FIX_ST_OP
+  isUndefined, isArray, isFunction, isDynamic, drawDynamicStyle,
 } from 'M/util/Utils';
 import OLFeature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
@@ -41,10 +41,10 @@ class Generic extends Simple {
    * - Point. Punto.
    * - Polygon. Polígono.
    * - Line. Linea.
-   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base. // #FIX_ST_OP
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base.
    * @api stable
    */
-  constructor(options = {}, vendorOptions = undefined) { // #FIX_ST_OP
+  constructor(options = {}, vendorOptions = undefined) {
     super(options, vendorOptions);
 
     /**
@@ -209,9 +209,9 @@ class Generic extends Simple {
    * @function
    * @api stable
    */
-  updateFacadeOptions(options, vendorOptions) { // #FIX_ST_OP
+  updateFacadeOptions(options, vendorOptions) {
     this.olStyleFn_ = (feature) => {
-      // NO SE SABE SI SE USA ESTE BIEN, ya que actualmente // #FIX_ST_OP
+      // NO SE SABE SI SE USA ESTE BIEN, ya que actualmente // #FIX_ST_VE_OP
       // la clase genera un estilo de tipo POINT,LINE,POLYGON al que envia vendorOptions
       // Y desde ahí se usa las clases ya probadas y funcionales de vendorOptions de esos.
       if (vendorOptions) {

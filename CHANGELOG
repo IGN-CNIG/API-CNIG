@@ -1,4 +1,5 @@
 15/07/24 - Versión 5.1.0
+- Se incluye nuevo tipo de capa LayerGroup.
 - Se impide interactuar con features que están detrás del actual popup mostrado.
 - Previsto uso de panIntoView en caso de que el popup al que referencia ya fue eliminado.
 - Refrescado necesario para interacción "hover" de features se evitará en caso de interacción "click" en la función unselectFeatures.
@@ -10,11 +11,13 @@
 - Sustituido funciones "filter" de arrays por "find" o "some" en caso de no utilizar array entero.
 - Eliminado condiciones sobrantes de comprobación de clases.
 - Previsto uso de "applyToFeature" si el estilo aun no fue aplicado.
-- Añadido vendorOptions a estilos Point, Line, Polygon y Generic. // #FIX_ST_OP
-- Limpiado o reemplazados eslint-disable completos sobrantes o utilizados para solo una línea.
+- Añadido vendorOptions a estilos Point, Line, Polygon y Generic.
+- Limpiado o reemplazados eslint-disable completos sobrantes o utilizados solo para una instancia.
 - Eliminado variables no usadas en estilos que fueron anteriormente deprecados.
 - Simplificado y mejorado rendimiento de funciones utils con imports ordenados.
 - Usado función "pop" para obtener el último objeto de un array evitando filtrados repetidos.
+- Mejorado eventos de Popup con uso más claro y previsto saltos no deseados de mapa al usar popups en móviles.
+- Simplificado imports removiendo duplicados.
 - Plugins:
   - Actualizado los metadatos para mostrar la versión actual de todos los plugins.
   - Normalizado código de la función "equals" en todos los plugins.

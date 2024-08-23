@@ -26,21 +26,28 @@ const capaPrueba = vector_001;
 window.M.style = { Point, Line, Polygon, Generic };
 window.ol = { style: { Style: OLStyle, Centroid, Fill: OLStyleFill, Stroke: OLStyleStroke, Circle: CircleStyle, Icon: OLStyleIcon, RegularShape: OLStyleRegularShape } };
 
-// VendorOptions TEST
+// pointVendor TEST
 // var pointVendorTEST = new M.style.Point({ radius: 12 }, new ol.style.Style({ radius: 12, fill: new ol.style.Fill({ color: 'blue' }), stroke: new ol.style.Stroke({ color: 'red', width: 7 }), image: new ol.style.Circle({ radius: 7, fill: new ol.style.Fill({ color: 'orange' }) }) })); console.log(pointVendorTEST); window.mapa.getLayers()[1].setStyle(pointVendorTEST);
 // var pointVendorTEST_ARRAY = new M.style.Point({ radius: 12 }, [new ol.style.Style({ radius: 12, fill: new ol.style.Fill({ color: 'blue' }), stroke: new ol.style.Stroke({ color: 'red', width: 7 }), image: new ol.style.Circle({ radius: 7, fill: new ol.style.Fill({ color: 'orange' }) }) }),new ol.style.Style({ radius: 4, fill: new ol.style.Fill({ color: 'blue' }), stroke: new ol.style.Stroke({ color: 'red', width: 3 }), image: new ol.style.Circle({ radius: 3, fill: new ol.style.Fill({ color: 'blue' }) }) })]); console.log(pointVendorTEST_ARRAY); window.mapa.getLayers()[1].setStyle(pointVendorTEST_ARRAY);
-// const pointVendor = () => new OLStyle({ radius: 12, fill: new OLStyleFill({ color: 'blue' }), stroke: new OLStyleStroke({ color: 'red', width: 7 }), image: new CircleStyle({ radius: 5, fill: new OLStyleFill({ color: 'orange' }) }) });
+// const pointVendor = new OLStyle({ radius: 12, fill: new OLStyleFill({ color: 'blue' }), stroke: new OLStyleStroke({ color: 'red', width: 7 }), image: new CircleStyle({ radius: 5, fill: new OLStyleFill({ color: 'orange' }) }) });
 
 // Color in classOLStyleIcon never used // var pointICONVendor = new M.style.Point({ radius: 12 }, new ol.style.Style({ radius: 10, fill: new ol.style.Fill({ color: 'blue' }), stroke: new ol.style.Stroke({ color: 'red', width: 7 }), image: new ol.style.Icon({ anchor: [1, 2], anchorOrigin: 'top-left', anchorXUnits: 'fraction', anchorYUnits: 'fraction', crossOrigin: null, src: 'https://avatars.githubusercontent.com/u/50570110?v=4', offset: [3, 4], offsetOrigin: 'top-left', size: [50, 150], opacity: 0.9, scale: 1, rotation: 0.5, rotateWithView: false }) })); console.log(pointICONVendor); window.mapa.getLayers()[1].setStyle(pointICONVendor);
-// const pointVendor = () => new OLStyle({ radius: 10, fill: new OLStyleFill({ color: 'blue' }), stroke: new OLStyleStroke({ color: 'red', width: 7 }), image: new OLStyleIcon({ anchor: [1, 2], anchorOrigin: 'top-left', anchorXUnits: 'fraction', anchorYUnits: 'fraction', crossOrigin: null, src: 'https://avatars.githubusercontent.com/u/50570110?v=4', offset: [3, 4], offsetOrigin: 'top-left', size: [50, 150], opacity: 0.9, scale: 1, rotation: 0.5, rotateWithView: false }) });
+// const pointVendor = new OLStyle({ radius: 10, fill: new OLStyleFill({ color: 'blue' }), stroke: new OLStyleStroke({ color: 'red', width: 7 }), image: new OLStyleIcon({ anchor: [1, 2], anchorOrigin: 'top-left', anchorXUnits: 'fraction', anchorYUnits: 'fraction', crossOrigin: null, src: 'https://avatars.githubusercontent.com/u/50570110?v=4', offset: [3, 4], offsetOrigin: 'top-left', size: [50, 150], opacity: 0.9, scale: 1, rotation: 0.5, rotateWithView: false }) });
 
 // var rgFont = new ol.style.RegularShape({ radius: 30, fill: 'blue', rotation: 0.6, rotateWithView: false });rgFont.setOpacity(0.8);rgFont.color_ = 'red'; rgFont.fontSize_ = 17; rgFont.stroke_ = new ol.style.Stroke({ color: 'green', width: 7 }); rgFont.fill_ = new ol.style.Fill({ color: 'blue' }); rgFont.radius_ = 20; rgFont.form_ = 'bubble'; rgFont.gradient_ = true; rgFont.offset_ = [0.5, 0.5]; rgFont.glyph_ = 'g-cartografia-alerta'; var pointFONTVendor = new M.style.Point({ radius: 12 }, new ol.style.Style({ radius: 10, fill: new ol.style.Fill({ color: 'blue' }), stroke: new ol.style.Stroke({ color: 'red', width: 7 }), image: rgFont })); console.log(pointFONTVendor); window.mapa.getLayers()[1].setStyle(pointFONTVendor);
 // eslint-disable-next-line no-underscore-dangle
-// const pointVendor = () => { const rgFont = new OLStyleRegularShape({ radius: 30, fill: 'blue', rotation: 0.6, rotateWithView: false }); rgFont.setOpacity(0.8); rgFont.color_ = 'red'; rgFont.fontSize_ = 17; rgFont.stroke_ = new OLStyleStroke({ color: 'green', width: 7 }); rgFont.fill_ = new OLStyleFill({ color: 'blue' }); rgFont.radius_ = 20; rgFont.form_ = 'bubble'; rgFont.gradient_ = true; rgFont.offset_ = [0.5, 0.5]; rgFont.glyph_ = 'g-cartografia-alerta'; const pointFONTVendor = new OLStyle({ radius: 10, fill: new OLStyleFill({ color: 'blue' }), stroke: new OLStyleStroke({ color: 'red', width: 7 }), image: rgFont }); return pointFONTVendor; };
+// const pointVendor = { const rgFont = new OLStyleRegularShape({ radius: 30, fill: 'blue', rotation: 0.6, rotateWithView: false }); rgFont.setOpacity(0.8); rgFont.color_ = 'red'; rgFont.fontSize_ = 17; rgFont.stroke_ = new OLStyleStroke({ color: 'green', width: 7 }); rgFont.fill_ = new OLStyleFill({ color: 'blue' }); rgFont.radius_ = 20; rgFont.form_ = 'bubble'; rgFont.gradient_ = true; rgFont.offset_ = [0.5, 0.5]; rgFont.glyph_ = 'g-cartografia-alerta'; const pointFONTVendor = new OLStyle({ radius: 10, fill: new OLStyleFill({ color: 'blue' }), stroke: new OLStyleStroke({ color: 'red', width: 7 }), image: rgFont }); return pointFONTVendor; };
 
-const pointVendor = () => undefined;
-const LineVendor = () => undefined;
-const polygonVendor = () => undefined;
+// lineVendor TEST
+// const lineVendor = [new OLStyle({ stroke: new OLStyleStroke({ color: 'blue', width: 3 }) }), new OLStyle({ stroke: new OLStyleStroke({ color: 'red', width: 6, lineDash: [4, 8] }) })];
+// const lineVendor = [new OLStyle({ stroke: new OLStyleStroke({ color: 'red', width: 6, lineDash: [4, 8] }) })];
+
+// polygonVendor TEST
+
+// Defaults
+const pointVendor = undefined;
+const lineVendor = undefined;
+const polygonVendor = undefined;
 
 const mapa = Mmap({
   container: 'map',
@@ -700,17 +707,17 @@ const setStyle = (type, options) => {
   capaPrueba.removeFeatures(capaPrueba.getFeatures());
   if (type === 'point') {
     capaPrueba.addFeatures(pointFeature);
-    estilo = new Point(options, pointVendor());
+    estilo = new Point(options, pointVendor);
     const bbox = [-662541.2130577073, 4348884.724285094, -589161.665903938, 4383472.479584137];
     mapa.setBbox(bbox);
   } else if (type === 'line') {
     capaPrueba.addFeatures(lineFeature);
-    estilo = new Line(options, LineVendor());
+    estilo = new Line(options, lineVendor);
     const bbox = [-398669.6723058473, 3973097.5442742878, -105151.48369077049, 4111448.5654704566];
     mapa.setBbox(bbox);
   } else if (type === 'polygon') {
     capaPrueba.addFeatures(polFeature);
-    estilo = new Polygon(options, polygonVendor());
+    estilo = new Polygon(options, polygonVendor);
     const bbox = [167553.43719930138, 3994732.042590404, 350849.43102715403, 4100215.141623947];
     mapa.setBbox(bbox);
   }
@@ -909,6 +916,19 @@ const initTestFunctions = () => {
 };
 
 initTestFunctions();
+
+/* / Pruebas con la leyenda de Layerswitcher(SIN EXITO, probar con localhost en el propio plugin)
+const pluginLayerswitcher = new M.plugin.Layerswitcher({
+  collapsed: false,
+  collapsible: true,
+  isDraggable: true,
+  position: 'TL',
+  tooltip: 'Tooltip de Gestor de Capas',
+  modeSelectLayers: 'eyes',
+  tools: ['transparency', 'zoom', 'legend', 'information', 'style', 'delete'],
+});
+mapa.addPlugin(pluginLayerswitcher);
+window.pluginLayerswitcher = pluginLayerswitcher; // */
 
 //////////////////////////
 // ERRORES develop y ol //

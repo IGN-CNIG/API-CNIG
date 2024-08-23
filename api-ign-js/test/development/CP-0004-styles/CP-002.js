@@ -2,6 +2,7 @@
 import { map as Mmap } from 'M/mapea';
 import Generic from 'M/style/Generic';
 import GeoJSON from 'M/layer/GeoJSON';
+// import Vector from 'M/layer/Vector';
 import {
   TOP, BOTTOM, MIDDLE, ALPHABETIC, HANGING, IDEOGRAPHIC,
 } from 'M/style/Baseline';
@@ -10,6 +11,20 @@ import {
   BAN, BLAZON, BUBBLE, CIRCLE, LOZENGE, MARKER, NONE, SHIELD, SIGN, SQUARE, TRIANGLE,
 } from 'M/style/Form';
 import { info } from 'M/dialog';
+import OLStyle from 'ol/style/Style';
+import OLStyleFill from 'ol/style/Fill';
+import OLStyleStroke from 'ol/style/Stroke';
+import CircleStyle from 'ol/style/Circle';
+import OLStyleIcon from 'ol/style/Icon';
+import OLStyleRegularShape from 'ol/style/RegularShape';
+import Centroid from '../../../src/impl/ol/js/style/Centroid';
+
+window.M.style = { Generic };
+window.ol = { style: { Style: OLStyle, Centroid, Fill: OLStyleFill, Stroke: OLStyleStroke, Circle: CircleStyle, Icon: OLStyleIcon, RegularShape: OLStyleRegularShape } };
+
+// genericVendor TEST
+
+const genericVendor = undefined;
 
 const mapa = Mmap({
   container: 'map',
@@ -389,76 +404,78 @@ const estilo = new Generic({
 }); */
 
 const sourceGeojson = {
-  crs: {
-    properties: {
-      name: 'urn:ogc:def:crs:OGC:1.3:CRS84',
-    },
-    type: 'name',
-  },
+  type: 'FeatureCollection',
   features: [
     {
-      geometry: {
-        coordinates: [-5.843486924121103, 37.61767006287201],
-        type: 'Point',
-      },
       id: 'mapea_feature_1840408885531848',
-      properties: {},
       type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-5.843486924121103, 37.61767006287201],
+      },
+      properties: {},
     },
     {
+      id: 'mapea_feature_46480286491644573',
+      type: 'Feature',
       geometry: {
+        type: 'LineString',
         coordinates: [
           [-5.612774033496102, 36.96652896177886], [-5.063457627246102, 37.81321353734174],
         ],
-        type: 'LineString',
       },
-      id: 'mapea_feature_46480286491644573',
       properties: {},
-      type: 'Feature',
     },
     {
-      geometry: {
-        coordinates: [
-          [
-            [-4.250469345996102, 37.73505808167863],
-            [-3.4319879006836023, 37.7133335734553],
-            [-4.404277939746102, 36.940190609334635],
-            [-4.250469345996102, 37.73505808167863],
-          ],
-        ],
-        type: 'Polygon',
-      },
       id: 'mapea_feature_578578836445871',
-      properties: {},
       type: 'Feature',
+      geometry: {
+        type: 'Polygon',
+        coordinates: [[
+          [-4.250469345996102, 37.73505808167863],
+          [-3.4319879006836023, 37.7133335734553],
+          [-4.404277939746102, 36.940190609334635],
+          [-4.250469345996102, 37.73505808167863],
+        ]],
+      },
+      properties: {},
     },
   ],
-  type: 'FeatureCollection',
+  crs: {
+    type: 'name',
+    properties: {
+      name: 'urn:ogc:def:crs:OGC:1.3:CRS84',
+    },
+  },
 };
 const geojson_001 = new GeoJSON({
   name: 'capas',
   source: sourceGeojson,
+}, {
+  style: genericVendor === undefined
+    ? undefined // WILL USE DEFAULT new Generic(Vector.DEFAULT_OPTIONS_STYLE)
+    : new Generic(undefined, genericVendor), // prueba con VendorOptions
 });
 
 window.mapa = mapa;
 window.layer = geojson_001;
-mapa.addLayers(window.layer);
+mapa.addLayers(geojson_001);
 
 ////////////////////////////////
 ////// OPCIONES DE ESTILO //////
 ////////////////////////////////
-const popupDePruebas = window.document.getElementById('popup_de_test');
-const abrirPopup = window.document.getElementById('abrir_test');
+const popupDePruebas = document.getElementById('popup_de_test');
+const abrirPopup = document.getElementById('abrir_test');
 abrirPopup.addEventListener('click', () => { popupDePruebas.className = 'active'; });
 
-const cerrarPopup = window.document.getElementById('cerrar_test');
+const cerrarPopup = document.getElementById('cerrar_test');
 cerrarPopup.addEventListener('click', () => { popupDePruebas.className = 'notactive'; });
 
-const pointStyleOptionsDiv = window.document.getElementsByClassName('pointStyleOptions')[0];
-const lineStyleOptionsDiv = window.document.getElementsByClassName('lineStyleOptions')[0];
-const polygonStyleOptionsDiv = window.document.getElementsByClassName('polygonStyleOptions')[0];
+const pointStyleOptionsDiv = document.getElementsByClassName('pointStyleOptions')[0];
+const lineStyleOptionsDiv = document.getElementsByClassName('lineStyleOptions')[0];
+const polygonStyleOptionsDiv = document.getElementsByClassName('polygonStyleOptions')[0];
 
-const showStyleBtn = window.document.getElementById('showStyleOptions');
+const showStyleBtn = document.getElementById('showStyleOptions');
 
 let estilo = null;
 
@@ -679,10 +696,10 @@ showStyleBtn.addEventListener('click', () => showStyleDialog());
 ///////////////////////
 ////// FUNCIONES //////
 ///////////////////////
-const noParam = window.document.getElementsByClassName('noParameters')[0];
-const getWithParam = window.document.getElementsByClassName('getWithParameters')[0];
-const setParam = window.document.getElementsByClassName('setFunctions')[0];
-const otherParam = window.document.getElementsByClassName('otherFunctions')[0];
+const noParam = document.getElementsByClassName('noParameters')[0];
+const getWithParam = document.getElementsByClassName('getWithParameters')[0];
+const setParam = document.getElementsByClassName('setFunctions')[0];
+const otherParam = document.getElementsByClassName('otherFunctions')[0];
 
 const checkFunctionArguments = (func) => {
   let hasArguments = false;
@@ -776,14 +793,14 @@ const initTestFunctions = () => {
           // ---------------------------------OTRAS FUNCIONES---------------------------------
           parameterTest = () => { // otherParameterTest
             if (auxName === 'apply') {
-              showResult(auxButton, null, estilo[auxName](window.layer));
+              showResult(auxButton, null, estilo[auxName](geojson_001));
             } else if (auxName === 'applyToFeature') {
-              const feature = window.layer.getFeatures()[0];
+              const feature = geojson_001.getFeatures()[0];
               showResult(auxButton, null, estilo[auxName](feature));
             } else if (auxName === 'refresh') {
               showResult(auxButton, null, estilo[auxName]());
             } else if (auxName === 'unapply') {
-              showResult(auxButton, null, estilo[auxName](window.layer));
+              showResult(auxButton, null, estilo[auxName](geojson_001));
             } else {
               console.error('NOT_PREPARED_FUNCTION_TEST_FOR_OTHER:', auxName);
             }
@@ -810,7 +827,7 @@ const initTestFunctions = () => {
 };
 
 const init = () => {
-  estilo = window.layer.getStyle();
+  estilo = geojson_001.getStyle();
   buildStyleOptions();
   initTestFunctions();
 };

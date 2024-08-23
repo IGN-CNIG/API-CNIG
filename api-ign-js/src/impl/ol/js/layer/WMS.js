@@ -3,7 +3,7 @@
  * @module M/impl/layer/WMS
  */
 import {
-  isNull, isNullOrEmpty, addParameters, getWMSGetCapabilitiesUrl, fillResolutions,
+  isNull, isArray, isNullOrEmpty, addParameters, getWMSGetCapabilitiesUrl, fillResolutions,
   getResolutionFromScale, generateResolutionsFromExtent, concatUrlPaths, extend,
 } from 'M/util/Utils';
 import FacadeLayerBase from 'M/layer/Layer';
@@ -15,7 +15,6 @@ import OLLayerImage from 'ol/layer/Image';
 import { get as getProj } from 'ol/proj';
 import OLTileGrid from 'ol/tilegrid/TileGrid';
 import { getBottomLeft } from 'ol/extent';
-import { isArray } from 'M/util/Utils';
 import ImplUtils from '../util/Utils';
 import ImplMap from '../Map';
 import LayerBase from './Layer';
@@ -288,7 +287,8 @@ class WMS extends LayerBase {
       this.addSingleLayer_(null);
     }
 
-    if (!this.isWMSfull && this.legendUrl_ === concatUrlPaths([M.config.THEME_URL, FacadeLayerBase.LEGEND_DEFAULT])) {
+    if (!this.isWMSfull
+      && this.legendUrl_ === concatUrlPaths([M.config.THEME_URL, FacadeLayerBase.LEGEND_DEFAULT])) {
       this.legendUrl_ = addParameters(this.url, {
         SERVICE: 'WMS',
         VERSION: this.version,

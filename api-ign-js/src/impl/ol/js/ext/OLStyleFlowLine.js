@@ -4,8 +4,7 @@
 
 /* eslint-disable  no-cond-assign */
 import OLStyleStyle from 'ol/style/Style';
-import { asString as olColorAsString } from 'ol/color';
-import { asArray as olColorAsArray } from 'ol/color';
+import { asString as olColorAsString, asArray as olColorAsArray } from 'ol/color';
 import { olCoordinateDist2d } from './GeomUtils';
 import './LineStringSplitAt';
 

@@ -20,12 +20,12 @@ class Generic extends Simple {
    * - Point. Punto.
    * - Polygon. Polígono.
    * - Line. Linea.
-   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base. // #FIX_ST_OP
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base.
    * @api
    */
-  constructor(optionsVar, vendorOptions) { // #FIX_ST_OP
+  constructor(optionsVar, vendorOptions) {
     let options = optionsVar;
-    if (vendorOptions) { // #FIX_ST_OP
+    if (vendorOptions) {
       options = extendsObj({}, Generic.DEFAULT);
     } else {
       if (isNullOrEmpty(options)) {
@@ -36,7 +36,7 @@ class Generic extends Simple {
       options = extendsObj({}, options);
     }
 
-    const impl = new GenericStyleImpl(options, vendorOptions); // #FIX_ST_OP
+    const impl = new GenericStyleImpl(options, vendorOptions);
     super(options, impl);
   }
 

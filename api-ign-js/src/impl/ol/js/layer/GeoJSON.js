@@ -249,8 +249,8 @@ class GeoJSON extends Vector {
    * @api stable
    */
   selectFeatures(features, coord, evt) {
-    const feature = features[0];
     if (this.extract === true) {
+      const feature = features[0];
       // unselects previous features
       this.unselectFeatures();
 

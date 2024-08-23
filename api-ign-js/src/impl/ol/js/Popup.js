@@ -37,7 +37,11 @@ class Popup extends OLOverlay {
    * @api
    */
   constructor(options = {}) {
-    super({});
+    super({
+      className: window.matchMedia('(max-width: 768px)').matches
+        ? 'ol-overlay-container ol-selectable unsetTransform' // to not blink from started location
+        : undefined, // OLOverlay replacement of 'ol-overlay-container ' + CLASS_SELECTABLE
+    });
 
     /**
      * Indica si el mapa se desplaza o no.
@@ -111,7 +115,7 @@ class Popup extends OLOverlay {
    */
   show(coord, callback) {
     this.setPosition(coord);
-    if (this.panMapIfOutOfView) {
+    if (this.panMapIfOutOfView && !window.matchMedia('(max-width: 768px)').matches) {
       this.panIntoView(coord);
     }
     this.content.scrollTop = 0;
@@ -184,38 +188,43 @@ class Popup extends OLOverlay {
       const popPx = overlayMap.getPixelFromCoordinate(coord);
       if (!isNullOrEmpty(popPx)) {
         this.isAnimating_ = true;
+        popPx[0] = Math.round(popPx[0]);
+        popPx[1] = Math.round(popPx[1]);
         // if (FacadeWindow.WIDTH > 768) {
-        const tabHeight = 30; // 30px for tabs
         const popupElement = this.element.querySelector('.m-popup');
-        const popupWidth = popupElement.clientWidth + 20;
-        const popupHeight = popupElement.clientHeight + 20 + tabHeight;
+        const extraOffset = 20; // Avoids putting popup on map edge, on mobile set to 0 is better
+        const popupWidth = popupElement.clientWidth + extraOffset; // 20;
+        const tabHeight = 30; // 30px for non mobile tabs, on mobile set to 0 is better
+        const popupHeight = popupElement.clientHeight + tabHeight + extraOffset;
         const mapSize = overlayMap.getSize();
-
         const center = overlayMap.getView().getCenter();
-        const tailHeight = 20;
-        const tailOffsetLeft = 60;
+        const tailOffsetLeft = 60; // arrow at bottom 48+10+2=60px (left,img/2,border)
         const tailOffsetRight = popupWidth - tailOffsetLeft;
-        const popOffset = this.getOffset();
-
-        const fromLeft = (popPx[0] - tailOffsetLeft);
-        const fromRight = mapSize[0] - (popPx[0] + tailOffsetRight);
-
-        const fromTop = popPx[1] - (popupHeight + popOffset[1]);
-        const fromBottom = mapSize[1] - (popPx[1] + tailHeight) - popOffset[1];
-
+        const popOffsetY = this.getOffset()[1];
         const curPix = overlayMap.getPixelFromCoordinate(center);
+        curPix[0] = Math.round(curPix[0]);
+        curPix[1] = Math.round(curPix[1]);
         const newPx = curPix.slice();
 
+        const fromRight = mapSize[0] - (popPx[0] + tailOffsetRight);
         if (fromRight < 0) {
           newPx[0] -= fromRight;
-        } else if (fromLeft < 0) {
-          newPx[0] += fromLeft;
+        } else {
+          const fromLeft = (popPx[0] - tailOffsetLeft);
+          if (fromLeft < 0) {
+            newPx[0] += fromLeft;
+          }
         }
 
+        const fromTop = popPx[1] - (popupHeight + popOffsetY);
         if (fromTop < 0) {
           newPx[1] += fromTop;
-        } else if (fromBottom < 0) {
-          newPx[1] -= fromBottom;
+        } else {
+          const tailHeight = 20; // small arrow at the bottom, on mobile set to 0 is better
+          const fromBottom = mapSize[1] - (popPx[1] + tailHeight) - popOffsetY;
+          if (fromBottom < 0) {
+            newPx[1] -= fromBottom;
+          }
         }
 
         // if (this.ani && this.ani_opts) {

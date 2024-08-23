@@ -184,9 +184,9 @@ class KML extends Vector {
    * @api stable
    */
   selectFeatures(features, coord, evt) {
-    // TODO: manage multiples features
-    const feature = features[0];
     if (this.extract === true) {
+      // TODO: manage multiples features
+      const feature = features[0];
       if (!isNullOrEmpty(feature)) {
         const featureName = feature.getAttribute('name');
         const featureDesc = feature.getAttribute('description');

@@ -245,8 +245,8 @@ class GenericVector extends Vector {
    * @api stable
    */
   selectFeatures(features, coord, evt) {
-    const feature = features[0];
     if (this.extract === true) {
+      const feature = features[0];
       this.unselectFeatures();
       if (!isNullOrEmpty(feature)) {
         const htmlAsText = compileTemplate(geojsonPopupTemplate, {

@@ -130,9 +130,9 @@ class Point extends Simple {
    * @function
    * @api stable
    */
-  updateFacadeOptions(options, vendorOptions) { // #FIX_ST_OP
+  updateFacadeOptions(options, vendorOptions) {
     this.olStyleFn_ = (feature) => {
-      if (vendorOptions) { // #FIX_ST_OP
+      if (vendorOptions) {
         if (isArray(vendorOptions)) {
           return vendorOptions;
         }

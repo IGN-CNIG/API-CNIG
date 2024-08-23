@@ -108,7 +108,9 @@ class KML extends MObject {
             });
           }
 
-          Array.from(folders).forEach((folder) => { folder.parentNode.removeChild(folder); });
+          Array.prototype.forEach.call(folders, (folder) => {
+            folder.parentNode.removeChild(folder);
+          });
 
           const filteredFolders = foldersArray.filter((folder) => {
             const nameElement = folder.querySelector(':scope > name');
@@ -136,7 +138,7 @@ class KML extends MObject {
             labelStyle.innerHTML = `<scale>${scaleLabel}</scale>`;
             style.appendChild(labelStyle);
             xmlDoc.getElementsByTagName('Document')[0].appendChild(style);
-            Array.from(xmlDoc.getElementsByTagName('Placemark')).forEach((element) => {
+            Array.prototype.forEach.call(xmlDoc.getElementsByTagName('Placemark'), (element) => {
               const styleUrl = element.getElementsByTagName('styleUrl');
               if (styleUrl.length === 0) {
                 const styleUrlEl = xmlDoc.createElement('styleUrl');
@@ -147,7 +149,7 @@ class KML extends MObject {
               }
             });
           } else {
-            Array.from(styles).forEach((element) => {
+            Array.prototype.forEach.call(styles, (element) => {
               const label = element.getElementsByTagName('LabelStyle');
               if (label.length === 0) {
                 const labelStyle = xmlDoc.createElement('LabelStyle');

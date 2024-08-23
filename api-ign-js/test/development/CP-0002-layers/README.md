@@ -59,4 +59,7 @@ CP-020
 Mapa básico con capas GeoTiff (COG).
 
 CP-021
+Mapa básico con capas LayerGroup.
+
+CP-022
 Mapa básico con capa GeoJSON y WFS, para probar select/unselect de features múltiples.

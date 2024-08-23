@@ -2,7 +2,7 @@
  * @module M/impl/format/GML
  */
 import OLFormatGML from 'ol/format/GML';
-import OLFormatGML3 from 'ol/format/GML';
+// import OLFormatGML3 from 'ol/format/GML'; // Same import as OLFormatGML
 import OLFormatGML2 from 'ol/format/GML2';
 import OLFormatGML32 from 'ol/format/GML32';
 import { isNullOrEmpty } from 'M/util/Utils';
@@ -89,7 +89,7 @@ class GML {
       return new OLFormatGML32(); // GML32
     }
     if (formatGmlVersion === 'gml3') {
-      return new OLFormatGML3(); // GML3
+      return new OLFormatGML(); // GML3 (OLD import name OLFormatGML3)
     }
     if (formatGmlVersion === 'gml32') {
       return new OLFormatGML32(); // GML32

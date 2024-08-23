@@ -8,12 +8,11 @@ import * as Align from 'M/style/Align';
 import OLStyleStroke from 'ol/style/Stroke';
 import OLStyleText from 'ol/style/Text';
 import OLGeomPolygon from 'ol/geom/Polygon';
-import { isArray, isNullOrEmpty } from 'M/util/Utils'; // #FIX_ST_OP
+import { isArray, isNullOrEmpty } from 'M/util/Utils';
 import OLStyleIcon from 'ol/style/Icon';
 import OLStyleFill from 'ol/style/Fill';
 import { toContext as toContextRender } from 'ol/render';
 import { getBottomLeft, getHeight, getWidth } from 'ol/extent';
-import { toContext } from 'ol/render';
 import RenderFeature from 'ol/render/Feature';
 import OLStyleFillPattern from '../ext/OLStyleFillPattern';
 import OLStyleStrokePattern from '../ext/OLStyleStrokePattern';
@@ -47,15 +46,20 @@ class Polygon extends Simple {
    * - renderer: Renderizado.
    *     - property: Propiedades.
    *     - stoke (color y width).
-   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base. // #FIX_ST_OP
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base.
    * @api stable
    */
-  constructor(options, vendorOptions) { // #FIX_ST_OP
+  constructor(options, vendorOptions) {
     super(options);
-    this.olStyleFn_ = this.updateFacadeOptions(options, vendorOptions); // #FIX_ST_OP
-    // NO SE AÑADE IGUAL QUE EN LOS OTROS, (*** TO DO ***)
-    // COMPROBAR SI por esto se PONE PERMANENTEMENTE EL VENDOROPTIONS y por ello,
-    // si causa errores en adelante en funciones que esperan otros resultados de este.
+    let auxVendorOptions;
+    if (vendorOptions) {
+      if (isArray(vendorOptions)) {
+        auxVendorOptions = vendorOptions;
+      } else {
+        auxVendorOptions = [vendorOptions];
+      }
+    }
+    this.olStyleFn_ = this.updateFacadeOptions(options, auxVendorOptions);
   }
 
   /**
@@ -68,13 +72,14 @@ class Polygon extends Simple {
    * @return {Array<object>} Estilo de la fachada.
    * @api stable
    */
-  updateFacadeOptions(options, vendorOptions) { // #FIX_ST_OP
+  updateFacadeOptions(options, vendorOptions) {
     return (feature) => {
-      if (vendorOptions) { // #FIX_ST_OP
-        if (isArray(vendorOptions)) {
-          return vendorOptions;
-        }
-        return [vendorOptions];
+      if (vendorOptions) {
+        // #FIX_ST_VE_OP no esta diseñado de tal forma que solo se use una vez vendorOptions,
+        // aquí seguirá enviando el vendorOptions como resultado ya que solo se define a
+        // través de la styleFuntion. Por lo que se intenta arreglar de esta manera.
+        this.olStyleFn_ = this.updateFacadeOptions(options);
+        return vendorOptions;
       }
       let featureVariable = feature;
       if (!(featureVariable instanceof OLFeature || feature instanceof RenderFeature)) {
@@ -255,7 +260,7 @@ class Polygon extends Simple {
             return;
           }
           context.save();
-          const renderContext = toContext(context, {
+          const renderContext = toContextRender(context, {
             pixelRatio: 1,
           });
           renderContext.setFillStrokeStyle(fill, stroke);
@@ -282,7 +287,7 @@ class Polygon extends Simple {
    * @api stable
    */
   updateCanvas(canvas) {
-    this.updateFacadeOptions(this.options_);
+    // this.updateFacadeOptions(this.options_); // DOES NOTHING, returned Function is never used
     const canvasSize = Polygon.getCanvasSize();
     const vectorContext = toContextRender(canvas.getContext('2d'), {
       size: canvasSize,

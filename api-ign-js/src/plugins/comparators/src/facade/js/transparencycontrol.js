@@ -212,7 +212,7 @@ export default class TransparencyControl extends M.Control {
           .querySelector('select')
           .addEventListener('change', (evt) => {
             const optionsSelect = evt.target.options;
-            Array.from(optionsSelect).forEach((option) => option.removeAttribute('selected'));
+            Array.prototype.forEach.call(optionsSelect, (option) => option.removeAttribute('selected'));
             evt.target.selectedOptions[0].setAttribute('selected', '');
 
             this.layerSelected.setVisible(false);

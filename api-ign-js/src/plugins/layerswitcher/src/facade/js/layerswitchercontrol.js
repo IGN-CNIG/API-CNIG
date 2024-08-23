@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle,no-param-reassign */
 /**
  * @module M/control/LayerswitcherControl
@@ -21,9 +20,8 @@ import layerModalTemplate from '../../templates/layermodal';
 import customQueryFiltersTemplate from '../../templates/customqueryfilters';
 import generateSortable from './sortable';
 import { displayLayers, getAllLayersGroup } from './groupLayers';
-import { removeLayersInLayerSwitcher } from './utils';
+import { reorderLayers, removeLayersInLayerSwitcher } from './utils';
 import { selectDefaultRange, showHideLayersRadio } from './radioSelectLayer';
-import { reorderLayers } from './utils';
 import { showHideLayersEye } from './eyeSelectLayer';
 import { legendInfo } from './legendLayers';
 
@@ -320,7 +318,8 @@ export default class LayerswitcherControl extends M.Control {
       if (layer.type === 'KML') {
         if (layer.options === null) {
           hasStyles = false;
-        } else if (layer.options.extractStyles || M.utils.isUndefined(layer.options.extractStyles)) {
+        } else if (layer.options.extractStyles
+          || M.utils.isUndefined(layer.options.extractStyles)) {
           hasStyles = false;
         }
       }

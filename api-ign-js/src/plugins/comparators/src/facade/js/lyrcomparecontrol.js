@@ -563,7 +563,7 @@ export default class LyrCompareControl extends M.Control {
       // eslint-disable-next-line consistent-return
       item.addEventListener('change', (evt) => {
         const options = evt.target.options;
-        Array.from(options).forEach((option) => option.removeAttribute('selected'));
+        Array.prototype.forEach.call(options, (option) => option.removeAttribute('selected'));
         evt.target.selectedOptions[0].setAttribute('selected', '');
 
         // eslint-disable-next-line no-shadow, array-callback-return, consistent-return

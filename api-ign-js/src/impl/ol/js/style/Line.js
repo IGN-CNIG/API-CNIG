@@ -1,7 +1,7 @@
 /**
  * @module M/impl/style/Line
  */
-import { isArray, isNullOrEmpty, isFunction } from 'M/util/Utils'; // #FIX_ST_OP
+import { isArray, isNullOrEmpty, isFunction } from 'M/util/Utils';
 import OLFeature from 'ol/Feature';
 import OLStyleStroke from 'ol/style/Stroke';
 import OLStyleFill from 'ol/style/Fill';
@@ -33,15 +33,20 @@ class Line extends Simple {
    * @param {Object} options Opciones de la clase.
    * - icon (src): Ruta del icono.
    * @implements {M.impl.style.Simple}
-   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base. // #FIX_ST_OP
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base.
    * @api stable
    */
-  constructor(options, vendorOptions) { // #FIX_ST_OP
+  constructor(options, vendorOptions) {
     super(options);
-    this.olStyleFn_ = this.updateFacadeOptions(options, vendorOptions); // #FIX_ST_OP
-    // NO SE AÑADE IGUAL QUE EN LOS OTROS, (*** TO DO ***)
-    // COMPROBAR SI por esto se PONE PERMANENTEMENTE EL VENDOROPTIONS y por ello,
-    // si causa errores en adelante en funciones que esperan otros resultados de este.
+    let auxVendorOptions;
+    if (vendorOptions) {
+      if (isArray(vendorOptions)) {
+        auxVendorOptions = vendorOptions;
+      } else {
+        auxVendorOptions = [vendorOptions];
+      }
+    }
+    this.olStyleFn_ = this.updateFacadeOptions(options, auxVendorOptions);
   }
 
   /**
@@ -54,13 +59,14 @@ class Line extends Simple {
    * @function
    * @api stable
    */
-  updateFacadeOptions(options, vendorOptions) { // #FIX_ST_OP
+  updateFacadeOptions(options, vendorOptions) {
     return (feature) => {
-      if (vendorOptions) { // #FIX_ST_OP
-        if (isArray(vendorOptions)) {
-          return vendorOptions;
-        }
-        return [vendorOptions];
+      if (vendorOptions) {
+        // #FIX_ST_VE_OP no esta diseñado de tal forma que solo se use una vez vendorOptions,
+        // aquí seguirá enviando el vendorOptions como resultado ya que solo se define a
+        // través de la styleFuntion. Por lo que se intenta arreglar de esta manera.
+        this.olStyleFn_ = this.updateFacadeOptions(options);
+        return vendorOptions;
       }
       let featureVariable = feature;
       if (!(featureVariable instanceof OLFeature || feature instanceof RenderFeature)) {
@@ -254,7 +260,7 @@ class Line extends Simple {
    * @api stable
    */
   updateCanvas(canvas) {
-    this.updateFacadeOptions(this.options_);
+    // this.updateFacadeOptions(this.options_); // DOES NOTHING, returned Function is never used
     const canvasSize = Line.getCanvasSize();
     const vectorContext = toContextRender(canvas.getContext('2d'), {
       size: canvasSize,

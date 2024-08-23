@@ -19,8 +19,7 @@ import OLGeomMultiPolygon from 'ol/geom/MultiPolygon';
 import OLGeomPoint from 'ol/geom/Point';
 import OLGeomPolygon from 'ol/geom/Polygon';
 import OLGeomCircle from 'ol/geom/Circle';
-import { getCenter as olExtentGetCenter } from 'ol/extent';
-import { buffer as olExtentBuffer } from 'ol/extent';
+import { buffer as olExtentBuffer, getCenter as olExtentGetCenter } from 'ol/extent';
 
 /**
  * Distancia entre 2 puntos.
