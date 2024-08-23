@@ -1353,8 +1353,6 @@ class Map extends MObject {
             layer.setZIndex(Map.Z_INDEX_BASELAYER);
           } else {
             if (layer.getZIndex() == null) {
-              // eslint-disable-next-line no-console
-              console.log(this.getLengthZIndex_());
               const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.WMTS];
               layer.setZIndex(zIndex);
             }

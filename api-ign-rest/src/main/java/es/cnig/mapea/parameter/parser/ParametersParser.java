@@ -3,6 +3,8 @@ package es.cnig.mapea.parameter.parser;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -73,8 +75,27 @@ public abstract class ParametersParser {
    public static List<String> parseLayers (String layerParameter) {
       List<String> layers = new LinkedList<String>();
       if (!StringUtils.isEmpty(layerParameter)) {
-         String[] layersValues = layerParameter.split(",");
-         layers = Arrays.asList(layersValues);
+         List<String> layerGroups = new LinkedList<>();
+         Pattern pattern = Pattern.compile("LayerGroup\\*.*?!");
+         Matcher matcher = pattern.matcher(layerParameter);
+
+         while (matcher.find()) {
+            layerGroups.add(matcher.group().substring(0, matcher.group().length() - 1));
+         }
+
+         layerParameter = matcher.replaceAll("");
+         
+         String[] layersArray = layerParameter.split(",");
+         
+         for (String item : layersArray) {
+            if (!item.isEmpty()) {
+               layers.add(item);
+            }
+         }
+
+         layers.addAll(layerGroups);
+         /* String[] layersValues = layerParameter.split(",");
+         layers = Arrays.asList(layersValues); */
       }
       return layers;
    }

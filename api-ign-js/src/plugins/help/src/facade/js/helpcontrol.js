@@ -108,7 +108,7 @@ export default class HelpControl extends M.Control {
           order: this.order || 0,
         },
       });
-      html.querySelector('#m-help-button').addEventListener('click', this.showHelp.bind(this));
+      html.querySelector('#m-help-button').addEventListener('click', this.showHelp.bind(this, this.initialIndex));
       success(html);
     });
   }
@@ -120,7 +120,8 @@ export default class HelpControl extends M.Control {
    * @function
    * @api
    */
-  showHelp() {
+  showHelp(initialIndex = 0) {
+    this.initialIndex = initialIndex;
     let allContents = [...this.initialExtraContents];
     allContents.push({
       title: getValue('tools'),

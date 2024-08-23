@@ -18,7 +18,7 @@
                 name="{{nameRadio}}" value="{{type}}-{{id}}">
             {{/if}}
 
-            <p tabindex="0" class="m-layerswitcher-sectionPanel-header-text">
+            <p tabindex="0" class="m-layerswitcher-sectionPanel-header-text" data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}">
                 <span {{#if ../displayLabel}}style="display: none" {{/if}} aria-label="Tipo de servicio {{type}}"
                     tabindex="0" class="m-layerswitcher-type">{{type}}</span>
                 {{title}}

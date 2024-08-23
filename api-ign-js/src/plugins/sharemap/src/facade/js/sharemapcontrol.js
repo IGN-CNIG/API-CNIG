@@ -436,8 +436,8 @@ export default class ShareMapControl extends M.Control {
 
           shareURL = shareURL.concat(`&controls=${newControls}`).concat('&plugins=toc,zoompanel,measurebar,mousesrs');
         }
-
-        shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) : shareURL.concat('');
+        const layerParam = this.getLayers();
+        shareURL = layerParam.length > 0 ? shareURL.concat(`&layers=${layerParam}`) : shareURL.concat('');
         shareURL = shareURL.concat(`&projection=${code}*${units}`);
       } else {
         const { x, y } = this.map_.getCenter();
@@ -571,7 +571,7 @@ export default class ShareMapControl extends M.Control {
    * @public
    * @function
    */
-  layerToParam(layer) {
+  layerToParam(layer, parent = true) {
     let param;
     if (layer.name === 'osm') {
       param = layer.name;
@@ -597,6 +597,8 @@ export default class ShareMapControl extends M.Control {
       param = this.getGeoTIFF(layer);
     } else if (layer.type === 'MapLibre') {
       param = this.getMapLibre(layer);
+    } else if (layer.type === 'LayerGroup') {
+      param = this.getLayerGroup(layer, parent);
     }
     return param;
   }
@@ -721,6 +723,19 @@ export default class ShareMapControl extends M.Control {
       legend = layer.legend;
     }
     return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${this.normalizeString(legend)}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+  }
+
+  getLayerGroup(group, parent) {
+    let layers = group.getLayers();
+    const comilla = parent ? '"' : "'";
+    layers = layers.map((layer) => {
+      if (this.layerToParam(layer, false) === undefined) {
+        return null;
+      }
+      return `${comilla}${this.layerToParam(layer, false)}${comilla}`;
+    })
+      .filter((param) => param != null);
+    return `LayerGroup*${group.name}*${this.normalizeString(group.legend)}*${group.isVisible()}*${group.transparent}*[${layers}]${parent ? '!' : ''}`;
   }
 
   // TO-DO
