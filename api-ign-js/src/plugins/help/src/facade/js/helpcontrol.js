@@ -108,7 +108,7 @@ export default class HelpControl extends M.Control {
           order: this.order || 0,
         },
       });
-      html.querySelector('#m-help-button').addEventListener('click', this.showHelp.bind(this));
+      html.querySelector('#m-help-button').addEventListener('click', this.showHelp.bind(this, this.initialIndex));
       success(html);
     });
   }
