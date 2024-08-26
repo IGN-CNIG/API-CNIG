@@ -27,6 +27,9 @@ import { addAttributions, removeLayersInLayerSwitcher, reorderLayers } from './u
 
 import {
   legendInfo, showHideLayersEye, showModalChangeName, selectDefaultRange, showHideLayersRadio,
+  TRANSLATIONS_OGCAPIFEATURES_WMS_WMTS,
+  TRANSLATIONS_INFO_LAYER,
+  eventIconTarget,
 } from './toolsLayers';
 
 const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
@@ -60,8 +63,6 @@ const BT_CLOSE_MODAL = 'div.m-dialog.info div.m-button > button';
 const SPINER_FATHER = '.m-layerswitcher-search-panel';
 
 const SHOW_BUTTON = [1, 2, 3]; // Añadir más numeros para mostrar más botones
-
-const layersTypes = ['WMTS', 'WFS', 'MBTilesVector', 'MBTiles', 'OSM', 'XYZ', 'TMS', 'GeoJSON', 'KML', 'OGCAPIFeatures', 'Vector', 'GenericRaster', 'GenericVector', 'MVT', 'GeoTIFF', 'MapLibre'];
 
 export default class LayerswitcherControl extends M.Control {
   constructor(options = {}) {
@@ -506,9 +507,9 @@ export default class LayerswitcherControl extends M.Control {
         } else if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'radio') {
           showHideLayersRadio(layer, this.map_, layerName, layerType, layerURL);
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-image') > -1) {
-          legendInfo(evt, layer);
+          legendInfo(evt, layer, this.useProxy, this.statusProxy);
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
-          this.eventIconTarget_(layerType, layer);
+          eventIconTarget(layerType, layer, this.map_, this.order);
         } else if (evt.target.className.indexOf('m-layerswitcher-icons-info') > -1) {
           if (layer.type === 'OGCAPIFeatures') {
             const metadataURL = `${layer.url}${layer.name}?f=json`;
@@ -523,24 +524,7 @@ export default class LayerswitcherControl extends M.Control {
                 hasMetadata: true,
                 metadata: htmlURL,
                 isOgc: true,
-                translations: {
-                  title: getValue('title'),
-                  name: getValue('name'),
-                  abstract: getValue('abstract'),
-                  provider: getValue('provider'),
-                  service_info: getValue('service_info'),
-                  download_center: getValue('download_center'),
-                  see_more: getValue('see_more'),
-                  metadata_abstract: getValue('metadata_abstract'),
-                  responsible: getValue('responsible'),
-                  access_constraints: getValue('access_constraints'),
-                  use_constraints: getValue('use_constraints'),
-                  online_resources: getValue('online_resources'),
-                  see_more_layer: getValue('see_more_layer'),
-                  see_more_service: getValue('see_more_service'),
-                  metadata: getValue('metadata'),
-                  attributes: getValue('attributes'),
-                },
+                translations: TRANSLATIONS_OGCAPIFEATURES_WMS_WMTS,
               };
               const nFeatures = layer.getFeatures().length;
               if (nFeatures > 0) {
@@ -602,23 +586,7 @@ export default class LayerswitcherControl extends M.Control {
               name: layer.name, // nombre
               title: layer.legend, // titulo
               abstract: layer.capabilitiesMetadata.abstract, // resumen
-              translations: {
-                title: getValue('title'),
-                name: getValue('name'),
-                abstract: getValue('abstract'),
-                provider: getValue('provider'),
-                service_info: getValue('service_info'),
-                download_center: getValue('download_center'),
-                see_more: getValue('see_more'),
-                metadata_abstract: getValue('metadata_abstract'),
-                responsible: getValue('responsible'),
-                access_constraints: getValue('access_constraints'),
-                use_constraints: getValue('use_constraints'),
-                online_resources: getValue('online_resources'),
-                see_more_layer: getValue('see_more_layer'),
-                see_more_service: getValue('see_more_service'),
-                metadata: getValue('metadata'),
-              },
+              translations: TRANSLATIONS_OGCAPIFEATURES_WMS_WMTS,
             };
 
             vars.capabilities = this.addCapabilitiesInformation(layer);
@@ -654,19 +622,7 @@ export default class LayerswitcherControl extends M.Control {
             const vars = {
               name: layer.name, // nombre
               title: layer.legend, // titulo
-              translations: {
-                title: getValue('title'),
-                name: getValue('name'),
-                n_obj_geo: getValue('n_obj_geo'),
-                extension: getValue('extension'),
-                attributes: getValue('attributes'),
-                values: getValue('values'),
-                attribution: getValue('attribution'),
-                description: getValue('description'),
-                minzoom: getValue('minzoom'),
-                maxzoom: getValue('maxzoom'),
-                center: getValue('center'),
-              },
+              translations: TRANSLATIONS_INFO_LAYER,
             };
             if (layer instanceof M.layer.Vector) {
               const nFeatures = layer.getFeatures().length;
@@ -820,38 +776,6 @@ export default class LayerswitcherControl extends M.Control {
     evt.stopPropagation();
   }
 
-  eventIconTarget_(layerType, layer) {
-    if (layerType === 'WMS') {
-      layer.getMaxExtent((me) => {
-        this.map_.setBbox(me);
-      });
-    } else if (layersTypes.includes(layerType)) {
-      const extent = layer.getMaxExtent();
-      if (extent === null) {
-        if (layer.calculateMaxExtent) {
-          layer.calculateMaxExtent()
-            .then((ext) => {
-              if (ext.length > 0) {
-                this.map_.setBbox(ext);
-              } else {
-                this.map_.setBbox(this.map_.getExtent());
-              }
-            })
-            .catch((err) => {
-              // eslint-disable-next-line no-console
-              console.error(err);
-            });
-        } else {
-          this.map_.setBbox(this.map_.getExtent());
-        }
-      } else {
-        this.map_.setBbox(extent);
-      }
-    } else {
-      M.dialog.info(getValue('exception.extent'), getValue('info'), this.order);
-    }
-  }
-
   /**
    * This function returns the number of pages based on the number of attributes indicated
    *
@@ -995,36 +919,6 @@ export default class LayerswitcherControl extends M.Control {
     }
 
     return result;
-  }
-
-  // Función para obtener la leyenda de ciertas capas
-  errorLegendLayer(layer) {
-    return new Promise((success) => {
-      let legend = '';
-      if (layer.type === 'TMS') {
-        legend = layer.url.replace('{z}/{x}/{-y}', '0/0/0');
-      } else if (layer.type === 'XYZ') {
-        legend = layer.url.replace('{z}/{x}/{y}', '0/0/0');
-      } else if (layer.type === 'OSM') {
-        let url = layer.getImpl().getOL3Layer().getSource().getUrls();
-        if (url.length > 0) {
-          url = url[0];
-        }
-        legend = url.replace('{z}/{x}/{y}', '0/0/0');
-      }
-      if (legend !== '') {
-        M.proxy(this.useProxy);
-        M.remote.get(legend).then((response) => {
-          if (response.code !== 200) {
-            legend = '';
-          }
-          success(legend);
-        });
-        M.proxy(this.statusProxy);
-      } else {
-        success('error legend');
-      }
-    });
   }
 
   // Muestra la información de la capa

@@ -8,6 +8,40 @@ const I18N_CHANGE = 'change';
 const I18N_CHANGE_NAME = 'change_name';
 const I18N_CLOSE = 'close';
 
+// I18N - Traducciones INFO LAYER
+export const TRANSLATIONS_OGCAPIFEATURES_WMS_WMTS = {
+  title: getValue('title'),
+  name: getValue('name'),
+  abstract: getValue('abstract'),
+  provider: getValue('provider'),
+  service_info: getValue('service_info'),
+  download_center: getValue('download_center'),
+  see_more: getValue('see_more'),
+  metadata_abstract: getValue('metadata_abstract'),
+  responsible: getValue('responsible'),
+  access_constraints: getValue('access_constraints'),
+  use_constraints: getValue('use_constraints'),
+  online_resources: getValue('online_resources'),
+  see_more_layer: getValue('see_more_layer'),
+  see_more_service: getValue('see_more_service'),
+  metadata: getValue('metadata'),
+  attributes: getValue('attributes'),
+};
+
+export const TRANSLATIONS_INFO_LAYER = {
+  title: getValue('title'),
+  name: getValue('name'),
+  n_obj_geo: getValue('n_obj_geo'),
+  extension: getValue('extension'),
+  attributes: getValue('attributes'),
+  values: getValue('values'),
+  attribution: getValue('attribution'),
+  description: getValue('description'),
+  minzoom: getValue('minzoom'),
+  maxzoom: getValue('maxzoom'),
+  center: getValue('center'),
+};
+
 // Selector de cambio de nombre
 const SELECTOR_CHANGE_NAME = 'div.m-mapea-container div.m-dialog #m-layer-change-name input';
 
@@ -29,6 +63,9 @@ const CLASS_CHECK = 'm-layerswitcher-check';
 const I18N_LEGEND_ERROR = 'legend_error';
 
 const LEGEND_DEFAULT_IMG = 'assets/img/legend-default.png';
+
+/* TARGET LAYER */
+const layersTypesTarget = ['WMTS', 'WFS', 'MBTilesVector', 'MBTiles', 'OSM', 'XYZ', 'TMS', 'GeoJSON', 'KML', 'OGCAPIFeatures', 'Vector', 'GenericRaster', 'GenericVector', 'MVT', 'GeoTIFF', 'MapLibre'];
 
 /* CHANGE NAME */
 const changeLayerLegend = (layer, target) => {
@@ -77,7 +114,36 @@ export const showHideLayersEye = (evt, layer, self) => {
 };
 
 /* LEGEND LAYER */
-export const legendInfo = (evt, layer) => {
+const errorLegendLayer = (layer, useProxy, statusProxy) => {
+  return new Promise((success) => {
+    let legend = '';
+    if (layer.type === 'TMS') {
+      legend = layer.url.replace('{z}/{x}/{-y}', '0/0/0');
+    } else if (layer.type === 'XYZ') {
+      legend = layer.url.replace('{z}/{x}/{y}', '0/0/0');
+    } else if (layer.type === 'OSM') {
+      let url = layer.getImpl().getOL3Layer().getSource().getUrls();
+      if (url.length > 0) {
+        url = url[0];
+      }
+      legend = url.replace('{z}/{x}/{y}', '0/0/0');
+    }
+    if (legend !== '') {
+      M.proxy(useProxy);
+      M.remote.get(legend).then((response) => {
+        if (response.code !== 200) {
+          legend = '';
+        }
+        success(legend);
+      });
+      M.proxy(statusProxy);
+    } else {
+      success('error legend');
+    }
+  });
+};
+
+export const legendInfo = (evt, layer, useProxy, statusProxy) => {
   const legend = evt.target.parentElement.parentElement.parentElement.querySelector('.m-layerswitcher-legend');
   if (legend.style.display !== 'block') {
     const legendUrl = layer.getLegendURL();
@@ -86,7 +152,7 @@ export const legendInfo = (evt, layer) => {
         if (url.indexOf(LEGEND_DEFAULT_IMG) === -1) {
           legend.querySelector('img').src = url;
         } else {
-          this.errorLegendLayer(layer).then((newLegend) => {
+          errorLegendLayer(layer, useProxy, statusProxy).then((newLegend) => {
             if (newLegend !== '') {
               legend.querySelector('img').src = newLegend;
             } else {
@@ -96,7 +162,7 @@ export const legendInfo = (evt, layer) => {
         }
       });
     } else if (legendUrl.indexOf(LEGEND_DEFAULT_IMG) >= 0) {
-      this.errorLegendLayer(layer).then((newLegend) => {
+      errorLegendLayer(layer, useProxy, statusProxy).then((newLegend) => {
         if (newLegend === 'error legend') {
           const img = legend.querySelector('img');
           const messageError = document.createElement('p');
@@ -124,6 +190,40 @@ export const legendInfo = (evt, layer) => {
       p.remove();
     }
     legend.style.display = 'none';
+  }
+};
+
+/* TARGET LAYER */
+export const eventIconTarget = (layerType, layer, map, order) => {
+  const mapView = map;
+  if (layerType === 'WMS') {
+    layer.getMaxExtent((me) => {
+      mapView.setBbox(me);
+    });
+  } else if (layersTypesTarget.includes(layerType)) {
+    const extent = layer.getMaxExtent();
+    if (extent === null) {
+      if (layer.calculateMaxExtent) {
+        layer.calculateMaxExtent()
+          .then((ext) => {
+            if (ext.length > 0) {
+              mapView.setBbox(ext);
+            } else {
+              mapView.setBbox(mapView.getExtent());
+            }
+          })
+          .catch((err) => {
+            // eslint-disable-next-line no-console
+            console.error(err);
+          });
+      } else {
+        mapView.setBbox(mapView.getExtent());
+      }
+    } else {
+      mapView.setBbox(extent);
+    }
+  } else {
+    M.dialog.info(getValue('exception.extent'), getValue('info'), order);
   }
 };
 
