@@ -137,8 +137,10 @@ export const getType = (parameter, forcedType) => {
       type = LayerType.OSM;
     } else {
       const typeMatches = parameter.match(/^(\w+)\*.+$/);
-      if (typeMatches && (typeMatches.length > 1)) {
-        type = LayerType.parse(typeMatches[1]);
+      const typeGroup = parameter.match(/^LayerGroup/);
+      if ((typeMatches && (typeMatches.length > 1))
+        || (typeGroup && (typeGroup.length > 1))) {
+        type = typeGroup !== null ? LayerType.parse(typeGroup[0]) : LayerType.parse(typeMatches[1]);
         if (isUndefined(type)) {
           Exception(`No se reconoce el tipo de capa ${typeMatches[1]}`);
         }
