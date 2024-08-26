@@ -796,6 +796,12 @@ export default class LayerswitcherControl extends M.Control {
    * @function
    */
   nextPage_() {
+    if (this.pages_.total > this.pages_.actual) {
+      this.pages_.actual += 1;
+      this.pages_.element += this.numPages_;
+
+      this.updateTablePage_();
+    }
   }
 
   /**
