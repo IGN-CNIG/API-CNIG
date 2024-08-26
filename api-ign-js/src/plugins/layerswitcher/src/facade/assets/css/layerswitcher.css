@@ -67,6 +67,11 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     max-width: 250px;
 }
 
+.m-layerswitcher-title-box:hover {
+    cursor: pointer;
+    color: #71a7d3;
+}
+
 /* Título */
 .m-layerswitcher-title {
     font-weight: bold !important;
@@ -129,6 +134,11 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
 
 .m-layerswitcher-sectionPanel-header-text {
     margin: 4px;
+}
+
+.m-layerswitcher-sectionPanel-header-text:hover {
+    cursor: pointer;
+    color: #71a7d3;
 }
 
 .m-layerswitcher-sectionPanel-header-text span {
