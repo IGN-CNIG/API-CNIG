@@ -5,6 +5,7 @@
 import { getValue } from '../../../facade/js/i18n/language';
 import WCSLoaderManager from './wcsloadermanager';
 
+const COVERAGE_NAME = 'OGCApiCoverage';
 /**
  * @classdesc
  * @api
@@ -43,71 +44,82 @@ class Mouse extends ol.control.MousePosition {
     this.activeZ = vendorOptions.activeZ;
 
     this.order = vendorOptions.order;
+
+    this.mode_ = vendorOptions.mode;
+
+    this.coveragePrecissions = vendorOptions.coveragePrecissions;
   }
 
-  initWCSLoaderManager(map) {
+  initLoaderManager(map) {
     this.facadeMap_ = map;
     if (this.activeZ) {
-      this.wcsloadermanager = new WCSLoaderManager();
-      const layers = [
-        {
-          url: 'https://servicios.idee.es/wcs-inspire/mdt',
-          options: {
-            coverage: 'Elevacion4258_200',
-            crs: 'EPSG:4326',
-            format: 'ArcGrid',
-            height: 500,
-            interpolationMethod: 'bilinear',
-            service: 'WCS',
-            version: '1.0.0',
-            width: 500,
+      if (this.mode_ === 'wcs') {
+        this.wcsloadermanager = new WCSLoaderManager();
+        const layers = [
+          {
+            url: 'https://servicios.idee.es/wcs-inspire/mdt',
+            options: {
+              coverage: 'Elevacion4258_200',
+              crs: 'EPSG:4326',
+              format: 'ArcGrid',
+              height: 500,
+              interpolationMethod: 'bilinear',
+              service: 'WCS',
+              version: '1.0.0',
+              width: 500,
+            },
           },
-        },
-        {
-          url: 'https://servicios.idee.es/wcs-inspire/mdt',
-          options: {
-            coverage: 'Elevacion4258_25',
-            crs: 'EPSG:4326',
-            format: 'ArcGrid',
-            height: 500,
-            interpolationMethod: 'bilinear',
-            service: 'WCS',
-            version: '1.0.0',
-            width: 500,
+          {
+            url: 'https://servicios.idee.es/wcs-inspire/mdt',
+            options: {
+              coverage: 'Elevacion4258_25',
+              crs: 'EPSG:4326',
+              format: 'ArcGrid',
+              height: 500,
+              interpolationMethod: 'bilinear',
+              service: 'WCS',
+              version: '1.0.0',
+              width: 500,
+            },
           },
-        },
-        {
-          url: 'https://servicios.idee.es/wcs-inspire/mdt',
-          options: {
-            coverage: 'Elevacion4258_500',
-            crs: 'EPSG:4326',
-            format: 'ArcGrid',
-            height: 500,
-            interpolationMethod: 'bilinear',
-            service: 'WCS',
-            version: '1.0.0',
-            width: 500,
+          {
+            url: 'https://servicios.idee.es/wcs-inspire/mdt',
+            options: {
+              coverage: 'Elevacion4258_500',
+              crs: 'EPSG:4326',
+              format: 'ArcGrid',
+              height: 500,
+              interpolationMethod: 'bilinear',
+              service: 'WCS',
+              version: '1.0.0',
+              width: 500,
+            },
           },
-        },
-        {
-          url: 'https://servicios.idee.es/wcs-inspire/mdt',
-          options: {
-            coverage: 'Elevacion4258_5',
-            crs: 'EPSG:4326',
-            format: 'ArcGrid',
-            height: 500,
-            interpolationMethod: 'bilinear',
-            service: 'WCS',
-            version: '1.0.0',
-            width: 500,
+          {
+            url: 'https://servicios.idee.es/wcs-inspire/mdt',
+            options: {
+              coverage: 'Elevacion4258_5',
+              crs: 'EPSG:4326',
+              format: 'ArcGrid',
+              height: 500,
+              interpolationMethod: 'bilinear',
+              service: 'WCS',
+              version: '1.0.0',
+              width: 500,
+            },
           },
-        },
-      ];
+        ];
 
-      this.wcsloadermanager.addLayers(layers);
-      map.getMapImpl().on('moveend', () => {
-        this.updateDataGrid(map);
-      });
+        this.wcsloadermanager.addLayers(layers);
+        map.getMapImpl().on('moveend', () => {
+          this.updateDataGrid(map);
+        });
+      } else if (this.mode_ === 'ogcapicoverage') {
+        this.updateOGCApiCoverage(map);
+        map.getMapImpl().on('moveend', () => {
+          this.updateOGCApiCoverage(map);
+        });
+      }
     }
   }
 
@@ -117,6 +129,50 @@ class Mouse extends ol.control.MousePosition {
     let extent = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
     extent = ol.proj.transformExtent(extent, innerMap.getProjection().code, 'EPSG:4326');
     this.wcsloadermanager.updateDataGrid(extent, 'EPSG:4326');
+  }
+
+  updateOGCApiCoverage(map) {
+    let bbox = map.getBbox();
+    bbox = this.transformExtent(bbox, map.getProjection().code, 'EPSG:4326');
+    bbox = `${bbox[0]},${bbox[1]},${bbox[2]},${bbox[3]}`;
+    const urlCoverage = this.getUrlCoverageByZoom(map.getZoom());
+    const coverage = new M.layer.GeoTIFF({
+      blob: `${urlCoverage}?f=COG&lang=es&bbox-crs=4326&bbox=${bbox}`,
+      name: COVERAGE_NAME,
+      legend: COVERAGE_NAME,
+      normalize: false,
+      displayInLayerSwitcher: false,
+    }, {
+      convertToRGB: false,
+      bands: [1],
+      opacity: 0.1,
+    });
+    coverage.setOpacity(0);
+    map.removeLayers(map.getLayers().find((l) => l.name === COVERAGE_NAME));
+    map.addLayers(coverage);
+  }
+
+  getUrlCoverageByZoom(mapZoom) {
+    const coverage = this.coveragePrecissions.find((o) => {
+      if (o.minzoom && o.maxzoom) {
+        return mapZoom >= o.minzoom && mapZoom <= o.maxzoom;
+      }
+      if (o.minzoom && !o.maxzoom) {
+        return mapZoom >= o.minzoom;
+      }
+      if (!o.minzoom && o.maxzoom) {
+        return mapZoom <= o.maxzoom;
+      }
+      return false;
+    });
+    return coverage ? coverage.url : '';
+  }
+
+  transformExtent(bbox, orig, dest) {
+    const transformFn = ol.proj.getTransform(orig, dest);
+    const min = transformFn([bbox.x.min, bbox.y.min]);
+    const max = transformFn([bbox.x.max, bbox.y.max]);
+    return [min[0], min[1], max[0], max[1]];
   }
 
   /**
@@ -184,10 +240,8 @@ class Mouse extends ol.control.MousePosition {
       if (coordinate) {
         this.transform_(coordinate, coordinate);
         html = `${this.coordinateFormat(coordinate)}`.replace('.', ',').replace('.', ',').replace(', ', '&nbsp;&nbsp;&nbsp;');
-        if (this.activeZ && this.wcsloadermanager !== undefined) {
-          const orgCoord = map.getCoordinateFromPixel(pixel);
-          const tCoord = ol.proj.transform(orgCoord, this.facadeMap_.getProjection().code, 'EPSG:4326');
-          const value = Math.round(this.wcsloadermanager.getValue(tCoord, 'EPSG:4326'));
+        if (this.activeZ) {
+          const value = this.mode_ === 'wcs' ? this.getZByWCS(pixel) : this.getZByTiff(pixel);
           if (!Number.isNaN(value)) {
             html += `&nbsp;&nbsp;&nbsp;${value}`;
           }
@@ -201,6 +255,20 @@ class Mouse extends ol.control.MousePosition {
       this.element.innerHTML = html;
       this.renderedHTML_ = html;
     }
+  }
+
+  getZByWCS(pixel) {
+    const orgCoord = this.getMap().getCoordinateFromPixel(pixel);
+    const tCoord = ol.proj.transform(orgCoord, this.facadeMap_.getProjection().code, 'EPSG:4326');
+    const value = Math.round(this.wcsloadermanager.getValue(tCoord, 'EPSG:4326'));
+    return value;
+  }
+
+  getZByTiff(pixel) {
+    const coverage = this.facadeMap_.getLayers()
+      .find((l) => l.name === COVERAGE_NAME).getImpl().getOL3Layer();
+    const value = coverage ? coverage.getData(pixel) : 0;
+    return value ? Math.round(value[0]) : 0;
   }
 }
 

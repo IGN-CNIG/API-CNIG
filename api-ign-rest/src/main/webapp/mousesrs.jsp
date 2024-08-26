@@ -63,6 +63,23 @@
             <option value="false" selected="selected">false</option>
             <option value="true">true</option>
         </select>
+        <label for="mode">Selector de mode</label>
+        <select name="mode" id="mode">
+            <option value="wcs" selected="selected">wcs</option>
+            <option value="ogcapicoverage">ogcapicoverage</option>
+        </select><label for="coveragePrecissions">coveragePrecissions</label>
+        <textarea name="coveragePrecission" id="coveragePrecissions" rows="4">[
+            {
+              "url": "https://api-coverages.idee.es/collections/EL.ElevationGridCoverage_4326_1000/coverage",
+              "minzoom": 0,
+              "maxzoom": 11
+            },
+            {
+              "url": "https://api-coverages.idee.es/collections/EL.ElevationGridCoverage_4326_500/coverage",
+              "minzoom": 12,
+              "maxzoom": 28
+            }
+          ]</textarea>
         <label for="draggableDialog">Mover dialog</label>
         <select name="draggableDialog" id="draggableDialog">
             <option value="false" selected="selected">false</option>
@@ -124,6 +141,8 @@
         const inputGeoDecimalDigits = document.getElementById("inputGeoDecimalDigits");
         const inputUtmDecimalDigits = document.getElementById("inputUtmDecimalDigits");
         const selectActiveZ = document.getElementById("selectActiveZ");
+        const selectMode = document.getElementById("mode");
+        const inputCoveragePrecissions = document.getElementById("coveragePrecissions");
         const epsgFormatElement = document.getElementById("epsgFormat");
         const draggableDialogElement = document.getElementById("draggableDialog");
         const inputHelpUrl = document.getElementById("inputHelpUrl");
@@ -135,6 +154,8 @@
         inputGeoDecimalDigits.addEventListener('change', cambiarTest);
         inputUtmDecimalDigits.addEventListener('change', cambiarTest);
         selectActiveZ.addEventListener('change', cambiarTest);
+        selectMode.addEventListener('change', cambiarTest);
+        inputCoveragePrecissions.addEventListener('change', cambiarTest);
         epsgFormatElement.addEventListener('change', cambiarTest);
         draggableDialogElement.addEventListener('change', cambiarTest);
         inputHelpUrl.addEventListener('change', cambiarTest);
@@ -149,6 +170,8 @@
             utmDecimalDigits = inputUtmDecimalDigits.value != "" ? objeto.utmDecimalDigits = inputUtmDecimalDigits.value : "";
             activeZ = selectActiveZ.value != "" && (selectActiveZ.value == "true" || selectActiveZ.value == true) ? objeto.activeZ = true : objeto.activeZ = false;
             epsgFormat = epsgFormatElement.value != "" && (epsgFormatElement.value == "true" || epsgFormatElement.value == true) ? objeto.epsgFormat = true : objeto.epsgFormat = false;
+            objeto.mode = selectMode.value;
+            objeto.coveragePrecissions = JSON.parse(inputCoveragePrecissions.value);
             helpUrl = inputHelpUrl.value != "" ? objeto.helpUrl = inputHelpUrl.value : "";
             draggableDialog = draggableDialogElement.value != "" && (draggableDialogElement.value == "true" || draggableDialogElement.value == true) ? objeto.draggableDialogElement = true : objeto.draggableDialogElement = false;
             map.removePlugins(mp);

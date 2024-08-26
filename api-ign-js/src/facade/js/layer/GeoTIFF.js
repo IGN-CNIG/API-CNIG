@@ -39,6 +39,7 @@ class GeoTIFF extends LayerBase {
    * construcción de la capa.
    * - name: nombre de la capa.
    * - url: url del servicio.
+   * - blob: url del blob.
    * - projection: SRS usado por la capa.
    * - legend: nombre asociado en el árbol de contenidos, si usamos uno.
    * - isBase: verdadero si es una capa base, falso en caso contrario.
@@ -85,6 +86,7 @@ class GeoTIFF extends LayerBase {
     const parameters = parameter.layer(userParameters, LayerType.GeoTIFF);
     const optionsVar = {
       ...options,
+      blob: parameters.blob,
       visibility: parameters.visibility,
       queryable: parameters.queryable,
       displayInLayerSwitcher: parameters.displayInLayerSwitcher,
