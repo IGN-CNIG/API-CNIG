@@ -1364,3 +1364,24 @@ button.g-cartografia-flecha-izquierda + div .m-layerswitcher-ullayersGroup {
 button.g-cartografia-flecha-derecha + div .m-layerswitcher-ullayersGroup {
     padding-right: 10px;
 }
+
+.m-layerswitcher-groups-fields-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.m-layerswitcher-groups-fields {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #464646;
+    cursor: pointer;
+    font-family: Muli, sans-serif;
+    font-size: 13px;
+    padding: 5px;
+    margin-top: 5px;
+    width: 100%;
+}
+
