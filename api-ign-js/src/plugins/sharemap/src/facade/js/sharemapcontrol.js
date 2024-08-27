@@ -219,8 +219,6 @@ export default class ShareMapControl extends M.Control {
       * @type {Boolean}
       */
     this.shareLayer = options.shareLayer;
-
-    this.addBaseLayer = options.addBaseLayer;
   }
 
   /**
@@ -534,7 +532,7 @@ export default class ShareMapControl extends M.Control {
         res = res && false;
       }
 
-      if (layer.displayInLayerSwitcher === false && layer.transparent === !this.addBaseLayer) {
+      if (layer.displayInLayerSwitcher === false && layer.transparent === true) {
         res = res && false;
       }
 
@@ -552,7 +550,7 @@ export default class ShareMapControl extends M.Control {
    */
   getLayersInLayerswitcher() {
     const layers = this.map_.getLayers().filter((layer) => {
-      return layer.displayInLayerSwitcher === true && layer.transparent === !this.addBaseLayer;
+      return layer.displayInLayerSwitcher === true && layer.transparent === true;
     });
 
     return layers.map((layer) => this.layerToParam(layer)).filter((param) => param != null);
