@@ -1356,3 +1356,11 @@ div.m-dialog.info div.m-button > button {
 .m-dialog.error div.m-button>button {
     background-color: #71a7d3 !important;
 }
+
+button.g-cartografia-flecha-izquierda + div .m-layerswitcher-ullayersGroup {
+    padding-left: 10px;
+}
+
+button.g-cartografia-flecha-derecha + div .m-layerswitcher-ullayersGroup {
+    padding-right: 10px;
+}
