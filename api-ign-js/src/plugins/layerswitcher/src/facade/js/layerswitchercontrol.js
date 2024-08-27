@@ -1041,6 +1041,7 @@ export default class LayerswitcherControl extends M.Control {
       if (layer instanceof M.layer.Vector) {
         if (!M.utils.isNullOrEmpty(otherStyles)) {
           const filtered = otherStyles[styleSelected];
+          layer.clearStyle();
           if (styleSelected === 0) {
             layer.setStyle();
           } else {
