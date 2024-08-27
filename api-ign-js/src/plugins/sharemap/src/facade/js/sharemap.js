@@ -216,6 +216,8 @@ export default class ShareMap extends M.Plugin {
       */
     this.shareLayer = options.shareLayer || false;
 
+    this.addBaseLayer = options.addBaseLayer === true;
+
     /**
      * Plugin parameters
      * @public
@@ -264,6 +266,7 @@ export default class ShareMap extends M.Plugin {
       order: this.order,
       filterLayers: this.filterLayers,
       shareLayer: this.shareLayer,
+      addBaseLayer: this.addBaseLayer,
     });
 
     this.controls_.push(this.control);
