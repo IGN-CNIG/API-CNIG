@@ -10,8 +10,8 @@ export default class LayerswitcherControl extends M.impl.Control {
   // Registra evento rendercomplete del mapa para renderizar el control
   registerEvent(map) {
     this.facadeMap_ = map;
-    this.fnRender = this.renderControl.bind(this);
     if (!M.utils.isNullOrEmpty(map)) {
+      this.fnRender = this.renderControl.bind(this);
       this.olMap = map.getMapImpl();
       this.olMap.on('rendercomplete', this.fnRender);
     }
@@ -24,7 +24,7 @@ export default class LayerswitcherControl extends M.impl.Control {
 
   // Elimina evento rendercomplete del mapa
   removeRenderComplete() {
-    if (!M.utils.isNullOrEmpty(this.olMap)) {
+    if (!M.utils.isNullOrEmpty(this.olMap) && !M.utils.isNullOrEmpty(this.fnRender)) {
       this.olMap.un('rendercomplete', this.fnRender);
       this.fnRender = null;
     }

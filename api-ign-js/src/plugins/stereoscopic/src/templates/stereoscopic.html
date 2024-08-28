@@ -9,10 +9,10 @@
           <br/>
           <div class="containerMagnify">
             <p>0%</p>
-            <input class="disabled3Dview" id="range3d" type="range" min="0" max="15" value="15" disabled="true">
+            <input class="disabled3Dview" id="range3d" type="range" min="0" max="{{translations.maxMagnification}}" disabled="true">
             <p>100%</p>
           </div>
-         
+
         </div>
         <br />
         {{#if translations.anaglyph_active}}
@@ -30,14 +30,14 @@
       </div>
       {{#if translations.orbitControls}}
       <div class="orbitalMoves">
-        <image id="imgOrbitalMoves" src="../assets/eartharrow.png" draggable="false" style="margin: 5px; cursor: pointer; display: inline;">
+        <image id="imgOrbitalMoves" src="../TR3-pack/img/eartharrow.png" draggable="false" style="margin: 5px; cursor: pointer; display: inline;">
       </div>
       {{/if}}
       <br>
       <div style="margin: 0 auto; text-align: center;">
         <a
         class="link3Dview"
-        href="https://visores-cnig-gestion-publico.desarrollo.guadaltel.es/estereoscopico/docStereo.pdf"
+        href="{{url}}"
         target="_black"
         >
           {{translations.linkGlass}}

@@ -26,6 +26,7 @@ import { getValue } from '../i18n/language';
  * @property {Number} tileGridMaxZoom Zoom máximo de la tesela en forma de rejilla.
  * @property {Object} options Opciones de capa XYZ.
  * @property {Boolean} isbase Define si la capa es base.
+ * @property {Array} maxExtent La medida en que restringe la visualización a una región específica.
  *
  * @api
  * @extends {M.layer}
@@ -94,6 +95,11 @@ class XYZ extends LayerBase {
     this.url = parameters.url;
 
     /**
+     * XYZ maxextent: Extensión de visualización
+     */
+    this.userMaxExtent = userParameters.maxExtent;
+
+    /**
      * XYZ name: Identificador de capa.
      */
     this.name = parameters.name;
@@ -103,20 +109,21 @@ class XYZ extends LayerBase {
     this.legend = parameters.legend;
 
     /**
-     * XYZ minZoom: Límite del zoom mínimo.
+     * XYZ tileGridMaxZoom. Zoom máximo de cuadrícula de mosaico.
      */
-    this.minZoom = parameters.minZoom;
+    this.tileGridMaxZoom = parameters.tileGridMaxZoom || userParameters.tileGridMaxZoom;
 
-    /**
-     * XYZ maxZoom: Límite del zoom máximo.
-     */
+    if (isUndefined(this.tileGridMaxZoom)) {
+      /**
+       * XYZ minZoom: Límite del zoom mínimo.
+       */
+      this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
 
-    this.maxZoom = parameters.maxZoom;
-
-    /**
-     * XYZ tileGridMaxZoom: Zoom máximo de la tesela en forma de rejilla.
-     */
-    this.tileGridMaxZoom = parameters.tileGridMaxZoom;
+      /**
+       * XYZ maxZoom: Límite del zoom máximo.
+       */
+      this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
+    }
 
     /**
      * XYZ options: Opciones de la capa.

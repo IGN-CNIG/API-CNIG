@@ -88,7 +88,7 @@ export default class FullTOCControl extends M.Control {
         this.template_ = html;
         success(html);
         this.template_.addEventListener('click', this.clickLayer.bind(this), false);
-        this.template_.addEventListener('keydown', evt => (evt.keyCode === 13) && evt.target.click());
+        this.template_.addEventListener('keydown', (evt) => (evt.keyCode === 13) && evt.target.click());
         this.template_.addEventListener('input', this.inputLayer.bind(this), false);
         this.getImpl().registerEvents();
         this.render();
@@ -137,7 +137,7 @@ export default class FullTOCControl extends M.Control {
       const layerName = evt.target.getAttribute('data-layer-name');
       if (!M.utils.isNullOrEmpty(layerName)) {
         evt.stopPropagation();
-        const layer = this.map_.getLayers().filter(l => l.name === layerName)[0];
+        const layer = this.map_.getLayers().filter((l) => l.name === layerName)[0];
         if (evt.target.classList.contains('m-check')) {
           if (layer.transparent === true || !layer.isVisible()) {
             const opacity = evt.target.parentElement.parentElement.parentElement.parentElement.querySelector('div.tools > input');
@@ -341,8 +341,8 @@ export default class FullTOCControl extends M.Control {
             } else if (layer.type === 'WMTS') {
               vars.capabilities = M.utils.getWMTSGetCapabilitiesUrl(layer.url);
               if (!M.utils.isNullOrEmpty(layer.capabilitiesMetadata.attribution)) {
-                vars.provider = `${layer.capabilitiesMetadata.attribution.ProviderName}` +
-                  `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
+                vars.provider = `${layer.capabilitiesMetadata.attribution.ProviderName}`
+                  + `<p><a class="m-fulltoc-provider-link" href="${layer.capabilitiesMetadata.attribution.ProviderSite}" target="_blank">${layer.capabilitiesMetadata.attribution.ProviderSite}</a></p>`;
                 const sc = layer.capabilitiesMetadata.attribution.ServiceContact;
                 if (!M.utils.isNullOrEmpty(sc) && !M.utils.isNullOrEmpty(sc.ContactInfo)) {
                   const mail = sc.ContactInfo.Address.ElectronicMailAddress;
@@ -405,8 +405,8 @@ export default class FullTOCControl extends M.Control {
         }
       } else if (evt.target.classList.contains('m-fulltoc-addservice')) {
         const precharged = this.precharged;
-        const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0) ||
-          (precharged.services !== undefined && precharged.services.length > 0);
+        const hasPrecharged = (precharged.groups !== undefined && precharged.groups.length > 0)
+          || (precharged.services !== undefined && precharged.services.length > 0);
         const codsiActive = this.codsi;
         const addServices = M.template.compileSync(addServicesTemplate, {
           jsonp: true,
@@ -432,18 +432,18 @@ export default class FullTOCControl extends M.Control {
         M.dialog.info(addServices, getValue('load_ext_services'), this.order);
         setTimeout(() => {
           if (document.querySelector('#m-fulltoc-addservices-list-btn') !== null) {
-            document.querySelector('#m-fulltoc-addservices-list-btn').addEventListener('click', e => this.showSuggestions(e));
-            document.querySelector('#m-fulltoc-addservices-list-btn').addEventListener('keydown', e => (e.keyCode === 13) && this.showSuggestions(e));
+            document.querySelector('#m-fulltoc-addservices-list-btn').addEventListener('click', (e) => this.showSuggestions(e));
+            document.querySelector('#m-fulltoc-addservices-list-btn').addEventListener('keydown', (e) => (e.keyCode === 13) && this.showSuggestions(e));
           }
 
           if (document.querySelector('#m-fulltoc-addservices-codsi-btn') !== null) {
-            document.querySelector('#m-fulltoc-addservices-codsi-btn').addEventListener('click', e => this.showCODSI(e));
-            document.querySelector('#m-fulltoc-addservices-codsi-btn').addEventListener('keydown', e => (e.keyCode === 13) && this.showCODSI(e));
+            document.querySelector('#m-fulltoc-addservices-codsi-btn').addEventListener('click', (e) => this.showCODSI(e));
+            document.querySelector('#m-fulltoc-addservices-codsi-btn').addEventListener('keydown', (e) => (e.keyCode === 13) && this.showCODSI(e));
             document.querySelector('#m-fulltoc-addservices-codsi-filter-btn').addEventListener('click', (e) => {
               this.loadCODSIResults(1);
             });
 
-            document.querySelector('#m-fulltoc-addservices-codsi-filter-btn').addEventListener('keydown', e => (e.keyCode === 13) && this.loadCODSIResults(1));
+            document.querySelector('#m-fulltoc-addservices-codsi-filter-btn').addEventListener('keydown', (e) => (e.keyCode === 13) && this.loadCODSIResults(1));
 
             document.querySelector('#m-fulltoc-addservices-codsi-search-input').addEventListener('keypress', (e) => {
               if (e.keyCode === 13) {
@@ -456,7 +456,6 @@ export default class FullTOCControl extends M.Control {
               this.loadCODSIResults(1);
             });
           }
-
 
           document.querySelector('#m-fulltoc-addservices-search-btn').addEventListener('click', (e) => {
             this.filterName = undefined;
@@ -506,8 +505,8 @@ export default class FullTOCControl extends M.Control {
           });
 
           document.querySelectorAll('#m-fulltoc-addservices-suggestions .m-fulltoc-suggestion').forEach((elem) => {
-            elem.addEventListener('click', e => this.loadSuggestion(e));
-            elem.addEventListener('keydown', e => (e.keyCode === 13) && this.loadSuggestion(e));
+            elem.addEventListener('click', (e) => this.loadSuggestion(e));
+            elem.addEventListener('keydown', (e) => (e.keyCode === 13) && this.loadSuggestion(e));
           });
           this.accessibilityTab(document.querySelector('.m-fulltoc-addservices'));
         }, 10);
@@ -748,13 +747,13 @@ export default class FullTOCControl extends M.Control {
           const isTransparent = (layer.transparent === true);
           const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
           const isRaster = ['wms', 'wmts'].indexOf(layer.type.toLowerCase()) > -1;
-          const isNotWMSFull = !((layer.type === M.layer.type.WMS) &&
-            M.utils.isNullOrEmpty(layer.name));
+          const isNotWMSFull = !((layer.type === M.layer.type.WMS)
+            && M.utils.isNullOrEmpty(layer.name));
           return ((isTransparent && displayInLayerSwitcher && isRaster && isNotWMSFull) || (layer.type === 'OGCAPIFeatures'));
         }).reverse();
 
         const overlayLayersPromise = Promise.all(overlayLayers.map(this.parseLayerForTemplate_));
-        overlayLayersPromise.then(parsedOverlayLayers => success({
+        overlayLayersPromise.then((parsedOverlayLayers) => success({
           layers: overlayLayers,
           overlayLayers: parsedOverlayLayers,
           translations: {
@@ -840,8 +839,8 @@ export default class FullTOCControl extends M.Control {
           layer.setLegendURL(legendErrorUrl);
         }
         /*
-        else if (layerURL.indexOf('/mirame.chduero.es/') > -1 &&
-        layer.getImpl().getOL3Layer() !== null) {
+        else if (layerURL.indexOf('/mirame.chduero.es/') > -1
+          && layer.getImpl().getOL3Layer() !== null) {
           const styleName = layer.getImpl().getOL3Layer().getSource().getStyle();
           const urlLegend = layer.getLegendURL().split('&amp;').join('&').split('default')
             .join(styleName);
@@ -862,6 +861,7 @@ export default class FullTOCControl extends M.Control {
   activate() {
     super.activate();
   }
+
   /**
    * This function is called on the control deactivation
    *
@@ -872,6 +872,7 @@ export default class FullTOCControl extends M.Control {
   deactivate() {
     super.deactivate();
   }
+
   /**
    * This function gets activation button
    *
@@ -905,8 +906,8 @@ export default class FullTOCControl extends M.Control {
   parseLayerForTemplate_(layer) {
     let ogcapiFeaturesStyles;
     const layerTitle = layer.legend || layer.name;
-    const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata) &&
-      !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
+    const hasMetadata = !M.utils.isNullOrEmpty(layer.capabilitiesMetadata)
+      && !M.utils.isNullOrEmpty(layer.capabilitiesMetadata.abstract);
 
     if (layer.type === 'OGCAPIFeatures') {
       if (!M.utils.isNullOrEmpty(layer.otherStyles)) {
@@ -1117,9 +1118,9 @@ export default class FullTOCControl extends M.Control {
         let insideService = false;
         allServices.forEach((service) => {
           if (service.type === layer.type && this.checkUrls(service.url, layer.url)) {
-            if (service.white_list !== undefined && service.white_list.length > 0 &&
-              service.white_list.indexOf(layer.name) > -1 &&
-              layerNames.indexOf(layer.name) === -1) {
+            if (service.white_list !== undefined && service.white_list.length > 0
+                && service.white_list.indexOf(layer.name) > -1
+                && layerNames.indexOf(layer.name) === -1) {
               layers.push(layer);
               layerNames.push(layer.name);
             } else if (service.white_list === undefined && layerNames.indexOf(layer.name) === -1) {
@@ -1138,19 +1139,19 @@ export default class FullTOCControl extends M.Control {
       });
     } else if (this.precharged.groups !== undefined && this.precharged.groups.length > 0) {
       this.precharged.groups.forEach((group) => {
-        if (group.services !== undefined && group.services.length > 0 &&
-          group.name === this.filterName) {
+        if (group.services !== undefined && group.services.length > 0
+            && group.name === this.filterName) {
           allLayers.forEach((layer) => {
             let insideService = false;
             group.services.forEach((service) => {
               if (service.type === layer.type && this.checkUrls(service.url, layer.url)) {
-                if (service.white_list !== undefined && service.white_list.length > 0 &&
-                  service.white_list.indexOf(layer.name) > -1 &&
-                  layerNames.indexOf(layer.name) === -1) {
+                if (service.white_list !== undefined && service.white_list.length > 0
+                    && service.white_list.indexOf(layer.name) > -1
+                    && layerNames.indexOf(layer.name) === -1) {
                   layers.push(layer);
                   layerNames.push(layer.name);
-                } else if (service.white_list === undefined &&
-                  layerNames.indexOf(layer.name) === -1) {
+                } else if (service.white_list === undefined
+                    && layerNames.indexOf(layer.name) === -1) {
                   layers.push(layer);
                   layerNames.push(layer.name);
                 }
@@ -1305,19 +1306,19 @@ export default class FullTOCControl extends M.Control {
       M.utils.enableTouchScroll(container);
       const results = container.querySelectorAll('span.m-check-fulltoc-addservices');
       for (let i = 0; i < results.length; i += 1) {
-        results[i].addEventListener('click', evt => this.registerCheck(evt));
+        results[i].addEventListener('click', (evt) => this.registerCheck(evt));
       }
 
       const resultsNames = container.querySelectorAll('.table-results .table-container table tbody tr td.table-layer-name');
       for (let i = 0; i < resultsNames.length; i += 1) {
-        resultsNames[i].addEventListener('click', evt => this.registerCheckFromName(evt));
+        resultsNames[i].addEventListener('click', (evt) => this.registerCheckFromName(evt));
       }
 
       const checkboxResults = container.querySelectorAll('.table-results .table-container table tbody tr td span');
-      checkboxResults.forEach(l => l.addEventListener('keydown', e => (e.keyCode === 13) && this.registerCheckFromName(e)));
+      checkboxResults.forEach((l) => l.addEventListener('keydown', (e) => (e.keyCode === 13) && this.registerCheckFromName(e)));
 
-      container.querySelector('#m-fulltoc-addservices-selectall').addEventListener('click', evt => this.registerCheck(evt));
-      container.querySelector('.m-fulltoc-addservices-add').addEventListener('click', evt => this.addLayers(evt));
+      container.querySelector('#m-fulltoc-addservices-selectall').addEventListener('click', (evt) => this.registerCheck(evt));
+      container.querySelector('.m-fulltoc-addservices-add').addEventListener('click', (evt) => this.addLayers(evt));
       const elem = container.querySelector('.m-fulltoc-show-capabilities');
       elem.addEventListener('click', () => {
         const block = container.querySelector('.m-fulltoc-capabilities-container');
@@ -1454,8 +1455,8 @@ export default class FullTOCControl extends M.Control {
               if (this.capabilities[j].type === 'WMTS') {
                 if (meta.style !== undefined && meta.style.length > 0) {
                   meta.style.forEach((s) => {
-                    if (s.isDefault === true && s.LegendURL !== undefined &&
-                      s.LegendURL.length > 0) {
+                    if (s.isDefault === true && s.LegendURL !== undefined
+                        && s.LegendURL.length > 0) {
                       const urlDefaultStyle = s.LegendURL[0].href;
                       this.capabilities[j].setLegendURL(urlDefaultStyle);
                     }
@@ -1545,14 +1546,13 @@ export default class FullTOCControl extends M.Control {
     Object.keys(checkboxes).forEach((name) => {
       const checkboxGroup = checkboxes[name];
       /* eslint-disable-next-line max-len */
-      const checkedValues = checkboxGroup.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+      const checkedValues = checkboxGroup.filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
 
       if (checkedValues.length === 1) {
         // Si solo hay un checkbox marcado, establecer el valor correspondiente en formData
         formData[name] = checkedValues[0];
       }
     });
-
 
     const propsKeysForm = Object.keys(formData);
     const propsValuesForm = Object.values(formData);
@@ -1611,8 +1611,14 @@ export default class FullTOCControl extends M.Control {
   }
 
   setOnClickersFiltersButtons(
-    summary, urlOGC, radioBtnFilterByID,
-    radioBtnFilterByOther, layers, url, filterByID, filterByOtherFilters,
+    summary,
+    urlOGC,
+    radioBtnFilterByID,
+    radioBtnFilterByOther,
+    layers,
+    url,
+    filterByID,
+    filterByOtherFilters,
   ) {
     let indexCurrentLayer;
     let formInputs;
@@ -1675,8 +1681,8 @@ export default class FullTOCControl extends M.Control {
                 v.bool = true;
               } else if (type === 'timestamp' || type === 'date') {
                 v.date = true;
-              } else if (type === 'int4' || type === 'int' ||
-                type === 'number' || type === 'numeric' || type.includes('numeric')) {
+              } else if (type === 'int4' || type === 'int'
+                || type === 'number' || type === 'numeric' || type.includes('numeric')) {
                 v.number = true;
               } else {
                 v.text = true;
@@ -1766,8 +1772,13 @@ export default class FullTOCControl extends M.Control {
             this.printOGCModal(url, indexCurrentLayer, limit, checked);
           } else {
             this.printOGCModal(
-              url, indexCurrentLayer, limit, checked, cDict,
-              filterByIDTemp, filterByOtherFiltersTemp,
+              url,
+              indexCurrentLayer,
+              limit,
+              checked,
+              cDict,
+              filterByIDTemp,
+              filterByOtherFiltersTemp,
             );
           }
         });
@@ -1778,8 +1789,13 @@ export default class FullTOCControl extends M.Control {
             return capa.id === selectValue;
           });
           this.printOGCModal(
-            url, indexCurrentLayer, limit, checked,
-            summary, filterByID, filterByOtherFilters,
+            url,
+            indexCurrentLayer,
+            limit,
+            checked,
+            summary,
+            filterByID,
+            filterByOtherFilters,
           );
         });
       }).catch((err) => {
@@ -1837,8 +1853,13 @@ export default class FullTOCControl extends M.Control {
   }
 
   printOGCModal(
-    url, selectedLayer, limitVal, onlyBbox, summary,
-    filterByID, filterByOtherFilters,
+    url,
+    selectedLayer,
+    limitVal,
+    onlyBbox,
+    summary,
+    filterByID,
+    filterByOtherFilters,
   ) {
     let prevID;
     let urlOGC = url.trim();
@@ -1902,8 +1923,14 @@ export default class FullTOCControl extends M.Control {
         this.setOnClickCloseBtn();
 
         this.setOnClickersFiltersButtons(
-          summary, urlOGC, radioBtnFilterByID, radioBtnFilterByOther,
-          layers, url, filterByID, filterByOtherFilters,
+          summary,
+          urlOGC,
+          radioBtnFilterByID,
+          radioBtnFilterByOther,
+          layers,
+          url,
+          filterByID,
+          filterByOtherFilters,
         );
       }).catch((err) => {
         urlOGC = '';
@@ -1917,6 +1944,6 @@ export default class FullTOCControl extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 }

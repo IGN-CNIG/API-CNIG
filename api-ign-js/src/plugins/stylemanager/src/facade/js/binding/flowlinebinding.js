@@ -68,7 +68,7 @@ export class FlowLineBinding extends Binding {
 
     if (this.layer_ != null) {
       options['arrowlist'] = [{ name: 0 }, { name: -1 }, { name: 1 }, { name: 2 }];
-      options['arrowlist'].forEach(ar => ar['selected'] = options.arrow);
+      options['arrowlist'].forEach((ar) => ar['selected'] = options.arrow);
       options['linecap'] = FlowLineBinding.arrayDataToTemplate(options.lineCap, ['round', 'butt'], [getValue('rounded'), getValue('extreme')]);
     }
     return options;

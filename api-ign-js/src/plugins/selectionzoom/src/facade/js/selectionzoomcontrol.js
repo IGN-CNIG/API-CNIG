@@ -211,11 +211,13 @@ export default class SelectionZoomControl extends M.Control {
           BboxTransformXmaxYmin = [layersInfo.bbox[1], layersInfo.bbox[2]];
         }
         BboxTransformXmaxYmin = this.getImpl().transform(
-          BboxTransformXmaxYmin, 'EPSG:3857',
+          BboxTransformXmaxYmin,
+          'EPSG:3857',
           this.map_.getProjection().code,
         );
         BboxTransformXminYmax = this.getImpl().transform(
-          BboxTransformXminYmax, 'EPSG:3857',
+          BboxTransformXminYmax,
+          'EPSG:3857',
           this.map_.getProjection().code,
         );
 
@@ -229,8 +231,8 @@ export default class SelectionZoomControl extends M.Control {
         if (!layersInfo.isnewparam) {
           this.map.setZoom(layersInfo.zoom);
         }
-      } else if (layersInfo.isnewparam && !M.utils.isNullOrEmpty(layersInfo.zoom) &&
-        !M.utils.isNullOrEmpty(layersInfo.center)) {
+      } else if (layersInfo.isnewparam && !M.utils.isNullOrEmpty(layersInfo.zoom)
+        && !M.utils.isNullOrEmpty(layersInfo.center)) {
         this.map.setZoom(layersInfo.zoom);
         this.map.setCenter(layersInfo.center);
       } else if (layersInfo.isnewparam) {
@@ -273,7 +275,7 @@ export default class SelectionZoomControl extends M.Control {
    */
   listen(html) {
     html.querySelectorAll('div[id^="m-selectionzoom-lyr-"]')
-      .forEach((b, i) => b.addEventListener('click', e => this.showBaseLayer(e, this.layers[i], i)));
+      .forEach((b, i) => b.addEventListener('click', (e) => this.showBaseLayer(e, this.layers[i], i)));
 
     html.querySelectorAll('div[id^="m-selectionzoom-lyr-"]')
       .forEach((b, i) => b.addEventListener('keydown', (e) => {
@@ -294,6 +296,6 @@ export default class SelectionZoomControl extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 }

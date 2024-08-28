@@ -35,7 +35,7 @@
     "name": "Buffer",
     "description": "Draws features and calculates influence area",
     "text": "Calculates the area of influence on a line, polygon or point that is drawn on the map.",
-    "version": "1.1.0",
+    "version": "2.0.0",
     "date": "Agosto, 2020",
     "author": "Guadaltel",
     "org": "CNIG",

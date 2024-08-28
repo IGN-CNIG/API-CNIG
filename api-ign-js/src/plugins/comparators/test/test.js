@@ -1,7 +1,7 @@
 import Comparators from 'facade/comparators';
 
-M.language.setLang('en');
-// M.language.setLang('es');
+// M.language.setLang('en');
+M.language.setLang('es');
 // M.proxy(false);
 
 
@@ -19,7 +19,7 @@ const mpLayerswitcher = new M.plugin.Layerswitcher({
 
 map.addPlugin(mpLayerswitcher);
 
-/* // PRUEBA ?, desconozco uso de esta prueba, por si solo sufre errores por insuficiencia de layers al usar transparencia al no existir listLayers. Es limpiado si existe plugin Comparators y se intenta ver menú de transparencia.
+/* // 
  const x = [
   'WMS*Americano 1956-1957*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957',
   'WMS*Interministerial 1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986',
@@ -56,7 +56,7 @@ const WMSObject = x.map((layer) => {
 });
 map.addLayers(WMSObject); // */
 
-/* // PRUEBA ?, desconozco uso de esta prueba, por si solo sufre errores por insuficiencia de layers al usar transparencia al no existir listLayers. Es limpiado si existe plugin Comparators y se intenta ver menú de transparencia.
+/* // PRUEBA ?, 
 const wmtsString = [
   'WMTS*https://www.ign.es/wmts/mapa-raster*MTN*GoogleMapsCompatible*Mapa MTN*image/jpeg',
   'WMTS*https://www.ign.es/wmts/primera-edicion-mtn?*mtn50-edicion1*GoogleMapsCompatible*MTN50 1Edi*image/jpeg',
@@ -79,7 +79,7 @@ const wmtsObject = wmtsString.map((layer) => {
 });
 map.addLayers(wmtsObject); // Falta este addLayers para usarlo igual que WMSObject */
 
-/* // PRUEBA ?, desconozco uso de esta prueba, por si solo sufre errores por insuficiencia de layers al usar transparencia.
+/* // PRUEBA 
 // const objWMTSMapaSoloTextos = new M.layer.WMTS({
 //  url: 'https://www.ign.es/wmts/mapa-raster', name: 'MTN_Fondo',
 //  matrixSet: 'GoogleMapsCompatible', legend: 'MTN Fondo', transparent: true,
@@ -141,7 +141,7 @@ const bkmp = new M.plugin.BackImgLayer({
   ],
 }); map.addPlugin(bkmp); window.bkmp = bkmp; // */
 
-/* // PRUEBA ?, Añado una capa al mapa, desconozco uso de esta prueba, por si solo sufre errores por insuficiencia de layers al usar transparencia al no existir listLayers. Es limpiado si existe plugin Comparators y se intenta ver menú de transparencia.
+/* // PRUEBA ?,
 const ocupacionSuelo = new M.layer.WMTS({
   url: 'https://wmts-mapa-lidar.idee.es/lidar',
   name: 'EL.GridCoverageDSM',
@@ -152,7 +152,7 @@ const ocupacionSuelo = new M.layer.WMTS({
 }, {});
 map.addLayers(ocupacionSuelo); // */
 
-/* // PRUEBA 1 Para el funcionamiento de transparencia
+// PRUEBA 1 Para el funcionamiento de transparencia
  const SENTINELlistBaseLayersByString = [
   'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true',
   'WMS*Invierno 2022 falso color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*SENTINEL.2022invierno_432-1184*true',
@@ -202,18 +202,19 @@ const capas = [
 ]; // */
 
 const mp = new Comparators({
-  position: 'TL',
+  position: 'TR',
   collapsed: false,
   collapsible: true,
-  isDraggable: true,
+  isDraggable: false,
+  enabledDisplayInLayerSwitcher: false,
   // tooltip: 'Plugin Comparators', // Si se evita uso de opciones tooltip, se usa el archivo de traducción por defecto
-  defaultCompareMode: 'transparecyParams', // 2 - ERROR, y 4 - ERROR
-  enabledKeyFunctions: true, // 3 - ERROR
-  // lyrsMirrorMinZindex: 10, // 5 - ERROR
+  defaultCompareMode: 'mirrorPanelParams', 
+  enabledKeyFunctions: true, 
+  // lyrsMirrorMinZindex: 10, 
   transparencyParams: {
     radius: 100,
-    maxRadius: 100,
-    minRadius: 10,
+    maxRadius: 200,
+    minRadius: 60,
     // tooltip: 'tooltipTransparency',
   },
   lyrcompareParams: {
@@ -222,9 +223,9 @@ const mp = new Comparators({
     defaultLyrB: 2,
     defaultLyrC: 3,
     defaultLyrD: 0,
-    opacityVal: 100,
+    opacityVal: 50,
     // tooltip: 'tooltipLyrCompare',
-    defaultCompareViz: 1,
+    defaultCompareViz: 2,
   },
   mirrorpanelParams: {
     showCursors: true,
@@ -239,7 +240,7 @@ const mp = new Comparators({
     },
     enabledDisplayInLayerSwitcher: true,
     defaultCompareViz: 2,
-    modeVizTypes: [0, 2],
+    modeVizTypes: [0, 2, 3, 4],
     // tooltip: 'tooltipMirror',
   },
   windowsyncParams: {
@@ -258,25 +259,10 @@ const mp = new Comparators({
       },
     ],
   },
-  // listLayers: SENTINELlistBaseLayersByString, // PRUEBA 1 Para el funcionamiento de transparencia
-  listLayers: capas, // PRUEBA 2 Para el funcionamiento de transparencia
+  listLayers: SENTINELlistBaseLayersByString, // PRUEBA 1 Para el funcionamiento de transparencia
+  // listLayers: capas, // PRUEBA 2 Para el funcionamiento de transparencia
 });
 
 map.addPlugin(mp);
 
 window.mp = mp; // */
-
-// Lista de errores encontrados
-
-// 1 - ERROR Se ha observado que la traducción del "comparators/src/facade/js/i18n/en.json" tiene puesto "exception.fourLayers" y "exception.notLayers" sin traducción correcta comparado con el lenguaje español. Parecen haber sido copiados de "no_layers_plugin".
-
-// 2 - ERROR "transparecyParams"(SIN segunda "n") es mal, tiene que ser "transparencyParams", por lo que hay esta inconsistencia en los textos de README y "plugins/comparators/src/facade/js/comparatorscontrol.js" que se deberían de cambiar.
-// 3 - ERROR enabledKeyFunctions, Los eventos lanzados por esta configuración de "plugins/comparators/src/facade/js/transparencycontrol.js" y "plugins/comparators/src/facade/js/mirrorpanelcontrol.js" se pueden generar de forma duplicada cada vez que se da click a las opciones de comparado. En "transparencycontrol" también se genera aunque si se pone false no debería de haber se generado igual que "mirrorpanelcontrol" que se lo salta en ese caso. Se podría añadir función "addEventKey_" a este también.
-// Con poner el generado de estos dos activate con "if (this.enabledKeyFunctions) {this.functionKeyDown = (zEvent) => {...};document.addEventListener('keydown', this.functionKeyDown);}" y en Deactivate el apartados "document.removeEventListener('keydown', this.functionKeyDown);" Se impide esta acumulación de eventos.
-// Además hay caso de repetidas llamadas a "if" de "zEvent.ctrlKey && zEvent.shiftKey" que se podría unir en un único if antes del siguiente if.
-// Teniendo en cuenta que "combinedKeys === 'Escape'" de "plugins/comparators/src/facade/js/mirrorpanelcontrol.js" se puede simplificar con un solo if de "(zEvent.key === 'Escape' && !(zEvent.ctrlKey || zEvent.shiftKey || zEvent.altKey || zEvent.metaKey))", eliminando también constante "keyStr". Si se combina con el arreglo de antes de "zEvent.ctrlKey && zEvent.shiftKey", se puede saltar en este caso en el "else" estas mismas pruebas de variables.
-
-// 4 - ERROR Parámetro "defaultCompareMode" no parece hacer nada en las pruebas de JSP de este plugin, porque esta configurado a usar valores default simples(ej 'mirror', 'spyeye' ...) que no se utilizan aquí, tienen que ser 'mirrorpanelParams', 'lyrcompareParams', 'transparecyParams', 'windowsyncParams' o 'none' en el select.
-// 5 - ERROR Parámetro 'lyrsMirrorMinZindex' no se usa en comparators, por lo que se tienen que limpiar de estos. Hay que tener cuidado porque parece como si se copiaron de Plugin "comparepanel"
-
-// 6 - ERROR "this.isDraggableE" parece ser un error traído con copiado y pegado, que en realidad debería de ser "this.isDraggable", ocurre en 4 plugins, en las funciones "getApiRest" de estos.

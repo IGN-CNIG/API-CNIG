@@ -22,7 +22,6 @@ export const handlerErrorURLWindowSync = (style, script, name) => {
     console.error(`${getValue('exception.errorLinkUrl')} ${name}`);
   }
 
-
   if (!script && name) {
     M.toast.error(`${getValue('exception.errorScriptUrl')} ${name}`, null, 6000);
     // eslint-disable-next-line no-console
@@ -35,7 +34,6 @@ export const handlerErrorURLWindowSync = (style, script, name) => {
     console.error(getValue('exception.errorScriptOrLinkUrl'));
   }
 };
-
 
 export const handlerErrorTileLoadFunction = ({ name }) => {
   if (name) {

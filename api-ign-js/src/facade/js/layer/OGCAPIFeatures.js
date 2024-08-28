@@ -3,7 +3,12 @@
  */
 import OGCAPIFeaturesImpl from 'impl/layer/OGCAPIFeatures';
 
-import { isUndefined, isNullOrEmpty, isString, normalize } from '../util/Utils';
+import {
+  isUndefined,
+  isNullOrEmpty,
+  isString,
+  normalize,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';
 import * as LayerType from './Type';
@@ -162,7 +167,7 @@ class OGCAPIFeatures extends Vector {
      * OGCAPIFeatures extract: Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */
-    this.extract = parameters.extract || true;
+    this.extract = parameters.extract === undefined ? false : parameters.extract;
 
     /**
      * OGCAPIFeatures cql: Declaración CQL para filtrar las características
@@ -187,33 +192,23 @@ class OGCAPIFeatures extends Vector {
     this.geometry = parameters.geometry;
 
     /**
+     * OGCAPIFeatures minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * OGCAPIFeatures maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
+
+    /**
      * OGCAPIFeatures opt: Opciones.
      */
     this.opt = opt;
-  }
-
-  /**
-   * Devuelve la leyenda de la capa.
-   * @function
-   * @return {M.layer.OGCAPIFeature.impl.legend} Devuelve la leyenda.
-   * @api
-   */
-  get legend() {
-    return this.getImpl().legend;
-  }
-
-  /**
-   * Sobrescribe la leyenda.
-   * @function
-   * @param {String} newLegend Nueva leyenda.
-   * @api
-   */
-  set legend(newLegend) {
-    if (isNullOrEmpty(newLegend)) {
-      this.getImpl().legend = this.name;
-    } else {
-      this.getImpl().legend = newLegend;
-    }
   }
 
   /**
@@ -433,7 +428,6 @@ class OGCAPIFeatures extends Vector {
       this.getImpl().extract = false;
     }
   }
-
 
   /**
    * Este método comprueba si un objeto es igual

@@ -3,7 +3,6 @@
  */
 import CurtainInteraction from 'impl/CurtainInteraction';
 
-
 export default class Lyrcomparecontrol extends M.impl.Control {
   /**
    * This function adds the control to the specified map
@@ -32,7 +31,6 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    * @api stable
    */
   effectSelectedCurtain(lyrA, lyrB, lyrC, lyrD, opacityVal, staticDivision, comparisonMode) {
-
     lyrA.setVisible(true);
     lyrB.setVisible(true);
 
@@ -41,7 +39,7 @@ export default class Lyrcomparecontrol extends M.impl.Control {
       lyrA,
       lyrB,
       lyrC,
-      lyrD
+      lyrD,
     });
 
     this.olMap.addInteraction(this.transparentInteraction_);
@@ -59,9 +57,9 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    * @api stable
    */
   setVisibilityLayersCD() {
-
-    if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setVisibilityLayersCD();
-
+    if (this.transparentInteraction_ !== undefined) {
+      this.transparentInteraction_.setVisibilityLayersCD();
+    }
   }
 
   /**
@@ -73,9 +71,9 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    * @api stable
    */
   setOpacity(opacityVal) {
-
-    if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setOpacity(opacityVal);
-
+    if (this.transparentInteraction_ !== undefined) {
+      this.transparentInteraction_.setOpacity(opacityVal);
+    }
   }
 
   /**
@@ -87,9 +85,10 @@ export default class Lyrcomparecontrol extends M.impl.Control {
      * @api stable
      */
   setComparisonMode(comparisonMode) {
-    if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setComparisonMode(comparisonMode);
+    if (this.transparentInteraction_ !== undefined) {
+      this.transparentInteraction_.setComparisonMode(comparisonMode);
+    }
     this.setVisibilityLayersCD();
-
   }
 
   /**
@@ -102,7 +101,9 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    */
 
   setStaticDivision(staticDivision) {
-    if (this.transparentInteraction_ !== undefined) this.transparentInteraction_.setStaticDivision(staticDivision);
+    if (this.transparentInteraction_ !== undefined) {
+      this.transparentInteraction_.setStaticDivision(staticDivision);
+    }
   }
 
   /**
@@ -126,9 +127,7 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    */
   removeEffectsCurtain() {
     this.olMap.removeInteraction(this.transparentInteraction_);
-    
   }
-
 
   /**
    * Remove layer
@@ -140,7 +139,5 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    */
   removeLayer(layer) {
     this.transparentInteraction_.removeLayer(layer.getImpl().getOL3Layer());
-
   }
-
 }

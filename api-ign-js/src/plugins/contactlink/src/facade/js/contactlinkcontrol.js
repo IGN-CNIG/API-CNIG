@@ -25,76 +25,75 @@ export default class ContactLinkControl extends M.Control {
     const impl = new ContactLinkImplControl();
     super(impl, 'ContactLink');
 
-
     /**
      * Link to cnig downloads
      * @private
      * @type {String}
      */
-    this.linksDescargascnig = values.descargascnig
+    this.linksDescargascnig = values.descargascnig;
 
     /**
      * Link to pnoa comparator
      * @private
      * @type {String}
      */
-    this.linksPnoa = values.pnoa
+    this.linksPnoa = values.pnoa;
 
     /**
      * Link to 3d visualizer
      * @private
      * @type {String}
      */
-    this.linksVisualizador3d = values.visualizador3d
+    this.linksVisualizador3d = values.visualizador3d;
 
     /**
      * Link to cnig
      * @privatecnig
      * @type {String}
      */
-    this.linksFototeca = values.fototeca
+    this.linksFototeca = values.fototeca;
 
     /**
      * Link to twitter
      * @private
      * @type {String}
      */
-    this.linksTwitter = values.twitter
+    this.linksTwitter = values.twitter;
 
     /**
      * Link to instagram
      * @private
      * @type {String}
      */
-    this.linksInstagram = values.instagram
+    this.linksInstagram = values.instagram;
 
     /**
      * Link to facebook
      * @private
      * @type {String}
      */
-    this.linksFacebook = values.facebook
+    this.linksFacebook = values.facebook;
 
     /**
      * Link to pinterest
      * @private
      * @type {String}
      */
-    this.linksPinterest = values.pinterest
+    this.linksPinterest = values.pinterest;
 
     /**
      * Link to youtube
      * @private
      * @type {String}
      */
-    this.linksYoutube = values.youtube
+    this.linksYoutube = values.youtube;
 
     /**
      * Link to cnig downloads
      * @private
      * @type {String}
      */
-    this.linksMail = values.mail
+    this.linksMail = values.mail;
 
     /**
      * Template
@@ -152,20 +151,20 @@ export default class ContactLinkControl extends M.Control {
             facebook: this.linksFacebook,
             pinterest: this.linksPinterest,
             youtube: this.linksYoutube,
-            mail: this.linksMail
+            mail: this.linksMail,
           },
           title: getValue('title'),
           links: {
             downloads: getValue('links.downloads'),
             compare: getValue('links.compare'),
             display: getValue('links.3d'),
-            photo: getValue('links.photo')
+            photo: getValue('links.photo'),
           },
           accessibility: {
             webLinks: getValue('accessibility.webLinks'),
-            socialMedia: getValue('accessibility.socialMedia')
-          }
-        }
+            socialMedia: getValue('accessibility.socialMedia'),
+          },
+        },
       });
 
       this.accessibilityTab(html);
@@ -204,9 +203,8 @@ export default class ContactLinkControl extends M.Control {
    * @function
    * @api stable
    */
-  activate() {
+  activate() {}
 
-  }
   /**
    * This function is called on the control deactivation
    *
@@ -214,9 +212,8 @@ export default class ContactLinkControl extends M.Control {
    * @function
    * @api stable
    */
-  deactivate() {
+  deactivate() {}
 
-  }
   /**
    * This function gets activation button
    *
@@ -241,9 +238,8 @@ export default class ContactLinkControl extends M.Control {
     return control instanceof ContactLinkControl;
   }
 
-
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
   // Add your own functions
 }

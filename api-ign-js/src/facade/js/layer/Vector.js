@@ -4,7 +4,14 @@
 import VectorImpl from 'impl/layer/Vector';
 import { geojsonTo4326 } from 'impl/util/Utils';
 import projAPI from 'impl/projections';
-import { isUndefined, isArray, isNullOrEmpty, isString, modifySVG, normalize } from '../util/Utils';
+import {
+  isUndefined,
+  isArray,
+  isNullOrEmpty,
+  isString,
+  modifySVG,
+  normalize,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
 import * as LayerType from './Type';
@@ -35,7 +42,7 @@ class Vector extends LayerBase {
    * con parámetros especificados por el usuario.
    *
    * @constructor
-   * @param {Mx.parameters.Layer} userParameters Parámetros para la construcción de la capa.
+   * @param {Mx.parameters.Layer} parameters Parámetros para la construcción de la capa.
    * - name: Nombre de la capa en la leyenda.
    * - type: Tipo de la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
@@ -63,7 +70,7 @@ class Vector extends LayerBase {
    * </code></pre>
    * @api
    */
-  constructor(parameters = {}, options = {}, vendorOptions = {}, implParam) {
+  constructor(parameters = {}, options = {}, vendorOptions = {}, implParam = undefined) {
     const optns = parameters;
     optns.type = !parameters.type ? LayerType.Vector : parameters.type;
 
@@ -100,12 +107,12 @@ class Vector extends LayerBase {
     /**
      * Vector minzoom. Zoom mínimo.
      */
-    this.minZoom = optns.minZoom;
+    this.minZoom = optionsVars.minZoom || Number.NEGATIVE_INFINITY; // || optns.minZoom
 
     /**
      * Vector maxzoom. Zoom máximo.
      */
-    this.maxZoom = optns.maxZoom;
+    this.maxZoom = optionsVars.maxZoom || Number.POSITIVE_INFINITY; // || optns.maxZoom
 
     /**
      * infoEventType. Tipo de evento para mostrar la info de una feature.
@@ -116,16 +123,18 @@ class Vector extends LayerBase {
       * Vector extract: Opcional, activa la consulta
       * haciendo clic en el objeto geográfico, por defecto falso.
     */
-    this.extract = optns.extract || true;
+    this.extract = optns.extract === undefined ? false : optns.extract;
 
     /**
      * predefinedStyles: Estilos predefinidos para la capa.
      */
-    this.predefinedStyles =
-      isUndefined(options.predefinedStyles) ? [] : options.predefinedStyles;
+    this.predefinedStyles = isUndefined(options.predefinedStyles)
+      ? []
+      : options.predefinedStyles;
 
-    const defaultOptionsStyle = !isUndefined(this.constructor.DEFAULT_OPTS_STYLE) ?
-      this.constructor.DEFAULT_OPTS_STYLE : this.constructor.DEFAULT_OPTIONS_STYLE;
+    const defaultOptionsStyle = !isUndefined(this.constructor.DEFAULT_OPTS_STYLE)
+      ? this.constructor.DEFAULT_OPTS_STYLE
+      : this.constructor.DEFAULT_OPTIONS_STYLE;
 
     if (isUndefined(options.style) && defaultOptionsStyle) {
       this.predefinedStyles.unshift(new Generic(defaultOptionsStyle));
@@ -137,7 +146,7 @@ class Vector extends LayerBase {
 
     this.setStyle(options.style);
 
-    impl.on(EventType.LOAD, features => this.fire(EventType.LOAD, [features]));
+    impl.on(EventType.LOAD, (features) => this.fire(EventType.LOAD, [features]));
   }
 
   /**
@@ -392,8 +401,8 @@ class Vector extends LayerBase {
       if (options.point) {
         options = options.point;
       }
-      if (options.icon && options.icon.src && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg') &&
-        (options.icon.fill || options.icon.stroke)) {
+      if (options.icon && options.icon.src && typeof options.icon.src === 'string' && options.icon.src.endsWith('.svg')
+        && (options.icon.fill || options.icon.stroke)) {
         modifySVG(options.icon.src, options).then((resp) => {
           options.icon.src = resp;
           this.applyStyle_(styleParam, applyToFeature);
@@ -431,7 +440,7 @@ class Vector extends LayerBase {
    */
   clearStyle() {
     this.setStyle(null);
-    this.getFeatures().forEach(feature => feature.clearStyle());
+    this.getFeatures().forEach((feature) => feature.clearStyle());
   }
 
   /**
@@ -443,8 +452,8 @@ class Vector extends LayerBase {
    */
   getLegendURL() {
     let legendUrl = this.getImpl().getLegendURL();
-    if (legendUrl.indexOf(LayerBase.LEGEND_DEFAULT) !== -1 &&
-      legendUrl.indexOf(LayerBase.LEGEND_ERROR) === -1 && this.style_ instanceof Style) {
+    if (legendUrl.indexOf(LayerBase.LEGEND_DEFAULT) !== -1
+      && legendUrl.indexOf(LayerBase.LEGEND_ERROR) === -1 && this.style_ instanceof Style) {
       legendUrl = this.style_.toImage();
     }
     return legendUrl;
@@ -535,9 +544,9 @@ class Vector extends LayerBase {
    */
   toGeoJSON() {
     const code = this.map_.getProjection().code;
-    const featuresAsJSON = this.getFeatures().map(feature => feature.getGeoJSON());
+    const featuresAsJSON = this.getFeatures().map((feature) => feature.getGeoJSON());
     const projection = projAPI.getSupportedProjs()
-      .filter(proj => proj.codes.includes('EPSG:4326'))[0];
+      .filter((proj) => proj.codes.includes('EPSG:4326'))[0];
     return {
       type: 'FeatureCollection',
       crs: {

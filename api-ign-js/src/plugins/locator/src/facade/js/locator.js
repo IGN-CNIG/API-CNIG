@@ -104,26 +104,28 @@ export default class Locator extends M.Plugin {
      * @private
      * @type {Boolean|Object}
      */
-    this.byParcelCadastre = M.utils.isUndefined(options.byParcelCadastre) ||
-      options.byParcelCadastre === true ?
-      this.getInfoCatastro() : options.byParcelCadastre;
+    this.byParcelCadastre = M.utils.isUndefined(options.byParcelCadastre)
+      || options.byParcelCadastre === true
+      ? this.getInfoCatastro()
+      : options.byParcelCadastre;
 
     /**
      * Indicates if the control xylocator is added to the plugin
      * @private
      * @type {Boolean|Object}
      */
-    this.byCoordinates = M.utils.isUndefined(options.byCoordinates) ||
-      options.byCoordinates === true ? this.getXYLocator() : options.byCoordinates;
+    this.byCoordinates = M.utils.isUndefined(options.byCoordinates)
+      || options.byCoordinates === true ? this.getXYLocator() : options.byCoordinates;
 
     /**
      * Indicates if the control ignsearchlocator is added to the plugin
      * @private
      * @type {Boolean|Object}
      */
-    this.byPlaceAddressPostal = M.utils.isUndefined(options.byPlaceAddressPostal) ||
-      options.byPlaceAddressPostal === true ? this.getIGNSearchLocator() :
-      options.byPlaceAddressPostal;
+    this.byPlaceAddressPostal = M.utils.isUndefined(options.byPlaceAddressPostal)
+      || options.byPlaceAddressPostal === true
+      ? this.getIGNSearchLocator()
+      : options.byPlaceAddressPostal;
 
     /**
      * Indicates order to the plugin
@@ -171,8 +173,8 @@ export default class Locator extends M.Plugin {
    * @api
    */
   addTo(map) {
-    if (this.byCoordinates === false && this.byParcelCadastre === false &&
-      this.byPlaceAddressPostal === false) {
+    if (this.byCoordinates === false && this.byParcelCadastre === false
+        && this.byPlaceAddressPostal === false) {
       M.dialog.error(getValue('exception.no_controls'));
     }
     this.controls_.push(new LocatorControl(
@@ -279,8 +281,7 @@ export default class Locator extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.zoom}*${this.pointStyle}
-    *${this.isDraggable}*${this.byParcelCadastre}*${this.byCoordinates}*${this.byPlaceAddressPostal}*${this.useProxy}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.zoom}*${this.pointStyle}*${this.isDraggable}*${!!this.byParcelCadastre}*${!!this.byCoordinates}*${!!this.byPlaceAddressPostal}*${this.useProxy}`;
   }
 
   /**

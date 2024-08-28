@@ -140,6 +140,15 @@ class WMTS extends LayerBase {
      */
     this.useCapabilities = parameters.useCapabilities !== false;
 
+    /**
+     * WMTS minZoom: Límite del zoom mínimo.
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * WMTS maxZoom: Límite del zoom máximo.
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
      * WMTS capabilitiesMetadata: Capacidades de metadatos WMTS.
@@ -160,7 +169,6 @@ class WMTS extends LayerBase {
     return this.getImpl().matrixSet;
   }
 
-
   /**
    * Sobrescribe el valor de la "propiedad matrixSet".
    *
@@ -171,36 +179,6 @@ class WMTS extends LayerBase {
    */
   set matrixSet(newMatrixSet) {
     this.getImpl().matrixSet = newMatrixSet;
-  }
-
-  /**
-   * Devuelve la leyenda del WMTS.
-   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
-   *
-   * @function
-   * @getter
-   * @return {M.layer.WMTS.impl.legend} Leyenda WMTS.
-   * @api
-   */
-  get legend() {
-    return this.getImpl().legend;
-  }
-
-  /**
-   * Sobrescribe la leyenda del WMTS.
-   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
-   *
-   * @function
-   * @setter
-   * @param {String} newLegend Nueva leyenda.
-   * @api
-   */
-  set legend(newLegend) {
-    if (isNullOrEmpty(newLegend)) {
-      this.getImpl().legend = this.name;
-    } else {
-      this.getImpl().legend = newLegend;
-    }
   }
 
   /**

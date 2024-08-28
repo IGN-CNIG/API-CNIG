@@ -2,7 +2,13 @@
  * @module M/parameter/tms
  * @example import tmsParameter from 'M/parameter/tms';
  */
-import { isNullOrEmpty, isString, normalize, isArray, isObject } from '../util/Utils';
+import {
+  isNullOrEmpty,
+  isString,
+  normalize,
+  isArray,
+  isObject,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import { TMS } from '../layer/Type';
 import { getValue } from '../i18n/language';
@@ -40,13 +46,13 @@ const getParameter = ({
 }) => (regexp, position) => {
   let value;
   const parserType = {
-    boolean: param => /^1|(true)$/i.test(param),
-    string: param => param,
-    int: param => Number.parseInt(param, 10),
-    float: param => Number.parseFloat(param, 10),
-    array_number: param => param.split(separator || '')
-      .map(elem => elem.trim())
-      .map(n => Number.parseFloat(n)),
+    boolean: (param) => /^1|(true)$/i.test(param),
+    string: (param) => param,
+    int: (param) => Number.parseInt(param, 10),
+    float: (param) => Number.parseFloat(param, 10),
+    array_number: (param) => param.split(separator || '')
+      .map((elem) => elem.trim())
+      .map((n) => Number.parseFloat(n)),
   };
   if (isString(parameter) && regexp.test(parameter)) {
     const params = parameter.split('*');

@@ -16,6 +16,7 @@ import ImageWMS from 'ol/source/ImageWMS';
 import OLSourceWMTS from 'ol/source/WMTS';
 import OLFormatWMTSCapabilities from 'ol/format/WMTSCapabilities';
 import { get as getRemote } from 'M/util/Remote';
+import { get as getProj } from 'ol/proj';
 
 import LayerBase from './Layer';
 import FormatWMS from '../format/WMS';
@@ -23,6 +24,7 @@ import GetCapabilities from '../util/WMSCapabilities';
 import getLayerExtent from '../util/wmtscapabilities';
 
 import ImplMap from '../Map';
+import ImplUtils from '../util/Utils';
 
 /**
  * @classdesc
@@ -61,7 +63,7 @@ class GenericRaster extends LayerBase {
    * </code></pre>
    * @api
    */
-  constructor(options = {}, vendorOptions) {
+  constructor(options = {}, vendorOptions = {}) {
     // calls the super constructor
     super(options, vendorOptions);
     this.options = options;
@@ -176,8 +178,8 @@ class GenericRaster extends LayerBase {
     if (!isNullOrEmpty(this.maxExtent)) {
       this.ol3Layer.setExtent(this.maxExtent);
     } else if (
-      this.ol3Layer.getSource() instanceof TileWMS ||
-      this.ol3Layer.getSource() instanceof ImageWMS) {
+      this.ol3Layer.getSource() instanceof TileWMS
+        || this.ol3Layer.getSource() instanceof ImageWMS) {
       if (this.ol3Layer.getExtent()) {
         this.maxExtent = this.ol3Layer.getExtent();
         this.ol3Layer.setExtent(this.maxExtent);
@@ -206,15 +208,15 @@ class GenericRaster extends LayerBase {
     this.ol3Layer.setVisible(this.visibility);
 
     // calculates the resolutions from scales
-    if (!isNull(this.options) &&
-      !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
+    if (!isNull(this.options)
+      && !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
       const units = this.map.getProjection().units;
       this.options.minResolution = getResolutionFromScale(this.options.minScale, units);
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
       this.ol3Layer.setMaxResolution(this.options.maxResolution);
       this.ol3Layer.setMinResolution(this.options.minResolution);
-    } else if (!isNull(this.options) &&
-      !isNull(this.options.minResolution) && !isNull(this.options.maxResolution)) {
+    } else if (!isNull(this.options)
+      && !isNull(this.options.minResolution) && !isNull(this.options.maxResolution)) {
       this.ol3Layer.setMaxResolution(this.options.maxResolution);
       this.ol3Layer.setMinResolution(this.options.minResolution);
     }
@@ -246,9 +248,9 @@ class GenericRaster extends LayerBase {
    */
   getCapabilitiesWMS_(layerOl, projection) {
     const olSource = layerOl.getSource();
-    const projectionCode = (olSource.getProjection()) ?
-      olSource.getProjection().getCode() :
-      projection;
+    const projectionCode = (olSource.getProjection())
+      ? olSource.getProjection().getCode()
+      : projection;
 
     const layerUrl = olSource.getUrl ? olSource.getUrl() : olSource.getUrls()[0];
 
@@ -260,8 +262,11 @@ class GenericRaster extends LayerBase {
         const getCapabilitiesParser = new FormatWMS();
         const getCapabilities = getCapabilitiesParser.customRead(getCapabilitiesDocument);
 
-        const getCapabilitiesUtils =
-          new GetCapabilities(getCapabilities, layerUrl, projectionCode);
+        const getCapabilitiesUtils = new GetCapabilities(
+          getCapabilities,
+          layerUrl,
+          projectionCode,
+        );
         success(getCapabilitiesUtils);
       });
     });
@@ -295,7 +300,7 @@ class GenericRaster extends LayerBase {
           parsedCapabilities.Contents.Layer.forEach((l) => {
             const name = l.Identifier;
             l.Style.forEach((s) => {
-              const layerText = response.text.split('Layer>').filter(text => text.indexOf(`Identifier>${name}<`) > -1)[0];
+              const layerText = response.text.split('Layer>').filter((text) => text.indexOf(`Identifier>${name}<`) > -1)[0];
               /* eslint-disable no-param-reassign */
               s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
             });
@@ -332,8 +337,8 @@ class GenericRaster extends LayerBase {
    * @api
    */
   setURLService(url) {
-    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-      !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
+    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource)
+      && !isNullOrEmpty(this.ol3Layer.getSource()) && !isNullOrEmpty(url)) {
       this.ol3Layer.getSource().setUrl(url);
     }
   }
@@ -347,8 +352,8 @@ class GenericRaster extends LayerBase {
    */
   getURLService() {
     let url = '';
-    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource) &&
-      !isNullOrEmpty(this.ol3Layer.getSource())) {
+    if (!isNullOrEmpty(this.ol3Layer) && !isNullOrEmpty(this.ol3Layer.getSource)
+      && !isNullOrEmpty(this.ol3Layer.getSource())) {
       const source = this.ol3Layer.getSource();
       if (!isNullOrEmpty(source.getUrl)) {
         url = this.ol3Layer.getSource().getUrl();
@@ -438,7 +443,19 @@ class GenericRaster extends LayerBase {
    * @api stable
    */
   getMaxExtent() {
-    return this.ol3Layer.getExtent() || this.ol3Layer.getSource().getImageExtent();
+    let extent = this.ol3Layer.getExtent();
+    if (isUndefined(extent)) {
+      const tilegrid = this.ol3Layer.getSource().getTileGrid;
+      if (!isUndefined(tilegrid)) {
+        extent = this.ol3Layer.getSource().getTileGrid().getExtent();
+        const extentProj = this.ol3Layer.getSource().getProjection().getCode();
+        extent = ImplUtils
+          .transformExtent(extent, extentProj, getProj(this.map.getProjection().code));
+      } else {
+        extent = this.ol3Layer.getSource().getImageExtent();
+      }
+    }
+    return extent;
   }
 
   /**

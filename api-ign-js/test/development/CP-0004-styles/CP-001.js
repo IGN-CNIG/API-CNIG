@@ -884,9 +884,9 @@ const checkFunctionArguments = (func) => {
 
 initTestFunctions();
 
-/////////////////////
-// ERRORES develop //
-/////////////////////
+//////////////////////////
+// ERRORES develop y ol //
+//////////////////////////
 /*
 + applyToFeature --> Cannot read properties of null (reading 'getOptions')  //El feature no tiene estilo
 */

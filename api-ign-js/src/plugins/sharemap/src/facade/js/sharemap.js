@@ -79,6 +79,7 @@ export default class ShareMap extends M.Plugin {
     super();
 
     if (M.utils.isNullOrEmpty(options.baseUrl)) {
+      // eslint-disable-next-line no-console
       console.warn('options.baseUrl is null or undefined.');
     }
 
@@ -205,8 +206,7 @@ export default class ShareMap extends M.Plugin {
       * @private
       * @type @type {Array}
       */
-    this.filterLayers = (options.shareLayer === undefined || options.shareLayer
-      === false)
+    this.filterLayers = (options.shareLayer === undefined || options.shareLayer === false)
       ? filterLayers
       : [];
 
@@ -282,6 +282,7 @@ export default class ShareMap extends M.Plugin {
 
     map.addPanels(this.panel_);
   }
+
   /**
    * This function destroys this plugin
    *

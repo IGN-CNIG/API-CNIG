@@ -63,6 +63,7 @@ export default class QueryAttributes extends M.Plugin {
     if (this.collapsible_ === undefined) this.collapsible_ = true;
 
     if (M.utils.isNullOrEmpty(options.configuration)) {
+      // eslint-disable-next-line no-console
       console.warn('options.configuration is null or undefined.');
     }
 

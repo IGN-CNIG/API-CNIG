@@ -178,7 +178,6 @@ export default class Incicarto extends M.Plugin {
       this.errProducts_ = this.controllist_[2];
     }
 
-
     this.control_ = new IncicartoControl({
       wfszoom: this.wfszoom_,
       controllist: this.controllist_,
@@ -222,7 +221,7 @@ export default class Incicarto extends M.Plugin {
   getAPIRest() {
     // eslint-disable-next-line max-len
     // *${JSON.stringify(this.buzones_)}*${JSON.stringify(this.controllist_)}*${JSON.stringify(this.themes_)}*${JSON.stringify(this.errors_)}*${JSON.stringify(this.products_)}
-    return `${this.name_}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}*${this.wfszoom_}*${this.prefixSubject_}*${this.interfazmode_}*${this.isDraggable}}`;
+    return `${this.name_}=${this.position_}*${this.collapsed_}*${this.collapsible_}*${this.tooltip_}*${this.wfszoom_}*${this.prefixSubject_}*${this.interfazmode_}*${this.isDraggable}`;
   }
 
   /**

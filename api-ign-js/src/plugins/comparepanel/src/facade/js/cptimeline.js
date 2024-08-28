@@ -129,9 +129,7 @@ export default class Timeline extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
-    
   }
-
 
   /**
    * This function destroys this plugin
@@ -143,7 +141,8 @@ export default class Timeline extends M.Plugin {
   destroy() {
     this.control_.removeTimelineLayers();
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.layers, this.radius] = [null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.layers, this.radius] = [
+      null, null, null, null, null];
   }
 
   /**
@@ -187,10 +186,9 @@ export default class Timeline extends M.Plugin {
    * @public
    * @api
    */
-   setDefaultLayer(indexLyr) {
+  setDefaultLayer(indexLyr) {
     this.control_.setDefaultLayer(indexLyr);
   }
-
 
   /**
    * Desactivate plugin

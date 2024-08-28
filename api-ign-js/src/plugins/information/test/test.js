@@ -1,3 +1,4 @@
+/* eslint-disable max-len,spaced-comment */
 import Information from 'facade/information';
 
 // M.language.setLang('en');
@@ -12,7 +13,7 @@ const map = M.map({
 });
 window.map = map;
 
-const mpLayerswitcher = new M.plugin.Layerswitcher({collapsed: true, position: 'TL'}); map.addPlugin(mpLayerswitcher);
+const mpLayerswitcher = new M.plugin.Layerswitcher({ collapsed: true, position: 'TL' }); map.addPlugin(mpLayerswitcher);
 // const mp2 = new M.plugin.Infocoordinates({position: 'TR', decimalGEOcoord: 4, decimalUTMcoord: 4}); map.addPlugin(mp2);
 // const mp3 = new M.plugin.Vectors({position: 'TR', wfszoom: 12}); map.addPlugin(mp3);
 // const mp4 = new M.plugin.MeasureBar({ position: 'TR' }); map.addPlugin(mp4);
@@ -23,7 +24,7 @@ const layer1 = new M.layer.WMS({
   name: 'RED_NAP',
   legend: 'Red de Nivelación de Alta Presión',
   tiled: true,
-  version: '1.3.0', // 1 - ERROR anteriormente era 1.1.0
+  version: '1.1.0', 
 }, {});
 
 const layer2 = new M.layer.WMS({
@@ -31,7 +32,7 @@ const layer2 = new M.layer.WMS({
   name: 'RED_ROI',
   legend: 'Red de Orden Inferior',
   tiled: true,
-  version: '1.3.0',
+  version: '1.1.0',
 }, {});
 
 const layer3 = new M.layer.WMS({
@@ -39,7 +40,7 @@ const layer3 = new M.layer.WMS({
   name: 'RED_REGENTE',
   legend: 'Red REGENTE',
   tiled: true,
-  version: '1.3.0',
+  version: '1.1.0',
 }, {});
 
 const layer4 = new M.layer.WMS({
@@ -47,18 +48,18 @@ const layer4 = new M.layer.WMS({
   name: 'RED_ERGNSS',
   legend: 'Red de Estaciones permanentes GNSS',
   tiled: true,
-  version: '1.3.0', // 1 - ERROR
+  version: '1.3.0',
 }, {});
 
 const layer5 = new M.layer.WMS({
   url: 'https://servicios.ine.es/WMS/WMS_INE_SECCIONES_G01/MapServer/WMSServer?',
   name: 'Secciones2021',
   legend: 'Secciones censales',
-  version: '1.3.0',
+  version: '1.1.0',
   tiled: false,
   visibility: true,
 }, {});
-map.addLayers([layer1, layer2, layer3, layer4, layer5]); // */
+map.addLayers([layer1, layer4]); // */
 
 /*/ Prueba de todos los usables capas WMTS, GenericRaster y WMS
 const wmtsLayer = new M.layer.WMTS({
@@ -94,20 +95,13 @@ map.addLayers([testLayer]); // */
 
 const mp = new Information({
   position: 'TR', // TL | TR | BL | BR
-  buffer: 100, // 2 - ERROR
-  opened: 'one', // 'one' | 'all' | 'closed'
-  featureCount: 10, // 10, // 3 - ERROR
+  buffer: 100,
+  opened: 'all', // 'one' | 'all' | 'closed'
+  featureCount: 3, // 10, 
   format: 'text/html', //  'text/html' como default || ('text/plain'|'plain') | ('application/vnd.ogc.gml'|'gml')
+  outputDownloadFormat: 'csv',
 });
 map.addPlugin(mp);
 window.mp = mp;
 
-// Lista de errores encontrados
 
-// 1 - ERROR de capas WMS, no del plugin que muetra error "TypeError: n is null" en "Utils.js:515" concretamente en la cadena "const srcProjExtent = olSrcProj.getExtent();" porque "olSrcProj" es null, del anterior "const projSrc = getProjection(bbox.crs);" porque "crs" es null, porque lo devuelve así "customRead(wmsDocument) { const formatedWMS = this.read(wmsDocument);...".
-// Parece que no sufre error si esta solo esta capa, lo que ocurre con múltiples capas es que las anteriores capas son de la versión "1.1.0", el getCapabilities usado termina permanentemente siendo de esta versión que tiene el error de "CRS" en la capa "RED_ERGNSS".
-// Es decir para la capa "RED_ERGNSS" de versión 1.3.0, se usa el capabilities de 1.1.0 causando este error.
-
-// 2 - ERROR parámetro "buffer: 0" se transforma a 10 porque el "0" se interpreta como false. Se podría solucionar con "this.buffer_ = isNaN(Number.parseInt(options.buffer)) || options.buffer < 0 ? 10 : Number.parseInt(options.buffer);"
-
-// 3 - ERROR no se muestran ningún resultado si se pone "featureCount" como número "0" o negativo , se puede solucionar con "this.featureCount_ = options.featureCount >= 1 ? options.featureCount : 10;"

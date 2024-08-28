@@ -4,7 +4,18 @@
 import Exception from '../exception/exception';
 import * as parserParameter from '../parameter/parameter';
 import Base from '../Base';
-import { isNullOrEmpty, concatUrlPaths, isUndefined, normalize, isString, isFunction, generateRandom, isBoolean, isArray, isObject } from '../util/Utils';
+import {
+  isNullOrEmpty,
+  concatUrlPaths,
+  isUndefined,
+  normalize,
+  isString,
+  isFunction,
+  generateRandom,
+  isBoolean,
+  isArray,
+  isObject,
+} from '../util/Utils';
 import { getValue } from '../i18n/language';
 
 /**
@@ -140,11 +151,41 @@ class LayerBase extends Base {
    * @api
    */
   set type(newType) {
-    if (!isUndefined(newType) &&
-      !isNullOrEmpty(newType) && (newType !== this._type)) {
+    if (!isUndefined(newType)
+      && !isNullOrEmpty(newType) && (newType !== this._type)) {
       Exception('El tipo de capa debe ser \''
         .concat(this._type)
         .concat('\' pero se ha especificado \'').concat(newType).concat('\''));
+    }
+  }
+
+  /**
+   * Devuelve la leyenda de la capa.
+   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   *
+   * @function
+   * @getter
+   * @return {M.layer.GeoTIFF.impl.legend} Leyenda de la capa.
+   * @api
+   */
+  get legend() {
+    return this.getImpl().legend;
+  }
+
+  /**
+   * Sobrescribe la leyenda de la capa.
+   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   *
+   * @function
+   * @setter
+   * @param {String} newLegend Nueva leyenda.
+   * @api
+   */
+  set legend(newLegend) {
+    if (isNullOrEmpty(newLegend)) {
+      this.getImpl().legend = this.name;
+    } else {
+      this.getImpl().legend = newLegend;
     }
   }
 
@@ -197,7 +238,6 @@ class LayerBase extends Base {
   set url(newUrl) {
     this.getImpl().url = newUrl;
   }
-
 
   /**
    * Nombre de la capa.
@@ -355,7 +395,7 @@ class LayerBase extends Base {
    * @api
    */
   calculateMaxExtent() {
-    return new Promise(resolve => resolve(this.getMaxExtent()));
+    return new Promise((resolve) => { resolve(this.getMaxExtent()); });
   }
 
   /**
@@ -436,7 +476,6 @@ class LayerBase extends Base {
   setLayerGroup(layerGroup) {
     this.getImpl().layerGroup = layerGroup;
   }
-
 
   /**
    * Este método indica si la capa es visible.

@@ -38,7 +38,6 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **srs**. Código EPSG del SRS sobre el que se mostrarán las coordenadas del ratón. Por defecto: EPSG:4326
 - **label**. Nombre del SRS sobre el que se mostrarán las coordenadas del ratón. Por defecto: WGS84
 - **precision**. Precisión de las coordenadas. Por defecto: 4
-- **epsgFormat**. Indica si el EPSG aparezca formateado, por ejemplo si el valor del label es "EPSG:4326" el formato será "WGS 84 EPSG:4326 - LONGITUD, LATITUD ". Por defecto, false.
 - **geoDecimalDigits**. Cifras decimales para proyecciones geográficas.
 - **utmDecimalDigits**. Cifras decimales para proyecciones UTM.
 - **activeZ**. Activar visualización valor z. Por defecto: false
@@ -108,7 +107,7 @@ URL_API?mousesrs=tooltip*srs*label*precision*geoDecimalDigits*utmDecimalDigits*a
 ### Ejemplo de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*4*true
+https://componentes.cnig.es/api-core?mousesrs=Muestra%20coordenadas*EPSG:4326*WGS84*4
 ```
 
 ### Ejemplo de uso API-REST en base64
@@ -119,7 +118,7 @@ Ejemplo:
 M.utils.encodeBase64(obj_params);
 ```
 
-Ejemplo del constructor: 
+Ejemplo del constructor:
 
 ```javascript
 {
@@ -142,7 +141,6 @@ const mp = new M.plugin.MouseSRS({
   srs: 'EPSG:4326',
   label: 'WGS84',
   precision: 4,
-  epsgFormat: true,
 });
 ```
 

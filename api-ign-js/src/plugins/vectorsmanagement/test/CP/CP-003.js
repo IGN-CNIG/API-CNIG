@@ -9,12 +9,10 @@ const map = M.map({
   zoom: 6,
 });
 
-
 const geojson = new M.layer.GeoJSON({
   name: 'Municipios',
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Municipios&maxFeatures=50&outputFormat=application/json',
 });
-
 
 map.addLayers([geojson]);
 

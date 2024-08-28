@@ -4,7 +4,7 @@
  * @example import handlebarshelpers from 'M/handlebarshelpers';
  */
 
-import { getTextFromHtml } from '../util/Utils';
+import { getTextFromHtml } from './Utils';
 
 /**
  * Esta función incluye métodos para ayudar a "Handlebars".
@@ -153,7 +153,7 @@ const helpers = (insecureHandlebars) => {
 
   /**
    * Ayudantes para "Handlebars", si los primeros parámetros son iguales, te
-   * devuelve la inversa de las optiones.
+   * devuelve la inversa de las opciones.
    *
    * @function
    * @param {Object} v1 Valor 1.

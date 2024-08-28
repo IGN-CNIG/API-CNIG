@@ -61,6 +61,7 @@ export const getValue = (keyPath, lang = getLang()) => {
   const translation = getTranslation(lang);
   let value = '';
   if (M.utils.isNullOrEmpty(translation)) {
+    // eslint-disable-next-line no-console
     console.warn(`The translation '${lang}' has not been defined.`);
   } else {
     value = keyPath.split('.').reduce((prev, current) => prev[current], translation);

@@ -178,7 +178,7 @@ export default class PrintViewManagement extends M.Plugin {
      * @private
      * @type {Boolean}
      */
-    this.useProxy = M.utils.isUndefined(options.useProxy) ? true : options.useProxy;
+    this.useProxy = M.utils.isUndefined(options.useProxy) ? false : options.useProxy;
 
     /**
      * Stores the proxy state at plugin load time
@@ -213,8 +213,8 @@ export default class PrintViewManagement extends M.Plugin {
    */
   addTo(map) {
     this.map_ = map;
-    if (this.georefImageEpsg === false && this.georefImage === false &&
-      this.printermap === false) {
+    if (this.georefImageEpsg === false && this.georefImage === false
+        && this.printermap === false) {
       M.dialog.error(getValue('exception.no_controls'));
     }
 
@@ -276,8 +276,8 @@ export default class PrintViewManagement extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}` +
-    `*${this.serverUrl}*${this.printStatusUrl}*${!M.utils.isNullOrEmpty(this.georefImageEpsg)}*${!M.utils.isNullOrEmpty(this.georefImage)}*${!M.utils.isNullOrEmpty(this.printermap)}*${this.defaultOpenControl}`;
+    return `${this.name}=${this.position_}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}`
+      + `*${this.serverUrl}*${this.printStatusUrl}*${!!this.georefImageEpsg}*${!!this.georefImage}*${!!this.printermap}*${this.defaultOpenControl}`;
   }
 
   /**

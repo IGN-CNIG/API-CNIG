@@ -6,7 +6,7 @@ Muestra un árbol de contenidos con las capas disponibles para mostrar.
 
 INTEGRACIÓN DE PARÁMETROS EN API REST
 
-OPCIONES:  
+OPCIONES:
 1. Nuevo parámetro en la API REST normalmente porque requiera parámetros de configuración.
 Example: <url_mapea>?toc=[params]
 

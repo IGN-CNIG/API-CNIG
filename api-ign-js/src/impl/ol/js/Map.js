@@ -74,6 +74,7 @@ class Map extends MObject {
    *
    * @constructor
    * @param {Object} div Elemento "div" proporcionado por el usuario.
+   * @param {M.Map} facadeMap Fachada del mapa a implementar.
    * @param {Mx.parameters.MapOptions} options Opciones del mapa.
    * - zoom: Nivel de zoom inicial del mapa.
    * - bbox: Encuadre de visualización del mapa.
@@ -89,7 +90,7 @@ class Map extends MObject {
    * @param {object} viewVendorOptions Parámetros para la vista del mapa de la librería base.
    * @api
    */
-  constructor(div, facadeMap, options = {}, viewVendorOptions) {
+  constructor(div, facadeMap, options = {}, viewVendorOptions = {}) {
     super();
     /**
      * Fachada del mapa a implementar.
@@ -249,6 +250,8 @@ class Map extends MObject {
   getLayers(filters) {
     const kmlLayers = this.getKML(filters);
     const wmsLayers = this.getWMS(filters);
+    const geotiffLayers = this.getGeoTIFF(filters);
+    const mapLibreLayers = this.getMapLibre(filters);
     const wfsLayers = this.getWFS(filters);
     const ogcapifLayers = this.getOGCAPIFeatures(filters);
     const wmtsLayers = this.getWMTS(filters);
@@ -260,6 +263,8 @@ class Map extends MObject {
     const unknowLayers = this.getUnknowLayers_(filters);
 
     return kmlLayers.concat(wmsLayers)
+      .concat(geotiffLayers)
+      .concat(mapLibreLayers)
       .concat(wfsLayers)
       .concat(ogcapifLayers)
       .concat(wmtsLayers)
@@ -280,7 +285,7 @@ class Map extends MObject {
    * @api
    */
   getBaseLayers() {
-    return this.layers_.filter(layer => layer.transparent === false);
+    return this.layers_.filter((layer) => layer.transparent === false);
   }
 
   /**
@@ -316,10 +321,14 @@ class Map extends MObject {
         this.facadeMap_.addKML(layer);
       } else if (layer.type === LayerType.WFS) {
         this.facadeMap_.addWFS(layer);
+      } else if (layer.type === LayerType.GeoTIFF) {
+        this.facadeMap_.addGeoTIFF(layer);
       } else if (layer.type === LayerType.OGCAPIFeatures) {
         this.facadeMap_.addOGCAPIFeatures(layer);
       } else if (layer.type === LayerType.MVT) {
         this.facadeMap_.addMVT(layer);
+      } else if (layer.type === LayerType.MapLibre) {
+        this.facadeMap_.addMapLibre(layer);
       } else if (layer.type === 'MBTiles') {
         this.facadeMap_.addMBTiles(layer);
       } else if (layer.type === 'MBTilesVector') {
@@ -337,7 +346,6 @@ class Map extends MObject {
 
     return this;
   }
-
 
   /**
    * Este método elimina las capas del mapa.
@@ -360,6 +368,8 @@ class Map extends MObject {
     if (knowLayers.length > 0) {
       this.removeKML(knowLayers);
       this.removeWMS(knowLayers);
+      this.removeGeoTIFF(knowLayers);
+      this.removeMapLibre(knowLayers);
       this.removeWFS(knowLayers);
       this.removeOGCAPIFeatures(knowLayers);
       this.removeWMTS(knowLayers);
@@ -484,7 +494,7 @@ class Map extends MObject {
   removeKML(layers) {
     const kmlMapLayers = this.getKML(layers);
     kmlMapLayers.forEach((kmlLayer) => {
-      this.layers_ = this.layers_.filter(layer => !kmlLayer.equals(layer));
+      this.layers_ = this.layers_.filter((layer) => !kmlLayer.equals(layer));
       kmlLayer.getImpl().destroy();
       kmlLayer.fire(EventType.REMOVED_FROM_MAP, [kmlLayer]);
     }, this);
@@ -616,8 +626,8 @@ class Map extends MObject {
     });
     // calculate resolutions if layers were added and there is not any base layer
     // or if some base layer was added
-    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer) ||
-      addedLayers.some(l => l.transparent !== true && l.isVisible());
+    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer)
+      || addedLayers.some((l) => l.transparent !== true && l.isVisible());
     if (calculateResolutions) {
       this.updateResolutionsFromBaseLayer();
     }
@@ -637,7 +647,7 @@ class Map extends MObject {
     const wmsMapLayers = this.getWMS(layers);
     wmsMapLayers.forEach((wmsLayer) => {
       wmsLayer.fire(EventType.REMOVED_FROM_MAP, [wmsLayer]);
-      this.layers_ = this.layers_.filter(layer => !wmsLayer.equals(layer));
+      this.layers_ = this.layers_.filter((layer) => !wmsLayer.equals(layer));
       wmsLayer.getImpl().destroy();
     });
 
@@ -833,9 +843,145 @@ class Map extends MObject {
   removeWFS(layers) {
     const wfsMapLayers = this.getWFS(layers);
     wfsMapLayers.forEach((wfsLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(wfsLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(wfsLayer));
       wfsLayer.getImpl().destroy();
       wfsLayer.fire(EventType.REMOVED_FROM_MAP, [wfsLayer]);
+    });
+
+    return this;
+  }
+
+  /**
+   * Este método obtiene las capas GeoTIFF añadidas al mapa.
+   *
+   * @function
+   * @param {Array<M.Layer>} filters Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.GeoTIFF>} Capas GeoTIFF del mapa.
+   * @public
+   * @api
+   */
+  getGeoTIFF(filtersParam) {
+    let foundLayers = [];
+    let filters = filtersParam;
+
+    // get all geotiffLayers
+    const geotiffLayers = this.layers_.filter((layer) => {
+      return (layer.type === LayerType.GeoTIFF);
+    });
+
+    // parse to Array
+    if (isNullOrEmpty(filters)) {
+      filters = [];
+    }
+    if (!isArray(filters)) {
+      filters = [filters];
+    }
+
+    if (filters.length === 0) {
+      foundLayers = geotiffLayers;
+    } else {
+      filters.forEach((filterLayer) => {
+        const filteredGeoTIFFLayers = geotiffLayers.filter((geotiffLayer) => {
+          let layerMatched = true;
+          // checks if the layer is not in selected layers
+          if (!foundLayers.includes(geotiffLayer)) {
+          // type
+            if (!isNullOrEmpty(filterLayer.type)) {
+              layerMatched = (layerMatched && (filterLayer.type === geotiffLayer.type));
+            }
+            // URL
+            if (!isNullOrEmpty(filterLayer.url)) {
+              layerMatched = (layerMatched && (filterLayer.url === geotiffLayer.url));
+            }
+            // name
+            if (!isNullOrEmpty(filterLayer.name)) {
+              layerMatched = (layerMatched && (filterLayer.name === geotiffLayer.name));
+            }
+            // namespace
+            if (!isNullOrEmpty(filterLayer.namespace)) {
+              layerMatched = (layerMatched && (filterLayer.namespace === geotiffLayer.namespace));
+            }
+            // legend
+            if (!isNullOrEmpty(filterLayer.legend)) {
+              layerMatched = (layerMatched && (filterLayer.legend === geotiffLayer.legend));
+            }
+            // cql
+            if (!isNullOrEmpty(filterLayer.cql)) {
+              layerMatched = (layerMatched && (filterLayer.cql === geotiffLayer.cql));
+            }
+            // geometry
+            if (!isNullOrEmpty(filterLayer.geometry)) {
+              layerMatched = (layerMatched && (filterLayer.geometry === geotiffLayer.geometry));
+            }
+            // ids
+            if (!isNullOrEmpty(filterLayer.ids)) {
+              layerMatched = (layerMatched && (filterLayer.ids === geotiffLayer.ids));
+            }
+            // version
+            if (!isNullOrEmpty(filterLayer.version)) {
+              layerMatched = (layerMatched && (filterLayer.version === geotiffLayer.version));
+            }
+          } else {
+            layerMatched = false;
+          }
+          return layerMatched;
+        });
+        foundLayers = foundLayers.concat(filteredGeoTIFFLayers);
+      });
+    }
+    return foundLayers;
+  }
+
+  /**
+ * Este método añade las capas WFS especificadas por el usuario al mapa.
+ *
+ * @function
+ * @param {Array<M.layer.WFS>} layers Capas WFS a añadir.
+ * @returns {Map} Mapa.
+ * @public
+ * @api
+ */
+  addGeoTIFF(layers) {
+  // checks if exists a base layer
+    const baseLayers = this.getBaseLayers();
+    const existsBaseLayer = (baseLayers.length > 0);
+
+    layers.forEach((layer) => {
+    // checks if layer is GeoTIFF and was added to the map
+      if (layer.type === LayerType.GeoTIFF) {
+        if (!includes(this.layers_, layer)) {
+          layer.getImpl().addTo(this.facadeMap_);
+          this.layers_.push(layer);
+          layer.setZIndex(layer.getZIndex());
+          if (layer.getZIndex() == null) {
+            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.GeoTIFF];
+            layer.setZIndex(zIndex);
+          }
+          if (!existsBaseLayer) {
+            this.updateResolutionsFromBaseLayer();
+          }
+        }
+      }
+    });
+
+    return this;
+  }
+
+  /**
+ * Este método elimina las capas GeoTIFF del mapa especificadas por el usuario.
+ *
+ * @function
+ * @param {Array<M.layer.GeoTIFF>} layers Capas GeoTIFF a eliminar.
+ * @returns {Map} Mapa.
+ * @public
+ * @api
+ */
+  removeGeoTIFF(layers) {
+    const geotiffMapLayers = this.getGeoTIFF(layers);
+    geotiffMapLayers.forEach((geotiffLayer) => {
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(geotiffLayer));
+      geotiffLayer.getImpl().destroy();
+      geotiffLayer.fire(EventType.REMOVED_FROM_MAP, [geotiffLayer]);
     });
 
     return this;
@@ -962,7 +1108,7 @@ class Map extends MObject {
   removeOGCAPIFeatures(layers) {
     const ogcapifMapLayers = this.getOGCAPIFeatures(layers);
     ogcapifMapLayers.forEach((ogcapifLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(ogcapifLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(ogcapifLayer));
       ogcapifLayer.getImpl().destroy();
       ogcapifLayer.fire(EventType.REMOVED_FROM_MAP, [ogcapifLayer]);
     });
@@ -1095,7 +1241,7 @@ class Map extends MObject {
   removeWMTS(layers) {
     const wmtsMapLayers = this.getWMTS(layers);
     wmtsMapLayers.forEach((wmtsLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(wmtsLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(wmtsLayer));
       wmtsLayer.getImpl().destroy();
       wmtsLayer.fire(EventType.REMOVED_FROM_MAP, [wmtsLayer]);
     });
@@ -1195,8 +1341,8 @@ class Map extends MObject {
       }
     });
 
-    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer) ||
-      addedLayers.some(l => l.transparent !== true && l.isVisible());
+    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer)
+      || addedLayers.some((l) => l.transparent !== true && l.isVisible());
     if (calculateResolutions) {
       this.updateResolutionsFromBaseLayer();
     }
@@ -1216,7 +1362,7 @@ class Map extends MObject {
   removeMBTiles(layers) {
     const mbtilesMapLayers = this.getMBTiles(layers);
     mbtilesMapLayers.forEach((mbtilesLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(mbtilesLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(mbtilesLayer));
       mbtilesLayer.getImpl().destroy();
       mbtilesLayer.fire(EventType.REMOVED_FROM_MAP, [mbtilesLayer]);
     });
@@ -1324,7 +1470,7 @@ class Map extends MObject {
   removeMBTilesVector(layers) {
     const mbtilesMapLayers = this.getMBTilesVector(layers);
     mbtilesMapLayers.forEach((mbtilesLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(mbtilesLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(mbtilesLayer));
       mbtilesLayer.getImpl().destroy();
       mbtilesLayer.fire(EventType.REMOVED_FROM_MAP, [mbtilesLayer]);
     });
@@ -1448,7 +1594,7 @@ class Map extends MObject {
     // removes unknow layers
     layers.forEach((layer) => {
       if (includes(this.layers_, layer)) {
-        this.layers_ = this.layers_.filter(layer2 => !layer2.equals(layer));
+        this.layers_ = this.layers_.filter((layer2) => !layer2.equals(layer));
         layer.getImpl().destroy();
         if (layer.transparent === false) {
           // it was base layer so sets the visibility of the first one
@@ -1524,7 +1670,7 @@ class Map extends MObject {
   removeMVT(layers) {
     const mvtLayers = this.getMVT(layers);
     mvtLayers.forEach((mvtLayer) => {
-      this.layers_ = this.layers_.filter(layer => !layer.equals(mvtLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(mvtLayer));
       mvtLayer.getImpl().destroy();
       mvtLayer.fire(EventType.REMOVED_FROM_MAP, [mvtLayer]);
     });
@@ -1567,6 +1713,104 @@ class Map extends MObject {
   }
 
   /**
+   * Este método obtiene las capas MapLibre del mapa.
+   *
+   * @function
+   * @param {Array<M.Layer>} filtersParam Filtros a aplicar para la búsqueda.
+   * @returns {Array<M.layer.MapLibre>} Capas MapLibre del mapa.
+   * @public
+   * @api
+   */
+  getMapLibre(filtersParam) {
+    let foundLayers = [];
+    let filters = filtersParam;
+
+    const MapLibreLayers = this.layers_.filter((layer) => {
+      return (layer.type === LayerType.MapLibre);
+    });
+
+    if (isNullOrEmpty(filters)) {
+      filters = [];
+    }
+    if (!isArray(filters)) {
+      filters = [filters];
+    }
+
+    if (filters.length === 0) {
+      foundLayers = MapLibreLayers;
+    } else {
+      filters.forEach((filterLayer) => {
+        const filteredMapLibreLayers = MapLibreLayers.filter((mapLibreLayer) => {
+          let layerMatched = true;
+          if (!foundLayers.includes(mapLibreLayer)) {
+            if (!isNullOrEmpty(filterLayer.type)) {
+              layerMatched = (layerMatched && (filterLayer.type === mapLibreLayer.type));
+            }
+            if (!isNullOrEmpty(filterLayer.url)) {
+              layerMatched = (layerMatched && (filterLayer.url === mapLibreLayer.url));
+            }
+            if (!isNullOrEmpty(filterLayer.name)) {
+              layerMatched = (layerMatched && (filterLayer.name === mapLibreLayer.name));
+            }
+          } else {
+            layerMatched = false;
+          }
+          return layerMatched;
+        });
+        foundLayers = foundLayers.concat(filteredMapLibreLayers);
+      });
+    }
+    return foundLayers;
+  }
+
+  /**
+     * Este método elimina las capas MapLibre del mapa especificadas por el usuario.
+     *
+     * @function
+     * @param {Array<M.layer.MapLibre>} layers Capas MapLibre a eliminar.
+     * @returns {M.impl.Map} Mapa.
+     * @public
+     * @api
+     */
+  removeMapLibre(layers) {
+    const mapLibreLayers = this.getMapLibre(layers);
+    mapLibreLayers.forEach((mapLibreLayer) => {
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(mapLibreLayer));
+      mapLibreLayer.getImpl().destroy();
+      mapLibreLayer.fire(EventType.REMOVED_FROM_MAP, [mapLibreLayer]);
+    });
+
+    return this;
+  }
+
+  /**
+     * Este método añade las capas MapLibre especificadas por el usuario al mapa.
+     *
+     * @function
+     * @param {Array<M.layer.MapLibre>} layers Capas MapLibre a añadir.
+     * @returns {M.impl.Map} Mapa.
+     * @public
+     * @api
+     */
+  addMapLibre(layers) {
+    layers.forEach((layer) => {
+      if (layer.type === LayerType.MapLibre) {
+        if (!includes(this.layers_, layer)) {
+          layer.getImpl().addTo(this.facadeMap_);
+          this.layers_.push(layer);
+          if (layer.transparent === true) {
+            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.MapLibre];
+            layer.setZIndex(zIndex);
+          } else {
+            layer.setZIndex(0);
+          }
+        }
+      }
+    });
+    return this;
+  }
+
+  /**
    * Este método obtiene las capas XYZ añadidas al mapa.
    *
    * @function
@@ -1578,7 +1822,7 @@ class Map extends MObject {
   getXYZs(filtersParam) {
     let foundLayers = [];
     let filters = filtersParam;
-    const xyzLayers = this.layers_.filter(layer => layer.type === LayerType.XYZ);
+    const xyzLayers = this.layers_.filter((layer) => layer.type === LayerType.XYZ);
 
     // parse to Array
     if (isNullOrEmpty(filters)) {
@@ -1660,7 +1904,7 @@ class Map extends MObject {
     const xyzMapLayers = this.getXYZs(layers);
     xyzMapLayers.forEach((xyzLayer) => {
       xyzLayer.getImpl().destroy();
-      this.layers_ = this.layers_.filter(layer => !layer.equals(xyzLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(xyzLayer));
       xyzLayer.fire(EventType.REMOVED_FROM_MAP, [xyzLayer]);
     });
 
@@ -1679,7 +1923,7 @@ class Map extends MObject {
   getTMS(filtersParam) {
     let foundLayers = [];
     let filters = filtersParam;
-    const tmsLayers = this.layers_.filter(layer => layer.type === LayerType.TMS);
+    const tmsLayers = this.layers_.filter((layer) => layer.type === LayerType.TMS);
 
     // parse to Array
     if (isNullOrEmpty(filters)) {
@@ -1761,13 +2005,12 @@ class Map extends MObject {
     const tmsMapLayers = this.getTMS(layers);
     tmsMapLayers.forEach((tmsLayer) => {
       tmsLayer.getImpl().destroy();
-      this.layers_ = this.layers_.filter(layer => !layer.equals(tmsLayer));
+      this.layers_ = this.layers_.filter((layer) => !layer.equals(tmsLayer));
       tmsLayer.fire(EventType.REMOVED_FROM_MAP, [tmsLayer]);
     });
 
     return this;
   }
-
 
   /**
    * Este método obtiene los controles especificados por el usuario.
@@ -1782,7 +2025,7 @@ class Map extends MObject {
     let filtersVar = filters;
     let foundControls = [];
 
-    let panelControls = this.facadeMap_.getPanels().map(p => p.getControls());
+    let panelControls = this.facadeMap_.getPanels().map((p) => p.getControls());
     if (panelControls.length > 0) {
       panelControls = panelControls.reduce((acc, controls) => acc.concat(controls));
     }
@@ -1816,7 +2059,7 @@ class Map extends MObject {
     }
     const nonRepeatFoundControls = [];
     foundControls.forEach((control) => {
-      const controlNames = nonRepeatFoundControls.map(c => c.name);
+      const controlNames = nonRepeatFoundControls.map((c) => c.name);
       if (!controlNames.includes(control.name)) {
         nonRepeatFoundControls.push(control);
       }
@@ -1889,8 +2132,11 @@ class Map extends MObject {
     }
 
     const olMap = this.getMapImpl();
-    const olView = olMap.getView();
-    olView.set('extent', olExtent);
+
+    const view = olMap.getView();
+    const newView = new View({ ...view, extent: maxExtent });
+    olMap.setView(newView);
+
     this.updateResolutionsFromBaseLayer();
 
     if (!isNullOrEmpty(olExtent) && (zoomToExtent !== false)) {
@@ -1938,10 +2184,9 @@ class Map extends MObject {
     const layerVersion = version;
     const projection = this.getProjection();
     // gest the capabilities URL
-    const getCapabilitiesUrl = (type === 'WMS') ?
-      getWMSGetCapabilitiesUrl(layerUrl, layerVersion) :
-      getWMTSGetCapabilitiesUrl(layerUrl, layerVersion);
-
+    const getCapabilitiesUrl = (type === 'WMS')
+      ? getWMSGetCapabilitiesUrl(layerUrl, layerVersion)
+      : getWMTSGetCapabilitiesUrl(layerUrl, layerVersion);
 
     // gets the getCapabilities response
     const response = await getRemote(getCapabilitiesUrl);
@@ -1952,7 +2197,8 @@ class Map extends MObject {
     if (type === 'WMS') {
       const getCapabilitiesUtils = await new GetCapabilities(
         parsedCapabilities,
-        layerUrl, projection,
+        layerUrl,
+        projection,
       );
       this.getCapabilitiesPromise = getCapabilitiesUtils;
     } else {
@@ -1960,7 +2206,7 @@ class Map extends MObject {
         parsedCapabilities.Contents.Layer.forEach((l) => {
           const name = l.Identifier;
           l.Style.forEach((s) => {
-            const layerText = response.text.split('Layer>').filter(text => text.indexOf(`Identifier>${name}<`) > -1)[0];
+            const layerText = response.text.split('Layer>').filter((text) => text.indexOf(`Identifier>${name}<`) > -1)[0];
             /* eslint-disable no-param-reassign */
             s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
           });
@@ -2155,7 +2401,6 @@ class Map extends MObject {
     return maxZoom;
   }
 
-
   /**
    * Este método establece el centro actual de la
    * instancia del mapa.
@@ -2203,7 +2448,6 @@ class Map extends MObject {
     }
     return center;
   }
-
 
   /**
    * Este método establece el estado de zoomConstrains
@@ -2308,7 +2552,7 @@ class Map extends MObject {
           bbox.x.max,
           bbox.y.max,
         ], size);
-        const restDiff = resolutions.map(r => Math.abs(r - oldResolution));
+        const restDiff = resolutions.map((r) => Math.abs(r - oldResolution));
         const newResolutionIdx = restDiff.indexOf(Math.min(...restDiff));
         newResolution = resolutions[newResolutionIdx];
       }
@@ -2444,7 +2688,7 @@ class Map extends MObject {
           prevMaxExtent.x.max, prevMaxExtent.y.max,
         ];
       }
-      this.setMaxExtent(ImplUtils
+      this.setBbox(ImplUtils
         .transformExtent(prevMaxExtent, olPrevProjection, olProjection), false);
     }
 
@@ -2811,6 +3055,8 @@ Map.Z_INDEX[LayerType.WFS] = 40;
 Map.Z_INDEX[LayerType.MVT] = 40;
 Map.Z_INDEX[LayerType.Vector] = 40;
 Map.Z_INDEX[LayerType.GeoJSON] = 40;
+Map.Z_INDEX[LayerType.GeoTIFF] = 40;
+Map.Z_INDEX[LayerType.MapLibre] = 40;
 Map.Z_INDEX[LayerType.MBTiles] = 40;
 Map.Z_INDEX[LayerType.MBTilesVector] = 40;
 Map.Z_INDEX[LayerType.XYZ] = 40;

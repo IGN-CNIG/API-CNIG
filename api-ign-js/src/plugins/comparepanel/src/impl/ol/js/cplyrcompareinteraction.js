@@ -17,7 +17,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     this.swipeClicked = false;
     ol.interaction.Pointer.call(this, {
       handleDownEvent: this.setPosition,
-      handleUpEvent: () => this.swipeClicked = false,
+      handleUpEvent: () => { this.swipeClicked = false; },
       handleMoveEvent: this.setPosition,
     });
 
@@ -26,51 +26,52 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
 
     this.pos = false;
     this.opacityVal = (optionsE.opacityVal || 100);
-    this.OLVersion = "OL6";
+    this.OLVersion = 'OL6';
 
-    const layerA = [optionsE.lyrA].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
+    const layerA = [optionsE.lyrA].map((layer) => layer.getImpl().getOL3Layer())
+      .filter((layer) => layer != null);
     this.addLayerA(layerA);
 
-    const layerB = [optionsE.lyrB].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
+    const layerB = [optionsE.lyrB].map((layer) => layer.getImpl().getOL3Layer())
+      .filter((layer) => layer != null);
     this.addLayerB(layerB);
 
     if (optionsE.lyrC !== undefined && optionsE.lyrD !== undefined) {
-      const layerC = [optionsE.lyrC].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
+      const layerC = [optionsE.lyrC].map((layer) => layer.getImpl().getOL3Layer())
+        .filter((layer) => layer != null);
       this.addLayerC(layerC);
 
-      const layerD = [optionsE.lyrD].map(layer => layer.getImpl().getOL3Layer()).filter(layer => layer != null);
+      const layerD = [optionsE.lyrD].map((layer) => layer.getImpl().getOL3Layer())
+        .filter((layer) => layer != null);
       this.addLayerD(layerD);
     }
-
-    
-
   }
 
   /** Set the map > start postcompose
    */
   setMap(map) {
-
-    
     if (this.getMap()) {
       // e2m: Por aquí pasamos al desactivar el control
       for (let i = 0; i < this.layers_.length; i += 1) {
-        if (this.OLVersion === "OL6"){
+        if (this.OLVersion === 'OL6') {
           if (this.layers_[i].prerender) ol.Observable.unByKey(this.layers_[i].prerender);
           if (this.layers_[i].postrender) ol.Observable.unByKey(this.layers_[i].postrender);
-          this.layers_[i].prerender = this.layers_[i].postrender = null;
-        }else{
+          this.layers_[i].prerender = null;
+          this.layers_[i].postrender = null;
+        } else {
           if (this.layers_[i].precompose) ol.Observable.unByKey(this.layers_[i].precompose);
           if (this.layers_[i].postcompose) ol.Observable.unByKey(this.layers_[i].postcompose);
-          this.layers_[i].precompose = this.layers_[i].postcompose = null;
+          this.layers_[i].precompose = null;
+          this.layers_[i].postcompose = null;
         }
       }
       this.getMap().renderSync();
     }
-    
+
     ol.interaction.Pointer.prototype.setMap.call(this, map);
     if (map) {
       this.createSwipeControl();
-      if (this.OLVersion === "OL6"){
+      if (this.OLVersion === 'OL6') {
         if (this.layers_[0] !== undefined) {
           this.layers_[0].prerender = this.layers_[0].on('prerender', this.precomposeA_.bind(this));
           this.layers_[0].postrender = this.layers_[0].on('postrender', this.postcomposeA_.bind(this));
@@ -87,7 +88,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
           this.layers_[3].prerender = this.layers_[3].on('prerender', this.precomposeD_.bind(this));
           this.layers_[3].postrender = this.layers_[3].on('postrender', this.postcomposeD_.bind(this));
         }
-      }else{
+      } else {
         this.layers_[0].precompose = this.layers_[0].on('precompose', this.precomposeA_.bind(this));
         this.layers_[0].postcompose = this.layers_[0].on('postcompose', this.postcomposeA_.bind(this));
         this.layers_[1].precompose = this.layers_[1].on('precompose', this.precomposeB_.bind(this));
@@ -148,7 +149,8 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
    * @api stable
    */
   setVisibilityLayersCD() {
-    if ((this.layers_[2] !== undefined && this.layers_[3] !== undefined) && (this.comparisonMode === 1 || this.comparisonMode === 2)) {
+    if ((this.layers_[2] !== undefined && this.layers_[3] !== undefined)
+      && (this.comparisonMode === 1 || this.comparisonMode === 2)) {
       this.layers_[2].setVisible(false);
       this.layers_[3].setVisible(false);
     } else if (this.layers_[2] !== undefined && this.layers_[3] !== undefined) {
@@ -163,6 +165,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
   addLayerA(layers) {
+    // eslint-disable-next-line no-param-reassign
     if (!(layers instanceof Array)) layers = [layers];
     const l = { layer: layers[0] };
     if (this.getMap()) {
@@ -180,6 +183,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
   addLayerB(layers) {
+    // eslint-disable-next-line no-param-reassign
     if (!(layers instanceof Array)) layers = [layers];
     const l = { layer: layers[0] };
     if (this.getMap()) {
@@ -196,6 +200,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
   addLayerC(layers) {
+    // eslint-disable-next-line no-param-reassign
     if (!(layers instanceof Array)) layers = [layers];
     const l = { layer: layers[0] };
     if (this.getMap()) {
@@ -212,6 +217,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
   addLayerD(layers) {
+    // eslint-disable-next-line no-param-reassign
     if (!(layers instanceof Array)) layers = [layers];
     const l = { layer: layers[0] };
     if (this.getMap()) {
@@ -229,9 +235,8 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
    * @param {ol.layer|Array<ol.layer>} layer to clip
    */
   removeLayer(layers) {
-    if (!(layers instanceof Array)) {
-      layers = [layers];
-    }
+    // eslint-disable-next-line no-param-reassign
+    if (!(layers instanceof Array)) layers = [layers];
 
     for (let i = 0; i < layers.length; i += 1) {
       let k;
@@ -262,6 +267,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       } else if (e && e instanceof Array) {
         this.pos = e;
       } else {
+        // eslint-disable-next-line no-param-reassign
         e = [-10000000, -10000000];
       }
 
@@ -284,18 +290,18 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     const swipeControl = document.querySelector('.lyrcompare-swipe-control');
     if (swipeControl) {
       if (this.comparisonMode === 1) {
-        swipeControl.classList = 'lyrcompare-swipe-control vertical' + (this.staticDivision === 1 ? ' static' : ' dynamic');
+        swipeControl.classList = `lyrcompare-swipe-control vertical${this.staticDivision === 1 ? ' static' : ' dynamic'}`;
       } else if (this.comparisonMode === 2) {
-        swipeControl.classList = 'lyrcompare-swipe-control horizontal' + (this.staticDivision === 1 ? ' static' : ' dynamic');
+        swipeControl.classList = `lyrcompare-swipe-control horizontal${this.staticDivision === 1 ? ' static' : ' dynamic'}`;
       } else if (this.comparisonMode === 3) {
-        swipeControl.classList = 'lyrcompare-swipe-control vertical horizontal' + (this.staticDivision === 1 ? ' static' : ' dynamic');
+        swipeControl.classList = `lyrcompare-swipe-control vertical horizontal${this.staticDivision === 1 ? ' static' : ' dynamic'}`;
       }
     }
 
     if (this.getMap()) {
       const lienzoMapa = this.map_.getSize();
-      swipeControl.style.left = (lienzoMapa[0] / 2) - (swipeControl.offsetWidth / 2) + 'px';
-      swipeControl.style.top = (lienzoMapa[1] / 2) - (swipeControl.offsetHeight / 2) + 'px';
+      swipeControl.style.left = `${(lienzoMapa[0] / 2) - (swipeControl.offsetWidth / 2)}px`;
+      swipeControl.style.top = `${(lienzoMapa[1] / 2) - (swipeControl.offsetHeight / 2)}px`;
       this.pos = [lienzoMapa[0] / 2, lienzoMapa[1] / 2];
       this.swipeClicked = false;
       this.getMap().renderSync();
@@ -310,57 +316,57 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     const mapSize = this.map_.getSize();
     const widthClip = this.pos[0];
     const heightClip = this.pos[1];
-    const margenClip = 0; //Stroke size in pixels.
+    const margenClip = 0; // Stroke size in pixels.
     let tl;
     let tr;
     let br;
     let bl;
-    //e2m: Canvas size --> lienzoMapa
-    //e2m: Mouse coordinates --> this.pos
+    // e2m: Canvas size --> lienzoMapa
+    // e2m: Mouse coordinates --> this.pos
     ctx.save();
     ctx.beginPath();
     if (this.staticDivision === 1) {
       if (this.comparisonMode === 1) {
-        tl =  ol.render.getRenderPixel(e, [0, 0]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0]/2, 0]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);
+        tl = ol.render.getRenderPixel(e, [0, 0]);
+        tr = ol.render.getRenderPixel(e, [mapSize[0] / 2, 0]);
+        br = ol.render.getRenderPixel(e, [mapSize[0] / 2, mapSize[1]]);
+        bl = ol.render.getRenderPixel(e, [0, mapSize[1]]);
       } else if (this.comparisonMode === 2) {
-        tl =  ol.render.getRenderPixel(e, [0, 0]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]/2]);
-        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]/2]);
+        tl = ol.render.getRenderPixel(e, [0, 0]);
+        tr = ol.render.getRenderPixel(e, [mapSize[0], 0]);
+        br = ol.render.getRenderPixel(e, [mapSize[0], mapSize[1] / 2]);
+        bl = ol.render.getRenderPixel(e, [0, mapSize[1] / 2]);
       } else if (this.comparisonMode === 3) {
-        tl =  ol.render.getRenderPixel(e, [0, 0]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0]/2, 0]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]/2]);
-        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]/2]);
+        tl = ol.render.getRenderPixel(e, [0, 0]);
+        tr = ol.render.getRenderPixel(e, [mapSize[0] / 2, 0]);
+        br = ol.render.getRenderPixel(e, [mapSize[0] / 2, mapSize[1] / 2]);
+        bl = ol.render.getRenderPixel(e, [0, mapSize[1] / 2]);
       }
-    } else {
-      if (this.comparisonMode === 1) {
-        tl =  ol.render.getRenderPixel(e, [0, 0]);
-        tr =  ol.render.getRenderPixel(e, [widthClip, 0]);
-        br =  ol.render.getRenderPixel(e, [widthClip, mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);
-      } else if (this.comparisonMode === 2) {
-        tl =  ol.render.getRenderPixel(e, [0, 0]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0], heightClip]);
-        bl =  ol.render.getRenderPixel(e, [0, heightClip]);
-      } else if (this.comparisonMode === 3) {
-        tl =  ol.render.getRenderPixel(e, [0, 0]);
-        tr =  ol.render.getRenderPixel(e, [widthClip, 0]);
-        br =  ol.render.getRenderPixel(e, [widthClip, heightClip]);
-        bl =  ol.render.getRenderPixel(e, [0, heightClip]);
-      }
+    } else if (this.comparisonMode === 1) {
+      tl = ol.render.getRenderPixel(e, [0, 0]);
+      tr = ol.render.getRenderPixel(e, [widthClip, 0]);
+      br = ol.render.getRenderPixel(e, [widthClip, mapSize[1]]);
+      bl = ol.render.getRenderPixel(e, [0, mapSize[1]]);
+    } else if (this.comparisonMode === 2) {
+      tl = ol.render.getRenderPixel(e, [0, 0]);
+      tr = ol.render.getRenderPixel(e, [mapSize[0], 0]);
+      br = ol.render.getRenderPixel(e, [mapSize[0], heightClip]);
+      bl = ol.render.getRenderPixel(e, [0, heightClip]);
+    } else if (this.comparisonMode === 3) {
+      tl = ol.render.getRenderPixel(e, [0, 0]);
+      tr = ol.render.getRenderPixel(e, [widthClip, 0]);
+      br = ol.render.getRenderPixel(e, [widthClip, heightClip]);
+      bl = ol.render.getRenderPixel(e, [0, heightClip]);
     }
-    if (tl!==undefined){
+
+    if (tl !== undefined) {
       ctx.moveTo(tl[0], tl[1]);
       ctx.lineTo(bl[0], bl[1]);
       ctx.lineTo(br[0], br[1]);
       ctx.lineTo(tr[0], tr[1]);
-      ctx.closePath();   
+      ctx.closePath();
     }
+
     /**
      *
      * e2m: con esto podemos pintar una línea de color para contornear la capa. Pero no queda bien
@@ -390,59 +396,59 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     const mapSize = lienzoMapa;
     const widthClip = this.pos[0];
     const heightClip = this.pos[1];
-    const margenClip = 0; //Stroke size in pixels.
+    const margenClip = 0; // Stroke size in pixels.
     let tl;
     let tr;
     let br;
-    let bl;    
-    //e2m: Canvas size --> lienzoMapa
-    //e2m: Mouse coordinates --> this.pos
+    let bl;
+    // e2m: Canvas size --> lienzoMapa
+    // e2m: Mouse coordinates --> this.pos
     ctx.save();
     ctx.beginPath();
     if (this.staticDivision === 1) {
       if (this.comparisonMode === 1) {
-        tl =  ol.render.getRenderPixel(e, [mapSize[0]/2, 0]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]]);    
+        tl = ol.render.getRenderPixel(e, [mapSize[0] / 2, 0]);
+        tr = ol.render.getRenderPixel(e, [mapSize[0], 0]);
+        br = ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
+        bl = ol.render.getRenderPixel(e, [mapSize[0] / 2, mapSize[1]]);
       } else if (this.comparisonMode === 2) {
-        tl =  ol.render.getRenderPixel(e, [0,mapSize[1]/2]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]/2]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);        
+        tl = ol.render.getRenderPixel(e, [0, mapSize[1] / 2]);
+        tr = ol.render.getRenderPixel(e, [mapSize[0], mapSize[1] / 2]);
+        br = ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
+        bl = ol.render.getRenderPixel(e, [0, mapSize[1]]);
       } else if (this.comparisonMode === 3) {
-        tl =  ol.render.getRenderPixel(e, [mapSize[0]/2, 0]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]/2]);
-        bl =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]/2]);
+        tl = ol.render.getRenderPixel(e, [mapSize[0] / 2, 0]);
+        tr = ol.render.getRenderPixel(e, [mapSize[0], 0]);
+        br = ol.render.getRenderPixel(e, [mapSize[0], mapSize[1] / 2]);
+        bl = ol.render.getRenderPixel(e, [mapSize[0] / 2, mapSize[1] / 2]);
       }
-    } else {
-      if (this.comparisonMode === 1) {
-        //ctx.rect(this.pos[0], 0, lienzoMapa[0] - this.pos[0], lienzoMapa[1]); //e2m: Right dynamic
-        tl =  ol.render.getRenderPixel(e, [widthClip, 0]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [widthClip, mapSize[1]]);
-      } else if (this.comparisonMode === 2) {
-        //ctx.rect(0, this.pos[1], ctx.canvas.width, ctx.canvas.height - this.pos[1]); //e2m: Down dynamic
-        tl =  ol.render.getRenderPixel(e, [0,heightClip]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0], heightClip]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);
-      } else if (this.comparisonMode === 3) {
-        tl =  ol.render.getRenderPixel(e, [widthClip, 0]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0], 0]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0], heightClip]);
-        bl =  ol.render.getRenderPixel(e, [widthClip, heightClip]);
-      }
-   }
-   if (tl!==undefined){
-    ctx.moveTo(tl[0], tl[1]);
-    ctx.lineTo(bl[0], bl[1]);
-    ctx.lineTo(br[0], br[1]);
-    ctx.lineTo(tr[0], tr[1]);
-    ctx.closePath();   
-  }   
+    } else if (this.comparisonMode === 1) {
+      // ctx.rect(this.pos[0], 0, lienzoMapa[0] - this.pos[0], lienzoMapa[1]); //e2m: Right dynamic
+      tl = ol.render.getRenderPixel(e, [widthClip, 0]);
+      tr = ol.render.getRenderPixel(e, [mapSize[0], 0]);
+      br = ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
+      bl = ol.render.getRenderPixel(e, [widthClip, mapSize[1]]);
+    } else if (this.comparisonMode === 2) {
+      // ctx.rect(0, this.pos[1], ctx.canvas.width, ctx.canvas.height - this.pos[1]);
+      // e2m: Down dynamic
+      tl = ol.render.getRenderPixel(e, [0, heightClip]);
+      tr = ol.render.getRenderPixel(e, [mapSize[0], heightClip]);
+      br = ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
+      bl = ol.render.getRenderPixel(e, [0, mapSize[1]]);
+    } else if (this.comparisonMode === 3) {
+      tl = ol.render.getRenderPixel(e, [widthClip, 0]);
+      tr = ol.render.getRenderPixel(e, [mapSize[0], 0]);
+      br = ol.render.getRenderPixel(e, [mapSize[0], heightClip]);
+      bl = ol.render.getRenderPixel(e, [widthClip, heightClip]);
+    }
+
+    if (tl !== undefined) {
+      ctx.moveTo(tl[0], tl[1]);
+      ctx.lineTo(bl[0], bl[1]);
+      ctx.lineTo(br[0], br[1]);
+      ctx.lineTo(tr[0], tr[1]);
+      ctx.closePath();
+    }
 
     if (margenClip > 0) {
       ctx.lineWidth = 2 * margenClip * ratio;
@@ -466,37 +472,36 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     const mapSize = lienzoMapa;
     const widthClip = this.pos[0];
     const heightClip = this.pos[1];
-    const margenClip = 0; //Stroke size in pixels.
+    const margenClip = 0; // Stroke size in pixels.
     let tl;
     let tr;
     let br;
-    let bl;        
-    //e2m: Canvas size --> lienzoMapa
-    //e2m: Mouse coordinates --> this.pos
+    let bl;
+    // e2m: Canvas size --> lienzoMapa
+    // e2m: Mouse coordinates --> this.pos
     ctx.save();
     ctx.beginPath();
     if (this.staticDivision === 1) {
       if (this.comparisonMode === 3) {
-        tl =  ol.render.getRenderPixel(e, [0,mapSize[1]/2]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]/2]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0]/2, mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]); 
+        tl = ol.render.getRenderPixel(e, [0, mapSize[1] / 2]);
+        tr = ol.render.getRenderPixel(e, [mapSize[0] / 2, mapSize[1] / 2]);
+        br = ol.render.getRenderPixel(e, [mapSize[0] / 2, mapSize[1]]);
+        bl = ol.render.getRenderPixel(e, [0, mapSize[1]]);
       }
-    } else {
-      if (this.comparisonMode === 3) {
-        tl =  ol.render.getRenderPixel(e, [0,heightClip]);
-        tr =  ol.render.getRenderPixel(e, [widthClip, heightClip]);
-        br =  ol.render.getRenderPixel(e, [widthClip, mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [0, mapSize[1]]);
-      }
+    } else if (this.comparisonMode === 3) {
+      tl = ol.render.getRenderPixel(e, [0, heightClip]);
+      tr = ol.render.getRenderPixel(e, [widthClip, heightClip]);
+      br = ol.render.getRenderPixel(e, [widthClip, mapSize[1]]);
+      bl = ol.render.getRenderPixel(e, [0, mapSize[1]]);
     }
-    if (tl!==undefined){
+
+    if (tl !== undefined) {
       ctx.moveTo(tl[0], tl[1]);
       ctx.lineTo(bl[0], bl[1]);
       ctx.lineTo(br[0], br[1]);
       ctx.lineTo(tr[0], tr[1]);
-      ctx.closePath();   
-    }   
+      ctx.closePath();
+    }
 
     if (margenClip > 0) {
       ctx.lineWidth = 2 * margenClip * ratio;
@@ -520,37 +525,36 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     const mapSize = lienzoMapa;
     const widthClip = this.pos[0];
     const heightClip = this.pos[1];
-    const margenClip = 0; //Stroke size in pixels.
+    const margenClip = 0; // Stroke size in pixels.
     let tl;
     let tr;
     let br;
-    let bl; 
-    //e2m: Canvas size --> lienzoMapa
-    //e2m: Mouse coordinates --> this.pos
+    let bl;
+    // e2m: Canvas size --> lienzoMapa
+    // e2m: Mouse coordinates --> this.pos
     ctx.save();
     ctx.beginPath();
     if (this.staticDivision === 1) {
       if (this.comparisonMode === 3) {
-        tl =  ol.render.getRenderPixel(e, [mapSize[0]/2,mapSize[1]/2]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]/2]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [mapSize[0]/2,mapSize[1]]);
+        tl = ol.render.getRenderPixel(e, [mapSize[0] / 2, mapSize[1] / 2]);
+        tr = ol.render.getRenderPixel(e, [mapSize[0], mapSize[1] / 2]);
+        br = ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
+        bl = ol.render.getRenderPixel(e, [mapSize[0] / 2, mapSize[1]]);
       }
-    } else {
-      if (this.comparisonMode === 3) {
-        tl =  ol.render.getRenderPixel(e, [widthClip,heightClip]);
-        tr =  ol.render.getRenderPixel(e, [mapSize[0], heightClip]);
-        br =  ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
-        bl =  ol.render.getRenderPixel(e, [widthClip,mapSize[1]]);
-      }
+    } else if (this.comparisonMode === 3) {
+      tl = ol.render.getRenderPixel(e, [widthClip, heightClip]);
+      tr = ol.render.getRenderPixel(e, [mapSize[0], heightClip]);
+      br = ol.render.getRenderPixel(e, [mapSize[0], mapSize[1]]);
+      bl = ol.render.getRenderPixel(e, [widthClip, mapSize[1]]);
     }
-    if (tl!==undefined){
+
+    if (tl !== undefined) {
       ctx.moveTo(tl[0], tl[1]);
       ctx.lineTo(bl[0], bl[1]);
       ctx.lineTo(br[0], br[1]);
       ctx.lineTo(tr[0], tr[1]);
-      ctx.closePath();   
-    }   
+      ctx.closePath();
+    }
     if (margenClip > 0) {
       ctx.lineWidth = 2 * margenClip * ratio;
       ctx.strokeStyle = 'rgba(0, 102, 204, 0.9)';
@@ -565,6 +569,7 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
   postcomposeD_(e) {
     e.context.restore();
   }
+
   /**
    * Create the swipe indicator
    *
@@ -584,10 +589,10 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
       swipeIcon = document.querySelector('.lyrcompare-swipe-control .control-icon');
     }
 
-    swipeControl.addEventListener('mousedown', () => this.swipeClicked = true);
-    swipeControl.addEventListener('mouseup', () => this.swipeClicked = false);
-    swipeControl.addEventListener('touchstart', () => this.swipeClicked = true);
-    swipeControl.addEventListener('touchend', () => this.swipeClicked = false);
+    swipeControl.addEventListener('mousedown', () => { this.swipeClicked = true; });
+    swipeControl.addEventListener('mouseup', () => { this.swipeClicked = false; });
+    swipeControl.addEventListener('touchstart', () => { this.swipeClicked = true; });
+    swipeControl.addEventListener('touchend', () => { this.swipeClicked = false; });
     this.updatePosition();
   }
 
@@ -601,18 +606,18 @@ export default class LyrcompareInteraction extends ol.interaction.Pointer {
     if (swipeControl && this.getMap()) {
       if (this.staticDivision === 0 || this.staticDivision === 2) {
         if (this.comparisonMode === 1) {
-          swipeControl.style.top = (lienzoMapa[1] / 2) - (swipeControl.offsetHeight / 2) + 'px';
-          swipeControl.style.left = (this.pos[0]) - (swipeControl.offsetWidth / 2) + 'px';
+          swipeControl.style.top = `${(lienzoMapa[1] / 2) - (swipeControl.offsetHeight / 2)}px`;
+          swipeControl.style.left = `${(this.pos[0]) - (swipeControl.offsetWidth / 2)}px`;
         } else if (this.comparisonMode === 2) {
-          swipeControl.style.left = (lienzoMapa[0] / 2) - (swipeControl.offsetWidth / 2) + 'px';
-          swipeControl.style.top = (this.pos[1]) - (swipeControl.offsetHeight / 2) + 'px';
+          swipeControl.style.left = `${(lienzoMapa[0] / 2) - (swipeControl.offsetWidth / 2)}px`;
+          swipeControl.style.top = `${(this.pos[1]) - (swipeControl.offsetHeight / 2)}px`;
         } else if (this.comparisonMode === 3) {
-          swipeControl.style.left = (this.pos[0]) - (swipeControl.offsetWidth / 2) + 'px';
-          swipeControl.style.top = (this.pos[1]) - (swipeControl.offsetHeight / 2) + 'px';
+          swipeControl.style.left = `${(this.pos[0]) - (swipeControl.offsetWidth / 2)}px`;
+          swipeControl.style.top = `${(this.pos[1]) - (swipeControl.offsetHeight / 2)}px`;
         }
       } else {
-        swipeControl.style.left = (lienzoMapa[0] / 2) - (swipeControl.offsetWidth / 2) + 'px';
-        swipeControl.style.top = (lienzoMapa[1] / 2) - (swipeControl.offsetHeight / 2) + 'px';
+        swipeControl.style.left = `${(lienzoMapa[0] / 2) - (swipeControl.offsetWidth / 2)}px`;
+        swipeControl.style.top = `${(lienzoMapa[1] / 2) - (swipeControl.offsetHeight / 2)}px`;
       }
     }
   }

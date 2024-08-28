@@ -25,6 +25,15 @@ export const KML = 'KML';
 export const WMS = 'WMS';
 
 /**
+ * Tipo GeoTIFF (). Definido por una url,
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const GeoTIFF = 'GeoTIFF';
+
+/**
  * Tipo WFS (Web Feature Service). Estándar OGC para la
  * transferencia de información geográfica, donde los elementos o
  * características geográficas se transmiten en su totalidad al cliente.
@@ -121,6 +130,16 @@ export const Vector = 'Vector';
 export const MVT = 'MVT';
 
 /**
+ * MapLibre. Se sirven en forma de teselas que contienen
+ * la información vectorial del área que delimitan.
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const MapLibre = 'MapLibre';
+
+/**
  * Tipo MBTiles. Es un formato de archivo para contener conjuntos
  * de imágenes (tilesets) bajo una estructura de base de datos SQLite.
  * @const
@@ -168,12 +187,14 @@ export const GenericRaster = 'GenericRaster';
 const layertypes = {
   KML,
   WMS,
+  GeoTIFF,
   WFS,
   WMTS,
   OSM,
   GeoJSON,
   Vector,
   MVT,
+  MapLibre,
   XYZ,
   TMS,
   MBTiles,
@@ -218,9 +239,11 @@ export const know = (type) => {
   const knowTypes = [
     KML,
     WMS,
+    GeoTIFF,
     WFS,
     WMTS,
     MVT,
+    MapLibre,
     XYZ,
     TMS,
     MBTiles,

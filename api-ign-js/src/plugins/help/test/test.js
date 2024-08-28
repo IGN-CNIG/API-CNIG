@@ -24,7 +24,7 @@ const mp = new Help({
     }
   },
   extendInitialExtraContents: true,
-  /*/ PRUEBA initialExtraContents 1
+  /* / PRUEBA initialExtraContents 1
   initialExtraContents: {es: [
     { title: 'Índice 1', content: '<div><h2>Título 1</h2><div><p>Contenido 1</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
       subContents : [
@@ -76,7 +76,7 @@ const mp = new Help({
       ]
     },
   ], // */
-  /*/ PRUEBA finalExtraContents 1
+  /* / PRUEBA finalExtraContents 1
   finalExtraContents: { es: [
     { title: 'Índice 7', content: '<div><h2>Título 7</h2><div><p>Contenido 7</p> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tyto_alba_close_up.jpg/200px-Tyto_alba_close_up.jpg" width="300" height="400"></div></div>',
       subContents : [
@@ -127,13 +127,5 @@ const mp = new Help({
   ], // */
 });
 
-map.addPlugin(mp); 
+map.addPlugin(mp);
 window.mp = mp;
-
-// Lista de errores
-
-// 1 - ERROR "getAPIRest" usa la variable "this.extendInitialExtraContents_" que no existe, porque tiene que ser sin "_", o se puede hacer lo contrario añadir "_" a todos los demás apartados de esta variable que lo necesiten.
-
-// 2 - ERROR En el help.html hay "< </div>" que no hace nada y además es erróneo. Por otro lado los botones de aumentar o disminuir font pueden estar separados según el tamaño de la pantalla, ya que están relacionados uno al otro se podría impedir que se separen con este span de inline-block "<span style="display: inline-block;"><button class="m-help-btn" onclick="increaseFont(event)">A+</button><button class="m-help-btn" onclick="reduceFont(event)">A-</button></span>" También se puede incluir tooltips a estos.
-
-// 3 - ERROR "applyZoom" y "removeZoom" del helps.html posiblemente tendría que tener un tooltip para que se explique que hay que hacer hover sobre la imagen en la que se ha activado.

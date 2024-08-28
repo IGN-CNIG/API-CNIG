@@ -20,6 +20,10 @@
     background-color: #71a7d3;
 }
 
+.m-areas>div.m-area.m-left>div.m-plugin-contactlink.opened.no-collapsible {
+    border-radius: 4px;
+}
+
 .m-areas>div.m-area.m-right>div.m-plugin-contactlink.opened>button.m-panel-btn {
     position: absolute;
     left: -40px;

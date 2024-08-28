@@ -145,7 +145,7 @@ export const parseParamToGeometries = (paramParameter) => {
   let param = paramParameter;
   let geometries = [];
   if (param instanceof M.layer.Vector) {
-    geometries = [...param.getFeatures().map(feature => feature.getGeometry())];
+    geometries = [...param.getFeatures().map((feature) => feature.getGeometry())];
   } else {
     if (!M.utils.isArray(param)) {
       param = [param];

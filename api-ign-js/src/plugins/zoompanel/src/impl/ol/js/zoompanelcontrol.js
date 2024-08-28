@@ -14,9 +14,9 @@ class Properties {
   equals(properties) {
     let equals = false;
     if (properties instanceof Properties) {
-      equals = properties.center[0] === this.center[0] &&
-        properties.center[1] === this.center[1] &&
-        properties.resolution === this.resolution;
+      equals = properties.center[0] === this.center[0]
+        && properties.center[1] === this.center[1]
+        && properties.resolution === this.resolution;
     }
     return equals;
   }

@@ -1,9 +1,9 @@
-import { getValue } from './i18n/language';
-import { pixelToCoordinateTransform } from '../../impl/ol/js/utils';
 // eslint-disable-next-line import/first
 import JsZip from 'jszip';
 // eslint-disable-next-line import/first
 import { saveAs } from 'file-saver';
+import { pixelToCoordinateTransform } from '../../impl/ol/js/utils';
+import { getValue } from './i18n/language';
 
 // ID and CLASS
 const LOADING_CLASS = 'printing';
@@ -34,7 +34,6 @@ export function showQueueElement(element) {
     e.style.display = 'block';
   }
 }
-
 
 // Return container queue
 export function getQueueContainer(html) {
@@ -75,7 +74,7 @@ export function removeQueueElements(html) {
 }
 
 // Generate wld file
-export function createWLD(bbox, dpi, size, epsgUser = false, map, type) {
+export function createWLD(bbox, dpi, size, epsgUser = false, map = {}, type = undefined) {
   let px;
 
   if (epsgUser) {
@@ -103,7 +102,6 @@ export function createWLD(bbox, dpi, size, epsgUser = false, map, type) {
 
   return px;
 }
-
 
 // Create jsZip file
 export function createZipFile(files, type, titulo) {

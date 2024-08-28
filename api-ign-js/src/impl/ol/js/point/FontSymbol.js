@@ -2,7 +2,6 @@
  * @module M/impl/point/FontSymbol
  */
 
-
 import OLFontSymbol from '../ext/OLStyleFontSymbol';
 
 class FontSymbol extends OLFontSymbol {

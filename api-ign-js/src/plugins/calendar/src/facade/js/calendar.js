@@ -135,7 +135,6 @@ export default class Calendar extends M.Plugin {
     return this.metadata_;
   }
 
-
   /**
    * This function destroys this plugin
    *

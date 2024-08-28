@@ -1,7 +1,7 @@
 import Comparepanel from 'facade/comparepanel';
 
-M.language.setLang('es'); //Español
-M.proxy(false)
+M.language.setLang('es'); // Español
+M.proxy(false);
 
 /*
 const customBGLids = ['cartomtn','imagen','hibrido','mapa'];
@@ -9,8 +9,8 @@ const customBGLtitles = ['Carto','Imagen','Mixto','Mapa'];
 const customBGLlayers = [
           'WMTS*https://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*MTN*true*image/jpeg*false*false*true',
           'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*false*image/jpeg*false*false*true',
-          'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*true*image/jpeg*false*false*true' + '+' +
-          'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Callejero*true*image/png*false*false*true',
+          'WMTS*https://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*imagen*true*image/jpeg*false*false*true' + '+'
+          + 'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseOrto*GoogleMapsCompatible*Callejero*true*image/png*false*false*true',
           'WMTS*https://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*base*false*image/jpeg*false*false*true',
         ];
 
@@ -29,30 +29,30 @@ const map = M.map({
   center: {
     x: -667143.31,
     y: 4493011.77,
-    //x: -3.23232333,
-    //y: 42.2365656,
+    // x: -3.23232333,
+    // y: 42.2365656,
     draw: false,
   },
   controls: ['scale', 'location'],
   projection: 'EPSG:3857*m',
-  //projection: 'EPSG:4326*d',
+  // projection: 'EPSG:4326*d',
   zoom: 6,
 });
 
 const objWMTSsiose = new M.layer.WMTS({
-  url: "https://servicios.idee.es/wmts/ocupacion-suelo",
-  name: "LC.LandCoverSurfaces",
-  matrixSet: "GoogleMapsCompatible",
-  legend: "CORINE / SIOSE",
-  format: 'image/png'
+  url: 'https://servicios.idee.es/wmts/ocupacion-suelo',
+  name: 'LC.LandCoverSurfaces',
+  matrixSet: 'GoogleMapsCompatible',
+  legend: 'CORINE / SIOSE',
+  format: 'image/png',
 });
 
-const objWMTSMapa = new M.layer.WMTS({
-  url: "https://www.ign.es/wmts/mapa-raster",
-  name: "MTN",
-  matrixSet: "GoogleMapsCompatible",
-  legend: "Mapa MTN",
-  format: "image/jpeg",
+/* const objWMTSMapa = new M.layer.WMTS({
+  url: 'https://www.ign.es/wmts/mapa-raster',
+  name: 'MTN',
+  matrixSet: 'GoogleMapsCompatible',
+  legend: 'Mapa MTN',
+  format: 'image/jpeg',
 });
 
 const lyrIGNBaseXYZ = new M.layer.XYZ({
@@ -65,7 +65,7 @@ const lyrIGNBaseXYZ = new M.layer.XYZ({
   queryable: false,
   visible: true,
   tileGridMaxZoom: 17,
-})
+}); */
 
 const lyrMTN501EdiWMTS = new M.layer.WMTS({
   url: 'https://www.ign.es/wmts/primera-edicion-mtn?',
@@ -104,18 +104,18 @@ const lyrCartografiaXYZ = new M.layer.XYZ({
 });
 
 const lyrIGNBaseWMTS = new M.layer.WMTS({
-  url: "https://www.ign.es/wmts/ign-base?",
-  name: "IGNBaseTodo",
-  legend: "Mapa IGN",
-  matrixSet: "GoogleMapsCompatible",
+  url: 'https://www.ign.es/wmts/ign-base?',
+  name: 'IGNBaseTodo',
+  legend: 'Mapa IGN',
+  matrixSet: 'GoogleMapsCompatible',
   transparent: false,
   displayInLayerSwitcher: false,
   queryable: false,
   visible: true,
-  format: "image/jpeg",
+  format: 'image/jpeg',
 });
 
-const lyrIGNPNOAWMTS = new M.layer.WMTS({
+/* const lyrIGNPNOAWMTS = new M.layer.WMTS({
   url: 'https://www.ign.es/wmts/pnoa-ma?',
   name: 'OI.OrthoimageCoverage',
   legend: 'Imagen PNOA',
@@ -125,7 +125,7 @@ const lyrIGNPNOAWMTS = new M.layer.WMTS({
   queryable: false,
   visible: true,
   format: 'image/jpeg',
-});
+}); */
 
 const lyrLiDARWMTS = new M.layer.WMTS({
   url: 'https://wmts-mapa-lidar.idee.es/lidar?',
@@ -217,18 +217,16 @@ const getWMTSLyrs = () => {
 
     ],
   });
-}
+};
 
 // Configuración de las capas de fondo
 const backImgLayersConfig = getWMTSLyrs();
 
-const mpBILBasico = new M.plugin.BackImgLayer(
-  backImgLayersConfig
-);
+const mpBILBasico = new M.plugin.BackImgLayer(backImgLayersConfig);
 
 map.addPlugin(mpBILBasico);
 
-const PNOAlistBaseLayersByString = [
+/* const PNOAlistBaseLayersByString = [
   // WMS PNOA Histórico
   ['Americano 1956-57', '1956', 'WMS*Americano 1956-1957*https://www.ign.es/wms/pnoa-historico*AMS_1956-1957'],
   ['Interministerial 1973-86', '1983', 'WMS*Interministerial 1973-1986*https://www.ign.es/wms/pnoa-historico*Interministerial_1973-1986'],
@@ -251,7 +249,6 @@ const PNOAlistBaseLayersByString = [
   ['PNOA 2017', '2017', 'WMS*PNOA 2017*https://www.ign.es/wms/pnoa-historico*pnoa2017'],
   ['PNOA 2018', '2018', 'WMS*PNOA 2018*https://www.ign.es/wms/pnoa-historico*pnoa2018'],
 ];
-
 
 const SENTINELlistBaseLayersByString = [
   ['Huellas Sentinel2', '2018', 'WMS*Huellas Sentinel2*https://wms-satelites-historicos.idee.es/satelites-historicos*teselas_sentinel2_espanna*true'],
@@ -294,8 +291,7 @@ const SENTINELlistBaseLayersByString = [
   ['Landsat 1 1971-1975. Color natural', '1971', 'WMS*Landsat 1 1971-1975. Color natural*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT1_544-574*true'],
   ['Landsat 1 1971-1975. Falso color infrarrojo', '1971', 'WMS*Landsat 1 1971-1975. Falso color infrarrojo*https://wms-satelites-historicos.idee.es/satelites-historicos*LANDSAT1_654*true'],
   ['Fondo', '2001', 'WMS*Fondo*https://wms-satelites-historicos.idee.es/satelites-historicos*fondo*true'],
-]; /* 40 capas */
-
+]; */ /* 40 capas */
 
 const mpTOC = new M.plugin.FullTOC({
   position: 'TR',
@@ -352,7 +348,7 @@ const listBaseLayersByString = [
   // WMTS Varios
   // ['MDT-Relieve', '2020', 'WMTS*MDT Relieve*https://servicios.idee.es/wmts/mdt*Relieve*GoogleMapsCompatible*image/jpeg'],
   // ['SIOSE', '2020', 'WMTS*SIOSE*https://servicios.idee.es/wmts/ocupacion-suelo*LC.LandCoverSurfaces*GoogleMapsCompatible*image/png'],
-  //['MDT-Elevaciones', '2020', 'WMTS*MDT-Elevaciones*https://servicios.idee.es/wmts/mdt*EL.GridCoverage*GoogleMapsCompatible*image/jpeg'],
+  // ['MDT-Elevaciones', '2020', 'WMTS*MDT-Elevaciones*https://servicios.idee.es/wmts/mdt*EL.GridCoverage*GoogleMapsCompatible*image/jpeg'],
 
 ];
 
@@ -366,9 +362,9 @@ const pluginComparepanel = new Comparepanel({
   baseLayers: listBaseLayersByString,
   urlcoberturas: 'http://visores-cnig-gestion-publico.desarrollo.guadaltel.es/comparador_pnoa/coberturas.geojson',
   lyrsMirrorMinZindex: 100,
-  /*timelineParams: {
+  /* timelineParams: {
     animation: true,
-  },*/
+  }, */
   transparencyParams: {
     radius: 100,
   },
@@ -385,7 +381,7 @@ const pluginComparepanel = new Comparepanel({
     reverseLayout: true,
     enabledPlugins: true,
     enabledKeyFunctions: true,
-  }
+  },
 });
 
 map.addPlugin(pluginComparepanel);

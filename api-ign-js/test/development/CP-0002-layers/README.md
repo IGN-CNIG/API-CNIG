@@ -48,3 +48,12 @@ Pruebas de la función "toGeoJSON" de las capas y pruebas de la función "getGeo
 
 CP-017
 WMS_FULL, capas wms sin nombre
+
+CP-018
+Mapa básico con capas MapLibre.
+
+CP-019
+Mapa básico con pruebas en todas las capas de parámetros de minZoom, maxZoom y tileGridMaxZoom.
+
+CP-020
+Mapa básico con capas GeoTiff (COG).

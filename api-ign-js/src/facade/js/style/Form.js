@@ -92,7 +92,6 @@ export const LOZENGE = 'LOZENGE';
  */
 export const SQUARE = 'SQUARE';
 
-
 /**
  * Forma de estilo cuadrado.
  * @const

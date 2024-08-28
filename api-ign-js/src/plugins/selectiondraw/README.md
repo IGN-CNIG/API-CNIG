@@ -43,7 +43,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
    const map = M.map({
      container: 'map'
    });
-  
+
    const mp = new M.plugin.SelectionDraw({
         projection: 'EPSG:4326',
         position: 'TL',
@@ -55,8 +55,8 @@ El constructor se inicializa con un JSON con los siguientes atributos:
       // lógica de negocio
       console.log(featureJSON);
    });
-   // Al terminar de dibujar, el plugin ejecutará siempre el callback anterior, 
-   // tomando como parámetro el feature dibujado como GeoJSON 
+   // Al terminar de dibujar, el plugin ejecutará siempre el callback anterior,
+   // tomando como parámetro el feature dibujado como GeoJSON
    // en la proyección que indiquemos en el constructor.
 
    map.addPlugin(mp);

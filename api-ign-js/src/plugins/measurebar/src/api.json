@@ -35,11 +35,11 @@
     "name": "measurebar",
     "description": "Allows measures over map",
     "text": "Allows measures over map",
-    "version": "1.1.0",
+    "version": "2.0.0",
     "date": "September 2019",
     "author": "",
     "org": "IGN",
     "tags": "mapea,plugin",
-    "icon": "./facade/assets/icons/icons.svg" 
+    "icon": "./facade/assets/icons/icons.svg"
   }
 }

@@ -15,7 +15,6 @@ const mp = new Popup({
   tooltip: 'Ayuda',
 });
 
-
 // map.removeControls('panzoom');
 window.map = map;
 

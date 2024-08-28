@@ -135,7 +135,6 @@ export default class BackImgLayer extends M.Plugin {
      */
     this.empty = options.empty !== undefined ? options.empty : false;
 
-
     /**
      * @private
      * @type {string}
@@ -156,7 +155,6 @@ export default class BackImgLayer extends M.Plugin {
      * @type {string}
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
-
 
     /**
      *@private
@@ -181,7 +179,6 @@ export default class BackImgLayer extends M.Plugin {
     }
     return M.language.getTranslation(lang).backimglayer;
   }
-
 
   /**
    * This function adds this plugin into the map
@@ -233,9 +230,9 @@ export default class BackImgLayer extends M.Plugin {
    * @api
    */
   getAPIRest() {
-    const layers = this.layerOpts === undefined ?
-      `${this.ids}*!${this.titles}*!${this.previews}*!${this.layers}` :
-      this.turnLayerOptsIntoUrl();
+    const layers = this.layerOpts === undefined
+      ? `${this.ids}*!${this.titles}*!${this.previews}*!${this.layers}`
+      : this.turnLayerOptsIntoUrl();
     return `${this.name}=${this.position_}*!${this.collapsed}*!${this.collapsible}*!${this.tooltip_}*!${this.layerVisibility}*!${this.layerId}*!${this.columnsNumber}*!${this.empty}*!${layers}`;
   }
 
@@ -354,8 +351,8 @@ export default class BackImgLayer extends M.Plugin {
   changeStyleResponsive(change) {
     // eslint-disable-next-line no-unused-expressions
     (change)
-      ? document.querySelectorAll('.m-panel.m-plugin-backimglayer').forEach(e => e.classList.add('changeStyleResponsive'))
-      : document.querySelectorAll('.m-panel.m-plugin-backimglayer').forEach(e => e.classList.remove('changeStyleResponsive'));
+      ? document.querySelectorAll('.m-panel.m-plugin-backimglayer').forEach((e) => e.classList.add('changeStyleResponsive'))
+      : document.querySelectorAll('.m-panel.m-plugin-backimglayer').forEach((e) => e.classList.remove('changeStyleResponsive'));
   }
 
   /**
@@ -393,4 +390,3 @@ export default class BackImgLayer extends M.Plugin {
     };
   }
 }
-

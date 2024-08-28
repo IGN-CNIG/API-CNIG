@@ -41,8 +41,9 @@ class Icon extends OLStyleIcon {
       anchorXUnits: options.anchorXUnits,
       anchorYUnits: options.anchorYUnits,
       crossOrigin: options.crossOrigin || null,
-      color: (options.color && options.color.slice) ?
-        options.color.slice() : options.color || undefined,
+      color: (options.color && options.color.slice)
+        ? options.color.slice()
+        : options.color || undefined,
       src: options.src,
       offset: !options.offset ? undefined : options.offset.slice(),
       offsetOrigin: options.offsetOrigin,
@@ -76,7 +77,7 @@ class Icon extends OLStyleIcon {
       size: this.size_ !== null ? this.size_.slice() : undefined,
       opacity: this.getOpacity(),
       scale: this.getScale(),
-      snapToPixel: this.getSnapToPixel(),
+      // snapToPixel: this.getSnapToPixel(),
       rotation: this.getRotation(),
       rotateWithView: this.getRotateWithView(),
     });

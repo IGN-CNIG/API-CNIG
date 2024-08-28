@@ -10,7 +10,6 @@ import * as Dialog from '../dialog';
 import { getValue } from '../i18n/language';
 import Vector from '../layer/Vector';
 
-
 /**
  * Esta función añade al mapa una capa vector con los features
  * de un fichero
@@ -47,6 +46,7 @@ export const loadFeaturesFromSource = (map, source, layerName, fileExt) => {
       const layer = new Vector({ name: layerName, legend: layerName, extract: true });
       layer.addFeatures(features);
       map.addLayers(layer);
+      LoadFilesImpl.centerFeatures(features, map);
     }
   } catch (e) {
     Dialog.error(getValue('exception').file_load_correct);
@@ -86,4 +86,3 @@ export const addFileToMap = (map, file) => {
 };
 
 export default {};
-

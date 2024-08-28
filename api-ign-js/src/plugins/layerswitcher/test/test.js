@@ -1,10 +1,11 @@
+/* eslint-disable max-len,object-property-newline */
 import Layerswitcher from 'facade/layerswitcher';
 
-//M.language.setLang('en');
+// M.language.setLang('en');
 
 const map = M.map({
   container: 'mapjs',
-  controls: ['scale','attributions'],
+  controls: ['scale', 'attributions'],
   center: { x: -528863.345515127, y: 4514194.232367303 },
   zoom: 9,
 });
@@ -20,6 +21,9 @@ const PRECHARGED = {
   }, {
     type: 'WMS', name: 'Planimetrías',
     url: 'https://www.ign.es/wms/minutas-cartograficas',
+  }, {
+    name: 'Mapa Libre', legend: 'Mapa Libre',
+    url: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json',
   }],
   groups: [{
     name: 'Cartografía',
@@ -127,7 +131,7 @@ const mp2 = new M.plugin.Vectors({}); map.addPlugin(mp2);
 // M.proxy(false);
 // Todas las CAPAS que se tienen que probar
 
-/*/ Capa GeoJson 1
+/* / Capa GeoJson 1
 const capaGeoJSON = new M.layer.GeoJSON({
   name: 'Capa GeoJSON',
   legend: 'Capa GeoJSON',
@@ -136,7 +140,7 @@ const capaGeoJSON = new M.layer.GeoJSON({
 });
 map.addLayers(capaGeoJSON); window.capaGeoJSON = capaGeoJSON; // */
 
-/*/ Reemplazo de capa GeoJson 1
+/* / Reemplazo de capa GeoJson 1
 map.getMapImpl().on('moveend', () => {
   map.removeLayers([capaGeoJSON]);
   capaGeoJSON = new M.layer.GeoJSON({
@@ -149,38 +153,38 @@ map.getMapImpl().on('moveend', () => {
   map.addLayers(capaGeoJSON); window.capaGeoJSON = capaGeoJSON;
 }); // */
 
-/*/ Capa GeoJson 2
+/* / Capa GeoJson 2
 const capaGeoJSON2 = new M.layer.GeoJSON({
-  name: "capaJson",
+  name: 'capaJson',
   source: {
-    "type": "FeatureCollection",
-    "features": [{
-      "properties": {
-        "estado": 1,
-        "vendor": {
-          "mapea": {}
+    type: 'FeatureCollection',
+    features: [{
+      properties: {
+        estado: 1,
+        vendor: {
+          mapea: {},
         },
-        "sede": "/Sevilla/CHGCOR003-Oficina de la zona regable del Genil",
-        "tipo": "ADSL",
-        "name": "/Sevilla/CHGCOR003-Oficina de la zona regable del Genil"
+        sede: '/Sevilla/CHGCOR003-Oficina de la zona regable del Genil',
+        tipo: 'ADSL',
+        name: '/Sevilla/CHGCOR003-Oficina de la zona regable del Genil',
       },
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-5.278075, 37.69374444444444]
-      }
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-5.278075, 37.69374444444444],
+      },
     }],
-    "crs": {
-      "properties": {
-        "name": "EPSG:4326"
+    crs: {
+      properties: {
+        name: 'EPSG:4326',
       },
-      "type": "name"
-    }
-  }
+      type: 'name',
+    },
+  },
 });
-map.addLayers(capaGeoJSON2); window.capaGeoJSON2 = capaGeoJSON2 // */
+map.addLayers(capaGeoJSON2); window.capaGeoJSON2 = capaGeoJSON2; // */
 
-// Capa OSM 1
+/* / Capa OSM 1
 const capaOSM = new M.layer.OSM({
   name: 'Capa OSM',
   legend: 'Capa OSM',
@@ -190,7 +194,7 @@ const capaOSM = new M.layer.OSM({
 });
 map.addLayers(capaOSM); window.capaOSM = capaOSM; // */
 
-// Capa KML
+/* / Capa KML
 const capaKML = new M.layer.KML({
   url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
   name: 'Capa KML',
@@ -199,7 +203,7 @@ const capaKML = new M.layer.KML({
 });
 map.addLayers(capaKML); window.capaKML = capaKML; // */
 
-/*/ Capa MVT
+/* / Capa MVT
 const capaMVT = new M.layer.MVT({ // No visible en zooms 0-7, saltan errores 404
   url: 'https://www.ign.es/web/resources/mapa-base-xyz/vt/{z}/{x}/{y}.pbf',
   layers: ['provincia_pol', 'camino_lin'], // Se reduce lag por demaciados elementos al solo coger estos
@@ -210,9 +214,9 @@ const capaMVT = new M.layer.MVT({ // No visible en zooms 0-7, saltan errores 404
 });
 map.addLayers(capaMVT); window.capaMVT = capaMVT; // */
 
-/*/ Capa OGCAPIFeatures
+/* / Capa OGCAPIFeatures
 const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
-  url: 'https://api-features.idee.es/collections/', name: 'hidrografia/Falls', // 1 - ERROR 404, no existe realmente, se cambia por uno valido
+  url: 'https://api-features.idee.es/collections/', name: 'falls',
   legend: 'Capa OGCAPIFeatures L',
   limit: 20,
 }, {
@@ -236,7 +240,7 @@ const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
 });
 map.addLayers(capaOGCAPIFeatures); window.capaOGCAPIFeatures = capaOGCAPIFeatures; // */
 
-/*/ Capa TMS
+/* / Capa TMS
 const capaTMS = new M.layer.TMS({
   url: 'https://tms-mapa-raster.ign.es/1.0.0/mapa-raster/{z}/{x}/{-y}.jpeg',
   name: 'Capa TMS',
@@ -245,7 +249,7 @@ const capaTMS = new M.layer.TMS({
 });
 map.addLayers(capaTMS); window.capaTMS = capaTMS; // */
 
-/*/ Capa Vector
+/* / Capa Vector
 const capaVector = new M.layer.Vector({ name: 'capaVector', legend: 'vector legend' });
 const feature = new M.Feature('localizacion', {
   type: 'Feature',
@@ -255,7 +259,7 @@ const feature = new M.Feature('localizacion', {
 capaVector.addFeatures(feature);
 map.addLayers(capaVector); window.capaVector = capaVector; // */
 
-/*/ Capas WFS 1
+/* / Capas WFS 1
 const capaWFS = new M.layer.WFS({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
   namespace: 'tematicos',
@@ -264,7 +268,7 @@ const capaWFS = new M.layer.WFS({
   geometry: 'MPOLYGON',
 });
 map.addLayers(capaWFS); window.capaWFS = capaWFS; // */
-/*/ Capas WFS 2
+/* / Capas WFS 2
 const capaWFS2 = new M.layer.WFS({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
   namespace: 'tematicos',
@@ -274,7 +278,7 @@ const capaWFS2 = new M.layer.WFS({
 });
 map.addWFS(capaWFS2); // */
 
-/*/ Capas WMS 1 Se usa la misma dirrecion que en "WMS 2", termina reemplazandolo
+/* / Capas WMS 1 Se usa la misma dirrecion que en "WMS 2", termina reemplazandolo
 const capaWMS = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit', legend: 'capaWMS1',
@@ -282,7 +286,7 @@ const capaWMS = new M.layer.WMS({
 });
 map.addLayers(capaWMS); window.capaWMS = capaWMS; // */
 
-// Capas WMS 2
+/* / Capas WMS 2
 const capaWMS2 = new M.layer.WMS({
   url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
   name: 'AU.AdministrativeUnit', legend: 'capaWMS2',
@@ -293,7 +297,7 @@ const capaWMS2 = new M.layer.WMS({
 capaWMS2.setZIndex(99);
 map.addWMS(capaWMS2); window.capaWMS2 = capaWMS2; // */
 
-// Capas WMS 3
+/* / Capas WMS 3
 const capaWMS3 = new M.layer.WMS({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
   name: 'provincias_pob', legend: 'capaWMS3',
@@ -301,7 +305,7 @@ const capaWMS3 = new M.layer.WMS({
 });
 map.addWMS(capaWMS3); window.capaWMS3 = capaWMS3; // */
 
-/*/ Capas WMTS
+/* / Capas WMTS
 const capaWMTS = new M.layer.WMTS({
   url: 'https://servicios.idee.es/wmts/ocupacion-suelo',
   name: 'LC.LandCoverSurfaces',
@@ -311,18 +315,18 @@ const capaWMTS = new M.layer.WMTS({
 });
 map.addLayers(capaWMTS); window.capaWMTS = capaWMTS; // */
 
-/*/ Capas XYZ
+/* / Capas XYZ
 const capaXYZ = new M.layer.XYZ({
   url: 'https://www.ign.es/web/catalogo-cartoteca/resources/webmaps/data/cresques/{z}/{x}/{y}.jpg',
   name: 'Capa XYZ',
   legend: 'Capa XYZ l',
   projection: 'EPSG:3857',
 },{
-  crossOrigin: false // parece ser necesario para evitar errores de CORS
+  crossOrigin: false
 });
 map.addLayers(capaXYZ); window.capaXYZ = capaXYZ; // */
 
-/*/ Capa GenericRaster
+/* / Capa GenericRaster
 const generic_001 = new M.layer.GenericRaster({}, {}, new ol.layer.Image({
   source: new ol.source.ImageWMS({
     url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
@@ -331,7 +335,7 @@ const generic_001 = new M.layer.GenericRaster({}, {}, new ol.layer.Image({
 }));
 map.addLayers(generic_001); window.generic_001 = generic_001; // */
 
-/*/ Capa GenericVector
+/* / Capa GenericVector
 const generic_002 = new M.layer.GenericVector({}, {}, new ol.layer.Vector({
   source: new ol.source.Vector({
     format: new ol.format.GeoJSON(),
@@ -341,7 +345,7 @@ const generic_002 = new M.layer.GenericVector({}, {}, new ol.layer.Vector({
 }));
 map.addLayers(generic_002); window.generic_002 = generic_002; // */
 
-/*/ Capa MBTiles fetch
+/* / Capa MBTiles fetch
 window.fetch('./cabrera.mbtiles').then((response) => {
   if (response.status != 404) {
     const mbtile1 = new M.layer.MBTiles({
@@ -352,7 +356,7 @@ window.fetch('./cabrera.mbtiles').then((response) => {
   } else console.error("Archivo cabrera.mbtiles no presente en directorio test");
 }).catch((e) => { throw e; }); // */
 
-/*/ Capa MBTiles
+/* / Capa MBTiles
 const mbtile2 = new M.layer.MBTiles({
   name: 'mbtilesLoadFunction',
   legend: 'Capa personalizada MBTiles',
@@ -368,7 +372,7 @@ const mbtile2 = new M.layer.MBTiles({
 });
 map.addLayers(mbtile2); window.mbtile2 = mbtile2; // */
 
-/*/ Capa MBTilesVector fetch
+/* / Capa MBTilesVector fetch
 window.fetch('./countries.mbtiles').then((response) => {
   if (response.status != 404) {
     const mbtilesvector = new M.layer.MBTilesVector({
@@ -381,7 +385,7 @@ window.fetch('./countries.mbtiles').then((response) => {
   } else console.error("Archivo countries.mbtiles no presente en directorio test");
 }).catch((e) => { throw e; }); // */
 
-/*/ Capa MBTilesVector
+/* / Capa MBTilesVector
 const mbtileVector = new M.layer.MBTilesVector({
   name: 'mbtilesvector',
   legend: 'Capa personalizada MBTilesVector',
@@ -395,7 +399,31 @@ const mbtileVector = new M.layer.MBTilesVector({
 });
 map.addLayers(mbtileVector); window.mbtileVector = mbtileVector; // */
 
-/*/ Plugin TOC
+/* / Capa GeoTIFF
+const geotiff = new M.layer.GeoTIFF({
+  url: 'http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif',
+  name: 'Nombre geotiff',
+  legend: 'Leyenda geotiff',
+  transparent: true,
+}, {
+  convertToRGB: 'auto', nodata: 0, // Pone transparente el color negro del background
+});
+map.addLayers(geotiff); window.geotiff = geotiff; // */
+// Capa GeoTIFF con strings
+// map.addGeoTIFF('GeoTIFF*LEG_GeoTIFF*http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif*NOM_GeoTIFF*true**true*true');
+// map.addLayers('GeoTIFF*LEG_GeoTIFF*http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif*NOM_GeoTIFF*true**false*true'); // false for not in layerswitcher
+// */
+
+/* / Capa MapLibre
+const mapLibre = new M.layer.MapLibre({
+  name: 'Mapa Libre', legend: 'Mapa Libre',
+  url: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json',
+  extract: true,
+  disableBackgroundColor: false,
+});
+map.addLayers(mapLibre); window.mapLibre = mapLibre; // */
+
+/* / Plugin TOC
 const mp3 = new M.plugin.TOC({
   collapsed: false, collapsible: true, position: 'TL',
   isDraggable: false, modeSelectLayers: 'eyes',
@@ -408,7 +436,7 @@ const mp1 = new Layerswitcher({
   isDraggable: true,
   position: 'TL', // TL | TR | BR | BL
   tooltip: 'Tooltip de Gestor de Capas',
-  modeSelectLayers: 'radio', // eyes | radio
+  modeSelectLayers: 'eyes', // eyes | radio
   // tools: [],
   tools: ['transparency', 'zoom', 'legend', 'information', 'style', 'delete'],
   isMoveLayers: true,
@@ -426,14 +454,4 @@ const mp1 = new Layerswitcher({
 map.addPlugin(mp1);
 window.mp1 = mp1;
 
-// Lista de errores encontrados
-
-// 1 - ERROR, al crear este layer de OGCAPIFeatures, se obtiene un code 404 en "loadInternal_" de "WFS.js", por lo que el text es null, pero se intenta usar. Este error ya se apunto pero solo para los WFS, se debería de incluir que también ocurre en este layer.
-
-// 2 - ERROR, comentario de "// Servicios precargados" repetido en "layerswitcher/src/facade/js/layerswitcher.js" el segundo tiene que describir que se permite usar label como WMS, GeoJson ...
-
-// 3 - ERROR, no se comenta en Readme la existencia del parámetro "useAttributions", tampoco esta en "getAPIRest()" y el JSP de este plugin, parece que necesita el control de "attributions" para poder ver las atribuciones que se añaden por cada uso de añadir capas.
-
-// 4 - ERROR, El botón de "Mostrar información del servicio" de "show_service_info" expande el contenido del popup, pero el popup sigue siendo del mismo tamaño y los elementos añadidos flotan fuera de este. Para encontrar este botón, hay que darle a "añadir" de capas y escoger un grupo de estos, aquí aparecerá el botón.
-
-// 5 - ERROR, en Añadido de capas, en el botón pequeño de binoculares, aparece la capa "Cartografia_Geologica/IGME_Litologias_1M", que parece que en "getRemote(wmsGetCapabilitiesUrl).then((response) => { const getCapabilitiesDocument = response.xml; ..." no tiene el xml, se observa que si tiene "text" que parece tener ese "xml" en formato string, pero si se asigna como tal, terminará lanzando el siguiente error porque "node = wmsNode.querySelector('Layer');" el querySelector no existe sobre el string del supuesto xml intercambiado. Esta de aquí es la URL de capabilities "https://www.ign.es/wms-inspire/unidades-administrativas?request=GetCapabilities&service=WMS&version=1.3.0"
+// Para pruebas locales, lanzar Tomcat del proyecto y usar "http://localhost:8080" en vez de "https://mapea-lite.desarrollo.guadaltel.es"

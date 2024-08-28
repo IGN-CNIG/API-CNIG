@@ -1,7 +1,10 @@
 const path = require('path');
+const OptimizeCssAssetsPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const GenerateVersionPlugin = require('./GenerateVersionPlugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopywebpackPlugin = require('copy-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const PJSON_PATH = path.resolve(__dirname, '..', 'package.json');
 const pjson = require(PJSON_PATH);
@@ -24,9 +27,15 @@ module.exports = {
       facade: path.resolve(__dirname, '../src/facade/js'),
     },
     extensions: ['.wasm', '.mjs', '.js', '.json', '.css', '.hbs', '.html'],
+    fallback: {
+      fs: false,
+      path: false,
+      crypto: false,
+    },
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.js$/,
         exclude: /(node_modules\/(?!ol)|bower_components)/,
         use: {
@@ -35,11 +44,6 @@ module.exports = {
             presets: ['@babel/preset-env'],
           },
         },
-      },
-      {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/,
       },
       {
         test: [/\.hbs$/, /\.html$/],
@@ -63,12 +67,12 @@ module.exports = {
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
         exclude: /node_modules/,
-        loader: 'url-loader?name=fonts/[name].[ext]',
-      }
+        type: 'asset/inline',
+      },
     ],
   },
   optimization: {
-    noEmitOnErrors: true,
+    emitOnErrors: false,
   },
   plugins: [
     // new GenerateVersionPlugin({
@@ -78,10 +82,19 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
-    new CopywebpackPlugin([{
-      from: 'src/api.json',
-      to: 'api.json',
-    }]),
+    new ESLintPlugin({
+      extensions: [`js`, `jsx`],
+      // files: 'src/**/*.js',
+      exclude: ['**/node_modules/**', '/lib/', '/test/', '/dist/'],
+    }),
+    new CopywebpackPlugin({
+      patterns: [
+        {
+          from: 'src/api.json',
+          to: 'api.json',
+        }
+      ],
+    }),
   ],
   devtool: 'source-map',
 };

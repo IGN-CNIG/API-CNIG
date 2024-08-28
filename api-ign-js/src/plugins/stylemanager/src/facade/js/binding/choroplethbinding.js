@@ -23,7 +23,7 @@ export class ChoroplethBinding extends Binding {
 
   setRanges() {
     const rangesButton = this.querySelector('[data-number-ranges]');
-    const number = parseInt(rangesButton.value, 0);
+    const number = parseInt(rangesButton.value, 10);
     const rangesArray = [];
 
     for (let i = 1; i <= number; i += 1) {
@@ -32,7 +32,6 @@ export class ChoroplethBinding extends Binding {
     const parent = this.querySelector('[data-parent]');
     this.addTemplate('choroplethstyles.html', parent, { ranges: rangesArray });
   }
-
 
   addEventRangeListener() {
     const rangesButton = this.querySelector('[data-number-ranges]');
@@ -66,7 +65,7 @@ export class ChoroplethBinding extends Binding {
 
   addColors() {
     const rangesButton = this.querySelector('[data-number-ranges]');
-    const number = parseInt(rangesButton.value, 0);
+    const number = parseInt(rangesButton.value, 10);
     const colorsInput = this.querySelectorAll('[data-array-options]');
     const numberColors = colorsInput.length;
     if (numberColors < number) {
@@ -115,7 +114,7 @@ export class ChoroplethBinding extends Binding {
     }
     if (this.layer_ != null) {
       options['attributes'] = this.getAttributes();
-      options['attributes'].forEach(attribute => attribute['selected'] = options.attribute);
+      options['attributes'].forEach((attribute) => attribute['selected'] = options.attribute);
     }
     return options;
   }

@@ -3,7 +3,12 @@
  */
 import KMLImpl from 'impl/layer/KML';
 import LayerVector from './Vector';
-import { isNullOrEmpty, isUndefined, normalize, isString } from '../util/Utils';
+import {
+  isNullOrEmpty,
+  isUndefined,
+  normalize,
+  isString,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from './Type';
 import * as parameter from '../parameter/parameter';
@@ -31,8 +36,6 @@ class KML extends LayerVector {
    * - url: Url del fichero o servicio -> https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml
    * - name: Nombre de la capa que aparecerá en la leyenda -> Delegaciones IGN
    * - extract: Opcional, activa la consulta por click en el objeto geográfico, por defecto falso.
-   * - minZoom: Zoom mínimo aplicable a la capa.
-   * - maxZoom: Zoom máximo aplicable a la capa.
    * - type: Tipo de la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
@@ -70,9 +73,9 @@ class KML extends LayerVector {
     optionsVar.label = parameters.label;
     optionsVar.visibility = parameters.visibility;
     optionsVar.layers = userParameters.layers || undefined;
-    optionsVar.removeFolderChildren = isUndefined(userParameters.removeFolderChildren) ?
-      true :
-      userParameters.removeFolderChildren;
+    optionsVar.removeFolderChildren = isUndefined(userParameters.removeFolderChildren)
+      ? true
+      : userParameters.removeFolderChildren;
 
     if (typeof userParameters !== 'string') {
       optionsVar.maxExtent = userParameters.maxExtent;
@@ -103,7 +106,7 @@ class KML extends LayerVector {
      * KML extract: Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */
-    this.extract = parameters.extract || true;
+    this.extract = parameters.extract === undefined ? false : parameters.extract;
 
     /**
      * KML options: Optiones que se mandan a la implementación.
@@ -120,6 +123,20 @@ class KML extends LayerVector {
      * @type {Array<String>}
      */
     this.layers = optionsVar.layers;
+
+    /**
+     * KML minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * KML maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
 
     /**
      * KML removeFolderChildren: Permite no mostrar las
@@ -184,36 +201,6 @@ class KML extends LayerVector {
    */
   set options(newOptions) {
     this.getImpl().options = newOptions;
-  }
-
-  /**
-   * Devuelve la leyenda de la capa.
-   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
-   *
-   * @function
-   * @getter
-   * @return {M.layer.WMS.impl.legend} Leyenda de la capa.
-   * @api
-   */
-  get legend() {
-    return this.getImpl().legend;
-  }
-
-  /**
-   * Sobrescribe la leyenda de la capa.
-   * La Leyenda indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
-   *
-   * @function
-   * @setter
-   * @param {String} newLegend Nueva leyenda.
-   * @api
-   */
-  set legend(newLegend) {
-    if (isNullOrEmpty(newLegend)) {
-      this.getImpl().legend = this.name;
-    } else {
-      this.getImpl().legend = newLegend;
-    }
   }
 
   /**

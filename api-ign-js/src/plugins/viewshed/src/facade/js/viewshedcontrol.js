@@ -6,7 +6,6 @@ import ViewShedImplControl from 'impl/viewshedcontrol';
 import template from 'templates/viewshed';
 import { getValue } from './i18n/language';
 
-
 export default class ViewShedControl extends M.Control {
   /**
    * @classdesc

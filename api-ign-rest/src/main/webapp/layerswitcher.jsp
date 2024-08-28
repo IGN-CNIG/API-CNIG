@@ -161,7 +161,7 @@
         });
         const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
             url: 'https://api-features.idee.es/collections/',
-            name: 'hidrografia/Falls',
+            name: 'falls',
             legend: 'Capa OGCAPIFeatures',
             limit: 20,
         });

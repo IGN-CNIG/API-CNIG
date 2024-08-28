@@ -6,7 +6,6 @@ import InfoCatastroImplControl from 'impl/infocatastrocontrol';
 import template from 'templates/infocatastro';
 import { getValue } from './i18n/language';
 
-
 export default class InfoCatastroControl extends M.Control {
   /**
    * @classdesc
@@ -169,7 +168,8 @@ export default class InfoCatastroControl extends M.Control {
         popup = new M.Popup();
         popup.addTab(tab);
         this.facadeMap_.addPopup(popup, coordinates);
-      } else if (popup.getCoordinate()[0] === coordinates[0] && popup.getCoordinate()[1] === coordinates[1]) {
+      } else if (popup.getCoordinate()[0] === coordinates[0]
+        && popup.getCoordinate()[1] === coordinates[1]) {
         let hasExternalContent = false;
         popup.getTabs().forEach((t) => {
           if (t.title !== this.POPUP_TITLE) {

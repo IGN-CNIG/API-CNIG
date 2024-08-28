@@ -29,6 +29,7 @@ export default class StyleManagerControl extends M.Control {
     super(impl, 'StyleManager');
     this.layer_ = layer;
   }
+
   /**
    * This function creates the view
    *
@@ -39,7 +40,7 @@ export default class StyleManagerControl extends M.Control {
    */
   createView(map) {
     this.facadeMap_ = map;
-    const layers = map.getWFS().concat(map.getMVT().concat(map.getKML().concat(map.getLayers().filter(layer => layer.type === 'GeoJSON' || layer.type === 'Vector')))).filter((layer) => {
+    const layers = map.getWFS().concat(map.getMVT().concat(map.getKML().concat(map.getLayers().filter((layer) => layer.type === 'GeoJSON' || layer.type === 'Vector')))).filter((layer) => {
       return layer.name !== 'selectLayer' && layer.name !== '__draw__';
     });
     return new Promise((success, fail) => {
@@ -165,8 +166,8 @@ export default class StyleManagerControl extends M.Control {
   subscribeAddedLayer(htmlSelect) {
     this.facadeMap_.on(M.evt.ADDED_LAYER, (layers) => {
       if (Array.isArray(layers)) {
-        layers.filter(layer => ((layer instanceof M.layer.Vector && layer.type !== 'Generic') && layer
-          instanceof M.layer.MBTilesVector === false && layer.name !== 'selectLayer')).forEach(layer => this.addLayerOption(htmlSelect, layer.name));
+        layers.filter((layer) => ((layer instanceof M.layer.Vector && layer.type !== 'Generic') && layer
+          instanceof M.layer.MBTilesVector === false && layer.name !== 'selectLayer')).forEach((layer) => this.addLayerOption(htmlSelect, layer.name));
       } else if (layers instanceof M.layer.Vector
         && !LAYERS_PREVENT_PLUGINS.includes(layers.name)
       ) {
@@ -209,7 +210,7 @@ export default class StyleManagerControl extends M.Control {
 
   removeLayerOption(htmlSelect, name) {
     if (this.isNotAdded(name, htmlSelect) === false) {
-      const htmlOption = Array.from(htmlSelect.options).find(option => option.getAttribute('name') === name);
+      const htmlOption = Array.from(htmlSelect.options).find((option) => option.getAttribute('name') === name);
       htmlOption.remove();
     }
   }
@@ -219,7 +220,7 @@ export default class StyleManagerControl extends M.Control {
    */
   isNotAdded(layerName, htmlSelect) {
     const aChildren = [...htmlSelect.children];
-    return !aChildren.some(o => o.innerHTML === layerName);
+    return !aChildren.some((o) => o.innerHTML === layerName);
   }
 
   /**
@@ -254,10 +255,10 @@ export default class StyleManagerControl extends M.Control {
    * @api stable
    */
   getLayerByName(layerName) {
-    const layers = this.facadeMap_.getWFS().concat(this.facadeMap_.getMVT().concat(this.facadeMap_.getKML().concat(this.facadeMap_.getLayers().filter(layer => layer.type === 'GeoJSON' || layer.type === 'Vector')))).filter((layer) => {
+    const layers = this.facadeMap_.getWFS().concat(this.facadeMap_.getMVT().concat(this.facadeMap_.getKML().concat(this.facadeMap_.getLayers().filter((layer) => layer.type === 'GeoJSON' || layer.type === 'Vector')))).filter((layer) => {
       return layer.name !== 'selectLayer' && layer.name !== '__draw__';
     });
-    return layers.find(layer => layer.name === layerName);
+    return layers.find((layer) => layer.name === layerName);
   }
 
   /**
@@ -324,6 +325,7 @@ export default class StyleManagerControl extends M.Control {
       M.dialog.info(getValue('exception.chooseLayer'), getValue('exception.choLayer'));
     }
   }
+
   /**
    * @function
    */

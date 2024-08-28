@@ -61,7 +61,7 @@ export class SimpleBinding extends Binding {
    * @function
    */
   refreshTemplate() {
-    this.querySelectorAllForEach('[data-geometry]', node => node.classList.remove('m-hidden'));
+    this.querySelectorAllForEach('[data-geometry]', (node) => node.classList.remove('m-hidden'));
     this.refreshOptionsButtons();
     this.addLabelPathListener();
   }
@@ -145,14 +145,14 @@ export class SimpleBinding extends Binding {
     if (style != null && !(style instanceof M.style.FlowLine)) {
       const options = style.getOptions();
       if (options['point']['fill'] != null || options['line']['fill'] != null || options['polygon']['fill'] != null) {
-        const valuesFillPoint =
-          Object.values(options.point.fill).filter(value => value !== undefined);
-        const valuesFillLine =
-          Object.values(options.line.fill).filter(value => value !== undefined);
-        const valuesFillPolygon =
-          Object.values(options.polygon.fill).filter(value => value !== undefined);
-        if (valuesFillPoint.length > 0 ||
-          valuesFillLine.length > 0 || valuesFillPolygon.length > 0) {
+        const valuesFillPoint = Object
+          .values(options.point.fill).filter((value) => value !== undefined);
+        const valuesFillLine = Object
+          .values(options.line.fill).filter((value) => value !== undefined);
+        const valuesFillPolygon = Object
+          .values(options.polygon.fill).filter((value) => value !== undefined);
+        if (valuesFillPoint.length > 0
+          || valuesFillLine.length > 0 || valuesFillPolygon.length > 0) {
           this.checkOptionSection('fill');
         }
       }
@@ -390,9 +390,9 @@ export class SimpleBinding extends Binding {
       if (target !== undefined) {
         const value1S = this.querySelector(`[data-target="${target}"]`).value;
         const value2S = this.querySelector(`[data-id="${target}"]`).value;
-        isEmptyValue = (target === 'size' || target === 'anchor') &&
-          (!value1S && !value2S) && (parseFloat(value1S) !== 0 &&
-            parseFloat(value2S) !== 0);
+        isEmptyValue = (target === 'size' || target === 'anchor')
+          && (!value1S && !value2S) && (parseFloat(value1S) !== 0
+            && parseFloat(value2S) !== 0);
         let value2 = parseFloat(this.querySelector(`[data-id="${target}"]`).value);
         if (Number.isNaN(value2)) {
           value2 = 0;
@@ -428,8 +428,9 @@ export class SimpleBinding extends Binding {
     const fontLine = `${fontSizeLine}px ${fontFamilyLine}`;
 
     const icon = document.querySelector('[data-apply="icon"]');
-    const iconOpts = icon !== null && icon.checked === true ?
-      styleOpts['options']['point'].src : styleOpts['options']['point'].form;
+    const iconOpts = icon !== null && icon.checked === true
+      ? styleOpts['options']['point'].src
+      : styleOpts['options']['point'].form;
 
     let labelOptPoint;
     if (styleOpts['options']['point']['label'] != null && styleOpts['options']['point']['label']['text'] != null) {
@@ -595,7 +596,6 @@ export class SimpleBinding extends Binding {
     input.disabled = false;
   }
 
-
   /**
    * @function
    *
@@ -616,8 +616,8 @@ export class SimpleBinding extends Binding {
         options['line']['patternflag'] = true;
       }
 
-      if (this.style_.get('point.icon') != null && this.style_.get('point.icon.src') != null &&
-        (this.style_.get('point.icon.fill') != null || this.style_.get('point.icon.stroke') != null)) {
+      if (this.style_.get('point.icon') != null && this.style_.get('point.icon.src') != null
+        && (this.style_.get('point.icon.fill') != null || this.style_.get('point.icon.stroke') != null)) {
         options['point']['svgflag'] = true;
       }
     }
@@ -636,10 +636,10 @@ export class SimpleBinding extends Binding {
     options['line']['fill']['pattern']['color'] = chroma(options['polygon']['fill']['pattern']['color']).hex();
     // --
 
-    const patternValids = Object.keys(M.style.pattern).filter(name => name !== 'ICON' && name !== 'IMAGE');
+    const patternValids = Object.keys(M.style.pattern).filter((name) => name !== 'ICON' && name !== 'IMAGE');
     const alignValues = Object.values(M.style.align);
     const baselineValues = Object.values(M.style.baseline);
-    const formValues = Object.values(M.style.form).filter(name => name != null);
+    const formValues = Object.values(M.style.form).filter((name) => name != null);
     const linejoins = [getValue('bevel'), getValue('miter'), getValue('rounded')];
     const linecapstrokes = [getValue('rounded'), getValue('extreme'), getValue('square')];
     const alings = [getValue('center'), getValue('justified'), getValue('left'), getValue('right')];
@@ -677,9 +677,9 @@ export class SimpleBinding extends Binding {
       const labelTextSelectedPolygon = options['polygon']['label'] != null ? options['polygon']['label']['text'] : '';
       const labelTextSelectedLine = options['line']['label'] != null ? options['line']['label']['text'] : '';
 
-      options['point']['featuresAttr'] = SimpleBinding.arrayDataToTemplate(labelTextSelectedPoint, labelTextValues.map(name => `{{${name}}}`), labelTextValues);
-      options['polygon']['featuresAttr'] = SimpleBinding.arrayDataToTemplate(labelTextSelectedPolygon, labelTextValues.map(name => `{{${name}}}`), labelTextValues);
-      options['line']['featuresAttr'] = SimpleBinding.arrayDataToTemplate(labelTextSelectedLine, labelTextValues.map(name => `{{${name}}}`), labelTextValues);
+      options['point']['featuresAttr'] = SimpleBinding.arrayDataToTemplate(labelTextSelectedPoint, labelTextValues.map((name) => `{{${name}}}`), labelTextValues);
+      options['polygon']['featuresAttr'] = SimpleBinding.arrayDataToTemplate(labelTextSelectedPolygon, labelTextValues.map((name) => `{{${name}}}`), labelTextValues);
+      options['line']['featuresAttr'] = SimpleBinding.arrayDataToTemplate(labelTextSelectedLine, labelTextValues.map((name) => `{{${name}}}`), labelTextValues);
     }
 
     options['point']['label']['fontSize'] = options['point']['label']['font'].split(' ')[0].replace('px', '');
@@ -688,7 +688,6 @@ export class SimpleBinding extends Binding {
     options['line']['label']['font'] = options['line']['label']['font'].split(' ')[1];
     options['polygon']['label']['fontSize'] = options['polygon']['label']['font'].split(' ')[0].replace('px', '');
     options['polygon']['label']['font'] = options['polygon']['label']['font'].split(' ')[1];
-
 
     // icon SVG
     if (typeof options['point']['icon']['fill'] === 'string') {
@@ -760,7 +759,6 @@ export class SimpleBinding extends Binding {
   static get RADIUS_OPTION() {
     return 10;
   }
-
 
   /**
    * TODO

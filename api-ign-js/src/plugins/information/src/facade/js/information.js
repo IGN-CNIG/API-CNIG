@@ -141,8 +141,12 @@ export default class Information extends M.Plugin {
   addTo(map) {
     const fc = this.featureCount_;
     this.ctrl = new InformationControl(
-      this.format_, fc, this.buffer_,
-      this.tooltip_, this.opened_, this.order,
+      this.format_,
+      fc,
+      this.buffer_,
+      this.tooltip_,
+      this.opened_,
+      this.order,
     );
     this.controls_.push(this.ctrl);
     this.map_ = map;

@@ -9,7 +9,6 @@ const map = M.map({
   zoom: 6,
 });
 
-
 const mbtileVector = new M.layer.MBTilesVector({
   name: 'mbtilesvector',
   legend: 'Capa personalizada MBTilesVector',

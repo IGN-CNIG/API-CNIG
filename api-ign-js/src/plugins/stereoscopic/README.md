@@ -25,7 +25,6 @@ El constructor se inicializa con un JSON de options con los siguientes atributos
 - **orbitControls**. Valor Boolean, activa "true" o desactiva (default) "false" la imagen que permite orbitar alrededor del mapa en 3D.
 - **anaglyphActive**. Valor Boolean, activa "true" o desactiva (default) "false" el efecto anaglifo por defecto cuando se carga el mapa.
 - **defaultAnaglyphActive**: Valor Boolean, define si la funcionalidad del control iniciará activada o desactivada.
-- **maxMagnify**: Escala de la magnificación, por defecto 1.
 
 
 # Ejemplo de uso
@@ -46,7 +45,6 @@ const mp = new Stereoscopic({
   orbitControls: false,
   anaglyphActive: true
   defaultAnaglyphActive: false,
-  maxMagnify: 2,
 });
 
 

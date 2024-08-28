@@ -78,6 +78,7 @@ export default class MeasureClear extends M.Control {
     this.impl = null;
   }
 }
+
 /**
  * Name to identify this control
  * @const

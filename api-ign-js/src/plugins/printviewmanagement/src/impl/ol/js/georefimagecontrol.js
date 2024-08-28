@@ -2,7 +2,9 @@
  * @module M/impl/control/GeorefimageControl
  */
 
-import { encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS, encodeMVT } from './encoders';
+import {
+  encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS, encodeMVT, encodeGeoTIFF,
+} from './encoders';
 
 export default class GeorefimageControl extends M.impl.Control {
   /**
@@ -34,11 +36,7 @@ export default class GeorefimageControl extends M.impl.Control {
    */
   addTo(map, element) {
     this.facadeMap_ = map;
-
-    ol.control.Control.call(this, {
-      element,
-      target: null,
-    });
+    this.element = element;
     map.getMapImpl().addControl(this);
   }
 
@@ -54,10 +52,10 @@ export default class GeorefimageControl extends M.impl.Control {
    */
   getParametrizedLayers(facadeMap, paramName, layers) {
     let others = facadeMap.getMapImpl().getLayers().getArray().filter((layer) => {
-      return !M.utils.isNullOrEmpty(layer.getSource()) &&
+      return !M.utils.isNullOrEmpty(layer.getSource())
         // eslint-disable-next-line no-underscore-dangle
-        !M.utils.isNullOrEmpty(layer.getSource().params_) &&
-        layer.getSource().getParams()[paramName] !== undefined;
+        && !M.utils.isNullOrEmpty(layer.getSource().params_)
+        && layer.getSource().getParams()[paramName] !== undefined;
     });
 
     others = others.filter((layer) => {
@@ -68,6 +66,7 @@ export default class GeorefimageControl extends M.impl.Control {
 
     return others;
   }
+
   /**
    * This function encodes a layer.
    *
@@ -80,13 +79,13 @@ export default class GeorefimageControl extends M.impl.Control {
     return (new Promise((success, fail) => {
       if (layer.type === M.layer.type.MVT) {
         success(encodeMVT(layer, this.facadeMap_));
-      } else if (layer.type === M.layer.type.KML &&
-        // eslint-disable-next-line no-underscore-dangle
-        layer.getImpl().formater_.extractStyles_ !== false) {
+      } else if (layer.type === M.layer.type.KML
+          // eslint-disable-next-line no-underscore-dangle
+          && layer.getImpl().formater_.extractStyles_ !== false) {
         success(encodeKML(layer, this.facadeMap_));
-      } else if (layer.type === M.layer.type.KML &&
-        // eslint-disable-next-line no-underscore-dangle
-        layer.getImpl().formater_.extractStyles_ === false) {
+      } else if (layer.type === M.layer.type.KML
+          // eslint-disable-next-line no-underscore-dangle
+          && layer.getImpl().formater_.extractStyles_ === false) {
         success(this.encodeWFS(layer));
       } else if (layer.type === M.layer.type.WMS) {
         success(encodeWMS(layer));
@@ -103,9 +102,11 @@ export default class GeorefimageControl extends M.impl.Control {
         // eslint-disable-next-line no-underscore-dangle
       } else if (layer.type === undefined && layer.className_ === 'ol-layer') {
         success(encodeImage(layer));
-      } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type) >
-        -1) {
+      } else if ([M.layer.type.XYZ, M.layer.type.TMS, M.layer.type.OSM].indexOf(layer.type)
+        > -1) {
         success(encodeXYZ(layer));
+      } else if (layer.type === M.layer.type.GeoTIFF) {
+        success(encodeGeoTIFF(layer));
       } else {
         success(this.encodeWFS(layer));
       }
@@ -163,9 +164,10 @@ export default class GeorefimageControl extends M.impl.Control {
         if (featureStyle instanceof Array) {
           // SRC style has priority
           if (featureStyle.length > 1) {
-            featureStyle = (!M.utils.isNullOrEmpty(featureStyle[1].getImage()) &&
-                featureStyle[1].getImage().getSrc) ?
-              featureStyle[1] : featureStyle[0];
+            featureStyle = (!M.utils.isNullOrEmpty(featureStyle[1].getImage())
+              && featureStyle[1].getImage().getSrc)
+              ? featureStyle[1]
+              : featureStyle[0];
           } else {
             featureStyle = featureStyle[0];
           }
@@ -191,21 +193,24 @@ export default class GeorefimageControl extends M.impl.Control {
             parseType = feature.getGeometry().getType().toLowerCase();
           }
 
-          const stroke = M.utils.isNullOrEmpty(image) ?
-            featureStyle.getStroke() : (image.getStroke && image.getStroke());
-          const fill = M.utils.isNullOrEmpty(image) ?
-            featureStyle.getFill() : (image.getFill && image.getFill());
-
+          const stroke = M.utils.isNullOrEmpty(image)
+            ? featureStyle.getStroke()
+            : (image.getStroke && image.getStroke());
+          const fill = M.utils.isNullOrEmpty(image)
+            ? featureStyle.getFill()
+            : (image.getFill && image.getFill());
 
           let styleText;
           const styleGeom = {
             type: parseType,
             fillColor: M.utils.isNullOrEmpty(fill) ? '#000000' : M.utils.rgbaToHex(fill.getColor()).slice(0, 7),
-            fillOpacity: M.utils.isNullOrEmpty(fill) ?
-              0 : M.utils.getOpacityFromRgba(fill.getColor()),
+            fillOpacity: M.utils.isNullOrEmpty(fill)
+              ? 0
+              : M.utils.getOpacityFromRgba(fill.getColor()),
             strokeColor: M.utils.isNullOrEmpty(stroke) ? '#000000' : M.utils.rgbaToHex(stroke.getColor()),
-            strokeOpacity: M.utils.isNullOrEmpty(stroke) ?
-              0 : M.utils.getOpacityFromRgba(stroke.getColor()),
+            strokeOpacity: M.utils.isNullOrEmpty(stroke)
+              ? 0
+              : M.utils.getOpacityFromRgba(stroke.getColor()),
             strokeWidth: M.utils.isNullOrEmpty(stroke) ? 0 : (stroke.getWidth && stroke.getWidth()),
             pointRadius: M.utils.isNullOrEmpty(image) ? '' : (image.getRadius && image.getRadius()),
             externalGraphic: M.utils.isNullOrEmpty(image) ? '' : (image.getSrc && image.getSrc()),
@@ -276,8 +281,8 @@ export default class GeorefimageControl extends M.impl.Control {
 
           nameFeature = `draw${index}`;
 
-          if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)) ||
-            !M.utils.isNullOrEmpty(text)) {
+          if ((!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox))
+            || !M.utils.isNullOrEmpty(text)) {
             const styleStr = JSON.stringify(styleGeom);
             const styleTextStr = JSON.stringify(styleText);
             let styleName = stylesNames[styleStr];
@@ -286,8 +291,8 @@ export default class GeorefimageControl extends M.impl.Control {
             if (M.utils.isUndefined(styleName) || M.utils.isUndefined(styleNameText)) {
               const symbolizers = [];
               let flag = 0;
-              if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox) &&
-                M.utils.isUndefined(styleName)) {
+              if (!M.utils.isNullOrEmpty(geometry) && geometry.intersectsExtent(bbox)
+                && M.utils.isUndefined(styleName)) {
                 styleName = indexGeom;
                 stylesNames[styleStr] = styleName;
                 flag = 1;
@@ -323,7 +328,7 @@ export default class GeorefimageControl extends M.impl.Control {
             }
 
             let geoJSONFeature;
-            if (projection.code !== 'EPSG:3857' && this.facadeMap_.getLayers().some(layerParam => (layerParam.type === M.layer.type.OSM || layerParam.type === M.layer.type.Mapbox))) {
+            if (projection.code !== 'EPSG:3857' && this.facadeMap_.getLayers().some((layerParam) => (layerParam.type === M.layer.type.OSM || layerParam.type === M.layer.type.Mapbox))) {
               geoJSONFeature = geoJSONFormat.writeFeatureObject(feature, {
                 featureProjection: projection.code,
                 dataProjection: 'EPSG:3857',
@@ -426,7 +431,6 @@ export default class GeorefimageControl extends M.impl.Control {
 
     const tileSize = tileGrid.getTileSize();
     const resolutions = tileGrid.getResolutions();
-
 
     const customParams = {};
     customParams[M.config.MAPBOX_TOKEN_NAME] = M.config.MAPBOX_TOKEN_VALUE;

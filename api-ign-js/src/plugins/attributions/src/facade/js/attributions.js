@@ -47,6 +47,7 @@ export default class Attributions extends M.Plugin {
     if (options.mode === MODES.mapAttributions && !M.utils.isNullOrEmpty(options.url)) {
       if (M.utils.isNullOrEmpty(options.type)) {
         // throw new Error(getValue('exception.type'));
+        // eslint-disable-next-line no-console
         console.warn(getValue('exception.type'));
       }
     }
@@ -54,6 +55,7 @@ export default class Attributions extends M.Plugin {
     if (options.mode === MODES.mapAttributions && !M.utils.isNullOrEmpty(options.layerName)) {
       if (M.utils.isNullOrEmpty(options.type)) {
         // throw new Error(getValue('exception.layerName'));
+        // eslint-disable-next-line no-console
         console.warn(getValue('exception.layerName'));
       }
     }
@@ -190,7 +192,7 @@ export default class Attributions extends M.Plugin {
      */
     this.urlAttribute = options.urlAttribute || 'Gobierno de España';
 
-    window.addEventListener('resize', e => this.setCollapsiblePanel(e));
+    window.addEventListener('resize', (e) => this.setCollapsiblePanel(e));
 
     /**
      *@private
@@ -295,7 +297,6 @@ export default class Attributions extends M.Plugin {
     }
   }
 
-
   /**
    * This method shows the layer attributions
    *
@@ -397,7 +398,7 @@ export default class Attributions extends M.Plugin {
   clearContent() {
     if (!M.utils.isNullOrEmpty(this.control_)) {
       const html = this.control_.getElement();
-      html.querySelectorAll('div').forEach(child => html.removeChild(child));
+      html.querySelectorAll('div').forEach((child) => html.removeChild(child));
     }
   }
 
@@ -415,7 +416,7 @@ export default class Attributions extends M.Plugin {
    */
   getMapAttributions() {
     this.updateBBoxFeature();
-    const featuresAttributions = this.map_.getLayers().filter(l => l.name.includes('attributions'))[0].getFeatures();
+    const featuresAttributions = this.map_.getLayers().filter((l) => l.name.includes('attributions'))[0].getFeatures();
     const interFilter = intersect(this.bboxFeature_);
     const filteredFeatures = interFilter.execute(featuresAttributions);
     return filteredFeatures.map((feature) => {
@@ -423,8 +424,9 @@ export default class Attributions extends M.Plugin {
         attribution: feature.getAttribute(this.attributionParam_) || '',
         url: feature.getAttribute(this.urlParam_) || this.defaultURL_,
       };
-    }).filter((element, index, array) => // remove repeat elements
-      array.map(e => e.attribution).indexOf(element.attribution) === index);
+    }).filter((element, index, array) => array
+    // remove repeat elements
+      .map((e) => e.attribution).indexOf(element.attribution) === index);
   }
 
   /**
@@ -490,12 +492,13 @@ export default class Attributions extends M.Plugin {
       }
     }
   }
+
   /**
    * @function
    * @public
    */
   onMoveEnd(callback) {
-    this.impl_.registerEvent('moveend', e => callback(e));
+    this.impl_.registerEvent('moveend', (e) => callback(e));
   }
 
   /**

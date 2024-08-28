@@ -121,7 +121,7 @@ export default class Mirrorpanel extends M.Plugin {
       if (Array.isArray(options.mirrorLayers)) {
         this.mirrorLayers = options.mirrorLayers;
       } else {
-        this.mirrorLayers = options.mirrorLayers.split(",");
+        this.mirrorLayers = options.mirrorLayers.split(',');
       }
     }
 
@@ -137,7 +137,7 @@ export default class Mirrorpanel extends M.Plugin {
       if (Array.isArray(options.defaultBaseLyrs)) {
         this.defaultBaseLyrs = options.defaultBaseLyrs;
       } else {
-        this.defaultBaseLyrs = options.defaultBaseLyrs.split(",");
+        this.defaultBaseLyrs = options.defaultBaseLyrs.split(',');
       }
     }
 
@@ -150,26 +150,23 @@ export default class Mirrorpanel extends M.Plugin {
     this.backImgLayersParams = options.backImgLayersParams;
     if (options.backImgLayersParams !== undefined) {
       if (M.utils.isObject(options.backImgLayersParams)) {
-        let bIL = new M.plugin.BackImgLayer(options.backImgLayersParams);
+        const bIL = new M.plugin.BackImgLayer(options.backImgLayersParams);
         this.backImgLayersParams = bIL.getAPIRest().replace('backimglayer=', '').replace(/\*!/g, '!!');
       }
-
     }
 
-    /** 
+    /**
      * Show interface
      *@public
      *@type{boolean}
      */
     this.interface = options.interface === undefined ? true : options.interface;
 
-
     /**
      *@private
      *@type { string }
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
-
 
     /**
      * Metadata from api.json
@@ -179,7 +176,7 @@ export default class Mirrorpanel extends M.Plugin {
     this.metadata_ = api.metadata;
   }
 
-    /**
+  /**
    * Return plugin language
    *
    * @public
@@ -187,12 +184,12 @@ export default class Mirrorpanel extends M.Plugin {
    * @param {string} lang type language
    * @api stable
    */
-     static getJSONTranslations(lang) {
-      if (lang === 'en' || lang === 'es') {
-        return (lang === 'en') ? en : es;
-      }
-      return M.language.getTranslation(lang).mirrorpanel;
+  static getJSONTranslations(lang) {
+    if (lang === 'en' || lang === 'es') {
+      return (lang === 'en') ? en : es;
     }
+    return M.language.getTranslation(lang).mirrorpanel;
+  }
 
   /**
    * This function adds this plugin into the map
@@ -214,7 +211,7 @@ export default class Mirrorpanel extends M.Plugin {
       showCursors: this.showCursors,
       mirrorLayers: this.mirrorLayers,
       defaultBaseLyrs: this.defaultBaseLyrs,
-      backImgLayersParams: this.backImgLayersParams
+      backImgLayersParams: this.backImgLayersParams,
     };
 
     this.control_ = new MirrorpanelControl(values);
@@ -236,7 +233,7 @@ export default class Mirrorpanel extends M.Plugin {
     map.addPanels(this.panel_);
 
     // Check if backimglayer is main map and backImgLayersParams is defined. If not, throw a error.
-    if (this.map_.getControls("BackImgLayer").length > 0 && this.backImgLayersParams === undefined) {
+    if (this.map_.getControls('BackImgLayer').length > 0 && this.backImgLayersParams === undefined) {
       M.dialog.error(getValue('backimglayersparams_undefined'));
     }
     // Keybindings for Ctrl + Shift + (F1-F8) / ESC
@@ -244,23 +241,21 @@ export default class Mirrorpanel extends M.Plugin {
       if (!this.enabledKeyFunctions) {
         return;
       }
-      for (let i = 0; i < 10; i++) {
-        if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "F" + (i + 1)) {  // case sensitive
+      for (let i = 0; i < 10; i += 1) {
+        if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === `F${i + 1}`) { // case sensitive
           this.control_.manageVisionPanelByCSSGrid(i);
         }
       }
-      var keyStr = ["Control", "Shift", "Alt", "Meta"].includes(zEvent.key) ? "" : zEvent.key;
+      const keyStr = ['Control', 'Shift', 'Alt', 'Meta'].includes(zEvent.key) ? '' : zEvent.key;
 
-      var combinedKeys = (zEvent.ctrlKey ? "Control " : "") +
-        (zEvent.shiftKey ? "Shift " : "") +
-        (zEvent.altKey ? "Alt " : "") +
-        (zEvent.metaKey ? "Meta " : "") + keyStr;
-      if (combinedKeys === "Escape") {
+      const combinedKeys = (zEvent.ctrlKey ? 'Control ' : '')
+        + (zEvent.shiftKey ? 'Shift ' : '')
+        + (zEvent.altKey ? 'Alt ' : '')
+        + (zEvent.metaKey ? 'Meta ' : '') + keyStr;
+      if (combinedKeys === 'Escape') {
         this.control_.manageVisionPanelByCSSGrid(0);
       }
-
     });
-
   }
 
   /**
@@ -275,7 +270,11 @@ export default class Mirrorpanel extends M.Plugin {
     this.control_.removeMaps();
     this.control_.destroyMapsContainer();
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.collapsible, this.collapsed, this.modeViz, this.enabledPlugins, this.enabledKeyFunctions, this.showCursors, this.mirrorLayers, this.defaultBaseLyrs, this.backImgLayersParams, this.interface] = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.collapsible, this.collapsed, this.modeViz,
+      this.enabledPlugins, this.enabledKeyFunctions, this.showCursors, this.mirrorLayers,
+      this.defaultBaseLyrs, this.backImgLayersParams, this.interface] = [
+      null, null, null, null, null, null, null, null, null, null, null, null, null,
+    ];
   }
 
   /**
@@ -332,6 +331,4 @@ export default class Mirrorpanel extends M.Plugin {
   deactivate() {
     this.control_.deactivate();
   }
-
-
 }

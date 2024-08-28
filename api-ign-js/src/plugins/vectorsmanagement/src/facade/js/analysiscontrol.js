@@ -54,6 +54,24 @@ export default class AnalysisControl extends M.Control {
      * Layer for buffers
      */
     this.bufferLayer = null;
+
+    this.destroyLayerBufferFN = this.destroyLayerBuffer.bind(this);
+
+    this.map_.on(M.evt.REMOVED_LAYER, this.destroyLayerBufferFN);
+  }
+
+  /**
+   * Esta función destruye la capa buffer
+   *
+   * @public
+   * @function
+   * @api
+   */
+  destroyLayerBuffer(layers) {
+    const bufferLayer = layers.filter((l) => { return l.name === 'bufferLayer'; });
+    if (bufferLayer.length > 0) {
+      this.bufferLayer = null;
+    }
   }
 
   /**
@@ -78,7 +96,6 @@ export default class AnalysisControl extends M.Control {
     });
 
     html.querySelector('#m-vectorsmanagement-controls').appendChild(this.template);
-    this.initializeLayers();
     this.addEvents();
     this.managementControl_.accessibilityTab(this.template);
 
@@ -116,8 +133,8 @@ export default class AnalysisControl extends M.Control {
    * @api
    */
   addEvents() {
-    this.template.querySelector('#topographic-profile-btn').addEventListener('click', evt => this.analysisBtnClick(evt.target.id));
-    this.template.querySelector('#buffer-btn').addEventListener('click', evt => this.analysisBtnClick(evt.target.id));
+    this.template.querySelector('#topographic-profile-btn').addEventListener('click', (evt) => this.analysisBtnClick(evt.target.id));
+    this.template.querySelector('#buffer-btn').addEventListener('click', (evt) => this.analysisBtnClick(evt.target.id));
     this.template.querySelector('#vectorsmanagement-btnCoord').addEventListener('click', (evt) => {
       this.analysisBtnClick(evt.target.id);
       if (evt.target.classList.contains('activated')) {
@@ -193,8 +210,8 @@ export default class AnalysisControl extends M.Control {
     const MFeatures = this.layer_.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.filter(f => f.getImpl().getOLFeature() ===
-      olFeature)[0] || undefined;
+    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+      || undefined;
 
     this.calculateAnalysis();
   }
@@ -293,6 +310,7 @@ export default class AnalysisControl extends M.Control {
       btn.parentElement.insertBefore(btn2, btn);
       // btn es cerrar btn2 es aceptar
       btn2.addEventListener('click', (ev) => {
+        this.initializeLayers();
         this.addBuffer_((distance * unit));
         btn.click();
       });
@@ -357,11 +375,11 @@ export default class AnalysisControl extends M.Control {
       document.body.removeChild(this.pointTemplate);
     }
     const mapProj = M.impl.ol.js.projections.getSupportedProjs()
-      .filter(p => p.codes.includes(pointXYZ.map.projection))[0];
+      .filter((p) => p.codes.includes(pointXYZ.map.projection))[0];
     const mapUnit = mapProj.units === 'm' ? 'm' : '°';
     const mapLabels = mapProj.units === 'm' ? ['X', 'Y'] : [getValue('creationLongitude'), getValue('creationLatitude')];
     const geographicProj = M.impl.ol.js.projections.getSupportedProjs()
-      .filter(p => p.codes.includes(pointXYZ.geographic.projection))[0];
+      .filter((p) => p.codes.includes(pointXYZ.geographic.projection))[0];
     const dist = mapProj.codes[0] !== geographicProj.codes[0];
     this.pointTemplate = M.template.compileSync(pointProfileTemplate, {
       vars: {
@@ -525,7 +543,6 @@ export default class AnalysisControl extends M.Control {
       },
     });
 
-
     this.template.querySelector('#analysisBtns #featureInfo').appendChild(this.infoanalysisTemplate);
     this.managementControl_.accessibilityTab(this.infoanalysisTemplate);
 
@@ -537,7 +554,6 @@ export default class AnalysisControl extends M.Control {
     }
   }
 
-
   /**
    * This function destroys this control
    *
@@ -546,6 +562,7 @@ export default class AnalysisControl extends M.Control {
    * @api stable
    */
   destroy() {
+    this.map_.un(M.evt.REMOVED_LAYER, this.destroyLayerBufferFN);
   }
 
   /**
@@ -566,7 +583,7 @@ export default class AnalysisControl extends M.Control {
 
     const selectLayer = this.managementControl_.selectionControl.getLayer();
     const layerID = selectLayer.getImpl().getOL3Layer().ol_uid;
-    const features = this.bufferLayer.getFeatures().filter(f => f.getImpl().getOLFeature().get('parentID') === layerID);
+    const features = this.bufferLayer.getFeatures().filter((f) => f.getImpl().getOLFeature().get('parentID') === layerID);
     this.bufferLayer.removeFeatures(features);
   }
 

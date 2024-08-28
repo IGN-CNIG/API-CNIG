@@ -232,7 +232,6 @@ import en from './i18n/en';
   ],
 }; */
 
-
 // Estas capas hacen referencia a la estructura de iberpix
 const PRECHARGED = {
   groups: [{
@@ -393,7 +392,6 @@ const PRECHARGED = {
   ],
 };
 
-
 export default class FullTOC extends M.Plugin {
   /**
    * @constructor
@@ -468,7 +466,6 @@ export default class FullTOC extends M.Plugin {
      */
     this.precharged = options.precharged || PRECHARGED;
 
-
     /**
      *@private
      *@type { Number }
@@ -502,8 +499,11 @@ export default class FullTOC extends M.Plugin {
   addTo(map) {
     this.map_ = map;
     this.control_ = new FullTOCControl(
-      this.http, this.https, this.precharged,
-      this.codsi, this.order,
+      this.http,
+      this.https,
+      this.precharged,
+      this.codsi,
+      this.order,
     );
     this.panel_ = new M.ui.Panel('FullTOC', {
       className: 'm-plugin-fulltoc',

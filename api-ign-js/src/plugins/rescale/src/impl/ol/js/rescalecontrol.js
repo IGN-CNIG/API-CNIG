@@ -2,7 +2,6 @@
  * @module M/impl/control/RescaleControl
  */
 
-
 export default class RescaleControl extends M.impl.Control {
   /**
    * This function adds the control to the specified map

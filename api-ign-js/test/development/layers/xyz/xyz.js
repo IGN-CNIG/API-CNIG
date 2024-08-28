@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import XYZ from 'M/layer/XYZ';
 
 export const xyz_001 = new XYZ({
@@ -24,8 +25,7 @@ export const xyz_001 = new XYZ({
   //   contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
   //   contentType: 'kml',
   // },
-},
-{
+}, {
   minZoom: 5,
   maxZoom: 10,
   // opacity: 0,
@@ -35,10 +35,21 @@ export const xyz_001 = new XYZ({
   // crossOrigin: 'anonymous',
   // displayInLayerSwitcher: false,
   // displayInLayerSwitcher: true,
-},
-{
+}, {
 
-},
-);
+});
 
 export const xyz_002 = 'XYZ*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*true';
+
+export const xyz_003 = new XYZ({
+  url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+  name: 'PNOA-MA',
+  projection: 'EPSG:3857',
+  legend: 'Leyenda XYZ 3',
+  tileGridMaxZoom: 5,
+  visibility: true,
+  transparent: true,
+}, {
+  minZoom: 5,
+  maxZoom: 10,
+}, {});

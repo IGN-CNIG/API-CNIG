@@ -45,6 +45,7 @@ export default class MeasureLength extends Measure {
     return equals;
   }
 }
+
 /**
  * Name for this controls
  * @const

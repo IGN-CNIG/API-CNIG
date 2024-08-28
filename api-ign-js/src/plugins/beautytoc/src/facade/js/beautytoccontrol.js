@@ -12,7 +12,8 @@ import { getValue } from './i18n/language';
  */
 const listenAll = (html, selector, type, callback) => {
   const nodeList = html.querySelectorAll(selector);
-  Array.prototype.forEach.call(nodeList, node => node.addEventListener(type, evt => callback(evt)));
+  Array.prototype.forEach.call(nodeList, (node) => node
+    .addEventListener(type, (evt) => callback(evt)));
 };
 
 export default class BeautyTOCControl extends M.Control {
@@ -43,7 +44,7 @@ export default class BeautyTOCControl extends M.Control {
       });
       this.panelHTML_ = html;
       success(html);
-      listenAll(this.panelHTML_, 'li', 'click', e => this.toogleVisible(e));
+      listenAll(this.panelHTML_, 'li', 'click', (e) => this.toogleVisible(e));
     });
   }
 
@@ -54,12 +55,13 @@ export default class BeautyTOCControl extends M.Control {
    */
   getTemplateVariables() {
     const layers = this.map_.getWMS().concat(this.map_.getWMTS())
-      .filter(layer => layer.transparent !== false && layer.displayInLayerSwitcher === true);
+      .filter((layer) => layer.transparent !== false && layer.displayInLayerSwitcher === true);
     const layersOpts = layers.map((layer) => {
       return {
         // disabled: this.getLayerDisabled(layer),
-        visible: (layer instanceof M.layer.WMTS ? layer.options.visibility === true :
-          layer.isVisible()),
+        visible: (layer instanceof M.layer.WMTS
+          ? layer.options.visibility === true
+          : layer.isVisible()),
         id: layer.name,
         title: layer.legend || layer.name,
         type: layer.type,
@@ -97,7 +99,7 @@ export default class BeautyTOCControl extends M.Control {
       vars: templateVars,
     });
     this.panelHTML_.innerHTML = html.innerHTML;
-    listenAll(this.panelHTML_, 'li', 'click', e => this.toogleVisible(e));
+    listenAll(this.panelHTML_, 'li', 'click', (e) => this.toogleVisible(e));
     if (scroll !== undefined) {
       document.querySelector('#m-beautytoc-panel').scrollTop = scroll;
     }
@@ -150,8 +152,9 @@ export default class BeautyTOCControl extends M.Control {
             parent.removeChild(dialog);
           });
 
-          const visibility = layerFound instanceof M.layer.WMTS ? layerFound.options.visibility :
-            layerFound.isVisible();
+          const visibility = layerFound instanceof M.layer.WMTS
+            ? layerFound.options.visibility
+            : layerFound.isVisible();
           layerFound.setVisible(!visibility);
           layerFound.options.visibility = !visibility;
           this.render(scroll);
@@ -164,8 +167,9 @@ export default class BeautyTOCControl extends M.Control {
         M.proxy(true);
       });
     } else if (layerFound !== null) {
-      const visibility = layerFound instanceof M.layer.WMTS ? layerFound.options.visibility :
-        layerFound.isVisible();
+      const visibility = layerFound instanceof M.layer.WMTS
+        ? layerFound.options.visibility
+        : layerFound.isVisible();
       layerFound.setVisible(!visibility);
       layerFound.options.visibility = !visibility;
       this.render(scroll);
@@ -182,6 +186,7 @@ export default class BeautyTOCControl extends M.Control {
   activate() {
     super.activate();
   }
+
   /**
    * This function is called on the control deactivation
    *
@@ -192,6 +197,7 @@ export default class BeautyTOCControl extends M.Control {
   deactivate() {
     super.deactivate();
   }
+
   /**
    * This function gets activation button
    *

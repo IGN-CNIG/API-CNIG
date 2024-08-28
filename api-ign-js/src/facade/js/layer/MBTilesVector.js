@@ -5,7 +5,12 @@ import MBTilesVectorImpl from 'impl/layer/MBTilesVector';
 import RenderFeatureImpl from 'impl/feature/RenderFeature';
 import Vector from './Vector';
 import * as LayerType from './Type';
-import { isUndefined, isNullOrEmpty, isString, normalize } from '../util/Utils';
+import {
+  isUndefined,
+  isNullOrEmpty,
+  isString,
+  normalize,
+} from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 import * as parameter from '../parameter/parameter';
@@ -94,10 +99,24 @@ class MBTilesVector extends Vector {
     }
 
     /**
+     * MBTilesVector minZoom: Límite del zoom mínimo.
+     * @public
+     * @type {Number}
+     */
+    this.minZoom = optionsVar.minZoom || Number.NEGATIVE_INFINITY;
+
+    /**
+     * MBTilesVector maxZoom: Límite del zoom máximo.
+     * @public
+     * @type {Number}
+     */
+    this.maxZoom = optionsVar.maxZoom || Number.POSITIVE_INFINITY;
+
+    /**
      * MBTilesVector extract: Activa la consulta al hacer clic sobre un objeto geográfico,
      * por defecto falso.
      */
-    this.extract = parameters.extract || true;
+    this.extract = parameters.extract === undefined ? false : parameters.extract;
   }
 
   /**
@@ -157,7 +176,7 @@ class MBTilesVector extends Vector {
    */
   getFeatures() {
     const features = this.getImpl().getFeatures();
-    return features.map(olFeature => RenderFeatureImpl.olFeature2Facade(olFeature));
+    return features.map((olFeature) => RenderFeatureImpl.olFeature2Facade(olFeature));
   }
 
   /**
@@ -293,7 +312,6 @@ MBTilesVector.DEFAULT_PARAMS = {
   },
   radius: 5,
 };
-
 
 /**
  * Estilos por defecto de la capa MBTilesVector.

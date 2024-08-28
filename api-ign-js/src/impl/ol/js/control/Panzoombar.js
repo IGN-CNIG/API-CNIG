@@ -5,7 +5,6 @@ import { extend } from 'M/util/Utils';
 
 import OLControlZoomSlider from 'ol/control/ZoomSlider';
 
-
 /**
  * @classdesc
  * Añade una barra de desplazamiento para acercar/alejar el mapa.

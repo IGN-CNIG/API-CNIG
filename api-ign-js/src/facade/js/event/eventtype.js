@@ -42,6 +42,22 @@ export const ADDED_KML = 'added:kml';
 export const ADDED_WMS = 'added:wms';
 
 /**
+ * Evento que se produce al añadir GeoTIFF.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const ADDED_GEOTIFF = 'added:geotiff';
+
+/**
+ * Evento que se produce al añadir MapLibre.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const ADDED_MAPLIBRE = 'added:maplibre';
+
+/**
  * Evento que se produce al añadir WFS.
  * @public
  * @type {string}
@@ -72,7 +88,6 @@ export const ADDED_MBTILES = 'added:mbtiles';
  * @api
  */
 export const ADDED_MBTILES_VECTOR = 'added:mbtilesvector';
-
 
 /**
  * Evento que se produce al añadir XYZ.

@@ -67,19 +67,19 @@ export default class TransparencyControl extends M.Control {
     return new Promise((success, fail) => {
       this.layers = this.transformToLayers(this.layers);
 
-      let names = this.layers.map(function(layer) {
+      const names = this.layers.map((layer) => {
         return layer instanceof Object ? { name: layer.name } : { name: layer };
       });
 
-      let options = {
+      const options = {
         jsonp: true,
         vars: {
           translations: {
             transparency: getValue('transparency'),
             radius: getValue('radius'),
             layers: getValue('layers'),
-          }
-        }
+          },
+        },
       };
 
       if (names.length >= 1) {
@@ -95,18 +95,16 @@ export default class TransparencyControl extends M.Control {
         this.getImpl().setRadius(this.radius);
       });
 
-      if (this.layers.length == 0 || this.layers == '') {
+      if (this.layers.length === 0 || this.layers === '') {
         M.dialog.error(getValue('errorLayer'));
       } else {
-        // Botón efecto transparencia      
+        // Botón efecto transparencia
         this.template.querySelector('#m-transparency-transparent').addEventListener('click', (evt) => {
-
-          if (document.getElementsByClassName('buttom-pressed').length == 0) {
+          if (document.getElementsByClassName('buttom-pressed').length === 0) {
             this.activate();
           } else {
             this.deactivate();
           }
-
         });
 
         if (options !== '') {
@@ -115,8 +113,8 @@ export default class TransparencyControl extends M.Control {
           this.template.querySelector('select').addEventListener('change', (evt) => {
             this.layerSelected.setVisible(false);
             this.removeEffects();
-            const layer = this.layers.filter(function(layer) {
-              return layer.name === evt.target.value
+            const layer = this.layers.filter((l) => {
+              return l.name === evt.target.value;
             });
             this.layerSelected = layer[0];
             this.getImpl().effectSelected(this.layerSelected, this.radius);
@@ -136,7 +134,7 @@ export default class TransparencyControl extends M.Control {
    */
   activate() {
     if (this.layerSelected === null) this.layerSelected = this.layers[0];
-    let names = this.layers.map(function(layer) {
+    const names = this.layers.map((layer) => {
       return layer instanceof Object ? { name: layer.name } : { name: layer };
     });
     this.template.querySelector('#m-transparency-transparent').classList.add('buttom-pressed');
@@ -156,7 +154,7 @@ export default class TransparencyControl extends M.Control {
    */
   deactivate() {
     if (this.layerSelected === null) this.layerSelected = this.layers[0];
-    let names = this.layers.map(function(layer) {
+    const names = this.layers.map((layer) => {
       return layer instanceof Object ? { name: layer.name } : { name: layer };
     });
     this.template.querySelector('#m-transparency-transparent').classList.remove('buttom-pressed');
@@ -167,7 +165,6 @@ export default class TransparencyControl extends M.Control {
       this.template.querySelector('input').disabled = true;
     }
   }
-
 
   /**
    * This function is called to remove the effects
@@ -188,19 +185,19 @@ export default class TransparencyControl extends M.Control {
    * @api stable
    */
   removeTransparencyLayers(layers) {
-    layers.forEach(layer => {
+    layers.forEach((layer) => {
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
-          let name = urlLayer[3]
-          const layerByUrl = this.map.getLayers().filter(l => name.includes(l.name))[0];
+          const name = urlLayer[3];
+          const layerByUrl = this.map.getLayers().filter((l) => name.includes(l.name))[0];
           this.map.removeLayers(layerByUrl);
         } else {
-          const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[0];
+          const layerByName = this.map.getLayers().filter((l) => layer.includes(l.name))[0];
           this.map.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
-        const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[0];
+        const layerByObject = this.map.getLayers().filter((l) => layer.name.includes(l.name))[0];
         this.map.removeLayers(layerByObject);
       }
     });
@@ -216,18 +213,18 @@ export default class TransparencyControl extends M.Control {
    * @return
    */
   transformToLayers(layers) {
-    const transform = layers.map(function(layer) {
+    const transform = layers.map((layer) => {
       let newLayer = null;
       if (!(layer instanceof Object)) {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
-          if (urlLayer[0].toUpperCase() == 'WMS') {
+          if (urlLayer[0].toUpperCase() === 'WMS') {
             newLayer = new M.layer.WMS({
               url: urlLayer[2],
-              name: urlLayer[3]
+              name: urlLayer[3],
             });
             this.map.addLayers(newLayer);
-          } else if (urlLayer[0].toUpperCase() == 'WMTS') {
+          } else if (urlLayer[0].toUpperCase() === 'WMTS') {
             newLayer = new M.layer.WMTS({
               url: urlLayer[1],
               name: urlLayer[2],
@@ -236,21 +233,19 @@ export default class TransparencyControl extends M.Control {
             this.map.addLayers(newLayer);
           }
         } else {
-          const layerByName = this.map.getLayers().filter(l => layer.includes(l.name))[0];
+          const layerByName = this.map.getLayers().filter((l) => layer.includes(l.name))[0];
           newLayer = this.isValidLayer(layerByName) ? layerByName : null;
         }
       } else if (layer instanceof Object) {
-        const layerByObject = this.map.getLayers().filter(l => layer.name.includes(l.name))[0];
+        const layerByObject = this.map.getLayers().filter((l) => layer.name.includes(l.name))[0];
         newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
       }
       if (newLayer !== null) {
         newLayer.displayInLayerSwitcher = false;
         newLayer.setVisible(false);
-        return newLayer
-
-      } else {
-        this.layers.remove(layer);
+        return newLayer;
       }
+      this.layers.remove(layer);
     }, this);
     return (transform[0] === undefined) ? [] : transform;
   }
@@ -282,6 +277,6 @@ export default class TransparencyControl extends M.Control {
   }
 
   getLayersNames() {
-    return this.layers.map(l => l.name);
+    return this.layers.map((l) => l.name);
   }
 }

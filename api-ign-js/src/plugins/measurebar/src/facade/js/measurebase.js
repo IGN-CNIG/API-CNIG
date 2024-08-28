@@ -86,6 +86,7 @@ export default class Measure extends M.Control {
     this.impl = null;
   }
 }
+
 /**
  * Name to identify this control
  * @const

@@ -54,7 +54,7 @@ class WFS extends Vector {
    * </code></pre>
    * @api stable
    */
-  constructor(options = {}, vendorOptions) {
+  constructor(options = {}, vendorOptions = {}) {
     // calls the super constructor
     super(options, vendorOptions);
 
@@ -100,8 +100,9 @@ class WFS extends Vector {
     /**
      * WFS GMLVersion_. Versión de GML.
      */
-    this.GMLVersion_ = (this.options.getFeatureOutputFormat.toUpperCase().includes('GML')) ?
-      this.options.getFeatureOutputFormat : null;
+    this.GMLVersion_ = (this.options.getFeatureOutputFormat.toUpperCase().includes('GML'))
+      ? this.options.getFeatureOutputFormat
+      : null;
   }
 
   /**
@@ -208,7 +209,6 @@ class WFS extends Vector {
       }
       this.loader_ = new LoaderWFS(this.map, this.service_, this.formater_);
 
-
       // const isCluster = (this.facadeVector_.getStyle() instanceof StyleCluster);
       const ol3LayerSource = this.ol3Layer.getSource();
       this.requestFeatures_().then((features) => {
@@ -301,8 +301,8 @@ class WFS extends Vector {
    */
   getDescribeFeatureType() {
     if (isNullOrEmpty(this.describeFeatureType_)) {
-      this.describeFeatureType_ =
-        this.service_.getDescribeFeatureType().then((describeFeatureType) => {
+      this.describeFeatureType_ = this.service_
+        .getDescribeFeatureType().then((describeFeatureType) => {
           if (!isNullOrEmpty(describeFeatureType)) {
             this.formater_ = new FormatImplGeoJSON({
               geometryName: describeFeatureType.geometryName,
@@ -372,7 +372,6 @@ class WFS extends Vector {
   isLoaded() {
     return this.loaded_;
   }
-
 
   /**
    * Devuelve los objetos geográficos, asincrono.

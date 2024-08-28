@@ -139,14 +139,14 @@ export default class IberpixCompare extends M.Plugin {
      */
     this.tooltip_ = options.tooltip || getValue('tooltip');
 
-      /**
+    /**
      *@private
      *@type { Number }
      */
-     this.order = options.order >= -1 ? options.order : null;
+    this.order = options.order >= -1 ? options.order : null;
   }
 
-    /**
+  /**
    * Return plugin language
    *
    * @public
@@ -160,7 +160,6 @@ export default class IberpixCompare extends M.Plugin {
     }
     return M.language.getTranslation(lang).iberpixcompare;
   }
-  
 
   /**
    * This function adds this plugin into the map
@@ -179,7 +178,7 @@ export default class IberpixCompare extends M.Plugin {
       fullTOCConfig: this.fullTOCConfig,
       vectorsConfig: this.vectorsConfig,
       position: this.position,
-      order: this.order
+      order: this.order,
     });
 
     this.controls_.push(this.control_);
@@ -195,9 +194,9 @@ export default class IberpixCompare extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+    // eslint-disable-next-line no-underscore-dangle
     this.panel_._element.classList.add(this.vertical ? 'orientation-vertical' : 'orientation-horizontal');
   }
-
 
   /**
    * This function destroys this plugin
@@ -209,7 +208,10 @@ export default class IberpixCompare extends M.Plugin {
   destroy() {
     this.control_.deactivate();
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.vertical, this.mirrorpanelParams, this.lyrcompareParams] = [null, null, null, null, null, null];
+    [this.control_, this.panel_, this.map_,
+      this.vertical, this.mirrorpanelParams, this.lyrcompareParams] = [
+      null, null, null, null, null, null,
+    ];
   }
 
   /**

@@ -41,14 +41,14 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BR': (bottom right) - Abajo a la derecha (por defecto).
 - **tooltip**: Texto para el mensaje cuando se copia la cadena (por defecto '¡Copiado!').
 - **baseUrl**: Url sobre la que está montada la instancia. Por defecto: https://componentes.cnig.es/api-core/
-- **minimize**: Genera URL minificada. (por defecto: false). 
+- **minimize**: Genera URL minificada. (por defecto: false).
 - **title**: Título para la cabecera de la ventana (por defecto: 'Compartir Mapa').
 - **btn**: Título para el botón Aceptar (por defecto: 'OK').
 - **copyBtn**: Título para el botón copiar (por defecto: 'Copiar').
-- **overwriteStyles**: Parámetro para sobreescribir los estilos. Si su valor es *true*, se aplicarán los estilos del parámetro *styles*. Si su valor es *false*, se aplicarán los estilos por defecto. Valor por defecto del parámetro: false. Colores por defecto: 
+- **overwriteStyles**: Parámetro para sobreescribir los estilos. Si su valor es *true*, se aplicarán los estilos del parámetro *styles*. Si su valor es *false*, se aplicarán los estilos por defecto. Valor por defecto del parámetro: false. Colores por defecto:
   - primaryColor: '#71a7d3'
   - secondaryColor: '#ffffff'
-- **styles**: Estilo a aplicar para sobreescribir. (por defecto: {}). 
+- **styles**: Estilo a aplicar para sobreescribir. (por defecto: {}).
   - **Ejemplo:**
 ```javascript
 styles: {
@@ -56,7 +56,7 @@ styles: {
   secondaryColor: 'green'
 }
 ```
-- **text**: Texto del segundo título. (por defecto: 'HTML embebido'). 
+- **text**: Texto del segundo título. (por defecto: 'HTML embebido').
 - **copyBtnHtml**: Título para el segundo botón. (por defecto: 'Copiar').
 - **urlAPI**: URL API o URL Visor (API verdadero o predeterminado, visor falso). Por defecto: false.
 - **shareLayer**: Define si se comparten todas las capas o ninguna, valor de tipo _Boolean_. Para que tenga efecto filterLayers, shareLayer debe estar como false o no definido. Por defecto: false.
@@ -166,7 +166,7 @@ M.utils.encodeBase64(obj_params);
 ```
 
 #### Ejemplo compartiendo todas las capas
-Ejemplo de constructor del plugin: 
+Ejemplo de constructor del plugin:
 
 ```javascript
 {
@@ -189,7 +189,7 @@ https://componentes.cnig.es/api-core/?sharemap=base64=eyJiYXNlVXJsIjoiaHR0cHM6Ly
 #### Ejemplo filtrando las capas
 En este ejemplo, le pasamos por url dos capas y especificamos en el parámetro filterLayers el nombre de la capa que queremos compartir (shareLayer tiene que estar como false o no definido).
 
-Ejemplo de constructor del plugin: 
+Ejemplo de constructor del plugin:
 ```javascript
 {
   position: "TL",

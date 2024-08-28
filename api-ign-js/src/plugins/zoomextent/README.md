@@ -42,7 +42,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
    const map = M.map({
      container: 'map'
    });
-  
+
    const mp = new M.plugin.ZoomExtent({
         postition: 'TL',
       });

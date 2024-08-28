@@ -159,7 +159,7 @@ class Mouse extends ol.control.MousePosition {
    * @protected
    */
   handleMouseOut(event) {
-    this.updateHTML_(null);
+    this.updateHTML_(this.lastMouseMovePixel_);
     this.lastMouseMovePixel_ = null;
   }
 

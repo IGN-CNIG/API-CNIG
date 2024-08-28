@@ -98,7 +98,7 @@ class MBTiles extends Layer {
    * </code></pre>
    * @api
    */
-  constructor(userParameters, options = {}, vendorOptions) {
+  constructor(userParameters, options = {}, vendorOptions = {}) {
     // calls the super constructor
     super(options, vendorOptions);
 
@@ -141,7 +141,6 @@ class MBTiles extends Layer {
      * MBTiles visibility: Visibilidad de la capa.
      */
     this.visibility = userParameters.visibility === false ? userParameters.visibility : true;
-
 
     /**
      *  CrossOrigin: Atributo crossOrigin para las imágenes cargadas.
@@ -301,7 +300,7 @@ class MBTiles extends Layer {
         url: '{z},{x},{y}',
         projection: opts.projection,
         crossOrigin: this.crossOrigin,
-        tileLoadFunction: tile => tileLoadFn(tile, opts.tileProvider, this),
+        tileLoadFunction: (tile) => tileLoadFn(tile, opts.tileProvider, this),
         tileGrid: new TileGrid({
           extent: opts.sourceExtent,
           origin: getBottomLeft(opts.sourceExtent),

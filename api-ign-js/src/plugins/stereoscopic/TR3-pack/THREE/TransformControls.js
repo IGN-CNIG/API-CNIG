@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
 	BoxGeometry,
 	BufferGeometry,
@@ -1189,7 +1190,6 @@ class TransformControlsGizmo extends Object3D {
 		this.helper[ 'rotate' ].visible = this.mode === 'rotate';
 		this.helper[ 'scale' ].visible = this.mode === 'scale';
 
-
 		let handles = [];
 		handles = handles.concat( this.picker[ this.mode ].children );
 		handles = handles.concat( this.gizmo[ this.mode ].children );
@@ -1284,7 +1284,6 @@ class TransformControlsGizmo extends Object3D {
 						handle.visible = false;
 
 					}
-
 
 				} else if ( handle.name === 'START' ) {
 

@@ -186,7 +186,6 @@ export class Binding {
     });
   }
 
-
   /**
    * This function generates the options style from his own html form.
    *
@@ -486,18 +485,17 @@ export class Binding {
     let attributeNames = Object.keys(attributes);
     switch (type) {
       case 'string':
-        attributeNames =
-          attributeNames.filter(element => Number.isNaN(parseFloat(attributes[element])));
+        attributeNames = attributeNames
+          .filter((element) => Number.isNaN(parseFloat(attributes[element])));
         break;
       case 'number':
-        attributeNames =
-          attributeNames.filter(element => !Number.isNaN(parseFloat(attributes[element])));
+        attributeNames = attributeNames
+          .filter((element) => !Number.isNaN(parseFloat(attributes[element])));
         break;
       default:
     }
     return attributeNames;
   }
-
 
   /**
    * This function sets the layer of a binding class.
@@ -627,7 +625,7 @@ export class Binding {
       if (M.utils.isArray(value)) {
         value = [...value];
       } else if (M.utils.isObject(value)) {
-        value = Object.assign({}, value);
+        value = { ...value };
       }
       obj[key] = value;
     } else if (keyLength > 1) { // recursive case

@@ -6,6 +6,7 @@
 # Descripción
 
 Plugin que muestra una previsualización de la zona donde está centrado el mapa.
+⚠️ Si la anchura de pantalla es 768 pixeles o menor, el botón y panel del plugin estarán ocultos.
 
 # Dependencias
 
@@ -121,7 +122,7 @@ Ejemplo de constructor:
   zoom: 4,
   baseLayer: "WMTS*http://www.ign.es/wmts/ign-base?*IGNBaseTodo*GoogleMapsCompatible*Mapa IGN*false*image/jpeg*false*false*true",
   collapsed: false,
-  collapsible: false, 
+  collapsible: false,
   tooltip: "Mapa"
 }
 ```

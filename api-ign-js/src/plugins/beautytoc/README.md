@@ -30,7 +30,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'TL': (top left) - Arriba a la izquierda.
   - 'TR': (top right) - Arriba a la derecha (por defecto).
   - 'BL': (bottom left) - Abajo a la izquierda.
-  - 'BR': (bottom right) - Abajo a la derecha. 
+  - 'BR': (bottom right) - Abajo a la derecha.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **tooltip**: Descripción emergente que se muestra sobre el plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto, _Capas Adicionales_.
 

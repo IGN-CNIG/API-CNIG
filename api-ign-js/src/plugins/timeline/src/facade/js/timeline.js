@@ -117,38 +117,37 @@ export default class Timeline extends M.Plugin {
      *@private
      *@type { String }
      */
-     this.paramsDate = (options.paramsDate) ? options.paramsDate : 'yr';
+    this.paramsDate = (options.paramsDate) ? options.paramsDate : 'yr';
 
     /**
      *@private
      *@type { Number }
      */
-     this.stepValue = (options.stepValue) ? options.stepValue : 1;
+    this.stepValue = (options.stepValue) ? options.stepValue : 1;
 
     /**
      *@private
      *@type { String }
      */
-     this.sizeWidthDinamic = (options.sizeWidthDinamic) ? options.sizeWidthDinamic : ''
-
-      /**
-     *@private
-     *@type { String }
-     */
-     this.formatMove = (options.formatMove === 'discrete') ? 'discrete' : 'continuous';
+    this.sizeWidthDinamic = (options.sizeWidthDinamic) ? options.sizeWidthDinamic : '';
 
     /**
      *@private
      *@type { String }
      */
-     this.formatValue = (options.formatValue) ? options.formatValue : 'linear';
+    this.formatMove = (options.formatMove === 'discrete') ? 'discrete' : 'continuous';
 
     /**
      *@private
      *@type { String }
      */
-     this.timelineType = options.timelineType || false;
+    this.formatValue = (options.formatValue) ? options.formatValue : 'linear';
 
+    /**
+     *@private
+     *@type { String }
+     */
+    this.timelineType = options.timelineType || false;
   }
 
   /**
@@ -159,7 +158,7 @@ export default class Timeline extends M.Plugin {
    * @param {string} lang type language
    * @api stable
    */
-   static getJSONTranslations(lang) {
+  static getJSONTranslations(lang) {
     if (lang === 'en' || lang === 'es') {
       return (lang === 'en') ? en : es;
     }
@@ -175,17 +174,28 @@ export default class Timeline extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    const typesTimeline = ['absoluteSimple', 'absolute', 'relative']
-    if(!this.timelineType || !typesTimeline.includes(this.timelineType)) {
-       throw new Error ('Add correct typesTimeline, (absoluteSimple', 'absolute', 'relative)');
+    const typesTimeline = ['absoluteSimple', 'absolute', 'relative'];
+    if (!this.timelineType || !typesTimeline.includes(this.timelineType)) {
+      throw new Error('Add correct typesTimeline, (absoluteSimple', 'absolute', 'relative)');
     }
 
-    this.intervals = this.intervals.filter(({layer}) => {
-      if (typeof layer === 'string') {
-        return !layer.includes('GenericRaster') || !layer.includes('GenericVector');
-      }
-      return layer.type !== 'GenericRaster' || layer.type !== 'GenericVector';
-    });
+    if (this.typesTimeline === 'absolute' || this.typesTimeline === 'relative') {
+      this.intervals = this.intervals.filter(({ layer }) => {
+        if (typeof layer === 'string') {
+          return !layer.includes('GenericRaster') || !layer.includes('GenericVector');
+        }
+
+        return layer.type !== 'GenericRaster' || layer.type !== 'GenericVector';
+      });
+    } else {
+      this.intervals = this.intervals.filter((layer) => {
+        if (typeof layer === 'string') {
+          return !layer.includes('GenericRaster') || !layer.includes('GenericVector');
+        }
+
+        return layer.type !== 'GenericRaster' || layer.type !== 'GenericVector';
+      });
+    }
 
     this.control_ = new TimelineControl({
       intervals: this.intervals,
@@ -197,7 +207,7 @@ export default class Timeline extends M.Plugin {
       sizeWidthDinamic: this.sizeWidthDinamic,
       formatMove: this.formatMove,
       formatValue: this.formatValue,
-      timelineType: this.timelineType
+      timelineType: this.timelineType,
     });
     this.controls_.push(this.control_);
     this.map_ = map;
@@ -212,7 +222,6 @@ export default class Timeline extends M.Plugin {
     map.addPanels(this.panel_);
   }
 
-
   /**
    * This function destroys this plugin
    *
@@ -221,14 +230,16 @@ export default class Timeline extends M.Plugin {
    * @api stable
    */
   destroy() {
-    if(['absolute', 'relative'].includes(this.timelineType)) {
-      this.control_.removeLayers()
-    }else {
+    if (['absolute', 'relative'].includes(this.timelineType)) {
+      this.control_.removeLayers();
+    } else {
       this.control_.removeTimelineLayers();
     }
 
     this.map_.removeControls([this.control_]);
-    [this.control_, this.panel_, this.map_, this.layers, this.radius] = [null, null, null, null, null];
+    [this.control_, this.panel_, this.map_, this.layers, this.radius] = [
+      null, null, null, null, null,
+    ];
   }
 
   /**
@@ -312,24 +323,24 @@ export default class Timeline extends M.Plugin {
    * @public
    * @api
    */
-    getHelp() {
-      return {
-        title: this.name,
-        content: new Promise((success) => {
-          const html = M.template.compileSync(myhelp, {
-            vars: {
-              urlImages: `${M.config.MAPEA_URL}plugins/timeline/images/`,
-              translations: {
-                help1: getValue('textHelp.help1'),
-                help2: getValue('textHelp.help2'),
-                help3: getValue('textHelp.help3'),
-                help4: getValue('textHelp.help4'),
-                help5: getValue('textHelp.help5'),
-              },
+  getHelp() {
+    return {
+      title: this.name,
+      content: new Promise((success) => {
+        const html = M.template.compileSync(myhelp, {
+          vars: {
+            urlImages: `${M.config.MAPEA_URL}plugins/timeline/images/`,
+            translations: {
+              help1: getValue('textHelp.help1'),
+              help2: getValue('textHelp.help2'),
+              help3: getValue('textHelp.help3'),
+              help4: getValue('textHelp.help4'),
+              help5: getValue('textHelp.help5'),
             },
-          });
-          success(html);
-        }),
-      };
-    }
+          },
+        });
+        success(html);
+      }),
+    };
+  }
 }

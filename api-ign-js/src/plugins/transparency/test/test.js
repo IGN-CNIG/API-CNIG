@@ -8,7 +8,6 @@ const map = M.map({
   controls: ['panzoom', 'scale*true'],
 });
 
-
 const wfs = new M.layer.WFS({
   url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?",
   namespace: "tematicos",
@@ -19,14 +18,12 @@ const wfs = new M.layer.WFS({
 
 //map.addWFS(wfs);
 
-
 // 1 WMS por url
 const pluginTransparency = new Transparency({
   position: 'TR',
   layers: ['WMS*hil*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeBoundary', 'WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA', 'WMTS*http://servicios.idee.es/wmts/ocupacion-suelo?*LC.LandCoverSurfaces*GoogleMapsCompatible*usoSuelo'],
   radius: ""
 });
-
 
 // 2 WMTS por url
 // const pluginTransparency = new Transparency({
@@ -49,7 +46,6 @@ const pluginTransparency = new Transparency({
 // WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA
 // WMTS*http://www.ign.es/wmts/mapa-raster?*MTN*GoogleMapsCompatible*mtn
 // WMTS*http://servicios.idee.es/wmts/ocupacion-suelo?*LC.LandCoverSurfaces*GoogleMapsCompatible*usoSuelo
-
 
 // 3 WMS y WMTS como objetos
 // let wmts = new M.layer.WMTS({
@@ -90,7 +86,6 @@ const shareMap = new ShareMap({
   position: 'BR',
 })
 
-
 // const mp6 = new M.plugin.ZoomExtent();
 
 // const mp7 = new M.plugin.XYLocator({
@@ -99,7 +94,6 @@ const shareMap = new ShareMap({
 
 map.addPlugin(shareMap);
 // map.addPlugin(mp6);
-
 
 map.addPlugin(pluginTransparency);
 // map.addPlugin(mp7);

@@ -244,14 +244,3 @@ map.addPlugin(mp4); window.mp4 = mp4; // */
 map.addPlugin(mp);
 // map.addPlugin(new M.plugin.MeasureBar({ position: 'TR' }));
 
-// Lista de errores
-
-// 1 - ERROR Hay HTMLs configurados para el plugin vectors que aquí no es valido:
-// Los "document.querySelector('.m-vectors .m-vectors-loading-container').innerHTML = '';" deberían ser "document.querySelector('.m-incicarto .m-incicarto-loading-container').innerHTML = '';"
-// Lo mismo ocurre con "const content = '<p class="m-vectors-loading"><span class="icon-spinner" /></p>';" que tiene que ser "const content = '<p class="m-incicarto-loading"><span class="icon-spinner" /></p>';"
-
-// 2 - ERROR La función "getAPIRest" parece dejar al final un "}" que podría ser que sobra, porque tampoco esta en README.
-
-// 3 - ERROR En JSP, cuando se cambia por ejemplo la posición del plugin y se vuelve a intentar añadir un feature, el "emphasizeSelectedFeature" que rodea el feature seleccionado no aparece ahora. Si se borra el layer "selectionLayer" antes de modificar un parámetro, entonces funciona bien, investigando esto se ha llegado a ver que se puede solucionar poniendo "this.selectionLayer = map.getLayers().find(l => l._type == "Vector" && l.impl_.name == "selectLayer") || this.selectionLayer;" antes de "this.map.addLayers(this.selectionLayer);" para no usar el nuevo "selectionLayer", si no que reutilizar el que estaba antes. Desconozco si causa problemas este cambio más adelante.
-
-// 4 - ERROR No parece que haya traducción al ingles de "incicarto/src/templates/incicarto.html" de los textos de métodos. Hay unas 6 lineas adicionales de "incicarto/src/templates/modalsimple.html" que podrían requerir traducciones.

@@ -32,7 +32,9 @@ export default class PrinterMapControl extends M.Control {
       filterTemplates,
       order,
       tooltip,
-    }, map, statusProxy,
+    },
+    map,
+    statusProxy,
     useProxy,
   ) {
     const impl = new PrinterMapControlImpl(map);
@@ -56,7 +58,6 @@ export default class PrinterMapControl extends M.Control {
       */
     this.serverUrl_ = serverUrl || 'https://componentes.cnig.es/geoprint';
 
-
     /**
       * Mapfish template url
       * @private
@@ -70,7 +71,6 @@ export default class PrinterMapControl extends M.Control {
       * @type {String}
       */
     this.printStatusUrl_ = printStatusUrl || 'https://componentes.cnig.es/geoprint/print/status';
-
 
     /**
       * Credits text for template
@@ -198,7 +198,7 @@ export default class PrinterMapControl extends M.Control {
       keepView: true,
       format: 'pdf',
       legend: 'false',
-      layout: 'A4 horizontal',
+      layout: 'A4 Horizontal',
     };
 
     this.layoutOptions_ = [];
@@ -453,7 +453,6 @@ export default class PrinterMapControl extends M.Control {
     let download;
     download = this.downloadPrint;
 
-
     getPrintData.then((printData) => {
       if (this.georef_) {
         download = this.downloadGeoPrint.bind(this, printData.attributes.map.bbox);
@@ -652,8 +651,9 @@ export default class PrinterMapControl extends M.Control {
     const parameters = this.params_.parameters;
 
     const attributionContainer = document.querySelector('#m-attributions-container>div>a');
-    const attribution = attributionContainer !== null ?
-      `${getValue('base')}: ${attributionContainer.innerHTML}` : '';
+    const attribution = attributionContainer !== null
+      ? `${getValue('base')}: ${attributionContainer.innerHTML}`
+      : '';
 
     if (outputFormat === 'jpg') {
       layout += ' jpg';
@@ -696,14 +696,14 @@ export default class PrinterMapControl extends M.Control {
     }, this.params_.layout);
 
     return this.encodeLayers().then((encodedLayers) => {
-      printData.attributes.map.layers = encodedLayers.filter(l => M.utils.isObject(l));
+      printData.attributes.map.layers = encodedLayers.filter((l) => M.utils.isObject(l));
       printData.attributes = Object.assign(printData.attributes, parameters);
-      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
+      if (projection !== 'EPSG:3857' && this.map_.getLayers().some((layer) => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.projection = 'EPSG:3857';
       }
 
       printData.attributes.map.bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
-      if (projection !== 'EPSG:3857' && this.map_.getLayers().some(layer => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
+      if (projection !== 'EPSG:3857' && this.map_.getLayers().some((layer) => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
         printData.attributes.map.bbox = transformExt(printData.attributes.map.bbox, projection, 'EPSG:3857');
       }
 
@@ -729,8 +729,8 @@ export default class PrinterMapControl extends M.Control {
     // and that doesn't have Cluster style.
     const mapZoom = this.map_.getZoom();
     let layers = this.map_.getLayers().filter((layer) => {
-      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer' &&
-      mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
+      return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer'
+        && mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
     });
 
     if (mapZoom === 20) {
@@ -898,7 +898,7 @@ export default class PrinterMapControl extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 
   deactive() {
@@ -913,8 +913,7 @@ export default class PrinterMapControl extends M.Control {
    * @function
    * @api
    */
-  destroy() {
-  }
+  destroy() {}
 }
 
 /**
@@ -952,4 +951,3 @@ PrinterMapControl.LOADING_CLASS = 'printing';
   * @api stable
   */
 PrinterMapControl.DOWNLOAD_ATTR_NAME = 'data-donwload-url-print';
-

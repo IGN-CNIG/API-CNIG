@@ -1,9 +1,12 @@
+/* eslint-disable no-console */
 import Buffer from 'facade/buffer';
 
 const map = M.map({
   container: 'mapjs',
 });
 
+// Wrong Buffer import detected by eslint
+// eslint-disable-next-line no-buffer-constructor
 const mp = new Buffer({
   position: 'TL',
   collapsed: true,
@@ -19,5 +22,5 @@ const capa = new M.layer.GeoJSON({
 
 map.addLayers(capa);
 map.addPlugin(mp);
-console.log('APIRest: ' + mp.getAPIRest());
-//console.log('APIRestbase64= ' + mp.getAPIRestBase64());
+console.log('APIRest:', mp.getAPIRest());
+// console.log('APIRestbase64= ' + mp.getAPIRestBase64());

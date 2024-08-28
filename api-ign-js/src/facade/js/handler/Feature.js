@@ -74,6 +74,7 @@ class Features extends Base {
       Exception(getValue('exception').getfeaturesbylayer_method);
     }
   }
+
   /**
    * Este método añade eventos al mapa.
    *
@@ -119,9 +120,10 @@ class Features extends Base {
             this.unselectFeatures(prevFeatures, layer, evt);
           }
         } else if (clickedFeatures.length > 0 && clickedFeatures[0] !== undefined) {
-          const newFeatures = clickedFeatures.filter(f => !prevFeatures.some(pf => pf.equals(f)));
-
-          const diffFeatures = prevFeatures.filter(f => !clickedFeatures.some(pf => pf.equals(f)));
+          const newFeatures = clickedFeatures
+            .filter((f) => !prevFeatures.some((pf) => pf.equals(f)));
+          const diffFeatures = prevFeatures
+            .filter((f) => !clickedFeatures.some((pf) => pf.equals(f)));
           // unselect prev selected features which have not been selected this time
           if (diffFeatures.length > 0) {
             if (layer.infoEventType === 'click') {
@@ -163,9 +165,9 @@ class Features extends Base {
             this.leaveFeatures_(prevFeatures, layer, evt);
           } else if (hoveredFeatures.length > 0) {
             const newFeatures = hoveredFeatures
-              .filter(f => !prevFeatures.some(pf => pf.equals(f)));
-            const diffFeatures = prevFeatures.filter(f =>
-              !hoveredFeatures.some(pf => pf.equals(f)));
+              .filter((f) => !prevFeatures.some((pf) => pf.equals(f)));
+            const diffFeatures = prevFeatures.filter((f) => !hoveredFeatures
+              .some((pf) => pf.equals(f)));
             // unselect prev selected features which have not been selected this time
             if (diffFeatures.length > 0) {
               if (layer.infoEventType === 'hover') {
@@ -240,9 +242,9 @@ class Features extends Base {
     /* FIXME abelcruz Cambiado por problemas al usar selectFeatures() con features de OL.
     Ver ejemplo cluster-ext-interaction */
     this.prevSelectedFeatures_[layer.name] = this.prevSelectedFeatures_[layer.name]
-      .filter(pf => !features.some(f => f.equals(pf)));
+      .filter((pf) => !features.some((f) => f.equals(pf)));
     // this.prevSelectedFeatures_[layer.name] = this.prevSelectedFeatures_[layer.name]
-    //   .filter(pf => !features.some(f => f.ol_uid === pf.ol_uid));
+    //   .filter((pf) => !features.some((f) => f.ol_uid === pf.ol_uid));
 
     const layerImpl = layer.getImpl();
     if (isFunction(layerImpl.unselectFeatures)) {
@@ -285,8 +287,8 @@ class Features extends Base {
    * @api
    */
   leaveFeatures_(features, layer, evt) {
-    this.prevHoverFeatures_[layer.name] =
-      this.prevHoverFeatures_[layer.name].filter(pf => !features.some(f => f.equals(pf)));
+    this.prevHoverFeatures_[layer.name] = this.prevHoverFeatures_[layer.name]
+      .filter((pf) => !features.some((f) => f.equals(pf)));
     layer.fire(EventType.LEAVE_FEATURES, [features, evt.coord]);
     this.getImpl().removeCursorPointer(evt);
   }
@@ -348,7 +350,7 @@ class Features extends Base {
    * @export
    */
   removeLayer(layer) {
-    this.layers_ = this.layers_.filter(layer2 => !layer2.equals(layer));
+    this.layers_ = this.layers_.filter((layer2) => !layer2.equals(layer));
     this.prevSelectedFeatures_[layer.name] = null;
     this.prevHoverFeatures_[layer.name] = null;
     delete this.prevSelectedFeatures_[layer.name];

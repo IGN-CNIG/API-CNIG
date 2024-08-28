@@ -187,7 +187,6 @@ class Attributions extends ControlBase {
     }
   }
 
-
   /**
    * Este método muestra las atribuciones de la capa.
    *
@@ -271,9 +270,11 @@ class Attributions extends ControlBase {
         return [{ name: 'Copernicus Sentinel 2019', url: 'https://sentinel.esa.int/web/sentinel/home' }];
       }
       return [{ name: 'Sistema Cartográfico Nacional', url: 'http://www.scne.es/' }];
-    } else if (layer !== undefined && (layer.name === 'IGNBaseTodo' || layer.name === 'EL.GridCoverageDSM')) {
+    }
+    if (layer !== undefined && (layer.name === 'IGNBaseTodo' || layer.name === 'EL.GridCoverageDSM')) {
       return [{ name: 'Sistema Cartográfico Nacional', url: 'http://www.scne.es/' }];
-    } else if (layer !== undefined && layer.name === 'LC.LandCoverSurfaces') {
+    }
+    if (layer !== undefined && layer.name === 'LC.LandCoverSurfaces') {
       if (zoom < 14) {
         return [{ name: 'CORINE-Land Cover. Instituto Geográfico Nacional', url: this.defaultURL_ }];
       }
@@ -313,7 +314,6 @@ class Attributions extends ControlBase {
         link.setAttribute('rol', 'link');
       }
 
-
       link.setAttribute('tabindex', this.order);
       const text = attrOpt.description ? attrOpt.description : `${attrOpt.name}, ${this.urlAttribute}`;
       link.innerHTML = text || '';
@@ -351,7 +351,7 @@ class Attributions extends ControlBase {
   clearContent() {
     if (!isNullOrEmpty(this.html_)) {
       const html = this.html_;
-      html.querySelectorAll('.attributionElements').forEach(child => html.removeChild(child));
+      html.querySelectorAll('.attributionElements').forEach((child) => html.removeChild(child));
     }
   }
 
@@ -383,8 +383,8 @@ class Attributions extends ControlBase {
         name: feature.getAttribute(this.attributionParam_) || '',
         url: feature.getAttribute(this.urlParam_) || this.defaultURL_,
       };
-    }).filter((element, index, array) => // remove repeat elements
-      array.map(e => e.attribution).indexOf(element.attribution) === index);
+    }).filter((element, index, array) => /* remove repeat elements */ array
+      .map((e) => e.attribution).indexOf(element.attribution) === index);
   }
 
   /**
@@ -476,7 +476,7 @@ class Attributions extends ControlBase {
    * @api
    */
   getAttributionsFromMap(layers) {
-    const layersFormat = layers.map(layer => layer.getAttributions());
+    const layersFormat = layers.map((layer) => layer.getAttributions());
     // Se elimina las capas que no tenga atribuciones
     return layersFormat.filter(Boolean);
   }
@@ -486,7 +486,7 @@ class Attributions extends ControlBase {
    * @public
    */
   onMoveEnd(callback) {
-    this.impl_.registerEvent('moveend', this.map_, e => callback(e));
+    this.impl_.registerEvent('moveend', this.map_, (e) => callback(e));
   }
 
   /**
@@ -570,7 +570,7 @@ class Attributions extends ControlBase {
    * @api
    */
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 }
 

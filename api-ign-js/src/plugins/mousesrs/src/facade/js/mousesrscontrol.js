@@ -17,8 +17,17 @@ export default class MouseSRSControl extends M.Control {
    * @api
    */
   constructor(
-    srs, label, precision, geoDD, utmDD, tooltip, activeZ, helpUrl,
-    order = 32766, draggableDialog, epsgFormat,
+    srs,
+    label,
+    precision,
+    geoDD,
+    utmDD,
+    tooltip,
+    activeZ,
+    helpUrl,
+    order = 32766,
+    draggableDialog = true,
+    epsgFormat = false,
   ) {
     if (M.utils.isUndefined(MouseSRSImplControl)) {
       M.exception(getValue('exception.impl'));

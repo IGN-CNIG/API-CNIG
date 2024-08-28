@@ -71,7 +71,7 @@ class GetFeatureInfo extends Control {
    */
   addTo(map, element) {
     const olControls = map.getMapImpl().getControls().getArray();
-    const hasControl = olControls.some(control => control instanceof GetFeatureInfo);
+    const hasControl = olControls.some((control) => control instanceof GetFeatureInfo);
     if (hasControl === false) {
       this.facadeMap_ = map;
       map.getMapImpl().addControl(this);
@@ -101,7 +101,7 @@ class GetFeatureInfo extends Control {
   addOnClickEvent_() {
     const olMap = this.facadeMap_.getMapImpl();
     if (this.activated === true) {
-      this.clickEventKey_ = olMap.on('singleclick', e => this.buildUrl_(dialog, e));
+      this.clickEventKey_ = olMap.on('singleclick', (e) => this.buildUrl_(dialog, e));
     }
   }
 
@@ -121,7 +121,7 @@ class GetFeatureInfo extends Control {
     const wmsInfoURLS = this.buildWMSInfoURL([...this.facadeMap_.getWMS(), ...urlsWMS]);
     const wmtsInfoURLS = this.buildWMTSInfoURL([...this.facadeMap_.getWMTS(), ...urlsWMTS]);
     const layerNamesUrls = [...wmtsInfoURLS, ...wmsInfoURLS]
-      .filter(layer => !isNullOrEmpty(layer));
+      .filter((layer) => !isNullOrEmpty(layer));
     if (layerNamesUrls.length > 0) {
       this.showInfoFromURL_(layerNamesUrls, evt.coordinate, olMap);
     } else {
@@ -130,7 +130,7 @@ class GetFeatureInfo extends Control {
   }
 
   buildGenericInfoURL() {
-    const layersGeneric = this.facadeMap_.getLayers().filter(layer => layer.type === 'GenericRaster');
+    const layersGeneric = this.facadeMap_.getLayers().filter((layer) => layer.type === 'GenericRaster');
     const urlsWMTS = [];
     const urlsWMS = [];
     layersGeneric.forEach((layer) => {
@@ -143,7 +143,6 @@ class GetFeatureInfo extends Control {
     });
     return [urlsWMTS, urlsWMS];
   }
-
 
   /**
    * Devuelve un objeto con la leyenda o el nombre de la capa y la url.
@@ -455,8 +454,8 @@ class GetFeatureInfo extends Control {
 
       if (attr.length > 0) {
         if (GetFeatureInfo.regExs.msNewFeature.test(attr)) {
-          if ((nextAttrValueString.length > 0) &&
-            !GetFeatureInfo.regExs.msNewFeature.test(nextAttrValueString)) {
+          if ((nextAttrValueString.length > 0)
+            && !GetFeatureInfo.regExs.msNewFeature.test(nextAttrValueString)) {
             // set new header
             html += `<tr><td class='header' colspan='3'>${beautifyAttribute(layerName)}</td><td></td></tr>`;
           }
@@ -510,8 +509,8 @@ class GetFeatureInfo extends Control {
       popup.addTab(loadingInfoTab);
       this.facadeMap_.addPopup(popup, coordinate);
     } else {
-      const hasExternalContent =
-        popup.getTabs().some(tab => tab.title !== GetFeatureInfo.POPUP_TITLE);
+      const hasExternalContent = popup
+        .getTabs().some((tab) => tab.title !== GetFeatureInfo.POPUP_TITLE);
       if (!hasExternalContent) {
         this.facadeMap_.removePopup();
         popup = new Popup();
@@ -570,7 +569,7 @@ class GetFeatureInfo extends Control {
                 selector: '.m-getfeatureinfo-content-info div.m-arrow-right',
                 all: true,
                 type: 'click',
-                callback: e => this.toogleSection(e),
+                callback: (e) => this.toogleSection(e),
               }],
             });
           }
@@ -616,7 +615,6 @@ class GetFeatureInfo extends Control {
  * @api
  */
 GetFeatureInfo.LOADING_MESSAGE = 'Obteniendo información...';
-
 
 /**
  * Título para la ventana emergente.

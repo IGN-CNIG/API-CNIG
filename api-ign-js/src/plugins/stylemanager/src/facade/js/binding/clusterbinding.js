@@ -71,7 +71,7 @@ export class ClusterBinding extends Binding {
       Binding.createObj(styleOpts['ranges'][id], path, value);
     });
 
-    styleOpts['ranges'] = Object.values(styleOpts['ranges']).filter(option => !Number.isNaN(option['minRange']) && !Number.isNaN(option['maxRange']));
+    styleOpts['ranges'] = Object.values(styleOpts['ranges']).filter((option) => !Number.isNaN(option['minRange']) && !Number.isNaN(option['maxRange']));
     return styleOpts;
   }
 
@@ -104,7 +104,7 @@ export class ClusterBinding extends Binding {
    */
   setRanges() {
     const rangesInput = this.querySelector('[data-number-ranges]');
-    const numRanges = parseInt(rangesInput.value, 0);
+    const numRanges = parseInt(rangesInput.value, 10);
     if (numRanges > 0 && numRanges < ClusterBinding.NUMBER_RANGES) {
       for (let i = 1; i < numRanges + 1; i += 1) {
         const pagerElement = this.querySelector(`[data-page-selector="${i}"]`);
@@ -178,10 +178,10 @@ export class ClusterBinding extends Binding {
    *
    */
   getOptionsTemplate() {
-    let options = Object.assign({}, ClusterBinding.DEFAULT_OPTIONS_STYLE);
+    let options = { ...ClusterBinding.DEFAULT_OPTIONS_STYLE };
     if (this.style_ != null) {
-      options = Object.assign({}, this.style_.getOptions());
-      const ranges = options['ranges'].filter(range => !Number.isNaN(range['min'])).map((rangeOpt) => {
+      options = { ...this.style_.getOptions() };
+      const ranges = options['ranges'].filter((range) => !Number.isNaN(range['min'])).map((rangeOpt) => {
         const obj = {};
         const style = rangeOpt['style'];
         obj['min'] = rangeOpt['min'];

@@ -2,7 +2,6 @@ import InfoCatastro from 'facade/infocatastro';
 
 M.language.setLang('es');
 
-
 const map = M.map({
   container: 'mapjs',
 });

@@ -9,13 +9,11 @@ const map = M.map({
   zoom: 6,
 });
 
-
 const ogc = new M.layer.OGCAPIFeatures({
   url: 'https://api-features.idee.es/collections/',
   name: 'falls',
   legend: 'Capa OGCAPIFeatures',
 });
-
 
 map.addLayers([ogc]);
 

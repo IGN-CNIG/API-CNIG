@@ -95,7 +95,7 @@ export const isNullOrEmpty = (obj) => {
   } else if (isArray(obj)) {
     nullOrEmpty = true;
     if (obj.length > 0) {
-      nullOrEmpty = !obj.some(objElem => !isNullOrEmpty(objElem));
+      nullOrEmpty = !obj.some((objElem) => !isNullOrEmpty(objElem));
     }
   } else if (typeof obj === 'string' && obj.trim()
     .length === 0) {
@@ -169,7 +169,6 @@ export const isUrl = (obj) => {
   return isUrlParam;
 };
 
-
 /**
  * Devuelve un texto normalizado (sin espacios y en mayúsculas o minúsculas).
  * @function
@@ -182,9 +181,9 @@ export const normalize = (stringToNormalize, upperCase) => {
   let normalizedString = stringToNormalize;
   if (!isNullOrEmpty(normalizedString) && isString(normalizedString)) {
     normalizedString = normalizedString.trim();
-    normalizedString = upperCase ?
-      normalizedString.toUpperCase() :
-      normalizedString.toLowerCase();
+    normalizedString = upperCase
+      ? normalizedString.toUpperCase()
+      : normalizedString.toLowerCase();
   }
   return normalizedString;
 };
@@ -386,9 +385,9 @@ export const getResolutionFromScale = (scale, unitsParam) => {
       units = 'degrees';
     }
     // normalize scale
-    const normScale = (scale > 1.0) ?
-      (1.0 / scale) :
-      scale;
+    const normScale = (scale > 1.0)
+      ? (1.0 / scale)
+      : scale;
     resolution = 1 / (normScale * INCHES_PER_UNIT[units] * DOTS_PER_INCH);
   }
   return resolution;
@@ -755,13 +754,7 @@ export const enableTouchScroll = (elem) => {
  * @api
  */
 export const rgbToHex = (rgbColor) => {
-  let hexColor;
-  try {
-    hexColor = chroma(rgbColor)
-      .hex();
-  } catch (err) {
-    throw err;
-  }
+  const hexColor = chroma(rgbColor).hex();
   return hexColor;
 };
 
@@ -774,13 +767,7 @@ export const rgbToHex = (rgbColor) => {
  * @api
  */
 export const rgbaToHex = (rgbaColor) => {
-  let hexColor;
-  try {
-    hexColor = chroma(rgbaColor)
-      .hex();
-  } catch (err) {
-    throw err;
-  }
+  const hexColor = chroma(rgbaColor).hex();
   return hexColor;
 };
 
@@ -798,11 +785,7 @@ export const getOpacityFromRgba = (rgbaColor) => {
   const rgbaRegExp = /^rgba\s*\((\s*\d+\s*,){3}\s*([\d.]+)\s*\)$/;
   if (rgbaRegExp.test(rgbaColor)) {
     opacity = rgbaColor.replace(rgbaRegExp, '$2');
-    try {
-      opacity = parseFloat(opacity);
-    } catch (err) {
-      throw err;
-    }
+    opacity = parseFloat(opacity);
   }
 
   return opacity;
@@ -927,7 +910,6 @@ export const inverseColor = (color) => {
 
   return inverseColorParam;
 };
-
 
 /**
  * Esta función devuelve el color RGBA.
@@ -1084,7 +1066,6 @@ export const defineFunctionFromString = (objParam) => {
   return obj;
 };
 
-
 /**
  * Esta función devuelve verdadero si algún valor de objeto es función o "{{*}}".
  * @function
@@ -1096,7 +1077,7 @@ export const defineFunctionFromString = (objParam) => {
 export const isDynamic = (obj) => {
   let flag = false;
   if (!Array.isArray(obj) && typeof obj === 'object' && !isNullOrEmpty(obj)) {
-    flag = Object.values(obj).some(val => isDynamic(val));
+    flag = Object.values(obj).some((val) => isDynamic(val));
   } else if (typeof obj === 'function' || (typeof obj === 'string' && /\{\{.*\}\}/.test(obj))) {
     flag = true;
   }
@@ -1164,7 +1145,6 @@ export const getEnvolvedExtent = (extents) => {
 
   return envolvedExtent;
 };
-
 
 /**
  * Esta función transforma "bytes" a Base64.
@@ -1280,12 +1260,14 @@ export const modifySVG = (url, options) => {
   return remoteGet(url).then((response) => {
     let result = '';
     try {
-      const tags = (options.icon.tag) ?
-        options.icon.tag : ['path', 'circle', 'ellipse', 'line', 'polygon', 'polyline', 'rect', 'foreignObject'];
+      const tags = (options.icon.tag)
+        ? options.icon.tag
+        : ['path', 'circle', 'ellipse', 'line', 'polygon', 'polyline', 'rect', 'foreignObject'];
 
       const svg = Array.from(response.xml.getElementsByTagName('svg'))[0];
-      const strokeMiddle = options.icon.stroke && options.icon.stroke.width ?
-        options.icon.stroke.width : 1;
+      const strokeMiddle = options.icon.stroke && options.icon.stroke.width
+        ? options.icon.stroke.width
+        : 1;
       let width = svg.getAttribute('width') ? svg.getAttribute('width').replace(/[^0-9.]/g, '') : null;
       let height = svg.getAttribute('height') ? svg.getAttribute('height').replace(/[^0-9.]/g, '') : null;
       if (svg.getAttribute('viewBox')) {
@@ -1533,23 +1515,113 @@ const joinCanvas = (map, imageType = 'image/jpeg') => {
 };
 
 /**
+ * Esta función devuelve una captura de pantalla del mapa en una promesa
+ * @function
+ * @param {M.Map} map mapa del que se obtiene el canvas
+ * @param {String} type formato de la imagen resultante
+ * @api
+ * @returns {String} Imagen en base64 o Promesa con esta
+ */
+const getImageMapReplacementWithJoin = (map, type = 'image/jpeg') => { // getImageMap and joinCanvas combined
+  return new Promise((resolve) => {
+    const canvasList = map.getMapImpl().getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer, canvas.maplibregl-canvas');
+    const resultFunc = (canvasResult) => {
+      if (canvasResult) {
+        resolve(canvasResult.toDataURL(type));
+      } else {
+        throw new Error('No obtenido canvas para el generado de Print');
+      }
+    };
+    if (canvasList.length === 1) {
+      resultFunc(canvasList[0]);
+    } else {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      [canvas.width, canvas.height] = map.getMapImpl().getSize();
+      if (/jp.*g$/.test(type)) {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      const canvasCombine = (c, opacity) => {
+        if (c.width) {
+          ctx.save();
+          if (opacity === '0') return; // opacity
+
+          ctx.globalAlpha = parseFloat(opacity) || 1;
+          // Blend mode & filter (OPENLAYERS format, not suitable for MAPLIBRE)
+          const auxParNodSty = c.parentNode.style;
+          ctx.globalCompositeOperation = auxParNodSty.mixBlendMode;
+          ctx.filter = auxParNodSty.filter;
+          // transform (OPENLAYERS format, not suitable for MAPLIBRE)
+          let tr = c.style.transform || c.style.webkitTransform;
+          if (/^matrix/.test(tr)) {
+            tr = tr.replace(/^matrix\(|\)$/g, '').split(',');
+            tr.forEach((t, i) => {
+              tr[i] = parseFloat(t);
+            });
+            ctx.transform(tr[0], tr[1], tr[2], tr[3], tr[4], tr[5]);
+            ctx.drawImage(c, 0, 0);
+          } else {
+            ctx.drawImage(c, 0, 0, c.width, c.height);
+          }
+          ctx.restore();
+        }
+      };
+
+      let checkIfKeepGoing;
+      let i = 0;
+      const ii = canvasList.length;
+      const allMapLibre = map.getMapLibre();
+      const maplibreForFunc = (ind) => {
+        const auxCanvas = canvasList[ind];
+        if (auxCanvas.className === 'maplibregl-canvas') { // MapLibre
+          let auxMapLibre = allMapLibre.find((l) => l.type === 'MapLibre' && l.getImpl()
+            .getOL3Layer().mapLibreMap.getCanvas() === auxCanvas);
+          if (auxMapLibre) {
+            auxMapLibre = auxMapLibre.getImpl().getOL3Layer().mapLibreMap;
+            auxMapLibre.once('render', () => { // MapLibre render
+              canvasCombine(auxCanvas, auxCanvas.style.opacity); // MapLibre opacity
+              checkIfKeepGoing(1);
+            });
+            auxMapLibre.triggerRepaint(); // Trigger render
+          } else {
+            checkIfKeepGoing(1); // In case Maplibre canvas not found
+          }
+        } else {
+          canvasCombine(auxCanvas, auxCanvas.parentNode.style.opacity); // OpenLayers opacity
+          checkIfKeepGoing(1);
+        }
+      };
+      checkIfKeepGoing = (add) => {
+        i += add;
+        if (i < ii) {
+          maplibreForFunc(i);
+        } else {
+          resultFunc(canvas);
+        }
+      };
+      checkIfKeepGoing(0); // Start with "In case canvasList.length is 0"
+    }
+  });
+};
+
+/**
  * Esta función devuelve una captura de pantalla del mapa
  * @function
  * @param {M.Map} map mapa del que se obtiene el canvas
  * @param {String} type formato de la imagen resultante
  * @param {HTMLCanvasElement} canva elemento canvas
+ * @param {Boolean} isPromise si tiene que devolver una promesa (MapLibre)
  * @api
- * @returns {String} Imagen en base64
+ * @returns {String} Imagen en base64 o Promesa con la imagen en base64
  */
-export const getImageMap = (map, type = 'image/jpeg', canva) => {
+export const getImageMap = (map, type = 'image/jpeg', canva = undefined, isPromise = false) => {
+  if (isPromise) return getImageMapReplacementWithJoin(map, type); // Promise
+
   const canvas = canva || joinCanvas(map, type);
   let img = null;
   if (canvas) {
-    try {
-      img = canvas.toDataURL(type);
-    } catch (e) {
-      throw e;
-    }
+    img = canvas.toDataURL(type);
   }
   return img;
 };
@@ -1564,22 +1636,18 @@ export const getImageMap = (map, type = 'image/jpeg', canva) => {
 export const copyImageClipBoard = (map, canva) => {
   const canvas = canva || joinCanvas(map, 'image/png');
   if (canvas) {
-    try {
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const item = new window.ClipboardItem({ 'image/png': blob });
-          window.navigator.clipboard.write([item]).then(() => {
-            // eslint-disable-next-line no-console
-            console.log('Image copied to clipboard');
-          }).catch((err) => {
-            // eslint-disable-next-line no-console
-            console.error('Error copying image to clipboard:', err);
-          });
-        }
-      });
-    } catch (e) {
-      throw e;
-    }
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const item = new window.ClipboardItem({ 'image/png': blob });
+        window.navigator.clipboard.write([item]).then(() => {
+          // eslint-disable-next-line no-console
+          console.log('Image copied to clipboard');
+        }).catch((err) => {
+          // eslint-disable-next-line no-console
+          console.error('Error copying image to clipboard:', err);
+        });
+      }
+    });
   }
 };
 
@@ -1655,7 +1723,7 @@ export const transfomContent = (text, pSizes = {}) => {
  */
 export const ObjectToArrayExtent = (bbox, epsg) => {
   const { def } = M.impl.ol.js.projections.getSupportedProjs()
-    .filter(proj => proj.codes.includes(epsg))[0];
+    .filter((proj) => proj.codes.includes(epsg))[0];
 
   const typeCoordinates = def.includes('+proj=longlat');
 

@@ -219,7 +219,7 @@ export default class Layerswitcher extends M.Plugin {
     // Servicios precargados
     this.precharged = options.precharged || PRECHARGED;
 
-    // Servicios precargados
+    // Mostrar tipo de capa
     this.displayLabel = !M.utils.isUndefined(options.displayLabel) ? options.displayLabel : false;
 
     //  Metadatos
@@ -279,25 +279,24 @@ export default class Layerswitcher extends M.Plugin {
     this.panel_ = panel;
 
     // creamos control
-    const control =
-      new LayerswitcherControl({
-        isDraggable: this.isDraggable,
-        modeSelectLayers: this.modeSelectLayers,
-        tools: this.tools,
-        addLayers: this.addLayers,
-        statusLayers: this.statusLayers,
-        collapsed: this.collapsed_,
-        isMoveLayers: this.isMoveLayers,
-        precharged: this.precharged,
-        http: this.http,
-        https: this.https,
-        showCatalog: this.showCatalog,
-        order: this.order,
-        useProxy: this.useProxy,
-        statusProxy: this.statusProxy,
-        useAttributions: this.useAttributions,
-        displayLabel: this.displayLabel,
-      });
+    const control = new LayerswitcherControl({
+      isDraggable: this.isDraggable,
+      modeSelectLayers: this.modeSelectLayers,
+      tools: this.tools,
+      addLayers: this.addLayers,
+      statusLayers: this.statusLayers,
+      collapsed: this.collapsed_,
+      isMoveLayers: this.isMoveLayers,
+      precharged: this.precharged,
+      http: this.http,
+      https: this.https,
+      showCatalog: this.showCatalog,
+      order: this.order,
+      useProxy: this.useProxy,
+      statusProxy: this.statusProxy,
+      useAttributions: this.useAttributions,
+      displayLabel: this.displayLabel,
+    });
     this.control_ = control;
 
     this.controls_.push(this.control_);

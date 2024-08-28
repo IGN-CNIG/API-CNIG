@@ -15,6 +15,7 @@ export default class IGNSearchLocatorControl extends M.impl.Control {
     this.map = map;
     super.addTo(map, html);
   }
+
   /**
    * This function sets a new scale to the map.
    * Developed for WGS 84 / Pseudo - Mercator 3857 projection.
@@ -73,6 +74,7 @@ export default class IGNSearchLocatorControl extends M.impl.Control {
     const olView = olMap.getView();
     olView.setResolution(newResolution);
   }
+
   /**
    * This function reprojects map on selected SRS.
    *
@@ -139,8 +141,8 @@ export default class IGNSearchLocatorControl extends M.impl.Control {
 
   wrapComplexFeature(feature) {
     const featureGeom = feature.getGeometry();
-    if ((featureGeom.getType() === M.geom.wkt.type.POLYGON) ||
-      (featureGeom.getType() === M.geom.wkt.type.MULTI_POLYGON)) {
+    if ((featureGeom.getType() === M.geom.wkt.type.POLYGON)
+      || (featureGeom.getType() === M.geom.wkt.type.MULTI_POLYGON)) {
       let centroid;
       if (featureGeom.getType() === M.geom.wkt.type.POLYGON) {
         centroid = featureGeom.getInteriorPoint();

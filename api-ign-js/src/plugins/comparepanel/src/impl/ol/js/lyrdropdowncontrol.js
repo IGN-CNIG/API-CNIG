@@ -15,22 +15,20 @@ export default class LyrdropdownControl extends M.impl.Control {
    * @api stable
    */
 
-
   addTo(map, html) {
     // obtengo la interacción por defecto del dblclick para manejarla
-    /*const olMap = map.getMapImpl();
+    /* const olMap = map.getMapImpl();
     olMap.getInteractions().forEach((interaction) => {
       if (interaction instanceof ol.interaction.DoubleClickZoom) {
         this.dblClickInteraction_ = interaction;
       }
-    });*/
+    }); */
 
     this.map = map;
     this.olMap = map.getMapImpl();
     // super addTo - don't delete
     super.addTo(map, html);
   }
-
 
   /**
    * Effects on the layer
@@ -42,16 +40,16 @@ export default class LyrdropdownControl extends M.impl.Control {
    */
   setLayer(lyrA) {
     lyrA.setVisible(true);
-    //lyrA.setZIndex(4500);
+    // lyrA.setZIndex(4500);
+    // e2m: Important control number interactions this.olMap.interactions.array_
+    // this.olMap.addLayer(lyrA);
+    // const olMap = map.getMapImpl();
 
-    //this.olMap.addLayer(lyrA); //e2m: Important control number interactions this.olMap.interactions.array_
-    //const olMap = map.getMapImpl();
-
-    //e2m:Recorrer las interacciones cargadas
-    /*this.olMap.getInteractions().forEach((interaction) => {
+    // e2m:Recorrer las interacciones cargadas
+    /* this.olMap.getInteractions().forEach((interaction) => {
       console.log(interaction);
     });
-    console.log('Número de interacciones:' + this.olMap.interactions.array_.length);*/
+    console.log('Número de interacciones:' + this.olMap.interactions.array_.length); */
 
     /*
     this.layerdropInteraction_ = new LayerdropInteraction({
@@ -71,10 +69,10 @@ export default class LyrdropdownControl extends M.impl.Control {
    * @api stable
    */
   addLayer(layer) {
-    //this.layerdropInteraction_.addLayer(layer.getImpl().getOL3Layer());
+    // this.layerdropInteraction_.addLayer(layer.getImpl().getOL3Layer());
   }
 
-/**
+  /**
    * Remove effects
    *
    * @public
@@ -84,7 +82,6 @@ export default class LyrdropdownControl extends M.impl.Control {
   removeEffects() {
     // this.olMap.removeInteraction(this.layerdropInteraction_);
   }
-
 
   /**
    * Remove layer
@@ -97,6 +94,4 @@ export default class LyrdropdownControl extends M.impl.Control {
   removeLayer(layer) {
     // this.layerdropInteraction_.removeLayer(layer.getImpl().getOL3Layer());
   }
-
-
 }

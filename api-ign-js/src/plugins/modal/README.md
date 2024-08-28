@@ -152,7 +152,7 @@ Ejemplo de constructor:
   position:'TR',
   collapsed: true,
   collapsible: true,
-  url_es: 'https://componentes.cnig.es/ayudaIberpix/es.html', 
+  url_es: 'https://componentes.cnig.es/ayudaIberpix/es.html',
   url_en: 'https://componentes.cnig.es/ayudaIberpix/en.html',
   tooltip: 'Ayuda',
 }

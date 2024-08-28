@@ -29,7 +29,7 @@ export default class LyrCompareControl extends M.Control {
     * @extends {M.Control}
     * @api stable
     */
-  constructor(values, controlsLayers, map) {
+  constructor(values, controlsLayers, map, fatherControl) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(LyrcompareImplControl)) {
       M.exception(getValue('exception'));
@@ -106,7 +106,6 @@ export default class LyrCompareControl extends M.Control {
        */
     // eslint-disable-next-line radix
     this.staticDivision = values.staticDivision === undefined ? 1 : parseInt(values.staticDivision);
-
 
     /**
     * Opacity
@@ -219,10 +218,10 @@ export default class LyrCompareControl extends M.Control {
       */
     this.interface = values.interface === undefined ? true : values.interface;
 
-
     this.dicAccesibilityButton = (M.language.getLang() === 'es') ? dicAccesibilityButtonES : dicAccesibilityButtonEN;
-  }
 
+    this.fatherControl_ = fatherControl;
+  }
 
   /**
     * This function creates the view
@@ -238,7 +237,7 @@ export default class LyrCompareControl extends M.Control {
       const emptyLayer = new M.layer.WMS({
         url: 'https://www.ign.es/wms-inspire/ign-base?',
         name: 'empty_layer',
-        legend: 'Sin capa',
+        legend: getValue('selector'),
         tiled: false,
         version: '1.3.0',
         displayInLayerSwitcher: false,
@@ -246,12 +245,7 @@ export default class LyrCompareControl extends M.Control {
 
       this.layers.push(emptyLayer);
 
-      this.layers.forEach((layer) => {
-        if (layer.getImpl().getOL3Layer() === null) {
-          this.map_.addLayers(layer);
-          layer.setVisible(false);
-        }
-      });
+      this.addDefaultLayers_();
 
       this.setFunctionsAndCompile(success);
     });
@@ -259,7 +253,70 @@ export default class LyrCompareControl extends M.Control {
     templateResult
       .then((t) => {
         html.querySelector('#m-comparators-contents').appendChild(t);
+
+        setTimeout(() => {
+          document.querySelector('#m-lyrcompare-void').click();
+        }, 1000);
       });
+  }
+
+  deactiveByError_() {
+    this.fatherControl_.controls[1].active = false;
+    const target = document.querySelector('#lyrcompare-btn');
+    target.classList.remove('activatedComparators');
+
+    setTimeout(() => {
+      this.template.remove();
+    }, 10);
+
+    this.deactivate();
+  }
+
+  addDefaultLayers_() {
+    if (!this.isDefaultLyr_()) {
+      this.layers.forEach((layer, i) => {
+        if (layer.getImpl().getOL3Layer() === null
+           && (i === this.defaultLyrA
+            || i === this.defaultLyrB
+            || i === this.defaultLyrC
+            || i === this.defaultLyrD)) {
+          const mapLayer = this.map_.getLayers().filter((l) => l.name === layer.name);
+          if (mapLayer.length > 0) {
+            this.map_.removeLayers(mapLayer[0]);
+          }
+          this.map_.addLayers(layer);
+          layer.setVisible(false);
+        }
+      });
+    } else {
+      /*
+      ? Añade las capas por defecto si no se quiere que aparezca las capas vacías
+
+      const nLayers = (this.comparisonMode === 1
+        || this.comparisonMode === 2
+        || this.comparisonMode !== 0) ? 2 : 4;
+
+      this.layers.forEach((layer, i) => {
+        if (layer.getImpl().getOL3Layer() === null && i < nLayers) {
+          this.map_.addLayers(layer);
+          layer.setVisible(false);
+        }
+      });
+      */
+
+      const lastIndexEmptyLayer = this.layers.length - 1;
+      this.defaultLyrA = lastIndexEmptyLayer;
+      this.defaultLyrB = lastIndexEmptyLayer;
+      this.defaultLyrC = lastIndexEmptyLayer;
+      this.defaultLyrD = lastIndexEmptyLayer;
+    }
+  }
+
+  isDefaultLyr_() {
+    return this.defaultLyrA === 0
+    && this.defaultLyrB === 1
+    && this.defaultLyrC === 2
+    && this.defaultLyrD === 3;
   }
 
   /**
@@ -368,7 +425,6 @@ export default class LyrCompareControl extends M.Control {
     const mirrorID = dicMirrorLang[idButton];
     const langMirror = this.dicAccesibilityButton[mirrorID];
 
-
     langMirror.forEach(({ id, text }) => {
       document.querySelector(`.${id}`).innerHTML = text.secondaryMap;
     });
@@ -422,7 +478,6 @@ export default class LyrCompareControl extends M.Control {
     //   this.activateCurtain();
     // }
 
-
     if ((this.layers.length - 1) === 0) {
       M.dialog.error(getValue('no_layers_plugin'));
     } else {
@@ -457,6 +512,7 @@ export default class LyrCompareControl extends M.Control {
 
           this.updateControls();
           this.getImpl().setComparisonMode(this.comparisonMode);
+          this.setVisibleLayers_();
         });
       });
     }
@@ -507,12 +563,17 @@ export default class LyrCompareControl extends M.Control {
       // eslint-disable-next-line consistent-return
       item.addEventListener('change', (evt) => {
         const options = evt.target.options;
-        Array.from(options).forEach(option => option.removeAttribute('selected'));
+        Array.from(options).forEach((option) => option.removeAttribute('selected'));
         evt.target.selectedOptions[0].setAttribute('selected', '');
 
         // eslint-disable-next-line no-shadow, array-callback-return, consistent-return
         const layer = this.layers.filter((layer) => {
           if (layer.name === evt.target.value) {
+            const mapLayer = this.map_.getLayers().filter((l) => l.name === layer.name);
+            if (mapLayer.length > 0) {
+              this.map_.removeLayers(mapLayer[0]);
+            }
+
             this.map_.addLayers(layer);
             return layer;
           }
@@ -621,11 +682,35 @@ export default class LyrCompareControl extends M.Control {
       this.removeEffectsComparison();
       this.getImpl().effectSelectedCurtain(
         this.layerSelectedA,
-        this.layerSelectedB, this.layerSelectedC,
-        this.layerSelectedD, this.opacityVal, this.staticDivision, this.comparisonMode,
+        this.layerSelectedB,
+        this.layerSelectedC,
+        this.layerSelectedD,
+        this.opacityVal,
+        this.staticDivision,
+        this.comparisonMode,
       );
       this.updateControls();
     }, 1000);
+  }
+
+  setVisibleLayers_() {
+    if (this.comparisonMode === 0) {
+      this.layerSelectedA.setVisible(false);
+      this.layerSelectedB.setVisible(false);
+      if (this.layerSelectedC !== null && this.layerSelectedD !== null) {
+        this.layerSelectedC.setVisible(false);
+        this.layerSelectedD.setVisible(false);
+      }
+    }
+
+    if (this.comparisonMode === 1 || this.comparisonMode === 2) {
+      this.layerSelectedA.setVisible(true);
+      this.layerSelectedB.setVisible(true);
+      if (this.layerSelectedC !== null && this.layerSelectedD !== null) {
+        this.layerSelectedC.setVisible(false);
+        this.layerSelectedD.setVisible(false);
+      }
+    }
   }
 
   /**
@@ -680,13 +765,15 @@ export default class LyrCompareControl extends M.Control {
       this.layerSelectedA = this.layers[this.defaultLyrA];
       const selectA = this.template.querySelector('#m-lyrcompare-lyrA');
       selectA.selectedIndex = this.defaultLyrA;
+
       if (!selectA.options[this.defaultLyrA]) {
         M.dialog.error('Error layerSelectedA', 'lyrcompare');
+        this.deactiveByError_();
         return;
       }
 
       selectA.options[this.defaultLyrA].setAttribute('selected', '');
-      if (this.map_.getLayers().some(l => l.name === this.layerSelectedA.name)) {
+      if (this.map_.getLayers().some((l) => l.name === this.layerSelectedA.name)) {
         this.map_.addLayers(this.layerSelectedA);
       }
     }
@@ -695,14 +782,16 @@ export default class LyrCompareControl extends M.Control {
       this.layerSelectedB = this.layers[this.defaultLyrB];
       const selectB = this.template.querySelector('#m-lyrcompare-lyrB');
       selectB.selectedIndex = this.defaultLyrB;
-      selectB.options[this.defaultLyrB].setAttribute('selected', '');
 
       if (!selectB.options[this.defaultLyrB]) {
         M.dialog.error('Error layerSelectedB', 'lyrcompare');
+        this.deactiveByError_();
         return;
       }
 
-      if (this.map_.getLayers().some(l => l.name === this.layerSelectedB.name)) {
+      selectB.options[this.defaultLyrB].setAttribute('selected', '');
+
+      if (this.map_.getLayers().some((l) => l.name === this.layerSelectedB.name)) {
         this.map_.addLayers(this.layerSelectedB);
       }
     }
@@ -710,15 +799,18 @@ export default class LyrCompareControl extends M.Control {
     if (this.layerSelectedC === null && this.layers.length >= 3) {
       this.layerSelectedC = this.layers[this.defaultLyrC];
       const selectC = this.template.querySelector('#m-lyrcompare-lyrC');
-      selectC.selectedIndex = this.defaultLyrC;
-      selectC.options[this.defaultLyrC].setAttribute('selected', '');
 
       if (!selectC.options[this.defaultLyrC]) {
         M.dialog.error('Error layerSelectedC', 'lyrcompare');
+        this.deactiveByError_();
         return;
       }
+      selectC.selectedIndex = this.defaultLyrC;
+      selectC.options[this.defaultLyrC].setAttribute('selected', '');
+      selectC.selectedIndex = this.defaultLyrC;
+      selectC.options[this.defaultLyrC].setAttribute('selected', '');
 
-      if (this.map_.getLayers().some(l => l.name === this.layerSelectedC.name)) {
+      if (this.map_.getLayers().some((l) => l.name === this.layerSelectedC.name)) {
         this.map_.addLayers(this.layerSelectedC);
       }
     }
@@ -727,14 +819,16 @@ export default class LyrCompareControl extends M.Control {
       this.layerSelectedD = this.layers[this.defaultLyrD];
       const selectD = this.template.querySelector('#m-lyrcompare-lyrD');
       selectD.selectedIndex = this.defaultLyrD;
-      selectD.options[this.defaultLyrD].setAttribute('selected', '');
 
       if (!selectD.options[this.defaultLyrD]) {
         M.dialog.error('Error layerSelectedD', 'lyrcompare');
+        this.deactiveByError_();
         return;
       }
 
-      if (this.map_.getLayers().some(l => l.name === this.layerSelectedD.name)) {
+      selectD.options[this.defaultLyrD].setAttribute('selected', '');
+
+      if (this.map_.getLayers().some((l) => l.name === this.layerSelectedD.name)) {
         this.map_.addLayers(this.layerSelectedD);
       }
     }
@@ -781,7 +875,6 @@ export default class LyrCompareControl extends M.Control {
     this.getImpl().removeEffectsCurtain();
   }
 
-
   manageLyrAvailable(lyrList) {
     if (this.template === null) {
       return;
@@ -798,16 +891,14 @@ export default class LyrCompareControl extends M.Control {
       dropDownContainer = this.template.querySelector(`#m-lyrcompare-lyr${dropDownLyrLetter}`);
       // eslint-disable-next-line no-plusplus
       for (let iOpt = 1; iOpt < dropDownContainer.options.length; iOpt++) {
-        dropDownContainer.options[iOpt].disabled =
-        !lyrList.includes(dropDownContainer.options[iOpt].value);
+        dropDownContainer.options[iOpt].disabled = !lyrList
+          .includes(dropDownContainer.options[iOpt].value);
       }
     } catch (error) {
-      /* eslint-disable */
-           console.log(error);
-           /* eslint-enable */
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
   }
-
 
   /**
     * This procedure updates texts in controls
@@ -828,7 +919,7 @@ export default class LyrCompareControl extends M.Control {
       this.template.querySelector('#div-m-lyrcompare-transparent-static').disabled = true; // Deshabilita options de tipo de control de cortina
       this.template.querySelector('#div-m-lyrcompare-transparent-mixed').disabled = true; // Deshabilita options de tipo de control de cortina
       return;
-    } else if (this.comparisonMode === 1) {
+    } if (this.comparisonMode === 1) {
       if (swapControl) swapControl.style.opacity = '1';
       this.template.querySelector('#m-lyrcompare-lyrA-lbl').classList.add('cp-columns-2');
       this.template.querySelector('#m-lyrcompare-lyrB-lbl').classList.add('cp-columns-1');
@@ -879,7 +970,6 @@ export default class LyrCompareControl extends M.Control {
     }
   }
 
-
   removeActivate() {
     if (this.template.querySelector('.buttom-pressed')) {
       this.template.querySelector('.buttom-pressed').classList.remove('buttom-pressed');
@@ -912,19 +1002,19 @@ export default class LyrCompareControl extends M.Control {
           const urlLayer = layer.split('*');
           const name = urlLayer[3];
           const layerByUrl = this.map_.getLayers()
-            .filter(l => name.includes(l.name))[this.map_.getLayers()
-              .filter(l => name.includes(l.name)).length - 1];
+            .filter((l) => name.includes(l.name))[this.map_.getLayers()
+              .filter((l) => name.includes(l.name)).length - 1];
           this.map_.removeLayers(layerByUrl);
         } else {
           const layerByName = this.map_.getLayers()
-            .filter(l => layer.includes(l.name))[this.map_.getLayers()
-              .filter(l => layer.includes(l.name)).length - 1];
+            .filter((l) => layer.includes(l.name))[this.map_.getLayers()
+              .filter((l) => layer.includes(l.name)).length - 1];
           this.map_.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
         const layerByObject = this.map_.getLayers()
-          .filter(l => layer.name.includes(l.name))[this.map_.getLayers()
-            .filter(l => layer.name.includes(l.name)).length - 1];
+          .filter((l) => layer.name.includes(l.name))[this.map_.getLayers()
+            .filter((l) => layer.name.includes(l.name)).length - 1];
         this.map_.removeLayers(layerByObject);
       }
     });
@@ -957,7 +1047,7 @@ export default class LyrCompareControl extends M.Control {
   }
 
   getLayersNames() {
-    return this.layers.map(l => l.name);
+    return this.layers.map((l) => l.name);
   }
 
   addlayersControl(layer) {

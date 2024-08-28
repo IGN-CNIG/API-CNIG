@@ -32,8 +32,8 @@ export class ColorPickerPolyfill {
         }
 
         // set the input
-        this.input = (this.inputs[inputId] = this.inputs[inputId]) ||
-          document.getElementById(inputId);
+        this.input = (this.inputs[inputId])
+          || document.getElementById(inputId);
 
         if (!this.input) {
           throw new Error(`There was no input found with id: "${inputId}"`);

@@ -44,7 +44,6 @@ export default class Georefimage2Control extends M.Control {
      */
     this.printTemplateUrl_ = printTemplateUrl;
 
-
     /**
      * Url for getting priting status
      * @private
@@ -561,6 +560,6 @@ export default class Georefimage2Control extends M.Control {
   }
 
   accessibilityTab(html) {
-    html.querySelectorAll('[tabindex="0"]').forEach(el => el.setAttribute('tabindex', this.order));
+    html.querySelectorAll('[tabindex="0"]').forEach((el) => el.setAttribute('tabindex', this.order));
   }
 }

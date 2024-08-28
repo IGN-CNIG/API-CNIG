@@ -7,6 +7,250 @@ import { getValue } from './i18n/language';
 import { getBaseLayers, getLayers } from './utils';
 import { handlerErrorPluginWindowSync, handlerErrorURLWindowSync } from './errorhandling';
 
+const CONFIG_IBERPIX_BACKIMAGELAYER = {
+  order: 10,
+  position: 'TR',
+  layerId: 0,
+  layerVisibility: true,
+  collapsed: true,
+  collapsible: true,
+  columnsNumber: 4,
+  empty: true,
+  layerOpts: [{
+    id: 'raster',
+    preview: 'https://www.ign.es/iberpix/static/media/raster.c7a904f3.png',
+    title: 'Mapa',
+    layers: [
+      'WMTS*https://www.ign.es/wmts/mapa-raster*MTN*GoogleMapsCompatible*CartografíadelIGN*false*image/jpeg*false*false*true',
+    ],
+  },
+  {
+    id: 'imagen',
+    preview: 'https://www.ign.es/iberpix/static/media/image.44c5b451.png',
+    title: 'Imagen',
+    layers: [
+      'TMS*Nombre*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19*false',
+    ],
+  },
+  {
+    id: 'mapa',
+    preview: 'https://www.ign.es/iberpix/static/media/mapa.98d45f00.png',
+    title: 'Callejero',
+    layers: [
+      'WMTS*https://www.ign.es/wmts/ign-base*IGNBaseTodo*GoogleMapsCompatible*Callejero*false*image/jpeg*false*false*true',
+    ],
+  },
+  {
+    id: 'hibrido',
+    title: 'Híbrido',
+    preview: 'https://www.ign.es/iberpix/static/media/hibrido.485e957e.png',
+    layers: [
+      'TMS*Nombre*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*false*19*false',
+      'WMTS*https://www.ign.es/wmts/ign-base*IGNBaseOrto*GoogleMapsCompatible*Callejero*false*image/jpeg*false*false*true',
+    ],
+  },
+  {
+    id: 'lidar',
+    preview: 'https://www.ign.es/iberpix/static/media/lidar.5aa94e82.png',
+    title: 'LiDAR (Relieve)',
+    layers: [
+      'WMTS*https://wmts-mapa-lidar.idee.es/lidar*EL.GridCoverageDSM*GoogleMapsCompatible*LiDAR*false*image/png*false*false*true',
+    ],
+  },
+  {
+    id: 'ocupacion-suelo',
+    preview: 'https://www.ign.es/iberpix/static/media/ocupacion_suelo.ae7c9787.png',
+    title: 'Ocupación del suelo (CORINE)',
+    layers: [
+      'WMTS*https://servicios.idee.es/wmts/ocupacion-suelo?*LC.LandCoverSurfaces*GoogleMapsCompatible*SIOSE*false*image/jpeg*false*false*true',
+    ],
+  },
+  {
+    id: 'historicos',
+    preview: 'https://www.ign.es/iberpix/static/media/historicos.78c9c369.png',
+    title: 'Mapas Históricos',
+    layers: [
+      'WMTS*https://www.ign.es/wmts/primera-edicion-mtn?*mtn50-edicion1*GoogleMapsCompatible*mtn50-edicion1*false*image/jpeg*false*false*true',
+    ],
+  },
+  ],
+};
+
+const CONFIG_IBERPIX_LAYERSWITCHER = {
+  collapsed: true,
+  position: 'TR',
+  https: true,
+  http: true,
+  isDraggable: false,
+  modeSelectLayers: 'eyes',
+  tools: ['transparency', 'legend', 'zoom', 'information', 'style', 'delete'],
+  isMoveLayers: true,
+  showCatalog: true,
+  precharged: {
+    groups: [
+      {
+        name: 'Cartografía',
+        services: [
+          {
+            name: 'Mapas',
+            type: 'WMTS',
+            url: 'https://www.ign.es/wmts/mapa-raster?',
+          },
+          {
+            name: 'Callejero ',
+            type: 'WMTS',
+            url: 'https://www.ign.es/wmts/ign-base?',
+          },
+          {
+            name: 'Primera edición MTN y Minutas de 1910-1970',
+            type: 'WMTS',
+            url: 'https://www.ign.es/wmts/primera-edicion-mtn?',
+          },
+          {
+            name: 'Planimetrías (1870 y 1950)',
+            type: 'WMS',
+            url: 'https://www.ign.es/wms/minutas-cartograficas?',
+          },
+          {
+            name: 'Planos de Madrid (1622 - 1960)',
+            type: 'WMTS',
+            url: 'https://www.ign.es/wmts/planos?',
+          },
+          {
+            name: 'Hojas kilométricas (Madrid - 1860)',
+            type: 'WMS',
+            url: 'https://www.ign.es/wms/hojas-kilometricas?',
+          },
+          {
+            name: 'Cuadrículas Mapa Topográfico Nacional',
+            type: 'WMS',
+            url: 'https://www.ign.es/wms-inspire/cuadriculas?',
+          },
+
+        ],
+      },
+      {
+        name: 'Imágenes',
+        services: [
+          {
+            name: 'Ortofotos máxima actualidad PNOA',
+            type: 'WMTS',
+            url: 'https://www.ign.es/wmts/pnoa-ma?',
+          },
+          {
+            name: 'Ortofotos históricas y PNOA anual',
+            type: 'WMS',
+            url: 'https://www.ign.es/wms/pnoa-historico?',
+          },
+          {
+            name: 'Ortofotos provisionales PNOA',
+            type: 'WMS',
+            url: 'https://wms-pnoa.idee.es/pnoa-provisionales?',
+          },
+          {
+            name: 'Mosaicos de satélite',
+            type: 'WMS',
+            url: 'https://wms-satelites-historicos.idee.es/satelites-historicos?',
+          },
+          {
+            name: 'Fototeca (Consulta de fotogramas históricos y PNOA)',
+            type: 'WMS',
+            url: 'https://wms-fototeca.idee.es/fototeca?',
+          },
+        ],
+      },
+      {
+        name: 'Información geográfica de referencia y temática',
+        services: [
+          {
+            name: 'Catastro ',
+            type: 'WMS',
+            url: 'https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
+          },
+          {
+            name: 'Unidades administrativas',
+            type: 'WMS',
+            url: ' https://www.ign.es/wms-inspire/unidades-administrativas?',
+          },
+          {
+            name: 'Nombres geográficos (Nomenclátor Geográfico Básico NGBE)',
+            type: 'WMS',
+            url: 'https://www.ign.es/wms-inspire/ngbe?',
+          },
+          {
+            name: 'Redes de transporte',
+            type: 'WMS',
+            url: 'https://servicios.idee.es/wms-inspire/transportes?',
+          },
+          {
+            name: 'Hidrografía ',
+            type: 'WMS',
+            url: 'https://servicios.idee.es/wms-inspire/hidrografia?',
+          },
+          {
+            name: 'Direcciones y códigos postales',
+            type: 'WMS',
+            url: 'https://www.cartociudad.es/wms-inspire/direcciones-ccpp?',
+          },
+          {
+            name: 'Ocupación del suelo (Corine y SIOSE)',
+            type: 'WMTS',
+            url: 'https://servicios.idee.es/wmts/ocupacion-suelo?',
+          },
+          {
+            name: 'Ocupación del suelo Histórico (Corine y SIOSE)',
+            type: 'WMS',
+            url: 'https://servicios.idee.es/wms-inspire/ocupacion-suelo-historico?',
+          },
+          {
+            name: 'Copernicus Land Monitoring Service',
+            type: 'WMS',
+            url: 'https://servicios.idee.es/wms/copernicus-landservice-spain?',
+          },
+          {
+            name: 'Información sísmica (terremotos)',
+            type: 'WMS',
+            url: 'https://www.ign.es/wms-inspire/geofisica?',
+          },
+          {
+            name: 'Red de vigilancia volcánica',
+            type: 'WMS',
+            url: 'https://wms-volcanologia.ign.es/volcanologia?',
+          },
+          {
+            name: 'Redes geodésicas',
+            type: 'WMS',
+            url: 'https://www.ign.es/wms-inspire/redes-geodesicas?',
+          },
+        ],
+      },
+      {
+        name: 'Modelos digitales de elevaciones',
+        services: [
+          {
+            name: 'Modelo Digital de Superficies (Sombreado superficies y consulta de elevaciones edificios y vegetación)',
+            type: 'WMTS',
+            url: 'https://wmts-mapa-lidar.idee.es/lidar?',
+          },
+          {
+            name: 'Modelo Digital del Terreno (Sombreado terreno y consulta de altitudes)',
+            type: 'WMTS',
+            url: 'https://servicios.idee.es/wmts/mdt?',
+          },
+          {
+            name: 'Curvas de nivel y puntos acotados',
+            type: 'WMS',
+            url: 'https://servicios.idee.es/wms-inspire/mdt?',
+            white_list: ['EL.ContourLine', 'EL.SpotElevation'],
+          },
+        ],
+      },
+
+    ],
+  },
+  order: 12,
+};
+
 export default class WindowSyncControl extends M.Control {
   /**
      * @classdesc
@@ -17,7 +261,7 @@ export default class WindowSyncControl extends M.Control {
      * @extends {M.Control}
      * @api stable
      */
-  constructor({ controls, plugins, layersPlugin }, controlsLayers, map) {
+  constructor({ controls, plugins = [], layersPlugin }, controlsLayers, map) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(WindowSyncImplControl)) {
       M.exception(getValue('exception'));
@@ -42,7 +286,22 @@ export default class WindowSyncControl extends M.Control {
       */
     this.map_ = map;
 
-    this.plugins = plugins;
+    this.plugins = [
+      {
+        name: 'Layerswitcher',
+        params: CONFIG_IBERPIX_LAYERSWITCHER,
+      },
+      {
+        name: 'BackImgLayer',
+        params: CONFIG_IBERPIX_BACKIMAGELAYER,
+      },
+    ];
+
+    plugins.forEach((plugin) => {
+      if (plugin.name !== 'Layerswitcher' && plugin.name !== 'BackImgLayer') {
+        this.plugins.push(plugin);
+      }
+    });
 
     this.controls = controls;
 
@@ -103,8 +362,10 @@ export default class WindowSyncControl extends M.Control {
           btnCloseWindow.addEventListener('click', this.closeWindows);
         }
       });
-  }
 
+    this.map_.addLayers(this.layers);
+    this.map_.getLayers().forEach((l) => !l.isBase && l.setVisible(false));
+  }
 
   /**
      * Activate Select/Input
@@ -151,7 +412,7 @@ export default class WindowSyncControl extends M.Control {
       if (newWindow.closed) {
         clearInterval(timer);
         // ? Se elimina por el indice para no perder la referencia
-        const index = this.mapsWindows_.findIndex(obj => obj.id === id);
+        const index = this.mapsWindows_.findIndex((obj) => obj.id === id);
         this.mapsWindows_.splice(index, 1);
       }
     }, 1000);
@@ -223,7 +484,7 @@ export default class WindowSyncControl extends M.Control {
     if (elements.length === 0) {
       elements = this.getAPIRestScriptAndLink(type, attr);
     }
-    return elements.map(l => l.outerHTML);
+    return elements.map((l) => l.outerHTML);
   }
 
   getAPIRestScriptAndLink(type, attr) {
@@ -270,8 +531,8 @@ export default class WindowSyncControl extends M.Control {
   }
 
   handlePluginScrips(name) {
-    const style = this.getScriptAndLink('link').some(s => s.includes(`${name.toLowerCase()}.ol.min.css`));
-    const script = this.getScriptAndLink('script').some(s => s.includes(`${name.toLowerCase()}.ol.min.js`));
+    const style = this.getScriptAndLink('link').some((s) => s.includes(`${name.toLowerCase()}.ol.min.css`));
+    const script = this.getScriptAndLink('script').some((s) => s.includes(`${name.toLowerCase()}.ol.min.js`));
 
     const currentUrl = window.location.href;
     if (currentUrl.includes('comparators') && (currentUrl.includes(M.config.MAPEA_URL))) {
@@ -318,4 +579,3 @@ export default class WindowSyncControl extends M.Control {
     return control instanceof WindowSyncControl;
   }
 }
-

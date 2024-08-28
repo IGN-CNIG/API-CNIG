@@ -112,7 +112,6 @@ export default class ZoomPanel extends M.Plugin {
     return M.language.getTranslation(lang).zoompanel;
   }
 
-
   /**
    * This function adds this plugin into the map
    *

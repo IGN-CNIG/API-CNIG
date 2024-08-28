@@ -204,7 +204,6 @@ class SelectCluster extends OLInteractionSelect {
     }
   }
 
-
   /**
    * Este método se encarga de dibujar los objetos geográficos y las líneas en el "cluster".
    * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
@@ -278,18 +277,19 @@ class SelectCluster extends OLInteractionSelect {
       clusterStyleFn = this.facadeLayer_.getStyle().getImpl().oldOL3Layer.getStyle();
     }
     const olClusterStyles = clusterStyleFn(clusterFeature, resolution);
-    const clonedStyles =
-      olClusterStyles.map ? olClusterStyles.map(s => s.clone()) : [olClusterStyles.clone()];
+    const clonedStyles = olClusterStyles.map
+      ? olClusterStyles.map((s) => s.clone())
+      : [olClusterStyles.clone()];
 
     cf.setId(clusterFeature.getId());
     cf.setStyle(clonedStyles);
     cf.set('features', [clusterFeature]);
-    const geometry = ['Point', 'MultiPoint'].includes(clusterFeature.getGeometry().getType()) === true ?
-      new OLGeomPoint(newPoint) :
-      clusterFeature.getGeometry();
-    const linkGeometry = ['Point', 'MultiPoint'].includes(clusterFeature.getGeometry().getType()) === true ?
-      new OLGeomLineString([center, newPoint]) :
-      new OLGeomLineString([center, Utils.getCentroid(clusterFeature.getGeometry())]);
+    const geometry = ['Point', 'MultiPoint'].includes(clusterFeature.getGeometry().getType()) === true
+      ? new OLGeomPoint(newPoint)
+      : clusterFeature.getGeometry();
+    const linkGeometry = ['Point', 'MultiPoint'].includes(clusterFeature.getGeometry().getType()) === true
+      ? new OLGeomLineString([center, newPoint])
+      : new OLGeomLineString([center, Utils.getCentroid(clusterFeature.getGeometry())]);
     cf.set('geometry', geometry);
     this.overlayLayer_.getSource().addFeature(cf);
 
@@ -341,7 +341,7 @@ class SelectCluster extends OLInteractionSelect {
           const geo = new OLGeomPoint(pt);
 
           // draw links
-          const st2 = this.overlayLayer_.getStyle()(mFeature, res).map(s => s.clone());
+          const st2 = this.overlayLayer_.getStyle()(mFeature, res).map((s) => s.clone());
           for (let s = 0; s < st2.length; s += 1) {
             const styleLink = st2[s];
             if (!styleLink.getImage().size) {
@@ -357,8 +357,9 @@ class SelectCluster extends OLInteractionSelect {
             clusterStyleFn = this.facadeLayer_.getStyle().getImpl().oldOL3Layer.getStyle();
           }
           const olClusterStyles = clusterStyleFn(mFeature, res);
-          const st =
-            olClusterStyles.map ? olClusterStyles.map(s => s.clone()) : [olClusterStyles.clone()];
+          const st = olClusterStyles.map
+            ? olClusterStyles.map((s) => s.clone())
+            : [olClusterStyles.clone()];
           for (let s = 0; s < st.length; s += 1) {
             const style = st[s];
             const imgs = style.getImage();

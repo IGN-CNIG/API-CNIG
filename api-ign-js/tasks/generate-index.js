@@ -15,7 +15,7 @@ const CUSTOM_NAMESPACES = require('./custom-namespaces');
  */
 async function getSymbols() {
   const info = await generateInfo();
-  return info.symbols.filter(symbol => symbol.kind !== 'member' && symbol.name.startsWith('module:'));
+  return info.symbols.filter((symbol) => symbol.kind !== 'member' && symbol.name.startsWith('module:'));
 }
 
 /**
@@ -24,7 +24,7 @@ async function getSymbols() {
  */
 async function getOLSymbols() {
   const info = await generateOLInfo();
-  return info.symbols.filter(symbol => symbol.name.startsWith('module:'));
+  return info.symbols.filter((symbol) => symbol.name.startsWith('module:'));
 }
 
 const srcPath = path.posix.resolve(__dirname, '../src').replace(/\\/g, '/');
@@ -103,9 +103,9 @@ function formatSymbolExport(name, namespaces) {
   const isNamed = parts[0].indexOf('.') !== -1;
   const nsParts = parts[0].replace(/^module:/, '').split(/[/.]/);
   const last = nsParts.length - 1;
-  const importName = isNamed ?
-    nsParts.slice(0, last).join('') + 'Module' + '.' + nsParts[last] :
-    '$' + nsParts.join('$');
+  const importName = isNamed
+    ? nsParts.slice(0, last).join('') + 'Module' + '.' + nsParts[last]
+    : '$' + nsParts.join('$');
   let line = nsParts[0];
   for (let i = 1, ii = nsParts.length; i < ii; ++i) {
     line += `.${nsParts[i]}`;
@@ -114,7 +114,6 @@ function formatSymbolExport(name, namespaces) {
   line += ` = ${importName};`;
   return line;
 }
-
 
 /**
  * Generate export code given a list symbol names.
@@ -184,11 +183,11 @@ async function main() {
   const symbols = await getSymbols();
   const imports = await getImports(symbols);
   const olSymbols = await getOLSymbols();
-  imports.push('\n/* eslint-disable */\n');
   const olImports = await getOLImports(olSymbols);
   const totalSymbols = symbols.concat(olSymbols);
   const totalImports = imports.concat(olImports);
-  return generateExports(totalSymbols, {}, totalImports);
+  totalImports.push('/* eslint-disable */\n');
+  return generateExports(totalSymbols, {}, totalImports.reverse());
 }
 
 /**
@@ -205,7 +204,6 @@ if (require.main === module) {
     process.stderr.write(`${err.message}\n`, () => process.exit(1));
   });
 }
-
 
 /**
  * Export main function.

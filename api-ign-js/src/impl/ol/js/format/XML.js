@@ -1,9 +1,9 @@
 /**
  * @module M/impl/format/XML
  */
+import { parse as olXMLParse } from 'ol/xml';
 import { isString } from 'M/util/Utils';
 import Exception from 'M/exception/exception';
-import { parse as olXMLParse } from 'ol/xml';
 import { getValue } from 'M/i18n/language';
 
 /**
@@ -60,7 +60,6 @@ class XML {
       */
     this.options = options;
   }
-
 
   /**
     * Este método obtiene un objeto basado en el XML dado.

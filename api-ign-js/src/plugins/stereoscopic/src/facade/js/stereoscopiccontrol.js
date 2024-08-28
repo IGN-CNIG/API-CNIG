@@ -1,3 +1,4 @@
+/* eslint-disable default-param-last */
 /**
  * @module M/control/StereoscopicControl
  */
@@ -17,7 +18,12 @@ export default class StereoscopicControl extends M.Control {
    * @extends {M.Control}
    * @api stable
    */
-  constructor(orbitControls = false,  anaglyphActive = false, maxMagnify = {}, defaultAnaglyphActive = false) {
+  constructor(
+    orbitControls = false,
+    anaglyphActive = false,
+    defaultAnaglyphActive = false,
+    maxMaginification,
+  ) {
     // 1. checks if the implementation can create PluginControl
     if (M.utils.isUndefined(StereoscopicImplControl)) {
       M.exception(getValue('exception.impl'));
@@ -27,12 +33,11 @@ export default class StereoscopicControl extends M.Control {
     super(impl, 'Stereoscopic');
     this.active = false;
     this.orbitControls_ = orbitControls;
-    this.anaglyphActive_ =  anaglyphActive;
+    this.anaglyphActive_ = anaglyphActive;
     this.toggle = false;
-    this.isMaxMagnify = Object.keys(maxMagnify).length !== 0;
-    this.maxMagnify = maxMagnify;
 
     this.defaultAnaglyphActive = defaultAnaglyphActive;
+    this.maxMaginification = maxMaginification;
   }
 
   /**
@@ -64,7 +69,9 @@ export default class StereoscopicControl extends M.Control {
             orbitControls: this.orbitControls_,
             activate3d: getValue('activate3d'),
             linkGlass: getValue('linkGlass'),
+            maxMagnification: this.maxMaginification,
           },
+          url: `${M.config.MAPEA_URL}plugins/stereoscopic/images/docStereo.pdf`,
         },
       });
       this.addEvent(html, this.map_);
@@ -85,7 +92,7 @@ export default class StereoscopicControl extends M.Control {
   }
 
   addEvent(html, mapjs) {
-    html.querySelector('#range3d').addEventListener('change', ({target})=> {
+    html.querySelector('#range3d').addEventListener('change', ({ target }) => {
       // eslint-disable-next-line no-undef
       TR3.formatMeasure(TR3.tPixMesh);
       // eslint-disable-next-line no-undef
@@ -100,20 +107,21 @@ export default class StereoscopicControl extends M.Control {
     });
   }
 
-  handleAnaglyph(mapjs, target){
+  handleAnaglyph(mapjs, target) {
     if (this.toggle === true) {
       document.querySelector('.map canvas').style.display = 'none';
       setTimeout(() => { // View3D Resolve Window White
-        const {x, y} = mapjs.getCenter();
-        mapjs.setCenter({ x: x + 1, y: y+1 });
+        const { x, y } = mapjs.getCenter();
+        mapjs.setCenter({ x: x + 1, y: y + 1 });
       }, 100);
-
+      // eslint-disable-next-line no-param-reassign
       target.innerHTML = target.innerHTML.replace(getValue('activate3d'), getValue('disable3d'));
       this.enableOptionView3D('#anaglyph-type');
       this.enableOptionView3D('#range3d');
       target.classList.add('toggle3D');
     } else {
       document.querySelector('.map canvas').style.display = 'block';
+      // eslint-disable-next-line no-param-reassign
       target.innerHTML = target.innerHTML.replace(getValue('disable3d'), getValue('activate3d'));
       this.disableOptionView3D('#anaglyph-type');
       this.disableOptionView3D('#range3d');
@@ -125,7 +133,7 @@ export default class StereoscopicControl extends M.Control {
     const newScript = document.createElement('script');
     newScript.type = 'module';
 
-    const url = M.config.MAPEA_URL+'plugins/stereoscopic/'
+    const url = `${M.config.MAPEA_URL}plugins/stereoscopic/`;
 
     const inlineScript = document.createTextNode(` const TR3cfg = new Array();
 
@@ -152,22 +160,13 @@ export default class StereoscopicControl extends M.Control {
     document.getElementById('tools').innerHTML = TR3.setPanel();
 
     const opts = {
-        imgControl: ${this.orbitControls_},	//desvía los controles de manejo de escena a ina imagen externa
-        cursor3d: false,		//visiviliza el cusrso 3D
-        anaglyph: ${this.anaglyphActive_},		//Activa el modo Anaglifo
-        autoRotate: false,	//Activa la rotación
+        imgControl: ${this.orbitControls_},
+        cursor3d: false,
+        anaglyph: ${this.anaglyphActive_},
+        autoRotate: false,
         wireframeMesh: false, //Muestra la malla del terreno
-        tentative: true, 	//Muestra los elelemtos interactivos realzando su tamaño
-        cheapMode: false	//Activa el modo ahorro de rendimiento
-    }
-
-    function getZoomMaxMagnify(objeto, zoom) {
-      for (const clave in objeto) {
-        if(Number(clave) >= zoom) {
-          return objeto[clave];
-        }
-      }
-      return 1;
+        tentative: true,
+        cheapMode: false
     }
 
     TR3.setOpts(opts);
@@ -178,7 +177,7 @@ export default class StereoscopicControl extends M.Control {
     function setTR3(changeZoom = true) {
         const bbox = map.getMapImpl().getView().calculateExtent(map.getMapImpl().getSize());
         const code = map.getMapImpl().getView().getProjection().getCode();
-
+  
         const desty = document.getElementById('TR3');
         // const ori = document.getElementsByTagName('CANVAS')[0]; // 1
         const ori = document.querySelector('.ol-layer canvas');
@@ -190,141 +189,114 @@ export default class StereoscopicControl extends M.Control {
             projCode: code
         };
 
-        TR3.setStart(TR3pms).then(function (obj) {
-            TR3.scene.remove();
-            changeZoom ? TR3.setMagniValues('auto') 
-            : TR3.setMagniValues(document.querySelector('#range3d').value);
-        });
+        TR3.setStart(TR3pms);
+        if(changeZoom) {
+        setTimeout(() => {
+          TR3.setMagniValues(document.querySelector('#range3d').value);
+        }, 1000);
+      }
     }
 
     let changeZoom = 0;
     map.getMapImpl().on('moveend', (e) => {
         if(changeZoom !== e.frameState.viewState.zoom) {
+          setTR3(true);
           changeZoom = e.frameState.viewState.zoom;
-          if(window.toggle3D) {setTR3(true);}
-          if(${this.isMaxMagnify}) {
-            const obj = ${JSON.stringify(this.maxMagnify)};
-            const max = getZoomMaxMagnify(obj, changeZoom);
-            document.querySelector('#range3d').max = (TR3.valuesSet.magnification + max);
-            document.querySelector('#range3d').value = TR3.valuesSet.magnification;
-          } else {
-            document.querySelector('#range3d').max = (TR3.valuesSet.magnification + 1);
-            document.querySelector('#range3d').value = TR3.valuesSet.magnification;
-          }
-
         } else {
-          if(window.toggle3D) {setTR3(false);}
+          setTR3(true);
         }
-
-      const toggle3D = document.querySelector('#toggle3D');
     });
 
-        // https://openlayers.org/en/latest/examples/tile-load-events.html
+
     /**
      * Renders a progress bar.
      * @param {HTMLElement} el The target element.
      * @constructor
      */
     function Progress(el) {
-        this.el = el;
-        this.loading = 0;
-        this.loaded = 0;
+      this.el = el;
+      this.loading = 0;
+      this.loaded = 0;
     }
 
     /**
      * Increment the count of loading tiles.
      */
     Progress.prototype.addLoading = function () {
-        if (this.loading === 0) {
-            this.show();
-        }
-        ++this.loading;
-        this.update();
+      if (this.loading === 0) {
+          this.show();
+      }
+      ++this.loading;
+      this.update();
     };
 
     /**
      * Increment the count of loaded tiles.
      */
     Progress.prototype.addLoaded = function () {
-        const this_ = this;
-        setTimeout(function () {
-            ++this_.loaded;
-            this_.update();
-        }, 100);
-    };
-
-    /**
-     * Update the progress bar.
-     */
-    Progress.prototype.update = function () {
-        const width = ((this.loaded / this.loading) * 100).toFixed(1) + '%';
-        this.el.style.width = width;
-        if (this.loading === this.loaded) {
-            this.loading = 0;
-            this.loaded = 0;
-            const this_ = this;
-            setTimeout(function () {
-                this_.hide();
-            }, 1700);
-        }
+      const this_ = this;
+      setTimeout(function () {
+        ++this_.loaded;
+        this_.update();
+      }, 100);
     };
 
     /**
      * Show the progress bar.
      */
     Progress.prototype.show = function () {
-        this.el.style.visibility = 'visible';
+      this.el.style.visibility = 'visible';
     };
 
     /**
      * Hide the progress bar.
      */
     Progress.prototype.hide = function () {
-        if (this.loading === this.loaded) {
-            this.el.style.visibility = 'hidden';
-            this.el.style.width = 0;
-        }
+      if (this.loading === this.loaded) {
+        this.el.style.visibility = 'hidden';
+        this.el.style.width = 0;
+      }
     };
 
     /**
      * Update the progress bar.
      */
     Progress.prototype.update = function () {
-        const width = ((this.loaded / this.loading) * 100).toFixed(1) + '%';
-        this.el.style.width = width;
-        if (this.loading === this.loaded) {
-            this.loading = 0;
-            this.loaded = 0;
-            const this_ = this;
-            setTimeout(function () {
-                setTR3();
-            }, 1700);
-        }
+      const width = ((this.loaded / this.loading) * 100).toFixed(1) + '%';
+      this.el.style.width = width;
+      if (this.loading === this.loaded) {
+        this.loading = 0;
+        this.loaded = 0;
+        const this_ = this;
+        setTimeout(function () {
+          setTR3();
+        }, 100);
+      }
     };
 
     const progress = new Progress(document.getElementById('progress'));
 
     map.getLayers()[0].getImpl().getOL3Layer().getSource().on('tileloadstart', function () {
-        progress.addLoading();
+      progress.addLoading();
     });
 
     map.getLayers()[0].getImpl().getOL3Layer().getSource().on('tileloadend', function () {
-        progress.addLoaded();
+      progress.addLoaded();
     });
     map.getLayers()[0].getImpl().getOL3Layer().getSource().on('tileloaderror', function () {
-        progress.addLoaded();
-    });
-`);
+      progress.addLoaded();
+    });`);
+
     newScript.appendChild(inlineScript);
     document.body.appendChild(newScript);
 
-    if(this.defaultAnaglyphActive) {
+    if (this.defaultAnaglyphActive) {
       setTimeout(() => {
         this.toggle = true;
         this.handleAnaglyph(this.map_, document.querySelector('#toggle3D'));
       }, 1000);
     }
-}
+  }
 
   /**
    * This function compares controls

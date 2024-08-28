@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
 	EventDispatcher,
 	MOUSE,
@@ -204,9 +205,9 @@ class OrbitControls extends EventDispatcher {
 
 					} else {
 
-						spherical.theta = ( spherical.theta > ( min + max ) / 2 ) ?
-							Math.max( min, spherical.theta ) :
-							Math.min( max, spherical.theta );
+						spherical.theta = ( spherical.theta > ( min + max ) / 2 )
+							? Math.max( min, spherical.theta )
+							: Math.min( max, spherical.theta );
 
 					}
 
@@ -216,7 +217,6 @@ class OrbitControls extends EventDispatcher {
 				spherical.phi = Math.max( scope.minPolarAngle, Math.min( scope.maxPolarAngle, spherical.phi ) );
 
 				spherical.makeSafe();
-
 
 				spherical.radius *= scale;
 
@@ -265,9 +265,9 @@ class OrbitControls extends EventDispatcher {
 				// min(camera displacement, camera rotation in radians)^2 > EPS
 				// using small-angle approximation cos(x/2) = 1 - x^2 / 8
 
-				if ( zoomChanged ||
-					lastPosition.distanceToSquared( scope.object.position ) > EPS ||
-					8 * ( 1 - lastQuaternion.dot( scope.object.quaternion ) ) > EPS ) {
+				if ( zoomChanged
+					|| lastPosition.distanceToSquared( scope.object.position ) > EPS
+					|| 8 * ( 1 - lastQuaternion.dot( scope.object.quaternion ) ) > EPS ) {
 
 					scope.dispatchEvent( _changeEvent );
 
@@ -298,7 +298,6 @@ class OrbitControls extends EventDispatcher {
 
 			scope.domElement.ownerDocument.removeEventListener( 'pointermove', onPointerMove );
 			scope.domElement.ownerDocument.removeEventListener( 'pointerup', onPointerUp );
-
 
 			if ( scope._domElementKeyEvents !== null ) {
 
@@ -636,7 +635,6 @@ class OrbitControls extends EventDispatcher {
 				scope.update();
 
 			}
-
 
 		}
 
@@ -1204,7 +1202,6 @@ class OrbitControls extends EventDispatcher {
 	}
 
 }
-
 
 // This set of controls performs orbiting, dollying (zooming), and panning.
 // Unlike TrackballControls, it maintains the "up" direction object.up (+Y by default).

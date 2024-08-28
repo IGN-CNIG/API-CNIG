@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg">
-<metadata>Copyright (C) 2023 by original authors @ fontello.com</metadata>
+<metadata>Copyright (C) 2024 by original authors @ fontello.com</metadata>
 <defs>
 <font id="modal" horiz-adv-x="1000" >
 <font-face font-family="modal" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
 <missing-glyph horiz-adv-x="1000" />
-<glyph glyph-name="help" unicode="&#xe800;" d="M494 740q86-62 86-184 0-64-42-124-12-20-88-80l-46-30q-40-34-48-60-6-16-8-44 0-14-16-14l-128 0q-16 0-16 12 4 98 28 124 16 22 48 48t56 42l24 14q22 16 34 34 28 44 28 70 0 40-26 78-28 36-92 36-68 0-94-44-28-42-28-92l-166 0q6 162 114 232 70 42 166 42 130 0 214-60z m-216-636q44 0 73-30t27-74q-2-46-32-73t-74-25q-44 0-73 29t-27 75 32 73 74 25z" horiz-adv-x="580" />
+<glyph glyph-name="help" unicode="&#xe800;" d="M900 750q42 0 71-30t29-70l0-600q0-42-29-71t-71-29l-800 0q-40 0-70 29t-30 71l0 600q0 40 30 70t70 30l800 0z m-670-94q-16 0-27-11t-11-25q0-16 11-27t27-11q38 0 38 38 0 16-11 26t-27 10z m-138-36q0-16 11-27t27-11q38 0 38 38 0 16-11 26t-27 10-27-11-11-25z m810-570l0 460-802 0 0-460 802 0z m0 540l0 60-602 0 0-60 602 0z" horiz-adv-x="1000" />
 </font>
 </defs>
 </svg>

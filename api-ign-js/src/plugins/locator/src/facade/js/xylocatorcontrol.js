@@ -108,8 +108,8 @@ export default class XYLocatorControl extends M.Control {
       });
       document.querySelector('#div-contenedor-locator').appendChild(panel);
       this.html_.querySelector('button#m-xylocator-limpiar').addEventListener('click', () => this.clearResults());
-      this.html_.querySelector('select#m-xylocator-srs').addEventListener('change', evt => this.manageInputs_(evt));
-      this.html_.querySelector('button#m-xylocator-loc').addEventListener('click', evt => this.calculate_());
+      this.html_.querySelector('select#m-xylocator-srs').addEventListener('change', (evt) => this.manageInputs_(evt));
+      this.html_.querySelector('button#m-xylocator-loc').addEventListener('click', (evt) => this.calculate_());
     }
   }
 
@@ -216,10 +216,10 @@ export default class XYLocatorControl extends M.Control {
         const ssLat = this.html_.querySelector('input#LATSS').value;
         const dirLat = this.html_.querySelector('input[name="LATDIR"]:checked').value;
 
-        if (this.checkDegreeValue_(mmLon) && this.checkDegreeValue_(ssLon) &&
-          this.checkDegreeValue_(mmLat) &&
-          this.checkDegreeValue_(ssLat) && parseFloat(hhLon) >= 0 &&
-          parseFloat(hhLon) <= 180 && parseFloat(hhLat) >= 0 && parseFloat(hhLat) <= 180) {
+        if (this.checkDegreeValue_(mmLon) && this.checkDegreeValue_(ssLon)
+          && this.checkDegreeValue_(mmLat)
+          && this.checkDegreeValue_(ssLat) && parseFloat(hhLon) >= 0
+          && parseFloat(hhLon) <= 180 && parseFloat(hhLat) >= 0 && parseFloat(hhLat) <= 180) {
           x = parseFloat(hhLon) + (parseFloat(mmLon) / 60) + (parseFloat(ssLon) / 3600);
           y = parseFloat(hhLat) + (parseFloat(mmLat) / 60) + (parseFloat(ssLat) / 3600);
 

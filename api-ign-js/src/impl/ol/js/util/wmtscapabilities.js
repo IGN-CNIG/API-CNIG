@@ -8,7 +8,6 @@ import { isNullOrEmpty, isArray, isObject } from 'M/util/Utils';
 import { get as getProj } from 'ol/proj';
 import ImplUtils from './Utils';
 
-
 /**
   * Este método calcula recursivamente la extensión de
   * una capa específica a partir de su 'GetCapabilities'.
@@ -126,4 +125,3 @@ const getLayerExtent = (parsedCapabilities, name, code, defaultExtent) => {
 };
 
 export default getLayerExtent;
-

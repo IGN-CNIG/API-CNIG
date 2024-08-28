@@ -50,8 +50,6 @@ class TMS extends LayerBase {
    * @param {string|Mx.parameters.TMS} userParameters Parámetros para la construcción de la capa.
    * - name: Nombre de la capa en la leyenda.
    * - url: Urlque genera la capa TMS.
-   * - minZoom: Zoom mínimo aplicable a la capa.
-   * - maxZoom: Zoom máximo aplicable a la capa.
    * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica,
    * [x.min, y.min, x.max, y.max].
@@ -117,6 +115,11 @@ class TMS extends LayerBase {
     this.url = parameters.url;
 
     /**
+     * XYZ maxextent: Extensión de visualización
+     */
+    this.userMaxExtent = userParameters.maxExtent;
+
+    /**
      * TMS name: Nombre de la capa.
      */
     this.name = parameters.name;
@@ -127,21 +130,21 @@ class TMS extends LayerBase {
     this.legend = parameters.legend;
 
     /**
-     * TMS minzoom. Zoom mínimo.
-     */
-    this.minZoom = parameters.minZoom;
-
-
-    /**
-     * TMS maxzoom. Zoom máximo.
-     */
-    this.maxZoom = parameters.maxZoom;
-
-    /**
      * TMS tileGridMaxZoom. Zoom máximo de cuadrícula de mosaico.
      */
     this.tileGridMaxZoom = parameters.tileGridMaxZoom;
 
+    if (isUndefined(this.tileGridMaxZoom)) {
+      /**
+       * TMS minzoom. Zoom mínimo.
+       */
+      this.minZoom = options.minZoom || Number.NEGATIVE_INFINITY;
+
+      /**
+       * TMS maxzoom. Zoom máximo.
+       */
+      this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
+    }
     /**
      * TMS options. Opciones de capa.
      */

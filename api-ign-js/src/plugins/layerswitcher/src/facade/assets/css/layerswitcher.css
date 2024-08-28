@@ -594,6 +594,8 @@ div.m-layerswitcher-legend>img {
     min-width: 400px;
     max-width: 500px;
     margin: 0 auto;
+    overflow: auto;
+    max-height: 50vh;
 }
 
 .m-layerswitcher-suggestion-caret {

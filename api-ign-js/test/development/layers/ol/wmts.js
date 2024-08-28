@@ -1,8 +1,9 @@
+/* eslint-disable no-loss-of-precision,no-plusplus,camelcase */
 import TileLayer from 'ol/layer/Tile';
 import WMTS from 'ol/source/WMTS';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import { get as getProjection } from 'ol/proj';
-import {getTopLeft, getWidth} from 'ol/extent.js';
+import { getTopLeft, getWidth } from 'ol/extent.js';
 
 // Create the WMTS layer
 export const wmtsLayer_01 = new TileLayer({
@@ -61,7 +62,6 @@ export const wmtsLayer_01 = new TileLayer({
   legend: 'Prueba de leyenda',
 });
 
-
 const projection = getProjection('EPSG:3857');
 const projectionExtent = projection.getExtent();
 const size = getWidth(projectionExtent) / 256;
@@ -69,7 +69,7 @@ const resolutions = new Array(19);
 const matrixIds = new Array(19);
 for (let z = 0; z < 19; ++z) {
   // generate resolutions and matrixIds arrays for this WMTS
-  resolutions[z] = size / Math.pow(2, z);
+  resolutions[z] = size / 2 ** z;
   matrixIds[z] = z;
 }
 export const wmtsLayer_02 = new TileLayer({
@@ -78,10 +78,11 @@ export const wmtsLayer_02 = new TileLayer({
     layer: 'catastrones',
     matrixSet: 'GoogleMapsCompatible',
     format: 'image/jpeg',
-    projection: projection,
+    projection,
     tileGrid: new WMTSTileGrid({
       origin: getTopLeft(projectionExtent),
-      resolutions: resolutions,
-      matrixIds: matrixIds,
-    })})
+      resolutions,
+      matrixIds,
+    }),
+  }),
 });
