@@ -21,3 +21,28 @@ export const removeLayersInLayerSwitcher = (evt, layer, map, layerName) => {
     map.removeLayers(layer);
   }
 };
+
+export const addAttributions = (layers) => {
+  return layers.map((l) => {
+    const layer = l;
+    const attributions = layer.capabilitiesMetadata.attribution;
+
+    if (attributions !== undefined) {
+      const {
+        Title,
+        OnlineResource,
+        ProviderName,
+        ProviderSite,
+      } = attributions;
+
+      layer.attribution = {
+        name: Title || ProviderName,
+        url: OnlineResource || ProviderSite,
+        nameLayer: layer.name,
+        id: window.crypto.randomUUID(),
+      };
+      return layer;
+    }
+    return layer;
+  });
+};

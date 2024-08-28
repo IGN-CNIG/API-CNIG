@@ -7,7 +7,7 @@ import { getValue } from '../../../facade/js/i18n/language';
 
 export default class MouseSRSControl extends M.impl.Control {
   // eslint-disable-next-line max-len
-  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl, order, draggableDialog, epsgFormat) {
+  constructor(srs, label, precision, geoDecimalDigits, utmDecimalDigits, tooltip, activeZ, helpUrl, mode, coveragePrecissions, order, draggableDialog, epsgFormat) {
     super();
 
     /**
@@ -70,6 +70,16 @@ export default class MouseSRSControl extends M.impl.Control {
      */
     this.helpUrl = helpUrl;
 
+    /**
+     * Service to use for Z value
+     * Values: wcs, ogc
+     * @private
+     * @type {string}
+     */
+    this.mode_ = mode;
+
+    this.coveragePrecissions_ = coveragePrecissions;
+
     this.order = order;
 
     this.epsgFormat = epsgFormat;
@@ -108,12 +118,14 @@ export default class MouseSRSControl extends M.impl.Control {
       utmDecimalDigits: this.utmDecimalDigits,
       activeZ: this.activeZ,
       order: this.order,
+      mode: this.mode_,
+      coveragePrecissions: this.coveragePrecissions_,
     });
 
     map.getMapImpl().addControl(this.mousePositionControl);
     super.addTo(map, html);
     setTimeout(() => {
-      this.mousePositionControl.initWCSLoaderManager(map);
+      this.mousePositionControl.initLoaderManager(map);
       document.querySelector('.m-mousesrs-container .m-mouse-srs').setAttribute('role', 'text ');
       document.querySelector('.m-mousesrs-container .m-mouse-srs').setAttribute('tabIndex', this.order);
       document.querySelector('.m-mousesrs-container .m-mouse-srs').addEventListener('click', this.openChangeSRS.bind(this, this.auxMap_, html));
@@ -136,7 +148,9 @@ export default class MouseSRSControl extends M.impl.Control {
       },
     });
 
-    if (this.epsgFormat) { this.formatEPSGs(content); }
+    if (this.epsgFormat) {
+      this.formatEPSGs(content);
+    }
     M.dialog.info(content.outerHTML, getValue('select_srs'), this.order);
     setTimeout(() => {
       document.querySelector('.m-dialog>div.m-modal>div.m-content').style.minWidth = '260px';

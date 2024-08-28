@@ -51,6 +51,8 @@
   "remove_layer": "Eliminar capa del mapa",
   "select_style": "Selecciona un estilo",
   "change": "Cambiar",
+  "change_name": "Cambiar nombre",
+  "defaultOptionGroup": "Añadir al mapa",
   "url_service": "Incluir URL del servicio a cargar",
   "query": "Consultar",
   "group": "Añadir un grupo de capa",

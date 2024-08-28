@@ -112,15 +112,19 @@ class LayerGroup extends Layer {
   }
 
   addLayer(layer) {
-    // ! Si esta añadida al mapa la tengo que eliminar
-    // ! VER LO QUE HACE OL
-
     if (!this.layers.includes(layer)) {
       const impl = layer.getImpl();
       this.setOLLayerToLayer_(layer);
 
       this.addRootLayerGroup(impl);
       this.layers.push(layer);
+
+      if (this.zIndex_ !== null) {
+        // ? Por si existe subgrupos siga todo un orden
+        this.layers.forEach((l, i) => {
+          l.setZIndex(this.ol3Layer.getZIndex() - i - 1);
+        });
+      }
 
       this.layersCollection.push(impl.getOL3Layer());
     }

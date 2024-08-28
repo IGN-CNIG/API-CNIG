@@ -24,6 +24,17 @@ const mp = new MouseSRS({
   epsgFormat: false, // Utilizar otra forma de descripción de label
   draggableDialog: true, // Activa dragging sobre el popup que aparece para escoger EPSG
   order: 1,
+  mode: 'ogcapicoverage',
+  coveragePrecissions: [
+    {
+      url: 'https://api-coverages.idee.es/collections/EL.ElevationGridCoverage_4326_1000/coverage',
+      minzoom: 10,
+      maxzoom: 12,
+    },
+    {
+      url: 'https://api-coverages.idee.es/collections/EL.ElevationGridCoverage_4326_500/coverage',
+      minzoom: 13,
+    },
+  ],
 });
 map.addPlugin(mp); window.mp = mp;
-

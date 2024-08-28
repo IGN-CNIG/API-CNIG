@@ -67,6 +67,11 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     max-width: 250px;
 }
 
+.m-layerswitcher-title-box:hover {
+    cursor: pointer;
+    color: #71a7d3;
+}
+
 /* Título */
 .m-layerswitcher-title {
     font-weight: bold !important;
@@ -109,6 +114,11 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     text-align: left;
 }
 
+.m-layerswitcher-content ul li {
+  border: 1px solid rgba(138, 134, 134, 0.73);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+}
+
 #m-layerswitcher-panel>ul {
     margin: 0px;
     padding: 0px;
@@ -124,6 +134,11 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
 
 .m-layerswitcher-sectionPanel-header-text {
     margin: 4px;
+}
+
+.m-layerswitcher-sectionPanel-header-text:hover {
+    cursor: pointer;
+    color: #71a7d3;
 }
 
 .m-layerswitcher-sectionPanel-header-text span {
@@ -1341,3 +1356,32 @@ div.m-dialog.info div.m-button > button {
 .m-dialog.error div.m-button>button {
     background-color: #71a7d3 !important;
 }
+
+button.g-cartografia-flecha-izquierda + div .m-layerswitcher-ullayersGroup {
+    padding-left: 10px;
+}
+
+button.g-cartografia-flecha-derecha + div .m-layerswitcher-ullayersGroup {
+    padding-right: 10px;
+}
+
+.m-layerswitcher-groups-fields-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.m-layerswitcher-groups-fields {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #464646;
+    cursor: pointer;
+    font-family: Muli, sans-serif;
+    font-size: 13px;
+    padding: 5px;
+    margin-top: 5px;
+    width: 100%;
+}
+

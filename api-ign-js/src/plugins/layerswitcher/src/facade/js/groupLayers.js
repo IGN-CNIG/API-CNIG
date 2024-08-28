@@ -1,3 +1,18 @@
+import addInGroupTemplate from 'templates/addInGroup';
+import { getValue } from './i18n/language';
+
+// I18N - Traducciones
+const I18N_DEFAULT_OPTION_GROUP = 'defaultOptionGroup';
+
+// Display
+const CLASS_DISPLAY_GROUP = 'm-layerswitcher-groupDisplay';
+const CLASS_DISPLAY_DESPLEGAR = 'm-layerswitcher-icons-desplegar';
+const CLASS_DISPLAY_COLAPSAR = 'm-layerswitcher-icons-colapsar';
+
+// Selector de grupos
+const CLASS_MODAL_LAYERGROUP = '.m-layerswitcher-groups-fields';
+const CONTAINER_LAYERGROUP = '#m-layerswitcher-groups-fields';
+
 export const getAllLayersGroup = (map) => {
   const allLayers = [];
   const layersGroup = map.getImpl().getGroupedLayers();
@@ -6,7 +21,7 @@ export const getAllLayersGroup = (map) => {
     if (group.displayInLayerSwitcher) {
       allLayers.push(group);
       group.getLayers().forEach((layer) => {
-        if (layer.type !== 'LayerGroup') {
+        if (layer.type !== M.layer.type.LayerGroup) {
           allLayers.push(layer);
         }
       });
@@ -16,20 +31,20 @@ export const getAllLayersGroup = (map) => {
 };
 
 export const displayLayers = ({ target }, targetName, map) => {
-  if (target.classList.contains('m-layerswitcher-groupDisplay')) {
+  if (target.classList.contains(CLASS_DISPLAY_GROUP)) {
     const groupLayer = map.getLayerGroup()
       .filter((layerGroup) => layerGroup.name === targetName)[0];
 
     const group = target.parentElement.parentElement.parentElement.children[1];
     group.style.display = group.style.display === 'none' ? 'block' : 'none';
 
-    if (target.classList.contains('m-layerswitcher-icons-desplegar')) {
-      target.classList.remove('m-layerswitcher-icons-desplegar');
-      target.classList.add('m-layerswitcher-icons-colapsar');
+    if (target.classList.contains(CLASS_DISPLAY_DESPLEGAR)) {
+      target.classList.remove(CLASS_DISPLAY_DESPLEGAR);
+      target.classList.add(CLASS_DISPLAY_COLAPSAR);
       groupLayer.display = true;
     } else {
-      target.classList.remove('m-layerswitcher-icons-colapsar');
-      target.classList.add('m-layerswitcher-icons-desplegar');
+      target.classList.remove(CLASS_DISPLAY_COLAPSAR);
+      target.classList.add(CLASS_DISPLAY_DESPLEGAR);
       groupLayer.display = false;
     }
   }
@@ -42,7 +57,7 @@ export const fiendLayerInGroup = (layer, map) => {
     layerGroup.getLayers().forEach((subLayer) => {
       if (subLayer.name === layer.name) {
         group = layerGroup;
-      } else if (subLayer.type === 'LayerGroup') {
+      } else if (subLayer.type === M.layer.type.LayerGroup) {
         findRecursiveGroup(subLayer);
       }
     });
@@ -53,4 +68,27 @@ export const fiendLayerInGroup = (layer, map) => {
   });
 
   return group;
+};
+
+export const createSelectGroup = (map) => {
+  const groups = map.getLayerGroup().reverse();
+
+  const select = M.template.compileSync(addInGroupTemplate, {
+    vars: {
+      groups,
+      translations: {
+        defaultSelectOption: getValue(I18N_DEFAULT_OPTION_GROUP),
+      },
+      order: 0,
+    },
+  });
+
+  const addGroup = document.querySelector(CONTAINER_LAYERGROUP);
+  addGroup.appendChild(select);
+};
+
+export const getLayerSelectGroup = (map) => {
+  const select = document.querySelector(CLASS_MODAL_LAYERGROUP);
+  const groups = map.getLayerGroup();
+  return groups.filter((group) => group.getImpl().getOL3Layer().ol_uid === select.value)[0];
 };

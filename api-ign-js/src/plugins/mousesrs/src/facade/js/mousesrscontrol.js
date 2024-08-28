@@ -25,6 +25,8 @@ export default class MouseSRSControl extends M.Control {
     tooltip,
     activeZ,
     helpUrl,
+    mode,
+    coveragePrecisions,
     order = 32766,
     draggableDialog = true,
     epsgFormat = false,
@@ -33,7 +35,7 @@ export default class MouseSRSControl extends M.Control {
       M.exception(getValue('exception.impl'));
     }
     // eslint-disable-next-line max-len
-    const impl = new MouseSRSImplControl(srs, label, precision, geoDD, utmDD, tooltip, activeZ, helpUrl, order, draggableDialog, epsgFormat);
+    const impl = new MouseSRSImplControl(srs, label, precision, geoDD, utmDD, tooltip, activeZ, helpUrl, mode, coveragePrecisions, order, draggableDialog, epsgFormat);
     super(impl, 'MouseSRS');
     this.tooltip_ = tooltip;
     this.order = order;

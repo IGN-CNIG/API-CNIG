@@ -129,8 +129,10 @@ export const getType = (parameter, forcedType) => {
       type = LayerType.OSM;
     } else {
       const typeMatches = parameter.match(/^(\w+)\*.+$/);
-      if (typeMatches && (typeMatches.length > 1)) {
-        type = LayerType.parse(typeMatches[1]);
+      const typeGroup = parameter.match(/^LayerGroup/);
+      if ((typeMatches && (typeMatches.length > 1))
+        || (typeGroup && (typeGroup.length > 1))) {
+        type = typeGroup !== null ? LayerType.parse(typeGroup[0]) : LayerType.parse(typeMatches[1]);
         if (isUndefined(type)) {
           Exception(`No se reconoce el tipo de capa ${typeMatches[1]}`);
         }
@@ -2120,6 +2122,31 @@ export const getURLGeoTIFF = (parameter) => {
 };
 
 /**
+ * Analiza el parámetro para obtener la URL del servicio de la capa GeoTIFF.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener la
+ * URL del servicio de la capa GeoTIFF.
+ * @returns {string} URL del servicio.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getBlobGeoTIFF = (parameter) => {
+  let blob;
+  if (isString(parameter)) {
+    blob = null;
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.blob)) {
+    blob = parameter.blob.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return blob;
+};
+
+/**
  * Analiza el parámetro para obtener la proyeccion de la capa GeoTIFF.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
@@ -2696,6 +2723,9 @@ export const geotiff = (userParameters) => {
 
     // gets the URL
     layerObj.url = getURLGeoTIFF(userParam);
+
+    // gets the blob
+    layerObj.blob = getBlobGeoTIFF(userParam);
 
     // gets the name
     layerObj.name = getNameGeoTIFF(userParam);
