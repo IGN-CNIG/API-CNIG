@@ -23,7 +23,8 @@ window.M.style = { Generic };
 window.ol = { style: { Style: OLStyle, Centroid, Fill: OLStyleFill, Stroke: OLStyleStroke, Circle: CircleStyle, Icon: OLStyleIcon, RegularShape: OLStyleRegularShape } };
 
 // genericVendor TEST
-
+// const genericVendor = [new OLStyle({ stroke: new OLStyleStroke({ color: 'red', width: 6, lineDash: [4, 8] }) })];
+// const genericVendor = [new OLStyle({ stroke: new OLStyleStroke({ color: 'blue', width: 3 }) }), new OLStyle({ stroke: new OLStyleStroke({ color: 'red', width: 6, lineDash: [4, 8] }) })];
 const genericVendor = undefined;
 
 const mapa = Mmap({

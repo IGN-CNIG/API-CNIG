@@ -211,10 +211,14 @@ class Generic extends Simple {
    */
   updateFacadeOptions(options, vendorOptions) {
     this.olStyleFn_ = (feature) => {
-      // NO SE SABE SI SE USA ESTE BIEN, ya que actualmente // #FIX_ST_VE_OP
-      // la clase genera un estilo de tipo POINT,LINE,POLYGON al que envia vendorOptions
-      // Y desde ahí se usa las clases ya probadas y funcionales de vendorOptions de esos.
       if (vendorOptions) {
+        // Generic vendorOptions, aplica su estilo a los POINT,LINE,POLYGON a la vez.
+        // #FIX_ST_VE_OP no esta diseñado de tal forma que solo se use una vez vendorOptions,
+        // aquí seguirá enviando el vendorOptions como resultado ya que solo se define a
+        // través de la styleFuntion. Por lo que se intenta arreglar de esta manera.
+        // this.updateFacadeOptions(options);
+        // eslint-disable-next-line no-underscore-dangle
+        // this.layer_.getImpl().ol3Layer.styleFunction_ = this.olStyleFn_;
         if (isArray(vendorOptions)) {
           return vendorOptions;
         }

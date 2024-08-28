@@ -29,7 +29,7 @@ function getBinaryPath(binaryName) {
   const jsdocResolved = require.resolve('jsdoc/jsdoc.js');
   const expectedPaths = [
     path.join(__dirname, '..', 'node_modules', '.bin', binaryName),
-    path.resolve(path.join(path.dirname(jsdocResolved), '..', '.bin', binaryName))
+    path.resolve(path.join(path.dirname(jsdocResolved), '..', '.bin', binaryName)),
   ];
 
   for (let i = 0; i < expectedPaths.length; i++) {
@@ -39,14 +39,12 @@ function getBinaryPath(binaryName) {
     }
   }
 
-  throw Error('JsDoc binary was not found in any of the expected paths: ' + expectedPaths);
+  throw Error(`JsDoc binary was not found in any of the expected paths: ${expectedPaths}`);
 }
 
 const jsdoc = getBinaryPath('jsdoc');
 
-const jsdocConfig = path.join(
-  __dirname, '..', 'config', 'jsdoc', 'info', 'conf.json');
-
+const jsdocConfig = path.join(__dirname, '..', 'config', 'jsdoc', 'info', 'conf.json');
 
 /**
  * Generate a list of all .js paths in the source directory.
@@ -65,7 +63,7 @@ function getPaths(rootPath) {
       next();
     });
     walker.on('errors', () => {
-      reject(new Error(`Trouble walking ${sourceDir}`));
+      reject(new Error(`Trouble walking ${rootPath}`));
     });
 
     walker.on('end', () => {
@@ -84,7 +82,6 @@ function getPaths(rootPath) {
   });
 }
 
-
 /**
  * Parse the JSDoc output.
  * @param {string} output JSDoc output
@@ -99,18 +96,17 @@ function parseOutput(output) {
   try {
     info = JSON.parse(String(output));
   } catch (err) {
-    throw new Error('Failed to parse output as JSON: ' + output);
+    throw new Error(`Failed to parse output as JSON: ${output}`);
   }
   if (!Array.isArray(info.symbols)) {
-    throw new Error('Expected symbols array: ' + output);
+    throw new Error(`Expected symbols array: ${output}`);
   }
   if (!Array.isArray(info.defines)) {
-    throw new Error('Expected defines array: ' + output);
+    throw new Error(`Expected defines array: ${output}`);
   }
 
   return info;
 }
-
 
 /**
  * Spawn JSDoc.
@@ -123,9 +119,7 @@ function spawnJSDoc(paths, array) {
     let output = '';
     let errors = '';
     const cwd = path.join(__dirname, '..');
-    const child = spawn(jsdoc, ['-c', jsdocConfig].concat(paths), {
-      cwd
-    });
+    const child = spawn(jsdoc, ['-c', jsdocConfig].concat(paths), { cwd });
 
     child.stdout.on('data', (data) => {
       output += String(data);
@@ -166,9 +160,7 @@ function spawnJSDoc(paths, array) {
  * @return {Promise} Resolves on completion.
  */
 async function write(info) {
-  await fse.outputJson(infoPath, info, {
-    spaces: 2
-  });
+  await fse.outputJson(infoPath, info, { spaces: 2 });
 }
 
 /**
@@ -180,10 +172,9 @@ async function main() {
   const facadePaths = await getPaths(sourceFacadePath);
   const implPaths = await getPaths(sourceImplPath);
   const spawnResult = await spawnJSDoc(facadePaths.concat(implPaths), arr);
-  arr.forEach(e => console.log(e));
+  arr.forEach((e) => console.log(e));
   return spawnResult;
 }
-
 
 /**
  * If running this module directly, generate and write out the info.json file.
@@ -193,7 +184,6 @@ if (require.main === module) {
     process.stderr.write(`${err.message}\n`, () => process.exit(1));
   });
 }
-
 
 /**
  * Export main function.

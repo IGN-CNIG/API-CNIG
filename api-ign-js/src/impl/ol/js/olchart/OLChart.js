@@ -33,10 +33,21 @@ class OLChart extends OLStyleRegularShape {
    *  - donutRatio: La relación de tipo 'donut' del gráfico.
    *  - data: Datos del gráfico.
    *  - fill3DColor: El color de relleno.
+   *  - displacement: Modifica el anchor.
    * @api
    */
   constructor(options = {}) {
     const strokeWidth = !isNullOrEmpty(options.stroke) ? options.stroke.getWidth() : 0;
+
+    /**
+     * Desplazamientos del eje del gráfico.
+     * @private
+     * @type {Array<number>}
+     */
+    const auxOffset = [
+      options.offsetX ? options.offsetX : 0,
+      options.offsetY ? options.offsetY : 0,
+    ];
 
     // super call
     super({
@@ -46,6 +57,7 @@ class OLChart extends OLStyleRegularShape {
       }),
       rotation: (typeof options.rotation === 'number' ? options.rotation : 0),
       snapToPixel: (typeof options.snapToPixel === 'boolean' ? options.snapToPixel : false),
+      displacement: auxOffset,
     });
 
     if (options.scale) {
@@ -92,10 +104,7 @@ class OLChart extends OLStyleRegularShape {
      * @private
      * @type {Array<number>}
      */
-    this.offset_ = [
-      options.offsetX ? options.offsetX : 0,
-      options.offsetY ? options.offsetY : 0,
-    ];
+    this.offset_ = auxOffset;
 
     /**
      * Configuración de animación.
@@ -316,18 +325,17 @@ class OLChart extends OLStyleRegularShape {
     const start = Math.min(5, (2 * this.radius_) / this.data_.length);
     const border = canvas.width - (strokeWidth || 0);
     let x;
-    const center = canvas.width / 2;
-    let x0 = center - ((this.data_.length * start) / 2);
+    let x0 = ((this.data_.length * start) / 2) - start;
     if (strokeStyle) {
       context.strokeStyle = strokeStyle;
       context.lineWidth = strokeWidth;
     }
-    this.data_.sort((num, numNext) => num - numNext).forEach((data, i) => {
+    this.data_.forEach((data, i) => { // .sort((num, numNext) => num - numNext)
       context.beginPath();
-      context.fillStyle = this.colors_[i % this.colors_.length];
-      x = x0 + start;
+      context.fillStyle = this.colors_[i];
+      x = x0 - start;
       const height = (data / max) * 2 * this.radius_ * step;
-      context.rect(x0, border - height, start, height);
+      context.rect(-border / 2, x0, height, start);
       context.closePath();
       context.fill();
       if (strokeStyle) {
@@ -335,9 +343,6 @@ class OLChart extends OLStyleRegularShape {
       }
       x0 = x;
     });
-    const anchor = this.getAnchor();
-    anchor[0] = center - this.offset_[0];
-    anchor[1] = center - this.offset_[1];
   }
 
   /**
@@ -383,9 +388,6 @@ class OLChart extends OLStyleRegularShape {
       this.drawPie(context, angle0, center, step, strokeStyle, sum);
     }
     context.restore();
-    const anchor = this.getAnchor();
-    anchor[0] = center - this.offset_[0];
-    anchor[1] = center - this.offset_[1];
   }
 
   /**

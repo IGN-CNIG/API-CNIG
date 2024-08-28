@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+/* eslint-disable camelcase,max-len,no-unused-vars */
 import { map as Mmap } from 'M/mapea';
 import LayerGroup from 'M/layer/LayerGroup';
 // import { vector_001 } from '../layers/vector/vector'; window.vector = vector_001;
@@ -17,15 +17,15 @@ import LayerGroup from 'M/layer/LayerGroup';
 // import { wmts_001 } from '../layers/wmts/wmts'; window.wmts = wmts_001;
 // STRING ==> import { wmts_002 } from '../layers/wmts/wmts'; const capaPrueba = wmts_002; window.wmts = wmts_002;
 // import { xyz_001 } from '../layers/xyz/xyz'; window.xyz = xyz_001;
-// STRING ==> 
-  
+// STRING ==>
+
 // import { xyz_002 } from '../layers/xyz/xyz'; const capaPrueba = xyz_002; window.xyz = xyz_002;
 // import { osm } from '../layers/osm/osm'; window.osm = osm;
 // STRING ==> import { osm_002 } from '../layers/osm/osm'; const capaPrueba = osm_002; window.osm = osm_002;
 // STRING ==> import { osm_003 } from '../layers/osm/osm'; const capaPrueba = osm_003; window.osm = osm_003;
 // import { mbtile_01 } from '../layers/mbtiles/mbtiles'; window.mbtile = mbtile_01;
 // import { generic_001 } from '../layers/generic/generic'; window.generic = generic_001;
-//import { geotiff_001 } from '../layers/geotiff/geotiff'; window.geotiff = geotiff_001;
+// import { geotiff_001 } from '../layers/geotiff/geotiff'; window.geotiff = geotiff_001;
 
 const url = 'LayerGroup*PRUEBA NAME*PRUEBA LEGEND*true*true*["WMTS*https://servicios.idee.es/wmts/ocupacion-suelo*LC.LandCoverSurfaces*GoogleMapsCompatible*LC.LandCoverSurfaces l*true*image/png*true*true*true", "XYZ*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*true"]';
 // const url = 'LayerGroup*Grupo de capas 1*Grupo de capas 1*true*true*["WMTS*https://servicios.idee.es/wmts/ocupacion-suelo*LC.LandCoverSurfaces*GoogleMapsCompatible*LC.LandCoverSurfaces l*true*image/png*true*true*true","LayerGroup*Grupo de capas 2*Grupo de capas 2*true*true*[`WMS*capaWMS3*http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?*provincias_pob*true*false**1.3.0*true*true*true`]"]'
@@ -50,8 +50,8 @@ legend: 'Grupo de capas LEGEND 2', layers: [geojson_001,  mvt_003, wms_001] });
 const layerGroup = new LayerGroup({
   layers: [
     subLayerGroup,
-    // xyz_002 
-    // vector_001, 
+    // xyz_002
+    // vector_001,
     // ogcAPIFeatures_001,
     // ogcAPIFeatures_001,
     // mbtileVector_001,
@@ -80,7 +80,6 @@ const layerGroup = new LayerGroup({
 
 window.layerGroup = layerGroup;
 window.subLayerGroup = subLayerGroup;
-
 
 mapa.addLayers([wfs_001, layerGroup, wmts_001]);
 */

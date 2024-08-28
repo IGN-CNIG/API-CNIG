@@ -494,7 +494,7 @@ export default class LayerswitcherControl extends M.Control {
         layer = layer[0];
         const selectLayer = evt.target.getAttribute('data-select-type');
         if (evt.target.className.indexOf('m-layerswitcher-title-box') > -1
-      || evt.target.className.indexOf('m-layerswitcher-sectionPanel-header-text') > -1) {
+          || evt.target.className.indexOf('m-layerswitcher-sectionPanel-header-text') > -1) {
           showModalChangeName(layer, evt.target, this.order);
         } else if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'eye') {
           showHideLayersEye(evt, layer, this);

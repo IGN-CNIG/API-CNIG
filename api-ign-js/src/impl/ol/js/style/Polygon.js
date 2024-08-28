@@ -78,7 +78,7 @@ class Polygon extends Simple {
         // #FIX_ST_VE_OP no esta diseñado de tal forma que solo se use una vez vendorOptions,
         // aquí seguirá enviando el vendorOptions como resultado ya que solo se define a
         // través de la styleFuntion. Por lo que se intenta arreglar de esta manera.
-        this.olStyleFn_ = this.updateFacadeOptions(options);
+        // this.olStyleFn_ = this.updateFacadeOptions(options);
         return vendorOptions;
       }
       let featureVariable = feature;

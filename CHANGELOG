@@ -18,6 +18,7 @@
 - Usado función "pop" para obtener el último objeto de un array evitando filtrados repetidos.
 - Mejorado eventos de Popup con uso más claro y previsto saltos no deseados de mapa al usar popups en móviles.
 - Simplificado imports removiendo duplicados.
+- Arreglado estilo Chart de tipo "bar" y ajustes del funcionamiento del offset de textos de todos estos.
 - Plugins:
   - Actualizado los metadatos para mostrar la versión actual de todos los plugins.
   - Normalizado código de la función "equals" en todos los plugins.
