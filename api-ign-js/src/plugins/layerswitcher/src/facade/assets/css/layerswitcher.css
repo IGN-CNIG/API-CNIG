@@ -1385,3 +1385,7 @@ button.g-cartografia-flecha-derecha + div .m-layerswitcher-ullayersGroup {
     width: 100%;
 }
 
+li.m-layerswitcher-sectionPanel[data-layer-type="LayerGroup"]:has(> section div button.m-layerswitcher-icons-ocultar) > ul > li button.m-layerswitcher-icons-ver {
+    color: #9a9a9a !important;
+}
+
