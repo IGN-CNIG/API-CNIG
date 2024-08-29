@@ -541,8 +541,9 @@ export default class GeorefimageControl extends M.Control {
 
     const keepView = document.getElementById('keepview').checked;
     const bbox = this.map_.getBbox();
-    const width = this.map_.getMapImpl().getSize()[0];
-    const height = this.map_.getMapImpl().getSize()[1];
+    const size = this.map_.getMapImpl().getSize();
+    const width = size[0];
+    const height = size[1];
     const layout = 'plain';
     const dpi = keepView ? 120 : this.dpi_;
     const outputFormat = 'jpg';

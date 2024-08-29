@@ -96,14 +96,15 @@ export class ChoroplethBinding extends Binding {
   getOptionsTemplate() {
     let options = ChoroplethBinding.DEFAULT_OPTIONS_STYLE;
     if (this.style_ != null) {
-      let startColorVar = this.style_.getChoroplethStyles()[0].get('fill.color');
-      let endColorVar = this.style_.getChoroplethStyles().slice(-1)[0].get('fill.color');
-      startColorVar = startColorVar || this.style_.getChoroplethStyles()[0].get('stroke.color');
-      endColorVar = endColorVar || this.style_.getChoroplethStyles().slice(-1)[0].get('stroke.color');
+      const auxChoroplethStyles = this.style_.getChoroplethStyles();
+      let startColorVar = auxChoroplethStyles[0].get('fill.color');
+      let endColorVar = auxChoroplethStyles.slice(-1)[0].get('fill.color');
+      startColorVar = startColorVar || auxChoroplethStyles[0].get('stroke.color');
+      endColorVar = endColorVar || auxChoroplethStyles.slice(-1)[0].get('stroke.color');
 
       options = {
         attribute: this.style_.getAttributeName(),
-        ranges: this.style_.getChoroplethStyles().length,
+        ranges: auxChoroplethStyles.length,
         quantification: this.style_.getQuantification().name,
         startColor: startColorVar,
         endColor: endColorVar,

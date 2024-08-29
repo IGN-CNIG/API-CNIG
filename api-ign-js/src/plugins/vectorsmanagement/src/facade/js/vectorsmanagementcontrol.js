@@ -397,10 +397,7 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   getControlActive(html) {
-    if (html.querySelectorAll('#m-vectorsmanagement-previews .activated:not(#m-vectorsmanagement-selection)').length === 0) {
-      return false;
-    }
-    return html.querySelectorAll('#m-vectorsmanagement-previews .activated:not(#m-vectorsmanagement-selection)')[0];
+    return html.querySelector('#m-vectorsmanagement-previews .activated:not(#m-vectorsmanagement-selection)') || false;
   }
 
   /**

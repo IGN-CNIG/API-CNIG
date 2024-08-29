@@ -183,7 +183,7 @@ export default class ViewManagementControl extends M.Control {
    * @api
    */
   deactive(html, control) {
-    const active = html.querySelectorAll('#m-viewmanagement-previews .activated')[0];
+    const active = html.querySelector('#m-viewmanagement-previews .activated');
     if (active && !active.id.includes(control)) {
       if (active.id === 'm-viewmanagement-zoomextent') {
         this.zoomextentControl.deactive();

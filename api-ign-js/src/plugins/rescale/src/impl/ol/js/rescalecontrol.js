@@ -81,16 +81,19 @@ export default class RescaleControl extends M.impl.Control {
    * @param {*} resolution -
    */
   getForViewAndSize(resolution) {
-    const dx = (resolution * this.facadeMap_.getMapImpl().getSize()[0]) / 2;
-    const dy = (resolution * this.facadeMap_.getMapImpl().getSize()[1]) / 2;
-    const cosRotation = Math.cos(this.facadeMap_.getMapImpl().getView().getRotation());
-    const sinRotation = Math.sin(this.facadeMap_.getMapImpl().getView().getRotation());
+    const size = this.facadeMap_.getMapImpl().getSize();
+    const dx = (size[0] / 2) * resolution;
+    const dy = (size[1] / 2) * resolution;
+    const rotation = this.facadeMap_.getMapImpl().getView().getRotation();
+    const cosRotation = Math.cos(rotation);
+    const sinRotation = Math.sin(rotation);
     const xCos = dx * cosRotation;
     const xSin = dx * sinRotation;
     const yCos = dy * cosRotation;
     const ySin = dy * sinRotation;
-    const x = this.facadeMap_.getCenter().x;
-    const y = this.facadeMap_.getCenter().y;
+    const center = this.facadeMap_.getCenter();
+    const x = center.x;
+    const y = center.y;
     const x0 = (x - xCos) + ySin;
     const x1 = (x - xCos) - ySin;
     const x2 = (x + xCos) - ySin;

@@ -174,7 +174,7 @@ export default class LocatorscnControl extends M.Control {
    * @api
    */
   deactive(html, control) {
-    const active = html.querySelectorAll('#m-locatorscn-previews .activated')[0];
+    const active = html.querySelector('#m-locatorscn-previews .activated');
     if (this.position === 'TC') {
       document.querySelector('.m-plugin-locatorscn').classList.remove('m-plugin-locatorscn-tc-withpanel');
       document.querySelector('.m-plugin-locatorscn').classList.add('m-plugin-locatorscn-tc');

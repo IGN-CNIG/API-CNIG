@@ -32,8 +32,7 @@ export const getAllLayersGroup = (map) => {
 
 export const displayLayers = ({ target }, targetName, map) => {
   if (target.classList.contains(CLASS_DISPLAY_GROUP)) {
-    const groupLayer = map.getLayerGroup()
-      .filter((layerGroup) => layerGroup.name === targetName)[0];
+    const groupLayer = map.getLayerGroup().find((layerGroup) => layerGroup.name === targetName);
 
     const group = target.parentElement.parentElement.parentElement.children[1];
     group.style.display = group.style.display === 'none' ? 'block' : 'none';
@@ -90,5 +89,5 @@ export const createSelectGroup = (map) => {
 export const getLayerSelectGroup = (map) => {
   const select = document.querySelector(CLASS_MODAL_LAYERGROUP);
   const groups = map.getLayerGroup();
-  return groups.filter((group) => group.getImpl().getOL3Layer().ol_uid === select.value)[0];
+  return groups.find((group) => group.getImpl().getOL3Layer().ol_uid === select.value);
 };

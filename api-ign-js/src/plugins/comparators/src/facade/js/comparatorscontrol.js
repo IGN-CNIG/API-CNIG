@@ -515,7 +515,7 @@ export default class ComparatorsControl extends M.Control {
    * @api
    */
   deactive(html, control) {
-    const active = html.querySelectorAll('#m-comparators-previews .activated')[0];
+    const active = html.querySelector('#m-comparators-previews .activated');
     if (active && !active.id.includes(control)) {
       if (active.id === 'm-comparators-zoomextent') {
         this.zoomextentControl.deactive();

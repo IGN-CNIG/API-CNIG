@@ -681,9 +681,9 @@ export default class Georefimage2Control extends M.impl.Control {
      * @see http: //www.mapfish.org/doc/print/protocol.html#layers-params
      */
     return layer.getImpl().getCapabilities().then((capabilities) => {
-      const matrixIdsObj = capabilities.Contents.TileMatrixSet.filter((tileMatrixSet) => {
+      const matrixIdsObj = capabilities.Contents.TileMatrixSet.find((tileMatrixSet) => {
         return (tileMatrixSet.Identifier === matrixSet);
-      })[0];
+      });
 
       try {
         return {
@@ -716,9 +716,9 @@ export default class Georefimage2Control extends M.impl.Control {
   encodeWMTSNoLayer(url, layerName, projection) {
     const matrixSet = projection !== 'EPSG:3857' ? projection : 'GoogleMapsCompatible';
     return this.getWMTSCapabilities(url).then((capabilities) => {
-      const matrixIdsObj = capabilities.Contents.TileMatrixSet.filter((tileMatrixSet) => {
+      const matrixIdsObj = capabilities.Contents.TileMatrixSet.find((tileMatrixSet) => {
         return (tileMatrixSet.Identifier === matrixSet);
-      })[0];
+      });
 
       try {
         return {

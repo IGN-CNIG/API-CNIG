@@ -319,10 +319,7 @@ export default class PrintViewManagementControl extends M.Control {
   }
 
   getControlActive(html) {
-    if (html.querySelectorAll('#m-printviewmanagement-previews .activated').length === 0) {
-      return false;
-    }
-    return html.querySelectorAll('#m-printviewmanagement-previews .activated')[0];
+    return html.querySelector('#m-printviewmanagement-previews .activated') || false;
   }
 
   /**

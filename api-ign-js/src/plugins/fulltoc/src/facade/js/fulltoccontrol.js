@@ -173,9 +173,9 @@ export default class FullTOCControl extends M.Control {
       const layerURL = evt.target.getAttribute('data-layer-url');
       if (!M.utils.isNullOrEmpty(layerName) && layerURL !== null) {
         evt.stopPropagation();
-        const layer = this.map_.getLayers().filter((l) => {
+        const layer = this.map_.getLayers().find((l) => {
           return l.name === layerName && l.url === layerURL;
-        })[0];
+        });
         // checkbox
         if (evt.target.classList.contains('m-check')) {
           if (layer.transparent === true || !layer.isVisible()) {
@@ -830,9 +830,9 @@ export default class FullTOCControl extends M.Control {
           M.layer.WMS.LEGEND_ERROR,
         ]);
 
-        const layer = this.map_.getLayers().filter((l) => {
+        const layer = this.map_.getLayers().find((l) => {
           return l.name === layerName && l.url === layerURL;
-        })[0];
+        });
 
         if (!M.utils.isNullOrEmpty(layer) && layerURL.indexOf('/mirame.chduero.es/') === -1) {
           layer.setLegendURL(legendErrorUrl);

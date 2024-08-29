@@ -181,10 +181,7 @@ export default class AnalysisControl extends M.Control {
    * @api stable
    */
   getControlActive() {
-    if (this.template.querySelectorAll('.m-vectorsmanagement-analysis>#analysisBtns .activated').length === 0) {
-      return false;
-    }
-    return this.template.querySelectorAll('.m-vectorsmanagement-analysis>#analysisBtns .activated')[0];
+    return this.template.querySelector('.m-vectorsmanagement-analysis>#analysisBtns .activated') || false;
   }
 
   /**

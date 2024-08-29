@@ -104,11 +104,12 @@ export default class Stereoscopic extends M.Plugin {
     map.addPanels(this.panel_);
 
     map.on(M.evt.COMPLETED, () => {
-      const mapProperties = map.getLayers()[0].getImpl().getOL3Layer().getProperties();
+      const olLayer = map.getLayers()[0].getImpl().getOL3Layer();
+      const mapProperties = olLayer.getProperties();
       const mapSource = mapProperties.source;
       mapSource.crossOrigin = 'anonymous';
       mapProperties.source = mapSource;
-      map.getLayers()[0].getImpl().getOL3Layer().setProperties(mapProperties);
+      olLayer.setProperties(mapProperties);
 
       window.map = this.map_;
       control.addScript();

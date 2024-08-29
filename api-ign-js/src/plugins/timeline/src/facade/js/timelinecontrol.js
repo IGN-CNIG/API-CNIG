@@ -686,8 +686,9 @@ export default class TimelineControl extends M.Control {
    * @function
   */
   changeValueSlider(init, end) {
-    this.template.querySelectorAll('.wrap input')[0].value = init;
-    this.template.querySelectorAll('.wrap input')[1].value = end;
+    const wrapInputs = this.template.querySelectorAll('.wrap input');
+    wrapInputs[0].value = init;
+    wrapInputs[1].value = end;
   }
 
   /**

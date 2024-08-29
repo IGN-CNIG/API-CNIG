@@ -523,7 +523,7 @@ class MBTilesVector extends Vector {
       if (tileCache.getCount() === 0) {
         return features;
       }
-      const z = tileCache.peekFirstKey().split('/').map(Number)[0];
+      const z = Number(tileCache.peekFirstKey().split('/')[0]);
       tileCache.forEach((tile) => {
         if (tile.tileCoord[0] !== z || tile.getState() !== 2) {
           return;

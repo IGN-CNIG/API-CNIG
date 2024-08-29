@@ -1675,8 +1675,9 @@ export default class VectorsControl extends M.Control {
     switch (this.geometry) {
       case 'Point':
       case 'MultiPoint':
-        const x = this.getImpl().getFeatureCoordinates()[0];
-        const y = this.getImpl().getFeatureCoordinates()[1];
+        const fCoord = this.getImpl().getFeatureCoordinates();
+        const x = fCoord[0];
+        const y = fCoord[1];
         if (infoContainer !== null) {
           document.querySelector('#drawingtools div.stroke-container').style.display = 'none';
           let html = `<table class="m-vectors-results-table"><tbody><tr><td><b>${getValue('coordinates')}</b></td>`;

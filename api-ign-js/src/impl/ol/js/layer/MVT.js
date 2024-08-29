@@ -13,7 +13,6 @@ import TileEventType from 'ol/source/TileEventType';
 import TileState from 'ol/TileState';
 import MVTFormatter from 'ol/format/MVT';
 import { get as getProj } from 'ol/proj';
-import { fromKey } from 'ol/tilecoord';
 import Feature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
 import { mode } from 'M/layer/MVT';
@@ -295,7 +294,7 @@ class MVT extends Vector {
       if (tileCache.getCount() === 0) {
         return features;
       }
-      const z = fromKey(tileCache.peekFirstKey())[0];
+      const z = Number(tileCache.peekFirstKey().split('/')[0]);
       tileCache.forEach((tile) => {
         if (tile.tileCoord[0] !== z || tile.getState() !== TileState.LOADED) {
           return;
@@ -331,7 +330,7 @@ class MVT extends Vector {
       if (kk === 0) {
         return features;
       }
-      const z = fromKey(tileCache.peekFirstKey())[0];
+      const z = Number(tileCache.peekFirstKey().split('/')[0]);
       for (let k = 0; k < kk; k += 1) {
         const auxValue = tileCache.getValues()[k];
         if (auxValue.tileCoord[0] === z && auxValue.getState() === TileState.LOADED) {

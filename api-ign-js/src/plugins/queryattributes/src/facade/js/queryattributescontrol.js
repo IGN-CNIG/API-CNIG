@@ -238,9 +238,9 @@ export default class QueryAttributesControl extends M.Control {
 
     this.map.getKML().forEach((kmlLayer) => {
       kmlLayer.on(M.evt.LOAD, () => {
-        this.kmlLayers.filter((layer) => {
+        this.kmlLayers.find((layer) => {
           return layer.layer === kmlLayer;
-        })[0].loaded = true;
+        }).loaded = true;
       });
     });
 

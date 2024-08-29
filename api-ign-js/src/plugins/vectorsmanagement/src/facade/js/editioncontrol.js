@@ -458,10 +458,7 @@ export default class EditionControl extends M.Control {
    * @api stable
    */
   getControlActive(html) {
-    if (html.querySelectorAll('.m-vectorsmanagement-edition-container>#editionBtns .activated').length === 0) {
-      return false;
-    }
-    return html.querySelectorAll('.m-vectorsmanagement-edition-container>#editionBtns .activated')[0];
+    return html.querySelector('.m-vectorsmanagement-edition-container>#editionBtns .activated') || false;
   }
 
   /**

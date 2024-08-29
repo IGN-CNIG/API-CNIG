@@ -1684,8 +1684,9 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.resultsBox.appendChild(compiledXYLocator);
 
       if (M.language.getLang() === 'es') {
-        document.querySelectorAll('p.parcela--input')[0].style = 'width: 71px';
-        document.querySelectorAll('p.parcela--input')[1].style = 'width: 71px';
+        const parcelInputs = document.querySelectorAll('p.parcela--input');
+        parcelInputs[0].style = 'width: 71px';
+        parcelInputs[1].style = 'width: 71px';
 
         document.querySelector('#m-searchParamsProvincia-select').style = 'width: 68%';
         document.querySelector('#m-searchParamsMunicipio-select').style = 'width: 68%';

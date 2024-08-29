@@ -289,9 +289,9 @@ export default class GeorefimageControl extends M.Control {
       //  });
     });
     promise.then((t) => {
-      const proj = M.impl.ol.js.projections.getSupportedProjs().filter(({ codes }) => {
+      const proj = M.impl.ol.js.projections.getSupportedProjs().find(({ codes }) => {
         return codes.includes(this.map_.getProjection().code);
-      })[0];
+      });
 
       const projFormat = `${proj.datum} - ${proj.proj.toUpperCase()} (${proj.codes[0]})`;
 
@@ -369,16 +369,16 @@ export default class GeorefimageControl extends M.Control {
       }
 
       if (value === 'client') {
-        const proj = M.impl.ol.js.projections.getSupportedProjs().filter(({ codes }) => {
+        const proj = M.impl.ol.js.projections.getSupportedProjs().find(({ codes }) => {
           return codes.includes(this.map_.getProjection().code);
-        })[0];
+        });
         if (proj) {
           this.elementProjection_.innerText = `${proj.datum} - ${proj.proj.toUpperCase()} (${proj.codes[0]})`;
         }
       } else {
-        const proj = M.impl.ol.js.projections.getSupportedProjs().filter(({ codes }) => {
+        const proj = M.impl.ol.js.projections.getSupportedProjs().find(({ codes }) => {
           return codes[0] === DEFAULT_PROJECTION_SERVER;
-        })[0];
+        });
         this.elementProjection_.innerText = `${proj.datum} - ${proj.proj.toUpperCase()} (${proj.codes[0]})`;
       }
     });
@@ -636,8 +636,9 @@ export default class GeorefimageControl extends M.Control {
     }
 
     const bbox = this.map_.getBbox();
-    const width = this.map_.getMapImpl().getSize()[0];
-    const height = this.map_.getMapImpl().getSize()[1];
+    const size = this.map_.getMapImpl().getSize();
+    const width = size[0];
+    const height = size[1];
     const layout = 'plain';
     const dpi = elementDpi.value;
     const outputFormat = 'jpg';

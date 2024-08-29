@@ -1020,8 +1020,9 @@ export default class GeometryDrawControl extends M.Control {
     switch (this.geometry) {
       case 'Point':
       case 'MultiPoint':
-        const x = this.getImpl().getFeatureCoordinates()[0];
-        const y = this.getImpl().getFeatureCoordinates()[1];
+        const fCoord = this.getImpl().getFeatureCoordinates();
+        const x = fCoord[0];
+        const y = fCoord[1];
         if (infoContainer !== null) {
           infoContainer.innerHTML = `Coordenadas<br/>
           x: ${Math.round(x * 1000) / 1000},<br/>

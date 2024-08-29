@@ -227,8 +227,9 @@ class Line extends Simple {
    * @api stable
    */
   drawGeometryToCanvas(vectorContext, canvas, style, stroke) {
-    let x = Line.getCanvasSize()[0];
-    let y = Line.getCanvasSize()[1];
+    const convasSize = Line.getCanvasSize();
+    let x = convasSize[0];
+    let y = convasSize[1];
     vectorContext.drawGeometry(new OLGeomLineString([
       [0 + (stroke / 2), 0 + (stroke / 2)],
       [(x / 3), (y / 2) - (stroke / 2)],

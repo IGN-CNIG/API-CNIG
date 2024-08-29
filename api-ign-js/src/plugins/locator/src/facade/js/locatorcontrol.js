@@ -261,7 +261,7 @@ export default class LocatorControl extends M.Control {
    * @api
    */
   deactive(html, control) {
-    const active = html.querySelectorAll('#m-locator-previews .activated')[0];
+    const active = html.querySelector('#m-locator-previews .activated');
     if (this.position === 'TC') {
       document.querySelector('.m-plugin-locator').classList.remove('m-plugin-locator-tc-withpanel');
       document.querySelector('.m-plugin-locator').classList.add('m-plugin-locator-tc');
