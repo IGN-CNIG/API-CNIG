@@ -2331,6 +2331,7 @@ export default class LayerswitcherControl extends M.Control {
 
     if (inGroup) {
       inGroup.addLayers(layer);
+      layer.setZIndex(inGroup.getZIndex());
     } else {
       this.map_.addLayers(layer);
     }
