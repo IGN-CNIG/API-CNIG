@@ -2,8 +2,8 @@
     <section class="m-layerswitcher-sectionPanel-header">
         <div>
             {{#if isEyes}}
-            <button title="{{#if visible}}{{../translations.hide_service}}{{^}}{{../translations.show_service}}{{/if}}"
-                aria-label="{{#if visible}}{{../translations.hide_service}}{{^}}{{../translations.show_service}}{{/if}}"
+            <button title="{{#if visible}}{{translations.hide_service}}{{^}}{{translations.show_service}}{{/if}}"
+                aria-label="{{#if visible}}{{translations.hide_service}}{{^}}{{translations.show_service}}{{/if}}"
                 tabindex="0" data-select-type="eye" data-layer-type="{{type}}" data-layer-name="{{id}}"
                 data-layer-url="{{url}}"
                 class="m-layerswitcher-visible-control-button m-layerswitcher-check {{#if visible}}m-layerswitcher-icons-ver{{^}}m-layerswitcher-icons-ocultar{{/if}} {{#if outOfRange}}m-layerswitcher-outOfRange{{/if}}">
@@ -11,7 +11,7 @@
             {{/if}}
             {{#if isRadio}}
             <input
-                aria-label="{{#if visible}}{{../translations.hide_service}}{{^}}{{../translations.show_service}}{{/if}}"
+                aria-label="{{#if visible}}{{translations.hide_service}}{{^}}{{translations.show_service}}{{/if}}"
                 tabindex="0" {{#eq checkedLayer "true" }}checked{{/eq}} type="radio" data-select-type="radio"
                 data-layer-type="{{type}}" data-layer-name="{{id}}" data-layer-url="{{url}}"
                 class="m-layerswitcher-check {{#if outOfRange}}m-layerswitcher-outOfRange-input{{/if}}"
@@ -24,7 +24,7 @@
             data-layer-name="{{id}}" 
             title="{{changeName}}"
             data-layer-url="{{url}}">
-                <span {{#if ../displayLabel}}style="display: none" {{/if}} aria-label="Tipo de servicio {{type}}"
+                <span {{#if displayLabel}}style="display: none" {{/if}} aria-label="Tipo de servicio {{type}}"
                     tabindex="0" class="m-layerswitcher-type">{{type}}</span>
                 {{title}}
             </p>
@@ -34,9 +34,11 @@
             <button
             class="{{#if displayGroup}}m-layerswitcher-icons-colapsar{{else}}m-layerswitcher-icons-desplegar{{/if}}  m-layerswitcher-groupDisplay"
             data-layer-name="{{id}}"
+            title="{{#if displayGroup}} {{hide_group}} {{else}} {{show_group}} {{/if}}"
+            aria-label="{{#if displayGroup}} {{hide_group}} {{else}} {{show_group}} {{/if}}"
             ></button>
             {{#if isDelete}}
-            <button title="{{../translations.remove_layer}}" data-layer-type="{{type}}" data-layer-name="{{id}}"
+            <button title="{{translations.remove_layer}}" data-layer-type="{{type}}" data-layer-name="{{id}}"
                 data-layer-url="{{url}}" tabindex="0" aria-label="{{translations.remove_layer}}"
                 class="m-layerswitcher-icons-delete">
             </button>

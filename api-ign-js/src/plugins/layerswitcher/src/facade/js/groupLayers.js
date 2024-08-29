@@ -41,10 +41,15 @@ export const displayLayers = ({ target }, targetName, map) => {
     if (target.classList.contains(CLASS_DISPLAY_DESPLEGAR)) {
       target.classList.remove(CLASS_DISPLAY_DESPLEGAR);
       target.classList.add(CLASS_DISPLAY_COLAPSAR);
+      target.setAttribute('title', getValue('hide_group'));
+      target.setAttribute('aria-label', getValue('hide_group'));
+
       groupLayer.display = true;
     } else {
       target.classList.remove(CLASS_DISPLAY_COLAPSAR);
       target.classList.add(CLASS_DISPLAY_DESPLEGAR);
+      target.setAttribute('title', getValue('show_group'));
+      target.setAttribute('aria-label', getValue('show_group'));
       groupLayer.display = false;
     }
   }
