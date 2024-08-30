@@ -460,31 +460,6 @@ class LayerBase extends Base {
   }
 
   /**
-   * Devuelve el "layerGroup".
-   *
-   * @function
-   * @returns {M.layer.impl.layerGroup} Valor del "layerGroup" (grupo de capas).
-   * @api stable
-   * @expose
-   */
-  getLayerGroup() {
-    return this.getImpl().layerGroup;
-  }
-
-  /**
-   * Sobrescribe el "layerGroup" (grupo de capas) de la implementación.
-   *
-   * @function
-   * @param {M.layer.layerGroup} layerGroup Nuevo valor para la propiedad
-   * "layerGroup" (grupo de capas).
-   * @api stable
-   * @expose
-   */
-  setLayerGroup(layerGroup) {
-    this.getImpl().layerGroup = layerGroup;
-  }
-
-  /**
    * Este método indica si la capa es visible.
    *
    * @function

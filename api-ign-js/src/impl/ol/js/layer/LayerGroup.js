@@ -9,11 +9,36 @@ import { Collection } from 'ol';
 import Layer from './Layer';
 
 /**
- * @classdesc
- * @api
- */
-
+* @classdesc
+* LayerGroup es una clase que representa un grupo de capas.
+*
+* @api
+* @extends {M.impl.layer.Vector}
+*/
 class LayerGroup extends Layer {
+  /**
+   * @classdesc
+   * Constructor principal de la clase. Crea una capa LayerGroup
+   * con parámetros especificados por el usuario.
+   *
+   * @constructor
+   * @implements {M.impl.layer.Vector}
+   * @param {Object} parameters Parámetros de la fachada, la fachada se refiere a un patrón
+   * estructural como una capa de abstracción con un patrón de diseño.
+   * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
+   * - visibility: Define si la capa es visible o no.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolución mínima.
+   * - maxResolution: Resolución máxima.
+   * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
+   * - opacity. Opacidad de capa, por defecto 1.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * @param {Object} vendorOptions Opciones para la biblioteca base.
+   * @api stable
+   */
   constructor(userParameters, options = {}, vendorOptions = {}) {
     super(options, vendorOptions);
 
@@ -61,6 +86,16 @@ class LayerGroup extends Layer {
     });
   }
 
+  /**
+   * Este método devuelve los parámetros de la capa.
+   *
+   * Método privado.
+   *
+   * @public
+   * @function
+   * @returns {Object} Parámetros de la capa.
+   * @api stable
+   */
   getParamsGroup_() {
     return {
       opacity: this.opacity,
@@ -74,6 +109,14 @@ class LayerGroup extends Layer {
     };
   }
 
+  /**
+   * Este método establece la capa de OpenLayers en la capa.
+   * Método privado.
+   * @function
+   * @param {M.layer} layer Capa.
+   * @private
+   * @api stable
+   */
   setOLLayerToLayer_(layer) {
     layer.setMap(this.map);
     layer.getImpl().addTo(this.map, false);
@@ -88,7 +131,6 @@ class LayerGroup extends Layer {
    * @api
    */
   setVisible(visibility) {
-    // ! [] REFACTORIZACION AÑADIR A LAYERS ¿?¿?¿???
     this.visibility = visibility;
     // if this layer is base then it hides all base layers
     if ((visibility === true) && (this.transparent !== true)) {
@@ -111,6 +153,13 @@ class LayerGroup extends Layer {
     }
   }
 
+  /**
+   * Este método agrega una capa al grupo.
+   * @function
+   * @param {M.layer} layer Capa a agregar.
+   * @public
+   * @api
+   */
   addLayer(layer) {
     if (!this.layers.includes(layer)) {
       const impl = layer.getImpl();
@@ -130,6 +179,13 @@ class LayerGroup extends Layer {
     }
   }
 
+  /**
+   * Este método agrega una capa al grupo raíz.
+   * @function
+   * @param {M.impl.layer.LayerGroup} layerGroup Grupo de capas.
+   * @public
+   * @api
+   */
   addRootLayerGroup(layerGroup) {
     const layerGroupImpl = layerGroup;
     if (layerGroup instanceof LayerGroup) {
@@ -137,11 +193,26 @@ class LayerGroup extends Layer {
     }
   }
 
+  /**
+   * Este método elimina una capa del grupo.
+   * @function
+   * @param {M.layer} layer Capa a eliminar.
+   * @public
+   * @api
+   */
   removeLayer(layer) {
     this.removeLayers_(layer);
     this.layersCollection.remove(layer.getImpl().getOL3Layer());
   }
 
+  /**
+   * Este método elimina una capa del grupo.
+   * Método privado.
+   * @function
+   * @param {M.layer} layer Capa a eliminar.
+   * @private
+   * @api
+   */
   removeLayers_(layer) {
     // ? Elimina las capas de this.layers para poder devolverlas
     // ? en el getLayers
@@ -150,6 +221,14 @@ class LayerGroup extends Layer {
     this.layersParams_.remove(layer);
   }
 
+  /**
+   * Este método saca una capa del grupo.
+   * @function
+   * @param {M.layer} layer Capa a sacar.
+   * @param {boolean} upToMap Indica si se saca hasta el mapa.
+   * @public
+   * @api
+   */
   ungroup(layer, upToMap = false) {
     this.removeLayers_(layer);
 
@@ -171,6 +250,15 @@ class LayerGroup extends Layer {
     }
   }
 
+  /**
+   * Este método establece el grupo raíz de la capa.
+   * Método privado.
+   * @function
+   * @param {M.layer} layer Capa.
+   * @param {M.impl.layer.LayerGroup} rootGroup Grupo raíz.
+   * @private
+   * @api
+   */
   setRootGroup_(layer, rootGroup) {
     const facadeLayer = layer;
     if (facadeLayer.getImpl() instanceof LayerGroup) {
@@ -178,12 +266,23 @@ class LayerGroup extends Layer {
     }
   }
 
+  /**
+   * Este método devuelve las capas del grupo.
+   * @function
+   * @returns {Array<M.layer>} Capas del grupo.
+   * @public
+   * @api
+   */
   getLayers() {
-    // ? TODO ¿?
-    // ? Se ordena por zIndex, reverse por -1 en zIndex
     return this.layers.reverse();
   }
 
+  /**
+   * Este método elimina la capa del mapa.
+   * @function
+   * @public
+   * @api
+   */
   destroy() {
     const olMap = this.map.getMapImpl();
     if (!isNullOrEmpty(this.ol3Layer)) {
@@ -196,6 +295,14 @@ class LayerGroup extends Layer {
     this.map = null;
   }
 
+  /**
+   * Este método compara si dos objetos son iguales.
+   * @function
+   * @param {Object} obj Objeto a comparar.
+   * @returns {boolean} Verdadero si son iguales, falso si no.
+   * @public
+   * @api
+   */
   equals(obj) {
     let equals = false;
     if (obj instanceof LayerGroup) {
