@@ -1,5 +1,13 @@
 18/07/24 - Versión 5.1.0
-
+- Se controla capas WMS cuando no se indica nombre si es WMS_FULL
+- Mejoras JSDOC
+- Se implementa funcionalidad de grupos de capas
+- Plugin printviewmanagement: se cambia la extensión de jpeg a jpg de los archivos
+- Plugin sharemap: se soluciona problema con paráemtro shareLayer que compartía siempre todas las capas
+- Plugin help: se incluye parámetro initialIndex para abrir en una sección determinada
+- Plugin stylemanager: subida de versión a la librería chroma-js
+- Plugin layerswitcher: permite cambiar nombre a las capas
+- Plugin mousesrs: se hace uso de OGC API Coverages para calcular la altura
 
 22/05/24 - Versión 5.0.0
 - Se incluye nuevo tipo de capa GeoTiff.
