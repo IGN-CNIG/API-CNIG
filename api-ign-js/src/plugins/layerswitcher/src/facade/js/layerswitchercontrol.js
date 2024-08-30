@@ -2186,7 +2186,8 @@ export default class LayerswitcherControl extends M.Control {
     const btnAddLayer = document.querySelector('#m-layerswitcher-layer-button');
     btnAddLayer.addEventListener('click', () => {
       const randomNumber = Math.floor(Math.random() * 9000) + 1000;
-      let name = document.querySelector('#m-layerswitcher-layer-name');
+      const nameModal = document.querySelector('#m-layerswitcher-layer-name');
+      let name = null;
       if (M.utils.isNullOrEmpty(name)) {
         name = `layer_${randomNumber}`;
       } else {
@@ -2199,7 +2200,7 @@ export default class LayerswitcherControl extends M.Control {
       }
 
       this.addLayer({
-        name,
+        name: nameModal === null ? legend : name,
         type,
         legend,
         url,
