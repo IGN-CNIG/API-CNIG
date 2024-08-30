@@ -196,6 +196,9 @@ class Mouse extends ol.control.MousePosition {
    * @export
    */
   destroy() {
+    const coverage = this.facadeMap_.getLayers()
+      .find((l) => l.name === COVERAGE_NAME);
+    this.facadeMap_.removeLayers(coverage);
     this.facadeMap_.getMapImpl().removeControl(this);
     this.facadeMap_ = null;
   }

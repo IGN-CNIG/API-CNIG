@@ -246,6 +246,7 @@ export default class MouseSRSControl extends M.impl.Control {
    * @export
    */
   destroy() {
+    this.mousePositionControl.destroy();
     this.facadeMap_.getMapImpl().removeControl(this);
     this.facadeMap_ = null;
   }
