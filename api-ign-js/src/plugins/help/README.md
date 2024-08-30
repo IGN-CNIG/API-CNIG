@@ -46,6 +46,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - **images**: Array de URLs de imágenes para mostrar en la cabecera. Por defecto:
     ['https://componentes.cnig.es/api-core/img/logo_ge.svg', 'https://componentes.cnig.es/api-core/img/ign.svg']
   - **title**: Título para mostrar en la cabecera. Por defecto: 'Ayuda API-CNIG'.
+- **initialIndex**: Indica en que índice se abrira la página de ayuda.
 - **initialExtraContents**: Contenido extra para mostrar antes de la ayuda de las herramientas. Permite un array de objetos con el siguiente formato:
   [{title: 'Texto', content: 'HTML en formato texto'}].
   El objeto también puede contener subcontenido que consiste en un array de objetos. Ejemplo:
