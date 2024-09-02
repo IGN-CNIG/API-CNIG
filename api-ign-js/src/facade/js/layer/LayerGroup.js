@@ -70,7 +70,7 @@ class LayerGroup extends LayerBase {
     const impl = new LayerGroupImpl(parameters, opt, vendorOptions);
     super(parameters, impl);
 
-    this.layers = parameters.layers;
+    this.layers = impl.layers;
 
     this.display = parameters.display || true;
   }
