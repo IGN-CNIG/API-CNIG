@@ -443,7 +443,7 @@ export default class GeorefimageControl extends M.Control {
           const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
           this.getStatus(
             statusURL,
-            (e) => removeLoadQueueElement(e),
+            (e) => { removeLoadQueueElement(e); this.downloadPrint(queueEl); },
             queueEl,
           );
 
@@ -460,8 +460,6 @@ export default class GeorefimageControl extends M.Control {
             M.exception(err);
           }
           queueEl.setAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME, downloadUrl);
-          queueEl.addEventListener('click', this.downloadPrint.bind(this));
-          queueEl.addEventListener('keydown', this.downloadPrint.bind(this));
         } else {
           queueEl.remove();
           if (document.querySelector('#m-georefimage-queue-container').childNodes.length === 0) {
@@ -486,11 +484,8 @@ export default class GeorefimageControl extends M.Control {
     );
 
     try {
-      // const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
-      // queueEl.addEventListener('click', (evt) => this.downloadPrint(evt, base64image, 'client'));
-      M.utils.getImageMap(this.map_, `image/${format}`, undefined, true).then((base64image) => {
-        queueEl.addEventListener('click', (evt) => this.downloadPrint(evt, base64image, 'client'));
-      });
+      const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
+      this.downloadPrint(queueEl, base64image, 'client');
     } catch (exceptionVar) {
       queueEl.parentElement.remove();
       M.toast.error('Error CrossOrigin', null, 6000);
@@ -845,11 +840,7 @@ export default class GeorefimageControl extends M.Control {
    * @function
    * @api stable
    */
-  downloadPrint(evt, imgBase64, type = 'server') {
-    if (evt.key !== undefined && evt.key !== 'Enter' && evt.key !== ' ') {
-      return;
-    }
-
+  downloadPrint(queueEl, imgBase64, type = 'server') {
     const formatImage = document.querySelector(ID_FORMAT_SELECT).value;
     const title = document.querySelector(ID_TITLE).value;
     const elementDpi = document.querySelector(ID_DPI);
@@ -894,7 +885,15 @@ export default class GeorefimageControl extends M.Control {
     ] : [fileIMG];
 
     // CREATE ZIP
-    createZipFile(files, TYPE_SAVE, titulo);
+    const zipEvent = (evt) => {
+      if (evt.key === undefined || evt.key === 'Enter' || evt.key === ' ') {
+        createZipFile(files, TYPE_SAVE, titulo);
+      }
+    };
+
+    // EVENTS
+    queueEl.addEventListener('click', zipEvent);
+    queueEl.addEventListener('keydown', zipEvent);
   }
 
   /**
@@ -952,8 +951,8 @@ export default class GeorefimageControl extends M.Control {
   deactive() {
     this.template_.remove();
 
-    // TO-DO [ ] ADD BUTTON REMOVE AND ALL EVENTS
-    // TO-DO [ ] Deactive dowloand when change the contorl
+    // TO-DO [ ] ADD REMOVE BUTTON AND ALL OTHER EVENTS
+    // TO-DO [ ] Deactivate download when changed the control
   }
 
   /**

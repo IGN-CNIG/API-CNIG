@@ -287,17 +287,19 @@ export default class ComparepanelControl extends M.Control {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
           if (urlLayer[0].toUpperCase() === 'WMS') {
-            newLayer = new M.layer.WMS({
-              url: urlLayer[2],
-              name: urlLayer[3],
-              legend: urlLayer[1],
-              useCapabilities: urlLayer[4] === 'true' || false,
-            });
-
-            if (map.getLayers().some((l) => newLayer.name.includes(l.name))) {
-              newLayer = map.getLayers().find((l) => newLayer.name.includes(l.name));
-              newLayer.legend = urlLayer[1] || newLayer.name;
-            } // else { this.map.addLayers(newLayer); }
+            const auxFound = map.getLayers().find((l) => urlLayer[3].includes(l.name));
+            if (auxFound) {
+              newLayer = auxFound;
+              newLayer.legend = urlLayer[1] || urlLayer[3];
+            } else {
+              // this.map.addLayers(newLayer);
+              newLayer = new M.layer.WMS({
+                url: urlLayer[2],
+                name: urlLayer[3],
+                legend: urlLayer[1],
+                useCapabilities: urlLayer[4] === 'true' || false,
+              });
+            }
           } else if (urlLayer[0].toUpperCase() === 'WMTS') {
             /* newLayer = new M.layer.WMTS({
               url: urlLayer[2] + '?',

@@ -2274,7 +2274,7 @@ class Map extends MObject {
     const olMap = this.getMapImpl();
 
     const view = olMap.getView();
-    const newView = new View({ ...view, extent: maxExtent });
+    const newView = new View({ ...view, ...view.getProperties(), extent: maxExtent });
     olMap.setView(newView);
 
     this.updateResolutionsFromBaseLayer();
@@ -2667,10 +2667,9 @@ class Map extends MObject {
     const maxZoom = olMap.getView().getMaxZoom();
     const size = olMap.getSize();
 
-    let newView = new View({ ...this.objectView, projection });
-    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
-      newView = new View({ ...this.objectView, projection, extent: this.viewExtent });
-    }
+    const newView = new View((this.viewExtent !== undefined && this.viewExtent.length === 4)
+      ? { ...this.objectView, projection, extent: this.viewExtent }
+      : { ...this.objectView, projection });
 
     newView.setProperties(oldViewProperties);
     newView.setResolutions(resolutions);
@@ -2796,10 +2795,9 @@ class Map extends MObject {
     const maxZoom = olMap.getView().getMaxZoom();
 
     // sets the new view
-    let newView = new View({ ...this.objectView, projection: olProjection });
-    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
-      newView = new View({ ...this.objectView, projection: olProjection, extent: this.viewExtent });
-    }
+    const newView = new View((this.viewExtent !== undefined && this.viewExtent.length === 4)
+      ? { ...this.objectView, projection: olProjection, extent: this.viewExtent }
+      : { ...this.objectView, projection: olProjection });
 
     newView.setProperties(oldViewProperties);
     if (!isNullOrEmpty(resolutions)) {

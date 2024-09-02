@@ -255,7 +255,10 @@ export default class LyrCompareControl extends M.Control {
         html.querySelector('#m-comparators-contents').appendChild(t);
 
         setTimeout(() => {
-          document.querySelector('#m-lyrcompare-void').click();
+          const selectFirst = document.querySelector('#m-lyrcompare-void');
+          if (selectFirst) {
+            selectFirst.click();
+          }
         }, 1000);
       });
   }

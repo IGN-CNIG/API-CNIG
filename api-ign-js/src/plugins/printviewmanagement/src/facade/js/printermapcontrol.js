@@ -2,13 +2,19 @@
  * @module M/control/PrinterMapControl
  */
 
-import JsZip from 'jszip';
-import { saveAs } from 'file-saver';
 import PrinterMapControlImpl from '../../impl/ol/js/printermapcontrol';
 import { reproject, transformExt } from '../../impl/ol/js/utils';
 import printermapHTML from '../../templates/printermap';
 import { getValue } from './i18n/language';
-import { innerQueueElement, removeLoadQueueElement, getBase64Image } from './utils';
+import {
+  innerQueueElement, removeLoadQueueElement, createWLD, createZipFile, generateTitle,
+  getBase64Image,
+} from './utils';
+
+// DEFAULTS PARAMS
+const FILE_EXTENSION_GEO = '.jgw'; // .wld
+const FILE_EXTENSION_IMG = '.jpg';
+const TYPE_SAVE = '.zip';
 
 export default class PrinterMapControl extends M.Control {
   /**
@@ -449,14 +455,7 @@ export default class PrinterMapControl extends M.Control {
     const getPrintData = this.getPrintData();
     const printUrl = this.printTemplateUrl_;
 
-    let download;
-    download = this.downloadPrint;
-
     getPrintData.then((printData) => {
-      if (this.georef_) {
-        download = this.downloadGeoPrint.bind(this, printData.attributes.map.bbox);
-      }
-
       let url = M.utils.concatUrlPaths([printUrl, `report.${printData.outputFormat}`]);
 
       const queueEl = innerQueueElement(
@@ -483,7 +482,14 @@ export default class PrinterMapControl extends M.Control {
           const responseStatusURL = response.text && JSON.parse(response.text);
           const ref = responseStatusURL.ref;
           const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
-          this.getStatus(statusURL, () => removeLoadQueueElement(queueEl), queueEl);
+          this.getStatus(statusURL, () => {
+            removeLoadQueueElement(queueEl);
+            if (this.georef_) {
+              const georefDownload = this.downloadGeoPrint(printData.attributes.map.bbox);
+              queueEl.addEventListener('click', georefDownload);
+              queueEl.addEventListener('keydown', georefDownload);
+            }
+          }, queueEl);
           let downloadUrl;
           try {
             response = JSON.parse(response.text);
@@ -495,8 +501,11 @@ export default class PrinterMapControl extends M.Control {
           }
 
           queueEl.setAttribute(PrinterMapControl.DOWNLOAD_ATTR_NAME, downloadUrl);
-          queueEl.addEventListener('click', download);
-          queueEl.addEventListener('keydown', download);
+          if (!this.georef_) {
+            const download = this.downloadPrint;
+            queueEl.addEventListener('click', download);
+            queueEl.addEventListener('keydown', download);
+          }
         } else {
           queueEl.remove();
           if (document.querySelector('#m-georefimage-queue-container').childNodes.length === 0) {
@@ -809,9 +818,9 @@ export default class PrinterMapControl extends M.Control {
     * @function
     * @api stable
     */
-  downloadPrint(event) {
-    event.preventDefault();
-    if (event.key === undefined || event.key === 'Enter' || event.key === ' ') {
+  downloadPrint(evt) {
+    evt.preventDefault();
+    if (evt.key === undefined || evt.key === 'Enter' || evt.key === ' ') {
       const downloadUrl = this.getAttribute(PrinterMapControl.DOWNLOAD_ATTR_NAME);
       if (!M.utils.isNullOrEmpty(downloadUrl)) {
         window.open(downloadUrl, '_blank');
@@ -826,27 +835,31 @@ export default class PrinterMapControl extends M.Control {
     * @function
     * @api stable
     */
-  downloadGeoPrint(bbox, event) {
+  downloadGeoPrint(bbox) {
     const base64image = getBase64Image(this.documentRead_.src);
-    base64image.then((resolve) => {
-      const size = this.map_.getMapImpl().getSize();
-      const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / this.dpiGeo_)).toString();
-      const GiroA = (0).toString();
-      const GiroB = (0).toString();
-      const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / this.dpiGeo_)).toString();
-      const Cx = (bbox[0] + (Px / 2)).toString();
-      const Cy = (bbox[3] + (Py / 2)).toString();
-      const f = new Date();
-      const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
-      const zip = new JsZip();
-      zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
-      zip.file(titulo.concat('.jpg'), resolve, { base64: true });
-      zip.generateAsync({ type: 'blob' }).then((content) => {
-        saveAs(content, titulo.concat('.zip'));
-      });
-    }).catch((err) => {
-      M.dialog.error(getValue('exception.imageError'));
-    });
+    const titulo = generateTitle('');
+
+    // CONTENT ZIP
+    const files = [{
+      name: titulo.concat(FILE_EXTENSION_GEO),
+      data: createWLD(bbox, this.dpiGeo_, this.map_.getMapImpl().getSize(), false, this.map_, 'server'),
+      base64: false,
+    },
+    {
+      name: titulo.concat(FILE_EXTENSION_IMG),
+      data: base64image,
+      base64: true,
+    },
+    ];
+
+    // CREATE ZIP
+    const zipEvent = (evt) => {
+      if (evt.key === undefined || evt.key === 'Enter' || evt.key === ' ') {
+        createZipFile(files, TYPE_SAVE, titulo);
+      }
+    };
+
+    return zipEvent;
   }
 
   /**

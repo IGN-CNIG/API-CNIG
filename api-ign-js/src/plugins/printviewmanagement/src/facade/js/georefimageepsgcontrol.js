@@ -10,6 +10,11 @@ import {
   generateTitle, getBase64Image,
 } from './utils';
 
+// DEFAULTS PARAMS
+const FILE_EXTENSION_GEO = '.wld'; // .jgw
+const FILE_EXTENSION_IMG = '.jpg';
+const TYPE_SAVE = '.zip';
+
 export default class GeorefImageEpsgControl extends M.Control {
   /**
     * @classdesc
@@ -249,10 +254,6 @@ export default class GeorefImageEpsgControl extends M.Control {
     * @api stable
     */
   downloadPrint(url, bbox, epsgUser, title = '') {
-    const FILE_EXTENSION_GEO = '.jgw'; // .jgw
-    const FILE_EXTENSION_IMG = '.jpg';
-    const TYPE_SAVE = '.zip';
-
     const imageUrl = url !== null ? url : this.documentRead_.src;
     const dpi = this.dpi_;
 
@@ -278,16 +279,15 @@ export default class GeorefImageEpsgControl extends M.Control {
           ];
 
           // CREATE ZIP
-          this.queueEl.addEventListener('click', () => {
-            createZipFile(files, TYPE_SAVE, titulo);
-          });
-
-          // Enter event create zip
-          this.queueEl.addEventListener('keydown', (evt) => {
-            if (evt.keyCode === 13) {
+          const zipEvent = (evt) => {
+            if (evt.key === undefined || evt.key === 'Enter' || evt.key === ' ') {
               createZipFile(files, TYPE_SAVE, titulo);
             }
-          });
+          };
+
+          // Enter event create zip
+          this.queueEl.addEventListener('click', zipEvent);
+          this.queueEl.addEventListener('keydown', zipEvent);
 
           // REMOVE QUEUE ELEMENT
           removeLoadQueueElement(this.queueEl);

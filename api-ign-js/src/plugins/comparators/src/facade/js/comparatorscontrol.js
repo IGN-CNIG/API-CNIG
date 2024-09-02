@@ -515,14 +515,18 @@ export default class ComparatorsControl extends M.Control {
    * @api
    */
   deactive(html, control) {
+    // eventActive_ con if (c.control) c.control.deactivate(); parece haberlo sustituido.
+    // activatedComparators podría ser necesario en vez de activated.
     const active = html.querySelector('#m-comparators-previews .activated');
     if (active && !active.id.includes(control)) {
       if (active.id === 'm-comparators-zoomextent') {
+        // zoomextentControl no parece existir ahora en este plugin.
         this.zoomextentControl.deactive();
       }
       active.classList.remove('activated');
       const container = document.querySelector('#div-contenedor-comparators');
       if (container && container.children.length > 2) {
+        // Borra el div de id="m-comparators-contents" que luego causará problemas.
         container.removeChild(container.children[2]);
       }
     }

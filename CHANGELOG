@@ -21,14 +21,18 @@
 - Arreglado estilo Chart de tipo "bar" y ajustes del funcionamiento del offset de textos de todos estos.
 - Añadido parámetro "blob" a las capas GeoTiff.
 - Actualizado en todos los plugins los metadatos para que muestren la versión actual usada en cada uno.
+- Arreglo de setMaxExtent para aplicar nuevo view con los mismos properties.
 - Plugin attributions: Optimizado uso de funciones de la clase array.
 - Plugin backimglayer:
   - Normalizado código de la función "equals".
   - Cambios de eslint.
+  - Arreglado aspecto del panel de la esquina inferior izquierda.
 - Plugin beautytoc: Optimizado uso de funciones de la clase array.
 - Plugin comparators:
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
+  - Añadido función común effectSelectedImpl_ para aplicar lupa.
+  - Previsto que la función click sobre m-lyrcompare-void, solo se haga si existe esta opción.
 - Plugin comparepanel: Optimizado uso de funciones de la clase array.
 - Plugin fulltoc:
   - Optimizado uso de funciones de la clase array.
@@ -76,6 +80,7 @@
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
   - Normalizado código de la función "getControlActive".
+  - Añadido cacheado al generado de la lista de descargas.
 - Plugin queryattributes: Optimizado uso de funciones de la clase array.
 - Plugin rescale: Optimizado uso de funciones de la clase array.
 - Plugin selectiondraw: Cambios de eslint.

@@ -231,13 +231,7 @@ export default class TransparencyControl extends M.Control {
             });
 
             this.layerSelected = layer[0];
-            setTimeout(() => {
-              this.getImpl().effectSelected(
-                this.layerSelected,
-                this.radius,
-                this.freeze,
-              );
-            }, 1000);
+            this.effectSelectedImpl_();
           });
       }
 
@@ -449,5 +443,11 @@ export default class TransparencyControl extends M.Control {
 
   getLayersNames() {
     return this.layers.map((l) => l.name);
+  }
+
+  effectSelectedImpl_() {
+    setTimeout(() => {
+      this.getImpl().effectSelected(this.layerSelected, this.radius, this.freeze);
+    }, 1000);
   }
 }
