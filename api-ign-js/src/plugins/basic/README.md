@@ -1,23 +1,23 @@
 <p align="center">
   <img src="https://www.ign.es/resources/viewer/images/logoApiCnig0.5.png" height="152" />
 </p>
-<h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.ContactLink</small></h1>
+<h1 align="center"><strong>APICNIG</strong> <small>🔌 M.plugin.Basic</small></h1>
 
 # Descripción
 
-Provee de enlaces a sitios, redes sociales y correo institucionales.
+Plugin básico para crear otros plugins
 
 # Dependencias
 
 Para que el plugin funcione correctamente es necesario importar las siguientes dependencias en el documento html:
 
-- **contactlink.ol.min.js**
-- **contactlink.ol.min.css**
+- **basic.ol.min.js**
+- **basic.ol.min.css**
 
 
 ```html
- <link href="https://componentes.cnig.es/api-core/plugins/contactlink/contactlink.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/contactlink/contactlink.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/basic/basic.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/basic/basic.ol.min.js"></script>
 ```
 
 # Uso del histórico de versiones
@@ -25,8 +25,8 @@ Para que el plugin funcione correctamente es necesario importar las siguientes d
 Existe un histórico de versiones de todos los plugins de API-CNIG en [api-ign-legacy](https://github.com/IGN-CNIG/API-CNIG/tree/master/api-ign-legacy/plugins) para hacer uso de versiones anteriores.
 Ejemplo:
 ```html
- <link href="https://componentes.cnig.es/api-core/plugins/contactlink/contactlink-1.0.0.ol.min.css" rel="stylesheet" />
- <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/contactlink/contactlink-1.0.0.ol.min.js"></script>
+ <link href="https://componentes.cnig.es/api-core/plugins/basic/basic-1.0.0.ol.min.css" rel="stylesheet" />
+ <script type="text/javascript" src="https://componentes.cnig.es/api-core/plugins/basic/basic-1.0.0.ol.min.js"></script>
 ```
 
 # Parámetros
@@ -40,23 +40,12 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   - 'BR': (bottom right) - Abajo a la derecha.
 - **collapsed**: Indica si el plugin viene colapsado de entrada (true/false). Por defecto: true.
 - **collapsible**: Indica si el plugin puede abrirse y cerrarse (true) o si permanece siempre abierto (false). Por defecto: true.
-- **descargascnig**: Indica la url al centro de descargas CNIG. Por defecto: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp'
-- **pnoa**: Indica la url al comparador PNOA. Por defecto: 'https://www.ign.es/web/'comparador_pnoa/index.html
-- **visualizador3d**: Indica la url al Visualizador3D. Por defecto: 'https://visualizadores.ign.es/estereoscopico/'
-- **fototeca**: Indica la url a Fototeca. Por defecto: 'https://fototeca.cnig.es/'
-- **twitter**: Indica la url al Twitter del CNIG. Por defecto: 'https://twitter.com/IGNSpain'
-- **instagram**: Indica la url al Instagram del CNIG. Por defecto: 'https://www.instagram.com/ignspain/'
-- **facebook**: Indica la url al Facebook del CNIG. Por defecto: 'https://www.facebook.com/IGNSpain/'
-- **pinterest**: Indica la url al Pinterest del CNIG. Por defecto: 'https://www.pinterest.es/IGNSpain/'
-- **youtube**: Indica la url al Youtube del CNIG. Por defecto: 'https://www.youtube.com/user/IGNSpain'
-- **mail**: Indica la url para escribir correo al CNIG. Por defecto: 'mailto:ign@fomento.es'
 - **tooltip**. Información emergente para mostrar en el tooltip del plugin (se muestra al dejar el ratón encima del plugin como información). Por defecto: 'Enlaces y contacto IGN'
 
 # API-REST
 
 ```javascript
-URL_API?contactlink=position*collapsed*collapsible*tooltip*descargascnig*pnoa*visualizador3d*fototeca*twitter
-*instagram*facebook*pinterest*youtube*mail
+URL_API?contactlink=position*collapsed*collapsible*tooltip
 ```
 
 <table>
@@ -85,67 +74,17 @@ URL_API?contactlink=position*collapsed*collapsible*tooltip*descargascnig*pnoa*vi
     <td>Valor a usar para mostrar en el tooltip del plugin</td>
     <td>Base64 ✔️ | Separador ✔️</td>
   </tr>
-  <tr>
-    <td>descargascnig</td>
-    <td>URL del centro de descargas CNIG</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
-    <td>pnoa</td>
-    <td>URL del comparador PNOA</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
-    <td>visualizador3d</td>
-    <td>URL del Visualizador3D</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
-    <td>fototeca</td>
-    <td>URL de Fototeca</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
-    <td>twitter</td>
-    <td>URL del Twitter del CNIG</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
-    <td>instagram</td>
-    <td>URL del Instagram del CNIG</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
-    <td>facebook</td>
-    <td>URL del Facebook del CNIG</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
-    <td>pinterest</td>
-    <td>URL del Pinterest del CNIG</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
-    <td>youtube</td>
-    <td>URL del Youtube del CNIG</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
-  <tr>
-    <td>mail</td>
-    <td>URL del correo del CNIG</td>
-    <td>Base64 ✔️ | Separador ✔️</td>
-  </tr>
 </table>
 
 
 ### Ejemplos de uso API-REST
 
 ```
-https://componentes.cnig.es/api-core/?contactlink=TR*true*true*Enlaces*http%3A%2F%2Fcentrodedescargas.cnig.es%2FCentroDescargas%2Findex.jsp*https%3A%2F%2Fwww.ign.es%2Fweb%2Fcomparador_pnoa%2Findex.html*https%3A%2F%2Fwww.ign.es%2F3D-Stereo%2F*https%3A%2F%2Ffototeca.cnig.es%2F*https%3A%2F%2Ftwitter.com%2FIGNSpain*https%3A%2F%2Fwww.instagram.com%2Fignspain%2F*https%3A%2F%2Fwww.facebook.com%2FIGNSpain%2F*https%3A%2F%2Fwww.pinterest.es%2FIGNSpain%2F*https%3A%2F%2Fwww.youtube.com%2Fuser%2FIGNSpain*mailto:ign@fomento.es
+https://componentes.cnig.es/api-core/?basic=TR*true*true*PluginBase
 ```
 
 ```
-https://componentes.cnig.es/api-core/?contactlink=TR*true*true
+https://componentes.cnig.es/api-core/?basic=TR*true*true
 ```
 
 ### Ejemplos de uso API-REST en base64
@@ -154,17 +93,7 @@ Ejemplo del constructor:
 ```javascript
 {
   position:"TL",
-  descargascnig:"http://centrodedescargas.cnig.es/CentroDescargas/index.jsp",
-  pnoa:"https://www.ign.es/web/comparador_pnoa/index.html",
-  visualizador3d:"https://www.ign.es/3D-Stereo/",
-  fototeca:"https://fototeca.cnig.es/",
-  twitter:"https://twitter.com/IGNSpain",
-  instagram:"https://www.instagram.com/ignspain/",
-  facebook:"https://www.facebook.com/IGNSpain/",
-  pinterest:"https://www.pinterest.es/IGNSpain/",
-  youtube:"https://www.youtube.com/user/IGNSpain",
-  mail:"mailto:ign@fomento.es",
-  tooltip:"Contacta con nosotros"
+  tooltip:"Plugin Base"
 }
 ```
 ```
@@ -175,18 +104,8 @@ https://componentes.cnig.es/api-core/?contactlink=base64=eyJwb3NpdGlvbiI6IlRMIiw
 # Ejemplo de uso
 
 ```javascript
-const mp = new ContactLink({
+const mp = new M.plugin.Basic({
   position: 'TR',
-  descargascnig: 'http://centrodedescargas.cnig.es/CentroDescargas/index.jsp',
-  pnoa: 'https://www.ign.es/web/comparador_pnoa/index.html',
-  visualizador3d: 'https://visualizadores.ign.es/estereoscopico/',
-  fototeca: 'https://fototeca.cnig.es/',
-  twitter: 'https://twitter.com/IGNSpain',
-  instagram: 'https://www.instagram.com/ignspain/',
-  facebook: 'https://www.facebook.com/IGNSpain/',
-  pinterest: 'https://www.pinterest.es/IGNSpain/',
-  youtube: 'https://www.youtube.com/user/IGNSpain',
-  mail: 'mailto:ign@fomento.es',
 });
 
 map.addPlugin(mp);

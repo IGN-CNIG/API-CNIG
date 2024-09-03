@@ -35,11 +35,11 @@
     "name": "Basic",
     "description": "Plugin básico",
     "text": "Plantilla de plugin básico",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "date": "Agosto 2024",
     "author": "Guadaltel",
     "org": "",
-    "tags": "mapea,plugin",
+    "tags": "cnig,plugin",
     "icon": "./facade/assets/icons/icons.svg"
   }
 }

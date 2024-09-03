@@ -81,13 +81,6 @@ export default class Basic extends M.Plugin {
     this.collapsible = options.collapsible !== false;
 
     /**
-     * Basic control
-     * @public
-     * @type {M.control.Basic}
-     */
-    this.control_ = new BasicControl();
-
-    /**
      *@private
      *@type { Number }
      */
@@ -110,7 +103,7 @@ export default class Basic extends M.Plugin {
    * @api stable
    */
   addTo(map) {
-    // this.controls_.push(new BasicControl(values));
+    this.controls_.push(new BasicControl());
     this.map_ = map;
     this.panel_ = new M.ui.Panel('Basic', {
       collapsible: this.collapsible,
@@ -121,7 +114,7 @@ export default class Basic extends M.Plugin {
       tooltip: this.tooltip_,
       order: this.order,
     });
-    this.panel_.addControls(this.control_);
+    this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
   }
 
@@ -143,7 +136,7 @@ export default class Basic extends M.Plugin {
    * @api stable
    */
   destroy() {
-    this.map_.removeControls([this.control_]);
+    this.map_.removeControls(this.controls_);
   }
 
   /**

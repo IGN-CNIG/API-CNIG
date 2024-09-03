@@ -49,36 +49,6 @@ export default class BasicControl extends M.Control {
   }
 
   /**
-   * This function is called on the control activation
-   *
-   * @public
-   * @function
-   * @api stable
-   */
-  activate() {}
-
-  /**
-   * This function is called on the control deactivation
-   *
-   * @public
-   * @function
-   * @api stable
-   */
-  deactivate() {}
-
-  /**
-   * This function gets activation button
-   *
-   * @public
-   * @function
-   * @param {HTML} html of control
-   * @api stable
-   */
-  getActivationButton(html) {
-    return html.querySelector('.m-basic button');
-  }
-
-  /**
    * This function compares controls
    *
    * @public
@@ -89,5 +59,4 @@ export default class BasicControl extends M.Control {
   equals(control) {
     return control instanceof BasicControl;
   }
-  // Add your own functions
 }

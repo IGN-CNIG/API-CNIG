@@ -3,16 +3,15 @@
  */
 export default class BasicControl extends M.impl.Control {
   /**
-   * This function adds the control to the specified map
+   * Esta función añade el control al mapa
    *
    * @public
    * @function
-   * @param {M.Map} map to add the plugin
-   * @param {HTMLElement} html of the plugin
+   * @param {M.Map} map mapa donde se añadirá el plugin
+   * @param {HTMLElement} html html del plugin
    * @api stable
    */
   addTo(map, html) {
-    // super addTo - don't delete
     super.addTo(map, html);
   }
 }
