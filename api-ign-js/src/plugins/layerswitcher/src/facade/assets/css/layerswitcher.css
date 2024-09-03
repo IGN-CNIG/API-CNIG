@@ -97,7 +97,6 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
 /* Listado de capas */
 .m-layerswitcher-container li div {
     display: flex;
-    font-family: sans-serif;
     font-size: 0.8em;
     overflow: hidden;
     line-height: 1.4em;
@@ -635,6 +634,7 @@ div.m-layerswitcher-legend>img {
 .m-layerswitcher-gray-shadow {
     opacity: 0.3;
     background-color: #D1E6F8;
+
 }
 
 /* leyenda */
@@ -780,6 +780,46 @@ div.m-layerswitcher-legend>img {
 /* Mobile fix */
 
 @media only screen and (max-width: 768px) {
+
+    .sortable-chosen .m-layerswitcher-type {
+        color: white;
+        background-color: #9a9a9a;
+        padding: 3px 7px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    /* Ocultar cuando se mueve drag and drop*/
+    .sortable-chosen ul li, .sortable-chosen .m-layerswitcher-tools {
+        display: none;
+    }
+
+    .sortable-chosen {
+        color: #6c6c6c;
+        font-family: Muli, "sans-serif" !important;
+        font-size: 13px;
+        height: 100%;
+    
+        list-style: none;
+    
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        gap: 20px;
+    
+        line-height: 40px;
+        text-align: center;
+        font-size: 15px;
+    }
+    
+    .m-layerswitcher-sectionPanel-header-text {
+        white-space: nowrap; 
+        overflow: hidden;            
+        text-overflow: ellipsis;   
+        width: 200px; 
+    }
+
     .m-plugin-layerswitcher.opened {
         width: 100vw;
         height: 100vh;
