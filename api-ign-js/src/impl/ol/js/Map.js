@@ -2298,7 +2298,7 @@ class Map extends MObject {
     const olMap = this.getMapImpl();
 
     const view = olMap.getView();
-    const newView = new View({ ...view, extent: maxExtent });
+    const newView = new View({ ...view, ...view.getProperties(), extent: maxExtent });
     olMap.setView(newView);
 
     this.updateResolutionsFromBaseLayer();

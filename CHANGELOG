@@ -2,6 +2,7 @@
 - Se controla capas WMS cuando no se indica nombre si es WMS_FULL
 - Mejoras JSDOC
 - Se implementa funcionalidad de grupos de capas
+- Arreglo de setMaxExtent para aplicar nuevo view con los mismos properties.
 - Plugin printviewmanagement: se cambia la extensión de jpeg a jpg de los archivos
 - Plugin sharemap: se soluciona problema con paráemtro shareLayer que compartía siempre todas las capas
 - Plugin help: se incluye parámetro initialIndex para abrir en una sección determinada
