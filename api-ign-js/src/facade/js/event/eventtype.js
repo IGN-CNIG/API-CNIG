@@ -58,6 +58,22 @@ export const ADDED_GEOTIFF = 'added:geotiff';
 export const ADDED_MAPLIBRE = 'added:maplibre';
 
 /**
+ * Evento que se produce al añadir LayerGroup.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const ADDED_LAYERGROUP = 'added:layergroup';
+
+/**
+ * Evento que se produce al añadir LayerGroup.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const ADDED_TO_LAYERGROUP = 'added:tolayergroup';
+
+/**
  * Evento que se produce al añadir WFS.
  * @public
  * @type {string}
