@@ -134,6 +134,7 @@
     "removewmc_method": "The used implementation does not have the removeWMC method.",
     "getkml_method": "The used implementation does not have the getKML method.",
     "addkml_method": "The implementation used does not have the addKML method.",
+    "addLayerGroup_method": "The used implementation does not have the addLayerGroup method.",
     "removekml_method": "The implementation used does not have the removeKML method.",
     "getwms_method": "The used implementation does not have the getWMS method.",
     "getgeotiff_method": "The used implementation does not have the getWMS method.",

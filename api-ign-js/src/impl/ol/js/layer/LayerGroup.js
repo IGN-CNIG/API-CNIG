@@ -184,6 +184,8 @@ class LayerGroup extends Layer {
 
       this.layersCollection.push(impl.getOL3Layer());
     }
+
+    return layer;
   }
 
   /**

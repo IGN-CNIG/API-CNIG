@@ -822,7 +822,34 @@ class Map extends Base {
    * @api stable
    */
   addLayerGroups(layerGroups) {
-    this.getImpl().addLayerGroups(layerGroups);
+    let layersParam = layerGroups;
+
+    if (!isNullOrEmpty(layersParam)) {
+      if (isUndefined(MapImpl.prototype.addLayerGroups)) {
+        Exception(getValue('exception').addLayerGroup_method);
+      }
+
+      if (!isArray(layersParam)) {
+        layersParam = [layersParam];
+      }
+
+      const collectionLayerGroups = [];
+      layersParam.forEach((layerParam) => {
+        if (isObject(layerParam) && (layerParam instanceof LayerGroup)) {
+          layerParam.setMap(this);
+          collectionLayerGroups.push(layerParam);
+        } else if (!(layerParam instanceof Layer)) {
+          const tmsLayer = new LayerGroup(layerParam, layerParam.options);
+          tmsLayer.setMap(this);
+          collectionLayerGroups.push(tmsLayer);
+        }
+      });
+
+      this.getImpl().addLayerGroups(collectionLayerGroups);
+
+      this.fire(EventType.ADDED_LAYER, [collectionLayerGroups]);
+      this.fire(EventType.ADDED_LAYERGROUP, [collectionLayerGroups]);
+    }
     return this;
   }
 
@@ -1282,7 +1309,7 @@ class Map extends Base {
   addGeoTIFF(layersParamVar) {
     let layersParam = layersParamVar;
     if (!isNullOrEmpty(layersParam)) {
-    // checks if the implementation can manage layers
+      // checks if the implementation can manage layers
       if (isUndefined(MapImpl.prototype.addGeoTIFF)) {
         Exception(getValue('exception').addgeotiff_method);
       }
@@ -1328,7 +1355,7 @@ class Map extends Base {
  */
   removeGeoTIFF(layersParam) {
     if (!isNullOrEmpty(layersParam)) {
-    // checks if the implementation can manage layers
+      // checks if the implementation can manage layers
       if (isUndefined(MapImpl.prototype.removeGeoTIFF)) {
         Exception(getValue('exception').removegeotiff_method);
       }

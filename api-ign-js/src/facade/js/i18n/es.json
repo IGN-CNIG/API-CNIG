@@ -135,6 +135,7 @@
     "removewmc_method": "La implementación usada no posee el método removeWMC.",
     "getkml_method": "La implementación usada no posee el método getKML.",
     "addkml_method": "La implementación usada no posee el método addKML.",
+    "addLayerGroup_method": "La implementación usada no posee el método addLayerGroup.",
     "removekml_method": "La implementación usada no posee el método removeKML.",
     "getwms_method": "La implementación usada no posee el método getWMS.",
     "getgeotiff_method": "La implementación usada no posee el método getGeoTIFF.",
