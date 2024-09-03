@@ -10,10 +10,12 @@ window.map = map;
 
 const mp = new Basic({
   position: 'TR', // TR, BR, TL, BL
-  collapsed: true,
+  collapsed: false,
   collapsible: true,
   tooltip: 'Plantilla plugin',
 });
 window.mp = mp;
 
 map.addPlugin(mp);
+
+map.addPlugin(new M.plugin.Help({}));
