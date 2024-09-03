@@ -330,8 +330,19 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   async generateTemplateLayerGroup() {
+    const layersFilter = this.map_.getLayers().filter((layer) => {
+      const isTransparent = (layer.transparent === true);
+      const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
+      const isLayerGroup = (layer instanceof M.layer.LayerGroup);
+      return isTransparent && displayInLayerSwitcher && !isLayerGroup;
+    });
+
+    if (layersFilter.length === 0) {
+      return;
+    }
+
     // eslint-disable-next-line no-restricted-syntax
-    for (const layer of this.map_.getLayers()) {
+    for (const layer of layersFilter) {
       if (layer instanceof M.layer.LayerGroup) {
         // eslint-disable-next-line no-await-in-loop
         const layerGroupHTML = await this.recursiveLayerGroupTemplate_(layer);
