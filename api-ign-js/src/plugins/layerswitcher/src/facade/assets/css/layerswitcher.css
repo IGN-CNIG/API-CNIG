@@ -1412,6 +1412,13 @@ button.g-cartografia-flecha-derecha + div .m-layerswitcher-ullayersGroup {
     margin: 20px;
 }
 
+.m-layerswitcher-groups-fields-container > div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .m-layerswitcher-groups-fields {
     background-color: #fff;
     border: 1px solid #ccc;
@@ -1422,7 +1429,7 @@ button.g-cartografia-flecha-derecha + div .m-layerswitcher-ullayersGroup {
     font-size: 13px;
     padding: 5px;
     margin-top: 5px;
-    width: 100%;
+    width: 60%;
 }
 
 li.m-layerswitcher-sectionPanel[data-layer-type="LayerGroup"]:has(> section div button.m-layerswitcher-icons-ocultar) > ul > li button.m-layerswitcher-icons-ver {
