@@ -141,6 +141,7 @@ class WMTS extends LayerBase {
       minResolution: this.options.minResolution,
       maxResolution: this.options.maxResolution,
       extent: this.userMaxExtent,
+      opacity: this.opacity_,
     }, this.vendorOptions_, true));
 
     if (this.useCapabilities) {
