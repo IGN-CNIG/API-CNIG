@@ -62,6 +62,7 @@ class LayerGroup extends LayerBase {
     const opt = options;
     opt.visibility = userParameters.visibility;
     opt.maxExtent = userParameters.maxExtent;
+    opt.displayInLayerSwitcher = parameters.displayInLayerSwitcher;
 
     /**
      * Implementation of this layer
