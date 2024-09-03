@@ -9,10 +9,12 @@ import * as LayerType from './Type';
 
 /**
  * @classdesc
- * Represents a group of layers, of any type. If a group is already added to a Map,
- * layers added to that group are automatically added to the map, and layers
- * removed from the group, are automatically removed from the map. Elements inside the group
- * are considered children of that group.
+ * Representa un grupo de capas.
+ *
+ * @property {Array<M.LayerBase|M.LayerGroup>} layers
+ * @property {boolean} display
+ *
+ *
  * @constructor
  * @extends {M.facade.Base}
  * @param {string|Mx.parameters.Layer} userParameters parameters
@@ -20,6 +22,38 @@ import * as LayerType from './Type';
  * @api
  */
 class LayerGroup extends LayerBase {
+  /**
+   * Constructor principal de la clase. Crea una capa LayerGroup
+   * con parámetros especificados por el usuario.
+   *
+   * @constructor
+   * @param {String|Mx.parameters.GeoJSON} parameters Parámetros para la construcción de la capa,
+   * estos parámetros los proporciona el usuario.
+   * - name: Nombre de la capa en la leyenda.
+   * - layers: Capas que forman el grupo.
+   * - display: Indica si el grupo se muestra en el árbol de contenidos.
+   * - type: Tipo de la capa.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * - attribution: Atribución de la capa.
+   * - isBase: Indica si la capa es base.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
+   * - visibility: Verdadero si la capa es visible, falso si queremos que no lo sea.
+   * En este caso la capa sería detectado por los plugins de tablas de contenidos
+   * y aparecería como no visible.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a la implementación.
+   * - minZoom: Zoom mínimo aplicable a la capa.
+   * - maxZoom: Zoom máximo aplicable a la capa.
+   * - minScale: Escala mínima.
+   * - maxScale: Escala máxima.
+   * - minResolution: Resolución mínima.
+   * - maxResolution: Resolución máxima.
+   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * @api
+   */
   constructor(userParameters, options = {}, vendorOptions = {}) {
     const parameters = parameter.layer(userParameters, LayerType.LayerGroup);
 
@@ -36,16 +70,16 @@ class LayerGroup extends LayerBase {
     const impl = new LayerGroupImpl(parameters, opt, vendorOptions);
     super(parameters, impl);
 
-    this.layers = parameters.layers;
+    this.layers = impl.layers;
 
     this.display = parameters.display || true;
   }
 
   /**
-   * Sets the visibility for the LayerGroup and all of its layers.
+   * Cambia la visibilidad de la capa.
    *
    * @function
-   * @param {boolean} visibility Visibility to set
+   * @param {boolean} visibility Visibilidad de la capa.
    * @api
    */
   setVisible(visibility) {
@@ -53,10 +87,10 @@ class LayerGroup extends LayerBase {
   }
 
   /**
-   * Deletes children from the group
+   * Elimina las capas del grupo.
    *
    * @function
-   * @param {Array<M.LayerBase|M.LayerGroup>}  children children to delete
+   * @param {Array<M.LayerBase|M.LayerGroup>} layers Capas a eliminar.
    * @api
    */
   removeLayers(layers = []) {
@@ -82,10 +116,10 @@ class LayerGroup extends LayerBase {
   }
 
   /**
-   * Moves a child out of a group, to the root level
-   * of the toc
+   * Saca una capa del grupo.
    * @function
-   * @param {M.LayerBase|M.LayerGroup} child
+   * @param {M.LayerBase|M.LayerGroup} layer Capa a sacar.
+   * @param {boolean} upToMap Indica si se saca hasta el mapa.
    * @api
    */
   ungroup(layers, upToMap = false) {
@@ -102,10 +136,9 @@ class LayerGroup extends LayerBase {
   }
 
   /**
-   * Adds children to the group
-   *
+   * Añade capas al grupo.
    * @function
-   * @param {Array<M.LayerBase|M.LayerGroup>}  children
+   * @param {Array<M.LayerBase|M.LayerGroup>} layers Capas a añadir.
    * @api
    */
   addLayers(layers = []) {
@@ -122,10 +155,22 @@ class LayerGroup extends LayerBase {
     this.layers = this.getLayers();
   }
 
+  /**
+   * Devuelve las capas del grupo.
+   * @function
+   * @return {Array<M.LayerBase|M.LayerGroup>} Capas del grupo.
+   * @api
+   */
   getLayers() {
     return this.getImpl().getLayers();
   }
 
+  /**
+   * Devuelve las capas del grupo.
+   * @function
+   * @return {Array<M.LayerBase|M.LayerGroup>} Capas del grupo.
+   * @api
+   */
   equals(obj) {
     let equals = false;
     if (obj instanceof LayerGroup) {

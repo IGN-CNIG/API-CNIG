@@ -1,5 +1,7 @@
-15/07/24 - Versión 5.1.0
-- Se incluye nuevo tipo de capa LayerGroup.
+18/07/24 - Versión 5.1.0
+- Se controla capas WMS cuando no se indica nombre si es WMS_FULL
+- Mejoras JSDOC
+- Se implementa funcionalidad de grupos de capas
 - Se impide interactuar con features que están detrás del actual popup mostrado.
 - Previsto uso de panIntoView en caso de que el popup al que referencia ya fue eliminado.
 - Refrescado necesario para interacción "hover" de features se evitará en caso de interacción "click" en la función unselectFeatures.
@@ -45,7 +47,9 @@
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
   - Cambios de eslint.
-- Plugin help: Optimizado uso de funciones de la clase array.
+- Plugin help:
+  - Se incluye parámetro initialIndex para abrir en una sección determinada.
+  - Optimizado uso de funciones de la clase array.
 - Plugin iberpixcompare: Optimizado uso de funciones de la clase array.
 - Plugin ignsearch: Optimizado uso de funciones de la clase array.
 - Plugin ignsearchlocator: Optimizado uso de funciones de la clase array.
@@ -54,9 +58,9 @@
   - Cambios de eslint.
 - Plugin infocoordinates: Cambios de eslint.
 - Plugin layerswitcher:
+  -Permite cambiar nombre a las capas
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
-  - Añadido posibilidad de cambiar leyenda.
   - Cambios de eslint.
 - Plugin locator:
   - Optimizado uso de funciones de la clase array.
@@ -71,12 +75,13 @@
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
 - Plugin mousesrs:
+  - Se hace uso de OGC API Coverages para calcular la altura
   - Cambios de eslint.
-  - Añadido parámetros "mode" y "coveragePrecissions".
 - Plugin printermap:
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
 - Plugin printviewmanagement:
+  - Se cambia la extensión de jpeg a jpg de los archivos
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
   - Normalizado código de la función "getControlActive".
@@ -85,9 +90,12 @@
 - Plugin rescale: Optimizado uso de funciones de la clase array.
 - Plugin selectiondraw: Cambios de eslint.
 - Plugin selectionzoom: Normalizado código de la función "equals".
-- Plugin sharemap: Optimizado uso de funciones de la clase array.
+- Plugin sharemap:
+  - Se soluciona problema con parámetro shareLayer que compartía siempre todas las capas.
+  - Optimizado uso de funciones de la clase array.
 - Plugin stereoscopic: Optimizado uso de funciones de la clase array.
 - Plugin stylemanager:
+  - Subida de versión a la librería chroma-js.
   - Optimizado uso de funciones de la clase array.
   - Cambios de eslint.
 - Plugin timeline:
@@ -108,6 +116,7 @@
 - Plugin viewmanagement:
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
+- Se incluye plantilla de plugin (basic)
 
 22/05/24 - Versión 5.0.0
 - Se incluye nuevo tipo de capa GeoTiff.

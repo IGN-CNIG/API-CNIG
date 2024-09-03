@@ -239,19 +239,6 @@ export default class LayerswitcherControl extends M.Control {
     }
   }
 
-  // ! ¿? NO SE UTILIZA
-  eventsPanel(panel) {
-    if (panel.getButtonPanel().parentElement.classList.contains('collapsed')) {
-      this.getImpl().removeRenderComplete();
-    }
-
-    panel.getButtonPanel().addEventListener('click', this.collapsedPlugin.bind(this), false);
-
-    if (this.isDraggable_) {
-      M.utils.draggabillyPlugin(panel, '#m-layerswitcher-title');
-    }
-  }
-
   // Esta función devuelve las variables para la plantilla
   getTemplateVariables(map) {
     return new Promise((success, fail) => {
@@ -366,6 +353,8 @@ export default class LayerswitcherControl extends M.Control {
             vars: {
               changeName: getValue('change_name'),
               displayGroup: layer.display === undefined ? true : layer.display,
+              show_group: getValue('show_group'),
+              hide_group: getValue('hide_group'),
               nameRadio: layer.getImpl().rootGroup === null ? 'm-layerswitcher-radioLayers' : layer.getImpl().rootGroup.name,
               ...varsGroup,
               ...this.getTemplateVariablesValues(),
@@ -2191,7 +2180,8 @@ export default class LayerswitcherControl extends M.Control {
     const btnAddLayer = document.querySelector('#m-layerswitcher-layer-button');
     btnAddLayer.addEventListener('click', () => {
       const randomNumber = Math.floor(Math.random() * 9000) + 1000;
-      let name = document.querySelector('#m-layerswitcher-layer-name');
+      const nameModal = document.querySelector('#m-layerswitcher-layer-name');
+      let name = null;
       if (M.utils.isNullOrEmpty(name)) {
         name = `layer_${randomNumber}`;
       } else {
@@ -2204,7 +2194,7 @@ export default class LayerswitcherControl extends M.Control {
       }
 
       this.addLayer({
-        name,
+        name: nameModal === null ? legend : name,
         type,
         legend,
         url,

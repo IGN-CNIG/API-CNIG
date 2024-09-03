@@ -789,7 +789,7 @@ class Map extends Base {
   }
 
   /**
-   * TODO
+   * Este método devuelve los grupos que tenga el mapa.
    *
    * @function
    * @returns {Array<M.layer.Group>}
@@ -804,6 +804,8 @@ class Map extends Base {
   }
 
   /**
+   * Añade un grupo de capa al mapa.
+   *
    * @function
    * @param {Array<M.layer.Group>} layerGroups
    * @returns {M.Map}
@@ -815,7 +817,7 @@ class Map extends Base {
   }
 
   /**
-   * TODO
+   * Elimina un grupo de capa al mapa.
    *
    * @function
    * @param {Array<M.layer.Group>} layerGroups

@@ -67,6 +67,8 @@
   "service_info": "Información del servicio (Capabilities)",
   "download_center": "Centro de descargas",
   "add": "Añadir",
+  "show_group": "Mostrar grupo",
+  "hide_group": "Ocultar grupo",
   "drag_drop": "Arrastre y suelte para cambiar el orden de visualización",
   "see_more": "Mostrar metadato del conjunto de datos",
   "see_less": "Ocultar metadato del conjunto de datos",

@@ -80,6 +80,8 @@
   "hide_service_info": "Hide service information",
   "hide_service": "Hide service",
   "show_service": "Show service",
+  "show_group": "Show group",
+  "hide_group": "Hide group",
   "show_all_services": "Show all services",
   "hide_all_services": "Hide all services",
   "type_service": "Tipo de servicio",

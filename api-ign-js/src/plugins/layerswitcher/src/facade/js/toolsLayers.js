@@ -272,18 +272,43 @@ export const showHideLayersRadio = (layer, map, layerName, layerType, layerURL) 
   }
 };
 
-export const selectDefaultRange = (radioButtons, map) => {
-  radioButtons.forEach((radio, i) => {
-    if (i === 0) {
-      radio.click();
-    }
+const getRadioLayersFilter = (layers) => {
+  return layers.filter((l) => l.displayInLayerSwitcher === true
+  && l.transparent === true
+  && l.isVisible()) || [];
+};
 
-    if (radio.getAttribute('data-layer-type') === M.layer.type.LayerGroup) {
-      const found = map.getLayerGroup()
-        .find((layerGroup) => layerGroup.name === radio.getAttribute('data-layer-name'));
-      if (found && found.getLayers().length > 0) {
-        radioButtons[i + 1].click();
+const clickRadioLayers = (layersVisible, radioButtons) => {
+  if (layersVisible.length === 1) {
+    radioButtons.forEach((radio) => {
+      if (radio.getAttribute('data-layer-name') === layersVisible[0].name) {
+        radio.click();
       }
-    }
+    });
+  }
+
+  if (layersVisible.length > 1) {
+    const radio = [...radioButtons]
+      .find((r) => r.getAttribute('data-layer-name') === layersVisible[layersVisible.length - 1].name);
+    if (radio) radio.click();
+  }
+};
+
+export const selectDefaultRange = (radioButtons, map) => {
+  const layersMapVisible = map.getLayers()
+    .filter((l) => l.displayInLayerSwitcher === true
+    && l.isVisible()
+    && l.transparent === true).reverse();
+
+  // Del mapa
+  clickRadioLayers(layersMapVisible, radioButtons);
+
+  // De los grupos
+  const layerGroupVisible = getRadioLayersFilter(map.getLayerGroup());
+  clickRadioLayers(layerGroupVisible, radioButtons);
+
+  // De las capas de cada grupo
+  layerGroupVisible.forEach((groups) => {
+    clickRadioLayers(getRadioLayersFilter(groups.layers), radioButtons);
   });
 };

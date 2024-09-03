@@ -380,6 +380,16 @@ class Map extends MObject {
     return this;
   }
 
+  /**
+   * Devuelve el total de capas en el mapa y en los grupos de capas.
+   *
+   * Método privado.
+   *
+   * @public
+   * @function
+   * @returns {Number} Suma de capas en el mapa y en los grupos de capas.
+   * @api stable
+   */
   getLengthZIndex_() {
     const layersGroup = this.getAllLayerInGroup().length;
     const layers = this.layers_.length;
@@ -387,7 +397,7 @@ class Map extends MObject {
   }
 
   /**
-   * TODO
+   * Este método devuelve los grupos de capas del mapa.
    *
    * @public
    * @function
@@ -435,11 +445,11 @@ class Map extends MObject {
   }
 
   /**
-     * Retrieves all layers which are in some LayerGroup
+     * Devuelve todos los grupos.
      *
      * @public
      * @function
-     * @returns {Array<M.Layer>} grouped layers from the map
+     * @returns {Array<M.Layer>} Grupos.
      * @api stable
      */
   getGroupedLayers() {
@@ -464,6 +474,14 @@ class Map extends MObject {
     return groupedLayers;
   }
 
+  /**
+     * Devuelve todas las capas de los grupos de capas.
+     *
+     * @public
+     * @function
+     * @returns {Array<M.Layer>} Capas.
+     * @api stable
+     */
   getAllLayerInGroup() {
     const layers = [];
     const groups = this.getGroupedLayers();
@@ -478,11 +496,11 @@ class Map extends MObject {
   }
 
   /**
-     * TODO
+     * Añade los grupos de capas al mapa.
      *
      * @public
      * @function
-     * @param {Array<M.layer.Group>} layers
+     * @param {Array<M.layer.Group>} layers Capas.
      * @returns {M.impl.Map}
      */
   addLayerGroups(groups = []) {
@@ -498,7 +516,7 @@ class Map extends MObject {
 
     groupsArray.forEach((group) => {
       if (group.type === LayerType.LayerGroup) {
-        if (!includes(this.layers_, group)) { // ! TODO WORK ?
+        if (!includes(this.layers_, group)) {
           group.getImpl().addTo(this.facadeMap_);
           this.layers_.push(group);
           if (group.getZIndex() == null) {
@@ -511,10 +529,10 @@ class Map extends MObject {
   }
 
   /**
-     * TODO
+     * Elimina los grupos de capas del mapa.
      *
      * @function
-     * @param {Array<M.layer.Group>} layers to remove
+     * @param {Array<M.layer.Group>} layers Elimina esta capa
      * @returns {M.impl.Map}
      * @api stable
      */
