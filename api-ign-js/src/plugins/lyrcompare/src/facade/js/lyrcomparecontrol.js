@@ -4,7 +4,9 @@
 
 import LyrcompareImplControl from 'impl/lyrcomparecontrol';
 import template from 'templates/lyrcompare';
-import { getValue as getValueTranslate } from './i18n/language';
+import {
+  getValue as getValueTranslate,
+} from './i18n/language';
 
 // eslint-disable-next-line no-extend-native, func-names
 Array.prototype.unique = (function (a) {
@@ -614,16 +616,19 @@ export default class LyrCompareControl extends M.Control {
           const urlLayer = layer.split('*');
           const name = urlLayer[3];
           const layerByUrl = this.map.getLayers()
-            .filter((l) => name.includes(l.name)).pop();
+            .filter((l) => name.includes(l.name))[this.map.getLayers()
+              .filter((l) => name.includes(l.name)).length - 1];
           this.map.removeLayers(layerByUrl);
         } else {
           const layerByName = this.map.getLayers()
-            .filter((l) => layer.includes(l.name)).pop();
+            .filter((l) => layer.includes(l.name))[this.map.getLayers()
+              .filter((l) => layer.includes(l.name)).length - 1];
           this.map.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
         const layerByObject = this.map.getLayers()
-          .filter((l) => layer.name.includes(l.name)).pop();
+          .filter((l) => layer.name.includes(l.name))[this.map.getLayers()
+            .filter((l) => layer.name.includes(l.name)).length - 1];
         this.map.removeLayers(layerByObject);
       }
     });
@@ -657,9 +662,9 @@ export default class LyrCompareControl extends M.Control {
               url: urlLayer[2],
               name: urlLayer[3],
             });
-            if (this.map.getLayers().some((l) => newLayer.name.includes(l.name))) {
+            if (this.map.getLayers().filter((l) => newLayer.name.includes(l.name)).length > 0) {
               this.map.removeLayers(this.map.getLayers()
-                .find((l) => newLayer.name.includes(l.name)));
+                .filter((l) => newLayer.name.includes(l.name))[0]);
             }
             this.map.addLayers(newLayer);
           } else if (urlLayer[0].toUpperCase() === 'WMTS') {
@@ -670,11 +675,11 @@ export default class LyrCompareControl extends M.Control {
             this.map.addLayers(newLayer);
           }
         } else {
-          const layerByName = this.map.getLayers().find((l) => layer.includes(l.name));
+          const layerByName = this.map.getLayers().filter((l) => layer.includes(l.name))[0];
           newLayer = this.isValidLayer(layerByName) ? layerByName : null;
         }
       } else if (layer instanceof Object) {
-        const layerByObject = this.map.getLayers().find((l) => layer.name.includes(l.name));
+        const layerByObject = this.map.getLayers().filter((l) => layer.name.includes(l.name))[0];
         newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
       }
 

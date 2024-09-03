@@ -111,13 +111,12 @@ export default class TOCControl extends M.Control {
   toogleVisible(evt) {
     const layerName = evt.currentTarget.querySelector('.m-check').dataset.layerName;
     const layerFound = this.map_.getLayers({ name: layerName })[0];
-    const notVisibility = layerFound instanceof M.layer.WMTS
-      ? !layerFound.options.visibility
-      : !layerFound.isVisible();
-    layerFound.setVisible(notVisibility);
-    layerFound.visibility = notVisibility;
+    const visibility = layerFound instanceof M.layer.WMTS ? layerFound.options.visibility
+      : layerFound.isVisible();
+    layerFound.setVisible(!visibility);
+    layerFound.visibility = !visibility;
     if (layerFound.options !== undefined) {
-      layerFound.options.visibility = notVisibility;
+      layerFound.options.visibility = !visibility;
     }
 
     this.render();

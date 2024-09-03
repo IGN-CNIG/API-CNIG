@@ -928,9 +928,8 @@ export default class PrinterMapControl extends M.Control {
     }
 
     const bbox = this.map_.getBbox();
-    const size = this.map_.getMapImpl().getSize();
-    const width = size[0];
-    const height = size[1];
+    const width = this.map_.getMapImpl().getSize()[0];
+    const height = this.map_.getMapImpl().getSize()[1];
     const layout = 'plain';
     // const dpi = this.dpiMax_;
     const dpi = this.dpiGeo_;

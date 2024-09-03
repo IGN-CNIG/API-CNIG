@@ -681,9 +681,9 @@ export default class Georefimage2Control extends M.impl.Control {
      * @see http: //www.mapfish.org/doc/print/protocol.html#layers-params
      */
     return layer.getImpl().getCapabilities().then((capabilities) => {
-      const matrixIdsObj = capabilities.Contents.TileMatrixSet.find((tileMatrixSet) => {
+      const matrixIdsObj = capabilities.Contents.TileMatrixSet.filter((tileMatrixSet) => {
         return (tileMatrixSet.Identifier === matrixSet);
-      });
+      })[0];
 
       try {
         return {
@@ -716,9 +716,9 @@ export default class Georefimage2Control extends M.impl.Control {
   encodeWMTSNoLayer(url, layerName, projection) {
     const matrixSet = projection !== 'EPSG:3857' ? projection : 'GoogleMapsCompatible';
     return this.getWMTSCapabilities(url).then((capabilities) => {
-      const matrixIdsObj = capabilities.Contents.TileMatrixSet.find((tileMatrixSet) => {
+      const matrixIdsObj = capabilities.Contents.TileMatrixSet.filter((tileMatrixSet) => {
         return (tileMatrixSet.Identifier === matrixSet);
-      });
+      })[0];
 
       try {
         return {
@@ -876,12 +876,13 @@ export default class Georefimage2Control extends M.impl.Control {
           parsedCapabilities.Contents.Layer.forEach((l) => {
             const name = l.Identifier;
             l.Style.forEach((s) => {
-              const layerText = response.text.split('Layer>').find((text) => text.indexOf(`Identifier>${name}<`) > -1);
-              // eslint-disable-next-line no-param-reassign
+              const layerText = response.text.split('Layer>').filter((text) => text.indexOf(`Identifier>${name}<`) > -1)[0];
+              /* eslint-disable no-param-reassign */
               s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
             });
           });
-        } catch (err) { /* Continue */ }
+        /* eslint-disable no-empty */
+        } catch (err) {}
         success.call(this, parsedCapabilities);
       });
     });

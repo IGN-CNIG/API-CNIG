@@ -1,5 +1,4 @@
 import Transparency from 'facade/transparency';
-// eslint-disable-next-line import/no-relative-packages
 import ShareMap from '../../sharemap/src/facade/js/sharemap';
 
 M.language.setLang('en');
@@ -9,22 +8,21 @@ const map = M.map({
   controls: ['panzoom', 'scale*true'],
 });
 
-/* / PRUEBA WFS
 const wfs = new M.layer.WFS({
-  url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
-  namespace: 'tematicos',
-  name: 'Provincias',
-  legend: 'Provincias',
+  url: "http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?",
+  namespace: "tematicos",
+  name: "Provincias",
+  legend: "Provincias",
   geometry: 'MPOLYGON',
 });
 
-map.addWFS(wfs); // */
+//map.addWFS(wfs);
 
 // 1 WMS por url
 const pluginTransparency = new Transparency({
   position: 'TR',
   layers: ['WMS*hil*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeBoundary', 'WMTS*http://www.ign.es/wmts/pnoa-ma?*OI.OrthoimageCoverage*GoogleMapsCompatible*PNOA', 'WMTS*http://servicios.idee.es/wmts/ocupacion-suelo?*LC.LandCoverSurfaces*GoogleMapsCompatible*usoSuelo'],
-  radius: '',
+  radius: ""
 });
 
 // 2 WMTS por url
@@ -86,7 +84,7 @@ const pluginTransparency = new Transparency({
 const shareMap = new ShareMap({
   baseUrl: 'http://localhost:8080/api-core/',
   position: 'BR',
-});
+})
 
 // const mp6 = new M.plugin.ZoomExtent();
 

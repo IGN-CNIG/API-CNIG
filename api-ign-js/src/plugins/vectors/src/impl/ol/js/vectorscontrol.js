@@ -1573,20 +1573,15 @@ export default class VectorsControl extends M.impl.Control {
       }
 
       const layers = [];
-      let auxMapLayers;
       map.getMapImpl().forEachFeatureAtPixel(evt.pixel, (feature) => {
-        if (!M.utils.isNull(feature.getId())) {
-          if (!auxMapLayers) {
-            auxMapLayers = map.getLayers().filter((l) => {
-              return ['kml', 'geojson', 'wfs', 'vector'].indexOf(l.type.toLowerCase()) > -1;
-            });
-          }
-          const foundLayer = auxMapLayers.find((l) => {
-            return !M.utils.isNull(l.getFeatureById(feature.getId()));
+        if (feature.getId() !== undefined && feature.getId() !== null) {
+          const filtered = map.getLayers().filter((l) => {
+            return ['kml', 'geojson', 'wfs', 'vector'].indexOf(l.type.toLowerCase()) > -1 && l.getFeatureById(feature.getId()) !== undefined;
           });
 
-          if (foundLayer) {
-            const name = foundLayer.legend || foundLayer.name;
+          if (filtered.length > 0) {
+            const layer = filtered[0];
+            const name = layer.legend || layer.name;
             if (layers.indexOf(name) < 0) {
               layers.push(name);
             }
@@ -1721,9 +1716,7 @@ export default class VectorsControl extends M.impl.Control {
         };
         if (M.utils.isUndefined(namelayer)) {
           obj.name = namespace;
-        } else { // La condición anterior siempre era true, por causa de ")" del namespace
-          // if (!M.utils.isUndefined(namespace && !M.utils.isUndefined(namelayer))) // wrong
-          // if (!M.utils.isUndefined(namespace) && !M.utils.isUndefined(namelayer)) // fixed
+        } else if (!M.utils.isUndefined(namespace && !M.utils.isUndefined(namelayer))) {
           obj.name = namelayer;
           obj.namespace = namespace;
         }
@@ -1739,16 +1732,16 @@ export default class VectorsControl extends M.impl.Control {
 
   reloadFeaturesUpdatables(layerName, layerURL) {
     const map = this.facadeMap_;
-    const found = map.getLayers().find((layer) => {
-      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1
-        && layer.name === layerName && layer.url === layerURL && layer.isVisible()
+    const srs = map.getProjection().code;
+    const filtered = map.getLayers().filter((layer) => {
+      return ['kml', 'geojson', 'wfs', 'vector'].indexOf(layer.type.toLowerCase()) > -1 && layer.isVisible()
         && layer.name !== undefined && layer.name !== 'selectLayer' && layer.name !== '__draw__' && layer.updatable
-        && layer.name !== 'coordinateresult' && layer.name !== 'searchresult' && layer.name !== 'infocoordinatesLayerFeatures';
+        && layer.name === layerName && layer.url === layerURL && layer.name !== 'coordinateresult'
+        && layer.name !== 'searchresult' && layer.name !== 'infocoordinatesLayerFeatures';
     });
 
-    if (found) {
-      const layer = found;
-      const srs = map.getProjection().code;
+    if (filtered.length > 0) {
+      const layer = filtered[0];
       const facadeControl = this.facadeControl;
       if (map.getZoom() >= facadeControl.wfszoom) {
         let cancelFlag = false;

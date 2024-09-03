@@ -152,11 +152,11 @@ export default class BeautyTOCControl extends M.Control {
             parent.removeChild(dialog);
           });
 
-          const notVisibility = layerFound instanceof M.layer.WMTS
-            ? !layerFound.options.visibility
-            : !layerFound.isVisible();
-          layerFound.setVisible(notVisibility);
-          layerFound.options.visibility = notVisibility;
+          const visibility = layerFound instanceof M.layer.WMTS
+            ? layerFound.options.visibility
+            : layerFound.isVisible();
+          layerFound.setVisible(!visibility);
+          layerFound.options.visibility = !visibility;
           this.render(scroll);
         } else {
           setTimeout(() => {
@@ -167,11 +167,11 @@ export default class BeautyTOCControl extends M.Control {
         M.proxy(true);
       });
     } else if (layerFound !== null) {
-      const notVisibility = layerFound instanceof M.layer.WMTS
-        ? !layerFound.options.visibility
-        : !layerFound.isVisible();
-      layerFound.setVisible(notVisibility);
-      layerFound.options.visibility = notVisibility;
+      const visibility = layerFound instanceof M.layer.WMTS
+        ? layerFound.options.visibility
+        : layerFound.isVisible();
+      layerFound.setVisible(!visibility);
+      layerFound.options.visibility = !visibility;
       this.render(scroll);
     }
   }

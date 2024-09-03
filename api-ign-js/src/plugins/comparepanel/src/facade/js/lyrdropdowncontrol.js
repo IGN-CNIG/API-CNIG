@@ -258,18 +258,18 @@ export default class LyrdropdownControl extends M.Control {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
           if (urlLayer[0].toUpperCase() === 'WMS') {
-            const auxFound = this.map.getLayers().find((l) => urlLayer[3].includes(l.name));
-            if (auxFound) {
-              newLayer = auxFound;
-              newLayer.legend = urlLayer[1] || urlLayer[3];
+            newLayer = new M.layer.WMS({
+              url: urlLayer[2],
+              name: urlLayer[3],
+              legend: urlLayer[1],
+              useCapabilities: urlLayer[4] === 'true' || false,
+            });
+
+            if (this.map.getLayers().filter((l) => newLayer.name.includes(l.name)).length > 0) {
+              newLayer = this.map.getLayers().filter((l) => newLayer.name.includes(l.name))[0];
+              newLayer.legend = urlLayer[1] || newLayer.name;
             } else {
               // this.map.addLayers(newLayer);
-              newLayer = new M.layer.WMS({
-                url: urlLayer[2],
-                name: urlLayer[3],
-                legend: urlLayer[1],
-                useCapabilities: urlLayer[4] === 'true' || false,
-              });
             }
           } else if (urlLayer[0].toUpperCase() === 'WMTS') {
             /* newLayer = new M.layer.WMTS({
@@ -300,11 +300,11 @@ export default class LyrdropdownControl extends M.Control {
             // this.map.addLayers(newLayer);
           }
         } else {
-          const layerByName = this.map.getLayers().find((l) => layer.includes(l.name));
+          const layerByName = this.map.getLayers().filter((l) => layer.includes(l.name))[0];
           newLayer = this.isValidLayer(layerByName) ? layerByName : null;
         }
       } else if (layer instanceof Object) {
-        const layerByObject = this.map.getLayers().find((l) => layer.name.includes(l.name));
+        const layerByObject = this.map.getLayers().filter((l) => layer.name.includes(l.name))[0];
         newLayer = this.isValidLayer(layerByObject) ? layerByObject : null;
       }
 

@@ -1234,9 +1234,9 @@ export default class PrinterMapControl extends M.impl.Control {
      * @see http: //www.mapfish.org/doc/print/protocol.html#layers-params
      */
     return layer.getImpl().getCapabilities().then((capabilities) => {
-      const matrixIdsObj = capabilities.Contents.TileMatrixSet.find((tileMatrixSet) => {
+      const matrixIdsObj = capabilities.Contents.TileMatrixSet.filter((tileMatrixSet) => {
         return (tileMatrixSet.Identifier === matrixSet);
-      });
+      })[0];
 
       try {
         return {

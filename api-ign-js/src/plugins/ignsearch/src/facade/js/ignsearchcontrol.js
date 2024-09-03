@@ -960,7 +960,7 @@ export default class IGNSearchControl extends M.Control {
    * @api
    */
   findClickedItem(listElement, allCandidates) {
-    return allCandidates.find((element) => element.id === listElement.getAttribute('id'));
+    return allCandidates.filter((element) => element.id === listElement.getAttribute('id'))[0];
   }
 
   /**

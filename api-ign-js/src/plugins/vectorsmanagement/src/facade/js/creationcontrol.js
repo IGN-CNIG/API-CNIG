@@ -318,7 +318,10 @@ export default class CreationControl extends M.Control {
    * @api stable
    */
   getControlActive(html) {
-    return html.querySelector('.m-vectorsmanagement-creation-container>#creationBtns .activated') || false;
+    if (html.querySelectorAll('.m-vectorsmanagement-creation-container>#creationBtns .activated').length === 0) {
+      return false;
+    }
+    return html.querySelectorAll('.m-vectorsmanagement-creation-container>#creationBtns .activated')[0];
   }
 
   /**

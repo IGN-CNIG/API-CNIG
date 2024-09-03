@@ -1333,7 +1333,8 @@ export default class VectorsControl extends M.Control {
     this.style = undefined;
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
-    this.feature = MFeatures.find((f) => f.getImpl().getOLFeature() === olFeature);
+    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+      || undefined;
     this.geometry = this.feature.getGeometry().type;
     const selector = `#m-vector-list li[name="${this.drawLayer.name}"] div.m-vector-layer-actions-container`;
     document.querySelector(selector).appendChild(this.drawingTools);
@@ -1369,13 +1370,11 @@ export default class VectorsControl extends M.Control {
   clickLayer(evtParameter) {
     const evt = (evtParameter || window.event);
     const layerName = evt.target.getAttribute('data-layer-name');
+    const layerURL = evt.target.getAttribute('data-layer-url');
     let render = false;
     if (!M.utils.isNullOrEmpty(layerName)) {
       evt.stopPropagation();
-      const layerURL = evt.target.getAttribute('data-layer-url');
-      const isEmptyURL = layerURL === '';
-      const layer = this.map.getLayers()
-        .find((l) => l.name === layerName && (l.url === layerURL || isEmptyURL));
+      const layer = this.map.getLayers().filter((l) => l.name === layerName && (l.url === layerURL || layerURL === ''))[0];
       if (evt.target.classList.contains('m-vector-layer-legend-change')) {
         const changeName = M.template.compileSync(changeNameTemplate, {
           jsonp: true,
@@ -1556,12 +1555,12 @@ export default class VectorsControl extends M.Control {
     const selector = '.m-vectors #m-vector-list div.m-vector-layer-actions-container';
     const selector2 = '#m-vector-list div.m-vector-layer-actions span';
     document.querySelectorAll(selector).forEach((elem) => {
-      // eslint-disable-next-line no-param-reassign
+      /* eslint-disable no-param-reassign */
       elem.innerHTML = '';
     });
 
     document.querySelectorAll(selector2).forEach((elem) => {
-      // eslint-disable-next-line no-param-reassign
+      /* eslint-disable no-param-reassign */
       elem.classList.remove('active-tool');
     });
 
@@ -1675,9 +1674,8 @@ export default class VectorsControl extends M.Control {
     switch (this.geometry) {
       case 'Point':
       case 'MultiPoint':
-        const fCoord = this.getImpl().getFeatureCoordinates();
-        const x = fCoord[0];
-        const y = fCoord[1];
+        const x = this.getImpl().getFeatureCoordinates()[0];
+        const y = this.getImpl().getFeatureCoordinates()[1];
         if (infoContainer !== null) {
           document.querySelector('#drawingtools div.stroke-container').style.display = 'none';
           let html = `<table class="m-vectors-results-table"><tbody><tr><td><b>${getValue('coordinates')}</b></td>`;
@@ -1797,12 +1795,12 @@ export default class VectorsControl extends M.Control {
     const selector = '.m-vectors #m-vector-list div.m-vector-layer-actions-container';
     const selector2 = '#m-vector-list div.m-vector-layer-actions span';
     document.querySelectorAll(selector).forEach((elem) => {
-      // eslint-disable-next-line no-param-reassign
+      /* eslint-disable no-param-reassign */
       elem.innerHTML = '';
     });
 
     document.querySelectorAll(selector2).forEach((elem) => {
-      // eslint-disable-next-line no-param-reassign
+      /* eslint-disable no-param-reassign */
       elem.classList.remove('active-tool');
     });
     this.getImpl().removeSelectInteraction();

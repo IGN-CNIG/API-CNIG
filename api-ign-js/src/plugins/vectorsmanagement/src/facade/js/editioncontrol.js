@@ -458,7 +458,10 @@ export default class EditionControl extends M.Control {
    * @api stable
    */
   getControlActive(html) {
-    return html.querySelector('.m-vectorsmanagement-edition-container>#editionBtns .activated') || false;
+    if (html.querySelectorAll('.m-vectorsmanagement-edition-container>#editionBtns .activated').length === 0) {
+      return false;
+    }
+    return html.querySelectorAll('.m-vectorsmanagement-edition-container>#editionBtns .activated')[0];
   }
 
   /**
@@ -548,7 +551,8 @@ export default class EditionControl extends M.Control {
     const MFeatures = this.layer_.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.find((f) => f.getImpl().getOLFeature() === olFeature);
+    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+      || undefined;
 
     this.geometry = this.feature.getGeometry().type;
     this.emphasizeSelectedFeature();

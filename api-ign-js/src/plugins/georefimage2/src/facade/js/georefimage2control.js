@@ -302,9 +302,8 @@ export default class Georefimage2Control extends M.Control {
   getPrintData() {
     const projection = this.map_.getProjection().code;
     const bbox = this.map_.getBbox();
-    const size = this.map_.getMapImpl().getSize();
-    const width = size[0];
-    const height = size[1];
+    const width = this.map_.getMapImpl().getSize()[0];
+    const height = this.map_.getMapImpl().getSize()[1];
     const parameters = this.params_.parameters;
     const printData = M.utils.extend({
       layout: 'plain',

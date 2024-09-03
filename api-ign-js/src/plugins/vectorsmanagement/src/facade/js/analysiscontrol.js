@@ -181,7 +181,10 @@ export default class AnalysisControl extends M.Control {
    * @api stable
    */
   getControlActive() {
-    return this.template.querySelector('.m-vectorsmanagement-analysis>#analysisBtns .activated') || false;
+    if (this.template.querySelectorAll('.m-vectorsmanagement-analysis>#analysisBtns .activated').length === 0) {
+      return false;
+    }
+    return this.template.querySelectorAll('.m-vectorsmanagement-analysis>#analysisBtns .activated')[0];
   }
 
   /**
@@ -207,7 +210,8 @@ export default class AnalysisControl extends M.Control {
     const MFeatures = this.layer_.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.find((f) => f.getImpl().getOLFeature() === olFeature);
+    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+      || undefined;
 
     this.calculateAnalysis();
   }
@@ -371,11 +375,11 @@ export default class AnalysisControl extends M.Control {
       document.body.removeChild(this.pointTemplate);
     }
     const mapProj = M.impl.ol.js.projections.getSupportedProjs()
-      .find((p) => p.codes.includes(pointXYZ.map.projection));
+      .filter((p) => p.codes.includes(pointXYZ.map.projection))[0];
     const mapUnit = mapProj.units === 'm' ? 'm' : '°';
     const mapLabels = mapProj.units === 'm' ? ['X', 'Y'] : [getValue('creationLongitude'), getValue('creationLatitude')];
     const geographicProj = M.impl.ol.js.projections.getSupportedProjs()
-      .find((p) => p.codes.includes(pointXYZ.geographic.projection));
+      .filter((p) => p.codes.includes(pointXYZ.geographic.projection))[0];
     const dist = mapProj.codes[0] !== geographicProj.codes[0];
     this.pointTemplate = M.template.compileSync(pointProfileTemplate, {
       vars: {

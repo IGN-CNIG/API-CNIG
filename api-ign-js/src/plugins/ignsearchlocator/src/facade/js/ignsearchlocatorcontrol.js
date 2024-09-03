@@ -1198,7 +1198,7 @@ export default class IGNSearchLocatorControl extends M.Control {
    * @api
    */
   findClickedItem(listElement, allCandidates) {
-    const elementClicked = allCandidates.find((element) => element.id === listElement.getAttribute('id'));
+    const elementClicked = allCandidates.filter((element) => element.id === listElement.getAttribute('id'))[0];
     this.setRecents(elementClicked);
     return elementClicked;
   }
@@ -1684,9 +1684,8 @@ export default class IGNSearchLocatorControl extends M.Control {
       this.resultsBox.appendChild(compiledXYLocator);
 
       if (M.language.getLang() === 'es') {
-        const parcelInputs = document.querySelectorAll('p.parcela--input');
-        parcelInputs[0].style = 'width: 71px';
-        parcelInputs[1].style = 'width: 71px';
+        document.querySelectorAll('p.parcela--input')[0].style = 'width: 71px';
+        document.querySelectorAll('p.parcela--input')[1].style = 'width: 71px';
 
         document.querySelector('#m-searchParamsProvincia-select').style = 'width: 68%';
         document.querySelector('#m-searchParamsMunicipio-select').style = 'width: 68%';

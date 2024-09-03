@@ -141,7 +141,7 @@ export default class VectorsManagementControl extends M.Control {
     this.html.querySelector('#m-vectorsmanagement-previews').classList.remove('closed');
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
-    this.selectedLayer = this.map.getLayers().find((l) => l.name === selectedLayerName);
+    this.selectedLayer = this.map.getLayers().filter((l) => l.name === selectedLayerName)[0];
 
     if (this.selectedLayer.type === 'MVT' || this.selectedLayer.type === 'MBTilesVector') {
       M.toast.warning(getValue('exception.typeLayer'), null, 6000);
@@ -397,7 +397,10 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   getControlActive(html) {
-    return html.querySelector('#m-vectorsmanagement-previews .activated:not(#m-vectorsmanagement-selection)') || false;
+    if (html.querySelectorAll('#m-vectorsmanagement-previews .activated:not(#m-vectorsmanagement-selection)').length === 0) {
+      return false;
+    }
+    return html.querySelectorAll('#m-vectorsmanagement-previews .activated:not(#m-vectorsmanagement-selection)')[0];
   }
 
   /**
@@ -521,7 +524,7 @@ export default class VectorsManagementControl extends M.Control {
     });
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
-    const layerExists = this.layers_.some((l) => l.value === selectedLayerName);
+    const layerExists = this.layers_.filter((l) => l.value === selectedLayerName).length > 0;
 
     const length = selector.children.length;
     for (let i = 0; i < length; i += 1) {

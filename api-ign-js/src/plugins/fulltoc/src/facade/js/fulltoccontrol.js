@@ -137,7 +137,7 @@ export default class FullTOCControl extends M.Control {
       const layerName = evt.target.getAttribute('data-layer-name');
       if (!M.utils.isNullOrEmpty(layerName)) {
         evt.stopPropagation();
-        const layer = this.map_.getLayers().find((l) => l.name === layerName);
+        const layer = this.map_.getLayers().filter((l) => l.name === layerName)[0];
         if (evt.target.classList.contains('m-check')) {
           if (layer.transparent === true || !layer.isVisible()) {
             const opacity = evt.target.parentElement.parentElement.parentElement.parentElement.querySelector('div.tools > input');
@@ -173,9 +173,9 @@ export default class FullTOCControl extends M.Control {
       const layerURL = evt.target.getAttribute('data-layer-url');
       if (!M.utils.isNullOrEmpty(layerName) && layerURL !== null) {
         evt.stopPropagation();
-        const layer = this.map_.getLayers().find((l) => {
+        const layer = this.map_.getLayers().filter((l) => {
           return l.name === layerName && l.url === layerURL;
-        });
+        })[0];
         // checkbox
         if (evt.target.classList.contains('m-check')) {
           if (layer.transparent === true || !layer.isVisible()) {
@@ -687,7 +687,8 @@ export default class FullTOCControl extends M.Control {
       if (group.localName === 'tbody') {
         this.filterName = 'none';
       }
-    } catch (err) { /* Continue */ }
+      /* eslint-disable no-empty */
+    } catch (err) {}
     const serviceType = evt.target.getAttribute('data-service-type');
     document.querySelector('div.m-dialog #m-fulltoc-addservices-search-input').value = url;
     if (serviceType === 'WMTS') {
@@ -830,9 +831,9 @@ export default class FullTOCControl extends M.Control {
           M.layer.WMS.LEGEND_ERROR,
         ]);
 
-        const layer = this.map_.getLayers().find((l) => {
+        const layer = this.map_.getLayers().filter((l) => {
           return l.name === layerName && l.url === layerURL;
-        });
+        })[0];
 
         if (!M.utils.isNullOrEmpty(layer) && layerURL.indexOf('/mirame.chduero.es/') === -1) {
           layer.setLegendURL(legendErrorUrl);
@@ -1041,7 +1042,8 @@ export default class FullTOCControl extends M.Control {
                         this.capabilities.forEach((layer) => {
                           try {
                             this.getParents(getCapabilities, layer);
-                          } catch (err) { /* Continue */ }
+                            /* eslint-disable no-empty */
+                          } catch (err) {}
                         });
                         this.showResults();
                       } catch (error) {
@@ -1212,7 +1214,7 @@ export default class FullTOCControl extends M.Control {
     });
 
     if (parent !== undefined) {
-      // eslint-disable-next-line no-param-reassign
+      /* eslint-disable no-param-reassign */
       layer.legend = `${parent} - ${layer.legend}`;
     }
   }
@@ -1543,8 +1545,9 @@ export default class FullTOCControl extends M.Control {
     // Procesar los checkboxes agrupados
     Object.keys(checkboxes).forEach((name) => {
       const checkboxGroup = checkboxes[name];
-      const checkedValues = checkboxGroup
-        .filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+      /* eslint-disable-next-line max-len */
+      const checkedValues = checkboxGroup.filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+
       if (checkedValues.length === 1) {
         // Si solo hay un checkbox marcado, establecer el valor correspondiente en formData
         formData[name] = checkedValues[0];
@@ -1568,7 +1571,6 @@ export default class FullTOCControl extends M.Control {
     // loading
     const urlQuery = document.querySelector('#m-fulltoc-addservices-search-input').value;
     const selectValueText = document.querySelector('#m-vectors-ogc-select').selectedOptions[0].text;
-    // eslint-disable-next-line no-param-reassign
     selectValue = document.querySelector('#m-vectors-ogc-select').value;
     const limit = document.querySelector('#limit-items-input').value;
     const checked = document.querySelector('#search-bbox').checked;
@@ -1673,7 +1675,6 @@ export default class FullTOCControl extends M.Control {
           const props = res.properties;
           filtersList = Object.values(props);
           filtersList.forEach((v) => {
-            /* eslint-disable no-param-reassign */
             if (v.title !== undefined) {
               const type = v.type.toLowerCase();
               if (type === 'bool' || type === 'boolean') {
@@ -1693,9 +1694,8 @@ export default class FullTOCControl extends M.Control {
               }
               document.querySelector('#check-results').innerHTML = '';
             }
-            /* eslint-enable no-param-reassign */
           });
-        } catch (error) { /* Continue */ }
+        } catch (error) {}
         const urlInput = document.querySelector('#m-fulltoc-addservices-search-input').value;
 
         const customQueryTemplate = M.template.compileSync(customQueryFiltersTemplate, {
@@ -1820,7 +1820,6 @@ export default class FullTOCControl extends M.Control {
       const divSummary = document.querySelector('#div-summary');
       if (divSummary !== null) {
         divSummary.remove();
-        // eslint-disable-next-line no-param-reassign
         summary = undefined;
       }
       document.querySelector('#check-results').innerHTML = '';
@@ -1848,7 +1847,7 @@ export default class FullTOCControl extends M.Control {
     buttonClose.addEventListener('click', () => {
       try {
         document.querySelector('div.m-dialog.info').parentNode.removeChild(document.querySelector('div.m-dialog.info'));
-      } catch (error) { /* Continue */ }
+      } catch (error) {}
       this.afterRender();
     });
   }
@@ -1877,8 +1876,9 @@ export default class FullTOCControl extends M.Control {
         const resJSON = JSON.parse(response.text);
         const layers = resJSON.collections;
         if (M.utils.isNullOrEmpty(summary)) {
-          // eslint-disable-next-line no-param-reassign
-          summary = undefined; filterByID = undefined; filterByOtherFilters = undefined;
+          summary = undefined;
+          filterByID = undefined;
+          filterByOtherFilters = undefined;
         }
 
         const ogcModal = M.template.compileSync(ogcModalTemplate, {

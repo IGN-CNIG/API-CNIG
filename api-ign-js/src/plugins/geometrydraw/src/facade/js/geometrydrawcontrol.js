@@ -836,9 +836,9 @@ export default class GeometryDrawControl extends M.Control {
    * @api
    */
   initializeLayers() {
-    this.drawLayer = this.map.getLayers().pop();
+    this.drawLayer = this.map.getLayers()[this.map.getLayers().length - 1];
     // popup desactivated
-    this.drawLayer.getImpl().extract = false;
+    this.map.getLayers()[this.map.getLayers().length - 1].getImpl().extract = false;
     this.map.addLayers(this.selectionLayer);
     this.selectionLayer.setZIndex(this.selectionLayer.getZIndex() + 8);
     this.getImpl().setImplSource();
@@ -982,7 +982,7 @@ export default class GeometryDrawControl extends M.Control {
       document.querySelector('.m-geometrydraw #drawingtools button').style.display = 'block';
     }
 
-    this.map.getLayers().pop().addFeatures(this.feature);
+    this.map.getLayers()[this.map.getLayers().length - 1].addFeatures(this.feature);
 
     this.emphasizeSelectedFeature();
     this.showFeatureInfo();
@@ -1020,9 +1020,8 @@ export default class GeometryDrawControl extends M.Control {
     switch (this.geometry) {
       case 'Point':
       case 'MultiPoint':
-        const fCoord = this.getImpl().getFeatureCoordinates();
-        const x = fCoord[0];
-        const y = fCoord[1];
+        const x = this.getImpl().getFeatureCoordinates()[0];
+        const y = this.getImpl().getFeatureCoordinates()[1];
         if (infoContainer !== null) {
           infoContainer.innerHTML = `Coordenadas<br/>
           x: ${Math.round(x * 1000) / 1000},<br/>
@@ -1699,7 +1698,8 @@ export default class GeometryDrawControl extends M.Control {
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.find((f) => f.getImpl().getOLFeature() === olFeature);
+    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+      || undefined;
 
     this.geometry = this.feature.getGeometry().type;
 
