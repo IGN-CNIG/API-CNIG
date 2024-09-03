@@ -11,15 +11,11 @@
 - Mejorado estabilidad y rendimiento de la función getFeaturesByLayer.
 - Reducido llamadas sobrantes a la función olStyleFn_ en estilado de puntos.
 - Sustituido funciones "filter" de arrays por "find" o "some" en caso de no utilizar array entero.
-- Eliminado condiciones sobrantes de comprobación de clases.
 - Previsto uso de "applyToFeature" si el estilo aun no fue aplicado.
 - Añadido vendorOptions a estilos Point, Line, Polygon y Generic.
-- Limpiado o reemplazados eslint-disable completos sobrantes o utilizados solo para una instancia.
-- Eliminado variables no usadas en estilos que fueron anteriormente deprecados.
 - Simplificado y mejorado rendimiento de funciones utils con imports ordenados.
 - Usado función "pop" para obtener el último objeto de un array evitando filtrados repetidos.
 - Mejorado eventos de Popup con uso más claro y previsto saltos no deseados de mapa al usar popups en móviles.
-- Simplificado imports removiendo duplicados.
 - Arreglado estilo Chart de tipo "bar" y ajustes del funcionamiento del offset de textos de todos estos.
 - Añadido parámetro "blob" a las capas GeoTiff.
 - Actualizado en todos los plugins los metadatos para que muestren la versión actual usada en cada uno.
@@ -27,7 +23,6 @@
 - Plugin attributions: Optimizado uso de funciones de la clase array.
 - Plugin backimglayer:
   - Normalizado código de la función "equals".
-  - Cambios de eslint.
   - Arreglado aspecto del panel de la esquina inferior izquierda.
 - Plugin beautytoc: Optimizado uso de funciones de la clase array.
 - Plugin comparators:
@@ -38,7 +33,6 @@
 - Plugin comparepanel: Optimizado uso de funciones de la clase array.
 - Plugin fulltoc:
   - Optimizado uso de funciones de la clase array.
-  - Cambios de eslint.
 - Plugin geometrydraw: Optimizado uso de funciones de la clase array.
 - Plugin georefimage:
   - Optimizado uso de funciones de la clase array.
@@ -46,7 +40,6 @@
 - Plugin georefimage2:
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
-  - Cambios de eslint.
 - Plugin help:
   - Se incluye parámetro initialIndex para abrir en una sección determinada.
   - Optimizado uso de funciones de la clase array.
@@ -55,13 +48,10 @@
 - Plugin ignsearchlocator: Optimizado uso de funciones de la clase array.
 - Plugin incicarto:
   - Optimizado uso de funciones de la clase array.
-  - Cambios de eslint.
-- Plugin infocoordinates: Cambios de eslint.
 - Plugin layerswitcher:
   -Permite cambiar nombre a las capas
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
-  - Cambios de eslint.
 - Plugin locator:
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
@@ -76,7 +66,6 @@
   - Normalizado código de la función "equals".
 - Plugin mousesrs:
   - Se hace uso de OGC API Coverages para calcular la altura
-  - Cambios de eslint.
 - Plugin printermap:
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
@@ -88,7 +77,6 @@
   - Añadido cacheado al generado de la lista de descargas.
 - Plugin queryattributes: Optimizado uso de funciones de la clase array.
 - Plugin rescale: Optimizado uso de funciones de la clase array.
-- Plugin selectiondraw: Cambios de eslint.
 - Plugin selectionzoom: Normalizado código de la función "equals".
 - Plugin sharemap:
   - Se soluciona problema con parámetro shareLayer que compartía siempre todas las capas.
@@ -97,7 +85,6 @@
 - Plugin stylemanager:
   - Subida de versión a la librería chroma-js.
   - Optimizado uso de funciones de la clase array.
-  - Cambios de eslint.
 - Plugin timeline:
   - Optimizado uso de funciones de la clase array.
   - Se controla el caso de parámetro intervals no asignado.
@@ -108,7 +95,6 @@
   - Normalizado código de la función "equals".
 - Plugin vectors:
   - Optimizado uso de funciones de la clase array.
-  - Cambios de eslint.
 - Plugin vectorsmanagement:
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
