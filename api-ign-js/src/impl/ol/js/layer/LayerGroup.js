@@ -70,6 +70,8 @@ class LayerGroup extends Layer {
       this.map.getMapImpl().addLayer(this.ol3Layer);
     }
 
+    this.setOpacity(this.opacity_);
+
     this.layersParams_.forEach((layer) => {
       if (typeof layer === 'string') {
         const layerAPI = this.map.getLayerByString(layer);
@@ -160,7 +162,12 @@ class LayerGroup extends Layer {
    * @public
    * @api
    */
-  addLayer(layer) {
+  addLayer(userLayer) {
+    let layer = userLayer;
+    if (typeof layer === 'string') {
+      layer = this.map.getLayerByString(layer);
+    }
+
     if (!this.layers.includes(layer)) {
       const impl = layer.getImpl();
       this.setOLLayerToLayer_(layer);
