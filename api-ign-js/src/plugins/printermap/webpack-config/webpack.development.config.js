@@ -42,13 +42,13 @@ module.exports = {
         test: /\.css$/i,
         use: [
           {
-            loader: "style-loader",
+            loader: 'style-loader',
             options: {
               // insert: 'head',
               injectType: 'singletonStyleTag',
             },
           },
-          "css-loader",
+          'css-loader',
         ],
         exclude: [/node_modules\/(?!ol)/],
       },
@@ -62,14 +62,14 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new ESLintPlugin({
-      // extensions: [`js`, `jsx`],
+      // extensions: ['js', 'jsx'],
       files: 'src/**/*.js',
       exclude: ['**/node_modules/**', '/lib/', '/test/', '/dist/'],
     }),
   ],
   devServer: {
     hot: true,
-    open: true,
+    // open: true,
     port: 6123,
     open: 'test/dev.html',
     static: {

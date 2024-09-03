@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack')
 const OptimizeCssAssetsPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const GenerateVersionPlugin = require('./GenerateVersionPlugin');
+// const GenerateVersionPlugin = require('./GenerateVersionPlugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopywebpackPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
@@ -91,7 +91,7 @@ module.exports = {
       filename: '[name].css',
     }),
     new ESLintPlugin({
-      extensions: [`js`, `jsx`],
+      extensions: ['js', 'jsx'],
       // files: 'src/**/*.js',
       exclude: ['**/node_modules/**', '/lib/', '/test/', '/dist/'],
     }),
@@ -100,7 +100,7 @@ module.exports = {
         {
           from: 'src/api.json',
           to: 'api.json',
-        }
+        },
       ],
     }),
   ],
