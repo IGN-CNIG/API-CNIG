@@ -309,10 +309,9 @@ class WMTS extends LayerBase {
    */
   addLayerNotCapabilities_() {
     if (!isNullOrEmpty(this.map)) {
-      const extent = this.facadeLayer_.getMaxExtent();
       const format = (this.options.format) ? this.options.format : 'image/png';
 
-      const size = getWidth(extent) / 256;
+      const size = getWidth(this.map.getProjection().getExtent()) / 256;
       const resolutions = new Array(19);
       const matrixIds = new Array(19);
       // eslint-disable-next-line no-plusplus
@@ -324,7 +323,7 @@ class WMTS extends LayerBase {
       }
 
       const tileGrid = new OLTileGridWMTS({
-        origin: getTopLeft(extent),
+        origin: getTopLeft(this.map.getProjection().getExtent()),
         resolutions,
         matrixIds,
       });
@@ -333,11 +332,11 @@ class WMTS extends LayerBase {
         attributions: ' https://www.ign.es/',
         url: this.url,
         layer: this.name,
-        matrixSet: this.options.matrixSet,
-        format: this.options.format,
+        matrixSet: this.matrixSet,
+        format,
         projection: getProj(this.map.getProjection().code),
         tileGrid,
-      }, extent, true);
+      });
 
       this.facadeLayer_.setFormat(format);
       this.ol3Layer.setSource(wmtsSource);
