@@ -2801,7 +2801,7 @@ export const layergroup = (userParameters) => {
     legend: urlParams[2] || undefined,
     visibility: urlParams[3] === '' ? undefined : urlParams[3] === 'true',
     transparent: urlParams[4] === '' ? undefined : urlParams[4] === 'true',
-    displayInLayerSwitcher: urlParams[5] === '' ? true : urlParams[5] === 'true',
+    displayInLayerSwitcher: urlParams[5] === '' || (urlParams[5] !== 'true' && urlParams[5] !== 'false') ? true : urlParams[5] === 'true',
     layers: layes,
   };
 };
