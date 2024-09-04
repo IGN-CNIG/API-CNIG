@@ -37,6 +37,8 @@ export default class VectorsManagementControl extends M.Control {
     const impl = new M.impl.Control();
     super(impl, 'VectorsManagement');
 
+    const allLayers = map.getLayers().concat(map.getImpl().getAllLayerInGroup());
+
     this.selection_ = selection;
     this.addlayer_ = addlayer;
     this.analysis_ = analysis;
@@ -45,7 +47,7 @@ export default class VectorsManagementControl extends M.Control {
     this.edition_ = edition;
     this.help_ = help;
     this.style_ = style;
-    this.layers_ = map.getLayers().filter((l) => (l instanceof M.layer.Vector
+    this.layers_ = allLayers.filter((l) => (l instanceof M.layer.Vector
       || l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
       return { value: l.name, text: l.legend || l.name, zIndex: l.getZIndex() };
     }).sort((a, b) => b.zIndex - a.zIndex);
@@ -141,7 +143,9 @@ export default class VectorsManagementControl extends M.Control {
     this.html.querySelector('#m-vectorsmanagement-previews').classList.remove('closed');
     const selector = this.html.querySelector('#m-selectionlayer');
     const selectedLayerName = selector.selectedOptions[0].value;
-    this.selectedLayer = this.map.getLayers().filter((l) => l.name === selectedLayerName)[0];
+
+    const allLayers = this.map.getLayers().concat(this.map.getImpl().getAllLayerInGroup());
+    this.selectedLayer = allLayers.filter((l) => l.name === selectedLayerName)[0];
 
     if (this.selectedLayer.type === 'MVT' || this.selectedLayer.type === 'MBTilesVector') {
       M.toast.warning(getValue('exception.typeLayer'), null, 6000);
@@ -518,7 +522,8 @@ export default class VectorsManagementControl extends M.Control {
    * @api stable
    */
   refreshLayers() {
-    this.layers_ = this.map_.getLayers().filter((l) => (l instanceof M.layer.Vector
+    const allLayers = this.map.getLayers().concat(this.map.getImpl().getAllLayerInGroup());
+    this.layers_ = allLayers.filter((l) => (l instanceof M.layer.Vector
       || l instanceof M.layer.GenericVector) && l.displayInLayerSwitcher).map((l) => {
       return { value: l.name, text: l.legend || l.name, zIndex: l.getZIndex() };
     });
