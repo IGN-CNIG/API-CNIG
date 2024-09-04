@@ -4,7 +4,7 @@
 
 import GenericStyleImpl from 'impl/style/Generic';
 import Simple from './Simple';
-import { isNullOrEmpty, extendsObj } from '../util/Utils';
+import { extendsObj } from '../util/Utils';
 
 /**
  * @classdesc
@@ -28,7 +28,7 @@ class Generic extends Simple {
     if (vendorOptions) {
       options = extendsObj({}, Generic.DEFAULT);
     } else {
-      if (isNullOrEmpty(options)) {
+      if (Object.keys(options).length === 0) {
         options = Generic.DEFAULT_NULL;
       } else {
         options = extendsObj(options, Generic.DEFAULT);

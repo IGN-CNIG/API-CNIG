@@ -3,7 +3,7 @@
  */
 import StyleLineImpl from 'impl/style/Line';
 import Simple from './Simple';
-import { isNullOrEmpty, extendsObj } from '../util/Utils';
+import { extendsObj } from '../util/Utils';
 
 /**
  * @classdesc
@@ -40,7 +40,7 @@ class Line extends Simple {
     if (vendorOptions) {
       options = {};
     } else {
-      if (isNullOrEmpty(options)) {
+      if (Object.keys(options).length === 0) {
         options = Line.DEFAULT_NULL;
       }
       options = extendsObj({}, options);

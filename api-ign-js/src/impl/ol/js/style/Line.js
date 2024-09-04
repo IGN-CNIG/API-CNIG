@@ -60,7 +60,7 @@ class Line extends Simple {
    * @api stable
    */
   updateFacadeOptions(options, vendorOptions) {
-    return (feature) => {
+    const fn = (feature) => {
       if (vendorOptions) {
         // #FIX_ST_VE_OP no esta diseñado de tal forma que solo se use una vez vendorOptions,
         // aquí seguirá enviando el vendorOptions como resultado ya que solo se define a
@@ -185,6 +185,8 @@ class Line extends Simple {
       styleStroke.setStroke(fill);
       return [style, styleStroke];
     };
+    this.olStyleFn_ = fn;
+    return fn;
   }
 
   /**

@@ -3,7 +3,7 @@
  */
 import StylePointImpl from 'impl/style/Point';
 import Simple from './Simple';
-import { isNullOrEmpty, extendsObj } from '../util/Utils';
+import { extendsObj } from '../util/Utils';
 
 /**
  * @classdesc
@@ -27,7 +27,7 @@ class Point extends Simple {
     if (vendorOptions) {
       options = extendsObj({}, Point.DEFAULT);
     } else {
-      if (isNullOrEmpty(options)) {
+      if (Object.keys(options).length === 0) {
         options = Point.DEFAULT_NULL;
       } else {
         options = extendsObj(options, Point.DEFAULT);
