@@ -263,7 +263,7 @@ class Line extends Simple {
    * @api stable
    */
   updateCanvas(canvas) {
-    // this.updateFacadeOptions(this.options_); // DOES NOTHING, returned Function is never used
+    this.updateFacadeOptions(this.options_);
     const canvasSize = Line.getCanvasSize();
     const vectorContext = toContextRender(canvas.getContext('2d'), {
       size: canvasSize,
