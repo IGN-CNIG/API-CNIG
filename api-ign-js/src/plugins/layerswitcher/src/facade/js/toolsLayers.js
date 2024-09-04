@@ -238,11 +238,14 @@ const showLayers = (layer) => {
   const changeLayer = layer;
   changeLayer.checkedLayer = 'true';
   changeLayer.setVisible(true);
+
+  if (layer.type === 'LayerGroup' && layer.getLayers().length === 1) {
+    showLayers(layer.getLayers()[0]);
+  }
 };
 
 const showHideLayersInLayerGroup = (layer, map) => {
   const group = fiendLayerInGroup(layer, map);
-
   if (group) {
     group.getLayers().forEach((subLayer) => {
       if (subLayer.name === layer.name) {

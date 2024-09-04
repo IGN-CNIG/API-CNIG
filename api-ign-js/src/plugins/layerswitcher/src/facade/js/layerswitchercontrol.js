@@ -21,6 +21,7 @@ import customQueryFiltersTemplate from '../../templates/customqueryfilters';
 import generateSortable from './sortable';
 import {
   getAllLayersGroup, displayLayers, createSelectGroup, getLayerSelectGroup,
+  filterGroups,
 } from './groupLayers';
 import { reorderLayers, removeLayersInLayerSwitcher, addAttributions } from './utils';
 import {
@@ -344,12 +345,7 @@ export default class LayerswitcherControl extends M.Control {
   }
 
   async generateTemplateLayerGroup() {
-    const layersFilter = this.map_.getLayers().filter((layer) => {
-      const isTransparent = (layer.transparent === true);
-      const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
-      const isLayerGroup = (layer instanceof M.layer.LayerGroup);
-      return isTransparent && displayInLayerSwitcher && isLayerGroup;
-    });
+    const layersFilter = filterGroups(this.map_.getLayers());
 
     if (layersFilter.length === 0) {
       return;
@@ -386,24 +382,25 @@ export default class LayerswitcherControl extends M.Control {
             },
           });
 
-          const layerPromises = reorderLayers(layer.getLayers()).map((sublayer) => {
-            if (sublayer instanceof M.layer.LayerGroup) {
-              return this.recursiveLayerGroupTemplate_(sublayer).then((subLayerGroupHTML) => {
-                html.querySelector('.m-layerswitcher-ullayersGroup').appendChild(subLayerGroupHTML);
-              });
-            }
-            return this.parseLayerForTemplate_(sublayer).then((varsSubLayer) => {
-              const li = M.template.compileSync(layerGroupChildTemplate, {
-                vars: {
-                  nameRadio: layer.name,
-                  ...varsSubLayer,
-                  ...this.getTemplateVariablesValues(),
-                },
-              });
+          const layerPromises = reorderLayers(filterGroups(layer.getLayers(), false))
+            .map((sublayer) => {
+              if (sublayer instanceof M.layer.LayerGroup) {
+                return this.recursiveLayerGroupTemplate_(sublayer).then((subLayerGroupHTML) => {
+                  html.querySelector('.m-layerswitcher-ullayersGroup').appendChild(subLayerGroupHTML);
+                });
+              }
+              return this.parseLayerForTemplate_(sublayer).then((varsSubLayer) => {
+                const li = M.template.compileSync(layerGroupChildTemplate, {
+                  vars: {
+                    nameRadio: layer.name,
+                    ...varsSubLayer,
+                    ...this.getTemplateVariablesValues(),
+                  },
+                });
 
-              html.querySelector('.m-layerswitcher-ullayersGroup').appendChild(li);
+                html.querySelector('.m-layerswitcher-ullayersGroup').appendChild(li);
+              });
             });
-          });
 
           Promise.all(layerPromises)
             .then(() => resolve(html))

@@ -97,3 +97,19 @@ export const getLayerSelectGroup = (map) => {
   const groups = map.getLayerGroup();
   return groups.find((group) => group.getImpl().getOL3Layer().ol_uid === select.value);
 };
+
+export const filterGroups = (layers, inLayerGroup = true) => {
+  if (inLayerGroup) {
+    return layers.filter((l) => {
+      const isTransparent = (l.transparent === true);
+      const displayInLayerSwitcher = (l.displayInLayerSwitcher === true);
+      const isLayerGroup = (l instanceof M.layer.LayerGroup);
+      return isTransparent && displayInLayerSwitcher && isLayerGroup;
+    });
+  }
+  return layers.filter((l) => {
+    const isTransparent = (l.transparent === true);
+    const displayInLayerSwitcher = (l.displayInLayerSwitcher === true);
+    return isTransparent && displayInLayerSwitcher;
+  });
+};
