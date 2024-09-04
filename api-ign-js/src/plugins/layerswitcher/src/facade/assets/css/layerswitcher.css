@@ -794,6 +794,10 @@ div.m-layerswitcher-legend>img {
         display: none;
     }
 
+    ul.m-layerswitcher-ullayersGroup li {
+        list-style: none !important;
+    }
+
     .sortable-chosen {
         color: #6c6c6c;
         font-family: Muli, "sans-serif" !important;
