@@ -75,7 +75,8 @@ export const fiendLayerInGroup = (layer, map) => {
 };
 
 export const createSelectGroup = (map) => {
-  const groups = map.getLayerGroup().reverse();
+  const groups = map.getLayerGroup()
+    .filter((l) => l.isBase === false && l.displayInLayerSwitcher).reverse();
 
   const select = M.template.compileSync(addInGroupTemplate, {
     vars: {

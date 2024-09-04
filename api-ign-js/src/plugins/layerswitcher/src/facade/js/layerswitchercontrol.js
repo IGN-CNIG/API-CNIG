@@ -200,7 +200,11 @@ export default class LayerswitcherControl extends M.Control {
     map.on(M.evt.ADDED_LAYER, (layers) => {
       if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === true) {
         layers.forEach((layer) => {
-          layer.setVisible(false);
+          if (layer instanceof M.layer.LayerGroup) {
+            this.recursiveVisibleHide_(layer, false);
+          } else {
+            layer.setVisible(false);
+          }
         });
       }
     });
@@ -222,6 +226,16 @@ export default class LayerswitcherControl extends M.Control {
 
         success(this.template_);
       });
+    });
+  }
+
+  recursiveVisibleHide_(layerGroup, visible) {
+    layerGroup.getLayers().forEach((subLayer) => {
+      if (subLayer instanceof M.layer.LayerGroup) {
+        this.recursiveVisibleHide_(subLayer, visible);
+      } else {
+        subLayer.setVisible(visible);
+      }
     });
   }
 
@@ -334,7 +348,7 @@ export default class LayerswitcherControl extends M.Control {
       const isTransparent = (layer.transparent === true);
       const displayInLayerSwitcher = (layer.displayInLayerSwitcher === true);
       const isLayerGroup = (layer instanceof M.layer.LayerGroup);
-      return isTransparent && displayInLayerSwitcher && !isLayerGroup;
+      return isTransparent && displayInLayerSwitcher && isLayerGroup;
     });
 
     if (layersFilter.length === 0) {
@@ -402,6 +416,7 @@ export default class LayerswitcherControl extends M.Control {
   // Esta función renderiza la plantilla
   async render() {
     const listLayer = document.getElementById('m-layerswitcher-content').childElementCount;
+
     if (listLayer === 0) {
       this.statusShowHideAllLayers = this.map_.getLayers().find((layer) => {
         if (layer.isBase === false && layer.displayInLayerSwitcher) {
@@ -410,6 +425,12 @@ export default class LayerswitcherControl extends M.Control {
         return false;
       });
     }
+
+    // ? NO SE MUESTRA NINGUNA CAPA
+    if (this.statusShowHideAllLayers === undefined) {
+      return;
+    }
+
     const templateVars = await this.getTemplateVariables(this.map_);
     let scroll;
     if (document.querySelector('.m-plugin-layerswitcher.opened ul.m-layerswitcher-ullayers') !== null) {
@@ -421,12 +442,6 @@ export default class LayerswitcherControl extends M.Control {
     });
 
     this.template_.querySelector('#m-layerswitcher-content').innerHTML = html.innerHTML;
-
-    if (templateVars.overlayLayers.length === 0 && !templateVars.someLayerGroup) {
-      this.template_.querySelector('.m-layerswitcher-content').style.display = 'none';
-    } else {
-      this.template_.querySelector('.m-layerswitcher-content').style.display = 'block';
-    }
 
     await this.generateTemplateLayerGroup();
 
