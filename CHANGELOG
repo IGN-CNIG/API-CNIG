@@ -71,6 +71,7 @@
   - Incluido parámetro timelineType al apiRest.
 - Se incluye plantilla de plugin (basic)
 - Se soluciona problemas con el useCapabilities a false en capas WMTS. 
+- Se soluciona problema al añadir capa vector al constructor del mapa.
 
 22/05/24 - Versión 5.0.0
 - Se incluye nuevo tipo de capa GeoTiff.
