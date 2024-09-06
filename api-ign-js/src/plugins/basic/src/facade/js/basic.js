@@ -10,56 +10,55 @@ import { getValue } from './i18n/language';
 export default class Basic extends M.Plugin {
   /**
    * @classdesc
-   * Main facade plugin object. This class creates a plugin
-   * object which has an implementation Object
+   * Fachada del plugin plantilla
    *
    * @constructor
    * @extends {M.Plugin}
-   * @param {Object} impl implementation object
-   * @api stable
+   * @param {Object} options Opciones para el plugin
+   * @api
    */
   constructor(options = {}) {
     super();
 
     /**
-     * Name plugin
+     * Nombre del plugin
      * @private
      * @type {String}
      */
     this.name_ = 'basic';
 
     /**
-     * Facade of the map
+     * Fachada del mapa
      * @private
      * @type {M.Map}
      */
     this.map_ = null;
 
     /**
-     * Array of controls
+     * Lista de controles
      * @private
      * @type {Array<M.Control>}
      */
     this.controls_ = [];
 
     /**
-     * Class name of the html view Plugin
+     * Nombre de clase de la vista html
      * @public
      * @type {string}
      */
     this.className = 'm-plugin-basic';
 
     /**
-     * Position of the Plugin
+     * Posición del Plugin
      * @public
-     * Posible values: TR | TL | BL | BR
+     * Posibles valores: TR | TL | BL | BR
      * @type {String}
      */
     const positions = ['TR', 'TL', 'BL', 'BR'];
     this.position = positions.includes(options.position) ? options.position : 'TR';
 
     /**
-     * Plugin tooltip
+     * Tooltip del plugin
      *
      * @private
      * @type {string}
@@ -67,27 +66,35 @@ export default class Basic extends M.Plugin {
     this.tooltip_ = options.tooltip || getValue('tooltip');
 
     /**
-     * Collapsed attribute
+     * Indicador de si el plugin se muestra contraido
      * @public
      * @type {boolean}
      */
     this.collapsed = options.collapsed !== false;
 
     /**
-     * Collapsible attribute
+     * Indicador de si el plugin se puede contraer no.
      * @public
      * @type {boolean}
      */
     this.collapsible = options.collapsible !== false;
 
     /**
+     * Indicador de si el plugin puede arrastrarse o no
+     * @public
+     * @type {boolean}
+     */
+    this.isDraggable = !M.utils.isUndefined(options.isDraggable) ? options.isDraggable : false;
+
+    /**
+     * Prioridad en la colocación del plugin en su área
      *@private
      *@type { Number }
      */
     this.order = options.order >= -1 ? options.order : null;
 
     /**
-     * Plugin parameters
+     * Parámetros del plugin
      * @public
      * @type {object}
      */
@@ -95,15 +102,15 @@ export default class Basic extends M.Plugin {
   }
 
   /**
-   * This function adds this plugin into the map
+   * Esta función añade el plugin al mapa.
    *
    * @public
    * @function
-   * @param {M.Map} map the map to add the plugin
+   * @param {M.Map} map el mapa al que se añade el plugin
    * @api stable
    */
   addTo(map) {
-    this.controls_.push(new BasicControl());
+    this.controls_.push(new BasicControl(this.isDraggable));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('Basic', {
       collapsible: this.collapsible,
@@ -119,17 +126,17 @@ export default class Basic extends M.Plugin {
   }
 
   /**
-   * Name of the plugin
+   * Obtiene el nombre del plugin
    *
    * @getter
    * @function
    */
   get name() {
-    return 'basic';
+    return this.name_;
   }
 
   /**
-   * This function destroys this plugin
+   * Esta función destruye el plugin
    *
    * @public
    * @function
@@ -140,18 +147,20 @@ export default class Basic extends M.Plugin {
   }
 
   /**
-   * Get the API REST Parameters of the plugin
+   * Esta función obtiene los parámetros de
+   * la API REST del plugin
    *
    * @function
    * @public
    * @api
    */
   getAPIRest() {
-    return `${this.name}=${this.position}*${this.collapsed}*${this.collapsible}*${this.tooltip_}`;
+    return `${this.name}=${this.position}*${this.collapsed}*${this.collapsible}*${this.tooltip_}*${this.isDraggable}`;
   }
 
   /**
-   * Gets the API REST Parameters in base64 of the plugin
+   * Esta función obtiene los parámetros de
+   * la API REST en base64 del plugin
    *
    * @function
    * @public

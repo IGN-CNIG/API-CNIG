@@ -9,10 +9,11 @@ const map = M.map({
 window.map = map;
 
 const mp = new Basic({
-  position: 'TR', // TR, BR, TL, BL
-  collapsed: false,
+  position: 'TL', // TR, BR, TL, BL
+  collapsed: true,
   collapsible: true,
-  tooltip: 'Plantilla plugin',
+  tooltip: 'Plantilla',
+  isDraggable: true,
 });
 window.mp = mp;
 

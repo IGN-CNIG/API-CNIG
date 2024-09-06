@@ -6,7 +6,6 @@
 
 .m-areas>div.m-area>div.m-panel.m-plugin-basic.opened {
     width: max-content;
-    border-radius: 0;
 }
 
 .m-areas>div.m-area>div.m-plugin-basic.collapsed>button.m-panel-btn {
