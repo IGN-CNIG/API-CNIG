@@ -73,6 +73,20 @@ class Line extends Simple {
   getDeserializedMethod_() {
     return "((serializedParameters) => M.style.Simple.deserialize(serializedParameters, 'M.style.Line'))";
   }
+
+  /**
+   * Este método clona el estilo.
+   *
+   * @public
+   * @return {M.style.Line} Devuelve un "new Line".
+   * @function
+   * @api
+   */
+  clone() {
+    const optsClone = {};
+    extendsObj(optsClone, this.options_);
+    return new this.constructor(optsClone);
+  }
 }
 
 /**

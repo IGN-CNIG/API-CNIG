@@ -62,6 +62,20 @@ class Point extends Simple {
   getDeserializedMethod_() {
     return "((serializedParameters) => M.style.Simple.deserialize(serializedParameters, 'M.style.Point'))";
   }
+
+  /**
+   * Este método clona el estilo.
+   *
+   * @public
+   * @return {M.style.Point} Devuelve un "new Point".
+   * @function
+   * @api
+   */
+  clone() {
+    const optsClone = {};
+    extendsObj(optsClone, this.options_);
+    return new this.constructor(optsClone);
+  }
 }
 
 /**

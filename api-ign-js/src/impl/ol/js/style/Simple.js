@@ -3,7 +3,7 @@
  */
 import OLFeature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
-import { isNullOrEmpty, isFunction } from 'M/util/Utils';
+import { isNullOrEmpty, isFunction, extendsObj } from 'M/util/Utils';
 import Style from './Style';
 import Feature from '../feature/Feature';
 
@@ -103,6 +103,20 @@ class Simple extends Style {
       }
     }
     return attrFeature;
+  }
+
+  /**
+   * Este método clona el estilo.
+   *
+   * @public
+   * @return {M.style.Simple} Devuelve un "new Simple".
+   * @function
+   * @api
+   */
+  clone() {
+    const optsClone = {};
+    extendsObj(optsClone, this.options_);
+    return new this.constructor(optsClone);
   }
 }
 

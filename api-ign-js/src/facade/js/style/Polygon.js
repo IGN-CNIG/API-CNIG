@@ -62,6 +62,20 @@ class Polygon extends Simple {
   getDeserializedMethod_() {
     return "((serializedParameters) => M.style.Simple.deserialize(serializedParameters, 'M.style.Polygon'))";
   }
+
+  /**
+   * Este método clona el estilo.
+   *
+   * @public
+   * @return {M.style.Polygon} Devuelve un "new Polygon".
+   * @function
+   * @api
+   */
+  clone() {
+    const optsClone = {};
+    extendsObj(optsClone, this.options_);
+    return new this.constructor(optsClone);
+  }
 }
 
 /**

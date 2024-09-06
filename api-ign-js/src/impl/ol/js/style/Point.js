@@ -56,7 +56,9 @@ class Point extends Simple {
         return null;
       }
       const auxOlStyleFn = this.olStyleFn_();
-      let styleImg = auxOlStyleFn[1].getImage ? auxOlStyleFn[1].getImage() : undefined;
+      let styleImg = auxOlStyleFn[1] && auxOlStyleFn[1].getImage
+        ? auxOlStyleFn[1].getImage()
+        : undefined;
       if (styleImg instanceof OLStyleImage) {
         // see https://github.com/openlayers/openlayers/blob/master/src/ol/style/regularshape.js#L205
         if (styleImg instanceof PointFontSymbol) {
@@ -80,16 +82,18 @@ class Point extends Simple {
           }
         }
       } else {
-        styleImg = auxOlStyleFn[0].getImage();
-        if (styleImg != null && styleImg.getStroke() != null) {
-          if (styleImg.getStroke().getWidth() > Point.DEFAULT_WIDTH_POINT) {
-            styleImg.getStroke().setWidth(Point.DEFAULT_WIDTH_POINT);
+        styleImg = auxOlStyleFn[0] && auxOlStyleFn[0].getImage ? auxOlStyleFn[0].getImage() : null;
+        if (styleImg != null) {
+          if (styleImg.getStroke() != null) {
+            if (styleImg.getStroke().getWidth() > Point.DEFAULT_WIDTH_POINT) {
+              styleImg.getStroke().setWidth(Point.DEFAULT_WIDTH_POINT);
+            }
+            styleImg.render();
           }
-          styleImg.render();
-        }
-        const imageCanvas = styleImg.getImage();
-        if (imageCanvas != null) {
-          image = imageCanvas.toDataURL();
+          const imageCanvas = styleImg.getImage();
+          if (imageCanvas != null) {
+            image = imageCanvas.toDataURL();
+          }
         }
       }
     }
