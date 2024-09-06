@@ -49,11 +49,12 @@ class OLStyleFontSymbol extends OLStyleRegularShape {
     });
 
     if (typeof options.opacity === 'number') this.setOpacity(options.opacity);
+    this.pixelRatio_ = window.devicePixelRatio;
     this.color_ = options.color;
     this.fontSize_ = options.fontSize || 1;
     this.stroke_ = options.stroke;
     this.fill_ = options.fill;
-    this.radius_ = options.radius - strokeWidth;
+    this.radius_ = (options.radius * this.pixelRatio_) - strokeWidth;
     this.form_ = options.form || 'none';
     this.gradient_ = options.gradient;
     this.offset_ = [options.offsetX ? options.offsetX : 0, options.offsetY ? options.offsetY : 0];
@@ -225,7 +226,7 @@ class OLStyleFontSymbol extends OLStyleRegularShape {
     }
 
     // no atlas manager is used, create a new canvas
-    const canvas = this.getImage(1);
+    const canvas = this.getImage(this.pixelRatio_);
 
     const renderOptions = {
       strokeStyle,

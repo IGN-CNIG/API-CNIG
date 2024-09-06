@@ -73,6 +73,7 @@
 - Se soluciona problemas con el useCapabilities a false en capas WMTS. 
 - Se soluciona problema al añadir capa vector al constructor del mapa.
 - Se elimina efecto al abrir/cerrar un plugin
+- Solucionado problema de estilos con iconos y el parámetro form en móvil
 
 22/05/24 - Versión 5.0.0
 - Se incluye nuevo tipo de capa GeoTiff.
