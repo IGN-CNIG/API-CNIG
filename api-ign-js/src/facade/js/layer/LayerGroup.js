@@ -75,8 +75,6 @@ class LayerGroup extends LayerBase {
     this.layers = impl.layers;
 
     this.display = parameters.display || true;
-
-    this.id = crypto.randomUUID();
   }
 
   /**

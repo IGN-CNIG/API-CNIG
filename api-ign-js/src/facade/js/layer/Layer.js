@@ -127,6 +127,8 @@ class LayerBase extends Base {
      * Zoom máximo aplicable a la capa.
      */
     this.maxZoom = parameter.maxZoom || Number.POSITIVE_INFINITY;
+
+    this.id = generateRandom(parameter.type, parameter.name);
   }
 
   /**
