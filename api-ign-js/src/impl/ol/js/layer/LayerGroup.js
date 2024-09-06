@@ -172,7 +172,7 @@ class LayerGroup extends Layer {
       const impl = layer.getImpl();
       this.setOLLayerToLayer_(layer);
 
-      this.addRootLayerGroup(impl);
+      impl.rootGroup = this;
       this.layers.push(layer);
 
       if (this.zIndex_ !== null) {
@@ -186,20 +186,6 @@ class LayerGroup extends Layer {
     }
 
     return layer;
-  }
-
-  /**
-   * Este método agrega una capa al grupo raíz.
-   * @function
-   * @param {M.impl.layer.LayerGroup} layerGroup Grupo de capas.
-   * @public
-   * @api
-   */
-  addRootLayerGroup(layerGroup) {
-    const layerGroupImpl = layerGroup;
-    if (layerGroup instanceof LayerGroup) {
-      layerGroupImpl.rootGroup = this;
-    }
   }
 
   /**
