@@ -6,7 +6,6 @@
 - Previsto uso de panIntoView en caso de que el popup al que referencia ya fue eliminado.
 - Refrescado necesario para interacción "hover" de features se evitará en caso de interacción "click" en la función unselectFeatures.
 - Simplificado las condiciones de interacción "click" de features para evitar utilizar código innecesario en tal caso. 
-- Se cambian las coordenadas de los popups en casos de interactuar con un feature solapado al anteriormente mostrado.
 - Se comprueba existencia de VectorImpl antes de su uso en capa Vector.
 - Mejorado estabilidad y rendimiento de la función getFeaturesByLayer.
 - Reducido llamadas sobrantes a la función olStyleFn_ en estilado de puntos.
