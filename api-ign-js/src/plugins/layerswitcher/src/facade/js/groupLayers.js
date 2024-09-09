@@ -30,9 +30,9 @@ export const getAllLayersGroup = (map) => {
   return allLayers;
 };
 
-export const displayLayers = ({ target }, targetName, map) => {
+export const displayLayers = ({ target }, layer, map) => {
   if (target.classList.contains(CLASS_DISPLAY_GROUP)) {
-    const groupLayer = map.getLayerGroup().find((layerGroup) => layerGroup.name === targetName);
+    const groupLayer = map.getLayerGroup().find((layerGroup) => layerGroup.name === layer.name);
 
     const group = target.parentElement.parentElement.parentElement.children[1];
     group.style.display = group.style.display === 'none' ? 'block' : 'none';

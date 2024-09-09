@@ -12,7 +12,6 @@ import infoTemplateOGC from '../../templates/informationogc';
 import infoTemplateOthers from '../../templates/informationothers';
 import layerGroupTemplate from '../../templates/layergroup';
 import layerGroupChildTemplate from '../../templates/layergroupchild';
-import configTemplate from '../../templates/config';
 import addServicesTemplate from '../../templates/addservices';
 import resultstemplate from '../../templates/addservicesresults';
 import ogcModalTemplate from '../../templates/ogcmodal';
@@ -23,10 +22,13 @@ import {
   getAllLayersGroup, displayLayers, createSelectGroup, getLayerSelectGroup,
   filterGroups,
 } from './groupLayers';
-import { reorderLayers, removeLayersInLayerSwitcher, addAttributions } from './utils';
+import {
+  reorderLayers, removeLayersInLayerSwitcher, addAttributions, focusModal,
+} from './utils';
 import {
   TRANSLATIONS_OGCAPIFEATURES_WMS_WMTS, TRANSLATIONS_INFO_LAYER, showModalChangeName,
   showHideLayersEye, legendInfo, eventIconTarget, showHideLayersRadio, selectDefaultRange,
+  styleLayers,
 } from './toolsLayers';
 
 const CATASTRO = '//ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx';
@@ -332,6 +334,7 @@ export default class LayerswitcherControl extends M.Control {
         type: layer.type,
         dataOrder: layer.getZIndex(),
         visible: (layer.isVisible() === true),
+        idLayer: layer.id,
         id: layer.name,
         url: layer.url,
         outOfRange: !layer.inRange(),
@@ -496,29 +499,28 @@ export default class LayerswitcherControl extends M.Control {
   // Esta función detecta cuando se hace click en la plantilla y efectúa la acción correspondiente
   clickLayer(evtParameter) {
     const evt = (evtParameter || window.event);
-    const layerName = evt.target.getAttribute('data-layer-name');
-    const layerURL = evt.target.getAttribute('data-layer-url') || undefined;
-    const layerType = evt.target.getAttribute('data-layer-type');
+
     if (evt.target.id === 'm-layerswitcher-hsalllayers') {
       this.showHideAllLayers();
-    } else if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericRaster' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles' || layerType === 'LayerGroup')))
-      && !M.utils.isNullOrEmpty(layerType)) {
-      let layer = this.findLayer(evt);
-      if (layer.length > 0) {
-        layer = layer[0];
-        const selectLayer = evt.target.getAttribute('data-select-type');
-        if (evt.target.className.indexOf('m-layerswitcher-title-box') > -1
-          || evt.target.className.indexOf('m-layerswitcher-sectionPanel-header-text') > -1) {
-          showModalChangeName(layer, evt.target, this.order);
-        } else if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'eye') {
-          showHideLayersEye(evt, layer, this);
-        } else if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'radio') {
-          showHideLayersRadio(layer, this.map_, layerName, layerType, layerURL);
-        } else if (evt.target.className.indexOf('m-layerswitcher-icons-image') > -1) {
-          legendInfo(evt, layer, this.useProxy, this.statusProxy);
-        } else if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
-          eventIconTarget(layerType, layer, this.map_, this.order);
-        } else if (evt.target.className.indexOf('m-layerswitcher-icons-info') > -1) {
+    } else {
+      const layer = this.findLayer(evt)[0];
+
+      if (layer) {
+        // ? Cambiar nombre de la capa
+        showModalChangeName(layer, evt.target, this.order);
+        // ? Mostrar/Ocultar capa (modo eye)
+        showHideLayersEye(evt, layer, this);
+        // ? Mostrar/Ocultar capa (modo radio)
+        showHideLayersRadio(layer, this.map_, evt.target);
+        // ? Leyenda de la capa
+        legendInfo(evt, layer, this.useProxy, this.statusProxy);
+        // ? Zoom a la capa
+        eventIconTarget(layer, this.map_, this.order, evt);
+        // ? Cambiar estilo de la capa
+        styleLayers(layer, this.order, evt);
+
+        // ? Información de la capa
+        if (evt.target.className.indexOf('m-layerswitcher-icons-info') > -1) {
           if (layer.type === 'OGCAPIFeatures') {
             const metadataURL = `${layer.url}${layer.name}?f=json`;
             const htmlURL = `${layer.url}${layer.name}?f=html`;
@@ -733,54 +735,15 @@ export default class LayerswitcherControl extends M.Control {
               loadFeatures();
             }
           }
-        } else if (evt.target.className.indexOf('m-layerswitcher-icons-style') > -1) {
-          let otherStyles = [];
-          let isVectorLayer = false;
-          if (!M.utils.isUndefined(layer.capabilitiesMetadata)
-            && !M.utils.isUndefined(layer.capabilitiesMetadata.style)) {
-            otherStyles = layer.capabilitiesMetadata.style;
-          }
-
-          if (layer instanceof M.layer.Vector) {
-            otherStyles = layer.predefinedStyles;
-            isVectorLayer = true;
-          }
-
-          const config = M.template.compileSync(configTemplate, {
-            jsonp: true,
-            parseToHtml: false,
-            vars: {
-              styles: otherStyles,
-              isVectorLayer,
-              translations: {
-                select_style: getValue('select_style'),
-                change: getValue('change'),
-                style: getValue('style'),
-                default_style: getValue('default_style'),
-                selected: getValue('selected'),
-              },
-            },
-          });
-
-          M.dialog.info(config, getValue('configure_layer'), this.order);
-          this.focusModal('.m-title span');
-          setTimeout(() => {
-            const selector = '#m-layerswitcher-style button';
-            document.querySelector(selector).addEventListener('click', this.changeLayerConfig.bind(this, layer, otherStyles));
-            document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
-            const button = document.querySelector('div.m-dialog.info div.m-button > button');
-            button.innerHTML = getValue('close');
-            button.style.width = '75px';
-            button.style.backgroundColor = '#71a7d3';
-            setTimeout(() => {
-              document.querySelector('.m-layerswitcher-style-container').focus();
-            }, 500);
-          }, 10);
         }
-        removeLayersInLayerSwitcher(evt, layer, this.map_, layerName);
+
+        // ? Eliminar capa
+        removeLayersInLayerSwitcher(evt, layer, this.map_);
+        // ? Colapsar/Expandir grupo de capas
+        displayLayers(evt, layer, this.map_);
       }
     }
-    displayLayers(evt, layerName, this.map_);
+
     evt.stopPropagation();
   }
 
@@ -919,17 +882,12 @@ export default class LayerswitcherControl extends M.Control {
 
   //  Función para buscar la capa por nombre, url y tipo
   findLayer(evt) {
-    const layerName = evt.target.getAttribute('data-layer-name');
-    const layerURL = evt.target.getAttribute('data-layer-url') || undefined;
-    const layerType = evt.target.getAttribute('data-layer-type');
+    const idLayers = evt.target.getAttribute('data-layer-id');
+
     let result = [];
-    if (!M.utils.isNullOrEmpty(layerName) && (!M.utils.isNullOrEmpty(layerURL) || (layerURL === undefined && (layerType === 'OSM' || layerType === 'GeoJSON' || layerType === 'GenericRaster' || layerType === 'GenericVector' || layerType === 'Vector' || layerType === 'MBTilesVector' || layerType === 'MBTiles' || layerType === 'LayerGroup')))
-      && !M.utils.isNullOrEmpty(layerType)) {
+    if (!M.utils.isNullOrEmpty(idLayers)) {
       const allLayers = getAllLayersGroup(this.map_).concat(this.overlayLayers);
-      result = allLayers.filter((l) => {
-        return l.name === layerName && (l.url === layerURL
-          || l.url === undefined || l.url[0] === layerURL) && l.type === layerType;
-      });
+      result = allLayers.filter((l) => l.id === idLayers);
     }
 
     return result;
@@ -947,21 +905,21 @@ export default class LayerswitcherControl extends M.Control {
         parseToHtml: false,
         vars,
       });
-      this.focusModal('.m-layerswitcher-info-cap p');
+      focusModal('.m-layerswitcher-info-cap p');
     } else if (type === 'Others') {
       info = M.template.compileSync(infoTemplateOthers, {
         jsonp: false,
         parseToHtml: false,
         vars,
       });
-      this.focusModal('.m-layerswitcher-info-cap p');
+      focusModal('.m-layerswitcher-info-cap p');
     } else {
       info = M.template.compileSync(infoTemplate, {
         jsonp: false,
         parseToHtml: false,
         vars,
       });
-      this.focusModal('.m-layerswitcher-info-cap p');
+      focusModal('.m-layerswitcher-info-cap p');
     }
 
     M.dialog.info(info, getValue('layer_info'), this.order);
@@ -1040,38 +998,6 @@ export default class LayerswitcherControl extends M.Control {
     allLayers.forEach((layer) => {
       layer.setVisible(this.statusShowHideAllLayers);
     });
-  }
-
-  // Cambia estilo a la capa
-  changeLayerConfig(layer, otherStyles) {
-    const styleSelected = document.querySelector('#m-layerswitcher-style-select').value;
-    if (styleSelected !== '') {
-      if (layer instanceof M.layer.Vector) {
-        if (!M.utils.isNullOrEmpty(otherStyles)) {
-          const filtered = otherStyles[styleSelected];
-          layer.clearStyle();
-          if (styleSelected === 0) {
-            layer.setStyle();
-          } else {
-            layer.setStyle(filtered);
-          }
-        }
-      } else {
-        layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
-        const cm = layer.capabilitiesMetadata;
-        if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
-          const filtered = layer.capabilitiesMetadata.style.filter((style) => {
-            return style.Name === styleSelected;
-          });
-
-          if (filtered.length > 0 && filtered[0].LegendURL.length > 0) {
-            const newURL = filtered[0].LegendURL[0].OnlineResource;
-            layer.setLegendURL(newURL);
-          }
-        }
-      }
-      document.querySelector('div.m-mapea-container div.m-dialog').remove();
-    }
   }
 
   // Muestra cargando
@@ -1436,15 +1362,7 @@ export default class LayerswitcherControl extends M.Control {
       this.addGroupLayersEvent();
     }, 10);
 
-    this.focusModal('#m-layerswitcher-addservices-search-input');
-  }
-
-  focusModal(id) {
-    setTimeout(() => {
-      const message = document.querySelector(id);
-      message.focus();
-      message.click();
-    }, 100);
+    focusModal('#m-layerswitcher-addservices-search-input');
   }
 
   changeClodeButtonModal() {

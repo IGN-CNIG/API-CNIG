@@ -1,6 +1,8 @@
 import changeNameTemplate from 'templates/changename';
 import { getValue } from './i18n/language';
 import { fiendLayerInGroup } from './groupLayers';
+import configTemplate from '../../templates/config';
+import { focusModal } from './utils';
 
 /* CHANGE NAME */
 // I18N - Traducciones
@@ -79,36 +81,43 @@ const changeLayerLegend = (layer, target) => {
 };
 
 export const showModalChangeName = (layer, target, order) => {
-  const changeName = M.template.compileSync(changeNameTemplate, {
-    jsonp: true,
-    parseToHtml: false,
-    vars: {
-      name: layer.legend || layer.name,
-      translations: {
-        change: getValue(I18N_CHANGE),
+  if (target.className.indexOf('m-layerswitcher-title-box') > -1
+  || target.className.indexOf('m-layerswitcher-sectionPanel-header-text') > -1) {
+    const changeName = M.template.compileSync(changeNameTemplate, {
+      jsonp: true,
+      parseToHtml: false,
+      vars: {
+        name: layer.legend || layer.name,
+        translations: {
+          change: getValue(I18N_CHANGE),
+        },
+        order,
       },
-      order,
-    },
-  });
+    });
 
-  M.dialog.info(changeName, getValue(I18N_CHANGE_NAME), order);
+    M.dialog.info(changeName, getValue(I18N_CHANGE_NAME), order);
 
-  document.querySelector(ID_SELECTOR_CHANGE_NAME_BUTTON).addEventListener('click', () => {
-    changeLayerLegend(layer, target);
-  });
+    document.querySelector(ID_SELECTOR_CHANGE_NAME_BUTTON).addEventListener('click', () => {
+      changeLayerLegend(layer, target);
+    });
 
-  const button = document.querySelector(ID_SELECTOR_CLOSE_DIALOG);
-  button.innerHTML = getValue(I18N_CLOSE);
-  button.style.width = WIDTH_BUTTON;
-  button.style.backgroundColor = COLOR_BUTTON;
+    const button = document.querySelector(ID_SELECTOR_CLOSE_DIALOG);
+    button.innerHTML = getValue(I18N_CLOSE);
+    button.style.width = WIDTH_BUTTON;
+    button.style.backgroundColor = COLOR_BUTTON;
+  }
 };
 
 /* EYE SELECT LAYER */
 export const showHideLayersEye = (evt, layer, self) => {
-  if (evt.target.classList.contains(CLASS_CHECK)) {
-    if (layer.transparent === true || !layer.isVisible()) {
-      layer.setVisible(!layer.isVisible());
-      self.render();
+  const selectLayer = evt.target.getAttribute('data-select-type');
+
+  if (evt.target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'eye') {
+    if (evt.target.classList.contains(CLASS_CHECK)) {
+      if (layer.transparent === true || !layer.isVisible()) {
+        layer.setVisible(!layer.isVisible());
+        self.render();
+      }
     }
   }
 };
@@ -144,86 +153,91 @@ const errorLegendLayer = (layer, useProxy, statusProxy) => {
 };
 
 export const legendInfo = (evt, layer, useProxy, statusProxy) => {
-  const legend = evt.target.parentElement.parentElement.parentElement.querySelector('.m-layerswitcher-legend');
-  if (legend.style.display !== 'block') {
-    const legendUrl = layer.getLegendURL();
-    if (legendUrl instanceof Promise) {
-      legendUrl.then((url) => {
-        if (url.indexOf(LEGEND_DEFAULT_IMG) === -1) {
-          legend.querySelector('img').src = url;
-        } else {
-          errorLegendLayer(layer, useProxy, statusProxy).then((newLegend) => {
-            if (newLegend !== '') {
-              legend.querySelector('img').src = newLegend;
-            } else {
-              legend.querySelector('img').src = url;
-            }
-          });
-        }
-      });
-    } else if (legendUrl.indexOf(LEGEND_DEFAULT_IMG) >= 0) {
-      errorLegendLayer(layer, useProxy, statusProxy).then((newLegend) => {
-        if (newLegend === 'error legend') {
-          const img = legend.querySelector('img');
-          const messageError = document.createElement('p');
-          const icon = document.createElement('span');
-          icon.classList.add('m-layerswitcher-icons-cancel');
-          messageError.classList.add('m-layerswitcher-legend-error');
-          messageError.appendChild(icon);
-          const text = document.createTextNode(getValue(I18N_LEGEND_ERROR));
-          messageError.appendChild(text);
-          img.parentNode.insertBefore(messageError, img);
-        } else if (newLegend !== '') {
-          legend.querySelector('img').src = newLegend;
-        } else {
-          legend.querySelector('img').src = legendUrl;
-        }
-      });
+  if (evt.target.className.indexOf('m-layerswitcher-icons-image') > -1) {
+    const legend = evt.target.parentElement.parentElement.parentElement.querySelector('.m-layerswitcher-legend');
+    if (legend.style.display !== 'block') {
+      const legendUrl = layer.getLegendURL();
+      if (legendUrl instanceof Promise) {
+        legendUrl.then((url) => {
+          if (url.indexOf(LEGEND_DEFAULT_IMG) === -1) {
+            legend.querySelector('img').src = url;
+          } else {
+            errorLegendLayer(layer, useProxy, statusProxy).then((newLegend) => {
+              if (newLegend !== '') {
+                legend.querySelector('img').src = newLegend;
+              } else {
+                legend.querySelector('img').src = url;
+              }
+            });
+          }
+        });
+      } else if (legendUrl.indexOf(LEGEND_DEFAULT_IMG) >= 0) {
+        errorLegendLayer(layer, useProxy, statusProxy).then((newLegend) => {
+          if (newLegend === 'error legend') {
+            const img = legend.querySelector('img');
+            const messageError = document.createElement('p');
+            const icon = document.createElement('span');
+            icon.classList.add('m-layerswitcher-icons-cancel');
+            messageError.classList.add('m-layerswitcher-legend-error');
+            messageError.appendChild(icon);
+            const text = document.createTextNode(getValue(I18N_LEGEND_ERROR));
+            messageError.appendChild(text);
+            img.parentNode.insertBefore(messageError, img);
+          } else if (newLegend !== '') {
+            legend.querySelector('img').src = newLegend;
+          } else {
+            legend.querySelector('img').src = legendUrl;
+          }
+        });
+      } else {
+        legend.querySelector('img').src = legendUrl;
+      }
+      legend.style.display = 'block';
     } else {
-      legend.querySelector('img').src = legendUrl;
+      const img = legend.querySelector('img');
+      const p = img.parentElement.querySelector('p');
+      if (!M.utils.isNullOrEmpty(p)) {
+        p.remove();
+      }
+      legend.style.display = 'none';
     }
-    legend.style.display = 'block';
-  } else {
-    const img = legend.querySelector('img');
-    const p = img.parentElement.querySelector('p');
-    if (!M.utils.isNullOrEmpty(p)) {
-      p.remove();
-    }
-    legend.style.display = 'none';
   }
 };
 
 /* TARGET LAYER */
-export const eventIconTarget = (layerType, layer, map, order) => {
-  const mapView = map;
-  if (layerType === 'WMS') {
-    layer.getMaxExtent((me) => {
-      mapView.setBbox(me);
-    });
-  } else if (layersTypesTarget.includes(layerType)) {
-    const extent = layer.getMaxExtent();
-    if (extent === null) {
-      if (layer.calculateMaxExtent) {
-        layer.calculateMaxExtent()
-          .then((ext) => {
-            if (ext.length > 0) {
-              mapView.setBbox(ext);
-            } else {
-              mapView.setBbox(mapView.getExtent());
-            }
-          })
-          .catch((err) => {
-            // eslint-disable-next-line no-console
-            console.error(err);
-          });
+export const eventIconTarget = (layer, map, order, evt) => {
+  if (evt.target.className.indexOf('m-layerswitcher-icons-target') > -1) {
+    const mapView = map;
+    const layerType = layer.type;
+    if (layerType === 'WMS') {
+      layer.getMaxExtent((me) => {
+        mapView.setBbox(me);
+      });
+    } else if (layersTypesTarget.includes(layerType)) {
+      const extent = layer.getMaxExtent();
+      if (extent === null) {
+        if (layer.calculateMaxExtent) {
+          layer.calculateMaxExtent()
+            .then((ext) => {
+              if (ext.length > 0) {
+                mapView.setBbox(ext);
+              } else {
+                mapView.setBbox(mapView.getExtent());
+              }
+            })
+            .catch((err) => {
+              // eslint-disable-next-line no-console
+              console.error(err);
+            });
+        } else {
+          mapView.setBbox(mapView.getExtent());
+        }
       } else {
-        mapView.setBbox(mapView.getExtent());
+        mapView.setBbox(extent);
       }
     } else {
-      mapView.setBbox(extent);
+      M.dialog.info(getValue('exception.extent'), getValue('info'), order);
     }
-  } else {
-    M.dialog.info(getValue('exception.extent'), getValue('info'), order);
   }
 };
 
@@ -257,21 +271,25 @@ const showHideLayersInLayerGroup = (layer, map) => {
   }
 };
 
-export const showHideLayersRadio = (layer, map, layerName, layerType, layerURL) => {
-  const layers = map.getLayers().filter((l) => l.displayInLayerSwitcher === true);
-  const layerMap = layers.some((l) => l.name === layerName
-  && l.type === layerType && l.url === layerURL);
+export const showHideLayersRadio = (layer, map, target) => {
+  const selectLayer = target.getAttribute('data-select-type');
+  if (target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'radio') {
+    const idLayers = target.getAttribute('data-layer-id');
 
-  if (layerMap) {
-    layers.forEach((l) => {
-      if (l.name === layerName && l.type === layerType && (l.url === layerURL || layerURL === 'noURL')) {
-        showLayers(l);
-      } else {
-        hideLayers(l);
-      }
-    });
-  } else {
-    showHideLayersInLayerGroup(layer, map);
+    const layers = map.getLayers().filter((l) => l.displayInLayerSwitcher === true);
+    const layerMap = layers.some((l) => l.id === idLayers);
+
+    if (layerMap) {
+      layers.forEach((l) => {
+        if (l.id === idLayers) {
+          showLayers(l);
+        } else {
+          hideLayers(l);
+        }
+      });
+    } else {
+      showHideLayersInLayerGroup(layer, map);
+    }
   }
 };
 
@@ -314,4 +332,85 @@ export const selectDefaultRange = (radioButtons, map) => {
   layerGroupVisible.forEach((groups) => {
     clickRadioLayers(getRadioLayersFilter(groups.layers), radioButtons);
   });
+};
+
+// Cambia estilo a la capa
+const changeLayerConfig = (layer, otherStyles) => {
+  const styleSelected = document.querySelector('#m-layerswitcher-style-select').value;
+  if (styleSelected !== '') {
+    if (layer instanceof M.layer.Vector) {
+      if (!M.utils.isNullOrEmpty(otherStyles)) {
+        const filtered = otherStyles[styleSelected];
+        layer.clearStyle();
+        if (styleSelected === 0) {
+          layer.setStyle();
+        } else {
+          layer.setStyle(filtered);
+        }
+      }
+    } else {
+      layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
+      const cm = layer.capabilitiesMetadata;
+      if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
+        const filtered = layer.capabilitiesMetadata.style.filter((style) => {
+          return style.Name === styleSelected;
+        });
+
+        if (filtered.length > 0 && filtered[0].LegendURL.length > 0) {
+          const newURL = filtered[0].LegendURL[0].OnlineResource;
+          layer.setLegendURL(newURL);
+        }
+      }
+    }
+    document.querySelector('div.m-mapea-container div.m-dialog').remove();
+  }
+};
+
+export const styleLayers = (layer, order, evt) => {
+  if (evt.target.className.indexOf('m-layerswitcher-icons-style') > -1) {
+    let otherStyles = [];
+    let isVectorLayer = false;
+    if (!M.utils.isUndefined(layer.capabilitiesMetadata)
+              && !M.utils.isUndefined(layer.capabilitiesMetadata.style)) {
+      otherStyles = layer.capabilitiesMetadata.style;
+    }
+
+    if (layer instanceof M.layer.Vector) {
+      otherStyles = layer.predefinedStyles;
+      isVectorLayer = true;
+    }
+
+    const config = M.template.compileSync(configTemplate, {
+      jsonp: true,
+      parseToHtml: false,
+      vars: {
+        styles: otherStyles,
+        isVectorLayer,
+        translations: {
+          select_style: getValue('select_style'),
+          change: getValue('change'),
+          style: getValue('style'),
+          default_style: getValue('default_style'),
+          selected: getValue('selected'),
+        },
+      },
+    });
+
+    M.dialog.info(config, getValue('configure_layer'), order);
+    focusModal('.m-title span');
+    setTimeout(() => {
+      const selector = '#m-layerswitcher-style button';
+      document.querySelector(selector).addEventListener('click', () => {
+        changeLayerConfig(layer, otherStyles);
+      });
+      document.querySelector('div.m-mapea-container div.m-dialog div.m-title').style.backgroundColor = '#71a7d3';
+      const button = document.querySelector('div.m-dialog.info div.m-button > button');
+      button.innerHTML = getValue('close');
+      button.style.width = '75px';
+      button.style.backgroundColor = '#71a7d3';
+      setTimeout(() => {
+        document.querySelector('.m-layerswitcher-style-container').focus();
+      }, 500);
+    }, 10);
+  }
 };

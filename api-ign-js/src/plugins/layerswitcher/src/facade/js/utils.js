@@ -5,20 +5,23 @@ export const reorderLayers = (layers) => {
   return result;
 };
 
-export const removeLayerGroup = (map, layerName) => {
-  map.getLayerGroup().forEach((layerGroup) => {
-    layerGroup.getLayers().forEach((layerGroupLayer) => {
-      if (layerGroupLayer.name === layerName) {
-        layerGroup.removeLayers(layerGroupLayer);
-      }
-    });
+export const removeLayerGroup = (layer) => {
+  const group = layer.getImpl().rootGroup;
+
+  group.getLayers().forEach((groupLayer) => {
+    if (groupLayer.id === layer.id) {
+      group.removeLayer(groupLayer);
+    }
   });
 };
 
-export const removeLayersInLayerSwitcher = (evt, layer, map, layerName) => {
+export const removeLayersInLayerSwitcher = (evt, layer, map) => {
   if (evt.target.className.indexOf('m-layerswitcher-icons-delete') > -1) {
-    removeLayerGroup(map, layerName);
-    map.removeLayers(layer);
+    if (layer.getImpl().rootGroup) {
+      removeLayerGroup(layer);
+    } else {
+      map.removeLayers(layer);
+    }
   }
 };
 
@@ -45,4 +48,12 @@ export const addAttributions = (layers) => {
     }
     return layer;
   });
+};
+
+export const focusModal = (id) => {
+  setTimeout(() => {
+    const message = document.querySelector(id);
+    message.focus();
+    message.click();
+  }, 100);
 };
