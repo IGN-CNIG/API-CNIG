@@ -55,6 +55,7 @@
   - Normalizado código de la función "equals".
   - Normalizado código de la función "getControlActive".
   - Añadido cacheado al generado de la lista de descargas.
+  - Añadido enviado de leyendas al servidor si se requiere.
 - Plugin queryattributes: Optimizado uso de funciones de la clase array.
 - Plugin rescale: Optimizado uso de funciones de la clase array.
 - Plugin selectionzoom: Normalizado código de la función "equals".

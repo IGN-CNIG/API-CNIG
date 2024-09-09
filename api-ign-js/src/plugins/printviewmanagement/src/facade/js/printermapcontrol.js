@@ -702,8 +702,12 @@ export default class PrinterMapControl extends M.Control {
         yCoordBotLeft: dmsBbox.x.min,
       },
     }, this.params_.layout);
-
-    return this.encodeLayers().then((encodedLayers) => {
+    const layers = this.preEncodeFilter();
+    const promises = [this.encodeLayers(layers), layout.includes('(con leyenda)') ? this.encodeLegends(layers) : undefined]; // Adds legend parameters
+    return Promise.all(promises).then(([encodedLayers, allLegends]) => {
+      if (allLegends) { // Adds legend parameters
+        printData.attributes.legend = { classes: allLegends };
+      }
       printData.attributes.map.layers = encodedLayers.filter((l) => M.utils.isObject(l));
       printData.attributes = Object.assign(printData.attributes, parameters);
       if (projection !== 'EPSG:3857' && this.map_.getLayers().some((layer) => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
@@ -727,12 +731,56 @@ export default class PrinterMapControl extends M.Control {
   }
 
   /**
-    * This function encodes layers.
+    * This function encodes legends.
     *
     * @private
     * @function
     */
-  encodeLayers() {
+  encodeLegends(preGeneratedLayers) {
+    return new Promise((success) => {
+      const promises = [];
+      const resultNames = [];
+
+      preGeneratedLayers.forEach((layer) => {
+        if (layer.displayInLayerSwitcher && layer.getLegendURL && !(layer instanceof M.layer.Vector)
+            && layer.isVisible() && layer.inRange()) {
+          promises.push(layer.getLegendURL());
+          resultNames.push(layer.name); // resultLayers.push(layer)
+        }
+      });
+
+      Promise.all(promises).then((promiseResult) => {
+        const result = [];
+        const dRE = new RegExp(`.*${M.Layer.LEGEND_DEFAULT}$`);
+        const eRE = new RegExp(`.*${M.Layer.LEGEND_ERROR}$`);
+        promiseResult.forEach((legendURL, index) => {
+          if (!M.utils.isNullOrEmpty(legendURL)
+            && !dRE.test(legendURL) && !eRE.test(legendURL)) {
+            const legend = {
+              name: resultNames[index], // resultLayers[index].name
+              icons: [legendURL],
+            };
+            // Confirmed in previus forEach that it is not Vector layer.
+            // if (resultLayers[index] instanceof M.layer.Vector) delete legend.icons;
+            result.push(legend);
+          }
+        });
+        if (result.length === 0) {
+          success(undefined);
+        } else {
+          success(result);
+        }
+      });
+    });
+  }
+
+  /**
+    * This function generates a filtered list of layers for encoding.
+    *
+    * @private
+    * @function
+    */
+  preEncodeFilter() {
     // Filters visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     const mapZoom = this.map_.getZoom();
@@ -746,11 +794,8 @@ export default class PrinterMapControl extends M.Control {
         .filter((layer) => layerFilter(layer)));
 
     if (mapZoom === 20) {
-      let contains = false;
-      layers.forEach((l) => {
-        if (l.url !== undefined && l.url === 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg') {
-          contains = true;
-        }
+      const contains = layers.some((l) => {
+        return l.url !== undefined && l.url === 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg';
       });
 
       if (contains) {
@@ -759,11 +804,8 @@ export default class PrinterMapControl extends M.Control {
         });
       }
     } else if (mapZoom < 20) {
-      let contains = false;
-      layers.forEach((l) => {
-        if (l.url !== undefined && l.name !== undefined && l.url === 'https://www.ign.es/wmts/pnoa-ma?' && l.name === 'OI.OrthoimageCoverage') {
-          contains = true;
-        }
+      const contains = layers.some((l) => {
+        return l.url !== undefined && l.name !== undefined && l.url === 'https://www.ign.es/wmts/pnoa-ma?' && l.name === 'OI.OrthoimageCoverage';
       });
 
       if (contains) {
@@ -773,17 +815,15 @@ export default class PrinterMapControl extends M.Control {
       }
     }
 
-    let numLayersToProc = layers.length;
     const otherLayers = this.getImpl().getParametrizedLayers('IMAGEN', layers);
     if (otherLayers.length > 0) {
       layers = layers.concat(otherLayers);
-      numLayersToProc = layers.length;
     }
 
     layers = layers.sort((a, b) => {
       let res = 0;
-      const zia = a.getZIndex() !== null ? a.getZIndex() : 0;
-      const zib = b.getZIndex() !== null ? b.getZIndex() : 0;
+      const zia = a.getZIndex() || 0;
+      const zib = b.getZIndex() || 0;
       if (zia > zib) {
         res = 1;
       } else if (zia < zib) {
@@ -792,6 +832,19 @@ export default class PrinterMapControl extends M.Control {
 
       return res;
     });
+
+    return layers;
+  }
+
+  /**
+    * This function encodes layers.
+    *
+    * @private
+    * @function
+    */
+  encodeLayers(preGeneratedLayers) {
+    const layers = preGeneratedLayers;
+    let numLayersToProc = layers.length;
 
     return (new Promise((success, fail) => {
       const encodedLayers = [];
