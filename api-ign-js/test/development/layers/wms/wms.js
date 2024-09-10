@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
 import WMS from 'M/layer/WMS';
+import OLSourceImageWMS from 'ol/source/ImageWMS';
+import OLSourceTileWMS from 'ol/source/TileWMS';
 
 // eslint-disable-next-line no-unused-vars
 const sldBody = '<?xml version="1.0" encoding="ISO-8859-1"?>'
@@ -98,6 +100,27 @@ export const wms_001 = new WMS({
 
 export const wms_002 = 'WMS*Unidadesadministrativa*http://www.ign.es/wms-inspire/unidades-administrativas?*AU.AdministrativeUnit*false*true**1.3.0*true*true*true';
 
-export const wms_003 = new WMS({
-  url: 'https://www.ideandalucia.es/wms/mdt_2016?',
-});
+export const wms_003 = new WMS(
+  {
+    url: 'http://geostematicos-sigc.es/geoserver/tematicos/wms?',
+    name: 'tematicos:Municipios',
+    tiled: false,
+    transparent: true,
+  },
+  {
+    styles: 'infrarrojo',
+  },
+  {
+    source: new OLSourceImageWMS({
+      url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/wms?',
+      params: {
+        'LAYERS': 'tematicos:Provincias',
+        'TILED': true,
+        'TRANSPARENT': false,
+        'STYLES': 'polygon',
+      },
+      ratio: 1,
+      serverType: 'geoserver',
+    }),
+  },
+);

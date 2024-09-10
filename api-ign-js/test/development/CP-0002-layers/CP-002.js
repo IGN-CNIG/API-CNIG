@@ -1,15 +1,15 @@
 /* eslint-disable object-property-newline,no-console,no-underscore-dangle,max-len,camelcase,no-plusplus,no-param-reassign,no-proto,import/newline-after-import */
 import { map as Mmap } from 'M/mapea';
 // Escoger una de estas capas para probarlas.
-// import { tms_001 } from '../layers/tms/tms'; const capaPrueba = tms_001; window.tms = tms_001; // STRING ==> import { tms_002 } from '../layers/tms/tms'; const capaPrueba = tms_002; window.tms = tms_002;
-// import { wms_001 } from '../layers/wms/wms'; const capaPrueba = wms_001; window.wms = wms_001; // STRING ==> import { wms_002 } from '../layers/wms/wms'; const capaPrueba = wms_002; window.wms = wms_002;
-// import { wmts_001 } from '../layers/wmts/wmts'; const capaPrueba = wmts_001; window.wmts = wmts_001; // STRING ==> import { wmts_002 } from '../layers/wmts/wmts'; const capaPrueba = wmts_002; window.wmts = wmts_002;
-// import { xyz_001 } from '../layers/xyz/xyz'; const capaPrueba = xyz_001; window.xyz = xyz_001; // STRING ==> import { xyz_002 } from '../layers/xyz/xyz'; const capaPrueba = xyz_002; window.xyz = xyz_002;
-// import { osm } from '../layers/osm/osm'; const capaPrueba = osm; window.osm = osm;// STRING ==> import { osm_002 } from '../layers/osm/osm'; const capaPrueba = osm_002; window.osm = osm_002;// STRING ==> import { osm_003 } from '../layers/osm/osm'; const capaPrueba = osm_003; window.osm = osm_003;
-// import { mbtile_01 } from '../layers/mbtiles/mbtiles'; const capaPrueba = mbtile_01; window.mbtile = mbtile_01;
+// import { tms_003 } from '../layers/tms/tms'; const capaPrueba = tms_003; window.tms = capaPrueba; // STRING ==> import { tms_002 } from '../layers/tms/tms'; const capaPrueba = tms_002; window.tms = tms_002;
+// import { wms_001, wms_003 } from '../layers/wms/wms'; const capaPrueba = wms_003; window.wms = capaPrueba; // STRING ==> import { wms_002 } from '../layers/wms/wms'; const capaPrueba = wms_002; window.wms = wms_002;
+// import { wmts_003 } from '../layers/wmts/wmts'; const capaPrueba = wmts_003; window.wmts = capaPrueba; // STRING ==> import { wmts_002 } from '../layers/wmts/wmts'; const capaPrueba = wmts_002; window.wmts = wmts_002;
+// import { xyz_003 } from '../layers/xyz/xyz'; const capaPrueba = xyz_003; window.xyz = capaPrueba; // STRING ==> import { xyz_002 } from '../layers/xyz/xyz'; const capaPrueba = xyz_002; window.xyz = xyz_002;
+// import { osm_004 } from '../layers/osm/osm'; const capaPrueba = osm_004; window.osm = capaPrueba;// STRING ==> import { osm_002 } from '../layers/osm/osm'; const capaPrueba = osm_002; window.osm = osm_002;// STRING ==> import { osm_003 } from '../layers/osm/osm'; const capaPrueba = osm_003; window.osm = osm_003;
+// import { mbtile_02 } from '../layers/mbtiles/mbtiles'; const capaPrueba = mbtile_02; window.mbtile = capaPrueba;
 // import { generic_001 } from '../layers/generic/generic'; const capaPrueba = generic_001; window.generic = generic_001;
-// import { geotiff_001 } from '../layers/geotiff/geotiff'; const capaPrueba = geotiff_001; window.geotiff = geotiff_001;
-import { layerGroup_001 } from '../layers/layerGroup/layerGroup'; const capaPrueba = layerGroup_001; window.layerGroup = layerGroup_001;
+import { geotiff_004 } from '../layers/geotiff/geotiff'; const capaPrueba = geotiff_004; window.geotiff = capaPrueba;
+// import { layerGroup_001 } from '../layers/layerGroup/layerGroup'; const capaPrueba = layerGroup_001; window.layerGroup = layerGroup_001;
 // import { maplibre_001 } from '../layers/maplibre/maplibre'; const capaPrueba = maplibre_001; window.maplibre = maplibre_001;
 window.capaPrueba = capaPrueba;
 

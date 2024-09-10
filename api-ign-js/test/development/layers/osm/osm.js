@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import OSM from 'M/layer/OSM';
+import SourceOSM from 'ol/source/OSM';
 
 export const osm = new OSM({
   name: 'OSM',
@@ -41,3 +42,17 @@ export const osm = new OSM({
 export const osm_002 = 'OSM';
 
 export const osm_003 = 'OSM*Capa*OSM';
+
+export const osm_004 = new OSM({
+  name: 'OSM',
+  legend: 'OSM',
+  url: 'https://a.tile.map.org/{z}/{x}/{y}.png',
+  matrixSet: 'EPSG:3857',
+}, {
+  maxZoom: 10,
+}, {
+  source: new SourceOSM({
+    url: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    maxZoom: 10,
+  }),
+});

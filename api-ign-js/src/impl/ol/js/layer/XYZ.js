@@ -180,13 +180,15 @@ class XYZ extends Layer {
     if (addLayer) {
       this.map.getMapImpl().addLayer(this.ol3Layer);
     }
-
-    const source = new XYZSource({
-      projection: this.map.getProjection().code,
-      url: this.url,
-      tileSize: this.getTileSize(),
-      crossOrigin: this.crossOrigin,
-    });
+    let source = this.vendorOptions_.source;
+    if (isNullOrEmpty(source)) {
+      source = new XYZSource({
+        projection: this.map.getProjection().code,
+        url: this.url,
+        tileSize: this.getTileSize(),
+        crossOrigin: this.crossOrigin,
+      });
+    }
     this.ol3Layer.setSource(source);
     if (this.tileGridMaxZoom !== undefined && this.tileGridMaxZoom > 0) {
       this.ol3Layer.getSource().tileGrid.maxZoom = this.tileGridMaxZoom;

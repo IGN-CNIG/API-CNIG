@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import XYZ from 'M/layer/XYZ';
+import XYZSource from 'ol/source/XYZ';
 
 export const xyz_001 = new XYZ({
   url: 'https://www.ign.es/web/catalogo-cartoteca/resources/webmaps/data/cresques/{z}/{x}/{y}.jpg',
@@ -42,14 +43,22 @@ export const xyz_001 = new XYZ({
 export const xyz_002 = 'XYZ*PNOA-MA*https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg*true*true';
 
 export const xyz_003 = new XYZ({
-  url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+  url: 'https://tms-/{-y}.jpeg',
   name: 'PNOA-MA',
-  projection: 'EPSG:3857',
+  projection: 'EPSG:4326',
   legend: 'Leyenda XYZ 3',
-  tileGridMaxZoom: 5,
+  tileSize: 512,
+  crossOrigin: false,
   visibility: true,
   transparent: true,
 }, {
   minZoom: 5,
   maxZoom: 10,
-}, {});
+}, {
+  source: new XYZSource({
+    projection: 'EPSG:3857',
+    url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+    tileSize: 256,
+    crossOrigin: 'anonymus',
+  }),
+});

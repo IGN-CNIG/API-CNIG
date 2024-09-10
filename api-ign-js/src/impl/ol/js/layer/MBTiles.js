@@ -240,7 +240,7 @@ class MBTiles extends Layer {
     const projection = getProj(code);
     const extent = projection.getExtent();
 
-    if (!this.tileLoadFunction) {
+    if (!this.tileLoadFunction && !this.vendorOptions_.source) {
       this.fetchSource().then((tileProvider) => {
         tileProvider.getMaxZoomLevel().then((maxZoomLevel) => {
           if (!this.maxZoomLevel_) {
@@ -295,12 +295,9 @@ class MBTiles extends Layer {
     if (this.tileLoadFunction) {
       tileLoadFn = this.loadTile;
     }
-    const layer = new OLLayerTile(extend({
-      visible: this.visibility,
-      opacity: this.opacity_,
-      zIndex: this.zIndex_,
-      extent: this.maxExtent_ || opts.sourceExtent,
-      source: new XYZ({
+    let source = this.vendorOptions_.source;
+    if (isNullOrEmpty(source)) {
+      source = new XYZ({
         url: '{z},{x},{y}',
         projection: opts.projection,
         crossOrigin: this.crossOrigin,
@@ -310,7 +307,14 @@ class MBTiles extends Layer {
           origin: getBottomLeft(opts.sourceExtent),
           resolutions: opts.resolutions,
         }),
-      }),
+      });
+    }
+    const layer = new OLLayerTile(extend({
+      visible: this.visibility,
+      opacity: this.opacity_,
+      zIndex: this.zIndex_,
+      extent: this.maxExtent_ || opts.sourceExtent,
+      source,
     }, this.vendorOptions_, true));
     return layer;
   }

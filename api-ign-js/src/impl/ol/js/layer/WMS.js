@@ -2,6 +2,7 @@
 /**
  * @module M/impl/layer/WMS
  */
+import OLSourceImageWMS from 'ol/source/ImageWMS';
 import {
   isNull, isArray, isNullOrEmpty, addParameters, getWMSGetCapabilitiesUrl, fillResolutions,
   getResolutionFromScale, generateResolutionsFromExtent, concatUrlPaths, extend,
@@ -667,15 +668,20 @@ class WMS extends LayerBase {
    * @api stable
    */
   getCapabilities() {
+    const vendorSource = this.vendorOptions_.source;
+    let url = this.url;
+    if (vendorSource) {
+      url = vendorSource instanceof OLSourceImageWMS
+        ? vendorSource.getUrl() : vendorSource.getUrls()[0];
+    }
     const capabilitiesInfo = this.map.collectionCapabilities.find((cap) => {
-      return cap.url === this.url;
+      return cap.url === url;
     }) || { capabilities: false };
 
     if (capabilitiesInfo.capabilities) {
       this.getCapabilitiesPromise = capabilitiesInfo.capabilities;
     } else if (isNullOrEmpty(this.getCapabilitiesPromise)) {
-      const layerUrl = this.url || (this.vendorOptions_ && this.vendorOptions_.source
-        && this.vendorOptions_.source.getUrl());
+      const layerUrl = url;
       const layerVersion = this.version;
       const projection = this.map.getProjection();
       this.getCapabilitiesPromise = new Promise((success, fail) => {

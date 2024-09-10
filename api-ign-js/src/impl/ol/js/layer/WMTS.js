@@ -122,6 +122,10 @@ class WMTS extends LayerBase {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
+    if (!isNullOrEmpty(this.vendorOptions_.source)) {
+      this.name = this.vendorOptions_.source.getLayer();
+    }
+
     // calculates the resolutions from scales
     if (!isNull(this.options)
       && !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
@@ -266,16 +270,14 @@ class WMTS extends LayerBase {
       // gets resolutions from defined min/max resolutions
       const capabilitiesOptionsVariable = capabilitiesOptions;
       capabilitiesOptionsVariable.format = this.options.format || capabilitiesOptions.format;
-      const wmtsSource = new OLSourceWMTS(extend(capabilitiesOptionsVariable, {
-        // tileGrid: new OLTileGridWMTS({
-        //   origin: getBottomLeft(extent),
-        //   resolutions,
-        //   matrixIds,
-        // }),
-        extent,
-        crossOrigin: this.crossOrigin,
-      }, true));
-
+      let wmtsSource = this.vendorOptions_.source;
+      if (isNullOrEmpty(this.vendorOptions_.source)) {
+        const options = extend(capabilitiesOptionsVariable, {
+          extent,
+          crossOrigin: this.crossOrigin,
+        }, true);
+        wmtsSource = new OLSourceWMTS(options);
+      }
       this.facadeLayer_.setFormat(capabilitiesOptionsVariable.format);
       this.ol3Layer.setSource(wmtsSource);
 
@@ -310,34 +312,34 @@ class WMTS extends LayerBase {
   addLayerNotCapabilities_() {
     if (!isNullOrEmpty(this.map)) {
       const format = (this.options.format) ? this.options.format : 'image/png';
+      let wmtsSource = this.vendorOptions_.source;
+      if (isNullOrEmpty(this.vendorOptions_.source)) {
+        const size = getWidth(this.map.getProjection().getExtent()) / 256;
+        const resolutions = new Array(19);
+        const matrixIds = new Array(19);
+        // eslint-disable-next-line no-plusplus
+        for (let z = 0; z < 19; ++z) {
+          // generate resolutions and matrixIds arrays for this WMTS
+          // eslint-disable-next-line no-restricted-properties
+          resolutions[z] = size / (2 ** z);
+          matrixIds[z] = z;
+        }
 
-      const size = getWidth(this.map.getProjection().getExtent()) / 256;
-      const resolutions = new Array(19);
-      const matrixIds = new Array(19);
-      // eslint-disable-next-line no-plusplus
-      for (let z = 0; z < 19; ++z) {
-        // generate resolutions and matrixIds arrays for this WMTS
-        // eslint-disable-next-line no-restricted-properties
-        resolutions[z] = size / (2 ** z);
-        matrixIds[z] = z;
+        const tileGrid = new OLTileGridWMTS({
+          origin: getTopLeft(this.map.getProjection().getExtent()),
+          resolutions,
+          matrixIds,
+        });
+        wmtsSource = new OLSourceWMTS({
+          attributions: ' https://www.ign.es/',
+          url: this.url,
+          layer: this.name,
+          matrixSet: this.matrixSet,
+          format,
+          projection: getProj(this.map.getProjection().code),
+          tileGrid,
+        });
       }
-
-      const tileGrid = new OLTileGridWMTS({
-        origin: getTopLeft(this.map.getProjection().getExtent()),
-        resolutions,
-        matrixIds,
-      });
-
-      const wmtsSource = new OLSourceWMTS({
-        attributions: ' https://www.ign.es/',
-        url: this.url,
-        layer: this.name,
-        matrixSet: this.matrixSet,
-        format,
-        projection: getProj(this.map.getProjection().code),
-        tileGrid,
-      });
-
       this.facadeLayer_.setFormat(format);
       this.ol3Layer.setSource(wmtsSource);
 
@@ -394,7 +396,7 @@ class WMTS extends LayerBase {
     }
     let capabilitiesLayer = capabilities.Contents.Layer;
     if (isArray(capabilitiesLayer)) {
-      capabilitiesLayer = capabilitiesLayer.find((l) => l.Identifier === this.facadeLayer_.name);
+      capabilitiesLayer = capabilitiesLayer.find((l) => l.Identifier === layerName);
     }
 
     if (capabilitiesLayer.Style.length > 0 && capabilitiesLayer.Style[0].LegendURL !== undefined) {
@@ -462,7 +464,11 @@ class WMTS extends LayerBase {
   getCapabilities() {
     if (isNullOrEmpty(this.getCapabilitiesPromise_)) {
       this.getCapabilitiesPromise_ = new Promise((success, fail) => {
-        const getCapabilitiesUrl = getWMTSGetCapabilitiesUrl(this.url);
+        let url = this.url;
+        if (this.vendorOptions_.source) {
+          url = this.vendorOptions_.source.getUrls()[0];
+        }
+        const getCapabilitiesUrl = getWMTSGetCapabilitiesUrl(url);
         const parser = new OLFormatWMTSCapabilities();
         getRemote(getCapabilitiesUrl).then((response) => {
           let getCapabilitiesDocument = response.xml;
