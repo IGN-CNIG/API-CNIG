@@ -14,5 +14,5 @@ const mapa = Mmap({
 });
 window.mapa = mapa;
 
-// mapa.addLayerGroups([layerGroup_001]);
-// mapa.addLayerGroups(layerGroup_002)
+mapa.addLayerGroups([layerGroup_001, layerGroup_002]);
+

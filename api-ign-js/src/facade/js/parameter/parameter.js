@@ -2781,6 +2781,21 @@ export const maplibre = (userParameters) => {
   };
 };
 
+const filterLayerGroupLayers = (data) => {
+  // eslint-disable-next-line no-useless-escape
+  const regex = /([^\[\],]+(?:\[[^\]]*\])?)/g;
+  const matches = [];
+  let match;
+
+  // Recorremos todas las capas dentro del grupo
+  // eslint-disable-next-line no-cond-assign
+  while ((match = regex.exec(data)) !== null) {
+    matches.push(match[1].trim());
+  }
+
+  return matches;
+};
+
 export const layergroup = (userParameters) => {
   let params = userParameters;
 
@@ -2791,9 +2806,8 @@ export const layergroup = (userParameters) => {
 
   params = decodeURI(params);
 
-  // eslint-disable-next-line no-eval
-  const layes = eval(params.substring(params.indexOf('[')));
   const urlParams = params.split(/\*/);
+  const layers = filterLayerGroupLayers(params.substring(params.indexOf('[') + 1));
 
   return {
     type: LayerType.LayerGroup,
@@ -2802,7 +2816,7 @@ export const layergroup = (userParameters) => {
     visibility: urlParams[3] === '' ? undefined : urlParams[3] === 'true',
     transparent: urlParams[4] === '' ? undefined : urlParams[4] === 'true',
     displayInLayerSwitcher: urlParams[5] === '' || (urlParams[5] !== 'true' && urlParams[5] !== 'false') ? true : urlParams[5] === 'true',
-    layers: layes,
+    layers,
   };
 };
 
