@@ -727,12 +727,11 @@ export default class ShareMapControl extends M.Control {
 
   getLayerGroup(group, parent) {
     let layers = group.getLayers();
-    const comilla = parent ? '"' : "'";
     layers = layers.map((layer) => {
       if (this.layerToParam(layer, false) === undefined) {
         return null;
       }
-      return `${comilla}${this.layerToParam(layer, false)}${comilla}`;
+      return `${this.layerToParam(layer, false)}`;
     })
       .filter((param) => param != null);
     return `LayerGroup*${group.name}*${this.normalizeString(group.legend)}*${group.isVisible()}*${group.transparent}*[${layers}]${parent ? '!' : ''}`;
