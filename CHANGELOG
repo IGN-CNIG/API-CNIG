@@ -72,7 +72,6 @@
 - Se incluye plantilla de plugin (basic)
 - Se soluciona problemas con el useCapabilities a false en capas WMTS. 
 - Se soluciona problema al añadir capa vector al constructor del mapa.
-- Se elimina efecto al abrir/cerrar un plugin
 - Solucionado problema de estilos con iconos y el parámetro form en móvil
 - Se aplica preferencia del source de vendorOptions en capas raster
 
