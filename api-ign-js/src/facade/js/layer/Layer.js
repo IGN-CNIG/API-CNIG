@@ -128,7 +128,7 @@ class LayerBase extends Base {
      */
     this.maxZoom = parameter.maxZoom || Number.POSITIVE_INFINITY;
 
-    this.id = generateRandom(parameter.type, parameter.name);
+    this.idLayer = generateRandom(parameter.type, parameter.name);
   }
 
   /**
