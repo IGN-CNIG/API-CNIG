@@ -159,19 +159,13 @@
             url: 'http://www.ign.es/resources/geodesia/GNSS/SPTR_geo.json',
             extract: false,
         });
-        const capaOGCAPIFeatures = new M.layer.OGCAPIFeatures({
-            url: 'https://api-features.idee.es/collections/',
-            name: 'falls',
-            legend: 'Capa OGCAPIFeatures',
-            limit: 20,
-        });
+
         const capaWMS = new M.layer.WMS({
             url: 'https://www.ign.es/wms-inspire/unidades-administrativas?',
             name: 'AU.AdministrativeUnit',
             legend: 'Capa WMS',
         });
         map.addLayers(capaGeoJSON);
-        map.addLayers(capaOGCAPIFeatures);
         map.addLayers(capaWMS);
 
         const selectPosition = document.getElementById("selectPosition");
