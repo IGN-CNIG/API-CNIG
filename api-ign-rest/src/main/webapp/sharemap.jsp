@@ -14,7 +14,7 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
-    <link href="plugins/layerswircher/layerswitcher.ol.min.css" rel="stylesheet" />
+    <link href="plugins/layerswitcher/layerswitcher.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
         body {
