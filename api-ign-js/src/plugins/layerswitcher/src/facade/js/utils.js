@@ -9,7 +9,7 @@ export const removeLayerGroup = (layer) => {
   const group = layer.getImpl().rootGroup;
 
   group.getLayers().forEach((groupLayer) => {
-    if (groupLayer.id === layer.id) {
+    if (groupLayer.idLayer === layer.idLayer) {
       group.removeLayer(groupLayer);
     }
   });

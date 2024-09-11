@@ -277,11 +277,11 @@ export const showHideLayersRadio = (layer, map, target) => {
     const idLayers = target.getAttribute('data-layer-id');
 
     const layers = map.getLayers().filter((l) => l.displayInLayerSwitcher === true);
-    const layerMap = layers.some((l) => l.id === idLayers);
+    const layerMap = layers.some((l) => l.idLayer === idLayers);
 
     if (layerMap) {
       layers.forEach((l) => {
-        if (l.id === idLayers) {
+        if (l.idLayer === idLayers) {
           showLayers(l);
         } else {
           hideLayers(l);

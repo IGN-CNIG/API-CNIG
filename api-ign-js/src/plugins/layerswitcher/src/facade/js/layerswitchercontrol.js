@@ -334,7 +334,7 @@ export default class LayerswitcherControl extends M.Control {
         type: layer.type,
         dataOrder: layer.getZIndex(),
         visible: (layer.isVisible() === true),
-        idLayer: layer.id,
+        idLayer: layer.idLayer,
         id: layer.name,
         url: layer.url,
         outOfRange: !layer.inRange(),
@@ -887,7 +887,7 @@ export default class LayerswitcherControl extends M.Control {
     let result = [];
     if (!M.utils.isNullOrEmpty(idLayers)) {
       const allLayers = getAllLayersGroup(this.map_).concat(this.overlayLayers);
-      result = allLayers.filter((l) => l.id === idLayers);
+      result = allLayers.filter((l) => l.idLayer === idLayers);
     }
 
     return result;
