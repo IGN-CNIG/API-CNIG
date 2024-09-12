@@ -216,7 +216,7 @@ class OGCAPIFeatures {
       getFeatureParams.f = this.format_;
     }
     if (!isNullOrEmpty(this.id_)) {
-      this.url_ = `${this.url_}${this.id_}?`;
+      this.url_ = `${this.url_}/${this.id_}?`;
       fUrl = addParameters(addParameters(this.url_, getFeatureParams), this.getFeatureVendor_);
     } else {
       this.url_ = `${this.url_}?`;

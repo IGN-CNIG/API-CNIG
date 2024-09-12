@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import WFS from 'M/layer/WFS';
 import Generic from 'M/style/Generic';// eslint-disable-line no-unused-vars
+import OLSourceVector from 'ol/source/Vector';
+import OLFormatGeoJSON from 'ol/format/GeoJSON';
 
 export const wfs_001 = new WFS({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?',
@@ -89,3 +91,23 @@ export const wfs_004 = new WFS({
   geometry: 'POINT',
   extract: true,
 });
+
+export const wfs_005 = new WFS(
+  {
+    // url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/wfs',
+    namespace: 'sepim',
+    name: 'campamentos',
+    // geometry: 'POLYGON',
+    extract: true,
+    cql: "nombre = 'Aljarafe'",
+  },
+  {
+    minZoom: 5,
+  },
+  {
+    source: new OLSourceVector({
+      url: 'https://geostematicos-sigc.juntadeandalucia.es/geoserver/wfs?service=WFS&version=1.0.0&request=GetFeature&typename=tematicos:comarcas&outputFormat=application%2Fjson&srsname=EPSG%3A3857',
+      format: new OLFormatGeoJSON(),
+    }),
+  },
+);

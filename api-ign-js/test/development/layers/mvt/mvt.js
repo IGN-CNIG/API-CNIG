@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import MVT from 'M/layer/MVT';
 import Generic from 'M/style/Generic';
+import OLSourceVectorTile from 'ol/source/VectorTile';
+import MVTFormatter from 'ol/format/MVT';
 
 window.MVT = MVT;
 
@@ -100,5 +102,20 @@ export const mvt_003 = new MVT({
         color: 'black',
       },
     },
+  }),
+});
+
+export const mvt_004 = new MVT({
+  url: 'https://vt-fedme.idee.es/vt.senderogr/{z}/{x}/{y}.pbf',
+  name: 'sendero_gr',
+  mode: 'feature',
+  extract: true,
+}, {
+  minZoom: 5,
+}, {
+  source: new OLSourceVectorTile({
+    format: new MVTFormatter(),
+    url: 'https://vt-fedme.idee.es/vt.senderosl/{z}/{x}/{y}.pbf',
+    projection: 'EPSG:3857',
   }),
 });

@@ -189,7 +189,7 @@ class MBTilesVector extends Vector {
     const projection = getProj(code);
     const extent = projection.getExtent();
 
-    if (!this.tileLoadFunction_) {
+    if (!this.tileLoadFunction_ && isNullOrEmpty(this.vendorOptions_.source)) {
       this.fetchSource().then((tileProvider) => {
         tileProvider.getMaxZoomLevel().then((maxZoomLevel) => {
           if (!this.maxZoomLevel_) {

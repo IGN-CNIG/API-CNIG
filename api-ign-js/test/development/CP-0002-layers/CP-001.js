@@ -6,24 +6,25 @@ import * as filterFunction from 'M/filter/Function';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'M/layer/GeoJSON';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
+import olXMLFormater from 'ol/format/XML';
 // Escoger una de estas capas para probarlas.
 // import { vector_001 } from '../layers/vector/vector'; const capaPrueba = vector_001; window.vector = vector_001;
-// import { geojson_001 } from '../layers/geojson/geojson'; const capaPrueba = geojson_001; window.geojson = geojson_001;
-// import { wfs_001 } from '../layers/wfs/wfs'; const capaPrueba = wfs_001; window.wfs = wfs_001;
-// import { kml_001 } from '../layers/kml/kml'; const capaPrueba = kml_001; window.kml = kml_001;
+// import { geojson_006 } from '../layers/geojson/geojson'; const capaPrueba = geojson_006; window.geojson = capaPrueba;
+import { wfs_005 } from '../layers/wfs/wfs'; const capaPrueba = wfs_005; window.wfs = capaPrueba;
+// import { kml_003 } from '../layers/kml/kml'; const capaPrueba = kml_003; window.kml = capaPrueba;
 // import { mvt_001 } from '../layers/mvt/mvt'; const capaPrueba = mvt_001; window.mvt = mvt_001; // Mode 'feature'
-import { mvt_003 } from '../layers/mvt/mvt'; const capaPrueba = mvt_003; window.mvt = mvt_003; // Mode 'render'
-// import { ogcAPIFeatures_001 } from '../layers/ogcApiFeatures/ogcApiFeatures'; const capaPrueba = ogcAPIFeatures_001; window.ogcAPIFeatures = ogcAPIFeatures_001;
-// import { mbtileVector_001 } from '../layers/mbTilesVector/mbTilesVector'; const capaPrueba = mbtileVector_001; window.mbtileVector = mbtileVector_001;
+// import { mvt_004 } from '../layers/mvt/mvt'; const capaPrueba = mvt_004; window.mvt = capaPrueba; // Mode 'render'
+// import { ogcAPIFeatures_002 } from '../layers/ogcApiFeatures/ogcApiFeatures'; const capaPrueba = ogcAPIFeatures_002; window.ogcAPIFeatures = capaPrueba;
+// import { mbtileVector_002 } from '../layers/mbTilesVector/mbTilesVector'; const capaPrueba = mbtileVector_002; window.mbtileVector = capaPrueba;
 // import { generic_002 } from '../layers/generic/generic'; const capaPrueba = generic_002; window.generic = generic_002;
 window.capaPrueba = capaPrueba;
-
+window.xmlFormater = new olXMLFormater();
 const mapa = Mmap({
   container: 'map',
   projection: 'EPSG:3857*m',
   center: [-443273.10081370454, 4757481.749296248],
   zoom: 6,
-  // controls: ['getfeatureinfo'],
+  controls: ['scale'],
   layers: [capaPrueba],
 });
 
