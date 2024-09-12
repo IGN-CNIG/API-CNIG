@@ -9,3 +9,9 @@ Estilos de feature
 
 CP-004
 Estilos avazados
+
+CP-005
+Estilo Choropleth
+
+CP-006
+Estilo Proportional
