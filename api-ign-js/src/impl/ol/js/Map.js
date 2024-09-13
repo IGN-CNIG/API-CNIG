@@ -337,6 +337,63 @@ class Map extends MObject {
     return this;
   }
 
+  addToLayers_(layers) {
+    let existsBaseLayer = null;
+
+    layers.forEach((layer) => {
+      if (!includes(this.layers_, layer)) {
+        layer.getImpl().addTo(this.facadeMap_);
+        this.layers_.push(layer);
+
+        existsBaseLayer = this.addZIndex_(layer);
+      }
+    });
+
+    if (!existsBaseLayer) {
+      this.updateResolutionsFromBaseLayer();
+    }
+  }
+
+  addToLayersCalcResolutions_(layers) {
+    let existsBaseLayer = null;
+
+    const addedLayers = [];
+    layers.forEach((layer) => {
+      if (!includes(this.layers_, layer)) {
+        layer.getImpl().addTo(this.facadeMap_);
+        this.layers_.push(layer);
+        addedLayers.push(layer);
+
+        existsBaseLayer = this.addZIndex_(layer);
+      }
+    });
+    // calculate resolutions if layers were added and there is not any base layer
+    // or if some base layer was added
+    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer)
+      || addedLayers.some((l) => l.transparent !== true && l.isVisible());
+    if (calculateResolutions) {
+      this.updateResolutionsFromBaseLayer();
+    }
+  }
+
+  addZIndex_(layer) {
+    // cehcks if exists a base layer
+    const baseLayers = this.getBaseLayers();
+    const existsBaseLayer = (baseLayers.length > 1);
+
+    /* if the layer is a base layer
+     then sets its visibility */
+    if (layer.transparent === false) {
+      layer.setVisible(!existsBaseLayer);
+      layer.setZIndex(Map.Z_INDEX_BASELAYER);
+    } else if (layer.getZIndex() == null) {
+      const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType[layer.type]];
+      layer.setZIndex(zIndex);
+    }
+
+    return existsBaseLayer;
+  }
+
   /**
    * Este método elimina las capas del mapa.
    *
@@ -504,28 +561,8 @@ class Map extends MObject {
      * @returns {M.impl.Map}
      */
   addLayerGroups(groups = []) {
-    let groupsArray = groups;
-
-    if (groups.length === 0) {
-      Exception('No ha especificado ningun grupo');
-    }
-
-    if (!Array.isArray(groupsArray)) {
-      groupsArray = [groups];
-    }
-
-    groupsArray.forEach((group) => {
-      if (group.type === LayerType.LayerGroup) {
-        if (!includes(this.layers_, group)) {
-          group.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(group);
-          if (group.getZIndex() == null) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.LayerGroup];
-            group.setZIndex(zIndex);
-          }
-        }
-      }
-    }, this);
+    this.addToLayers_(groups);
+    return this;
   }
 
   /**
@@ -618,25 +655,7 @@ class Map extends MObject {
    * @api
    */
   addKML(layers) {
-    const existsBaseLayer = this.getBaseLayers().length > 0;
-
-    layers.forEach((layer) => {
-      // checks if layer is WMC and was added to the map
-      if (layer.type === LayerType.KML) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          if (layer.getZIndex() == null) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.KML];
-            layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    }, this);
-
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -756,39 +775,7 @@ class Map extends MObject {
    * @api
    */
   addWMS(layers) {
-    // cehcks if exists a base layer
-    const baseLayers = this.getBaseLayers();
-    let existsBaseLayer = (baseLayers.length > 0);
-
-    const addedLayers = [];
-    layers.forEach((layer) => {
-      // checks if layer is WMC and was added to the map
-      if (layer.type === LayerType.WMS) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          addedLayers.push(layer);
-
-          /* if the layer is a base layer then
-          sets its visibility */
-          if (layer.transparent === false) {
-            layer.setVisible(!existsBaseLayer);
-            existsBaseLayer = true;
-            layer.setZIndex(Map.Z_INDEX_BASELAYER);
-          } else if (layer.getZIndex() == null) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.WMS];
-            layer.setZIndex(zIndex);
-          }
-        }
-      }
-    });
-    // calculate resolutions if layers were added and there is not any base layer
-    // or if some base layer was added
-    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer)
-      || addedLayers.some((l) => l.transparent !== true && l.isVisible());
-    if (calculateResolutions) {
-      this.updateResolutionsFromBaseLayer();
-    }
+    this.addToLayersCalcResolutions_(layers);
     return this;
   }
 
@@ -964,28 +951,7 @@ class Map extends MObject {
    * @api
    */
   addWFS(layers) {
-    // checks if exists a base layer
-    const baseLayers = this.getBaseLayers();
-    const existsBaseLayer = (baseLayers.length > 0);
-
-    layers.forEach((layer) => {
-      // checks if layer is WFS and was added to the map
-      if (layer.type === LayerType.WFS) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.WFS];
-            layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    });
-
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1100,28 +1066,7 @@ class Map extends MObject {
  * @api
  */
   addGeoTIFF(layers) {
-  // checks if exists a base layer
-    const baseLayers = this.getBaseLayers();
-    const existsBaseLayer = (baseLayers.length > 0);
-
-    layers.forEach((layer) => {
-    // checks if layer is GeoTIFF and was added to the map
-      if (layer.type === LayerType.GeoTIFF) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.GeoTIFF];
-            layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    });
-
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1229,28 +1174,7 @@ class Map extends MObject {
    * @api
    */
   addOGCAPIFeatures(layers) {
-    // checks if exists a base layer
-    const baseLayers = this.getBaseLayers();
-    const existsBaseLayer = (baseLayers.length > 0);
-
-    layers.forEach((layer) => {
-      // checks if layer is OGCAPIFeatures and was added to the map
-      if (layer.type === LayerType.OGCAPIFeatures) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.OGCAPIFeatures];
-            layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    });
-
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1350,40 +1274,7 @@ class Map extends MObject {
    * @api
    */
   addWMTS(layers) {
-    // cehcks if exists a base layer
-    const baseLayers = this.getBaseLayers();
-    let existsBaseLayer = (baseLayers.length > 0);
-
-    layers.forEach((layer) => {
-      // checks if layer is WMTS and was added to the map
-      if (layer.type === LayerType.WMTS) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          /* if the layer is a base layer then
-                 sets its visibility */
-          if (layer.transparent === false) {
-            layer.setVisible(!existsBaseLayer);
-            existsBaseLayer = true;
-            if (layer.isVisible()) {
-              this.updateResolutionsFromBaseLayer();
-            }
-            layer.setZIndex(Map.Z_INDEX_BASELAYER);
-          } else {
-            if (layer.getZIndex() == null) {
-              const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.WMTS];
-              layer.setZIndex(zIndex);
-            }
-
-            // recalculates resolution if there are not
-            // any base layer
-            if (!existsBaseLayer) {
-              this.updateResolutionsFromBaseLayer();
-            }
-          }
-        }
-      }
-    });
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1476,35 +1367,7 @@ class Map extends MObject {
    * @api
    */
   addMBTiles(layers) {
-    const baseLayers = this.getBaseLayers();
-    let existsBaseLayer = (baseLayers.length > 0);
-
-    const addedLayers = [];
-    layers.forEach((layer) => {
-      if (layer.type === LayerType.MBTiles) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          addedLayers.push(layer);
-
-          if (layer.transparent === false) {
-            layer.setVisible(!existsBaseLayer);
-            existsBaseLayer = true;
-            layer.setZIndex(Map.Z_INDEX_BASELAYER);
-          } else if (layer.getZIndex() == null) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX.MBTiles;
-            layer.setZIndex(zIndex);
-          }
-        }
-      }
-    });
-
-    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer)
-      || addedLayers.some((l) => l.transparent !== true && l.isVisible());
-    if (calculateResolutions) {
-      this.updateResolutionsFromBaseLayer();
-    }
-
+    this.addToLayersCalcResolutions_(layers);
     return this;
   }
 
@@ -1594,25 +1457,7 @@ class Map extends MObject {
    * @api
    */
   addMBTilesVector(layers) {
-    const baseLayers = this.getBaseLayers();
-    const existsBaseLayer = (baseLayers.length > 0);
-    layers.forEach((layer) => {
-      // checks if layer is WFS and was added to the map
-      if (layer.type === LayerType.MBTilesVector) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX.MBTilesVector;
-            layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    });
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1703,39 +1548,7 @@ class Map extends MObject {
    * @api
    */
   addUnknowLayers_(layers) {
-    // cehcks if exists a base layer
-    let existsBaseLayer = this.getBaseLayers().length > 0;
-
-    // adds layers
-    layers.forEach((layer) => {
-      if (!includes(this.layers_, layer)) {
-        layer.getImpl().addTo(this.facadeMap_);
-        this.layers_.push(layer);
-
-        /* if the layer is a base layer then
-        sets its visibility */
-        if (layer.transparent === false) {
-          layer.setVisible(!existsBaseLayer);
-          existsBaseLayer = true;
-          if (layer.isVisible()) {
-            this.updateResolutionsFromBaseLayer();
-          }
-          layer.setZIndex(Map.Z_INDEX_BASELAYER);
-        } else {
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[layer.type];
-            layer.setZIndex(zIndex);
-          }
-          // recalculates resolution if there are not
-          // any base layer
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    });
-
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1846,27 +1659,7 @@ class Map extends MObject {
    * @api
    */
   addMVT(layers) {
-    const baseLayers = this.getBaseLayers();
-    const existsBaseLayer = baseLayers.length > 0;
-
-    layers.forEach((layer) => {
-      // checks if layer is WFS and was added to the map
-      if (layer.type === LayerType.MVT) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.MVT];
-            layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    });
-
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1951,20 +1744,7 @@ class Map extends MObject {
      * @api
      */
   addMapLibre(layers) {
-    layers.forEach((layer) => {
-      if (layer.type === LayerType.MapLibre) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          if (layer.transparent === true) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.MapLibre];
-            layer.setZIndex(zIndex);
-          } else {
-            layer.setZIndex(0);
-          }
-        }
-      }
-    });
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -2031,21 +1811,7 @@ class Map extends MObject {
    * @api
    */
   addXYZ(layers) {
-    layers.forEach((layer) => {
-      // checks if layer is XYZ and was added to the map
-      if (layer.type === LayerType.XYZ) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          if (layer.transparent === true) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.XYZ];
-            layer.setZIndex(zIndex);
-          } else {
-            layer.setZIndex(0);
-          }
-        }
-      }
-    });
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -2132,21 +1898,7 @@ class Map extends MObject {
    * @api
    */
   addTMS(layers) {
-    layers.forEach((layer) => {
-      // checks if layer is TMS and was added to the map
-      if (layer.type === LayerType.TMS) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          if (layer.transparent === true) {
-            const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType.TMS];
-            layer.setZIndex(zIndex);
-          } else {
-            layer.setZIndex(0);
-          }
-        }
-      }
-    });
+    this.addToLayers_(layers);
     return this;
   }
 

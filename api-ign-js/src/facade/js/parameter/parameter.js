@@ -4408,6 +4408,11 @@ export const layer = (userParameters, forcedType) => {
         layerObj.transparent = !userParam.isBase;
       }
 
+      // wfs
+      if (!isNullOrEmpty(userParam.transparent)) {
+        layerObj.transparent = userParam.transparent;
+      }
+
       if (!isNullOrEmpty(userParam.infoEventType)) {
         layerObj.infoEventType = userParam.infoEventType;
       }
