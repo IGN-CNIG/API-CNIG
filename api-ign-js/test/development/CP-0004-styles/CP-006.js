@@ -59,6 +59,9 @@ let styleProp2 = new Proportional('tot_ibi', 5, 20,
   })
 );
 
+let styleProp5 = new Proportional('tot_ibi', 5, 20);
+
+
 let estilo = new Generic(undefined, [new ol.style.Style({ fill: new ol.style.Fill({ color: '#F5470088' }), stroke: new ol.style.Stroke({ color: '#0000ff88', width: 5, lineDash: [5, 5, 20], lineDashOffset: 5, lineCap: 'butt' }), image: new ol.style.Circle({ radius: 15, fill: new ol.style.Fill({ color: '#F5470088', width: 20 }), stroke: new ol.style.Stroke({ color: '#0000ff88', width: 5, lineDash: [5, 5, 20], lineDashOffset: 5, lineCap: 'butt' }) }) }), new ol.style.Style({ fill: new ol.style.Fill({ color: '#00ff00' }), stroke: new ol.style.Stroke({ color: '#ff0000', width: 2 }), image: new ol.style.Circle({ radius: 5, fill: new ol.style.Fill({ color: '#00ffff', width: 20 }), stroke: new ol.style.Stroke({ color: '#ff0000', width: 2, lineDash: [10, 10], lineDashOffset: 5, lineCap: 'butt' }) }) })]);
 let styleProp3 = new Proportional('tot_ibi', 5, 20, 
   new Generic({}, estilo)
@@ -68,4 +71,4 @@ const estilo2 = new Point(undefined, new ol.style.Style({ image: new ol.style.Ci
 let styleProp4 = new Proportional('tot_ibi', 5, 20, estilo2);
 
 // lo establecemos a la capa
-// layer.setStyle(estilo2);
+layer.setStyle(styleProp5);
