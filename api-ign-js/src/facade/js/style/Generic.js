@@ -38,6 +38,8 @@ class Generic extends Simple {
 
     const impl = new GenericStyleImpl(options, vendorOptions);
     super(options, impl);
+
+    this.vendorOptions_ = vendorOptions;
   }
 
   /**
@@ -75,7 +77,7 @@ class Generic extends Simple {
   clone() {
     const optsClone = {};
     extendsObj(optsClone, this.options_);
-    return new this.constructor(optsClone);
+    return new this.constructor(optsClone, this.vendorOptions_);
   }
 }
 
