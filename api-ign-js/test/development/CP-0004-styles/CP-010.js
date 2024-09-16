@@ -29,51 +29,62 @@ var wfs = new WFS({
   geometry: 'POINT',
   extract: true
 });
-  
+
+const generic = new Generic(undefined, [
+  new ol.style.Style({ 
+      image: new ol.style.Circle({ 
+        radius: 15, 
+        fill: new ol.style.Fill({ 
+          color: '#99ccff',
+        }), 
+        stroke: new ol.style.Stroke({ 
+          color: '#5789aa', 
+        }) 
+      })}), 
+]);
+
 
 mapa.addLayers([wfs]);
 
 let clusterOptions = {
   ranges: [{
-      min: 2,
-      max: 4,
-      style: new Generic({
-        point: {
-        stroke: {
-          color: '#5789aa'
-        },
-        fill: {
-          color: '#99ccff',
-        },
-        radius: 20
-      }})
-    }, {
-      min: 5,
-      max: 9,
-      style: new Generic({
-        point: {
-        stroke: {
-          color: '#5789aa'
-        },
-        fill: {
-          color: '#3399ff',
-        },
-        radius: 30
-      }})
-    }
-      // Se pueden definir más rangos
-  ],
+    min: 2,
+    max: 4,
+    style: generic,
+  }, {
+    min: 5,
+    max: 9,
+    style: generic
+  }
+],
   animated: true,
   hoverInteraction: true,
   displayAmount: true,
   selectInteraction: true,
   distance: 80,
-  label: {          
-   font: 'bold 19px Comic Sans MS', 
-   color: '#FFFFFF'
+  label: {
+    font: 'bold 19px Comic Sans MS',
+    color: '#FFFFFF'
   }
 };
+
+const convexHullStyle = {
+  fill: {
+      color: '#000000',
+      opacity: 0.5
+  },
+  stroke: {
+      color: '#000000',
+      width: 1
+  }
+}
+
 //generamos un cluster personalizado
-const styleCluster = Cluster(clusterOptions); 
+const styleCluster = new Cluster(clusterOptions, {
+  // animationDuration: 700, // -> API (AnimatedCluster) 
+  // convexHullStyle, // -> API (FACADE)
+  // animationMethod: x, // -> ol/easing
+  // distanceSelectFeatures: 25 // -> ol/interaction/SelectedCluster
+});
 
 wfs.setStyle(styleCluster);

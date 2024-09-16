@@ -12,6 +12,7 @@ import OLStyleStroke from 'ol/style/Stroke';
 import CircleStyle from 'ol/style/Circle';
 import OLStyleIcon from 'ol/style/Icon';
 import OLStyleRegularShape from 'ol/style/RegularShape';
+import {Heatmap as HeatmapLayer} from 'ol/layer.js';
 window.ol = { style: { Style: OLStyle, Centroid, Fill: OLStyleFill, Stroke: OLStyleStroke, Circle: CircleStyle, Icon: OLStyleIcon, RegularShape: OLStyleRegularShape } };
 
 
@@ -31,12 +32,17 @@ var wfs = new WFS({
   });
   
 
+  const heatmapLayer = new HeatmapLayer({
+    blur: 20,
+    radius: 15,
+    gradient: ['red', 'black', 'blue', 'pink', 'green', 'white'],
+    weight: feature => {
+      return feature.get('weight') || 1;
+    }
+  });
+
 mapa.addLayers([wfs]);
 
-const styleheatmap = new Heatmap('u_cod_prov', {
-  blur: 20,
-  radius: 15,
-  gradient: ['red', 'black', 'blue', 'pink', 'green', 'white'],
-});
+const styleheatmap = new Heatmap('u_cod_prov', undefined, heatmapLayer);
 
 wfs.setStyle(styleheatmap);
