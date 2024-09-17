@@ -4,7 +4,9 @@
 
 import GenericStyleImpl from 'impl/style/Generic';
 import Simple from './Simple';
-import { isNull, extendsObj } from '../util/Utils';
+import {
+  isNull, extendsObj, isArray, isNullOrEmpty,
+} from '../util/Utils';
 
 /**
  * @classdesc
@@ -25,9 +27,11 @@ class Generic extends Simple {
    */
   constructor(optionsVar, vendorOptions) {
     let options = optionsVar;
-    if (vendorOptions) {
+    let vendorOpts = vendorOptions;
+    if (!isNull(vendorOpts) && Object.keys(vendorOpts).length > 0) {
       options = extendsObj({}, Generic.DEFAULT);
     } else {
+      vendorOpts = null;
       if (isNull(options) || Object.keys(options).length === 0) {
         options = Generic.DEFAULT_NULL;
       } else {
@@ -36,10 +40,8 @@ class Generic extends Simple {
       options = extendsObj({}, options);
     }
 
-    const impl = new GenericStyleImpl(options, vendorOptions);
+    const impl = new GenericStyleImpl(options, vendorOpts);
     super(options, impl);
-
-    this.vendorOptions_ = vendorOptions;
   }
 
   /**
@@ -76,8 +78,17 @@ class Generic extends Simple {
    */
   clone() {
     const optsClone = {};
+    let vendorOptsClone = {};
+    const vendorOpts = this.getImpl().vendorOptions;
     extendsObj(optsClone, this.options_);
-    return new this.constructor(optsClone, this.vendorOptions_);
+    if (!isNullOrEmpty(vendorOpts) && Object.keys(vendorOpts).length > 0) {
+      if (isArray(vendorOpts)) {
+        vendorOptsClone = vendorOpts.map((vo) => vo.clone());
+      } else {
+        vendorOptsClone = vendorOpts.clone();
+      }
+    }
+    return new this.constructor(optsClone, vendorOptsClone);
   }
 }
 

@@ -8,7 +8,8 @@ import StyleSimple from './Simple';
 import StyleGeneric from './Generic';
 import StyleChoropleth from './Choropleth';
 import {
-  isNullOrEmpty, extendsObj, stringifyFunctions, defineFunctionFromString,
+  isNullOrEmpty, extendsObj, stringifyFunctions, defineFunctionFromString, isArray,
+  isNull,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
@@ -195,12 +196,14 @@ class Proportional extends StyleComposite {
       style = feature.getStyle() ? feature.getStyle() : this.layer_.getStyle();
     }
     if (!isNullOrEmpty(style)) {
+      const options = style.getOptions();
+      const vendorOptions = style.getImpl().vendorOptions;
       if (style instanceof StyleGeneric) {
-        style = new StylePoint(style.getOptions().point);
+        style = new StylePoint(options.point, vendorOptions);
       } else if (!(style instanceof StylePoint) && style instanceof StyleSimple) {
-        style = new StylePoint(style.getOptions());
+        style = new StylePoint(options, vendorOptions);
       } else if (style instanceof StyleChoropleth) {
-        style = new StylePoint(style.getOptions());
+        style = new StylePoint(options);
       } else if (style instanceof StyleComposite) {
         style = new StylePoint(style.getOldStyle().getOptions());
       }
@@ -391,6 +394,18 @@ class Proportional extends StyleComposite {
     return this;
   }
 
+  isValidVendorOptions(vendorOptions) {
+    let valid = false;
+    if (!isNull(vendorOptions)) {
+      let opts = vendorOptions;
+      if (isArray(vendorOptions)) {
+        opts = vendorOptions[0];
+      }
+      valid = Object.keys(opts).length > 0;
+    }
+    return valid;
+  }
+
   /**
    * Esta función actualiza el "canvas" de estilo.
    *
@@ -407,10 +422,12 @@ class Proportional extends StyleComposite {
 
         if (style instanceof StyleSimple) {
           let featureStyle = style.clone();
+          const options = featureStyle.getOptions();
+          const vendorOptions = featureStyle.getImpl().vendorOptions;
           if ((featureStyle instanceof StyleGeneric)) {
-            featureStyle = new StylePoint(featureStyle.getOptions().point);
+            featureStyle = new StylePoint(options.point, vendorOptions);
           } else if (!(featureStyle instanceof StylePoint)) {
-            featureStyle = new StylePoint(featureStyle.getOptions());
+            featureStyle = new StylePoint(options, vendorOptions);
           }
           const sizeAttribute = Proportional.getSizeAttribute(featureStyle);
 
@@ -418,11 +435,38 @@ class Proportional extends StyleComposite {
           const styleMin = featureStyle.clone();
           const maxRadius = this.getMaxRadius();
           const minRadius = this.getMinRadius();
-          styleMax.set(sizeAttribute, maxRadius);
-          styleMin.set(sizeAttribute, minRadius);
+          let imageMax;
+          let imageMin;
+          if (this.isValidVendorOptions(vendorOptions)) {
+            const olStylesMax = styleMax.getImpl().olStyleFn();
+            const olStylesMin = styleMin.getImpl().olStyleFn();
+            if (isArray(olStylesMax)) {
+              olStylesMax.forEach((s) => this.setRadiusOlStyle(s, maxRadius));
+              imageMax = styleMax.getImpl().olStyleFn()[0].getImage().getImage()
+                .toDataURL();
+            } else {
+              this.setRadiusOlStyle(olStylesMax, maxRadius);
+              imageMax = styleMax.getImpl().olStyleFn().getImage().getImage()
+                .toDataURL();
+            }
+            if (isArray(olStylesMin)) {
+              olStylesMin.forEach((s) => this.setRadiusOlStyle(s, minRadius));
+              imageMin = styleMin.getImpl().olStyleFn()[0].getImage().getImage()
+                .toDataURL();
+            } else {
+              this.setRadiusOlStyle(olStylesMin, minRadius);
+              imageMin = styleMin.getImpl().olStyleFn().getImage().getImage()
+                .toDataURL();
+            }
+          } else if (!isNullOrEmpty(options) && Object.keys(options).length > 0) {
+            styleMax.set(sizeAttribute, maxRadius);
+            imageMax = styleMax.toImage();
+            styleMin.set(sizeAttribute, minRadius);
+            imageMin = styleMin.toImage();
+          }
 
-          this.loadCanvasImage(maxRadius, styleMax.toImage(), (canvasImageMax) => {
-            this.loadCanvasImage(minRadius, styleMin.toImage(), (canvasImageMin) => {
+          this.loadCanvasImage(maxRadius, imageMax, (canvasImageMax) => {
+            this.loadCanvasImage(minRadius, imageMin, (canvasImageMin) => {
               this.drawGeometryToCanvas(canvasImageMax, canvasImageMin, success);
             });
           });
@@ -563,10 +607,27 @@ class Proportional extends StyleComposite {
       }
       const radius = propFun(value, options.minValue, options.maxValue, minRadius, maxRadius);
       const zindex = options.maxValue - parseFloat(feature.getAttribute(this.attributeName_));
-      style.set(`${Proportional.getSizeAttribute(style)}`, radius);
-      style.set('zindex', zindex);
+      const styleOptions = style.getOptions();
+      const styleVendorOptions = style.getImpl().vendorOptions;
+      if (this.isValidVendorOptions(styleVendorOptions)) {
+        const olStyles = style.getImpl().olStyleFn();
+        if (isArray(olStyles)) {
+          olStyles.forEach((s) => this.setRadiusOlStyle(s, radius));
+        } else {
+          this.setRadiusOlStyle(olStyles, radius);
+        }
+      } else if (!isNullOrEmpty(styleOptions) && Object.keys(styleOptions).length > 0) {
+        style.set(`${Proportional.getSizeAttribute(style)}`, radius);
+        style.set('zindex', zindex);
+      }
     }
     return style;
+  }
+
+  setRadiusOlStyle(olStyle, radius) {
+    if (olStyle.getImage) {
+      olStyle.getImage().setRadius(radius);
+    }
   }
 
   /**

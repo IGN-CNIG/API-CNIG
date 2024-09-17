@@ -3,7 +3,9 @@
  */
 import StylePointImpl from 'impl/style/Point';
 import Simple from './Simple';
-import { isNull, extendsObj } from '../util/Utils';
+import {
+  isNull, extendsObj, isArray,
+} from '../util/Utils';
 
 /**
  * @classdesc
@@ -24,9 +26,11 @@ class Point extends Simple {
    */
   constructor(optionsVar, vendorOptions) {
     let options = optionsVar;
-    if (vendorOptions) {
+    let vendorOpts = vendorOptions;
+    if (!isNull(vendorOpts) && Object.keys(vendorOpts).length > 0) {
       options = extendsObj({}, Point.DEFAULT);
     } else {
+      vendorOpts = null;
       if (isNull(options) || Object.keys(options).length === 0) {
         options = Point.DEFAULT_NULL;
       } else {
@@ -35,7 +39,7 @@ class Point extends Simple {
       options = extendsObj({}, options);
     }
 
-    const impl = new StylePointImpl(options, vendorOptions);
+    const impl = new StylePointImpl(options, vendorOpts);
     super(options, impl);
   }
 
@@ -73,8 +77,17 @@ class Point extends Simple {
    */
   clone() {
     const optsClone = {};
+    let vendorOptsClone = {};
+    const vendorOpts = this.getImpl().vendorOptions;
     extendsObj(optsClone, this.options_);
-    return new this.constructor(optsClone);
+    if (!isNull(vendorOpts) && Object.keys(vendorOpts).length > 0) {
+      if (isArray(vendorOpts)) {
+        vendorOptsClone = vendorOpts.map((vo) => vo.clone());
+      } else {
+        vendorOptsClone = vendorOpts.clone();
+      }
+    }
+    return new this.constructor(optsClone, vendorOptsClone);
   }
 }
 
