@@ -2215,14 +2215,14 @@ export default class LayerswitcherControl extends M.Control {
         name,
         legend,
         url,
-        projection: matrixSet,
+        // projection: matrixSet,
       });
     } else if (type === 'xyz') {
       layer = new M.layer.XYZ({
         name,
         legend,
         url,
-        projection: matrixSet,
+        // projection: matrixSet,
       });
     } else if (type === 'mvt') {
       const elmSel = document.querySelectorAll('#m-layerswitcher-addservices-results .m-layerswitcher-icons-check-seleccionado');

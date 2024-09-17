@@ -37,6 +37,7 @@
   -Permite cambiar nombre a las capas
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
+  - Eliminado campo MatrixSet al añadir capas XYZ y TMS
 - Plugin locator:
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
