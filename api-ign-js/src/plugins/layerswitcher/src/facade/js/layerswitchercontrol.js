@@ -1503,14 +1503,39 @@ export default class LayerswitcherControl extends M.Control {
   // Lee el capabilities de un WFS
   readWFSCapabilities(response) {
     const services = [];
+    const formatDefault = [];
+
+    const operation = response.text.split('<ows:Operation name="GetFeature">')[1].split('</ows:Operation>')[0];
+    const outputFormat = operation.split('<ows:Parameter name="outputFormat">')[1].split('</ows:Parameter>')[0];
+    const allowedValues = outputFormat.split('<ows:AllowedValues>')[1].split('</ows:AllowedValues>')[0];
+
+    if (allowedValues.indexOf('<ows:Value>') > -1) {
+      const values = allowedValues.split('<ows:Value>');
+      values.forEach((value) => {
+        if (value.indexOf('</ows:Value>') > -1) {
+          formatDefault.push(value.split('</ows:Value>')[0].trim());
+        }
+      });
+    }
+
+    const defaultFormatGetFeature = formatDefault.includes('json') ? 'application/json' : formatDefault[0];
+
     const prenode = response.text.split('<FeatureTypeList>')[1].split('</FeatureTypeList>')[0];
     if (prenode.indexOf('<FeatureType>') > -1) {
       const nodes = prenode.split('<FeatureType>');
       nodes.forEach((node) => {
         if (node.indexOf('</Name>') > -1) {
+          // Extraer los formatos disponibles para cada FeatureType
+          let formats = [];
+          if (node.indexOf('<OutputFormats>') > -1) {
+            const formatNode = node.split('<OutputFormats>')[1].split('</OutputFormats>')[0];
+            formats = formatNode.split('<Format>').slice(1).map((format) => format.split('</Format>')[0].trim());
+          }
+
           services.push({
             name: node.split('</Name>')[0].split('>')[1].trim(),
             title: node.split('</Title>')[0].split('<Title>')[1].trim(),
+            formats: formats.length === 0 ? [defaultFormatGetFeature] : formats,
           });
         }
       });
@@ -1518,9 +1543,17 @@ export default class LayerswitcherControl extends M.Control {
       const nodes = prenode.split('<FeatureType');
       nodes.forEach((node) => {
         if (node.indexOf('</Name>') > -1) {
+          // Extraer los formatos disponibles para cada FeatureType
+          let formats = [];
+          if (node.indexOf('<OutputFormats>') > -1) {
+            const formatNode = node.split('<OutputFormats>')[1].split('</OutputFormats>')[0];
+            formats = formatNode.split('<Format>').slice(1).map((format) => format.split('</Format>')[0].trim());
+          }
+
           services.push({
             name: node.split('</Name>')[0].split('<Name>')[1].trim(),
             title: node.split('</Title>')[0].split('<Title>')[1].trim(),
+            formats: formats.length === 0 ? [defaultFormatGetFeature] : formats,
           });
         }
       });
@@ -1942,6 +1975,7 @@ export default class LayerswitcherControl extends M.Control {
     const url = document.querySelector(SEARCH_INPUT).value.trim().split('?')[0];
     elmSelWFS.forEach((elm) => {
       const id = elm.id.split(':');
+      const format = elm.getAttribute('format');
       if (id[0] !== 'm-layerswitcher-addservices-selectall-wfs') {
         const namespace = id[0];
         const name = id[1];
@@ -1950,6 +1984,7 @@ export default class LayerswitcherControl extends M.Control {
           url,
           legend: name,
           extact: true,
+          format: format || 'application/json',
         };
         if (M.utils.isUndefined(name)) {
           obj.name = namespace;
@@ -2152,6 +2187,7 @@ export default class LayerswitcherControl extends M.Control {
     type,
     legend,
     url,
+    format,
     matrixSet,
     OGCAPIFeatures,
     namespace,
@@ -2253,6 +2289,9 @@ export default class LayerswitcherControl extends M.Control {
         legend,
         url,
         extract: true,
+      }, {
+        describeFeatureTypeOutputFormat: 'geojson',
+        getFeatureOutputFormat: format,
       });
     } else if (existingLayer) {
       layer = existingLayer;
