@@ -2,7 +2,7 @@
  * @module M/control/GeorefImageEpsgControl
  */
 import Georefimage2ControlImpl from '../../impl/ol/js/georefimageepsgcontrol';
-import { reproject } from '../../impl/ol/js/utils';
+import { adjustExtentForSquarePixels, reproject } from '../../impl/ol/js/utils';
 import georefimage2HTML from '../../templates/georefimageepsg';
 import { getValue } from './i18n/language';
 import {
@@ -173,11 +173,12 @@ export default class GeorefImageEpsgControl extends M.Control {
       } else if (version === '1.1.1' || version === '1.1.0') {
         const transformBbox = [mapBbox.x.min, mapBbox.y.min, mapBbox.x.max, mapBbox.y.max];
         ext = ol.proj.transformExtent(transformBbox, DEFAULT_EPSG, projection);
-        extWLD = ext;
+
+        extWLD = adjustExtentForSquarePixels(ext, size);
       } else {
         const transformBbox = M.utils.ObjectToArrayExtent(mapBbox, DEFAULT_EPSG);
         ext = ol.proj.transformExtent(transformBbox, DEFAULT_EPSG, projection);
-        extWLD = ext;
+        extWLD = adjustExtentForSquarePixels(ext, size);
         ext = this.transformExtentOL(ext, projection);
       }
 
@@ -200,8 +201,7 @@ export default class GeorefImageEpsgControl extends M.Control {
       let ext = v.calculateExtent(size);
 
       ext = ol.proj.transformExtent(ext, DEFAULT_EPSG, projection);
-      const f = (ext[2] - ext[0]) / size[0];
-      ext[3] = ext[1] + (f * size[1]);
+      ext = adjustExtentForSquarePixels(ext, size);
 
       const urlLayer = this.generateURLLayer_(url, projection, size, ext, format, name, version);
       this.downloadPrint(urlLayer, ext, false, title);
