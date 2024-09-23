@@ -1163,7 +1163,7 @@ export default class LayerswitcherControl extends M.Control {
             });
 
             promise.then((response) => {
-              if (response.text && response.text.indexOf('<TileMatrixSetLink>') >= 0 && response.text.indexOf('Operation name="GetTile"') >= 0) {
+              if (response.text && !M.utils.isNullOrEmpty(response.text) && response.text.indexOf('<TileMatrixSetLink>') >= 0 && response.text.indexOf('Operation name="GetTile"') >= 0) {
                 const getCapabilitiesParser = new M.impl.format.WMTSCapabilities();
                 const getCapabilities = getCapabilitiesParser.read(response.xml);
                 this.serviceCapabilities = getCapabilities.capabilities || {};
@@ -1204,11 +1204,11 @@ export default class LayerswitcherControl extends M.Control {
                   let wms = false;
                   let wfs = false;
 
-                  if (response2[0].text.indexOf('<TileMatrixSetLink>') === -1 && response2[0].text.indexOf('<GetMap>') >= 0) {
+                  if (!M.utils.isNullOrEmpty(response2[0].text) && response2[0].text.indexOf('<TileMatrixSetLink>') === -1 && response2[0].text.indexOf('<GetMap>') >= 0) {
                     wms = true;
                   }
 
-                  if (response2[1].text.indexOf('<TileMatrixSetLink>') === -1 && response2[1].text.indexOf('Operation name="GetFeature"') >= 0) {
+                  if (!M.utils.isNullOrEmpty(response2[1].text) && response2[1].text.indexOf('<TileMatrixSetLink>') === -1 && response2[1].text.indexOf('Operation name="GetFeature"') >= 0) {
                     wfs = true;
                   }
 
@@ -1260,7 +1260,16 @@ export default class LayerswitcherControl extends M.Control {
                         } else {
                           M.remote.get(url).then((response3) => {
                             // GEOJSON
-                            if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
+                            if (M.utils.isNullOrEmpty(response3.text)) {
+                              M.remote.get(searchInput.value.trim()).then((response4) => {
+                                if (!M.utils.isNullOrEmpty(response4.text) && response4.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
+                                  this.printLayerModal(searchInput.value.trim(), 'geojson');
+                                } else {
+                                  M.dialog.error(getValue('exception.capabilities'), undefined, this.order);
+                                  this.removeLoading();
+                                }
+                              });
+                            } else if (response3.text.replaceAll('\r\n', '').replaceAll(' ', '').indexOf('"type":"FeatureCollection"') >= 0) {
                               this.printLayerModal(url, 'geojson');
                             } else if (response3.text.indexOf('<kml ') >= 0) {
                               const parser = new DOMParser();
