@@ -459,10 +459,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       // Adds animation class during loading
       this.resultsBox.classList.add('locator-icon-spinner');
 
-      this.nomenclatorCandidates = [];
       this.geocoderCandidates = [];
-
-      this.nomenclatorFinished = false;
       this.candidatesFinished = false;
 
       // saves on allCandidates search results from CartoCiudad (geocoder)
@@ -490,7 +487,7 @@ export default class IGNSearchLocatorControl extends M.Control {
       const urlToGet = `${this.urlCandidates}?${params}`;
       M.proxy(this.useProxy);
       M.remote.get(urlToGet).then((res) => {
-        if (res.code === 404 || res.code === 500) {
+        if (M.utils.isNullOrEmpty(res.text) || res.code === 404 || res.code === 500) {
           M.dialog.error(getValue('exception.error_candidates'));
         } else {
           const returnData = JSON.parse(res.text.substring(9, res.text.length - 1));
@@ -524,8 +521,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     this.resultsBox.classList.remove('locator-icon-spinner');
     const compiledResult = M.template.compileSync(results, {
       vars: {
-        noresults: this.allCandidates.length === 0
-          && this.nomenclatorFinished && this.candidatesFinished,
+        noresults: this.allCandidates.length === 0 && this.candidatesFinished,
         places: this.allCandidates,
         translations: {
           noresults: getValue('exception.noresults'),

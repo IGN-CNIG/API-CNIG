@@ -100,7 +100,7 @@ class MapLibre extends LayerBase {
     impl.facade = this;
 
     if (isUndefined(MapLibreImpl)) {
-      Exception('La implementación usada no puede crear capas Vector');
+      Exception('La implementación usada no puede crear capas MapLibre');
     }
 
     /**

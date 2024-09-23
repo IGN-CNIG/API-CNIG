@@ -90,7 +90,7 @@ class MBTilesVector extends Vector {
      * @type {M.impl.layer.MBTilesVector}
      */
     const impl = new MBTilesVectorImpl(parameters, optionsVar, vendorOptions);
-    super(parameters, options, vendorOptions, impl);
+    super(parameters, options, undefined, impl);
     if (isUndefined(MBTilesVectorImpl)) {
       Exception(getValue('exception').mbtilesvector_method);
     }

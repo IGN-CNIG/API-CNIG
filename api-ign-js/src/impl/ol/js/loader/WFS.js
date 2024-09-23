@@ -97,7 +97,7 @@ class WFS extends MObject {
           success(features);
         } else if (response.code === 401) {
           Dialog.error(getValue('dialog').unauthorized_user);
-        } else if (response.text.indexOf('featureId and cql_filter') >= 0) {
+        } else if (!isNullOrEmpty(response.text) && response.text.indexOf('featureId and cql_filter') >= 0) {
           Dialog.error(getValue('dialog').only_one_filter);
         } else {
           Exception(getValue('exception').no_getfeature_response);

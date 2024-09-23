@@ -41,6 +41,7 @@
 - Plugin locator:
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
+  - Limpiado variables de nomenclátor sobrantes para mostrar mensaje de lista vacía obtenida.
 - Plugin locatorscn:
   - Optimizado uso de funciones de la clase array.
   - Normalizado código de la función "equals".
@@ -56,6 +57,7 @@
   - Normalizado código de la función "getControlActive".
   - Añadido cacheado al generado de la lista de descargas.
   - Añadido enviado de leyendas al servidor si se requiere.
+  - Mejorado función "converterDecimalToDMS" para casos de coordenadas sin decimales.
 - Plugin queryattributes: Optimizado uso de funciones de la clase array.
 - Plugin rescale: Optimizado uso de funciones de la clase array.
 - Plugin selectionzoom: Normalizado código de la función "equals".

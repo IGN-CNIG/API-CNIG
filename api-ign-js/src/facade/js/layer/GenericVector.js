@@ -105,7 +105,7 @@ class GenericVector extends Vector {
     const impl = new GenericVectorImpl(options, vOptions, 'vector');
 
     // calls the super constructor
-    super(params, options, vOptions, impl);
+    super(params, options, undefined, impl);
 
     if (!isNullOrEmpty(impl) && isFunction(impl.setFacadeObj)) {
       impl.setFacadeObj(this);

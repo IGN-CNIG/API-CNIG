@@ -88,10 +88,10 @@ class MVT extends Vector {
     }
 
     const impl = implParam || new MVTTileImpl(opts, optionsVar, vendorOptions);
-    super(opts, optionsVar, vendorOptions, impl);
+    super(opts, optionsVar, undefined, impl);
 
     if (isUndefined(MVTTileImpl)) {
-      Exception('La implementación usada no puede crear capas Vector');
+      Exception('La implementación usada no puede crear capas MVT');
     }
 
     /**

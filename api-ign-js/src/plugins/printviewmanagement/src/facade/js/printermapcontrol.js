@@ -559,25 +559,11 @@ export default class PrinterMapControl extends M.Control {
     * @api
     */
   converterDecimalToDMS(coordinate) {
-    let dms;
-    let aux;
-    const coord = coordinate.toString();
-    const splittedCoord = coord.split('.');
-    // Degrees
-    dms = `${splittedCoord[0]}º `;
-    // Minutes
-    aux = `0.${splittedCoord[1]}`;
-    aux *= 60;
-    aux = aux.toString();
-    aux = aux.split('.');
-    dms = `${dms}${aux[0]}' `;
-    // Seconds
-    aux = `0.${aux[1]}`;
-    aux *= 60;
-    aux = aux.toString();
-    aux = aux.split('.');
-    dms = `${dms}${aux[0]}'' `;
-    return dms;
+    const coord = Number.parseFloat(coordinate);
+    const deg = Math.abs(coord);
+    const min = (deg % 1) * 60;
+    // sign Degrees Minutes Seconds
+    return `${Math.sign(coord) === -1 ? '-' : ''}${Math.trunc(deg)}º ${Math.trunc(min)}' ${Math.trunc((min % 1) * 60)}'' `;
   }
 
   /**
