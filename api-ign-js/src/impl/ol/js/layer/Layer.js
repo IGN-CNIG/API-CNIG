@@ -248,6 +248,9 @@ class LayerBase extends MObject {
     if (!isNullOrEmpty(this.getOL3Layer())) {
       this.getOL3Layer().setZIndex(zIndex);
     }
+    if (this.rootGroup) {
+      this.rootGroup.reorderLayers();
+    }
   }
 
   /**

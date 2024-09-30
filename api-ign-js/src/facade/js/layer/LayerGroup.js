@@ -156,6 +156,39 @@ class LayerGroup extends LayerBase {
 
     // ! Se actualiza this.layers
     this.layers = this.getLayers();
+
+    // se actualiza zIndex de grupos relacionados desde el grupo raiz
+    if (this.getZIndex() !== null) {
+      let topRootGroup = this.getImpl().getTopRootGroup();
+      let oldZIndex = this.getZIndex();
+      const map = this.getImpl().getMap();
+      let base = this.isBase;
+      let idLayer = this.idLayer;
+      if (topRootGroup) {
+        topRootGroup = map.getLayers()
+          .find((l) => l.getImpl().getOL3Layer().ol_uid === topRootGroup.getOL3Layer().ol_uid);
+        oldZIndex = topRootGroup.getZIndex();
+        base = topRootGroup.isBase;
+        idLayer = topRootGroup.idLayer;
+        // Si es base no va a cambiar el zIndex del grupo
+        // pero hay que establecer el de las capas hijas
+        if (base) {
+          topRootGroup.getImpl().setZIndexChildren();
+        } else {
+          topRootGroup.setZIndex(oldZIndex + arrLayers.length);
+        }
+      } else if (base) {
+        this.getImpl().setZIndexChildren();
+      } else {
+        this.setZIndex(oldZIndex + arrLayers.length);
+      }
+      // Se actualizan los layers que estan por encima para que sigan por encima
+      if (!base) {
+        const layersUp = map.getLayers()
+          .filter((l) => l.idLayer !== idLayer && l.getZIndex() > oldZIndex);
+        layersUp.forEach((l) => l.setZIndex(l.getZIndex() + arrLayers.length));
+      }
+    }
   }
 
   /**

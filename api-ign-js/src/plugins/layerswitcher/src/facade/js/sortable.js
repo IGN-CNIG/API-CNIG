@@ -11,6 +11,7 @@ const setZIndex = (maxZIndex, parentElem, layers) => {
     const filtered = layers.filter((layer) => layer.name === name);
     if (filtered.length > 0) {
       filtered[0].setZIndex(zindex);
+      zindex -= 1;
     }
   }
   if (children && children.length > 0) {

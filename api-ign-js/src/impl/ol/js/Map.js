@@ -29,6 +29,7 @@ import ImplUtils from './util/Utils';
 import GetCapabilities from './util/WMSCapabilities';
 import View from './View';
 import FormatWMS from './format/WMS';
+import LayerGroup from './layer/LayerGroup';
 
 /**
  * @classdesc
@@ -387,7 +388,11 @@ class Map extends MObject {
       layer.setVisible(!existsBaseLayer);
       layer.setZIndex(Map.Z_INDEX_BASELAYER);
     } else if (layer.getZIndex() == null) {
-      const zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType[layer.type]];
+      // let zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType[layer.type]];
+      let zIndex = this.getMaxZIndex_(Map.Z_INDEX[LayerType[layer.type]]) + 1;
+      if (layer.getImpl() instanceof LayerGroup) {
+        zIndex += layer.getImpl().getTotalLayers();
+      }
       layer.setZIndex(zIndex);
     }
 
@@ -451,6 +456,30 @@ class Map extends MObject {
     const layersGroup = this.getAllLayerInGroup().length;
     const layers = this.layers_.length;
     return layersGroup + layers;
+  }
+
+  /**
+   * Devuelve el máximo zIndex de las capas del mapa.
+   *
+   * Método privado.
+   *
+   * @public
+   * @function
+   * @returns {Number} zIndex máximo.
+   * @api stable
+   */
+  getMaxZIndex_(initValue) {
+    const layers = this.facadeMap_.getLayers();
+    const maxZIndex = layers.map((l) => l.getZIndex()).filter((z) => z < 1000).reduce(
+      (a, b) => {
+        if (a > b) {
+          return a;
+        }
+        return b;
+      },
+      initValue,
+    );
+    return maxZIndex;
   }
 
   /**

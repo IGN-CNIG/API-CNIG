@@ -579,8 +579,19 @@ class LayerBase extends Base {
    * @api
    */
   setZIndex(zIndex) {
-    this.zindex_ = zIndex;
-    this.getImpl().setZIndex(zIndex);
+    let newZIndex = zIndex;
+    const rootGroup = this.getImpl().rootGroup;
+    if (rootGroup) {
+      // Si pertenece a un grupo se comprueba que no se salga de
+      // los límites superior e inferior de zindex
+      if (zIndex >= rootGroup.getZIndex()) {
+        newZIndex = rootGroup.getZIndex() - 1;
+      } else if (zIndex <= rootGroup.getZIndex() - rootGroup.getTotalLayers()) {
+        newZIndex = rootGroup.getZIndex() - rootGroup.getTotalLayers() + 1;
+      }
+    }
+    this.zindex_ = newZIndex;
+    this.getImpl().setZIndex(newZIndex);
   }
 
   /**

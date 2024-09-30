@@ -82,10 +82,77 @@ class LayerGroup extends Layer {
     });
 
     this.ol3Layer.on('change:zIndex', () => {
-      this.layers.forEach((layer, i) => {
-        layer.setZIndex(this.ol3Layer.getZIndex() - i - 1);
-      });
+      this.setZIndexChildren();
     });
+  }
+
+  /**
+   * Este método establece los zIndex de las capas del grupo.
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  setZIndexChildren() {
+    const olZIndex = this.ol3Layer.getZIndex();
+    let nexZIndex = olZIndex - 1;
+    // Se clona el array de layers para que el reverse no modifique el array original
+    const layers = this.layers.concat().reverse();
+    layers.forEach((layer) => {
+      layer.setZIndex(nexZIndex);
+      nexZIndex -= layer.getImpl() instanceof LayerGroup
+        ? layer.getImpl().getTotalLayers() : 1;
+    });
+    this.reorderLayers();
+  }
+
+  /**
+   * Este método obtiene el número total de capas
+   * que componen el grupo.
+   *
+   * @public
+   * @function
+   * @returns {Number} Número de capas
+   * @api stable
+   */
+  getTotalLayers() {
+    let num = 1;
+    this.layers.forEach((l) => {
+      if (l.getImpl() instanceof LayerGroup) {
+        num += l.getImpl().getTotalLayers();
+      } else {
+        num += 1;
+      }
+    });
+    return num;
+  }
+
+  /**
+   * Este método ordena la lista de capas del grupo
+   * de menor a mayor zindex.
+   *
+   * @public
+   * @function
+   * @api stable
+   */
+  reorderLayers() {
+    this.layers.sort((a, b) => a.getZIndex() - b.getZIndex());
+  }
+
+  /**
+   * Este método devuelve el grupo raiz.
+   *
+   * @public
+   * @function
+   * @returns {LayerGroup} Grupo raiz.
+   * @api stable
+   */
+  getTopRootGroup() {
+    let topRootGroup = this.rootGroup;
+    if (!isNullOrEmpty(topRootGroup) && !isNullOrEmpty(topRootGroup.rootGroup)) {
+      topRootGroup = topRootGroup.getTopRootGroup();
+    }
+    return topRootGroup;
   }
 
   /**
@@ -175,12 +242,10 @@ class LayerGroup extends Layer {
       impl.rootGroup = this;
       this.layers.push(layer);
 
-      if (this.zIndex_ !== null) {
+      /* if (this.zIndex_ !== null) {
         // ? Por si existe subgrupos siga todo un orden
-        this.layers.forEach((l, i) => {
-          l.setZIndex(this.ol3Layer.getZIndex() - i - 1);
-        });
-      }
+        this.setZIndexChildren();
+      } */
 
       this.layersCollection.push(impl.getOL3Layer());
     }
@@ -269,7 +334,7 @@ class LayerGroup extends Layer {
    * @api
    */
   getLayers() {
-    return this.layers.reverse();
+    return this.layers;
   }
 
   /**
