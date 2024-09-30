@@ -1516,7 +1516,12 @@ export default class LayerswitcherControl extends M.Control {
 
     const operation = response.text.split('<ows:Operation name="GetFeature">')[1].split('</ows:Operation>')[0];
     const outputFormat = operation.split('<ows:Parameter name="outputFormat">')[1].split('</ows:Parameter>')[0];
-    const allowedValues = outputFormat.split('<ows:AllowedValues>')[1].split('</ows:AllowedValues>')[0];
+    let allowedValues = '';
+    if (outputFormat.indexOf('<ows:AllowedValues>') > -1) {
+      allowedValues = outputFormat.split('<ows:AllowedValues>')[1].split('</ows:AllowedValues>')[0];
+    } else {
+      allowedValues = outputFormat;
+    }
 
     if (allowedValues.indexOf('<ows:Value>') > -1) {
       const values = allowedValues.split('<ows:Value>');
