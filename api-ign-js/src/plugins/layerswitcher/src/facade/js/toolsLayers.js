@@ -276,7 +276,8 @@ export const showHideLayersRadio = (layer, map, target) => {
   if (target.className.indexOf('m-layerswitcher-check') > -1 && selectLayer === 'radio') {
     const idLayers = target.getAttribute('data-layer-id');
 
-    const layers = map.getLayers().filter((l) => l.displayInLayerSwitcher === true);
+    const layers = map.getLayers()
+      .filter((l) => l.displayInLayerSwitcher === true && l.isBase === false);
     const layerMap = layers.some((l) => l.idLayer === idLayers);
 
     if (layerMap) {
