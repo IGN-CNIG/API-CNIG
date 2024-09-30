@@ -420,7 +420,9 @@ export default class LayerswitcherControl extends M.Control {
     if (listLayer === 0) {
       this.statusShowHideAllLayers = this.map_.getLayers().find((layer) => {
         if (layer.isBase === false && layer.displayInLayerSwitcher) {
-          return layer.isVisible();
+          // RANGE ¿?
+          // return layer.isVisible();
+          return true;
         }
         return false;
       });
@@ -467,7 +469,6 @@ export default class LayerswitcherControl extends M.Control {
   defaultRangeSelect_() {
     if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === false) {
       const radioButtons = this.template_.querySelectorAll('input[type=radio]');
-
       if (radioButtons.length > 0) {
         this.isCheckedLayerRadio = true;
 

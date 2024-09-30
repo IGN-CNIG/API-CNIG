@@ -302,7 +302,7 @@ const getRadioLayersFilter = (layers) => {
 const clickRadioLayers = (layersVisible, radioButtons) => {
   if (layersVisible.length === 1) {
     radioButtons.forEach((radio) => {
-      if (radio.getAttribute('data-layer-name') === layersVisible[0].name) {
+      if (radio.getAttribute('data-layer-id') === layersVisible[0].idLayer) {
         radio.click();
       }
     });
@@ -310,7 +310,7 @@ const clickRadioLayers = (layersVisible, radioButtons) => {
 
   if (layersVisible.length > 1) {
     const radio = [...radioButtons]
-      .find((r) => r.getAttribute('data-layer-name') === layersVisible[layersVisible.length - 1].name);
+      .find((r) => r.getAttribute('data-layer-id') === layersVisible[layersVisible.length - 1].idLayer);
     if (radio) radio.click();
   }
 };
@@ -319,7 +319,7 @@ export const selectDefaultRange = (radioButtons, map) => {
   const layersMapVisible = map.getLayers()
     .filter((l) => l.displayInLayerSwitcher === true
     && l.isVisible()
-    && l.transparent === true).reverse();
+    && l.transparent === true);
 
   // Del mapa
   clickRadioLayers(layersMapVisible, radioButtons);
