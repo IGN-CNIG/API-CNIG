@@ -201,12 +201,15 @@ export default class LayerswitcherControl extends M.Control {
     });
 
     map.on(M.evt.ADDED_LAYER, (layers) => {
-      if (this.modeSelectLayers === 'radio' && this.isCheckedLayerRadio === true) {
+      if (this.modeSelectLayers === 'radio'
+      && this.isCheckedLayerRadio === true) {
         layers.forEach((layer) => {
-          if (layer instanceof M.layer.LayerGroup) {
-            this.recursiveVisibleHide_(layer, false);
-          } else {
-            layer.setVisible(false);
+          if (layer.isBase === false && layer.displayInLayerSwitcher) {
+            if (layer instanceof M.layer.LayerGroup) {
+              this.recursiveVisibleHide_(layer, false);
+            } else {
+              layer.setVisible(false);
+            }
           }
         });
       }
