@@ -480,14 +480,40 @@ export default class ComparatorsControl extends M.Control {
     this.map_.on(M.evt.REMOVED_LAYER, (layer) => {
       if (!(layer instanceof Array)) { return; }
       layer.forEach((l) => {
-        const idName = formatearID(l.name).replaceAll('.', '');
-        if (document.getElementById(`l_${idName}_external`)) {
-          document.querySelectorAll('.externalLayers').forEach((el) => {
-            if (el.id.includes(idName)) {
-              el.remove();
+        this.layersPlugin.forEach((lp) => {
+          if (lp.includes(l.url) && lp.includes(l.name)) {
+            if (this.controls[0].active) {
+              const selectes = ['mapLASelect', 'mapLBSelect', 'mapLCSelect', 'mapLDSelect'];
+              selectes.forEach((id) => {
+                const select = document.querySelector(`#${id}`);
+                [...select.children].forEach((child) => {
+                  if (child.value.includes(l.name)
+                     && child.value.includes(l.url)
+                     && child.disabled) {
+                    child.removeAttribute('disabled');
+                    select.selectedIndex = 0;
+                  }
+                });
+              });
             }
-          });
-        }
+            /*
+            if (this.controls[1].active) {
+              const selects = ['m-lyrcompare-lyrA',
+              'm-lyrcompare-lyrB', 'm-lyrcompare-lyrC', 'm-lyrcompare-lyrD'];
+              selects.forEach((id) => {
+                const select = document.querySelector(`#${id}`);
+                [...select.children].forEach((child) => {
+                  if (child.value === l.name && select.value === l.name) {
+                    child.remove();
+                    // child.removeAttribute('disabled');
+                    select.selectedIndex = select.children.length - 1;
+                  }
+                });
+              });
+            }
+            */
+          }
+        });
       });
     });
   }
