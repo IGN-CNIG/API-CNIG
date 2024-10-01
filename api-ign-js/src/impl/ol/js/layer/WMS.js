@@ -411,7 +411,8 @@ class WMS extends LayerBase {
     let capabilitiesLayer = capabilites;
     for (let i = 0, ilen = capabilitiesLayer.length; i < ilen; i += 1) {
       if (capabilitiesLayer[i] !== undefined && capabilitiesLayer[i].Name !== undefined
-        && capabilitiesLayer[i].Name === selff.facadeLayer_.name) {
+        && (capabilitiesLayer[i].Name === selff.facadeLayer_.name
+          || capabilitiesLayer[i].Identifier.includes(selff.facadeLayer_.name))) {
         capabilitiesLayer = capabilitiesLayer[i];
 
         try {
