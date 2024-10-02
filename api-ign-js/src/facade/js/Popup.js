@@ -45,13 +45,15 @@ class Tab {
      */
     this.content = options.content;
 
-    const isIntelligenceByUser = options.intelligence === true
-    || (!isUndefined(options.intelligence) && (options.intelligence.activate === true));
+    const intelligence = isUndefined(options.intelligence)
+      ? M.config.POPUP_INTELLIGENCE : options.intelligence;
 
-    if (isIntelligenceByUser || M.config.INTELLIGENCE) {
-      const contetentIntelligence = isIntelligenceByUser
-        ? options.intelligence : M.config.INTELLIGENCE;
-      this.content = transfomContent(this.content, contetentIntelligence.sizes);
+    if (typeof intelligence === 'boolean' && intelligence) {
+      this.content = transfomContent(this.content);
+    }
+
+    if (typeof intelligence === 'object' && intelligence.activate) {
+      this.content = transfomContent(this.content, intelligence.sizes);
     }
 
     /**

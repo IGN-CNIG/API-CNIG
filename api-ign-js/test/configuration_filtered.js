@@ -212,7 +212,15 @@ function fun(M_) {
    * @private
    * @type {object}
    */
-    M_.config('INTELLIGENCE', true);
+    M_.config('POPUP_INTELLIGENCE', true);
+
+      /**
+   * Hace el dialog inteligente
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('DIALOG_INTELLIGENCE', true);
 }
 
 fun(window.M);

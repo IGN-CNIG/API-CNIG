@@ -251,10 +251,18 @@ params.forEach((param) => {
   M.config('MOVE_MAP_EXTRACT', true);
 
   /**
-   * Hace el popup inteligente
+   * Hace el popup y dialog inteligente
    *
    * @private
    * @type {object}
    */
-  M.config('INTELLIGENCE', true);
+  M.config('POPUP_INTELLIGENCE', true);
+
+  /**
+   * Hace el dialog inteligente
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('DIALOG_INTELLIGENCE', true);
 }(window.M));
