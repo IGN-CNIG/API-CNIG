@@ -45,9 +45,13 @@ class Tab {
      */
     this.content = options.content;
 
-    if (options.intelligence === true
-      || (!isUndefined(options.intelligence) && (options.intelligence.activate === true))) {
-      this.content = transfomContent(this.content, options.intelligence.sizes);
+    const isIntelligenceByUser = options.intelligence === true
+    || (!isUndefined(options.intelligence) && (options.intelligence.activate === true));
+
+    if (isIntelligenceByUser || M.config.INTELLIGENCE) {
+      const contetentIntelligence = isIntelligenceByUser
+        ? options.intelligence : M.config.INTELLIGENCE;
+      this.content = transfomContent(this.content, contetentIntelligence.sizes);
     }
 
     /**

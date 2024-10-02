@@ -205,6 +205,14 @@ function fun(M_) {
    * @type {object}
    */
   M_.config('MOVE_MAP_EXTRACT', false);
+
+  /**
+   * Hace el popup inteligente
+   *
+   * @private
+   * @type {object}
+   */
+    M_.config('INTELLIGENCE', true);
 }
 
 fun(window.M);
