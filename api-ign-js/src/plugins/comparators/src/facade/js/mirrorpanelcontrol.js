@@ -633,7 +633,10 @@ export default class MirrorpanelControl extends M.Control {
     if (mapSelect) {
       const [type, , , nameWMS, layerWMTS] = mapSelect.split('*');
       if (type === 'WMS' && this.comparatorsControls.saveLayers.includes(nameWMS)) {
-        this.mapL[map].getWMS(nameWMS)[0].setVisible(false);
+        const wmsLayers = this.mapL[map].getWMS(nameWMS);
+        if (wmsLayers.length !== 0) {
+          this.mapL[map].getWMS(nameWMS)[0].setVisible(false);
+        }
       }
 
       if (type === 'WMTS' && !this.comparatorsControls.saveLayers.includes(layerWMTS)) { this.mapL[map].removeWMTS(layerWMTS); }
