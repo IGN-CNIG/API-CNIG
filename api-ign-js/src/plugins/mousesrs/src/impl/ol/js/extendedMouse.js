@@ -132,6 +132,7 @@ class Mouse extends ol.control.MousePosition {
   }
 
   updateOGCApiCoverage(map) {
+    map.removeLayers(map.getLayers().find((l) => l.name === COVERAGE_NAME));
     let bbox = map.getBbox();
     bbox = this.transformExtent(bbox, map.getProjection().code, 'EPSG:4326');
     bbox = `${bbox[0]},${bbox[1]},${bbox[2]},${bbox[3]}`;
@@ -148,7 +149,7 @@ class Mouse extends ol.control.MousePosition {
       opacity: 0.1,
     });
     coverage.setOpacity(0);
-    map.removeLayers(map.getLayers().find((l) => l.name === COVERAGE_NAME));
+    coverage.setZIndex(-9999);
     map.addLayers(coverage);
   }
 
