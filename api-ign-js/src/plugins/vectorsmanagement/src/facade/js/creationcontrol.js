@@ -179,7 +179,7 @@ export default class CreationControl extends M.Control {
       }, { displayInLayerSwitcher: false });
       this.layer_.getImpl().extract = false;
       this.map_.addLayers(this.selectionLayer);
-      this.selectionLayer.setZIndex(this.selectionLayer.getZIndex() + 8);
+      this.selectionLayer.setZIndex(1045);
     }
   }
 
