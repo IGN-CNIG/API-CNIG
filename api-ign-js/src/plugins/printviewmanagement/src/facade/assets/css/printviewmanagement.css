@@ -501,7 +501,7 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
     font-family: 'Muli', 'sans-serif' !important;
   }
 
-  .m-printermap-params select{
+  #m-printermap-layout{
     max-width: 65%;
     overflow: hidden;
     text-overflow: ellipsis;
