@@ -909,33 +909,12 @@ export default class PrinterMapControl extends M.Control {
     * @api
     */
   turnProjIntoLegend(projection) {
-    let projectionLegend;
-    switch (projection) {
-      case 'EPSG:4258':
-        projectionLegend = 'EPSG:4258 (ETRS89)';
-        break;
-      case 'EPSG:4326':
-        projectionLegend = 'EPSG:4326 (WGS84)';
-        break;
-      case 'EPSG:3857':
-        projectionLegend = 'EPSG:3857 (WGS84)';
-        break;
-      case 'EPSG:25831':
-        projectionLegend = `EPSG:25831 (UTM ${getValue('zone')} 31N)`;
-        break;
-      case 'EPSG:25830':
-        projectionLegend = `EPSG:25830 (UTM ${getValue('zone')} 30N)`;
-        break;
-      case 'EPSG:25829':
-        projectionLegend = `EPSG:25829 (UTM ${getValue('zone')} 29N)`;
-        break;
-      case 'EPSG:25828':
-        projectionLegend = `EPSG:25828 (UTM ${getValue('zone')} 28N)`;
-        break;
-      default:
-        projectionLegend = '';
-    }
-    return projectionLegend;
+    const supportedProjs = M.impl.ol.js.projections.getSupportedProjs();
+    const find = supportedProjs.find((p) => p.codes.includes(projection));
+    if (!find) return projection;
+    const { datum, proj } = find;
+    const format = `${datum} - ${proj} (${projection})`;
+    return format;
   }
 
   /**
