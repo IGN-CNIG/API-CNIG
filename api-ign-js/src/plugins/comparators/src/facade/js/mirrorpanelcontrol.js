@@ -629,28 +629,37 @@ export default class MirrorpanelControl extends M.Control {
 
     if (!this.mapL[map]) return;
 
+    // ? Si ya existe una capa seleccionada, la oculta.
     const mapSelect = this.layerSelected[map];
     if (mapSelect) {
-      const [type, , , nameWMS, layerWMTS] = mapSelect.split('*');
+      const [type, , nameWMTS, nameWMS] = mapSelect.split('*');
       if (type === 'WMS' && this.comparatorsControls.saveLayers.includes(nameWMS)) {
-        const wmsLayers = this.mapL[map].getWMS(nameWMS);
+        const wmsLayers = this.mapL[map].getWMS({ name: nameWMS });
         if (wmsLayers.length !== 0) {
-          this.mapL[map].getWMS(nameWMS)[0].setVisible(false);
+          wmsLayers[0].setVisible(false);
         }
       }
 
-      if (type === 'WMTS' && !this.comparatorsControls.saveLayers.includes(layerWMTS)) { this.mapL[map].removeWMTS(layerWMTS); }
+      if (type === 'WMTS' && this.comparatorsControls.saveLayers.includes(nameWMTS)) {
+        // this.mapL[map].removeWMTS(layerWMTS);
+        const wmtsLayers = this.mapL[map].getWMTS({ name: nameWMTS });
+        if (wmtsLayers.length !== 0) {
+          wmtsLayers[0].setVisible(false);
+        }
+      }
     }
 
+    // ? No es "ninguna capa" muestra la capa.
     if (value !== 'void') {
-      const someSaveLayers = this.comparatorsControls.saveLayers.find((l) => value.includes(l));
+      const someSaveLayers = this.comparatorsControls.saveLayers.find((l) => value.includes(`*${l}*`));
       const layerFind = this.mapL[map].getLayers().find((l) => l.name === someSaveLayers);
+
       if (layerFind) {
         layerFind.setVisible(true);
       } else {
         this.mapL[map].addLayers(value);
-        this.layerSelected[map] = value;
       }
+      this.layerSelected[map] = value;
     }
   }
 
