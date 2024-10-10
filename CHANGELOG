@@ -131,6 +131,8 @@
   - Se actualiza método getAPIRest.
 - Plugin overviewmap: se soluciona problema con evento postrender y actualizado su visor JSP.
 - Se soluciona error de estilo Choropleth al llamar al setQuantification
+- Se soluciona error panMapIfOutOfView cuando se carga un popup al cargar el mapa.
+- Se soluciona error animación ani_opts.
 
 
 29/02/2024 - Versión 4.9.0
