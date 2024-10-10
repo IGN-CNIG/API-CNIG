@@ -28,6 +28,7 @@
   - Normalizado código de la función "equals".
   - Añadido función común effectSelectedImpl_ para aplicar lupa.
   - Previsto que la función click sobre m-lyrcompare-void, solo se haga si existe esta opción.
+  - Se soluciona error WMTS al cargar capas externas.
 - Plugin help:
   - Se incluye parámetro initialIndex para abrir en una sección determinada.
   - Optimizado uso de funciones de la clase array.
