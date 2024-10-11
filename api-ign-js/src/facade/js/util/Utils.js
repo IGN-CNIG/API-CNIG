@@ -1619,7 +1619,7 @@ export const copyImageClipBoard = (map, canva) => {
  * @api
  */
 export const findUrls = (content) => {
-  const regexURL = /(^|\s)(https?:\/\/[^\s<>"']+)/g;
+  const regexURL = /(https?:\/\/[^\s<>"']+)/g;
   const urls = content.match(regexURL);
   return urls || [];
 };
