@@ -94,7 +94,7 @@
 
 .m-popup>div.m-content>div.m-body {
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     max-height: 50vh;
     width: calc(100%+ 15px);
 }
