@@ -260,6 +260,11 @@ const showLayers = (layer) => {
 
 const showHideLayersInLayerGroup = (layer, map) => {
   const group = fiendLayerInGroup(layer, map);
+
+  if (!document.querySelector(`[data-layer-id="${group.idLayer}"]`).checked) {
+    document.querySelector(`[data-layer-id="${group.idLayer}"]`).click();
+  }
+
   if (group) {
     group.getLayers().forEach((subLayer) => {
       if (subLayer.name === layer.name) {
