@@ -1668,7 +1668,7 @@ export const transfomContent = (text, pSizes = {}) => {
     } else if (regexAudio.test(url)) {
       content = content.replace(`${url}${aux}`, `</br><audio style='max-width: ${sizes.audios[0]}; max-height: ${sizes.audios[1]}'controls><source src='${url}'>${getValue('exception').browser_audio}</audio></br>${aux}`);
     } else {
-      content = content.replace(`${url}${aux}`, `<a href=${url}>${url}</a>${aux}`);
+      content = content.replace(`${url}${aux}`, `<a target='blank' href=${url}>${url}</a>${aux}`);
     }
   });
   return content;

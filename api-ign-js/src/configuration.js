@@ -256,7 +256,15 @@ params.forEach((param) => {
    * @private
    * @type {object}
    */
-  M.config('POPUP_INTELLIGENCE', true);
+  M.config('POPUP_INTELLIGENCE', {
+    activate: true,
+    sizes: {
+      images: ['120px', '75px'],
+      videos: ['500px', '300px'],
+      documents: ['500px', '300px'],
+      audios: ['250px', '40px'],
+    },
+  });
 
   /**
    * Hace el dialog inteligente
@@ -264,5 +272,13 @@ params.forEach((param) => {
    * @private
    * @type {object}
    */
-  M.config('DIALOG_INTELLIGENCE', true);
+  M.config('DIALOG_INTELLIGENCE', {
+    activate: true,
+    sizes: {
+      images: ['120px', '75px'],
+      videos: ['500px', '300px'],
+      documents: ['500px', '300px'],
+      audios: ['250px', '40px'],
+    },
+  });
 }(window.M));

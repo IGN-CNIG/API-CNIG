@@ -212,7 +212,15 @@ function fun(M_) {
    * @private
    * @type {object}
    */
-    M_.config('POPUP_INTELLIGENCE', true);
+  M_.config('POPUP_INTELLIGENCE', {
+      activate: true,
+      sizes: {
+        images: ['120px', '75px'],
+        videos: ['500px', '300px'],
+        documents: ['500px', '300px'],
+        audios: ['250px', '40px'],
+      }
+  });
 
       /**
    * Hace el dialog inteligente
@@ -220,7 +228,15 @@ function fun(M_) {
    * @private
    * @type {object}
    */
-  M.config('DIALOG_INTELLIGENCE', true);
+  M.config('DIALOG_INTELLIGENCE', {
+    activate: true,
+    sizes: {
+      images: ['120px', '75px'],
+      videos: ['500px', '300px'],
+      documents: ['500px', '300px'],
+      audios: ['250px', '40px'],
+    }
+  });
 }
 
 fun(window.M);
