@@ -71,23 +71,24 @@ window.mapjs = mapjs;
 //   'content': 'Texto http://localhost:8080/test/development/ficheros/videos/mp4.mp4 texto'
 // };
 
-// const featureTabOpts3 = {
-//   'icon': 'g-cartografia-pin',
-//   'title': 'Título',
-//   intelligence: {
-//     activate: false,
-//     sizes: {
-//       images: ['20px', '20px'],
-//       documents: ['50px', '50px'],
-//       videos: ['100px', '100px'],
-//       audios: ['200px', '20px'],
-//     }
-//   },
-//   'content': 'http://localhost:8080/test/development/ficheros/audios/wav.wav'
-// };
+const featureTabOpts3 = {
+  'icon': 'g-cartografia-pin',
+  'title': 'Título',
+  // intelligence: {
+  //   activate: false,
+  //   sizes: {
+  //     images: ['20px', '20px'],
+  //     documents: ['50px', '50px'],
+  //     videos: ['100px', '100px'],
+  //     audios: ['200px', '20px'],
+  //   }
+  // },
+  'content': `kajklsajkldjaskjddsfsdfñlskdflsdlfkñlskdñlkfdñlskfsñlkdlkdsklsdklkk 
+  https://ethic.es/wp-content/uploads/2023/03/imagen-1280x768.jpg https://www.google.es`
+};
 
-// const popup = new Popup();
+const popup = new Popup();
 // popup.addTab(featureTabOpts);
 // popup.addTab(featureTabOpts2);
-// popup.addTab(featureTabOpts3);
-// mapjs.addPopup(popup, [-391232.32792904036, 4915993.4141376745]);
+popup.addTab(featureTabOpts3);
+mapjs.addPopup(popup, [-391232.32792904036, 4915993.4141376745]);
