@@ -1614,14 +1614,26 @@ export const copyImageClipBoard = (map, canva) => {
 
 /**
  * Esta función detecta en un texto los enlaces.
+ * @param {String} text Texto donde se detectará los enlaces.
  * @returns {Array<String>} Matriz de enlaces.
  * @function
  * @api
  */
-export const findUrls = (content) => {
-  const regexURL = /(https?:\/\/[^\s<>"']+)/g;
-  const urls = content.match(regexURL);
-  return urls || [];
+export const findUrls = (text) => {
+  const regex = /https?:\/\/[^\s<]+(?![^<>]*>)/g;
+  const matches = text.match(regex);
+
+  if (!matches) return [];
+
+  // Filtrar las URLs que están dentro de etiquetas HTML
+  const outsideURLs = matches.filter((url) => {
+    const startIndex = text.indexOf(url);
+    const beforeChar = text[startIndex - 1];
+    const afterChar = text[startIndex + url.length];
+
+    return beforeChar !== '"' && beforeChar !== "'" && afterChar !== '"' && afterChar !== "'";
+  });
+  return outsideURLs;
 };
 
 /**
