@@ -582,7 +582,13 @@ export default class InfoCatastroControl extends M.Control {
     const y = coords[1];
     const xFloat = parseFloat(x);
     const yFloat = parseFloat(y);
-    this.map.removeLayers(this.coordinatesLayer);
+    const someCoordinatesLayerInMap = this.coordinatesLayer ? this.map.getLayers()
+      .some((l) => this.coordinatesLayer.idLayer === l.idLayer) : false;
+
+    if (someCoordinatesLayerInMap) {
+      this.map.removeLayers(this.coordinatesLayer);
+    }
+
     if (!Number.isNaN(xFloat) && !Number.isNaN(yFloat)) {
       this.map.setCenter(`${xFloat},${yFloat}*false`);
       this.map.setZoom(this.zoom);
