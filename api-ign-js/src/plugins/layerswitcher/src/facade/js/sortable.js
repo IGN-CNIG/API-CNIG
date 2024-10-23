@@ -1,6 +1,6 @@
 import Sortable from 'sortablejs';
 import { getAllLayersGroup } from './groupLayers';
-import { getValue } from './i18n/language';
+// import { getValue } from './i18n/language';
 
 const LAYER_NOT_URL = ['OSM', 'GeoJSON', 'MBTilesVector', 'MBTiles', 'LayerGroup'];
 
@@ -75,11 +75,11 @@ const handleOnAdd = (map) => (evt) => {
     ? groupFrom.getLayers().find((l) => l.name === itemName)
     : map.getLayers().find((l) => l.name === itemName);
 
-  if (item instanceof M.layer.MBTilesVector
-      || item instanceof M.layer.MBTiles) {
-    M.toast.error(getValue('exception.not_layerGroup'), null, 6000);
-    return;
-  }
+  // if (item instanceof M.layer.MBTilesVector
+  //     || item instanceof M.layer.MBTiles) {
+  //   M.toast.error(getValue('exception.not_layerGroup'), null, 6000);
+  //   return;
+  // }
 
   if (item.checkedLayer === 'true') {
     item.checkedLayer = 'false';

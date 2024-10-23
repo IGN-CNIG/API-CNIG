@@ -239,7 +239,11 @@ class MBTiles extends Layer {
     const { code } = this.map.getProjection();
     const projection = getProj(code);
     const extent = projection.getExtent();
-
+    this.ol3Layer = new OLLayerTile(extend({
+      visible: this.visibility,
+      opacity: this.opacity_,
+      zIndex: this.zIndex_,
+    }, this.vendorOptions_, true));
     if (!this.tileLoadFunction && !this.vendorOptions_.source) {
       this.fetchSource().then((tileProvider) => {
         tileProvider.getMaxZoomLevel().then((maxZoomLevel) => {
@@ -249,7 +253,7 @@ class MBTiles extends Layer {
           const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_);
           this.getExtentFromProvider().then((reprojectedExtent) => {
             this.maxExtent_ = this.maxExtent_ || reprojectedExtent || extent;
-            this.ol3Layer = this.createLayer({
+            this.createLayer({
               tileProvider,
               resolutions,
               extent: this.maxExtent_,
@@ -267,7 +271,7 @@ class MBTiles extends Layer {
     } else {
       const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 28);
       this.maxExtent_ = this.maxExtent_ || extent;
-      this.ol3Layer = this.createLayer({
+      this.createLayer({
         resolutions,
         extent: this.maxExtent_ || extent,
         sourceExtent: extent,
@@ -309,14 +313,9 @@ class MBTiles extends Layer {
         }),
       });
     }
-    const layer = new OLLayerTile(extend({
-      visible: this.visibility,
-      opacity: this.opacity_,
-      zIndex: this.zIndex_,
-      extent: this.maxExtent_ || opts.sourceExtent,
-      source,
-    }, this.vendorOptions_, true));
-    return layer;
+    this.ol3Layer.setSource(source);
+    this.ol3Layer.setExtent(this.maxExtent_ || opts.sourceExtent);
+    return this.ol3Layer;
   }
 
   /**

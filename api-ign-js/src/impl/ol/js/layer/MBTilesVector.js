@@ -188,7 +188,11 @@ class MBTilesVector extends Vector {
     const { code } = this.map.getProjection();
     const projection = getProj(code);
     const extent = projection.getExtent();
-
+    this.ol3Layer = new OLLayerVectorTile(extend({
+      visible: this.visibility,
+      opacity: this.opacity_,
+      zIndex: this.zIndex_,
+    }, this.vendorOptions_, true));
     if (!this.tileLoadFunction_ && isNullOrEmpty(this.vendorOptions_.source)) {
       this.fetchSource().then((tileProvider) => {
         tileProvider.getMaxZoomLevel().then((maxZoomLevel) => {
@@ -203,7 +207,7 @@ class MBTilesVector extends Vector {
               reprojectedExtent = transformExtent(mbtilesExtent, 'EPSG:4326', code);
             }
             this.tileProvider_.getFormat().then((format) => {
-              this.ol3Layer = this.createLayer({
+              this.createLayer({
                 tileProvider,
                 resolutions,
                 extent: reprojectedExtent,
@@ -235,7 +239,7 @@ class MBTilesVector extends Vector {
       });
     } else {
       const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 28);
-      this.ol3Layer = this.createLayer({
+      this.createLayer({
         resolutions,
         extent,
         sourceExtent: extent,
@@ -279,23 +283,19 @@ class MBTilesVector extends Vector {
       tileLoadFn = this.loadVectorTile;
     }
     const mvtFormat = new MVT();
-    const layer = new OLLayerVectorTile(extend({
-      visible: this.visibility,
-      opacity: this.opacity_,
-      zIndex: this.zIndex_,
-      extent: this.maxExtent_ || opts.sourceExtent,
-      source: new OLSourceVectorTile({
-        projection: opts.projection,
-        url: '{z},{x},{y}',
-        tileLoadFunction: (tile) => tileLoadFn(tile, mvtFormat, opts, this),
-        tileGrid: new TileGrid({
-          extent: opts.sourceExtent,
-          origin: getBottomLeft(opts.sourceExtent),
-          resolutions: opts.resolutions,
-        }),
+    this.ol3Layer.setSource(new OLSourceVectorTile({
+      projection: opts.projection,
+      url: '{z},{x},{y}',
+      tileLoadFunction: (tile) => tileLoadFn(tile, mvtFormat, opts, this),
+      tileGrid: new TileGrid({
+        extent: opts.sourceExtent,
+        origin: getBottomLeft(opts.sourceExtent),
+        resolutions: opts.resolutions,
       }),
-    }, this.vendorOptions_, true));
-    return layer;
+    }));
+
+    this.ol3Layer.setExtent(this.maxExtent_ || opts.sourceExtent);
+    return this.ol3Layer;
   }
 
   /**
