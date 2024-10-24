@@ -1,7 +1,7 @@
 /**
  * @module M/impl/layer/MBTilesVector
  */
-import { isNullOrEmpty, extend, isFunction } from 'M/util/Utils';
+import { isNullOrEmpty, isFunction, extend } from 'M/util/Utils';
 import { compileSync as compileTemplate } from 'M/util/Template';
 import Popup from 'M/Popup';
 import geojsonPopupTemplate from 'templates/geojson_popup';
@@ -183,13 +183,17 @@ class MBTilesVector extends Vector {
    * @param {M.Map} map Mapa.
    * @api
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     const { code } = this.map.getProjection();
     const projection = getProj(code);
     const extent = projection.getExtent();
-
-    if (!this.tileLoadFunction_) {
+    this.ol3Layer = new OLLayerVectorTile(extend({
+      visible: this.visibility,
+      opacity: this.opacity_,
+      zIndex: this.zIndex_,
+    }, this.vendorOptions_, true));
+    if (!this.tileLoadFunction_ && isNullOrEmpty(this.vendorOptions_.source)) {
       this.fetchSource().then((tileProvider) => {
         tileProvider.getMaxZoomLevel().then((maxZoomLevel) => {
           if (!this.maxZoomLevel_) {
@@ -203,7 +207,7 @@ class MBTilesVector extends Vector {
               reprojectedExtent = transformExtent(mbtilesExtent, 'EPSG:4326', code);
             }
             this.tileProvider_.getFormat().then((format) => {
-              this.ol3Layer = this.createLayer({
+              this.createLayer({
                 tileProvider,
                 resolutions,
                 extent: reprojectedExtent,
@@ -226,14 +230,16 @@ class MBTilesVector extends Vector {
               });
               this.ol3Layer.setMaxZoom(this.maxZoom);
               this.ol3Layer.setMinZoom(this.minZoom);
-              this.map.getMapImpl().addLayer(this.ol3Layer);
+              if (addLayer) {
+                this.map.getMapImpl().addLayer(this.ol3Layer);
+              }
             });
           });
         });
       });
     } else {
       const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 28);
-      this.ol3Layer = this.createLayer({
+      this.createLayer({
         resolutions,
         extent,
         sourceExtent: extent,
@@ -256,7 +262,9 @@ class MBTilesVector extends Vector {
       });
       this.ol3Layer.setMaxZoom(this.maxZoom);
       this.ol3Layer.setMinZoom(this.minZoom);
-      this.map.getMapImpl().addLayer(this.ol3Layer);
+      if (addLayer) {
+        this.map.getMapImpl().addLayer(this.ol3Layer);
+      }
     }
   }
 
@@ -275,23 +283,19 @@ class MBTilesVector extends Vector {
       tileLoadFn = this.loadVectorTile;
     }
     const mvtFormat = new MVT();
-    const layer = new OLLayerVectorTile(extend({
-      visible: this.visibility,
-      opacity: this.opacity_,
-      zIndex: this.zIndex_,
-      extent: this.maxExtent_ || opts.sourceExtent,
-      source: new OLSourceVectorTile({
-        projection: opts.projection,
-        url: '{z},{x},{y}',
-        tileLoadFunction: (tile) => tileLoadFn(tile, mvtFormat, opts, this),
-        tileGrid: new TileGrid({
-          extent: opts.sourceExtent,
-          origin: getBottomLeft(opts.sourceExtent),
-          resolutions: opts.resolutions,
-        }),
+    this.ol3Layer.setSource(new OLSourceVectorTile({
+      projection: opts.projection,
+      url: '{z},{x},{y}',
+      tileLoadFunction: (tile) => tileLoadFn(tile, mvtFormat, opts, this),
+      tileGrid: new TileGrid({
+        extent: opts.sourceExtent,
+        origin: getBottomLeft(opts.sourceExtent),
+        resolutions: opts.resolutions,
       }),
-    }, this.vendorOptions_, true));
-    return layer;
+    }));
+
+    this.ol3Layer.setExtent(this.maxExtent_ || opts.sourceExtent);
+    return this.ol3Layer;
   }
 
   /**
@@ -402,8 +406,8 @@ class MBTilesVector extends Vector {
    * @expose
    */
   selectFeatures(features, coord, evt) {
-    const feature = features[0];
     if (this.extract === true) {
+      const feature = features[0];
       // unselects previous features
       this.unselectFeatures();
 
@@ -519,7 +523,7 @@ class MBTilesVector extends Vector {
       if (tileCache.getCount() === 0) {
         return features;
       }
-      const z = tileCache.peekFirstKey().split('/').map(Number)[0];
+      const z = Number(tileCache.peekFirstKey().split('/')[0]);
       tileCache.forEach((tile) => {
         if (tile.tileCoord[0] !== z || tile.getState() !== 2) {
           return;

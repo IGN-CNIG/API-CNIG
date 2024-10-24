@@ -71,9 +71,9 @@ class WMTSCapabilities {
       if (layer.Identifier === layerName) {
         if (!isNullOrEmpty(srid)) {
           // gets the matrixSet by the SRID
-          matrixSet = layer.TileMatrixSetLink.filter((matrixSetLink) => {
+          matrixSet = layer.TileMatrixSetLink.find((matrixSetLink) => {
             return matrixSetLink.contains(srid);
-          })[0];
+          });
         }
         if (matrixSet === undefined) {
           matrixSet = layer.TileMatrixSetLink[0].TileMatrixSet;
@@ -96,9 +96,9 @@ class WMTSCapabilities {
   getMatrixIds(layerName, srid) {
     let matrixIds = [];
     const matrixSet = this.getMatrixSet(layerName, srid);
-    const tileMatrixSet = this.capabilities.Contents.TileMatrixSet.filter((tMatrixSet) => {
+    const tileMatrixSet = this.capabilities.Contents.TileMatrixSet.find((tMatrixSet) => {
       return tMatrixSet.Identifier === matrixSet;
-    })[0];
+    });
     if (tileMatrixSet != null && tileMatrixSet.length > 0) {
       matrixIds = tileMatrixSet.TileMatrix.map((tileMatrix) => tileMatrix.Identifier);
     }
@@ -116,7 +116,7 @@ class WMTSCapabilities {
     */
   getFormat(layerName) {
     let format;
-    const layer = this.capabilities.Contents.Layer.filter((l) => l.Identifier === layerName)[0];
+    const layer = this.capabilities.Contents.Layer.find((l) => l.Identifier === layerName);
     if (layer != null) {
       format = layer.Format[0];
     }

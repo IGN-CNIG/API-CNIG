@@ -10,6 +10,20 @@ import myhelp from '../../templates/myhelp';
 import es from './i18n/es';
 import en from './i18n/en';
 
+const MODE_VALUES = ['wcs', 'ogcapicoverage'];
+const DEFAULT_COVERAGE_PRECISSIONS = [
+  {
+    url: 'https://api-coverages.idee.es/collections/EL.ElevationGridCoverage_4326_1000/coverage',
+    minzoom: 0,
+    maxzoom: 11,
+  },
+  {
+    url: 'https://api-coverages.idee.es/collections/EL.ElevationGridCoverage_4326_500/coverage',
+    minzoom: 12,
+    maxzoom: 28,
+  },
+];
+
 export default class MouseSRS extends M.Plugin {
   /**
    * @classdesc
@@ -111,6 +125,16 @@ export default class MouseSRS extends M.Plugin {
     this.order = options.order >= -1 ? options.order : null;
 
     /**
+     * Service to use for Z value
+     * Values: wcs, ogc
+     * @private
+     * @type {string}
+     */
+    this.mode = MODE_VALUES.includes(options.mode) ? options.mode : MODE_VALUES[0];
+
+    this.coveragePrecissions = options.coveragePrecissions || DEFAULT_COVERAGE_PRECISSIONS;
+
+    /**
      * Plugin parameters
      * @public
      * @type {object}
@@ -151,6 +175,8 @@ export default class MouseSRS extends M.Plugin {
       this.tooltip_,
       this.activeZ,
       this.helpUrl,
+      this.mode,
+      this.coveragePrecissions,
       this.order,
       this.draggableDialog,
       this.epsgFormat,

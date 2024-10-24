@@ -1,6 +1,9 @@
 /* eslint-disable camelcase,import/prefer-default-export */
 import OGCAPIFeatures from 'M/layer/OGCAPIFeatures';
 import Generic from 'M/style/Generic';// eslint-disable-line no-unused-vars
+import OLSourceVector from 'ol/source/Vector';
+import OLFormatGeoJSON from 'ol/format/GeoJSON';
+import { bbox } from 'ol/loadingstrategy';
 
 export const ogcAPIFeatures_001 = new OGCAPIFeatures({
   url: 'https://api-features.idee.es/collections/',
@@ -13,7 +16,7 @@ export const ogcAPIFeatures_001 = new OGCAPIFeatures({
   // format: 'json',
   // offset: 10,
   // offset: 2,
-  // id: 11,
+  // id: 'ES010HYFLSP0000001528421',
   // conditional: {
   //   slug: 'Puerto-del-Leon-por-Totalan'
   // },
@@ -91,3 +94,19 @@ export const ogcAPIFeatures_001 = new OGCAPIFeatures({
 //   name: 'hidrografia/Wetland',
 //   legend: 'Capa OGCAPIFeatures',
 // });
+
+export const ogcAPIFeatures_002 = new OGCAPIFeatures({
+  url: 'https://api-features.idee.es/collections/',
+  name: 'falls', // 'portarea',
+  legend: 'Capa OGCAPIFeatures',
+  extract: true,
+  bbox: [-523124.9709505441, 4814543.778545674, -504780.08416210185, 4823190.717370434],
+  id: 'ES010HYFLSP0000001528421',
+}, {}, {
+  source: new OLSourceVector({
+    attributions: ['© Acme Inc.', '© Bacme Inc.'],
+    format: new OLFormatGeoJSON(),
+    url: 'https://api-features.idee.es/collections/portarea/items?f=json',
+    wrapX: false,
+  }),
+});

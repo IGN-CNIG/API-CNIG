@@ -6,11 +6,11 @@
     -webkit-transition: opacity 0.25s ease 0s, color 0.25s ease 0s;
     transition: opacity 0.25s ease 0s, color 0.25s ease 0s;
 }
-
+/*
 .m-areas> div.m-area> div.m-panel {
     -webkit-transition: border-radius .5s ease 0s;
     transition: border-radius .5s ease 0s;
-}
+}*/
 
 .m-areas> div.m-area> div.m-panel.collapsed {
     border-radius: 20px;

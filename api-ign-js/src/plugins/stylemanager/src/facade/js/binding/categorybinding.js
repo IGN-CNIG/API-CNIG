@@ -1,8 +1,4 @@
-/* eslint-disable  dot-notation */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-return-assign */
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable dot-notation,no-prototype-builtins,no-return-assign,no-underscore-dangle */
 import buttonoptions2 from 'templates/buttonoptions2';
 import simpleoptions from 'templates/simpleoptions';
 import attributestemplate from 'templates/attributestemplate';
@@ -354,6 +350,7 @@ export class CategoryBinding extends Binding {
    */
   setGeometryCategory(category) {
     const geometry = this.layer_.getFeatures()[0].getGeometry().type;
+    /* eslint-disable no-param-reassign */
     switch (geometry) {
       case 'Point':
       case 'MultiPoint':
@@ -370,6 +367,7 @@ export class CategoryBinding extends Binding {
       default:
         M.dialog.error(getValue('exception.geomNotSupported'), 'Error');
     }
+    /* eslint-enable no-param-reassign */
   }
 
   /**
@@ -477,6 +475,7 @@ export class CategoryBinding extends Binding {
    * @function
    */
   activateSubmenu() {
+    // eslint-disable-next-line no-param-reassign
     this.querySelectorAllForEachParent('[data-buttons-option-category] input', (input) => input.disabled = false);
     this.querySelectorAllForEachParent('[data-buttons-option-category] label[data-selector]', (label) => {
       label.classList.remove('check-inactive');
@@ -488,6 +487,7 @@ export class CategoryBinding extends Binding {
    * @function
    */
   deactivateSubmenu() {
+    // eslint-disable-next-line no-param-reassign
     this.querySelectorAllForEachParent('[data-buttons-option-category] input', (input) => input.disabled = true);
     this.querySelectorAllForEachParent('[data-buttons-option-category] label[data-selector]', (label) => {
       label.classList.add('check-inactive');

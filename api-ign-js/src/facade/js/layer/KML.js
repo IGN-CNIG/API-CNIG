@@ -4,10 +4,7 @@
 import KMLImpl from 'impl/layer/KML';
 import LayerVector from './Vector';
 import {
-  isNullOrEmpty,
-  isUndefined,
-  normalize,
-  isString,
+  isUndefined, isNullOrEmpty, isString, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from './Type';

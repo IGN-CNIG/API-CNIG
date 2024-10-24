@@ -5,14 +5,8 @@ import StyleBase from './Style';
 import StyleComposite from './Composite';
 import * as StyleQuantification from './Quantification';
 import {
-  extendsObj,
-  isNullOrEmpty,
-  generateColorScale,
-  isArray,
-  isString,
-  stringifyFunctions,
-  defineFunctionFromString,
-  isUndefined,
+  isUndefined, isArray, isNullOrEmpty, isString, extendsObj, stringifyFunctions,
+  defineFunctionFromString, generateColorScale,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as Filter from '../filter/Filter';

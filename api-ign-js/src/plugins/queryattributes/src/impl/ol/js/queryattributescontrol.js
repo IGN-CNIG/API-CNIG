@@ -43,7 +43,7 @@ export default class QueryAttributesControl extends M.impl.Control {
   // e2m: al pulsar en Buscar por área añadimos la interacción
   addDrawInteraction(callback) {
     this.removeDrawInteraction_();
-    const drawLayer = this.facadeMap.getLayers().filter((layer) => layer.name === '__draw__')[0];
+    const drawLayer = this.facadeMap.getLayers().find((layer) => layer.name === '__draw__');
     drawLayer.clear();
     const draw = new ol.interaction.Draw({
       source: drawLayer.getImpl().getOL3Layer().getSource(),
@@ -96,7 +96,7 @@ export default class QueryAttributesControl extends M.impl.Control {
   }
 
   getPolygonFromDrawnFeature() {
-    const drawLayer = this.facadeMap.getLayers().filter((layer) => layer.name === '__draw__')[0];
+    const drawLayer = this.facadeMap.getLayers().find((layer) => layer.name === '__draw__');
     const olFeature = drawLayer.getImpl().getOL3Layer().getSource().getFeatures()[0];
     const feature = new M.Feature('featuredraw.1', {
       geometry: {

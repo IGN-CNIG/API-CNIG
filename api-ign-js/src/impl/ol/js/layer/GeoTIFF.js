@@ -1,14 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable max-len */
 /**
  * @module M/impl/layer/GeoTIFF
  */
 import {
-  isNullOrEmpty,
-  extend,
-  isNull,
-  isUndefined,
-  getResolutionFromScale,
+  isUndefined, isNull, isNullOrEmpty, getResolutionFromScale, extend,
 } from 'M/util/Utils';
 import * as LayerType from 'M/layer/Type';
 import * as EventType from 'M/event/eventtype';
@@ -22,7 +17,7 @@ import ImplUtils from '../util/Utils';
 /**
  * @classdesc
  * El formato ráster GeoTIFF aprovecha un formato de archivo independiente de plataforma (TIFF)
- * maduro añadiendo los metadatos necesarios para describir y utilizar datos de imágenes geográficas.
+ * maduro añadiendo metadatos necesarios para describir y utilizar datos de imágenes geográficas.
  * Estos metadatos sirven para georreferenciar el archivo ráster, por lo que a demás de los datos,
  * el archivo contiene metadatos necesarios para su utilización.
  *
@@ -44,6 +39,7 @@ class GeoTIFF extends LayerBase {
    * @implements {M.impl.Layer}
    * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
    * - url: url del servicio.
+   * - blob: url del blob.
    * - projection: SRS usado por la capa.
    * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
@@ -172,6 +168,8 @@ class GeoTIFF extends LayerBase {
      * GeoTIFF maxZoom. Zoom máximo aplicable a la capa.
      */
     this.maxZoom = options.maxZoom || Number.POSITIVE_INFINITY;
+
+    this.blob = options.blob;
   }
 
   /**
@@ -214,8 +212,9 @@ class GeoTIFF extends LayerBase {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
+    this.addLayerToMap_ = addLayer;
     this.createOLLayer_(null);
     this.fire(EventType.ADDED_TO_MAP);
   }
@@ -229,8 +228,6 @@ class GeoTIFF extends LayerBase {
    * @api stable
    */
   createOLLayer_() {
-    const zIndex = this.zIndex_;
-
     // calculates the resolutions from scales
     if (!isNull(this.options)
       && !isNull(this.options.minScale) && !isNull(this.options.maxScale)) {
@@ -239,7 +236,21 @@ class GeoTIFF extends LayerBase {
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
     }
 
-    const source = this.createOLSource_();
+    if (this.blob) {
+      window.fetch(this.blob).then((response) => {
+        response.blob().then((blob) => {
+          const source = this.createOLSourceBlob_(blob);
+          this.createOLLayerBySource_(source);
+        });
+      });
+    } else {
+      const source = this.createOLSource_();
+      this.createOLLayerBySource_(source);
+    }
+  }
+
+  createOLLayerBySource_(source) {
+    const zIndex = this.zIndex_;
     const properties = extend({
       opacity: this.opacity_,
       source,
@@ -250,7 +261,9 @@ class GeoTIFF extends LayerBase {
     }, this.vendorOptions_, true);
     this.ol3Layer = new TileLayer(properties);
 
-    this.map.getMapImpl().addLayer(this.ol3Layer);
+    if (this.addLayerToMap_) {
+      this.map.getMapImpl().addLayer(this.ol3Layer);
+    }
 
     this.fire(EventType.ADDED_TO_MAP);
 
@@ -309,6 +322,35 @@ class GeoTIFF extends LayerBase {
       const sources = [
         {
           url: this.url,
+          nodata,
+        },
+      ];
+      if (bands.length !== 0) {
+        sources.forEach((src) => {
+          // eslint-disable-next-line no-param-reassign
+          src.bands = bands;
+        });
+      }
+      olSource = new GeoTIFFSource({
+        sources,
+        convertToRGB,
+        projection: projectionGeoTIFF,
+        normalize: this.normalize,
+      });
+    }
+    return olSource;
+  }
+
+  createOLSourceBlob_(blob) {
+    let olSource = this.vendorOptions_.source;
+    if (isNullOrEmpty(this.vendorOptions_.source)) {
+      const convertToRGB = this.convertToRGB_;
+      const bands = this.bands_;
+      const nodata = this.nodata_;
+      const projectionGeoTIFF = this.options.projection;
+      const sources = [
+        {
+          blob,
           nodata,
         },
       ];

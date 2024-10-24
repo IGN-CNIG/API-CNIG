@@ -18,3 +18,11 @@ export const transform = (box, code, currProj) => {
 export const pixelToCoordinateTransform = (map) => {
   return map.getMapImpl().pixelToCoordinateTransform_; // eslint-disable-line
 };
+
+export const adjustExtentForSquarePixels = (extent, size) => {
+  const ext = extent;
+  const f = (ext[2] - ext[0]) / size[0];
+  ext[3] = ext[1] + (f * size[1]);
+
+  return ext;
+};

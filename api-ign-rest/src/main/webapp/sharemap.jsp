@@ -14,6 +14,7 @@
     <title>Visor base</title>
     <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
     <link href="plugins/sharemap/sharemap.ol.min.css" rel="stylesheet" />
+    <link href="plugins/layerswitcher/layerswitcher.ol.min.css" rel="stylesheet" />
     <style type="text/css">
         html,
         body {
@@ -98,6 +99,7 @@
     <script type="text/javascript" src="js/apiign.ol.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
     <script type="text/javascript" src="plugins/sharemap/sharemap.ol.min.js"></script>
+    <script type="text/javascript" src="plugins/layerswitcher/layerswitcher.ol.min.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
       for (int i = 0; i < jsfiles.length; i++) {
@@ -224,6 +226,9 @@
         botonEliminar.addEventListener("click", function() {
             map.removePlugins(mp);
         });
+
+        const layerswitcher = new M.plugin.Layerswitcher({});
+        map.addPlugin(layerswitcher);
     </script>
 </body>
 

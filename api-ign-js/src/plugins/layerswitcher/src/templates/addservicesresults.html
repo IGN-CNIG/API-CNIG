@@ -1,5 +1,6 @@
 <div>
     <div class="m-layerswitcher-service-capabilities">
+        <section id="m-layerswitcher-groups-fields" class="m-layerswitcher-groups-fields-container"></section>
         {{#if showgeneral}}
             <p tabindex="0" class="m-layerswitcher-show-capabilities"><button tabindex="0" class="m-layerswitcher-icons-desplegar"></button>&nbsp;{{translations.show_service_info}} {{type}}</p>
             <div class="m-layerswitcher-capabilities-container">
@@ -124,7 +125,7 @@
                     <tbody>
                         {{#each layersWFS}}
                             <tr tabindex="0">
-                                <td><span role="button" aria-label="{{translations.add_service}}" tabindex="0" id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices-wfs m-layerswitcher-icons-check"></span></td>
+                                <td><span role="button" aria-label="{{translations.add_service}}" format="{{formats.[0]}}" tabindex="0" id="{{name}}" name="{{name}}" class="m-check-layerswitcher-addservices-wfs m-layerswitcher-icons-check"></span></td>
                                 <td class="m-layerswitcher-table-layer-name" name="{{name}}" title="{{title}}">{{title}}</td>
                             </tr>
                         {{/each}}

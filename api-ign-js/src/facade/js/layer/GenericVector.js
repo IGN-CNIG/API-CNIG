@@ -4,13 +4,7 @@
 import GenericVectorImpl from 'impl/layer/GenericVector';
 import Utils from 'impl/util/Utils';
 import {
-  isNullOrEmpty,
-  isUndefined,
-  isFunction,
-  isArray,
-  normalize,
-  isString,
-  isObject,
+  isUndefined, isArray, isNullOrEmpty, isFunction, isObject, isString, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';
@@ -111,7 +105,7 @@ class GenericVector extends Vector {
     const impl = new GenericVectorImpl(options, vOptions, 'vector');
 
     // calls the super constructor
-    super(params, options, vOptions, impl);
+    super(params, options, undefined, impl);
 
     if (!isNullOrEmpty(impl) && isFunction(impl.setFacadeObj)) {
       impl.setFacadeObj(this);

@@ -34,13 +34,13 @@ module.exports = {
         test: /\.css$/i,
         use: [
           {
-            loader: "style-loader",
+            loader: 'style-loader',
             options: {
               // insert: 'head',
               injectType: 'singletonStyleTag',
             },
           },
-          "css-loader",
+          'css-loader',
         ],
         exclude: [/node_modules/],
       },
@@ -57,7 +57,7 @@ module.exports = {
   devServer: {
     // https: true,
     hot: true,
-    open: true,
+    // open: true,
     port: 6123,
     open: 'test/dev.html',
     static: {

@@ -4,7 +4,6 @@
  * Date ${build.timestamp}
  */
 
-
 const backgroundlayersOpts = [{
   id: 'mapa',
   title: 'Callejero',
@@ -45,8 +44,16 @@ params.forEach((param) => {
     const value = param.split('=')[1];
     srs = value;
   } else if (param.indexOf('layers') > -1) {
-    const value = param.substring(param.indexOf('=') + 1, param.length);
-    layers = value.split(',');
+    let value = param.substring(param.indexOf('=') + 1, param.length);
+
+    let layerGroups = [];
+    const regex = /LayerGroup\*.*?!/g;
+    if (value.match(regex) !== null) {
+      layerGroups = value.match(regex).map((item) => item.slice(0, -1));
+      value = value.replace(regex, '');
+    }
+
+    layers = value.split(',').filter((item) => item !== '').concat(layerGroups);
   }
 });
 
@@ -242,4 +249,36 @@ params.forEach((param) => {
    * @type {object}
    */
   M.config('MOVE_MAP_EXTRACT', true);
+
+  /**
+   * Hace el popup y dialog inteligente
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('POPUP_INTELLIGENCE', {
+    activate: true,
+    sizes: {
+      images: ['120px', '75px'],
+      videos: ['500px', '300px'],
+      documents: ['500px', '300px'],
+      audios: ['250px', '40px'],
+    },
+  });
+
+  /**
+   * Hace el dialog inteligente
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('DIALOG_INTELLIGENCE', {
+    activate: true,
+    sizes: {
+      images: ['120px', '75px'],
+      videos: ['500px', '300px'],
+      documents: ['500px', '300px'],
+      audios: ['250px', '40px'],
+    },
+  });
 }(window.M));

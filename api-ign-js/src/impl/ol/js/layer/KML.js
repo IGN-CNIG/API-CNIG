@@ -145,7 +145,7 @@ class KML extends Vector {
    * @param {M.impl.Map} map Implementación del mapa.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
     map.on(EventType.CHANGE_PROJ, this.setProjection_.bind(this), this);
@@ -170,7 +170,10 @@ class KML extends Vector {
     const olMap = this.map.getMapImpl();
     this.ol3Layer.setMaxZoom(this.maxZoom);
     this.ol3Layer.setMinZoom(this.minZoom);
-    olMap.addLayer(this.ol3Layer);
+
+    if (addLayer) {
+      olMap.addLayer(this.ol3Layer);
+    }
   }
 
   /**
@@ -181,9 +184,9 @@ class KML extends Vector {
    * @api stable
    */
   selectFeatures(features, coord, evt) {
-    // TODO: manage multiples features
-    const feature = features[0];
     if (this.extract === true) {
+      // TODO: manage multiples features
+      const feature = features[0];
       if (!isNullOrEmpty(feature)) {
         const featureName = feature.getAttribute('name');
         const featureDesc = feature.getAttribute('description');

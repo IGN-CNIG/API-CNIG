@@ -1,7 +1,4 @@
-/* eslint-disable  dot-notation */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-return-assign */
+/* eslint-disable dot-notation,no-prototype-builtins,no-return-assign */
 import colorchoropleth from 'templates/colorchoropleth';
 import { Binding } from './binding';
 import { getValue } from '../i18n/language';
@@ -99,14 +96,15 @@ export class ChoroplethBinding extends Binding {
   getOptionsTemplate() {
     let options = ChoroplethBinding.DEFAULT_OPTIONS_STYLE;
     if (this.style_ != null) {
-      let startColorVar = this.style_.getChoroplethStyles()[0].get('fill.color');
-      let endColorVar = this.style_.getChoroplethStyles().slice(-1)[0].get('fill.color');
-      startColorVar = startColorVar || this.style_.getChoroplethStyles()[0].get('stroke.color');
-      endColorVar = endColorVar || this.style_.getChoroplethStyles().slice(-1)[0].get('stroke.color');
+      const auxChoroplethStyles = this.style_.getChoroplethStyles();
+      let startColorVar = auxChoroplethStyles[0].get('fill.color');
+      let endColorVar = auxChoroplethStyles.slice(-1)[0].get('fill.color');
+      startColorVar = startColorVar || auxChoroplethStyles[0].get('stroke.color');
+      endColorVar = endColorVar || auxChoroplethStyles.slice(-1)[0].get('stroke.color');
 
       options = {
         attribute: this.style_.getAttributeName(),
-        ranges: this.style_.getChoroplethStyles().length,
+        ranges: auxChoroplethStyles.length,
         quantification: this.style_.getQuantification().name,
         startColor: startColorVar,
         endColor: endColorVar,
@@ -114,6 +112,7 @@ export class ChoroplethBinding extends Binding {
     }
     if (this.layer_ != null) {
       options['attributes'] = this.getAttributes();
+      // eslint-disable-next-line no-param-reassign
       options['attributes'].forEach((attribute) => attribute['selected'] = options.attribute);
     }
     return options;

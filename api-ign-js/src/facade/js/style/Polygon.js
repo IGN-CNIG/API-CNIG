@@ -3,7 +3,7 @@
  */
 import PolygonImpl from 'impl/style/Polygon';
 import Simple from './Simple';
-import { isNullOrEmpty, extendsObj } from '../util/Utils';
+import { isNull, extendsObj } from '../util/Utils';
 
 /**
  * @classdesc
@@ -33,19 +33,22 @@ class Polygon extends Simple {
    * - renderer: Renderizado.
    *     - property: Propiedades.
    *     - stoke (color y width).
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base.
    * @api
    */
-  constructor(optionsParam = {}) {
+  constructor(optionsParam = {}, vendorOptions = undefined) {
     let options = optionsParam;
-
-    const impl = new PolygonImpl(options);
-
-    super(options, impl);
-
-    if (isNullOrEmpty(options)) {
-      options = Polygon.DEFAULT_NULL;
+    if (vendorOptions) {
+      options = {};
+    } else {
+      if (isNull(options) || Object.keys(options).length === 0) {
+        options = Polygon.DEFAULT_NULL;
+      }
+      options = extendsObj({}, options);
     }
-    options = extendsObj({}, options);
+
+    const impl = new PolygonImpl(options, vendorOptions);
+    super(options, impl);
   }
 
   /**
@@ -58,6 +61,20 @@ class Polygon extends Simple {
    */
   getDeserializedMethod_() {
     return "((serializedParameters) => M.style.Simple.deserialize(serializedParameters, 'M.style.Polygon'))";
+  }
+
+  /**
+   * Este método clona el estilo.
+   *
+   * @public
+   * @return {M.style.Polygon} Devuelve un "new Polygon".
+   * @function
+   * @api
+   */
+  clone() {
+    const optsClone = {};
+    extendsObj(optsClone, this.options_);
+    return new this.constructor(optsClone);
   }
 }
 

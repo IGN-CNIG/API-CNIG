@@ -115,7 +115,7 @@ module.exports = {
     new AllowMutateEsmExports(),
     new webpack.HotModuleReplacementPlugin(),
     new ESLintPlugin({
-      // extensions: [`js`, `jsx`],
+      // extensions: ['js', 'jsx'],
       files: 'src/**/*.js',
       exclude: ['**/node_modules/**', '/lib/', '/test/', '/dist/'],
     }),

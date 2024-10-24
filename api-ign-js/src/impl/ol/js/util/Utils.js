@@ -4,7 +4,7 @@
 import Feature from 'M/feature/Feature';
 import * as WKT from 'M/geom/WKT';
 import { isNullOrEmpty, isString, generateRandom } from 'M/util/Utils';
-import { getWidth, extend } from 'ol/extent';
+import { extend, getWidth } from 'ol/extent';
 import { get as getProj, getTransform, transformExtent } from 'ol/proj';
 import OLFeature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
@@ -63,10 +63,10 @@ const getFullCoordinates = (oldCoordinates, newXY) => {
   * @api
   */
 const getXY = (coordinatesSet) => {
-  const coordinateCopy = [];
-  for (let i = 0; i < coordinatesSet.length; i += 1) coordinateCopy.push(coordinatesSet[i]);
-  while (coordinateCopy.length > 2) coordinateCopy.pop();
-  return coordinateCopy;
+  const copyCoord = [];
+  const size = coordinatesSet.length > 2 ? 2 : coordinatesSet.length;
+  for (let i = 0; i < size; i += 1) copyCoord.push(coordinatesSet[i]);
+  return copyCoord;
 };
 
 /**
@@ -222,7 +222,6 @@ class Utils {
     let newMinZoom;
     let newMaxZoom;
     const generatedResolutions = [];
-    const defaultMaxZoom = 20;
     // extent
     if (isNullOrEmpty(extent)) {
       newExtent = projection.getExtent();
@@ -234,6 +233,7 @@ class Utils {
       newMinZoom = 0;
     }
     if (isNullOrEmpty(maxZoom)) {
+      const defaultMaxZoom = 20;
       newMaxZoom = defaultMaxZoom;
     }
     const zoomLevels = newMaxZoom - newMinZoom;
@@ -372,10 +372,8 @@ class Utils {
     */
   static getCentroid(geometry) {
     let centroid;
-    let coordinates;
     let medianIdx;
     let points;
-    let lineStrings;
     if (isNullOrEmpty(geometry)) {
       centroid = null;
     } else if (geometry instanceof RenderFeature) {
@@ -387,7 +385,7 @@ class Utils {
           break;
         case 'LineString':
         case 'LinearRing':
-          coordinates = geometry.getCoordinates();
+          const coordinates = geometry.getCoordinates();
           medianIdx = Math.floor(coordinates.length / 2);
           centroid = coordinates[medianIdx];
           break;
@@ -400,7 +398,7 @@ class Utils {
           centroid = Utils.getCentroid(points[medianIdx]);
           break;
         case 'MultiLineString':
-          lineStrings = geometry.getLineStrings();
+          const lineStrings = geometry.getLineStrings();
           medianIdx = Math.floor(lineStrings.length / 2);
           centroid = Utils.getCentroid(lineStrings[medianIdx]);
           break;
@@ -440,8 +438,9 @@ class Utils {
       const geometry = olFeatures[0].getGeometry();
       if (geometry.getType() === 'Point') {
         const units = getUnitsPerMeter(projectionCode, 1000);
-        const coordX = geometry.getCoordinates()[0];
-        const coordY = geometry.getCoordinates()[1];
+        const auxCoord = geometry.getCoordinates();
+        const coordX = auxCoord[0];
+        const coordY = auxCoord[1];
         extents = [
           [
             coordX - units,
@@ -469,8 +468,6 @@ class Utils {
     let coordinates;
     let medianIdx;
     let points;
-    let lineStrings;
-    let geometries;
     // POINT
     if (geometry.getType() === WKT.POINT) {
       centroid = geometry.getCoordinates();
@@ -492,7 +489,7 @@ class Utils {
       medianIdx = Math.floor(points.length / 2);
       centroid = Utils.getCentroidCoordinate(points[medianIdx]);
     } else if (geometry.getType() === WKT.MULTI_LINE_STRING) {
-      lineStrings = geometry.getLineStrings();
+      const lineStrings = geometry.getLineStrings();
       medianIdx = Math.floor(lineStrings.length / 2);
       centroid = Utils.getCentroidCoordinate(lineStrings[medianIdx]);
     } else if (geometry.getType() === WKT.MULTI_POLYGON) {
@@ -501,7 +498,7 @@ class Utils {
     } else if (geometry.getType() === WKT.CIRCLE) {
       centroid = geometry.getCenter();
     } else if (geometry.getType() === WKT.GEOMETRY_COLLECTION) {
-      geometries = geometry.getGeometries();
+      const geometries = geometry.getGeometries();
       medianIdx = Math.floor(geometries.length / 2);
       centroid = Utils.getCentroidCoordinate(geometries[medianIdx]);
     }
@@ -626,8 +623,6 @@ class Utils {
   static getGeometryFromRenderFeature(olRenderFeature) {
     let geometry;
     const coordinates = olRenderFeature.getFlatCoordinates();
-    const ends = olRenderFeature.getEnds();
-    const endss = olRenderFeature.getEndss();
     const type = olRenderFeature.getType();
     switch (type) {
       case 'Point':
@@ -646,9 +641,11 @@ class Utils {
         geometry = new MultiPoint(coordinates);
         break;
       case 'MultiLineString':
+        const ends = olRenderFeature.getEnds();
         geometry = new MultiLineString(coordinates, undefined, ends);
         break;
       case 'MultiPolygon':
+        const endss = olRenderFeature.getEndss();
         geometry = new MultiPolygon(coordinates, undefined, endss);
         break;
       case 'GeometryCollection':

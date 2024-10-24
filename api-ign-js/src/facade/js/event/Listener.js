@@ -1,7 +1,7 @@
 /**
  * @module M/evt/Listener
  */
-import { isArray, generateRandom, isFunction } from '../util/Utils';
+import { isArray, isFunction, generateRandom } from '../util/Utils';
 
 /**
   * @classdesc

@@ -1,7 +1,4 @@
-/* eslint-disable  dot-notation */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-param-reassign */
-
+/* eslint-disable dot-notation,no-prototype-builtins */
 import * as chroma from 'chroma-js';
 import { getValue } from '../i18n/language';
 import { Binding } from './binding';
@@ -157,6 +154,7 @@ export class SimpleCategoryBinding extends Binding {
    */
   togglePathSection(flag) {
     this.querySelectorAllForEach('[data-textpath]', (element) => {
+      // eslint-disable-next-line no-param-reassign
       element.disabled = flag === true ? flag : false;
     });
   }

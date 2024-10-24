@@ -8,6 +8,8 @@ import Base from '../Base';
 import * as EventType from '../event/eventtype';
 import { getValue } from '../i18n/language';
 
+const mouseMoveDelay = 50;
+
 /**
  * @classdesc
  * Clase para manipular los objetos geográficos.
@@ -107,33 +109,27 @@ class Features extends Base {
       this.map_.removePopup();
 
       this.layers_.forEach((layer, i) => {
-        const clickedFeatures = impl.getFeaturesByLayer(evt, layer);
-        const prevFeatures = [...(this.prevSelectedFeatures_[layer.name])];
-        // no features selected then unselect prev selected features
-        if (prevFeatures[0] === clickedFeatures[0] && i === 1 && clickedFeatures !== []) {
-          if (layer.infoEventType === 'click') {
+        if (layer.infoEventType === 'click') {
+          const clickedFeatures = impl.getFeaturesByLayer(evt, layer);
+          const prevFeatures = [...(this.prevSelectedFeatures_[layer.name])];
+          // no features selected then unselect prev selected features
+          if (i === 1 && prevFeatures[0] === clickedFeatures[0]) {
             this.selectFeatures(prevFeatures, layer, evt);
           }
-        }
-        if (clickedFeatures.length === 0 && prevFeatures.length > 0) {
-          if (layer.infoEventType === 'click') {
+          if (clickedFeatures.length === 0 && prevFeatures.length > 0) {
             this.unselectFeatures(prevFeatures, layer, evt);
-          }
-        } else if (clickedFeatures.length > 0 && clickedFeatures[0] !== undefined) {
-          const newFeatures = clickedFeatures
-            .filter((f) => !prevFeatures.some((pf) => pf.equals(f)));
-          const diffFeatures = prevFeatures
-            .filter((f) => !clickedFeatures.some((pf) => pf.equals(f)));
-          // unselect prev selected features which have not been selected this time
-          if (diffFeatures.length > 0) {
-            if (layer.infoEventType === 'click') {
+          } else if (clickedFeatures.length > 0 && clickedFeatures[0] !== undefined) {
+            const newFeatures = clickedFeatures
+              .filter((f) => !prevFeatures.some((pf) => pf.equals(f)));
+            const diffFeatures = prevFeatures
+              .filter((f) => !clickedFeatures.some((pf) => pf.equals(f)));
+            // unselect prev selected features which have not been selected this time
+            if (diffFeatures.length > 0) {
               this.unselectFeatures(diffFeatures, layer, evt);
             }
-          }
 
-          // select new selected features
-          if (newFeatures.length > 0) {
-            if (layer.infoEventType === 'click') {
+            // select new selected features
+            if (newFeatures.length > 0) {
               this.selectFeatures(newFeatures, layer, evt);
             }
           }
@@ -179,6 +175,7 @@ class Features extends Base {
             if (newFeatures.length > 0) {
               if (layer.infoEventType === 'hover') {
                 this.selectFeatures(newFeatures, layer, e);
+                this.map_.getPopup().setCoordinate(evt.coord);
               }
               this.hoverFeatures_(newFeatures, layer, e);
             }
@@ -198,7 +195,6 @@ class Features extends Base {
    * @api
    */
   hookStopMoveEvent_(evt) {
-    const mouseMoveDelay = 50;
     clearTimeout(this.mouseMoverTimer);
 
     return new Promise((resolve) => {
@@ -251,8 +247,10 @@ class Features extends Base {
       layerImpl.unselectFeatures(features, evt.coord);
     }
 
-    // ! Tareas #6384/6860
-    if (this.map_.getPopup()) { this.map_.getPopup().hide(); }
+    if (layer.infoEventType === 'hover') {
+      // ! Tareas #6384/6860
+      if (this.map_.getPopup()) { this.map_.getPopup().hide(); }
+    }
     layer.fire(EventType.UNSELECT_FEATURES, [features, evt.coord]);
   }
 

@@ -8,12 +8,11 @@ import * as Align from 'M/style/Align';
 import OLStyleStroke from 'ol/style/Stroke';
 import OLStyleText from 'ol/style/Text';
 import OLGeomPolygon from 'ol/geom/Polygon';
-import { isNullOrEmpty } from 'M/util/Utils';
+import { isArray, isNullOrEmpty } from 'M/util/Utils';
 import OLStyleIcon from 'ol/style/Icon';
 import OLStyleFill from 'ol/style/Fill';
 import { toContext as toContextRender } from 'ol/render';
 import { getBottomLeft, getHeight, getWidth } from 'ol/extent';
-import { toContext } from 'ol/render';
 import RenderFeature from 'ol/render/Feature';
 import OLStyleFillPattern from '../ext/OLStyleFillPattern';
 import OLStyleStrokePattern from '../ext/OLStyleStrokePattern';
@@ -47,11 +46,20 @@ class Polygon extends Simple {
    * - renderer: Renderizado.
    *     - property: Propiedades.
    *     - stoke (color y width).
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base.
    * @api stable
    */
-  constructor(options) {
+  constructor(options, vendorOptions) {
     super(options);
-    this.olStyleFn_ = this.updateFacadeOptions(options);
+    let auxVendorOptions;
+    if (vendorOptions) {
+      if (isArray(vendorOptions)) {
+        auxVendorOptions = vendorOptions;
+      } else {
+        auxVendorOptions = [vendorOptions];
+      }
+    }
+    this.olStyleFn_ = this.updateFacadeOptions(options, auxVendorOptions);
   }
 
   /**
@@ -64,8 +72,15 @@ class Polygon extends Simple {
    * @return {Array<object>} Estilo de la fachada.
    * @api stable
    */
-  updateFacadeOptions(options) {
-    return (feature) => {
+  updateFacadeOptions(options, vendorOptions) {
+    const fnStyle = (feature) => {
+      if (vendorOptions) {
+        // #FIX_ST_VE_OP no esta diseñado de tal forma que solo se use una vez vendorOptions,
+        // aquí seguirá enviando el vendorOptions como resultado ya que solo se define a
+        // través de la styleFuntion. Por lo que se intenta arreglar de esta manera.
+        // this.olStyleFn_ = this.updateFacadeOptions(options);
+        return vendorOptions;
+      }
       let featureVariable = feature;
       if (!(featureVariable instanceof OLFeature || feature instanceof RenderFeature)) {
         featureVariable = this;
@@ -76,12 +91,12 @@ class Polygon extends Simple {
         if (!isNullOrEmpty(options.stroke.color)) {
           const fillColorValue = Simple
             .getValue(options.stroke.color, featureVariable, this.layer_);
-          let fillOpacityValue = Simple
-            .getValue(options.stroke.opacity, featureVariable, this.layer_);
-          if (!fillOpacityValue && fillOpacityValue !== 0) {
-            fillOpacityValue = 1;
-          }
           if (!isNullOrEmpty(fillColorValue)) {
+            let fillOpacityValue = Simple
+              .getValue(options.stroke.opacity, featureVariable, this.layer_);
+            if (!fillOpacityValue && fillOpacityValue !== 0) {
+              fillOpacityValue = 1;
+            }
             fill = new OLStyleFill({
               color: chroma(fillColorValue).alpha(fillOpacityValue).css(),
             });
@@ -175,12 +190,13 @@ class Polygon extends Simple {
       }
       if (!isNullOrEmpty(options.fill)) {
         const fillColorValue = Simple.getValue(options.fill.color, featureVariable, this.layer_);
-        let fillOpacityValue = Simple.getValue(options.fill.opacity, featureVariable, this.layer_);
-        if (!fillOpacityValue && fillOpacityValue !== 0) {
-          fillOpacityValue = 1;
-        }
         let fill;
         if (!isNullOrEmpty(fillColorValue)) {
+          let fillOpacityValue = Simple
+            .getValue(options.fill.opacity, featureVariable, this.layer_);
+          if (!fillOpacityValue && fillOpacityValue !== 0) {
+            fillOpacityValue = 1;
+          }
           fill = new OLStyleFill({
             color: chroma(fillColorValue).alpha(fillOpacityValue).css(),
           });
@@ -244,7 +260,7 @@ class Polygon extends Simple {
             return;
           }
           context.save();
-          const renderContext = toContext(context, {
+          const renderContext = toContextRender(context, {
             pixelRatio: 1,
           });
           renderContext.setFillStrokeStyle(fill, stroke);
@@ -260,6 +276,8 @@ class Polygon extends Simple {
       }
       return [style];
     };
+    this.olStyleFn_ = fnStyle;
+    return fnStyle;
   }
 
   /**

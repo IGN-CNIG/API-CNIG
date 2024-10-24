@@ -264,6 +264,7 @@ export default class ShareMap extends M.Plugin {
       order: this.order,
       filterLayers: this.filterLayers,
       shareLayer: this.shareLayer,
+      addBaseLayer: this.addBaseLayer,
     });
 
     this.controls_.push(this.control);

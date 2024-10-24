@@ -99,7 +99,7 @@ class Vector extends Layer {
    * @param {M.impl.Map} map Implementación del mapa.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
     map.on(EventType.CHANGE_PROJ, this.setProjection_.bind(this), this);
@@ -109,8 +109,11 @@ class Vector extends Layer {
       this.setOpacity(this.opacity_);
     }
     this.setVisible(this.visibility);
-    const olMap = this.map.getMapImpl();
-    olMap.addLayer(this.ol3Layer);
+    if (addLayer) {
+      const olMap = this.map.getMapImpl();
+      olMap.addLayer(this.ol3Layer);
+    }
+
     this.ol3Layer.setMaxZoom(this.maxZoom);
     this.ol3Layer.setMinZoom(this.minZoom);
     this.ol3Layer.setExtent(this.maxExtent_);
@@ -270,7 +273,7 @@ class Vector extends Layer {
    * @api stable
    */
   getFeatureById(id) {
-    return this.features_.filter((feature) => feature.getId() === id)[0];
+    return this.features_.find((feature) => feature.getId() === id);
   }
 
   /**
@@ -425,6 +428,32 @@ class Vector extends Layer {
       equals = true;
     }
     return equals;
+  }
+
+  /**
+   * Este método devuelve la extensión de todos los objetos geográficos, se
+   * le puede pasar un filtro. Asíncrono.
+   *
+   * @function
+   * @param {boolean} skipFilter Indica si se filtra por el filtro "skip".
+   * @param {M.Filter} filter Filtro.
+   * @return {Array<number>} Extensión de los objetos geográficos.
+   * @api stable
+   */
+  getFeaturesExtentPromise(skipFilter, filter) {
+    return new Promise((resolve) => {
+      const codeProj = this.map.getProjection().code;
+      if (this.isLoaded() === true) {
+        const features = this.getFeatures(skipFilter, filter);
+        const extent = ImplUtils.getFeaturesExtent(features, codeProj);
+        resolve(extent);
+      } else {
+        this.requestFeatures_().then((features) => {
+          const extent = ImplUtils.getFeaturesExtent(features, codeProj);
+          resolve(extent);
+        });
+      }
+    });
   }
 
   /**

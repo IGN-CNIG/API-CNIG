@@ -28,7 +28,7 @@ module.exports = {
       fs: false,
       path: false,
       crypto: false,
-      "assert": require.resolve("assert/"),
+      'assert': require.resolve('assert/'),
     },
   },
   module: {
@@ -52,13 +52,13 @@ module.exports = {
         test: /\.css$/i,
         use: [
           {
-            loader: "style-loader",
+            loader: 'style-loader',
             options: {
               // insert: 'head',
               injectType: 'singletonStyleTag',
             },
           },
-          "css-loader",
+          'css-loader',
         ],
         exclude: [/node_modules/],
       },
@@ -75,14 +75,14 @@ module.exports = {
       process: 'process/browser',
     }),
     new ESLintPlugin({
-      // extensions: [`js`, `jsx`],
+      // extensions: ['js', 'jsx'],
       files: 'src/**/*.js',
       exclude: ['**/node_modules/**', '/lib/', '/test/', '/dist/'],
     }),
   ],
   devServer: {
     hot: true,
-    open: true,
+    // open: true,
     port: 6123,
     open: 'test/dev.html',
     static: {

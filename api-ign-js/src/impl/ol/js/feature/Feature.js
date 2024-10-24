@@ -89,7 +89,7 @@ class Feature {
   getAttributes() {
     const properties = this.olFeature_.getProperties();
     const geometry = properties.geometry;
-    if (!isNullOrEmpty(geometry) && geometry instanceof OLGeomGeometry) {
+    if (geometry instanceof OLGeomGeometry) {
       delete properties.geometry;
     }
     return properties;

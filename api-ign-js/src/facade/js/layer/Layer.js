@@ -5,16 +5,8 @@ import Exception from '../exception/exception';
 import * as parserParameter from '../parameter/parameter';
 import Base from '../Base';
 import {
-  isNullOrEmpty,
-  concatUrlPaths,
-  isUndefined,
-  normalize,
-  isString,
-  isFunction,
-  generateRandom,
-  isBoolean,
-  isArray,
-  isObject,
+  isUndefined, isBoolean, isArray, isNullOrEmpty, isFunction, isObject, isString,
+  normalize, generateRandom, concatUrlPaths,
 } from '../util/Utils';
 import { getValue } from '../i18n/language';
 
@@ -41,8 +33,15 @@ class LayerBase extends Base {
    * @constructor
    * @extends {M.facade.Base}
    * @param {string|Mx.parameters.Layer} userParameters Parámetros proporcionados por el usuario.
+   * - attribution: Atribución de la capa.
+   * - name: Nombre de la capa.
    * - isBase: Indica si la capa es base.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - minZoom. Zoom mínimo aplicable a la capa.
+   * - maxZoom. Zoom máximo aplicable a la capa.
+   * - url: url del servicio.
    * @param {Object} impl Implementación.
    * @api
    */
@@ -128,6 +127,8 @@ class LayerBase extends Base {
      * Zoom máximo aplicable a la capa.
      */
     this.maxZoom = parameter.maxZoom || Number.POSITIVE_INFINITY;
+
+    this.idLayer = generateRandom(parameter.type, parameter.name);
   }
 
   /**
@@ -453,31 +454,6 @@ class LayerBase extends Base {
   }
 
   /**
-   * Devuelve el "layerGroup".
-   *
-   * @function
-   * @returns {M.layer.impl.layerGroup} Valor del "layerGroup" (grupo de capas).
-   * @api stable
-   * @expose
-   */
-  getLayerGroup() {
-    return this.getImpl().layerGroup;
-  }
-
-  /**
-   * Sobrescribe el "layerGroup" (grupo de capas) de la implementación.
-   *
-   * @function
-   * @param {M.layer.layerGroup} layerGroup Nuevo valor para la propiedad
-   * "layerGroup" (grupo de capas).
-   * @api stable
-   * @expose
-   */
-  setLayerGroup(layerGroup) {
-    this.getImpl().layerGroup = layerGroup;
-  }
-
-  /**
    * Este método indica si la capa es visible.
    *
    * @function
@@ -603,8 +579,19 @@ class LayerBase extends Base {
    * @api
    */
   setZIndex(zIndex) {
-    this.zindex_ = zIndex;
-    this.getImpl().setZIndex(zIndex);
+    let newZIndex = zIndex;
+    const rootGroup = this.getImpl().rootGroup;
+    if (rootGroup) {
+      // Si pertenece a un grupo se comprueba que no se salga de
+      // los límites superior e inferior de zindex
+      if (zIndex >= rootGroup.getZIndex()) {
+        newZIndex = rootGroup.getZIndex() - 1;
+      } else if (zIndex <= rootGroup.getZIndex() - rootGroup.getTotalLayers()) {
+        newZIndex = rootGroup.getZIndex() - rootGroup.getTotalLayers() + 1;
+      }
+    }
+    this.zindex_ = newZIndex;
+    this.getImpl().setZIndex(newZIndex);
   }
 
   /**

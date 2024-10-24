@@ -5,9 +5,8 @@ exports.handlers = {
 
   newDoclet: function(e) {
     const doclet = e.doclet;
-    let cls;
     if (doclet.kind == 'event') {
-      cls = doclet.longname.split('#')[0];
+      let cls = doclet.longname.split('#')[0];
       if (!(cls in events)) {
         events[cls] = [];
       }

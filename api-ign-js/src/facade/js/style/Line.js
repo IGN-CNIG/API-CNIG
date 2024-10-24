@@ -3,7 +3,7 @@
  */
 import StyleLineImpl from 'impl/style/Line';
 import Simple from './Simple';
-import { isNullOrEmpty, extendsObj } from '../util/Utils';
+import { isNull, extendsObj } from '../util/Utils';
 
 /**
  * @classdesc
@@ -32,16 +32,21 @@ class Line extends Simple {
    *    - color: Color.
    *    - opacity: Opacidad.
    *    - pattern: Propiedades (name, src, color, size, spacing, rotation, scale, offset)
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base.
    * @api
    */
-  constructor(optionsVar) {
+  constructor(optionsVar, vendorOptions) {
     let options = optionsVar;
-    if (isNullOrEmpty(options)) {
-      options = Line.DEFAULT_NULL;
+    if (vendorOptions) {
+      options = {};
+    } else {
+      if (isNull(options) || Object.keys(options).length === 0) {
+        options = Line.DEFAULT_NULL;
+      }
+      options = extendsObj({}, options);
     }
-    options = extendsObj({}, options);
 
-    const impl = new StyleLineImpl(options);
+    const impl = new StyleLineImpl(options, vendorOptions);
     super(options, impl);
   }
 
@@ -67,6 +72,20 @@ class Line extends Simple {
    */
   getDeserializedMethod_() {
     return "((serializedParameters) => M.style.Simple.deserialize(serializedParameters, 'M.style.Line'))";
+  }
+
+  /**
+   * Este método clona el estilo.
+   *
+   * @public
+   * @return {M.style.Line} Devuelve un "new Line".
+   * @function
+   * @api
+   */
+  clone() {
+    const optsClone = {};
+    extendsObj(optsClone, this.options_);
+    return new this.constructor(optsClone);
   }
 }
 

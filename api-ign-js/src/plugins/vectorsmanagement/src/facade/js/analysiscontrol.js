@@ -68,7 +68,11 @@ export default class AnalysisControl extends M.Control {
    * @api
    */
   destroyLayerBuffer(layers) {
-    const bufferLayer = layers.filter((l) => { return l.name === 'bufferLayer'; });
+    let layersParam = layers;
+    if (!M.utils.isArray(layers)) {
+      layersParam = [layers];
+    }
+    const bufferLayer = layersParam.filter((l) => { return l.name === 'bufferLayer'; });
     if (bufferLayer.length > 0) {
       this.bufferLayer = null;
     }

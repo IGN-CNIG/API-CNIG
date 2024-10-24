@@ -3,11 +3,7 @@
  * @module M/impl/layer/MapLibre
  */
 import {
-  isNull,
-  getResolutionFromScale,
-  isNullOrEmpty,
-  includes,
-  isString,
+  isNull, isNullOrEmpty, isString, getResolutionFromScale, includes,
 } from 'M/util/Utils';
 import geojsonPopupTemplate from 'templates/geojson_popup';
 import { compileSync as compileTemplate } from 'M/util/Template';
@@ -128,7 +124,7 @@ class MapLibre extends LayerBase {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
@@ -145,7 +141,10 @@ class MapLibre extends LayerBase {
     this.setZooms_();
     this.setResolutions_();
     this.setVisible(this.visibility_);
-    this.map.getMapImpl().addLayer(this.ol3Layer);
+
+    if (addLayer) {
+      this.map.getMapImpl().addLayer(this.ol3Layer);
+    }
 
     if (this.disableBackgroundColor !== undefined) {
       this.changeDisableBackgroundColor_();
@@ -201,7 +200,7 @@ class MapLibre extends LayerBase {
       const mapLibreMap = this.ol3Layer.mapLibreMap;
 
       const layers = mapLibreMap.getStyle().layers;
-      const idBackground = layers.filter(({ type }) => type === 'background')[0].id;
+      const idBackground = layers.find(({ type }) => type === 'background').id;
 
       if (this.disableBackgroundColor === true) {
         mapLibreMap.setPaintProperty(idBackground, 'background-color', 'transparent');
@@ -373,14 +372,14 @@ class MapLibre extends LayerBase {
    * Este método se ejecuta cuando se selecciona un objeto geográfico.
    * @public
    * @function
-   * @param {ol.Feature} feature Objetos geográficos de Openlayers.
+   * @param {ol.Feature} features Objetos geográficos de Openlayers.
    * @param {Array} coord Coordenadas.
    * @param {Object} evt Eventos.
    * @api stable
    */
   selectFeatures(features, coord, evt) {
-    const feature = features[0];
     if (this.extract === true) {
+      const feature = features[0];
       this.unselectFeatures();
       if (!isNullOrEmpty(feature)) {
         const htmlAsText = compileTemplate(geojsonPopupTemplate, {
@@ -455,7 +454,7 @@ class MapLibre extends LayerBase {
    * @api stable
    */
   getFeatureById(id) {
-    return this.features_.filter((feature) => feature.getId() === id)[0];
+    return this.features_.find((feature) => feature.getId() === id);
   }
 
   /**

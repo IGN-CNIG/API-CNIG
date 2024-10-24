@@ -67,6 +67,11 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     max-width: 250px;
 }
 
+.m-layerswitcher-title-box:hover {
+    cursor: pointer;
+    color: #71a7d3;
+}
+
 /* Título */
 .m-layerswitcher-title {
     font-weight: bold !important;
@@ -91,7 +96,7 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
 
 /* Listado de capas */
 .m-layerswitcher-container li div {
-    font-family: sans-serif;
+    display: flex;
     font-size: 0.8em;
     overflow: hidden;
     line-height: 1.4em;
@@ -100,8 +105,17 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     font-size: 15px;
 }
 
+.m-layerswitcher-radioGroup {
+    margin: 10px;
+} 
+
 .m-layerswitcher-content {
     text-align: left;
+}
+
+.m-layerswitcher-content ul li {
+  border: 1px solid rgba(138, 134, 134, 0.73);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
 }
 
 #m-layerswitcher-panel>ul {
@@ -109,12 +123,29 @@ div.m-areas div.m-area .m-panel.m-plugin-layerswitcher.opened {
     padding: 0px;
 }
 
-ul.m-layerswitcher-ullayers>li {
+.m-layerswitcher-sectionPanel {
     background-color: white;
     margin-bottom: 5px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
     overflow: hidden;
+}
+
+.m-layerswitcher-sectionPanel-header-text {
+    margin: 4px;
+}
+
+.m-layerswitcher-sectionPanel-header-text:hover {
+    cursor: pointer;
+    color: #71a7d3;
+}
+
+.m-layerswitcher-sectionPanel-header-text span {
+    margin-right: 2px;
+}
+
+.m-layerswitcher-ullayersGroup {
+    padding: 5px;
 }
 
 ul.m-layerswitcher-ullayers {
@@ -127,6 +158,42 @@ ul.m-layerswitcher-ullayers {
     max-width: 50vw;
 }
 
+ul.m-layerswitcher-ullayers .m-layerswitcher-sectionPanel-colorPanel button,
+ul.m-layerswitcher-ullayers .m-layerswitcher-sectionPanel-colorPanel li button {
+    background-color: #f4f4f400
+}
+
+ul.m-layerswitcher-ullayers .m-layerswitcher-sectionPanel-colorPanel input,
+ul.m-layerswitcher-ullayers .m-layerswitcher-sectionPanel-colorPanel li input {
+    background-color: #f4f4f400
+}
+
+ul.m-layerswitcher-ullayers .m-layerswitcher-sectionPanel-colorPanel {
+    background-color: #f4f4f4;
+}
+
+ul.m-layerswitcher-ullayers .m-layerswitcher-sectionPanel-colorPanel li {
+    background-color: #ffffff;
+}
+
+ul.m-layerswitcher-ullayers .m-layerswitcher-sectionPanel-colorPanel .m-layerswitcher-sectionPanel-colorPanel{
+    background-color: #e4f4ff;
+}
+
+ul.m-layerswitcher-ullayers .m-layerswitcher-sectionPanel-colorPanel .m-layerswitcher-sectionPanel-colorPanel li {
+    background-color: #f0f9ff;
+}
+
+ul.m-layerswitcher-ullayers .m-layerswitcher-sectionPanel-colorPanel .m-layerswitcher-sectionPanel-colorPanel .m-layerswitcher-sectionPanel-colorPanel{
+    background-color: #e2e2e291;
+}
+
+ul.m-layerswitcher-ullayers .m-layerswitcher-sectionPanel-colorPanel .m-layerswitcher-sectionPanel-colorPanel .m-layerswitcher-sectionPanel-colorPanel li {
+    background-color: #ffffff91;
+}
+
+
+
 /* Etiqueta tipo */
 .m-layerswitcher-container .m-layerswitcher-type {
     color: white;
@@ -136,6 +203,15 @@ ul.m-layerswitcher-ullayers {
     font-weight: bold;
 }
 
+.m-layerswitcher-groupDisplay {
+    font-size: 1.1rem;
+    margin-top: 4px;
+}
+
+.m-layerswitcher-sectionPanel-header-tools {
+    height: 40px;
+    gap: 0px !important;
+}
 
 /* Icono ver */
 .m-layerswitcher-title-layer {
@@ -146,6 +222,35 @@ ul.m-layerswitcher-ullayers {
 
 .m-layerswitcher-visible-control {
     width: 10%;
+}
+
+.m-layerswitcher-sectionPanel-header-bt {
+    justify-content: space-around;
+}
+
+.m-layerswitcher-sectionPanel-header-bt-desplegar {
+    font-weight: bold;
+}
+
+
+.m-layerswitcher-sectionPanel-header div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.m-layerswitcher-sectionPanel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0 0 5px;
+}
+
+.m-layerswitcher-visible-control-button {
+    border: 1px solid rgba(0,0,0,.1) !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,.3);
+    cursor: pointer;
+    background-color: transparent;
 }
 
 .m-layerswitcher-visible-control > button {
@@ -209,6 +314,10 @@ ul.m-layerswitcher-ullayers {
     color: #9a9a9a;
 }
 
+.m-layerswitcher-radio {
+    justify-content: center;
+}
+
 /* Estilo personalizado para los inputs de tipo radio */
 .m-layerswitcher-container input[type="radio"] {
     border-color: #6abe47;
@@ -225,6 +334,40 @@ ul.m-layerswitcher-ullayers {
     border: 2px solid #6abe47;
 }
 
+.m-layerswitcher-change-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.m-layerswitcher-change-name p {
+    text-align: center;
+    width: 100%;
+}
+
+.m-layerswitcher-change-name p input {
+    width: 70%;
+}
+
+.m-layerswitcher-change-name button {
+    width: 90px;
+    background-color: rgb(113, 167, 211);
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+    font-weight: 700;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+
+.m-layerswitcher-sectionPanel-header div input[type="radio"] {
+    margin-right: 5px;
+    margin-left: 10px;
+}
+
 .m-layerswitcher-container input[type="radio"]:checked {
     background-color: #6abe47;
     border-color: #6abe47;
@@ -239,14 +382,15 @@ ul.m-layerswitcher-ullayers {
 }
 
 /* Input range */
-.m-layerswitcher-container .m-layerswitcher-tools .m-layerswitcher-opacity {
+.m-layerswitcher-tools .m-layerswitcher-opacity {
     margin-left: 10px;
     min-width: 50%;
     max-width: 50%;
 }
 
-.m-layerswitcher-container .m-layerswitcher-tools {
+.m-layerswitcher-tools {
     margin-top: -0.5rem;
+    padding: 5px 0 10px 0;
     display: flex;
     flex-wrap: wrap;
     border-top: 1px solid #f1ecec;
@@ -309,10 +453,9 @@ input[type=range].m-layerswitcher-transparency:focus {
 
 /* legend */
 .m-layerswitcher-action-tools {
-    /* width: 40%; */
+    display: flex;
     text-align: left !important;
-    margin-right: 5%;
-    margin-left: 5%;
+    padding: 5px 10px 5px 10px;
 }
 
 .m-layerswitcher-action-tools span {
@@ -340,7 +483,8 @@ input[type=range].m-layerswitcher-transparency:focus {
 .m-layerswitcher-icons-lista,
 .m-layerswitcher-suggestion,
 .m-layerswitcher-icons-doc-text,
-.m-layerswitcher-icons-upload
+.m-layerswitcher-icons-upload,
+.m-layerswitcher-icons-layer-group
 {
     background-color: #ffffff;
     border: none;
@@ -490,6 +634,7 @@ div.m-layerswitcher-legend>img {
 .m-layerswitcher-gray-shadow {
     opacity: 0.3;
     background-color: #D1E6F8;
+
 }
 
 /* leyenda */
@@ -635,6 +780,50 @@ div.m-layerswitcher-legend>img {
 /* Mobile fix */
 
 @media only screen and (max-width: 768px) {
+
+    .sortable-chosen .m-layerswitcher-type {
+        color: white;
+        background-color: #9a9a9a;
+        padding: 3px 7px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    /* Ocultar cuando se mueve drag and drop*/
+    .sortable-chosen ul li, .sortable-chosen .m-layerswitcher-tools {
+        display: none;
+    }
+
+    ul.m-layerswitcher-ullayersGroup li {
+        list-style: none !important;
+    }
+
+    .sortable-chosen {
+        color: #6c6c6c;
+        font-family: Muli, "sans-serif" !important;
+        font-size: 13px;
+        height: 100%;
+    
+        list-style: none;
+    
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        gap: 20px;
+    
+        line-height: 40px;
+        text-align: center;
+        font-size: 15px;
+    }
+    
+    .m-layerswitcher-sectionPanel-header-text {
+        white-space: nowrap; 
+        overflow: hidden;            
+        text-overflow: ellipsis;   
+        width: 200px; 
+    }
+
     .m-plugin-layerswitcher.opened {
         width: 100vw;
         height: 100vh;
@@ -916,7 +1105,7 @@ table#m-layerswitcher-table.m-layerswitcher-tablepagination tbody tr:hover {
     color: #6c6c6c;
 }
 
-.m-layerswitcher-icons-desplegar {
+.m-layerswitcher-icons-desplegar, .m-layerswitcher-icons-colapsar{
     background-color: #ffffff;
     border: none;
     color: #6c6c6c;
@@ -1211,3 +1400,48 @@ div.m-dialog.info div.m-button > button {
 .m-dialog.error div.m-button>button {
     background-color: #71a7d3 !important;
 }
+
+button.g-cartografia-flecha-izquierda + div .m-layerswitcher-ullayersGroup {
+    padding-left: 10px;
+}
+
+button.g-cartografia-flecha-derecha + div .m-layerswitcher-ullayersGroup {
+    padding-right: 10px;
+}
+
+.m-layerswitcher-groups-fields-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.m-layerswitcher-groups-fields-container > div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.m-layerswitcher-groups-fields {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #464646;
+    cursor: pointer;
+    font-family: Muli, sans-serif;
+    font-size: 13px;
+    padding: 5px;
+    margin-top: 5px;
+    width: 60%;
+}
+
+li.m-layerswitcher-sectionPanel[data-layer-type="LayerGroup"]:has(> section div button.m-layerswitcher-icons-ocultar) > ul > li button.m-layerswitcher-icons-ver {
+    color: #9a9a9a !important;
+}
+
+li[data-layer-type="LayerGroup"]:not(:has(> section div input[type="radio"]:checked)) > ul > li input[type="radio"]:checked{
+    background-color: #9a9a9a !important;
+    border-color: #9a9a9a !important;
+}
+

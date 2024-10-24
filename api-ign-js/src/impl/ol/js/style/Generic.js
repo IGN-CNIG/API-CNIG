@@ -2,10 +2,7 @@
  * @module M/impl/style/Generic
  */
 import {
-  isFunction,
-  isUndefined,
-  isDynamic,
-  drawDynamicStyle,
+  isUndefined, isArray, isFunction, isDynamic, drawDynamicStyle,
 } from 'M/util/Utils';
 import OLFeature from 'ol/Feature';
 import RenderFeature from 'ol/render/Feature';
@@ -40,14 +37,15 @@ class Generic extends Simple {
   /**
    * Constructor principal de la clase.
    * @constructor
-   * @param {Object} optionsVar Opciones del estilo.
+   * @param {Object} options Opciones del estilo.
    * - Point. Punto.
    * - Polygon. Polígono.
    * - Line. Linea.
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base.
    * @api stable
    */
-  constructor(options = {}) {
-    super(options);
+  constructor(options = {}, vendorOptions = undefined) {
+    super(options, vendorOptions);
 
     /**
      * @private
@@ -211,8 +209,21 @@ class Generic extends Simple {
    * @function
    * @api stable
    */
-  updateFacadeOptions(options) {
+  updateFacadeOptions(options, vendorOptions) {
     this.olStyleFn_ = (feature) => {
+      if (vendorOptions) {
+        // Generic vendorOptions, aplica su estilo a los POINT,LINE,POLYGON a la vez.
+        // #FIX_ST_VE_OP no esta diseñado de tal forma que solo se use una vez vendorOptions,
+        // aquí seguirá enviando el vendorOptions como resultado ya que solo se define a
+        // través de la styleFuntion. Por lo que se intenta arreglar de esta manera.
+        // this.updateFacadeOptions(options);
+        // eslint-disable-next-line no-underscore-dangle
+        // this.layer_.getImpl().ol3Layer.styleFunction_ = this.olStyleFn_;
+        if (isArray(vendorOptions)) {
+          return vendorOptions;
+        }
+        return [vendorOptions];
+      }
       const idFeature = JSON.stringify(feature.getProperties());
       let styles = [];
       this.styles_ = [];

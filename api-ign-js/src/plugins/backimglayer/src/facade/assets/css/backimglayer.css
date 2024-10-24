@@ -86,7 +86,7 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
 }
 
 .m-bottom.m-left>.m-plugin-backimglayer.opened>.m-panel-btn {
-    position: relative;
+    position: absolute;
     right: -40px;
 }
 
@@ -115,6 +115,10 @@ div[id^="m-backimglayer-lyr-"]:hover>span {
 /* Mobile fix */
 
 @media only screen and (max-width: 850px) {
+
+    .m-bottom.m-left>.m-plugin-backimglayer.opened>.m-panel-btn {
+        position: relative;
+    }
 
     .m-areas>div.m-area>div.m-panel.m-plugin-backimglayer.opened {
         z-index: 99999;

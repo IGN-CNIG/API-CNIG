@@ -4,7 +4,7 @@
  */
 import 'assets/css/dialog';
 import dialogTemplate from 'templates/dialog';
-import { isNullOrEmpty, isUndefined, transfomContent } from './util/Utils';
+import { isUndefined, isNullOrEmpty, transfomContent } from './util/Utils';
 import { compileSync as compileTemplate } from './util/Template';
 import { getValue } from './i18n/language';
 
@@ -54,10 +54,15 @@ export const show = (message, title, severity, order = 300, configuration = {}) 
     order,
   };
 
-  if (configuration.intelligence === true
-    || (!isUndefined(configuration.intelligence)
-      && (configuration.intelligence.activate === true))) {
-    vars.message = transfomContent(message, configuration.intelligence.sizes);
+  const intelligence = isUndefined(configuration.intelligence)
+    ? M.config.DIALOG_INTELLIGENCE : configuration.intelligence;
+
+  if (typeof intelligence === 'object' && intelligence.activate) {
+    vars.message = transfomContent(message, intelligence.sizes);
+  }
+
+  if (typeof intelligence === 'boolean' && intelligence) {
+    vars.message = transfomContent(message);
   }
 
   const html = compileTemplate(dialogTemplate, {

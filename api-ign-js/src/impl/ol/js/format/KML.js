@@ -2,7 +2,7 @@
  * @module M/impl/format/KML
  */
 import { parse as parseXML } from 'ol/xml';
-import { decodeHtml, isNullOrEmpty } from 'M/util/Utils';
+import { isNullOrEmpty, decodeHtml } from 'M/util/Utils';
 import OLFormatKML from 'ol/format/KML';
 import Icon from 'ol/style/Icon';
 

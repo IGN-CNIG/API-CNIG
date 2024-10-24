@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import TMS from 'M/layer/TMS';
+import XYZSource from 'ol/source/XYZ';
 
 export const tms_001 = new TMS({
   url: 'https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
@@ -41,3 +42,21 @@ export const tms_001 = new TMS({
 // ERROR: No funcionan los niveles de zooom maximo y minimo
 
 export const tms_002 = 'TMS*TMSBaseIGNRest*https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg*true*false*17***anonymous';
+
+export const tms_003 = new TMS({
+  url: 'https://tms-ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
+  name: 'Vendor',
+  projection: 'EPSG:4326',
+  tileSize: 512,
+  crossOrigin: false,
+  legend: 'Capa TMS',
+}, {
+  minZoom: 5,
+}, {
+  source: new XYZSource({
+    projection: 'EPSG:3857',
+    url: 'https://tms-ign-base.ign.es/1.0.0/IGNBaseTodo/{z}/{x}/{-y}.jpeg',
+    tileSize: 256,
+    // crossOrigin: 'anonymus',
+  }),
+});

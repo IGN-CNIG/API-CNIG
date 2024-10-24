@@ -2,19 +2,18 @@
  * @module M/control/GeorefImageEpsgControl
  */
 import Georefimage2ControlImpl from '../../impl/ol/js/georefimageepsgcontrol';
-import { reproject } from '../../impl/ol/js/utils';
+import { adjustExtentForSquarePixels, reproject } from '../../impl/ol/js/utils';
 import georefimage2HTML from '../../templates/georefimageepsg';
 import { getValue } from './i18n/language';
-
 import {
-  innerQueueElement,
-  removeLoadQueueElement,
-  getQueueContainer,
-  createWLD,
-  getBase64Image,
-  generateTitle,
-  createZipFile,
+  getQueueContainer, innerQueueElement, removeLoadQueueElement, createWLD, createZipFile,
+  generateTitle, getBase64Image,
 } from './utils';
+
+// DEFAULTS PARAMS
+const FILE_EXTENSION_GEO = '.wld'; // .jgw
+const FILE_EXTENSION_IMG = '.jpg';
+const TYPE_SAVE = '.zip';
 
 export default class GeorefImageEpsgControl extends M.Control {
   /**
@@ -174,11 +173,12 @@ export default class GeorefImageEpsgControl extends M.Control {
       } else if (version === '1.1.1' || version === '1.1.0') {
         const transformBbox = [mapBbox.x.min, mapBbox.y.min, mapBbox.x.max, mapBbox.y.max];
         ext = ol.proj.transformExtent(transformBbox, DEFAULT_EPSG, projection);
-        extWLD = ext;
+
+        extWLD = adjustExtentForSquarePixels(ext, size);
       } else {
         const transformBbox = M.utils.ObjectToArrayExtent(mapBbox, DEFAULT_EPSG);
         ext = ol.proj.transformExtent(transformBbox, DEFAULT_EPSG, projection);
-        extWLD = ext;
+        extWLD = adjustExtentForSquarePixels(ext, size);
         ext = this.transformExtentOL(ext, projection);
       }
 
@@ -201,8 +201,7 @@ export default class GeorefImageEpsgControl extends M.Control {
       let ext = v.calculateExtent(size);
 
       ext = ol.proj.transformExtent(ext, DEFAULT_EPSG, projection);
-      const f = (ext[2] - ext[0]) / size[0];
-      ext[3] = ext[1] + (f * size[1]);
+      ext = adjustExtentForSquarePixels(ext, size);
 
       const urlLayer = this.generateURLLayer_(url, projection, size, ext, format, name, version);
       this.downloadPrint(urlLayer, ext, false, title);
@@ -211,7 +210,7 @@ export default class GeorefImageEpsgControl extends M.Control {
 
   transformExtentOL(extent, projection) {
     const { def } = M.impl.ol.js.projections.getSupportedProjs()
-      .filter((proj) => proj.codes.includes(projection))[0];
+      .find((proj) => proj.codes.includes(projection));
     const typeCoordinates = def.includes('+proj=longlat');
 
     if (typeCoordinates) {
@@ -255,10 +254,6 @@ export default class GeorefImageEpsgControl extends M.Control {
     * @api stable
     */
   downloadPrint(url, bbox, epsgUser, title = '') {
-    const FILE_EXTENSION_GEO = '.jgw'; // .jgw
-    const FILE_EXTENSION_IMG = '.jpg';
-    const TYPE_SAVE = '.zip';
-
     const imageUrl = url !== null ? url : this.documentRead_.src;
     const dpi = this.dpi_;
 
@@ -284,16 +279,15 @@ export default class GeorefImageEpsgControl extends M.Control {
           ];
 
           // CREATE ZIP
-          this.queueEl.addEventListener('click', () => {
-            createZipFile(files, TYPE_SAVE, titulo);
-          });
-
-          // Enter event create zip
-          this.queueEl.addEventListener('keydown', (evt) => {
-            if (evt.keyCode === 13) {
+          const zipEvent = (evt) => {
+            if (evt.key === undefined || evt.key === 'Enter' || evt.key === ' ') {
               createZipFile(files, TYPE_SAVE, titulo);
             }
-          });
+          };
+
+          // Enter event create zip
+          this.queueEl.addEventListener('click', zipEvent);
+          this.queueEl.addEventListener('keydown', zipEvent);
 
           // REMOVE QUEUE ELEMENT
           removeLoadQueueElement(this.queueEl);

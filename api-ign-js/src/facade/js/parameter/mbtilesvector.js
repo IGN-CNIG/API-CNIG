@@ -3,11 +3,7 @@
  * @example import mbtilesVectorParameter from 'M/parameter/mbtilesvector';
  */
 import {
-  isNullOrEmpty,
-  isString,
-  normalize,
-  isArray,
-  isObject,
+  isArray, isNullOrEmpty, isObject, isString, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';

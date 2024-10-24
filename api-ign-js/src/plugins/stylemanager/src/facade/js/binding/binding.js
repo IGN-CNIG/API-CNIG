@@ -1,5 +1,4 @@
-/* eslint-disable  dot-notation */
-/* eslint-disable no-param-reassign */
+/* eslint-disable dot-notation */
 import attributestemplate from 'templates/attributestemplate';
 import { getValue } from '../i18n/language';
 
@@ -165,6 +164,7 @@ export class Binding {
    */
   addTemplate(htmlName, htmlParent, options, callback = null) {
     this.compileTemplate(htmlName, options).then((html) => {
+      // eslint-disable-next-line no-param-reassign
       htmlParent.innerHTML = html.innerHTML;
       if (typeof callback === 'function') {
         callback();
@@ -621,6 +621,7 @@ export class Binding {
     const keys = M.utils.isArray(path) ? path : path.split('.');
     const keyLength = keys.length;
     const key = keys[0];
+    /* eslint-disable no-param-reassign */
     if (keyLength === 1) { // base case
       if (M.utils.isArray(value)) {
         value = [...value];
@@ -634,5 +635,6 @@ export class Binding {
       }
       Binding.createObj(obj[key], keys.slice(1, keyLength), value);
     }
+    /* eslint-enable no-param-reassign */
   }
 }

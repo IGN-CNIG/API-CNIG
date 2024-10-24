@@ -19,14 +19,8 @@ import Exception from 'M/exception/exception';
 import { getValue } from 'M/i18n/language';
 import { get as getRemote } from 'M/util/Remote';
 import {
-  isNullOrEmpty,
-  isArray,
-  isString,
-  isObject,
-  includes,
-  getScaleFromResolution,
-  getWMSGetCapabilitiesUrl,
-  getWMTSGetCapabilitiesUrl,
+  isArray, isNullOrEmpty, isObject, isString, getWMSGetCapabilitiesUrl, getWMTSGetCapabilitiesUrl,
+  getScaleFromResolution, includes,
   // fillResolutions,
   // generateResolutionsFromExtent,
 } from 'M/util/Utils';
@@ -35,6 +29,7 @@ import ImplUtils from './util/Utils';
 import GetCapabilities from './util/WMSCapabilities';
 import View from './View';
 import FormatWMS from './format/WMS';
+import LayerGroup from './layer/LayerGroup';
 
 /**
  * @classdesc
@@ -42,7 +37,6 @@ import FormatWMS from './format/WMS';
  *
  * @property {M.Map} facadeMap_ Fachada del mapa a implementar.
  * @property {ol.Collection<M.Layer>} layers_ Capas añadidas al mapa.
- * @property {Array<M.layer.Group>} layerGroups_ Grupos añadidos al mapa.
  * @property {Array<M.Control>} controls_ Controles añadidos al mapa.
  * @property {Boolean} initZoom_ Indica si el zoom inicial fue calculado. Por defecto verdadero.
  * @property {Array<Number>} userResolutions_ Resoluciones asociadas a cada nivel
@@ -105,13 +99,6 @@ class Map extends MObject {
      * @type {ol.Collection<M.Layer>}
      */
     this.layers_ = [];
-
-    /**
-     * Grupos añadidos al mapa.
-     * @private
-     * @type {Array<M.layer.Group>}
-     */
-    this.layerGroups_ = [];
 
     /**
      * Controles añadidos al mapa.
@@ -260,6 +247,7 @@ class Map extends MObject {
     const mbtilesVectorLayers = this.getMBTilesVector(filters);
     const xyzLayers = this.getXYZs(filters);
     const tmsLayers = this.getTMS(filters);
+    const layersGroup = this.getLayerGroups(filters);
     const unknowLayers = this.getUnknowLayers_(filters);
 
     return kmlLayers.concat(wmsLayers)
@@ -273,6 +261,7 @@ class Map extends MObject {
       .concat(mbtilesVectorLayers)
       .concat(xyzLayers)
       .concat(tmsLayers)
+      .concat(layersGroup)
       .concat(unknowLayers);
   }
 
@@ -337,6 +326,8 @@ class Map extends MObject {
         this.facadeMap_.addXYZ(layer);
       } else if (layer.type === LayerType.TMS) {
         this.facadeMap_.addTMS(layer);
+      } else if (layer.type === LayerType.LayerGroup) {
+        this.facadeMap_.addLayerGroups(layer);
       } else if (!LayerType.know(layer.type)) {
         this.addUnknowLayers_([layer]);
         // eslint-disable-next-line no-underscore-dangle
@@ -345,6 +336,67 @@ class Map extends MObject {
     });
 
     return this;
+  }
+
+  addToLayers_(layers) {
+    let existsBaseLayer = null;
+
+    layers.forEach((layer) => {
+      if (!includes(this.layers_, layer)) {
+        layer.getImpl().addTo(this.facadeMap_);
+        this.layers_.push(layer);
+
+        existsBaseLayer = this.addZIndex_(layer);
+      }
+    });
+
+    if (!existsBaseLayer) {
+      this.updateResolutionsFromBaseLayer();
+    }
+  }
+
+  addToLayersCalcResolutions_(layers) {
+    let existsBaseLayer = null;
+
+    const addedLayers = [];
+    layers.forEach((layer) => {
+      if (!includes(this.layers_, layer)) {
+        layer.getImpl().addTo(this.facadeMap_);
+        this.layers_.push(layer);
+        addedLayers.push(layer);
+
+        existsBaseLayer = this.addZIndex_(layer);
+      }
+    });
+    // calculate resolutions if layers were added and there is not any base layer
+    // or if some base layer was added
+    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer)
+      || addedLayers.some((l) => l.transparent !== true && l.isVisible());
+    if (calculateResolutions) {
+      this.updateResolutionsFromBaseLayer();
+    }
+  }
+
+  addZIndex_(layer) {
+    // cehcks if exists a base layer
+    const baseLayers = this.getBaseLayers();
+    const existsBaseLayer = (baseLayers.length > 1);
+
+    /* if the layer is a base layer
+     then sets its visibility */
+    if (layer.transparent === false) {
+      layer.setVisible(!existsBaseLayer);
+      layer.setZIndex(Map.Z_INDEX_BASELAYER);
+    } else if (layer.getZIndex() == null) {
+      // let zIndex = this.getLengthZIndex_() + Map.Z_INDEX[LayerType[layer.type]];
+      let zIndex = this.getMaxZIndex_(Map.Z_INDEX[LayerType[layer.type]]) + 1;
+      if (layer.getImpl() instanceof LayerGroup) {
+        zIndex += layer.getImpl().getTotalLayers();
+      }
+      layer.setZIndex(zIndex);
+    }
+
+    return existsBaseLayer;
   }
 
   /**
@@ -378,6 +430,7 @@ class Map extends MObject {
       this.removeMBTilesVector(knowLayers);
       this.removeXYZ(knowLayers);
       this.removeTMS(knowLayers);
+      this.removeLayerGroups(knowLayers);
     }
 
     if (unknowLayers.length > 0) {
@@ -385,6 +438,177 @@ class Map extends MObject {
     }
 
     this.facadeMap_.fire(EventType.REMOVED_LAYER, [layers]);
+
+    return this;
+  }
+
+  /**
+   * Devuelve el total de capas en el mapa y en los grupos de capas.
+   *
+   * Método privado.
+   *
+   * @public
+   * @function
+   * @returns {Number} Suma de capas en el mapa y en los grupos de capas.
+   * @api stable
+   */
+  getLengthZIndex_() {
+    const layersGroup = this.getAllLayerInGroup().length;
+    const layers = this.layers_.length;
+    return layersGroup + layers;
+  }
+
+  /**
+   * Devuelve el máximo zIndex de las capas del mapa.
+   *
+   * Método privado.
+   *
+   * @public
+   * @function
+   * @returns {Number} zIndex máximo.
+   * @api stable
+   */
+  getMaxZIndex_(initValue) {
+    const layers = this.facadeMap_.getLayers();
+    const maxZIndex = layers.map((l) => l.getZIndex()).filter((z) => z < 1000).reduce(
+      (a, b) => {
+        if (a > b) {
+          return a;
+        }
+        return b;
+      },
+      initValue,
+    );
+    return maxZIndex;
+  }
+
+  /**
+   * Este método devuelve los grupos de capas del mapa.
+   *
+   * @public
+   * @function
+   * @returns {Array<M.layer.Group>} layers from the map
+   * @api stable
+   */
+  getLayerGroups(filtersParam) {
+    let foundLayers = [];
+    let filters = filtersParam;
+    const groupLayers = this.layers_.filter((layer) => layer.type === LayerType.LayerGroup);
+
+    // parse to Array
+    if (isNullOrEmpty(filters)) {
+      filters = [];
+    }
+    if (!isArray(filters)) {
+      filters = [filters];
+    }
+
+    if (filters.length === 0) {
+      foundLayers = groupLayers;
+    } else {
+      filters.forEach((filterLayer) => {
+        const filteredGroupLayers = groupLayers.filter((groupLayer) => {
+          let layerMatched = true;
+          // checks if the layer is not in selected layers
+          if (!foundLayers.includes(groupLayer)) {
+            // type
+            if (!isNullOrEmpty(filterLayer.type)) {
+              layerMatched = (layerMatched && (filterLayer.type === groupLayer.type));
+            }
+            // name
+            if (!isNullOrEmpty(filterLayer.name)) {
+              layerMatched = (layerMatched && (filterLayer.name === groupLayer.name));
+            }
+          } else {
+            layerMatched = false;
+          }
+          return layerMatched;
+        });
+        foundLayers = foundLayers.concat(filteredGroupLayers);
+      });
+    }
+    return foundLayers;
+  }
+
+  /**
+     * Devuelve todos los grupos.
+     *
+     * @public
+     * @function
+     * @returns {Array<M.Layer>} Grupos.
+     * @api stable
+     */
+  getGroupedLayers() {
+    const groupedLayers = [];
+    const groups = this.getLayerGroups();
+    groupedLayers.push(...groups);
+
+    // recursividad y añadir intance layerGroup en groupedLayers
+    const getLayersFromGroup = (group) => {
+      group.getLayers().forEach((layer) => {
+        if (layer.type === LayerType.LayerGroup) {
+          groupedLayers.push(layer);
+          getLayersFromGroup(layer);
+        }
+      });
+    };
+
+    groups.forEach((group) => {
+      getLayersFromGroup(group);
+    });
+
+    return groupedLayers;
+  }
+
+  /**
+     * Devuelve todas las capas de los grupos de capas.
+     *
+     * @public
+     * @function
+     * @returns {Array<M.Layer>} Capas.
+     * @api stable
+     */
+  getAllLayerInGroup() {
+    const layers = [];
+    const groups = this.getGroupedLayers();
+    groups.forEach((group) => {
+      group.getLayers().forEach((layer) => {
+        if (layer.type !== LayerType.LayerGroup) {
+          layers.push(layer);
+        }
+      });
+    });
+    return layers;
+  }
+
+  /**
+     * Añade los grupos de capas al mapa.
+     *
+     * @public
+     * @function
+     * @param {Array<M.layer.Group>} layers Capas.
+     * @returns {M.impl.Map}
+     */
+  addLayerGroups(groups = []) {
+    this.addToLayers_(groups);
+    return this;
+  }
+
+  /**
+     * Elimina los grupos de capas del mapa.
+     *
+     * @function
+     * @param {Array<M.layer.Group>} layers Elimina esta capa
+     * @returns {M.impl.Map}
+     * @api stable
+     */
+  removeLayerGroups(layers) {
+    const layerGroupMapLayers = this.getLayerGroups(layers);
+    layerGroupMapLayers.forEach((layerGroup) => {
+      layerGroup.fire(EventType.REMOVED_FROM_MAP, [layerGroup]);
+      this.layers_ = this.layers_.filter((layer) => !layerGroup.equals(layer));
+      layerGroup.getImpl().destroy();
+    });
 
     return this;
   }
@@ -460,25 +684,7 @@ class Map extends MObject {
    * @api
    */
   addKML(layers) {
-    const existsBaseLayer = this.getBaseLayers().length > 0;
-
-    layers.forEach((layer) => {
-      // checks if layer is WMC and was added to the map
-      if (layer.type === LayerType.KML) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.KML];
-            layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    }, this);
-
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -598,39 +804,7 @@ class Map extends MObject {
    * @api
    */
   addWMS(layers) {
-    // cehcks if exists a base layer
-    const baseLayers = this.getBaseLayers();
-    let existsBaseLayer = (baseLayers.length > 0);
-
-    const addedLayers = [];
-    layers.forEach((layer) => {
-      // checks if layer is WMC and was added to the map
-      if (layer.type === LayerType.WMS) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          addedLayers.push(layer);
-
-          /* if the layer is a base layer then
-          sets its visibility */
-          if (layer.transparent === false) {
-            layer.setVisible(!existsBaseLayer);
-            existsBaseLayer = true;
-            layer.setZIndex(Map.Z_INDEX_BASELAYER);
-          } else if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.WMS];
-            layer.setZIndex(zIndex);
-          }
-        }
-      }
-    });
-    // calculate resolutions if layers were added and there is not any base layer
-    // or if some base layer was added
-    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer)
-      || addedLayers.some((l) => l.transparent !== true && l.isVisible());
-    if (calculateResolutions) {
-      this.updateResolutionsFromBaseLayer();
-    }
+    this.addToLayersCalcResolutions_(layers);
     return this;
   }
 
@@ -806,28 +980,7 @@ class Map extends MObject {
    * @api
    */
   addWFS(layers) {
-    // checks if exists a base layer
-    const baseLayers = this.getBaseLayers();
-    const existsBaseLayer = (baseLayers.length > 0);
-
-    layers.forEach((layer) => {
-      // checks if layer is WFS and was added to the map
-      if (layer.type === LayerType.WFS) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.WFS];
-            layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    });
-
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -942,28 +1095,7 @@ class Map extends MObject {
  * @api
  */
   addGeoTIFF(layers) {
-  // checks if exists a base layer
-    const baseLayers = this.getBaseLayers();
-    const existsBaseLayer = (baseLayers.length > 0);
-
-    layers.forEach((layer) => {
-    // checks if layer is GeoTIFF and was added to the map
-      if (layer.type === LayerType.GeoTIFF) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.GeoTIFF];
-            layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    });
-
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1071,28 +1203,7 @@ class Map extends MObject {
    * @api
    */
   addOGCAPIFeatures(layers) {
-    // checks if exists a base layer
-    const baseLayers = this.getBaseLayers();
-    const existsBaseLayer = (baseLayers.length > 0);
-
-    layers.forEach((layer) => {
-      // checks if layer is OGCAPIFeatures and was added to the map
-      if (layer.type === LayerType.OGCAPIFeatures) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.OGCAPIFeatures];
-            layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    });
-
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1192,40 +1303,7 @@ class Map extends MObject {
    * @api
    */
   addWMTS(layers) {
-    // cehcks if exists a base layer
-    const baseLayers = this.getBaseLayers();
-    let existsBaseLayer = (baseLayers.length > 0);
-
-    layers.forEach((layer) => {
-      // checks if layer is WMTS and was added to the map
-      if (layer.type === LayerType.WMTS) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          /* if the layer is a base layer then
-                 sets its visibility */
-          if (layer.transparent === false) {
-            layer.setVisible(!existsBaseLayer);
-            existsBaseLayer = true;
-            if (layer.isVisible()) {
-              this.updateResolutionsFromBaseLayer();
-            }
-            layer.setZIndex(Map.Z_INDEX_BASELAYER);
-          } else {
-            if (layer.getZIndex() == null) {
-              const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.WMTS];
-              layer.setZIndex(zIndex);
-            }
-
-            // recalculates resolution if there are not
-            // any base layer
-            if (!existsBaseLayer) {
-              this.updateResolutionsFromBaseLayer();
-            }
-          }
-        }
-      }
-    });
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1318,35 +1396,7 @@ class Map extends MObject {
    * @api
    */
   addMBTiles(layers) {
-    const baseLayers = this.getBaseLayers();
-    let existsBaseLayer = (baseLayers.length > 0);
-
-    const addedLayers = [];
-    layers.forEach((layer) => {
-      if (layer.type === LayerType.MBTiles) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          addedLayers.push(layer);
-
-          if (layer.transparent === false) {
-            layer.setVisible(!existsBaseLayer);
-            existsBaseLayer = true;
-            layer.setZIndex(Map.Z_INDEX_BASELAYER);
-          } else if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX.MBTiles;
-            layer.setZIndex(zIndex);
-          }
-        }
-      }
-    });
-
-    const calculateResolutions = (addedLayers.length > 0 && !existsBaseLayer)
-      || addedLayers.some((l) => l.transparent !== true && l.isVisible());
-    if (calculateResolutions) {
-      this.updateResolutionsFromBaseLayer();
-    }
-
+    this.addToLayersCalcResolutions_(layers);
     return this;
   }
 
@@ -1436,25 +1486,7 @@ class Map extends MObject {
    * @api
    */
   addMBTilesVector(layers) {
-    const baseLayers = this.getBaseLayers();
-    const existsBaseLayer = (baseLayers.length > 0);
-    layers.forEach((layer) => {
-      // checks if layer is WFS and was added to the map
-      if (layer.type === LayerType.MBTilesVector) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX.MBTilesVector;
-            layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    });
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1545,39 +1577,7 @@ class Map extends MObject {
    * @api
    */
   addUnknowLayers_(layers) {
-    // cehcks if exists a base layer
-    let existsBaseLayer = this.getBaseLayers().length > 0;
-
-    // adds layers
-    layers.forEach((layer) => {
-      if (!includes(this.layers_, layer)) {
-        layer.getImpl().addTo(this.facadeMap_);
-        this.layers_.push(layer);
-
-        /* if the layer is a base layer then
-        sets its visibility */
-        if (layer.transparent === false) {
-          layer.setVisible(!existsBaseLayer);
-          existsBaseLayer = true;
-          if (layer.isVisible()) {
-            this.updateResolutionsFromBaseLayer();
-          }
-          layer.setZIndex(Map.Z_INDEX_BASELAYER);
-        } else {
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[layer.type];
-            layer.setZIndex(zIndex);
-          }
-          // recalculates resolution if there are not
-          // any base layer
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    });
-
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1688,27 +1688,7 @@ class Map extends MObject {
    * @api
    */
   addMVT(layers) {
-    const baseLayers = this.getBaseLayers();
-    const existsBaseLayer = baseLayers.length > 0;
-
-    layers.forEach((layer) => {
-      // checks if layer is WFS and was added to the map
-      if (layer.type === LayerType.MVT) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          layer.setZIndex(layer.getZIndex());
-          if (layer.getZIndex() == null) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.MVT];
-            layer.setZIndex(zIndex);
-          }
-          if (!existsBaseLayer) {
-            this.updateResolutionsFromBaseLayer();
-          }
-        }
-      }
-    });
-
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1793,20 +1773,7 @@ class Map extends MObject {
      * @api
      */
   addMapLibre(layers) {
-    layers.forEach((layer) => {
-      if (layer.type === LayerType.MapLibre) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          if (layer.transparent === true) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.MapLibre];
-            layer.setZIndex(zIndex);
-          } else {
-            layer.setZIndex(0);
-          }
-        }
-      }
-    });
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1873,21 +1840,7 @@ class Map extends MObject {
    * @api
    */
   addXYZ(layers) {
-    layers.forEach((layer) => {
-      // checks if layer is XYZ and was added to the map
-      if (layer.type === LayerType.XYZ) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          if (layer.transparent === true) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.XYZ];
-            layer.setZIndex(zIndex);
-          } else {
-            layer.setZIndex(0);
-          }
-        }
-      }
-    });
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -1974,21 +1927,7 @@ class Map extends MObject {
    * @api
    */
   addTMS(layers) {
-    layers.forEach((layer) => {
-      // checks if layer is TMS and was added to the map
-      if (layer.type === LayerType.TMS) {
-        if (!includes(this.layers_, layer)) {
-          layer.getImpl().addTo(this.facadeMap_);
-          this.layers_.push(layer);
-          if (layer.transparent === true) {
-            const zIndex = this.layers_.length + Map.Z_INDEX[LayerType.TMS];
-            layer.setZIndex(zIndex);
-          } else {
-            layer.setZIndex(0);
-          }
-        }
-      }
-    });
+    this.addToLayers_(layers);
     return this;
   }
 
@@ -2134,7 +2073,7 @@ class Map extends MObject {
     const olMap = this.getMapImpl();
 
     const view = olMap.getView();
-    const newView = new View({ ...view, extent: maxExtent });
+    const newView = new View({ ...view, ...view.getProperties(), extent: maxExtent });
     olMap.setView(newView);
 
     this.updateResolutionsFromBaseLayer();
@@ -2206,13 +2145,12 @@ class Map extends MObject {
         parsedCapabilities.Contents.Layer.forEach((l) => {
           const name = l.Identifier;
           l.Style.forEach((s) => {
-            const layerText = response.text.split('Layer>').filter((text) => text.indexOf(`Identifier>${name}<`) > -1)[0];
-            /* eslint-disable no-param-reassign */
+            const layerText = response.text.split('Layer>').find((text) => text.indexOf(`Identifier>${name}<`) > -1);
+            // eslint-disable-next-line no-param-reassign
             s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
           });
         });
-        /* eslint-disable no-empty */
-      } catch (err) {}
+      } catch (err) { /* Continue */ }
       this.getCapabilitiesPromise = parsedCapabilities;
     }
     return this.getCapabilitiesPromise;
@@ -2528,10 +2466,9 @@ class Map extends MObject {
     const maxZoom = olMap.getView().getMaxZoom();
     const size = olMap.getSize();
 
-    let newView = new View({ ...this.objectView, projection });
-    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
-      newView = new View({ ...this.objectView, projection, extent: this.viewExtent });
-    }
+    const newView = new View((this.viewExtent !== undefined && this.viewExtent.length === 4)
+      ? { ...this.objectView, projection, extent: this.viewExtent }
+      : { ...this.objectView, projection });
 
     newView.setProperties(oldViewProperties);
     newView.setResolutions(resolutions);
@@ -2657,10 +2594,9 @@ class Map extends MObject {
     const maxZoom = olMap.getView().getMaxZoom();
 
     // sets the new view
-    let newView = new View({ ...this.objectView, projection: olProjection });
-    if (this.viewExtent !== undefined && this.viewExtent.length === 4) {
-      newView = new View({ ...this.objectView, projection: olProjection, extent: this.viewExtent });
-    }
+    const newView = new View((this.viewExtent !== undefined && this.viewExtent.length === 4)
+      ? { ...this.objectView, projection: olProjection, extent: this.viewExtent }
+      : { ...this.objectView, projection: olProjection });
 
     newView.setProperties(oldViewProperties);
     if (!isNullOrEmpty(resolutions)) {
@@ -3064,5 +3000,6 @@ Map.Z_INDEX[LayerType.TMS] = 40;
 Map.Z_INDEX[LayerType.OGCAPIFeatures] = 40;
 Map.Z_INDEX[LayerType.GenericVector] = 40;
 Map.Z_INDEX[LayerType.GenericRaster] = 40;
+Map.Z_INDEX[LayerType.LayerGroup] = 40;
 
 export default Map;

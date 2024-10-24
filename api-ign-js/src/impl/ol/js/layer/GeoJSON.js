@@ -1,7 +1,7 @@
 /**
  * @module M/impl/layer/GeoJSON
  */
-import { isNullOrEmpty, isObject, isFunction } from 'M/util/Utils';
+import { isNullOrEmpty, isFunction, isObject } from 'M/util/Utils';
 import * as EventType from 'M/event/eventtype';
 import Popup from 'M/Popup';
 import { compileSync as compileTemplate } from 'M/util/Template';
@@ -109,14 +109,14 @@ class GeoJSON extends Vector {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.formater_ = new GeoJSONFormat({
       defaultDataProjection: getProj(map.getProjection().code),
     });
     if (!isNullOrEmpty(this.url)) {
       this.loader_ = new JSONPLoader(map, this.url, this.formater_);
     }
-    super.addTo(map);
+    super.addTo(map, addLayer);
   }
 
   /**
@@ -249,8 +249,8 @@ class GeoJSON extends Vector {
    * @api stable
    */
   selectFeatures(features, coord, evt) {
-    const feature = features[0];
     if (this.extract === true) {
+      const feature = features[0];
       // unselects previous features
       this.unselectFeatures();
 

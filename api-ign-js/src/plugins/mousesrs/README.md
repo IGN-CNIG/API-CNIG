@@ -43,7 +43,27 @@ El constructor se inicializa con un JSON con los siguientes atributos:
 - **activeZ**. Activar visualización valor z. Por defecto: false
 - **helpUrl**. URL a la ayuda para el icono.
 - **draggableDialog**. Permite mover el dialog por la pantalla. Por defecto: true.
+- **mode**. Tipo de servicio para la obtención de valor z. Posibles valores: wcs, ogcapicoverage. Por defecto: wcs
+- **coveragePrecissions**. Lista de JSON con las urls de los coverage junto con los niveles de zoom en los que se utilizan (sólo válido con mode ogcapicoverage).
+  - **url**. Url blob del coverage.
+  - **minzoom**. Zoom mínimo al que se va a utilizar el coverage (Inclusive).
+  - **maxzoom**. Zoom máximo al que se va a utilizar el coverage (Inclusive).
 
+  Por defecto:
+```javascript
+[
+  {
+    url: 'https://api-coverages.idee.es/collections/EL.ElevationGridCoverage_4326_1000/coverage',
+    minzoom: 0,
+    maxzoom: 11,
+  },
+  {
+    url: 'https://api-coverages.idee.es/collections/EL.ElevationGridCoverage_4326_500/coverage',
+    minzoom: 12,
+    maxzoom: 28,
+  },
+]
+```
 # API-REST
 
 ```javascript

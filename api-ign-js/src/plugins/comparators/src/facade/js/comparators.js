@@ -198,10 +198,7 @@ export default class Comparators extends M.Plugin {
    * @api
    */
   equals(plugin) {
-    if (plugin instanceof Comparators) {
-      return true;
-    }
-    return false;
+    return plugin instanceof Comparators;
   }
 
   /**

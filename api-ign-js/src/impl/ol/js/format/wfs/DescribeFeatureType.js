@@ -92,11 +92,13 @@ class DescribeFeatureType {
         describeFeatureType.properties.some((prop) => {
           if (isGeometryType(prop.localType)) {
             describeFeatureType.geometryName = prop.name;
+            return true;
           }
-          return isGeometryType(prop.localType);
+          return false;
         });
+        return true;
       }
-      return featureType.typeName === this.typeName_;
+      return false;
     });
     return describeFeatureType;
   }

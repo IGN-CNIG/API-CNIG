@@ -26,6 +26,12 @@
         "type": "simple",
         "name": "speed",
         "position": 3
+      },
+      {
+        "type": "simple",
+        "name": "timelineType",
+        "possibleValues": ["absoluteSimple", "absolute", "relative"],
+        "position": 4
       }
     ]
   }],
@@ -39,7 +45,7 @@
     "name": "Timeline",
     "description": "Línea de tiempo por intervalos",
     "text": "Plugin que permite mostrar la progresión del tiempo sobre un mapa",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "date": "Junio, 2020",
     "author": "",
     "org": "CNIG",

@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import KML from 'M/layer/KML';
-import Generic from 'M/style/Generic'; // eslint-disable-line no-unused-vars
+import Generic from 'M/style/Generic';
+import VectorSource from 'ol/source/Vector';
+import OLKMLFormat from 'ol/format/KML';
 
 export const kml_001 = new KML({
   // url: 'https://www.ign.es/web/resources/delegaciones/delegacionesIGN.kml',
@@ -73,4 +75,18 @@ export const kml_002 = new KML({
   url: 'https://www.ign.es/resources/CaminoDeSantiago_PRE/rutas/04/04-Via%20de%20la%20Plata%20-%20Camino%20Moz%C3%A1rabe%20a%20Santiago.kml',
   name: 'routeKmlLayer',
   extract: true,
+});
+
+export const kml_003 = new KML({
+  url: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+  name: 'capaKML',
+  extract: true,
+  visibility: true,
+}, {
+  minZoom: 5,
+}, {
+  source: new VectorSource({
+    format: new OLKMLFormat(),
+    url: 'https://www.ign.es/resources/CaminoDeSantiago_PRE/rutas/04/04-Via%20de%20la%20Plata%20-%20Camino%20Moz%C3%A1rabe%20a%20Santiago.kml',
+  }),
 });

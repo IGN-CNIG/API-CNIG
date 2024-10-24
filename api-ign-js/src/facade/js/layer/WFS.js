@@ -3,10 +3,7 @@
  */
 import WFSImpl from 'impl/layer/WFS';
 import {
-  isUndefined,
-  isNullOrEmpty,
-  normalize,
-  isString,
+  isUndefined, isNullOrEmpty, isString, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';

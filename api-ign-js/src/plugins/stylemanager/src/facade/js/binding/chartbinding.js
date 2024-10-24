@@ -1,6 +1,4 @@
-/* eslint-disable  dot-notation */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-param-reassign */
+/* eslint-disable dot-notation,no-prototype-builtins */
 import variablechart from 'templates/variablechart';
 import paginationchart from 'templates/paginationchart';
 import attributeschart from 'templates/attributeschart';
@@ -353,10 +351,12 @@ export class ChartBinding extends Binding {
     optVars = optVars.map((option) => {
       // options text label, show the % of data
       if (option.labelshow === true) {
+        // eslint-disable-next-line no-param-reassign
         option['label']['text'] = (value, values) => {
           return `${Math.round((value / (values.reduce((tot, curr) => tot + curr))) * 100)}%`;
         };
       } else {
+        // eslint-disable-next-line no-param-reassign
         option['label'] = undefined;
       }
       return option;

@@ -7,7 +7,7 @@ const path = require('path');
 const generateInfo = require('./generate-info');
 const generateOLInfo = require('./generate-ol-info');
 
-const EXTERNS_LIBRARIES = require('./externs-libraries.js');
+const EXTERNS_LIBRARIES = require('./externs-libraries');
 const CUSTOM_NAMESPACES = require('./custom-namespaces');
 /**
  * Read the symbols from info file.
@@ -91,7 +91,6 @@ function getOLImports(symbols) {
   return Object.keys(imports).sort();
 }
 
-
 /**
  * Generate code to export a named symbol.
  * @param {string} name Symbol name.
@@ -104,7 +103,7 @@ function formatSymbolExport(name, namespaces) {
   const nsParts = parts[0].replace(/^module:/, '').split(/[/.]/);
   const last = nsParts.length - 1;
   const importName = isNamed
-    ? nsParts.slice(0, last).join('') + 'Module' + '.' + nsParts[last]
+    ? nsParts.slice(0, last).join('') + 'Module.' + nsParts[last]
     : '$' + nsParts.join('$');
   let line = nsParts[0];
   for (let i = 1, ii = nsParts.length; i < ii; ++i) {

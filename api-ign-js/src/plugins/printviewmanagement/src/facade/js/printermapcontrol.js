@@ -2,14 +2,19 @@
  * @module M/control/PrinterMapControl
  */
 
-import JsZip from 'jszip';
-import { saveAs } from 'file-saver';
 import PrinterMapControlImpl from '../../impl/ol/js/printermapcontrol';
 import { reproject, transformExt } from '../../impl/ol/js/utils';
 import printermapHTML from '../../templates/printermap';
 import { getValue } from './i18n/language';
+import {
+  innerQueueElement, removeLoadQueueElement, createWLD, createZipFile, generateTitle,
+  getBase64Image,
+} from './utils';
 
-import { getBase64Image, removeLoadQueueElement, innerQueueElement } from './utils';
+// DEFAULTS PARAMS
+const FILE_EXTENSION_GEO = '.jgw'; // .wld
+const FILE_EXTENSION_IMG = '.jpg';
+const TYPE_SAVE = '.zip';
 
 export default class PrinterMapControl extends M.Control {
   /**
@@ -450,14 +455,7 @@ export default class PrinterMapControl extends M.Control {
     const getPrintData = this.getPrintData();
     const printUrl = this.printTemplateUrl_;
 
-    let download;
-    download = this.downloadPrint;
-
     getPrintData.then((printData) => {
-      if (this.georef_) {
-        download = this.downloadGeoPrint.bind(this, printData.attributes.map.bbox);
-      }
-
       let url = M.utils.concatUrlPaths([printUrl, `report.${printData.outputFormat}`]);
 
       const queueEl = innerQueueElement(
@@ -484,7 +482,14 @@ export default class PrinterMapControl extends M.Control {
           const responseStatusURL = response.text && JSON.parse(response.text);
           const ref = responseStatusURL.ref;
           const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
-          this.getStatus(statusURL, () => removeLoadQueueElement(queueEl), queueEl);
+          this.getStatus(statusURL, () => {
+            removeLoadQueueElement(queueEl);
+            if (this.georef_) {
+              const georefDownload = this.downloadGeoPrint(printData.attributes.map.bbox);
+              queueEl.addEventListener('click', georefDownload);
+              queueEl.addEventListener('keydown', georefDownload);
+            }
+          }, queueEl);
           let downloadUrl;
           try {
             response = JSON.parse(response.text);
@@ -496,8 +501,11 @@ export default class PrinterMapControl extends M.Control {
           }
 
           queueEl.setAttribute(PrinterMapControl.DOWNLOAD_ATTR_NAME, downloadUrl);
-          queueEl.addEventListener('click', download);
-          queueEl.addEventListener('keydown', download);
+          if (!this.georef_) {
+            const download = this.downloadPrint;
+            queueEl.addEventListener('click', download);
+            queueEl.addEventListener('keydown', download);
+          }
         } else {
           queueEl.remove();
           if (document.querySelector('#m-georefimage-queue-container').childNodes.length === 0) {
@@ -551,25 +559,11 @@ export default class PrinterMapControl extends M.Control {
     * @api
     */
   converterDecimalToDMS(coordinate) {
-    let dms;
-    let aux;
-    const coord = coordinate.toString();
-    const splittedCoord = coord.split('.');
-    // Degrees
-    dms = `${splittedCoord[0]}º `;
-    // Minutes
-    aux = `0.${splittedCoord[1]}`;
-    aux *= 60;
-    aux = aux.toString();
-    aux = aux.split('.');
-    dms = `${dms}${aux[0]}' `;
-    // Seconds
-    aux = `0.${aux[1]}`;
-    aux *= 60;
-    aux = aux.toString();
-    aux = aux.split('.');
-    dms = `${dms}${aux[0]}'' `;
-    return dms;
+    const coord = Number.parseFloat(coordinate);
+    const deg = Math.abs(coord);
+    const min = (deg % 1) * 60;
+    // sign Degrees Minutes Seconds
+    return `${Math.sign(coord) === -1 ? '-' : ''}${Math.trunc(deg)}º ${Math.trunc(min)}' ${Math.trunc((min % 1) * 60)}'' `;
   }
 
   /**
@@ -694,8 +688,12 @@ export default class PrinterMapControl extends M.Control {
         yCoordBotLeft: dmsBbox.x.min,
       },
     }, this.params_.layout);
-
-    return this.encodeLayers().then((encodedLayers) => {
+    const layers = this.preEncodeFilter();
+    const promises = [this.encodeLayers(layers), layout.includes('(con leyenda)') ? this.encodeLegends(layers) : undefined]; // Adds legend parameters
+    return Promise.all(promises).then(([encodedLayers, allLegends]) => {
+      if (allLegends) { // Adds legend parameters
+        printData.attributes.legend = { classes: allLegends };
+      }
       printData.attributes.map.layers = encodedLayers.filter((l) => M.utils.isObject(l));
       printData.attributes = Object.assign(printData.attributes, parameters);
       if (projection !== 'EPSG:3857' && this.map_.getLayers().some((layer) => (layer.type === M.layer.type.OSM || layer.type === M.layer.type.Mapbox))) {
@@ -719,26 +717,71 @@ export default class PrinterMapControl extends M.Control {
   }
 
   /**
-    * This function encodes layers.
+    * This function encodes legends.
     *
     * @private
     * @function
     */
-  encodeLayers() {
+  encodeLegends(preGeneratedLayers) {
+    return new Promise((success) => {
+      const promises = [];
+      const resultNames = [];
+
+      preGeneratedLayers.forEach((layer) => {
+        if (layer.displayInLayerSwitcher && layer.getLegendURL && !(layer instanceof M.layer.Vector)
+            && layer.isVisible() && layer.inRange()) {
+          promises.push(layer.getLegendURL());
+          resultNames.push(layer.name); // resultLayers.push(layer)
+        }
+      });
+
+      Promise.all(promises).then((promiseResult) => {
+        const result = [];
+        const dRE = new RegExp(`.*${M.Layer.LEGEND_DEFAULT}$`);
+        const eRE = new RegExp(`.*${M.Layer.LEGEND_ERROR}$`);
+        promiseResult.forEach((legendURL, index) => {
+          if (!M.utils.isNullOrEmpty(legendURL)
+            && !dRE.test(legendURL) && !eRE.test(legendURL)) {
+            const legend = {
+              name: resultNames[index], // resultLayers[index].name
+              icons: [legendURL],
+            };
+            // Confirmed in previus forEach that it is not Vector layer.
+            // if (resultLayers[index] instanceof M.layer.Vector) delete legend.icons;
+            result.push(legend);
+          }
+        });
+        if (result.length === 0) {
+          success(undefined);
+        } else {
+          success(result);
+        }
+      });
+    });
+  }
+
+  /**
+    * This function generates a filtered list of layers for encoding.
+    *
+    * @private
+    * @function
+    */
+  preEncodeFilter() {
     // Filters visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     const mapZoom = this.map_.getZoom();
-    let layers = this.map_.getLayers().filter((layer) => {
+    const layerFilter = (layer) => {
       return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer' && layer.name !== 'empty_layer'
-        && mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
-    });
+      && mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
+    };
+
+    let layers = this.map_.getLayers().filter((layer) => layer.type !== 'LayerGroup' && layerFilter(layer))
+      .concat(this.map_.getImpl().getAllLayerInGroup()
+        .filter((layer) => layerFilter(layer)));
 
     if (mapZoom === 20) {
-      let contains = false;
-      layers.forEach((l) => {
-        if (l.url !== undefined && l.url === 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg') {
-          contains = true;
-        }
+      const contains = layers.some((l) => {
+        return l.url !== undefined && l.url === 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg';
       });
 
       if (contains) {
@@ -747,11 +790,8 @@ export default class PrinterMapControl extends M.Control {
         });
       }
     } else if (mapZoom < 20) {
-      let contains = false;
-      layers.forEach((l) => {
-        if (l.url !== undefined && l.name !== undefined && l.url === 'https://www.ign.es/wmts/pnoa-ma?' && l.name === 'OI.OrthoimageCoverage') {
-          contains = true;
-        }
+      const contains = layers.some((l) => {
+        return l.url !== undefined && l.name !== undefined && l.url === 'https://www.ign.es/wmts/pnoa-ma?' && l.name === 'OI.OrthoimageCoverage';
       });
 
       if (contains) {
@@ -761,17 +801,15 @@ export default class PrinterMapControl extends M.Control {
       }
     }
 
-    let numLayersToProc = layers.length;
     const otherLayers = this.getImpl().getParametrizedLayers('IMAGEN', layers);
     if (otherLayers.length > 0) {
       layers = layers.concat(otherLayers);
-      numLayersToProc = layers.length;
     }
 
     layers = layers.sort((a, b) => {
       let res = 0;
-      const zia = a.getZIndex() !== null ? a.getZIndex() : 0;
-      const zib = b.getZIndex() !== null ? b.getZIndex() : 0;
+      const zia = a.getZIndex() || 0;
+      const zib = b.getZIndex() || 0;
       if (zia > zib) {
         res = 1;
       } else if (zia < zib) {
@@ -780,6 +818,19 @@ export default class PrinterMapControl extends M.Control {
 
       return res;
     });
+
+    return layers;
+  }
+
+  /**
+    * This function encodes layers.
+    *
+    * @private
+    * @function
+    */
+  encodeLayers(preGeneratedLayers) {
+    const layers = preGeneratedLayers;
+    let numLayersToProc = layers.length;
 
     return (new Promise((success, fail) => {
       const encodedLayers = [];
@@ -806,9 +857,9 @@ export default class PrinterMapControl extends M.Control {
     * @function
     * @api stable
     */
-  downloadPrint(event) {
-    event.preventDefault();
-    if (event.key === undefined || event.key === 'Enter' || event.key === ' ') {
+  downloadPrint(evt) {
+    evt.preventDefault();
+    if (evt.key === undefined || evt.key === 'Enter' || evt.key === ' ') {
       const downloadUrl = this.getAttribute(PrinterMapControl.DOWNLOAD_ATTR_NAME);
       if (!M.utils.isNullOrEmpty(downloadUrl)) {
         window.open(downloadUrl, '_blank');
@@ -823,27 +874,31 @@ export default class PrinterMapControl extends M.Control {
     * @function
     * @api stable
     */
-  downloadGeoPrint(bbox, event) {
+  downloadGeoPrint(bbox) {
     const base64image = getBase64Image(this.documentRead_.src);
-    base64image.then((resolve) => {
-      const size = this.map_.getMapImpl().getSize();
-      const Px = (((bbox[2] - bbox[0]) / size[0]) * (72 / this.dpiGeo_)).toString();
-      const GiroA = (0).toString();
-      const GiroB = (0).toString();
-      const Py = (-((bbox[3] - bbox[1]) / size[1]) * (72 / this.dpiGeo_)).toString();
-      const Cx = (bbox[0] + (Px / 2)).toString();
-      const Cy = (bbox[3] + (Py / 2)).toString();
-      const f = new Date();
-      const titulo = 'mapa_'.concat(f.getFullYear(), '-', f.getMonth() + 1, '-', f.getDay() + 1, '_', f.getHours(), f.getMinutes(), f.getSeconds());
-      const zip = new JsZip();
-      zip.file(titulo.concat('.jgw'), Px.concat('\n', GiroA, '\n', GiroB, '\n', Py, '\n', Cx, '\n', Cy));
-      zip.file(titulo.concat('.jpg'), resolve, { base64: true });
-      zip.generateAsync({ type: 'blob' }).then((content) => {
-        saveAs(content, titulo.concat('.zip'));
-      });
-    }).catch((err) => {
-      M.dialog.error(getValue('exception.imageError'));
-    });
+    const titulo = generateTitle('');
+
+    // CONTENT ZIP
+    const files = [{
+      name: titulo.concat(FILE_EXTENSION_GEO),
+      data: createWLD(bbox, this.dpiGeo_, this.map_.getMapImpl().getSize(), false, this.map_, 'server'),
+      base64: false,
+    },
+    {
+      name: titulo.concat(FILE_EXTENSION_IMG),
+      data: base64image,
+      base64: true,
+    },
+    ];
+
+    // CREATE ZIP
+    const zipEvent = (evt) => {
+      if (evt.key === undefined || evt.key === 'Enter' || evt.key === ' ') {
+        createZipFile(files, TYPE_SAVE, titulo);
+      }
+    };
+
+    return zipEvent;
   }
 
   /**
@@ -854,33 +909,12 @@ export default class PrinterMapControl extends M.Control {
     * @api
     */
   turnProjIntoLegend(projection) {
-    let projectionLegend;
-    switch (projection) {
-      case 'EPSG:4258':
-        projectionLegend = 'EPSG:4258 (ETRS89)';
-        break;
-      case 'EPSG:4326':
-        projectionLegend = 'EPSG:4326 (WGS84)';
-        break;
-      case 'EPSG:3857':
-        projectionLegend = 'EPSG:3857 (WGS84)';
-        break;
-      case 'EPSG:25831':
-        projectionLegend = `EPSG:25831 (UTM ${getValue('zone')} 31N)`;
-        break;
-      case 'EPSG:25830':
-        projectionLegend = `EPSG:25830 (UTM ${getValue('zone')} 30N)`;
-        break;
-      case 'EPSG:25829':
-        projectionLegend = `EPSG:25829 (UTM ${getValue('zone')} 29N)`;
-        break;
-      case 'EPSG:25828':
-        projectionLegend = `EPSG:25828 (UTM ${getValue('zone')} 28N)`;
-        break;
-      default:
-        projectionLegend = '';
-    }
-    return projectionLegend;
+    const supportedProjs = M.impl.ol.js.projections.getSupportedProjs();
+    const find = supportedProjs.find((p) => p.codes.includes(projection));
+    if (!find) return projection;
+    const { datum, proj } = find;
+    const format = `${datum} - ${proj} (${projection})`;
+    return format;
   }
 
   /**

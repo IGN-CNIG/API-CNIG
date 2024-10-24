@@ -255,7 +255,10 @@ export default class LyrCompareControl extends M.Control {
         html.querySelector('#m-comparators-contents').appendChild(t);
 
         setTimeout(() => {
-          document.querySelector('#m-lyrcompare-void').click();
+          const selectFirst = document.querySelector('#m-lyrcompare-void');
+          if (selectFirst) {
+            selectFirst.click();
+          }
         }, 1000);
       });
   }
@@ -563,7 +566,7 @@ export default class LyrCompareControl extends M.Control {
       // eslint-disable-next-line consistent-return
       item.addEventListener('change', (evt) => {
         const options = evt.target.options;
-        Array.from(options).forEach((option) => option.removeAttribute('selected'));
+        Array.prototype.forEach.call(options, (option) => option.removeAttribute('selected'));
         evt.target.selectedOptions[0].setAttribute('selected', '');
 
         // eslint-disable-next-line no-shadow, array-callback-return, consistent-return
@@ -1002,19 +1005,16 @@ export default class LyrCompareControl extends M.Control {
           const urlLayer = layer.split('*');
           const name = urlLayer[3];
           const layerByUrl = this.map_.getLayers()
-            .filter((l) => name.includes(l.name))[this.map_.getLayers()
-              .filter((l) => name.includes(l.name)).length - 1];
+            .filter((l) => name.includes(l.name)).pop();
           this.map_.removeLayers(layerByUrl);
         } else {
           const layerByName = this.map_.getLayers()
-            .filter((l) => layer.includes(l.name))[this.map_.getLayers()
-              .filter((l) => layer.includes(l.name)).length - 1];
+            .filter((l) => layer.includes(l.name)).pop();
           this.map_.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
         const layerByObject = this.map_.getLayers()
-          .filter((l) => layer.name.includes(l.name))[this.map_.getLayers()
-            .filter((l) => layer.name.includes(l.name)).length - 1];
+          .filter((l) => layer.name.includes(l.name)).pop();
         this.map_.removeLayers(layerByObject);
       }
     });

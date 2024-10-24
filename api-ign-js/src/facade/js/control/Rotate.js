@@ -28,7 +28,7 @@ class Rotate extends ControlBase {
    */
   constructor() {
     if (isUndefined(RotateImpl)) {
-      Exception('La implementación usada no puede crear controles Scale');
+      Exception('La implementación usada no puede crear controles Rotate');
     }
 
     // implementation of this control

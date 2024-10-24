@@ -1,9 +1,8 @@
 /**
  * @module M/impl/control/PrinterMapControl
  */
-
 import {
-  encodeKML, encodeWMS, encodeImage, encodeXYZ, encodeWMTS, encodeGeoTIFF,
+  encodeKML, encodeWMS, encodeImage, encodeGeoTIFF, encodeXYZ, encodeWMTS,
 } from './encoders';
 
 export default class PrinterMapControl extends M.impl.Control {
@@ -52,7 +51,7 @@ export default class PrinterMapControl extends M.impl.Control {
    */
   getParametrizedLayers(paramName, layers) {
     let others = this.facadeMap_.getMapImpl().getLayers().getArray().filter((layer) => {
-      return !M.utils.isNullOrEmpty(layer.getSource())
+      return layer.getSource && !M.utils.isNullOrEmpty(layer.getSource())
         // eslint-disable-next-line no-underscore-dangle
         && !M.utils.isNullOrEmpty(layer.getSource().params_)
         && layer.getSource().getParams()[paramName] !== undefined;

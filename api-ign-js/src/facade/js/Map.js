@@ -5,18 +5,8 @@ import MapImpl from 'impl/Map';
 import Base from './Base';
 import { getQuickLayers } from './mapea';
 import {
-  isNullOrEmpty,
-  isUndefined,
-  isNull,
-  isArray,
-  isFunction,
-  normalize,
-  addParameters,
-  concatUrlPaths,
-  escapeJSCode,
-  isString,
-  isObject,
-  getEnvolvedExtent,
+  isUndefined, isNull, isArray, isNullOrEmpty, isFunction, isObject, isString, normalize,
+  addParameters, concatUrlPaths, escapeJSCode, getEnvolvedExtent,
 } from './util/Utils';
 import { addFileToMap } from './util/LoadFiles';
 import { getValue } from './i18n/language';
@@ -60,6 +50,7 @@ import MBTilesVector from './layer/MBTilesVector';
 import XYZ from './layer/XYZ';
 import TMS from './layer/TMS';
 import OSM from './layer/OSM';
+import LayerGroup from './layer/LayerGroup';
 import Attributions from './control/Attributions';
 
 /**
@@ -448,7 +439,7 @@ class Map extends Base {
       return;
     }
 
-    const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
+    const controlAttributions = this.getControls().find(({ name }) => name === 'attributions');
     if (!controlAttributions) { return; }
     let addAttribution = null;
 
@@ -618,66 +609,7 @@ class Map extends Base {
           layer = layerParam;
         } else {
           // try {
-          const parameterVariable = parameter.layer(layerParam);
-          if (!isNullOrEmpty(parameterVariable.type)) {
-            switch (parameterVariable.type) {
-              case 'WFS':
-                layer = new WFS(layerParam, { style: parameterVariable.style });
-                break;
-              case 'WMS':
-                layer = new WMS(layerParam);
-                break;
-              case 'GeoJSON':
-                layer = new GeoJSON(parameterVariable, { style: parameterVariable.style });
-                break;
-              case 'GeoTIFF':
-                layer = new GeoTIFF(layerParam);
-                break;
-              case 'KML':
-                layer = new KML(layerParam);
-                break;
-              case 'Vector':
-                layer = new Vector(layerParam);
-                break;
-              case 'WMTS':
-                layer = new WMTS(layerParam);
-                break;
-              case 'MVT':
-                layer = new MVT(layerParam);
-                break;
-              case 'MBTiles':
-                layer = new MBTiles(parameterVariable);
-                break;
-              case 'MBTilesVector':
-                layer = new MBTilesVector(parameterVariable, { style: parameterVariable.style });
-                break;
-              case 'XYZ':
-                layer = new XYZ(parameterVariable);
-                break;
-              case 'TMS':
-                layer = new TMS(parameterVariable, { crossOrigin: parameterVariable.crossOrigin });
-                break;
-              case 'OSM':
-                layer = new OSM(layerParam);
-                break;
-              case 'OGCAPIFeatures':
-                layer = new OGCAPIFeatures(layerParam, { style: parameterVariable.style });
-                break;
-              case 'GenericRaster':
-                layer = new GenericRaster(layerParam);
-                break;
-              case 'GenericVector':
-                layer = new GenericVector(layerParam);
-                break;
-              case 'MapLibre':
-                layer = new MapLibre(layerParam);
-                break;
-              default:
-                Dialog.error(getValue('dialog').invalid_type_layer);
-            }
-          } else {
-            Dialog.error(getValue('dialog').invalid_type_layer);
-          }
+          layer = this.getLayerByString(layerParam);
           // }
           // catch (err) {
           //   Dialog.error('El formato de la capa (' + layerParam + ') no se reconoce');
@@ -705,6 +637,75 @@ class Map extends Base {
       this.getImpl().addLayers(layers.filter((element) => element !== null));
     }
     return this;
+  }
+
+  getLayerByString(layerParam) {
+    let layer = null;
+    const parameterVariable = parameter.layer(layerParam);
+    if (!isNullOrEmpty(parameterVariable.type)) {
+      switch (parameterVariable.type) {
+        case 'WFS':
+          layer = new WFS(layerParam, { style: parameterVariable.style });
+          break;
+        case 'WMS':
+          layer = new WMS(layerParam);
+          break;
+        case 'GeoJSON':
+          layer = new GeoJSON(parameterVariable, { style: parameterVariable.style });
+          break;
+        case 'GeoTIFF':
+          layer = new GeoTIFF(layerParam);
+          break;
+        case 'KML':
+          layer = new KML(layerParam);
+          break;
+        case 'Vector':
+          layer = new Vector(layerParam);
+          break;
+        case 'WMTS':
+          layer = new WMTS(layerParam);
+          break;
+        case 'MVT':
+          layer = new MVT(layerParam);
+          break;
+        case 'MBTiles':
+          layer = new MBTiles(parameterVariable);
+          break;
+        case 'MBTilesVector':
+          layer = new MBTilesVector(parameterVariable, { style: parameterVariable.style });
+          break;
+        case 'XYZ':
+          layer = new XYZ(parameterVariable);
+          break;
+        case 'TMS':
+          layer = new TMS(parameterVariable, { crossOrigin: parameterVariable.crossOrigin });
+          break;
+        case 'OSM':
+          layer = new OSM(layerParam);
+          break;
+        case 'OGCAPIFeatures':
+          layer = new OGCAPIFeatures(layerParam, { style: parameterVariable.style });
+          break;
+        case 'GenericRaster':
+          layer = new GenericRaster(layerParam);
+          break;
+        case 'GenericVector':
+          layer = new GenericVector(layerParam);
+          break;
+        case 'MapLibre':
+          layer = new MapLibre(layerParam);
+          break;
+        case 'LayerGroup':
+          layer = new LayerGroup(layerParam);
+          break;
+        default:
+          Dialog.error(getValue('dialog').invalid_type_layer);
+      }
+    } else {
+      Dialog.error(getValue('dialog').invalid_type_layer);
+    }
+
+    return layer;
   }
 
   /**
@@ -740,10 +741,10 @@ class Map extends Base {
         useCapabilities = l.useCapabilities;
       }
 
-      if (this.collectionCapabilities.filter((u) => u.url === url).length > 0) return;
+      if (this.collectionCapabilities.some((u) => u.url === url)) return;
 
       if ((type === 'WMS' || type === 'WMTS') && useCapabilities) {
-        if (urlCapabilities.filter((u) => u.url === url).length === 0) {
+        if (!urlCapabilities.some((u) => u.url === url)) {
           this.collectionCapabilities.push({
             type,
             url,
@@ -784,6 +785,84 @@ class Map extends Base {
       this.getImpl().removeLayers(layers);
     }
 
+    return this;
+  }
+
+  /**
+   * Este método devuelve los grupos que tenga el mapa.
+   *
+   * @function
+   * @returns {Array<M.layer.Group>}
+   * @api stable
+   */
+  getLayerGroup() {
+    // checks if the implementation can manage layers
+    if (isUndefined(MapImpl.prototype.getLayerGroups)) {
+      Exception('La implementación usada no posee el método getLayerGroups');
+    }
+    return this.getImpl().getGroupedLayers().sort(Map.LAYER_SORT);
+  }
+
+  /**
+   * Añade un grupo de capa al mapa.
+   *
+   * @function
+   * @param {Array<M.layer.Group>} layerGroups
+   * @returns {M.Map}
+   * @api stable
+   */
+  addLayerGroups(layerGroups) {
+    let layersParam = layerGroups;
+
+    if (!isNullOrEmpty(layersParam)) {
+      if (isUndefined(MapImpl.prototype.addLayerGroups)) {
+        Exception(getValue('exception').addLayerGroup_method);
+      }
+
+      if (!isArray(layersParam)) {
+        layersParam = [layersParam];
+      }
+
+      const collectionLayerGroups = [];
+      layersParam.forEach((layerParam) => {
+        if (isObject(layerParam) && (layerParam instanceof LayerGroup)) {
+          layerParam.setMap(this);
+          collectionLayerGroups.push(layerParam);
+        } else if (!(layerParam instanceof Layer)) {
+          const tmsLayer = new LayerGroup(layerParam, layerParam.options);
+          tmsLayer.setMap(this);
+          collectionLayerGroups.push(tmsLayer);
+        }
+      });
+
+      this.getImpl().addLayerGroups(collectionLayerGroups);
+
+      this.fire(EventType.ADDED_LAYER, [collectionLayerGroups]);
+      this.fire(EventType.ADDED_LAYERGROUP, [collectionLayerGroups]);
+    }
+    return this;
+  }
+
+  /**
+   * Elimina un grupo de capa al mapa.
+   *
+   * @function
+   * @param {Array<M.layer.Group>} layerGroups
+   * specified by the user
+   * @returns {M.Map}
+   * @api stable
+   */
+  removeLayerGroup(layerGroups) {
+    // checks if the parameter is null or empty
+    if (isNull(layerGroups)) {
+      Exception('No ha especificado ningun grupo a eliminar');
+    }
+    // checks if the implementation can manage groups
+    if (isUndefined(this.getImpl().removeLayerGroups)) {
+      Exception('La implementación usada no posee el método removeGroups');
+    }
+    // removes the layers
+    this.getImpl().removeLayerGroups(layerGroups);
     return this;
   }
 
@@ -849,7 +928,7 @@ class Map extends Base {
       const kmlLayers = [];
       layersParam.forEach((layerParam) => {
         let kmlLayer;
-        if (isObject(layerParam) && (layerParam instanceof KML)) {
+        if (layerParam instanceof KML) {
           kmlLayer = layerParam;
         } else if (!(layerParam instanceof Layer)) {
           kmlLayer = new KML(layerParam, layerParam.options);
@@ -1095,7 +1174,7 @@ class Map extends Base {
       const wfsLayers = [];
       layersParam.forEach((layerParam) => {
         let wfsLayer;
-        if (isObject(layerParam) && (layerParam instanceof WFS)) {
+        if (layerParam instanceof WFS) {
           wfsLayer = layerParam;
         } else if (!(layerParam instanceof Layer)) {
           try {
@@ -1220,7 +1299,7 @@ class Map extends Base {
   addGeoTIFF(layersParamVar) {
     let layersParam = layersParamVar;
     if (!isNullOrEmpty(layersParam)) {
-    // checks if the implementation can manage layers
+      // checks if the implementation can manage layers
       if (isUndefined(MapImpl.prototype.addGeoTIFF)) {
         Exception(getValue('exception').addgeotiff_method);
       }
@@ -1234,7 +1313,7 @@ class Map extends Base {
       const geotiffLayers = [];
       layersParam.forEach((layerParam) => {
         let geotiffLayer;
-        if (isObject(layerParam) && (layerParam instanceof GeoTIFF)) {
+        if (layerParam instanceof GeoTIFF) {
           geotiffLayer = layerParam;
         } else if (!(layerParam instanceof Layer)) {
           try {
@@ -1266,7 +1345,7 @@ class Map extends Base {
  */
   removeGeoTIFF(layersParam) {
     if (!isNullOrEmpty(layersParam)) {
-    // checks if the implementation can manage layers
+      // checks if the implementation can manage layers
       if (isUndefined(MapImpl.prototype.removeGeoTIFF)) {
         Exception(getValue('exception').removegeotiff_method);
       }
@@ -1347,7 +1426,7 @@ class Map extends Base {
       const mapLibreLayers = [];
       layersParam.forEach((layerParam) => {
         let mapLibreLayer;
-        if (isObject(layerParam) && (layerParam instanceof MapLibre)) {
+        if (layerParam instanceof MapLibre) {
           mapLibreLayer = layerParam;
         } else if (!(layerParam instanceof Layer)) {
           try {
@@ -1462,7 +1541,7 @@ class Map extends Base {
       const ogcapifLayers = [];
       layersParam.forEach((layerParam) => {
         let ogcapifLayer;
-        if (isObject(layerParam) && (layerParam instanceof OGCAPIFeatures)) {
+        if (layerParam instanceof OGCAPIFeatures) {
           ogcapifLayer = layerParam;
         } else if (!(layerParam instanceof Layer)) {
           try {
@@ -1577,7 +1656,7 @@ class Map extends Base {
       // gets the parameters as WMS objects to add
       const wmtsLayers = [];
       layersParam.forEach((layerParam) => {
-        if (isObject(layerParam) && (layerParam instanceof WMTS)) {
+        if (layerParam instanceof WMTS) {
           layerParam.setMap(this);
           wmtsLayers.push(layerParam);
         } else if (!(layerParam instanceof Layer)) {
@@ -1706,7 +1785,7 @@ class Map extends Base {
       const mvtLayers = [];
       layersParam.forEach((layerParam) => {
         let vectorTile;
-        if (isObject(layerParam) && (layerParam instanceof MVT)) {
+        if (layerParam instanceof MVT) {
           vectorTile = layerParam;
         } else if (!(layerParam instanceof Layer)) {
           try {
@@ -1951,7 +2030,7 @@ class Map extends Base {
 
       const xyzLayers = [];
       layersParam.forEach((layerParam) => {
-        if (isObject(layerParam) && (layerParam instanceof XYZ)) {
+        if (layerParam instanceof XYZ) {
           layerParam.setMap(this);
           xyzLayers.push(layerParam);
         } else if (!(layerParam instanceof Layer)) {
@@ -2044,7 +2123,7 @@ class Map extends Base {
 
       const tmsLayers = [];
       layersParam.forEach((layerParam) => {
-        if (isObject(layerParam) && (layerParam instanceof TMS)) {
+        if (layerParam instanceof TMS) {
           layerParam.setMap(this);
           tmsLayers.push(layerParam);
         } else if (!(layerParam instanceof Layer)) {
@@ -3581,7 +3660,7 @@ class Map extends Base {
    */
   evtRemoveAttributions_() {
     this.on(EventType.REMOVED_LAYER, (layersEvt) => {
-      const controlAttributions = this.getControls().filter(({ name }) => name === 'attributions')[0];
+      const controlAttributions = this.getControls().find(({ name }) => name === 'attributions');
 
       if (!layersEvt || !controlAttributions) {
         return;

@@ -7,6 +7,7 @@ import { isNullOrEmpty } from 'M/util/Utils';
 import Exception from 'M/exception/exception';
 import * as Dialog from 'M/dialog';
 import { getValue } from 'M/i18n/language';
+import GML from '../format/GML';
 
 /**
   * @classdesc
@@ -85,11 +86,18 @@ class WFS extends MObject {
     return new Promise((success, fail) => {
       getRemote(url).then((response) => {
         if (!isNullOrEmpty(response.text) && response.text.indexOf('ServiceExceptionReport') < 0) {
-          const features = this.format_.read(response.text, projection);
+          let text = response.text;
+          // Arreglo para WFS 2.0.0 #7434
+          if (this.format_ instanceof GML && text.includes('<wfs:')) {
+            text = text.replaceAll('<wfs:', '<gml:').replaceAll('</wfs:', '</gml:')
+              .replaceAll('</gml:member', '</gml:featureMember')
+              .replaceAll('<gml:member', '<gml:featureMember');
+          }
+          const features = this.format_.read(text, projection);
           success(features);
         } else if (response.code === 401) {
           Dialog.error(getValue('dialog').unauthorized_user);
-        } else if (response.text.indexOf('featureId and cql_filter') >= 0) {
+        } else if (!isNullOrEmpty(response.text) && response.text.indexOf('featureId and cql_filter') >= 0) {
           Dialog.error(getValue('dialog').only_one_filter);
         } else {
           Exception(getValue('exception').no_getfeature_response);

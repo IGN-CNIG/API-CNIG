@@ -57,7 +57,7 @@ $(() => {
   $(window).on('resize', _onResize);
   _onResize();
 
-  const currentVersion = document.getElementById('package-version').innerHTML;
+  // const currentVersion = document.getElementById('package-version').innerHTML;
 
   // warn about outdated version
   // var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';

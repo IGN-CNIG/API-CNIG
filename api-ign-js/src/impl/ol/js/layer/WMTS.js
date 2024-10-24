@@ -1,14 +1,9 @@
-/* eslint-disable max-len */
 /**
  * @module M/impl/layer/WMTS
  */
 import {
-  isNullOrEmpty,
-  isNull,
-  getResolutionFromScale,
-  getWMTSGetCapabilitiesUrl,
+  isNull, isArray, isNullOrEmpty, addParameters, getWMTSGetCapabilitiesUrl, getResolutionFromScale,
   extend,
-  addParameters,
 } from 'M/util/Utils';
 import { default as OLSourceWMTS } from 'ol/source/WMTS';
 import OLFormatWMTSCapabilities from 'ol/format/WMTSCapabilities';
@@ -18,7 +13,6 @@ import { get as getRemote } from 'M/util/Remote';
 import * as EventType from 'M/event/eventtype';
 import { get as getProj } from 'ol/proj';
 import OLLayerTile from 'ol/layer/Tile';
-import { isArray } from 'M/util/Utils';
 import { optionsFromCapabilities } from 'patches';
 import LayerBase from './Layer';
 import getLayerExtent from '../util/wmtscapabilities';
@@ -123,9 +117,14 @@ class WMTS extends LayerBase {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
+    this.addLayerToMap_ = addLayer;
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
+
+    if (!isNullOrEmpty(this.vendorOptions_.source)) {
+      this.name = this.vendorOptions_.source.getLayer();
+    }
 
     // calculates the resolutions from scales
     if (!isNull(this.options)
@@ -134,6 +133,14 @@ class WMTS extends LayerBase {
       this.options.minResolution = getResolutionFromScale(this.options.minScale, units);
       this.options.maxResolution = getResolutionFromScale(this.options.maxScale, units);
     }
+
+    this.ol3Layer = new OLLayerTile(extend({
+      visible: this.visibility,
+      minResolution: this.options.minResolution,
+      maxResolution: this.options.maxResolution,
+      extent: this.userMaxExtent,
+      opacity: this.opacity_,
+    }, this.vendorOptions_, true));
 
     if (this.useCapabilities) {
       this.capabilitiesOptionsPromise = this.getCapabilitiesOptions_();
@@ -161,7 +168,8 @@ class WMTS extends LayerBase {
     const defaultExtent = this.map.getMaxExtent();
 
     if (!isNull(contents)) {
-      this.maxExtent = getLayerExtent(contents, this.name, this.map.getProjection().code, defaultExtent);
+      this.maxExtent = getLayerExtent(contents, this.name, this.map
+        .getProjection().code, defaultExtent);
     }
     return this.maxExtent;
   }
@@ -261,32 +269,25 @@ class WMTS extends LayerBase {
       const extent = this.facadeLayer_.getMaxExtent();
       // gets resolutions from defined min/max resolutions
       const capabilitiesOptionsVariable = capabilitiesOptions;
-      const minResolution = this.options.minResolution;
-      const maxResolution = this.options.maxResolution;
       capabilitiesOptionsVariable.format = this.options.format || capabilitiesOptions.format;
-      const wmtsSource = new OLSourceWMTS(extend(capabilitiesOptionsVariable, {
-        // tileGrid: new OLTileGridWMTS({
-        //   origin: getBottomLeft(extent),
-        //   resolutions,
-        //   matrixIds,
-        // }),
-        extent,
-        crossOrigin: this.crossOrigin,
-      }, true));
-
+      let wmtsSource = this.vendorOptions_.source;
+      if (isNullOrEmpty(this.vendorOptions_.source)) {
+        const options = extend(capabilitiesOptionsVariable, {
+          extent,
+          crossOrigin: this.crossOrigin,
+        }, true);
+        wmtsSource = new OLSourceWMTS(options);
+      }
       this.facadeLayer_.setFormat(capabilitiesOptionsVariable.format);
-      this.ol3Layer = new OLLayerTile(extend({
-        visible: this.visibility,
-        source: wmtsSource,
-        minResolution,
-        maxResolution,
-        extent: this.userMaxExtent,
-        opacity: this.opacity_,
-      }, this.vendorOptions_, true));
+      this.ol3Layer.setSource(wmtsSource);
 
       // keeps z-index values before ol resets
       const zIndex = this.zIndex_;
-      this.map.getMapImpl().addLayer(this.ol3Layer);
+
+      if (this.addLayerToMap_) {
+        this.map.getMapImpl().addLayer(this.ol3Layer);
+      }
+
       this.ol3Layer.setMaxZoom(this.maxZoom);
       this.ol3Layer.setMinZoom(this.minZoom);
 
@@ -310,47 +311,37 @@ class WMTS extends LayerBase {
    */
   addLayerNotCapabilities_() {
     if (!isNullOrEmpty(this.map)) {
-      const extent = this.facadeLayer_.getMaxExtent();
-
-      const minResolution = this.options.minResolution;
-      const maxResolution = this.options.maxResolution;
       const format = (this.options.format) ? this.options.format : 'image/png';
+      let wmtsSource = this.vendorOptions_.source;
+      if (isNullOrEmpty(this.vendorOptions_.source)) {
+        const size = getWidth(this.map.getProjection().getExtent()) / 256;
+        const resolutions = new Array(19);
+        const matrixIds = new Array(19);
+        // eslint-disable-next-line no-plusplus
+        for (let z = 0; z < 19; ++z) {
+          // generate resolutions and matrixIds arrays for this WMTS
+          // eslint-disable-next-line no-restricted-properties
+          resolutions[z] = size / (2 ** z);
+          matrixIds[z] = z;
+        }
 
-      const size = getWidth(extent) / 256;
-      const resolutions = new Array(19);
-      const matrixIds = new Array(19);
-      // eslint-disable-next-line no-plusplus
-      for (let z = 0; z < 19; ++z) {
-        // generate resolutions and matrixIds arrays for this WMTS
-        // eslint-disable-next-line no-restricted-properties
-        resolutions[z] = size / (2 ** z);
-        matrixIds[z] = z;
+        const tileGrid = new OLTileGridWMTS({
+          origin: getTopLeft(this.map.getProjection().getExtent()),
+          resolutions,
+          matrixIds,
+        });
+        wmtsSource = new OLSourceWMTS({
+          attributions: ' https://www.ign.es/',
+          url: this.url,
+          layer: this.name,
+          matrixSet: this.matrixSet,
+          format,
+          projection: getProj(this.map.getProjection().code),
+          tileGrid,
+        });
       }
-
-      const tileGrid = new OLTileGridWMTS({
-        origin: getTopLeft(extent),
-        resolutions,
-        matrixIds,
-      });
-
-      const wmtsSource = new OLSourceWMTS({
-        attributions: ' https://www.ign.es/',
-        url: this.url,
-        layer: this.name,
-        matrixSet: this.options.matrixSet,
-        format: this.options.format,
-        projection: getProj(this.map.getProjection().code),
-        tileGrid,
-      }, extent, true);
-
       this.facadeLayer_.setFormat(format);
-      this.ol3Layer = new OLLayerTile(extend({
-        visible: this.visibility,
-        source: wmtsSource,
-        minResolution,
-        maxResolution,
-        extent: this.userMaxExtent,
-      }, this.vendorOptions_, true));
+      this.ol3Layer.setSource(wmtsSource);
 
       // keeps z-index values before ol resets
       const zIndex = this.zIndex_;
@@ -405,7 +396,7 @@ class WMTS extends LayerBase {
     }
     let capabilitiesLayer = capabilities.Contents.Layer;
     if (isArray(capabilitiesLayer)) {
-      capabilitiesLayer = capabilitiesLayer.filter((l) => l.Identifier === this.facadeLayer_.name)[0];
+      capabilitiesLayer = capabilitiesLayer.find((l) => l.Identifier === layerName);
     }
 
     if (capabilitiesLayer.Style.length > 0 && capabilitiesLayer.Style[0].LegendURL !== undefined) {
@@ -473,7 +464,11 @@ class WMTS extends LayerBase {
   getCapabilities() {
     if (isNullOrEmpty(this.getCapabilitiesPromise_)) {
       this.getCapabilitiesPromise_ = new Promise((success, fail) => {
-        const getCapabilitiesUrl = getWMTSGetCapabilitiesUrl(this.url);
+        let url = this.url;
+        if (this.vendorOptions_.source) {
+          url = this.vendorOptions_.source.getUrls()[0];
+        }
+        const getCapabilitiesUrl = getWMTSGetCapabilitiesUrl(url);
         const parser = new OLFormatWMTSCapabilities();
         getRemote(getCapabilitiesUrl).then((response) => {
           let getCapabilitiesDocument = response.xml;
@@ -488,13 +483,12 @@ class WMTS extends LayerBase {
             parsedCapabilities.Contents.Layer.forEach((l) => {
               const name = l.Identifier;
               l.Style.forEach((s) => {
-                const layerText = response.text.split('Layer>').filter((text) => text.indexOf(`Identifier>${name}<`) > -1)[0];
-                /* eslint-disable no-param-reassign */
+                const layerText = response.text.split('Layer>').find((text) => text.indexOf(`Identifier>${name}<`) > -1);
+                // eslint-disable-next-line no-param-reassign
                 s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
               });
             });
-            /* eslint-disable no-empty */
-          } catch (err) {}
+          } catch (err) { /* Continue */ }
           success.call(this, parsedCapabilities);
         });
       });

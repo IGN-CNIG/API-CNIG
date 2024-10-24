@@ -2,11 +2,7 @@
  * @module M/impl/GetCapabilities
  */
 import {
-  isNullOrEmpty,
-  isArray,
-  isObject,
-  isUndefined,
-  isString,
+  isUndefined, isArray, isNullOrEmpty, isObject, isString,
 } from 'M/util/Utils';
 import WMS from 'M/layer/WMS';
 import { get as getProjection } from 'ol/proj';
@@ -205,8 +201,7 @@ class GetCapabilities {
         if (formats.length === 1) {
           imageFormat = formats[0];
         }
-        /* eslint-disable no-empty */
-      } catch (err) {}
+      } catch (err) { /* Continue */ }
       layers.push(new WMS({
         url: this.serviceUrl_,
         name: layer.Name,

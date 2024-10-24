@@ -1,7 +1,7 @@
 /**
  * @module M/impl/style/Line
  */
-import { isNullOrEmpty, isFunction } from 'M/util/Utils';
+import { isArray, isNullOrEmpty, isFunction } from 'M/util/Utils';
 import OLFeature from 'ol/Feature';
 import OLStyleStroke from 'ol/style/Stroke';
 import OLStyleFill from 'ol/style/Fill';
@@ -33,11 +33,20 @@ class Line extends Simple {
    * @param {Object} options Opciones de la clase.
    * - icon (src): Ruta del icono.
    * @implements {M.impl.style.Simple}
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base.
    * @api stable
    */
-  constructor(options) {
+  constructor(options, vendorOptions) {
     super(options);
-    this.olStyleFn_ = this.updateFacadeOptions(options);
+    let auxVendorOptions;
+    if (vendorOptions) {
+      if (isArray(vendorOptions)) {
+        auxVendorOptions = vendorOptions;
+      } else {
+        auxVendorOptions = [vendorOptions];
+      }
+    }
+    this.olStyleFn_ = this.updateFacadeOptions(options, auxVendorOptions);
   }
 
   /**
@@ -50,8 +59,15 @@ class Line extends Simple {
    * @function
    * @api stable
    */
-  updateFacadeOptions(options) {
-    return (feature) => {
+  updateFacadeOptions(options, vendorOptions) {
+    const fn = (feature) => {
+      if (vendorOptions) {
+        // #FIX_ST_VE_OP no esta diseñado de tal forma que solo se use una vez vendorOptions,
+        // aquí seguirá enviando el vendorOptions como resultado ya que solo se define a
+        // través de la styleFuntion. Por lo que se intenta arreglar de esta manera.
+        // this.olStyleFn_ = this.updateFacadeOptions(options);
+        return vendorOptions;
+      }
       let featureVariable = feature;
       if (!(featureVariable instanceof OLFeature || feature instanceof RenderFeature)) {
         featureVariable = this;
@@ -128,13 +144,13 @@ class Line extends Simple {
       let fill;
       if (!isNullOrEmpty(options.fill)) {
         const fillColorValue = Simple.getValue(options.fill.color, featureVariable, this.layer_);
-        let fillOpacityValue = Simple.getValue(options.fill.opacity, featureVariable, this.layer_);
-        if (!fillOpacityValue && fillOpacityValue !== 0) {
-          fillOpacityValue = 1;
-        }
         const widthValue = Simple.getValue(options.fill.width, featureVariable, this.layer_);
-
         if (!isNullOrEmpty(fillColorValue)) {
+          let fillOpacityValue = Simple
+            .getValue(options.fill.opacity, featureVariable, this.layer_);
+          if (!fillOpacityValue && fillOpacityValue !== 0) {
+            fillOpacityValue = 1;
+          }
           fill = new OLStyleStroke({
             color: chroma(fillColorValue).alpha(fillOpacityValue).css(),
             width: widthValue,
@@ -142,10 +158,9 @@ class Line extends Simple {
         }
 
         if (!isNullOrEmpty(options.fill.pattern)) {
-          let color = 'rgba(0,0,0,1)';
-          if (!isNullOrEmpty(options.fill.pattern.color)) {
-            color = Simple.getValue(options.fill.pattern.color, featureVariable, this.layer_);
-          }
+          const color = isNullOrEmpty(options.fill.pattern.color)
+            ? 'rgba(0,0,0,1)'
+            : Simple.getValue(options.fill.pattern.color, featureVariable, this.layer_);
 
           fill = new OLStyleStrokePattern({
             pattern: (Simple.getValue(options.fill.pattern.name, featureVariable, this.layer_) || '').toLowerCase(),
@@ -170,6 +185,8 @@ class Line extends Simple {
       styleStroke.setStroke(fill);
       return [style, styleStroke];
     };
+    this.olStyleFn_ = fn;
+    return fn;
   }
 
   /**
@@ -212,8 +229,9 @@ class Line extends Simple {
    * @api stable
    */
   drawGeometryToCanvas(vectorContext, canvas, style, stroke) {
-    let x = Line.getCanvasSize()[0];
-    let y = Line.getCanvasSize()[1];
+    const convasSize = Line.getCanvasSize();
+    let x = convasSize[0];
+    let y = convasSize[1];
     vectorContext.drawGeometry(new OLGeomLineString([
       [0 + (stroke / 2), 0 + (stroke / 2)],
       [(x / 3), (y / 2) - (stroke / 2)],
@@ -251,14 +269,15 @@ class Line extends Simple {
       size: canvasSize,
     });
     let optionsStyle;
-    const style = this.olStyleFn_()[1];
+    const auxOlStyleFn = this.olStyleFn_();
+    const style = auxOlStyleFn[1];
     if (!isNullOrEmpty(style) && !isNullOrEmpty(style.getStroke())) {
       optionsStyle = {
         color: style.getStroke().getColor(),
         width: 1,
       };
     }
-    const applyStyle = this.olStyleFn_()[0];
+    const applyStyle = auxOlStyleFn[0];
     if (!isNullOrEmpty(applyStyle.getText())) {
       applyStyle.setText(null);
     }

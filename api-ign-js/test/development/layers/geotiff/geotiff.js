@@ -1,5 +1,7 @@
 /* eslint-disable camelcase,import/prefer-default-export */
 import GeoTIFF from 'M/layer/GeoTIFF';
+import { normalize } from 'ol/color';
+import GeoTIFFSource from 'ol/source/GeoTIFF';
 
 export const geotiff_001 = new GeoTIFF({
   url: 'http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif',
@@ -53,6 +55,27 @@ export const geotiff_003 = new GeoTIFF({
   url: 'http://ftpcdd.cnig.es/Vuelos_2022/Vuelos_2022/murcia_2022/01.VF/01.08_PNOA_2022_MUR_35cm_VF_img8c_rgb_hu30/h50_0932_fot_011-0034_cog.tif',
 }, { nodata: 0 });
 
-export const geotiff_004 = new GeoTIFF({
-  url: 'http://ftpcdd.cnig.es/Vuelos_2015_2016/Vuelos_2015/Baleares/1.VF/1.08_PNOA_L6_2015_BAL_25cm_VF_img8c_rgb_hu31/h50_0697_fot_002-0026.tif',
-});
+export const geotiff_004 = new GeoTIFF(
+  {
+    url: 'http://ftpcdd.cnig.es/Vuelos_2015_2016/Vuelos_2015/Baleares/1.VF/1.08_PNOA_L6_2015_BAL_25cm_VF_img8c_rgb_hu31/h50_0697_fot_002-0026.tif',
+    projection: 'EPSG:4326',
+    normalize: false,
+  },
+  {
+    convertToRGB: false,
+    nodata: 99,
+  },
+  {
+    source: new GeoTIFFSource({
+      sources: [
+        {
+          url: 'http://ftpcdd.cnig.es/Vuelos_2021/Vuelos_2021/catalunya_2021/Costa/01.VF/01.08_PNOA_2021_CAT_COSTA_22cm_VF_img8c_rgb_hu31/h50_0219_fot_002-0001_cog.tif',
+          nodata: 0,
+        },
+      ],
+      convertToRGB: true,
+      projection: 'EPSG:3857',
+      normalize: true,
+    }),
+  },
+);

@@ -2,7 +2,7 @@
  * @module M/impl/Popup
  */
 import OLOverlay from 'ol/Overlay';
-import { enableTouchScroll, isFunction, isNullOrEmpty } from 'M/util/Utils';
+import { isNullOrEmpty, isFunction, enableTouchScroll } from 'M/util/Utils';
 import FacadePopup from 'M/Popup';
 import FacadeWindow from 'M/util/Window';
 
@@ -37,7 +37,11 @@ class Popup extends OLOverlay {
    * @api
    */
   constructor(options = {}) {
-    super({});
+    super({
+      className: window.matchMedia('(max-width: 768px)').matches
+        ? 'ol-overlay-container ol-selectable unsetTransform' // to not blink from started location
+        : undefined, // OLOverlay replacement of 'ol-overlay-container ' + CLASS_SELECTABLE
+    });
 
     /**
      * Indica si el mapa se desplaza o no.
@@ -111,7 +115,7 @@ class Popup extends OLOverlay {
    */
   show(coord, callback) {
     this.setPosition(coord);
-    if (this.panMapIfOutOfView) {
+    if (this.panMapIfOutOfView && !window.matchMedia('(max-width: 768px)').matches) {
       this.panIntoView(coord);
     }
     this.content.scrollTop = 0;
@@ -178,59 +182,84 @@ class Popup extends OLOverlay {
   panIntoView(coord) {
     // it waits for the previous animation in order to execute this
     this.panIntoSynchronizedAnim_().then(() => {
-      this.isAnimating_ = true;
-      // if (FacadeWindow.WIDTH > 768) {
-      const tabHeight = 30; // 30px for tabs
-      const popupElement = this.element.querySelector('.m-popup');
-      const popupWidth = popupElement.clientWidth + 20;
-      const popupHeight = popupElement.clientHeight + 20 + tabHeight;
-      const mapSize = this.getMap().getSize();
+      const overlayMap = this.getMap();
+      if (isNullOrEmpty(overlayMap)) return; // Comprueba si overlay fue borrado
 
-      const center = this.getMap().getView().getCenter();
-      const tailHeight = 20;
-      const tailOffsetLeft = 60;
-      const tailOffsetRight = popupWidth - tailOffsetLeft;
-      const popOffset = this.getOffset();
-      const popPx = this.getMap().getPixelFromCoordinate(coord);
-
-      if (!isNullOrEmpty(popPx)) {
-        const fromLeft = (popPx[0] - tailOffsetLeft);
-        const fromRight = mapSize[0] - (popPx[0] + tailOffsetRight);
-
-        const fromTop = popPx[1] - (popupHeight + popOffset[1]);
-        const fromBottom = mapSize[1] - (popPx[1] + tailHeight) - popOffset[1];
-
-        const curPix = this.getMap().getPixelFromCoordinate(center);
-        const newPx = curPix.slice();
-
-        if (fromRight < 0) {
-          newPx[0] -= fromRight;
-        } else if (fromLeft < 0) {
-          newPx[0] += fromLeft;
-        }
-
-        if (fromTop < 0) {
-          newPx[1] += fromTop;
-        } else if (fromBottom < 0) {
-          newPx[1] -= fromBottom;
-        }
-
-        // if (this.ani && this.ani_opts) {
-        if (!isNullOrEmpty(this.ani_opts) && isNullOrEmpty(this.ani_opts.source)) {
-          this.ani_opts.source = center;
-          this.getMap().getView().animate(this.ani_opts);
-        }
-
-        if (newPx[0] !== curPix[0] || newPx[1] !== curPix[1]) {
-          this.getMap().getView().setCenter(this.getMap().getCoordinateFromPixel(newPx));
-        }
+      if (!overlayMap.getPixelFromCoordinate(coord)) {
+        overlayMap.once('postrender', () => {
+          this.centerPixelFromCoordinate_(coord, overlayMap);
+        });
+      } else {
+        this.centerPixelFromCoordinate_(coord, overlayMap);
       }
-      // }
-      // the animation ended
-      this.isAnimating_ = false;
     });
 
     return this.getMap().getView().getCenter();
+  }
+
+  /**
+   * Este método centra el "Popup" en las coordenadas.
+   * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+   * @function
+   * @param {ol.Coordinate} coord Coordenadas del "Popup".
+   * @param {ol.Map} overlayMap Mapa.
+   * @public
+   * @api
+   */
+  centerPixelFromCoordinate_(coord, overlayMap) {
+    const popPx = overlayMap.getPixelFromCoordinate(coord);
+    if (!isNullOrEmpty(popPx)) {
+      this.isAnimating_ = true;
+      popPx[0] = Math.round(popPx[0]);
+      popPx[1] = Math.round(popPx[1]);
+      // if (FacadeWindow.WIDTH > 768) {
+      const popupElement = this.element.querySelector('.m-popup');
+      const extraOffset = 20; // Avoids putting popup on map edge, on mobile set to 0 is better
+      const popupWidth = popupElement.clientWidth + extraOffset; // 20;
+      const tabHeight = 30; // 30px for non mobile tabs, on mobile set to 0 is better
+      const popupHeight = popupElement.clientHeight + tabHeight + extraOffset;
+      const mapSize = overlayMap.getSize();
+      const center = overlayMap.getView().getCenter();
+      const tailOffsetLeft = 60; // arrow at bottom 48+10+2=60px (left,img/2,border)
+      const tailOffsetRight = popupWidth - tailOffsetLeft;
+      const popOffsetY = this.getOffset()[1];
+      const curPix = overlayMap.getPixelFromCoordinate(center);
+      curPix[0] = Math.round(curPix[0]);
+      curPix[1] = Math.round(curPix[1]);
+      const newPx = curPix.slice();
+
+      const fromRight = mapSize[0] - (popPx[0] + tailOffsetRight);
+      if (fromRight < 0) {
+        newPx[0] -= fromRight;
+      } else {
+        const fromLeft = (popPx[0] - tailOffsetLeft);
+        if (fromLeft < 0) {
+          newPx[0] += fromLeft;
+        }
+      }
+
+      const fromTop = popPx[1] - (popupHeight + popOffsetY);
+      if (fromTop < 0) {
+        newPx[1] += fromTop;
+      } else {
+        const tailHeight = 20; // small arrow at the bottom, on mobile set to 0 is better
+        const fromBottom = mapSize[1] - (popPx[1] + tailHeight) - popOffsetY;
+        if (fromBottom < 0) {
+          newPx[1] -= fromBottom;
+        }
+      }
+
+      // if (this.ani && this.ani_opts) {
+      if (!isNullOrEmpty(this.ani_opts) && isNullOrEmpty(this.ani_opts.source)
+      && (newPx[0] !== curPix[0] || newPx[1] !== curPix[1])) {
+        this.ani_opts.source = center;
+        overlayMap.getView()
+          .animate({ ...this.ani_opts, center: overlayMap.getCoordinateFromPixel(newPx) });
+      }
+
+      // The animation ended
+      this.isAnimating_ = false;
+    }
   }
 
   /**

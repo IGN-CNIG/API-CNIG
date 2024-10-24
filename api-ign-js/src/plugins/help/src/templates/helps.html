@@ -286,7 +286,7 @@
         const text = document.getElementById('m-help-input').value;
         const ol = document.querySelector('#m-help-index > div:nth-child(2) > ol');
         const lis = ol.getElementsByTagName('li');
-        Array.from(lis).forEach((element) => {
+        Array.prototype.forEach.call(lis, (element) => {
           element.style.display = 'block';
           if (element.textContent.toLocaleLowerCase().indexOf(text.toLocaleLowerCase()) === -1) {
             element.style.display = 'none';

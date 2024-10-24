@@ -2,7 +2,7 @@
  * @module M/style/Composite
  */
 import StyleBase from './Style';
-import { isNullOrEmpty, isArray, styleComparator } from '../util/Utils';
+import { isArray, isNullOrEmpty, styleComparator } from '../util/Utils';
 // import StyleCluster from './Cluster';
 // import StyleProportional from './Proportional';
 /**
@@ -16,8 +16,7 @@ class Composite extends StyleBase {
    * Constructor principal de la clase.
    * @constructor
    * @param {Object} options Parámetros.
-   * - icon
-   *    - src: Ruta.
+   * - Las opciones dependen de la clase estilo hija que lo llame
    * @param {Object} impl Implementación.
    * @api
    */

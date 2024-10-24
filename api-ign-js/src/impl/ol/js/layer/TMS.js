@@ -26,19 +26,22 @@ class TMS extends MXYZ {
    *
    * @constructor
    * @implements {M.impl.layer.Vector}
-   * @param {string|Mx.parameters.TMS} userParameters Parámetros que se pasarán
-   * al padre (clase Vector).
-   * - URL: Url del servicio XYZ.
-   * - tileSize: Tamaño de la tesela, por defecto 256.
-   * - visibility: Define si la capa es visible o no.
-   * - minZoom: Limitar el zoom mínimo.
-   * - maxZoom: Limitar el zoom máximo.
-   * - tileGridMaxZoom: Zoom máximo de la tesela en forma de rejilla.
-   * - displayInLayerSwitcher: Mostrar en el selector de capas.
-   * @param {Mx.parameters.LayerOptions} options Opciones personalizadas para esta capa.
+   * @param {Mx.parameters.TMS} userParameters Parámetros para la construcción de la capa.
+   * - attribution: Atribución de la capa.
+   * - name: Nombre de la capa.
+   * - isBase: Indica si la capa es base.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
+   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - legend: Nombre asociado en el árbol de contenidos, si usamos uno.
+   * - visibility: Indica si la capa estará por defecto visible o no.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - url: URL del servicio XYZ.
+   * - type: Tipo de la capa.
+   * - tileGridMaxZoom: Zoom máximo de cuadrícula de mosaico.
+   * - tileSize: Tamaño de la tesela
+   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - opacity: Opacidad de capa, por defecto 1.
-   * - visibility: Define si la capa es visible o no. Verdadero por defecto.
-   * - displayInLayerSwitcher:  Indica si la capa se muestra en el selector de capas.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - crossOrigin: Atributo crossOrigin para las imágenes cargadas.

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /**
  * @module M/plugin/Attributions
  */
@@ -330,7 +329,8 @@ export default class Attributions extends M.Plugin {
             mapAttributions = [{ attribution: 'Sistema Cartográfico Nacional', url: 'http://www.scne.es/' }].concat(mapAttributions);
           }
         } else {
-          mapAttributions = [{ attribution: this.defaultAttribution_, url: this.defaultURL_ }].concat(mapAttributions);
+          mapAttributions = [{ attribution: this.defaultAttribution_, url: this.defaultURL_ }]
+            .concat(mapAttributions);
         }
       }
 
@@ -416,7 +416,7 @@ export default class Attributions extends M.Plugin {
    */
   getMapAttributions() {
     this.updateBBoxFeature();
-    const featuresAttributions = this.map_.getLayers().filter((l) => l.name.includes('attributions'))[0].getFeatures();
+    const featuresAttributions = this.map_.getLayers().find((l) => l.name.includes('attributions')).getFeatures();
     const interFilter = intersect(this.bboxFeature_);
     const filteredFeatures = interFilter.execute(featuresAttributions);
     return filteredFeatures.map((feature) => {

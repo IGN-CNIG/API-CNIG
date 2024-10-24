@@ -3,7 +3,9 @@
  */
 import StylePointImpl from 'impl/style/Point';
 import Simple from './Simple';
-import { isNullOrEmpty, extendsObj } from '../util/Utils';
+import {
+  isNull, extendsObj, isArray,
+} from '../util/Utils';
 
 /**
  * @classdesc
@@ -15,22 +17,29 @@ class Point extends Simple {
   /**
    * Constructor principal de la clase.
    * @constructor
-   * @param {Object} options Opciones de los estilos.
+   * @param {Object} optionsVar Opciones de los estilos.
    * - fill: Color de fondo.
    * - stroke: Color del borde.
    * - icon: URL.
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base.
    * @api
    */
-  constructor(optionsVar) {
+  constructor(optionsVar, vendorOptions) {
     let options = optionsVar;
-    if (isNullOrEmpty(options)) {
-      options = Point.DEFAULT_NULL;
+    let vendorOpts = vendorOptions;
+    if (!isNull(vendorOpts) && Object.keys(vendorOpts).length > 0) {
+      options = extendsObj({}, Point.DEFAULT);
     } else {
-      options = extendsObj(options, Point.DEFAULT);
+      vendorOpts = null;
+      if (isNull(options) || Object.keys(options).length === 0) {
+        options = Point.DEFAULT_NULL;
+      } else {
+        options = extendsObj(options, Point.DEFAULT);
+      }
+      options = extendsObj({}, options);
     }
-    options = extendsObj({}, options);
 
-    const impl = new StylePointImpl(options);
+    const impl = new StylePointImpl(options, vendorOpts);
     super(options, impl);
   }
 
@@ -56,6 +65,29 @@ class Point extends Simple {
    */
   getDeserializedMethod_() {
     return "((serializedParameters) => M.style.Simple.deserialize(serializedParameters, 'M.style.Point'))";
+  }
+
+  /**
+   * Este método clona el estilo.
+   *
+   * @public
+   * @return {M.style.Point} Devuelve un "new Point".
+   * @function
+   * @api
+   */
+  clone() {
+    const optsClone = {};
+    let vendorOptsClone = {};
+    const vendorOpts = this.getImpl().vendorOptions;
+    extendsObj(optsClone, this.options_);
+    if (!isNull(vendorOpts) && Object.keys(vendorOpts).length > 0) {
+      if (isArray(vendorOpts)) {
+        vendorOptsClone = vendorOpts.map((vo) => vo.clone());
+      } else {
+        vendorOptsClone = vendorOpts.clone();
+      }
+    }
+    return new this.constructor(optsClone, vendorOptsClone);
   }
 }
 

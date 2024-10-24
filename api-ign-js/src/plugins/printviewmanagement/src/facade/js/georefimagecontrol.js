@@ -5,17 +5,9 @@ import GeorefimageControlImpl from '../../impl/ol/js/georefimagecontrol';
 import { reproject, transformExt } from '../../impl/ol/js/utils';
 import georefimageHTML from '../../templates/georefimage';
 import { getValue } from './i18n/language';
-
 import {
-  innerQueueElement,
-  removeLoadQueueElement,
-  getQueueContainer,
-  createWLD,
-  createZipFile,
-  LIST_SERVICES,
-  generateTitle,
-  formatImageBase64,
-  getBase64Image,
+  getQueueContainer, innerQueueElement, removeLoadQueueElement, createWLD, createZipFile,
+  generateTitle, getBase64Image, formatImageBase64, LIST_SERVICES,
 } from './utils';
 
 // ID ELEMENTS
@@ -297,9 +289,9 @@ export default class GeorefimageControl extends M.Control {
       //  });
     });
     promise.then((t) => {
-      const proj = M.impl.ol.js.projections.getSupportedProjs().filter(({ codes }) => {
+      const proj = M.impl.ol.js.projections.getSupportedProjs().find(({ codes }) => {
         return codes.includes(this.map_.getProjection().code);
-      })[0];
+      });
 
       const projFormat = `${proj.datum} - ${proj.proj.toUpperCase()} (${proj.codes[0]})`;
 
@@ -377,16 +369,16 @@ export default class GeorefimageControl extends M.Control {
       }
 
       if (value === 'client') {
-        const proj = M.impl.ol.js.projections.getSupportedProjs().filter(({ codes }) => {
+        const proj = M.impl.ol.js.projections.getSupportedProjs().find(({ codes }) => {
           return codes.includes(this.map_.getProjection().code);
-        })[0];
+        });
         if (proj) {
           this.elementProjection_.innerText = `${proj.datum} - ${proj.proj.toUpperCase()} (${proj.codes[0]})`;
         }
       } else {
-        const proj = M.impl.ol.js.projections.getSupportedProjs().filter(({ codes }) => {
+        const proj = M.impl.ol.js.projections.getSupportedProjs().find(({ codes }) => {
           return codes[0] === DEFAULT_PROJECTION_SERVER;
-        })[0];
+        });
         this.elementProjection_.innerText = `${proj.datum} - ${proj.proj.toUpperCase()} (${proj.codes[0]})`;
       }
     });
@@ -451,7 +443,7 @@ export default class GeorefimageControl extends M.Control {
           const statusURL = M.utils.concatUrlPaths([this.printStatusUrl_, `${ref}.json`]);
           this.getStatus(
             statusURL,
-            (e) => removeLoadQueueElement(e),
+            (e) => { removeLoadQueueElement(e); this.downloadPrint(queueEl); },
             queueEl,
           );
 
@@ -468,8 +460,6 @@ export default class GeorefimageControl extends M.Control {
             M.exception(err);
           }
           queueEl.setAttribute(GeorefimageControl.DOWNLOAD_ATTR_NAME, downloadUrl);
-          queueEl.addEventListener('click', this.downloadPrint.bind(this));
-          queueEl.addEventListener('keydown', this.downloadPrint.bind(this));
         } else {
           queueEl.remove();
           if (document.querySelector('#m-georefimage-queue-container').childNodes.length === 0) {
@@ -494,11 +484,8 @@ export default class GeorefimageControl extends M.Control {
     );
 
     try {
-      // const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
-      // queueEl.addEventListener('click', (evt) => this.downloadPrint(evt, base64image, 'client'));
-      M.utils.getImageMap(this.map_, `image/${format}`, undefined, true).then((base64image) => {
-        queueEl.addEventListener('click', (evt) => this.downloadPrint(evt, base64image, 'client'));
-      });
+      const base64image = M.utils.getImageMap(this.map_, `image/${format}`);
+      this.downloadPrint(queueEl, base64image, 'client');
     } catch (exceptionVar) {
       queueEl.parentElement.remove();
       M.toast.error('Error CrossOrigin', null, 6000);
@@ -644,8 +631,9 @@ export default class GeorefimageControl extends M.Control {
     }
 
     const bbox = this.map_.getBbox();
-    const width = this.map_.getMapImpl().getSize()[0];
-    const height = this.map_.getMapImpl().getSize()[1];
+    const size = this.map_.getMapImpl().getSize();
+    const width = size[0];
+    const height = size[1];
     const layout = 'plain';
     const dpi = elementDpi.value;
     const outputFormat = 'jpg';
@@ -712,20 +700,19 @@ export default class GeorefimageControl extends M.Control {
     // Filters WMS and WMTS visible layers whose resolution is inside map resolutions range
     // and that doesn't have Cluster style.
     const mapZoom = this.map_.getZoom();
-    let layers = this.map_.getLayers().filter((layer) => {
+    const layerFilter = (layer) => {
       return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer'
-        && layer.name !== 'empty_layer'
-        && layer.name !== '__draw__'
-        && layer.type !== 'GenericRaster'
-        && layer.type !== 'GenericVector'
-        && layer.type !== 'MBTiles'
-        && layer.type !== 'MBTilesVector'
-        && layer.type !== 'MVT'
-        && layer.type !== 'MapLibre'
-        && mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
-    });
-
-    const errorLayers = this.map_.getLayers().filter((layer) => {
+      && layer.name !== 'empty_layer'
+      && layer.name !== '__draw__'
+      && layer.type !== 'GenericRaster'
+      && layer.type !== 'GenericVector'
+      && layer.type !== 'MBTiles'
+      && layer.type !== 'MBTilesVector'
+      && layer.type !== 'MVT'
+      && layer.type !== 'MapLibre'
+      && mapZoom > layer.getImpl().getMinZoom() && mapZoom <= layer.getImpl().getMaxZoom());
+    };
+    const errorLayerFilter = (layer) => {
       return (layer.isVisible() && layer.inRange() && layer.name !== 'cluster_cover' && layer.name !== 'selectLayer'
         && layer.name !== 'empty_layer'
         && layer.name !== '__draw__' && (
@@ -736,7 +723,12 @@ export default class GeorefimageControl extends M.Control {
         || layer.type === 'MVT'
         || layer.type === 'MapLibre'
       ));
-    });
+    };
+    let layers = this.map_.getLayers().filter((layer) => layer.type !== 'LayerGroup' && layerFilter(layer))
+      .concat(this.map_.getImpl().getAllLayerInGroup().filter((layer) => layerFilter(layer)));
+
+    const errorLayers = this.map_.getLayers().filter((layer) => layer.type !== 'LayerGroup' && errorLayerFilter(layer))
+      .concat(this.map_.getImpl().getAllLayerInGroup().filter((layer) => errorLayerFilter(layer)));
 
     if (errorLayers.length !== 0) {
       M.toast.warning(getValue('exception.error_layers') + errorLayers.map((l) => l.name).join(', '), null, 6000);
@@ -848,11 +840,7 @@ export default class GeorefimageControl extends M.Control {
    * @function
    * @api stable
    */
-  downloadPrint(evt, imgBase64, type = 'server') {
-    if (evt.key !== undefined && evt.key !== 'Enter' && evt.key !== ' ') {
-      return;
-    }
-
+  downloadPrint(queueEl, imgBase64, type = 'server') {
     const formatImage = document.querySelector(ID_FORMAT_SELECT).value;
     const title = document.querySelector(ID_TITLE).value;
     const elementDpi = document.querySelector(ID_DPI);
@@ -882,7 +870,7 @@ export default class GeorefimageControl extends M.Control {
 
     // CONTENT ZIP
     const fileIMG = {
-      name: titulo.concat(`.${formatImage}`),
+      name: titulo.concat(`.${formatImage === 'jpeg' ? 'jpg' : formatImage}`),
       data: base64image,
       base64: true,
     };
@@ -897,7 +885,15 @@ export default class GeorefimageControl extends M.Control {
     ] : [fileIMG];
 
     // CREATE ZIP
-    createZipFile(files, TYPE_SAVE, titulo);
+    const zipEvent = (evt) => {
+      if (evt.key === undefined || evt.key === 'Enter' || evt.key === ' ') {
+        createZipFile(files, TYPE_SAVE, titulo);
+      }
+    };
+
+    // EVENTS
+    queueEl.addEventListener('click', zipEvent);
+    queueEl.addEventListener('keydown', zipEvent);
   }
 
   /**
@@ -955,8 +951,8 @@ export default class GeorefimageControl extends M.Control {
   deactive() {
     this.template_.remove();
 
-    // TO-DO [ ] ADD BUTTON REMOVE AND ALL EVENTS
-    // TO-DO [ ] Deactive dowloand when change the contorl
+    // TO-DO [ ] ADD REMOVE BUTTON AND ALL OTHER EVENTS
+    // TO-DO [ ] Deactivate download when changed the control
   }
 
   /**

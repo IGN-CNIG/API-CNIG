@@ -25,14 +25,23 @@ class OSM extends Layer {
    *
    * @constructor
    * @implements {M.impl.Layer}
-   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
-   * - visibility: Define si la capa es visible o no.
-   * - animated: Activa la animación para capas base o parámetros animados.
-   * - displayInLayerSwitcher: Define si la capa se mostrará en el selector de capas.
-   * - opacity: Opacidad de capa, por defecto 1.
+  * @param {string|Mx.parameters.OSM} userParameters Parámetros para la construcción de la capa.
+   * - attribution: Atribución de la capa.
+   * - isBase: Indica si la capa es base.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
+   * - visibility: Indica si la capa estará por defecto visible o no.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
+   * - name: Nombre de la capa en la leyenda.
+   * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
+   * - transparent: Falso si es una capa base, verdadero en caso contrario.
+   * - type: Tipo de la capa.
+   * - url: Url genera la OSM.
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * - opacity: Opacidad de capa, por defecto 1.
+   * @param {Mx.parameters.LayerOptions} options Parámetros opcionales para la capa.
+   * - animated: Activa la animación para capas base o parámetros animados.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import SourceOSM from 'ol/source/OSM';
@@ -128,7 +137,7 @@ class OSM extends Layer {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     this.fire(EventType.ADDED_TO_MAP);
 
@@ -141,7 +150,10 @@ class OSM extends Layer {
     if (this.opacity_) {
       this.setOpacity(this.opacity_);
     }
-    this.map.getMapImpl().addLayer(this.ol3Layer);
+
+    if (addLayer) {
+      this.map.getMapImpl().addLayer(this.ol3Layer);
+    }
 
     this.map.getImpl().getMapImpl().getControls().getArray()
       .forEach((cont) => {

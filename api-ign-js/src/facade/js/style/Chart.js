@@ -6,11 +6,7 @@ import StyleFeature from './Feature';
 import ChartVariable from '../chart/Variable';
 import * as ChartTypes from '../chart/types';
 import {
-  isNullOrEmpty,
-  extendsObj,
-  isArray,
-  stringifyFunctions,
-  defineFunctionFromString,
+  isArray, isNullOrEmpty, extendsObj, stringifyFunctions, defineFunctionFromString,
 } from '../util/Utils';
 
 /**

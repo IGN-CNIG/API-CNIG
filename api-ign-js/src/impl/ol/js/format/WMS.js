@@ -1,7 +1,7 @@
 /**
  * @module M/impl/format/WMSCapabilities
  */
-import { isArray, isObject, isNullOrEmpty } from 'M/util/Utils';
+import { isArray, isNullOrEmpty, isObject } from 'M/util/Utils';
 import OLFormatWMSCapabilities from 'ol/format/WMSCapabilities';
 
 /**

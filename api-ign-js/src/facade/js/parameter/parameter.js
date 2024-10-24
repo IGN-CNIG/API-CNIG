@@ -3,15 +3,7 @@
  * @example import parameter from 'M/parameter';
  */
 import {
-  isNullOrEmpty,
-  isString,
-  isNull,
-  isFunction,
-  normalize,
-  isArray,
-  isObject,
-  isUrl,
-  isUndefined,
+  isUndefined, isNull, isArray, isNullOrEmpty, isFunction, isObject, isString, isUrl, normalize,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from '../layer/Type';
@@ -137,8 +129,10 @@ export const getType = (parameter, forcedType) => {
       type = LayerType.OSM;
     } else {
       const typeMatches = parameter.match(/^(\w+)\*.+$/);
-      if (typeMatches && (typeMatches.length > 1)) {
-        type = LayerType.parse(typeMatches[1]);
+      const typeGroup = parameter.match(/^LayerGroup/);
+      if ((typeMatches && (typeMatches.length > 1))
+        || (typeGroup && (typeGroup.length > 1))) {
+        type = typeGroup !== null ? LayerType.parse(typeGroup[0]) : LayerType.parse(typeMatches[1]);
         if (isUndefined(type)) {
           Exception(`No se reconoce el tipo de capa ${typeMatches[1]}`);
         }
@@ -2128,6 +2122,31 @@ export const getURLGeoTIFF = (parameter) => {
 };
 
 /**
+ * Analiza el parámetro para obtener la URL del servicio de la capa GeoTIFF.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.GeoTIFF} parameter Parámetro para obtener la
+ * URL del servicio de la capa GeoTIFF.
+ * @returns {string} URL del servicio.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getBlobGeoTIFF = (parameter) => {
+  let blob;
+  if (isString(parameter)) {
+    blob = null;
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.blob)) {
+    blob = parameter.blob.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return blob;
+};
+
+/**
  * Analiza el parámetro para obtener la proyeccion de la capa GeoTIFF.
  * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
  *
@@ -2705,6 +2724,9 @@ export const geotiff = (userParameters) => {
     // gets the URL
     layerObj.url = getURLGeoTIFF(userParam);
 
+    // gets the blob
+    layerObj.blob = getBlobGeoTIFF(userParam);
+
     // gets the name
     layerObj.name = getNameGeoTIFF(userParam);
 
@@ -2756,6 +2778,45 @@ export const maplibre = (userParameters) => {
     displayInLayerSwitcher: urlParams[7] === '' ? true : urlParams[7] === 'true',
     disableBackgroundColor: urlParams[8] === '' ? undefined : urlParams[8] === 'true',
     style: urlParams[9] || undefined,
+  };
+};
+
+const filterLayerGroupLayers = (data) => {
+  // eslint-disable-next-line no-useless-escape
+  const regex = /([^\[\],]+(?:\[[^\]]*\])?)/g;
+  const matches = [];
+  let match;
+
+  // Recorremos todas las capas dentro del grupo
+  // eslint-disable-next-line no-cond-assign
+  while ((match = regex.exec(data)) !== null) {
+    matches.push(match[1].trim());
+  }
+
+  return matches;
+};
+
+export const layergroup = (userParameters) => {
+  let params = userParameters;
+
+  if (!isString(params)) {
+    params.type = LayerType.LayerGroup;
+    return userParameters;
+  }
+
+  params = decodeURI(params);
+
+  const urlParams = params.split(/\*/);
+  const layers = filterLayerGroupLayers(params.substring(params.indexOf('[') + 1));
+
+  return {
+    type: LayerType.LayerGroup,
+    name: urlParams[1] || undefined,
+    legend: urlParams[2] || undefined,
+    visibility: urlParams[3] === '' ? undefined : urlParams[3] === 'true',
+    transparent: urlParams[4] === '' ? undefined : urlParams[4] === 'true',
+    displayInLayerSwitcher: urlParams[5] === '' || (urlParams[5] !== 'true' && urlParams[5] !== 'false') ? true : urlParams[5] === 'true',
+    layers,
   };
 };
 
@@ -4291,6 +4352,7 @@ const parameterFunction = {
   wms,
   geotiff,
   maplibre,
+  layergroup,
   wmts,
   geojson,
   mvt,
@@ -4329,7 +4391,7 @@ export const layer = (userParameters, forcedType) => {
 
   layers = userParametersArray.map((userParam) => {
     let layerObj = null;
-    if (isObject(userParam) && (userParam instanceof Layer)) {
+    if (userParam instanceof Layer) {
       layerObj = userParam;
     } else {
       // gets the layer type
@@ -4344,6 +4406,11 @@ export const layer = (userParameters, forcedType) => {
 
       if (!isNullOrEmpty(userParam.isBase)) {
         layerObj.transparent = !userParam.isBase;
+      }
+
+      // wfs
+      if (!isNullOrEmpty(userParam.transparent)) {
+        layerObj.transparent = userParam.transparent;
       }
 
       if (!isNullOrEmpty(userParam.infoEventType)) {

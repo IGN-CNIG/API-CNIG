@@ -1,7 +1,7 @@
 /**
  * @module M/impl/Layer
  */
-import { isNullOrEmpty, concatUrlPaths, isString } from 'M/util/Utils';
+import { isNullOrEmpty, isString, concatUrlPaths } from 'M/util/Utils';
 import MObject from 'M/Object';
 import FacadeLayer from 'M/layer/Layer';
 /**
@@ -247,6 +247,9 @@ class LayerBase extends MObject {
     this.zIndex_ = zIndex;
     if (!isNullOrEmpty(this.getOL3Layer())) {
       this.getOL3Layer().setZIndex(zIndex);
+    }
+    if (this.rootGroup) {
+      this.rootGroup.reorderLayers();
     }
   }
 

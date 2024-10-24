@@ -31,9 +31,6 @@ class FontSymbol extends OLFontSymbol {
   constructor(options = {}) {
     // super call
     const optionsC = options;
-    if (!options.anchor) {
-      optionsC.anchor = [];
-    }
     if (!options.offset) {
       optionsC.offset = [];
     }

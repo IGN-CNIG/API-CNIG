@@ -12,7 +12,8 @@
     "select_layer": "Debes seleccionar al menos una capa",
     "no_results": "No se han encontrado capas en este servicio",
     "codsi": "Ha ocurrido un error al consultar el catálogo CODSI",
-    "codsi_no_results": "No hay resultados para su búsqueda"
+    "codsi_no_results": "No hay resultados para su búsqueda",
+    "not_layerGroup": "No se ha podido añadir la capa al grupo"
   },
   "textHelp": {
     "help1": "La extensión selector de capas permite gestionar las capas que se muestran en un visualizador cartográfico.",
@@ -51,8 +52,11 @@
   "remove_layer": "Eliminar capa del mapa",
   "select_style": "Selecciona un estilo",
   "change": "Cambiar",
+  "change_name": "Cambiar nombre",
+  "defaultOptionGroup": "Añadir al mapa",
   "url_service": "Incluir URL del servicio a cargar",
   "query": "Consultar",
+  "group": "Añadir un grupo de capa",
   "loaded_services": "Capas de información geográfica",
   "codsi_services": "Catálogo de Servicios",
   "clean": "Limpiar búsqueda",
@@ -64,6 +68,8 @@
   "service_info": "Información del servicio (Capabilities)",
   "download_center": "Centro de descargas",
   "add": "Añadir",
+  "show_group": "Mostrar grupo",
+  "hide_group": "Ocultar grupo",
   "drag_drop": "Arrastre y suelte para cambiar el orden de visualización",
   "see_more": "Mostrar metadato del conjunto de datos",
   "see_less": "Ocultar metadato del conjunto de datos",

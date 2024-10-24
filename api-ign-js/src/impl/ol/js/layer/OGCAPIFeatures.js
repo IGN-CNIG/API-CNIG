@@ -104,8 +104,8 @@ class OGCAPIFeatures extends Vector {
    * @param {M.Map} map Implementación del mapa.
    * @api stable
    */
-  addTo(map) {
-    super.addTo(map);
+  addTo(map, addLayer = true) {
+    super.addTo(map, addLayer);
     // this.updateSource_();
     map.getImpl().on(EventType.CHANGE, () => this.refresh());
   }
@@ -224,8 +224,8 @@ class OGCAPIFeatures extends Vector {
    * @expose
    */
   selectFeatures(features, coord, evt) {
-    const feature = features[0];
     if (this.extract === true) {
+      const feature = features[0];
       // unselects previous features
       this.unselectFeatures();
 

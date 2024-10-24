@@ -6,10 +6,7 @@ import PopupImpl from 'impl/Popup';
 import 'assets/css/popup';
 import popupTemplate from 'templates/popup';
 import {
-  isNullOrEmpty,
-  isUndefined,
-  returnPositionHtmlElement,
-  transfomContent,
+  isUndefined, isNullOrEmpty, returnPositionHtmlElement, transfomContent,
 } from './util/Utils';
 import Base from './Base';
 import { compileSync as compileTemplate } from './util/Template';
@@ -48,9 +45,15 @@ class Tab {
      */
     this.content = options.content;
 
-    if (options.intelligence === true
-      || (!isUndefined(options.intelligence) && (options.intelligence.activate === true))) {
-      this.content = transfomContent(this.content, options.intelligence.sizes);
+    const intelligence = isUndefined(options.intelligence)
+      ? M.config.POPUP_INTELLIGENCE : options.intelligence;
+
+    if (typeof intelligence === 'boolean' && intelligence) {
+      this.content = transfomContent(this.content);
+    }
+
+    if (typeof intelligence === 'object' && intelligence.activate) {
+      this.content = transfomContent(this.content, intelligence.sizes);
     }
 
     /**
@@ -298,35 +301,35 @@ class Popup extends Base {
    * @public
    * @function
    * @api
-   * @param {HTMLElement} html Contenedor del "popup".
+   * @param {HTMLElement} htmlParam Contenedor del "popup".
    */
   addEvents(htmlParam) {
     const html = htmlParam;
-
+    html.addEventListener('pointermove', (evt) => { evt.stopImmediatePropagation(); evt.preventDefault(); });
     // adds tabs events
     let touchstartY;
     const tabs = html.querySelectorAll('div.m-tab');
     Array.prototype.forEach.call(tabs, (tab) => {
       tab.addEventListener('click', (evt) => {
         evt.preventDefault();
-        // 5px tolerance
-        const touchendY = evt.clientY;
-        if ((evt.type === 'click') || (Math.abs(touchstartY - touchendY) < 5)) {
-          // remove m-activated from all tabs
-          Array.prototype.forEach.call(tabs, (addedTab) => {
-            addedTab.classList.remove('m-activated');
-          });
-          tab.classList.add('m-activated');
-          const index = tab.getAttribute('data-index');
-          this.switchTab(index);
-        }
+        // 5px tolerance does not exist in click, only in touch
+        // const touchendY = evt.clientY;
+        // if ((evt.type === 'click') || (Math.abs(touchstartY - touchendY) < 5)) {
+        // remove m-activated from all tabs
+        Array.prototype.forEach.call(tabs, (addedTab) => {
+          addedTab.classList.remove('m-activated');
+        });
+        tab.classList.add('m-activated');
+        const index = tab.getAttribute('data-index');
+        this.switchTab(index);
+        // }
       });
 
       tab.addEventListener('touchend', (evt) => {
         evt.preventDefault();
-        // 5px tolerance
-        const touchendY = evt.clientY;
-        if ((evt.type === 'touchend') || (Math.abs(touchstartY - touchendY) < 5)) {
+        const touchendY = evt.changedTouches ? evt.changedTouches[0].clientY : evt.clientY;
+        const auxCalc = Math.abs(touchstartY - touchendY);
+        if (Number.isNaN(auxCalc) || auxCalc < 5) { // 5px tolerance
           // remove m-activated from all tabs
           Array.prototype.forEach.call(tabs, (addedTab) => {
             addedTab.classList.remove('m-activated');
@@ -352,10 +355,12 @@ class Popup extends Base {
       headerElement.addEventListener('touchstart', (evt) => {
         evt.preventDefault();
         touchstartY = evt.touches[0].clientY;
-        if (this.status_ === Popup.status.COLLAPSED) {
-          topPosition = 0.9 * MWindow.HEIGHT;
+        if (html.style.top) { // El caso de mover en default o menos de 10% de pantalla
+          topPosition = Number.parseFloat(html.style.top);
+        } else if (this.status_ === Popup.status.COLLAPSED) {
+          topPosition = Math.ceil(0.9 * MWindow.HEIGHT);
         } else if (this.status_ === Popup.status.DEFAULT) {
-          topPosition = 0.45 * MWindow.HEIGHT;
+          topPosition = Math.floor(0.45 * MWindow.HEIGHT);
         } else if (this.status_ === Popup.status.FULL) {
           topPosition = 0;
         }
@@ -364,7 +369,7 @@ class Popup extends Base {
 
       headerElement.addEventListener('touchmove', (evt) => {
         evt.preventDefault();
-        this.touchY = evt.touches[0].clientY;
+        this.touchY = evt.touches ? evt.touches[0].clientY : evt.clientY;
         const translatedPixels = this.touchY - touchstartY;
         html.style.top = `${topPosition + translatedPixels}px`;
       }, false);
@@ -372,6 +377,7 @@ class Popup extends Base {
       headerElement.addEventListener('touchend', (evt) => {
         evt.preventDefault();
         this.manageCollapsiblePopup_(touchstartY, this.touchY);
+        this.touchY = undefined;
       }, false);
 
       const mediaQuery = window.matchMedia('(max-width: 768px)');
@@ -385,7 +391,8 @@ class Popup extends Base {
         evt.preventDefault();
 
         // COLLAPSED --> DEFAULT
-        if (this.tabs_.length <= 1) {
+        if (this.tabs_.length <= 1
+          || (this.status_ === Popup.status.COLLAPSED || evt.target.classList.contains('m-activated') || evt.target.parentElement.classList.contains('m-activated'))) {
           if (this.status_ === Popup.status.COLLAPSED) {
             this.setStatus_(Popup.status.DEFAULT);
           } else if (this.status_ === Popup.status.DEFAULT) {
@@ -453,7 +460,7 @@ class Popup extends Base {
     const touchPerc = (touchendY * 100) / MWindow.HEIGHT;
     const distanceTouch = Math.abs(touchstartY - touchendY);
     const distanceTouchPerc = (distanceTouch * 100) / MWindow.HEIGHT;
-    // 10% tolerance
+    // 10% tolerance, (permits repeated movement of less than specified, looks wrong)
     if (distanceTouchPerc > 10) {
       /*
        * manages collapsing events depending on

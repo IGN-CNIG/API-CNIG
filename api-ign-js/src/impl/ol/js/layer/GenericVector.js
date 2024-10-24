@@ -7,10 +7,7 @@ import { compileSync as compileTemplate } from 'M/util/Template';
 import Popup from 'M/Popup';
 import { getValue } from 'M/i18n/language';
 import {
-  isNullOrEmpty,
-  isNull,
-  getResolutionFromScale,
-  isUndefined,
+  isUndefined, isNull, isNullOrEmpty, getResolutionFromScale,
 } from 'M/util/Utils';
 import geojsonPopupTemplate from 'templates/geojson_popup';
 import Vector from './Vector';
@@ -95,7 +92,7 @@ class GenericVector extends Vector {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
 
     this.facadeVector_ = this.facadeLayer_;
@@ -162,7 +159,10 @@ class GenericVector extends Vector {
       this.ol3Layer.setMinResolution(this.options.minResolution);
     }
 
-    map.getMapImpl().addLayer(this.ol3Layer);
+    if (addLayer) {
+      map.getMapImpl().addLayer(this.ol3Layer);
+    }
+
     const source = this.ol3Layer.getSource();
 
     // ? Capas con features ya cargados
@@ -245,8 +245,8 @@ class GenericVector extends Vector {
    * @api stable
    */
   selectFeatures(features, coord, evt) {
-    const feature = features[0];
     if (this.extract === true) {
+      const feature = features[0];
       this.unselectFeatures();
       if (!isNullOrEmpty(feature)) {
         const htmlAsText = compileTemplate(geojsonPopupTemplate, {

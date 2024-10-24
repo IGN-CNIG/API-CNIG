@@ -75,7 +75,10 @@ class WMTS extends LayerBase {
   constructor(userParameters, options = {}, vendorOptions = {}) {
     const parameters = parameter.layer(userParameters, LayerType.WMTS);
 
-    const optionsVar = options;
+    const optionsVar = {
+      ...options,
+      useCapabilities: parameters.useCapabilities,
+    };
 
     if (typeof userParameters !== 'string') {
       optionsVar.maxExtent = userParameters.maxExtent;

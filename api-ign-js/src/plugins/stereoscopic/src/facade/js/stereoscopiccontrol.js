@@ -275,15 +275,14 @@ export default class StereoscopicControl extends M.Control {
     };
 
     const progress = new Progress(document.getElementById('progress'));
-
-    map.getLayers()[0].getImpl().getOL3Layer().getSource().on('tileloadstart', function () {
+    const auxThreeEvtSource = map.getLayers()[0].getImpl().getOL3Layer().getSource();
+    auxThreeEvtSource.on('tileloadstart', function () {
       progress.addLoading();
     });
-
-    map.getLayers()[0].getImpl().getOL3Layer().getSource().on('tileloadend', function () {
+    auxThreeEvtSource.on('tileloadend', function () {
       progress.addLoaded();
     });
-    map.getLayers()[0].getImpl().getOL3Layer().getSource().on('tileloaderror', function () {
+    auxThreeEvtSource.on('tileloaderror', function () {
       progress.addLoaded();
     });`);
 

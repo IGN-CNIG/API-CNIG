@@ -94,7 +94,7 @@
 
 .m-popup>div.m-content>div.m-body {
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     max-height: 50vh;
     width: calc(100%+ 15px);
 }
@@ -209,6 +209,7 @@
         z-index: 1500;
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
+        max-width: 100vw;
     }
 
     .m-popup>div.m-content>div.m-header,

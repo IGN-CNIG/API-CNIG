@@ -1,3 +1,4 @@
+/* eslint-disable no-console,no-underscore-dangle,no-loop-func,no-proto,max-len,no-param-reassign,spaced-comment,no-plusplus,no-unused-vars,camelcase */
 import { map as Mmap } from 'M/mapea';
 import Generic from 'M/style/Generic';
 import Choropleth from 'M/style/Choropleth';
@@ -8,10 +9,14 @@ import Heatmap from 'M/style/Heatmap';
 import Cluster from 'M/style/Cluster';
 import FlowLine from 'M/style/FlowLine';
 import { schemes } from 'M/chart/types';
-import { JENKS, QUANTILE, EQUAL_INTERVAL, MEDIA_SIGMA, ARITHMETIC_PROGRESSION, GEOMETRIC_PROGRESSION } from 'M/style/Quantification';
-import { wfs_001, wfs_002, wfs_003, wfs_004 } from '../layers/wfs/wfs';
-import { geojson_003 } from '../layers/geojson/geojson';
+import {
+  JENKS, QUANTILE, EQUAL_INTERVAL, MEDIA_SIGMA, ARITHMETIC_PROGRESSION, GEOMETRIC_PROGRESSION,
+} from 'M/style/Quantification';
 import { info } from 'M/dialog';
+import {
+  wfs_001, wfs_002, wfs_003, wfs_004,
+} from '../layers/wfs/wfs';
+import { geojson_003 } from '../layers/geojson/geojson';
 
 const mapa = Mmap({
   container: 'map',
@@ -36,19 +41,17 @@ const getCoropletasStyle = () => {
 
 // PROPORCIONAL
 const getProportionalStyle = () => {
-  const estilo = new Proportional('tot_ibi', 5, 20,
-    new Generic({ // estilo del punto
-      point: {
-        fill: {
-          color: '#000000',
-        },
-        stroke: {
-          color: '#FFFFFF',
-          width: 2,
-        },
+  const estilo = new Proportional('tot_ibi', 5, 20, new Generic({ // estilo del punto
+    point: {
+      fill: {
+        color: '#000000',
       },
-    }),
-  );
+      stroke: {
+        color: '#FFFFFF',
+        width: 2,
+      },
+    },
+  }));
   if (window.layer) {
     mapa.removeLayers(window.layer);
   }
@@ -59,24 +62,24 @@ const getProportionalStyle = () => {
 
 // CATEGORICO
 const getCategoricStyle = () => {
-  const verde = new Generic({polygon: {fill: {color: 'green'}}});
-  const amarillo = new Generic({polygon: {fill: {color: 'pink'}}});
-  const rojo = new Generic({polygon: {fill: {color: 'red'}}});
-  const azul = new Generic({polygon: {fill: {color: 'grey'}}});
-  const naranja = new Generic({polygon: {fill: {color: 'orange'}}});
-  const marron = new Generic({polygon: {fill: {color: 'brown'}}});
-  const magenta = new Generic({polygon: {fill: {color: '#e814d9'}}});
-  const morado = new Generic({polygon: {fill: {color: '#b213dd'}}});
+  const verde = new Generic({ polygon: { fill: { color: 'green' } } });
+  const amarillo = new Generic({ polygon: { fill: { color: 'pink' } } });
+  const rojo = new Generic({ polygon: { fill: { color: 'red' } } });
+  const azul = new Generic({ polygon: { fill: { color: 'grey' } } });
+  const naranja = new Generic({ polygon: { fill: { color: 'orange' } } });
+  const marron = new Generic({ polygon: { fill: { color: 'brown' } } });
+  const magenta = new Generic({ polygon: { fill: { color: '#e814d9' } } });
+  const morado = new Generic({ polygon: { fill: { color: '#b213dd' } } });
 
-  const estilo = new Category("provincia", {
-    "Almería": marron,
-    "Cádiz": amarillo,
-    "Córdoba": magenta,
-    "Granada": verde,
-    "Jaén": naranja,
-    "Málaga": azul,
-    "Sevilla": rojo,
-    "Huelva": morado
+  const estilo = new Category('provincia', {
+    'Almería': marron,
+    'Cádiz': amarillo,
+    'Córdoba': magenta,
+    'Granada': verde,
+    'Jaén': naranja,
+    'Málaga': azul,
+    'Sevilla': rojo,
+    'Huelva': morado,
   });
   if (window.layer) {
     mapa.removeLayers(window.layer);
@@ -224,12 +227,12 @@ const getFlowLineStyle = () => {
   const estilo = new FlowLine({
     color: 'blue',
     color2: 'pink',
-    width: function (feature) {
-              return feature.getAttribute('inicio') * 0.2;
-          },
-    width2: function (feature) {
-              return feature.getAttribute('final') * 0.2;
-          },
+    width: (feature) => {
+      return feature.getAttribute('inicio') * 0.2;
+    },
+    width2: (feature) => {
+      return feature.getAttribute('final') * 0.2;
+    },
     arrow: -1,
     arrowColor: 'grey',
     lineCap: 'butt',
@@ -250,12 +253,12 @@ const getCompositeStyle = () => {
       radius: 5,
       fill: {
         color: 'yellow',
-        opacity: 0.5
+        opacity: 0.5,
       },
       stroke: {
-        color: '#FF0000'
-      }
-    }
+        color: '#FF0000',
+      },
+    },
   });
 
   // Estilo cluster por defecto
@@ -275,22 +278,18 @@ window.mapa = mapa;
 
 const popupDePruebas = window.document.getElementById('popup_de_test');
 const abrirPopup = window.document.getElementById('abrir_test');
-abrirPopup.addEventListener('click', () => {popupDePruebas.className = "active"});
+abrirPopup.addEventListener('click', () => { popupDePruebas.className = 'active'; });
 
 const cerrarPopup = window.document.getElementById('cerrar_test');
-cerrarPopup.addEventListener('click', () => {popupDePruebas.className = "notactive"});
+cerrarPopup.addEventListener('click', () => { popupDePruebas.className = 'notactive'; });
 
 const styleTypeDiv = window.document.getElementsByClassName('styleType')[0];
-styleTypeDiv.addEventListener('click', (evt) => styleTypeEvent(evt));
 
 const styleOptionsDiv = window.document.getElementsByClassName('styleOptions')[0];
-styleOptionsDiv.addEventListener('click', (evt) => refreshStyle(evt));
 
 const showStyleBtn = window.document.getElementById('showStyleOptions');
-showStyleBtn.addEventListener('click', () => showStyleDialog());
 
 const resetDefaultBtn = window.document.getElementById('resetDefault');
-resetDefaultBtn.addEventListener('click', () => resetDefaultStyle());
 
 const setParam = window.document.getElementsByClassName('setFunctions')[0];
 const getWithParam = window.document.getElementsByClassName('getWithParameters')[0];
@@ -345,16 +344,18 @@ const styles = {
   },
 };
 
-const styleTypeEvent = (evt) => {
-  const idTarget = evt.target.id;
-  if (idTarget) {
-    styleType = idTarget;
-    activateStyleTypeBtn(idTarget);
-    refreshStyleOptions(idTarget);
-    setStyle(idTarget);
-    refreshFuntions();
-    showTestSections();
-  }
+const removeClassFromElement = (element, className) => {
+  element.classList.remove(className);
+};
+
+const removeClassFromListElements = (elements, className) => {
+  elements.forEach((e) => removeClassFromElement(e, className));
+};
+
+const setStyle = (type) => {
+  estilo = styles[type].funcion();
+  window.layer.setStyle(estilo);
+  window.estilo = estilo;
 };
 
 const resetDefaultStyle = () => {
@@ -367,14 +368,7 @@ const resetDefaultStyle = () => {
   removeClassFromListElements(errorButtons, 'errorButton');
   setStyle(activeBtn.id);
 };
-
-const removeClassFromElement = (element, className) => {
-  element.classList.remove(className);
-};
-
-const removeClassFromListElements = (elements, className) => {
-  elements.forEach(e => removeClassFromElement(e, className));
-};
+resetDefaultBtn.addEventListener('click', () => resetDefaultStyle());
 
 const deleteChilds = (element) => {
   while (element.firstChild) {
@@ -397,12 +391,6 @@ const showTestSections = () => {
   testSections.classList.remove('hidden');
 };
 
-const setStyle = (type) => {
-  estilo = styles[type].funcion();
-  window.layer.setStyle(estilo);
-  window.estilo = estilo;
-};
-
 const setStyleWithParam = (type, param) => {
   estilo = styles[type].funcion(param);
   window.layer.setStyle(estilo);
@@ -423,23 +411,16 @@ const refreshStyleOptions = (type) => {
   }
 };
 
-const refreshFuntions = () => {
-  deleteChilds(setParam);
-  deleteChilds(getWithParam);
-  deleteChilds(noParam);
-  deleteChilds(otherParam);
-  addTestFunctions();
-};
-
 const refreshStyle = (evt) => {
   const idBtn = evt.target.id;
   if (idBtn) {
     removeClassFromListElements(styleOptionsDiv.querySelectorAll('.activeButton'), 'activeButton');
     evt.target.classList.add('activeButton');
-    const value = styles[styleType].opciones.filter(o => o.id === idBtn)[0].value;
+    const value = styles[styleType].opciones.find((o) => o.id === idBtn).value;
     setStyleWithParam(styleType, value);
   }
 };
+styleOptionsDiv.addEventListener('click', (evt) => refreshStyle(evt));
 
 const showStyleDialog = () => {
   const options = estilo.getOptions();
@@ -447,6 +428,7 @@ const showStyleDialog = () => {
   console.log(options);
   info(jsonFormateado);
 };
+showStyleBtn.addEventListener('click', () => showStyleDialog());
 
 ///////////////////////
 ////// FUNCIONES //////
@@ -461,11 +443,11 @@ const showResult = (button, format, result) => {
       console.log(`PROMISE_SUCCESS: ${complete}`, success);
       resultArray.push(success);
       button.className = 'okButton';
-    }, (error)=> {
+    }, (error) => {
       console.log(`PROMISE_ERROR_THEN: ${complete}`, error);
       resultArray.push(error);
       button.className = 'errorButton';
-    }).catch((error)=> {
+    }).catch((error) => {
       console.log(`PROMISE_ERROR_CATCH: ${complete}`, error);
       resultArray.push(error);
       button.className = 'errorButton';
@@ -495,9 +477,8 @@ const addTestFunctions = () => {
     ...Object.getOwnPropertyDescriptors(estilo.__proto__),
     ...Object.getOwnPropertyDescriptors(estilo.__proto__.__proto__),
     ...Object.getOwnPropertyDescriptors(estilo.__proto__.__proto__.__proto__),
-    ...Object.getOwnPropertyDescriptors(estilo.__proto__.__proto__.__proto__.__proto__)
+    ...Object.getOwnPropertyDescriptors(estilo.__proto__.__proto__.__proto__.__proto__),
   };
-
 
   // Creado Array para manejar más adelante el objectWithAllFunctions y ordenado de este sin funciones de "constructor" y "destroy"
   const listOfAllFunctions = Object.keys(objectWithAllFunctions).sort();
@@ -505,7 +486,7 @@ const addTestFunctions = () => {
   listOfAllFunctions.remove('destroy');
   listOfAllFunctions.remove('equals');
   listOfAllFunctions.remove('setImpl');
-  listOfAllFunctions.remove('loadCanvasImages_');listOfAllFunctions.remove('loadCanvasImage'); // se llama internamente con updateCanvas
+  listOfAllFunctions.remove('loadCanvasImages_'); listOfAllFunctions.remove('loadCanvasImage'); // se llama internamente con updateCanvas
   listOfAllFunctions.remove('drawGeometryToCanvas'); // se llama internamente con updateCanvas
   /* if (styleType !== 'composite') {
     // listOfAllFunctions.remove('add');
@@ -532,180 +513,178 @@ const addTestFunctions = () => {
         if (objectWithAllFunctions[auxName].value && !checkFunctionArguments(objectWithAllFunctions[auxName].value)) {
           // ---------------------------------FUNCIONES SIN PARÁMETROS-----------------------------
           parameterTest = () => { // singeParameterTest
-            showResult(auxButton, undefined , estilo[auxName]());
+            showResult(auxButton, undefined, estilo[auxName]());
           };
           appendTo = noParam;
-        } else {
-          if (auxName.startsWith('get')) {
-            // ---------------------------------FUNCIONES GET---------------------------------
-            parameterTest = () => { // getParameterTest
-              if (auxName == 'get') {
-                showResult(auxButton, 'fill.color', estilo[auxName]('fill.color'));
-              } else if (auxName == 'getStyleForCategory') {
-                showResult(auxButton, 'SEVILLA', estilo[auxName]('Sevilla'));
-              } else if (auxName == 'getRange') {
-                showResult(auxButton, '2-4', estilo[auxName](2, 4));
-              } else {
-                console.error('NOT_PREPARED_FUNCTION_TEST_FOR_GET:',auxName);
-              }
-            };
-            appendTo = getWithParam;
-          } else if (auxName.startsWith('set')) {
-            // ---------------------------------FUNCIONES SET---------------------------------
-            parameterTest = () => { // setParameterTest
-              if (auxName === 'set') {
-                showResult(auxButton, 'fill.color', estilo[auxName]('fill.color', 'pink'));
-              } else if (auxName === 'setAttributeName') {
-                showResult(auxButton, 'es_0_15', estilo[auxName]('es_0_15'));
-              } else if (auxName === 'setQuantification') {
-                // const rangos = [10, 20, 30, 40, 50];
-                showResult(auxButton, 'JENKS', estilo[auxName](EQUAL_INTERVAL(4)));
-              } else if (auxName === 'setStyles') {
-                showResult(auxButton, 'EMPTY_STYLES', estilo[auxName]([]));
-              } else if (auxName === 'setMaxRadius') {
-                showResult(auxButton, '30', estilo[auxName](30));
-              } else if (auxName === 'setMinRadius') {
-                showResult(auxButton, '3', estilo[auxName](3));
-              } else if (auxName === 'setProportionalFunction') {
-                const miFuncionProporcional = (value, minValue, maxValue, minRadius, maxRadius) => {
-                  let radio = value * (maxValue / maxRadius);                  
-                  return radio;
-                }
-                showResult(auxButton, 'function', estilo[auxName](miFuncionProporcional));
-              } else if (auxName === 'setStyle') {
-                showResult(auxButton, 'setStyle', estilo[auxName](estilo.style_));
-              } else if (auxName === 'setCategories') {
-                const categories = {};
-                showResult(auxButton, 'empty_object', estilo[auxName](categories));
-              } else if (auxName === 'setStyleForCategory') {
-                const negro = new Generic({polygon: {fill: {color: 'black'}}});
-                showResult(auxButton, 'black', estilo[auxName]('Sevilla', negro));
-              } else if (auxName === 'setBlurSize') {
-                showResult(auxButton, '10', estilo[auxName](10));
-              } else if (auxName === 'setGradient') {
-                const gradient = ['red', 'green', 'blue'];
-                showResult(auxButton, '[red, green, blue]', estilo[auxName](gradient));
-              } else if (auxName === 'setRadius') {
-                showResult(auxButton, '20', estilo[auxName](20));
-              } else if (auxName === 'setAnimated') {
-                showResult(auxButton, 'false', estilo[auxName](false));
-              } else if (auxName === 'setRanges') {
-                const rangos = [{
-                  min: 1,
-                  max: 3,
-                  style: new Generic({
-                    point: {
-                      stroke: {
-                        color: '#5789aa',
-                      },
-                      fill: {
-                        color: '#99ccff',
-                      },
-                      radius: 20,
-                    },
-                  }),
-                }, {
-                  min: 4,
-                  max: 7,
-                  style: new Generic({
-                    point: {
-                      stroke: {
-                        color: '#5789aa',
-                      },
-                      fill: {
-                        color: '#3399ff',
-                      },
-                      radius: 30,
-                    },
-                  }),
-                },
-                // Se pueden definir más rangos
-                ];
-                showResult(auxButton, null, estilo[auxName](rangos));
-              } else {
-                console.error('NOT_PREPARED_FUNCTION_TEST_FOR_SET:',auxName);
-              }
-            };
-            appendTo = setParam;
-          } else {
-            // ---------------------------------OTRAS FUNCIONES---------------------------------
-            parameterTest = () => { // otherParameterTest
-              if (auxName === 'add') {
-                showResult(auxButton, 'add', estilo[auxName](styles[styleType]))
-              } else if (auxName === 'apply' || auxName === 'applyInternal') {
-                showResult(auxButton, null, estilo[auxName](window.layer));
-              } else if (auxName == 'applyToFeature') {
-                const feature = window.layer.getFeatures()[0];
-                showResult(auxButton, null, estilo[auxName](feature));
-              } else if (auxName == 'calculateStyle_') {
-                const feature = window.layer.getFeatures()[0];
-                let style = estilo.style_;
-                if (style == null || style == undefined) {
-                  style = feature.getStyle() ? feature.getStyle() : this.layer_.getStyle();
-                }
-                showResult(auxButton, null, estilo[auxName](feature,{
-                  minRadius: estilo.minRadius_,
-                  maxRadius: estilo.maxRadius_,
-                  minValue: estilo.minValue_,
-                  maxValue: estilo.maxValue_,
-                }, style));
-              } else if (auxName == 'refresh') {
-                showResult(auxButton, null, estilo[auxName]());
-              } else if (auxName === 'remove') {
-                showResult(auxButton, 'remove', estilo[auxName](styles[styleType]));
-              } else if (auxName === 'unapply' || auxName === 'unapplyInternal') {
-                showResult(auxButton, null, estilo[auxName](window.layer));
-              } else if (auxName == 'fire') {
-                showResult(auxButton, 'FIRE_CLICK_EVENT', estilo[auxName]('click', {pixel:[0, 0]}));
-              } else if (auxName == 'on') {
-                const onDate = new Date().getTime();
-                const funcEvent = () => {console.log('ON_FUNCTION:', onDate)}
-                eventsFuncArray.push(funcEvent);
-                showResult(auxButton, 'ON_CLICK_'+onDate, estilo[auxName]('click', funcEvent));
-              } else if (auxName == 'once') {
-                const onDate = new Date().getTime();
-                eventsKeyArray.push(showResult(auxButton, 'ONCE_CLICK_'+onDate, estilo[auxName]('click', () => {console.log('ONCE_FUNCTION:', onDate)})));
-              } else if (auxName == 'un') {
-                if (eventsFuncArray.length > 0) {
-                  eventsFuncArray.forEach(f => {showResult(auxButton, 'UN', estilo[auxName]('click', f));});
-                  eventsFuncArray.splice(0);
-                } else {
-                  auxButton.className = 'warningButton';
-                  console.error('NO_ON_EVENTS_PRESENT_TO_CLEAR:', auxName);
-                }
-              } else if (auxName == 'unByKey') {
-                if (eventsKeyArray.length > 0) {
-                  eventsKeyArray.forEach(k => {showResult(auxButton, 'UNBYKEY', estilo[auxName]('click', k));});
-                  eventsKeyArray.splice(0);
-                } else {
-                  auxButton.className = 'warningButton';
-                  console.error('NO_ONCE_EVENTS_PRESENT_TO_CLEAR:', auxName);
-                }
-              } else if (auxName === 'unapplySoft') {
-                showResult(auxButton, 'unapplySoft', estilo[auxName](undefined));
-              } else if (auxName === 'updateInternal_') {
-                if(estilo.layer_){
-                  showResult(auxButton, 'updateInternal_', estilo[auxName](estilo.layer_));
-                } else {
-                  auxButton.className = 'warningButton';
-                  console.error('NO_LAYER_PRESENT_FOR UPDATE:');
-                }
-              } else if (auxName === 'updateRange') {
-                showResult(auxButton, 'updateRange', estilo[auxName](1, 3, new Generic({
+        } else if (auxName.startsWith('get')) {
+          // ---------------------------------FUNCIONES GET---------------------------------
+          parameterTest = () => { // getParameterTest
+            if (auxName === 'get') {
+              showResult(auxButton, 'fill.color', estilo[auxName]('fill.color'));
+            } else if (auxName === 'getStyleForCategory') {
+              showResult(auxButton, 'SEVILLA', estilo[auxName]('Sevilla'));
+            } else if (auxName === 'getRange') {
+              showResult(auxButton, '2-4', estilo[auxName](2, 4));
+            } else {
+              console.error('NOT_PREPARED_FUNCTION_TEST_FOR_GET:', auxName);
+            }
+          };
+          appendTo = getWithParam;
+        } else if (auxName.startsWith('set')) {
+          // ---------------------------------FUNCIONES SET---------------------------------
+          parameterTest = () => { // setParameterTest
+            if (auxName === 'set') {
+              showResult(auxButton, 'fill.color', estilo[auxName]('fill.color', 'pink'));
+            } else if (auxName === 'setAttributeName') {
+              showResult(auxButton, 'es_0_15', estilo[auxName]('es_0_15'));
+            } else if (auxName === 'setQuantification') {
+              // const rangos = [10, 20, 30, 40, 50];
+              showResult(auxButton, 'JENKS', estilo[auxName](EQUAL_INTERVAL(4)));
+            } else if (auxName === 'setStyles') {
+              showResult(auxButton, 'EMPTY_STYLES', estilo[auxName]([]));
+            } else if (auxName === 'setMaxRadius') {
+              showResult(auxButton, '30', estilo[auxName](30));
+            } else if (auxName === 'setMinRadius') {
+              showResult(auxButton, '3', estilo[auxName](3));
+            } else if (auxName === 'setProportionalFunction') {
+              const miFuncionProporcional = (value, minValue, maxValue, minRadius, maxRadius) => {
+                const radio = value * (maxValue / maxRadius);
+                return radio;
+              };
+              showResult(auxButton, 'function', estilo[auxName](miFuncionProporcional));
+            } else if (auxName === 'setStyle') {
+              showResult(auxButton, 'setStyle', estilo[auxName](estilo.style_));
+            } else if (auxName === 'setCategories') {
+              const categories = {};
+              showResult(auxButton, 'empty_object', estilo[auxName](categories));
+            } else if (auxName === 'setStyleForCategory') {
+              const negro = new Generic({ polygon: { fill: { color: 'black' } } });
+              showResult(auxButton, 'black', estilo[auxName]('Sevilla', negro));
+            } else if (auxName === 'setBlurSize') {
+              showResult(auxButton, '10', estilo[auxName](10));
+            } else if (auxName === 'setGradient') {
+              const gradient = ['red', 'green', 'blue'];
+              showResult(auxButton, '[red, green, blue]', estilo[auxName](gradient));
+            } else if (auxName === 'setRadius') {
+              showResult(auxButton, '20', estilo[auxName](20));
+            } else if (auxName === 'setAnimated') {
+              showResult(auxButton, 'false', estilo[auxName](false));
+            } else if (auxName === 'setRanges') {
+              const rangos = [{
+                min: 1,
+                max: 3,
+                style: new Generic({
                   point: {
-                    stroke: {color: '#5789aa',},
-                    fill: {color: '#99ccff',},
+                    stroke: {
+                      color: '#5789aa',
+                    },
+                    fill: {
+                      color: '#99ccff',
+                    },
                     radius: 20,
                   },
-                })));
-              } else {
-                console.error('NOT_PREPARED_FUNCTION_TEST_FOR_OTHER:',auxName);
+                }),
+              }, {
+                min: 4,
+                max: 7,
+                style: new Generic({
+                  point: {
+                    stroke: {
+                      color: '#5789aa',
+                    },
+                    fill: {
+                      color: '#3399ff',
+                    },
+                    radius: 30,
+                  },
+                }),
+              },
+              // Se pueden definir más rangos
+              ];
+              showResult(auxButton, null, estilo[auxName](rangos));
+            } else {
+              console.error('NOT_PREPARED_FUNCTION_TEST_FOR_SET:', auxName);
+            }
+          };
+          appendTo = setParam;
+        } else {
+          // ---------------------------------OTRAS FUNCIONES---------------------------------
+          parameterTest = () => { // otherParameterTest
+            if (auxName === 'add') {
+              showResult(auxButton, 'add', estilo[auxName](styles[styleType]));
+            } else if (auxName === 'apply' || auxName === 'applyInternal') {
+              showResult(auxButton, null, estilo[auxName](window.layer));
+            } else if (auxName === 'applyToFeature') {
+              const feature = window.layer.getFeatures()[0];
+              showResult(auxButton, null, estilo[auxName](feature));
+            } else if (auxName === 'calculateStyle_') {
+              const feature = window.layer.getFeatures()[0];
+              let style = estilo.style_;
+              if (style === null || style === undefined) {
+                style = feature.getStyle() ? feature.getStyle() : this.layer_.getStyle();
               }
-            };
-            appendTo = otherParam;
-          }
+              showResult(auxButton, null, estilo[auxName](feature, {
+                minRadius: estilo.minRadius_,
+                maxRadius: estilo.maxRadius_,
+                minValue: estilo.minValue_,
+                maxValue: estilo.maxValue_,
+              }, style));
+            } else if (auxName === 'refresh') {
+              showResult(auxButton, null, estilo[auxName]());
+            } else if (auxName === 'remove') {
+              showResult(auxButton, 'remove', estilo[auxName](styles[styleType]));
+            } else if (auxName === 'unapply' || auxName === 'unapplyInternal') {
+              showResult(auxButton, null, estilo[auxName](window.layer));
+            } else if (auxName === 'fire') {
+              showResult(auxButton, 'FIRE_CLICK_EVENT', estilo[auxName]('click', { pixel: [0, 0] }));
+            } else if (auxName === 'on') {
+              const onDate = new Date().getTime();
+              const funcEvent = () => { console.log('ON_FUNCTION:', onDate); };
+              eventsFuncArray.push(funcEvent);
+              showResult(auxButton, `ON_CLICK_${onDate}`, estilo[auxName]('click', funcEvent));
+            } else if (auxName === 'once') {
+              const onDate = new Date().getTime();
+              eventsKeyArray.push(showResult(auxButton, `ONCE_CLICK_${onDate}`, estilo[auxName]('click', () => { console.log('ONCE_FUNCTION:', onDate); })));
+            } else if (auxName === 'un') {
+              if (eventsFuncArray.length > 0) {
+                eventsFuncArray.forEach((f) => { showResult(auxButton, 'UN', estilo[auxName]('click', f)); });
+                eventsFuncArray.splice(0);
+              } else {
+                auxButton.className = 'warningButton';
+                console.error('NO_ON_EVENTS_PRESENT_TO_CLEAR:', auxName);
+              }
+            } else if (auxName === 'unByKey') {
+              if (eventsKeyArray.length > 0) {
+                eventsKeyArray.forEach((k) => { showResult(auxButton, 'UNBYKEY', estilo[auxName]('click', k)); });
+                eventsKeyArray.splice(0);
+              } else {
+                auxButton.className = 'warningButton';
+                console.error('NO_ONCE_EVENTS_PRESENT_TO_CLEAR:', auxName);
+              }
+            } else if (auxName === 'unapplySoft') {
+              showResult(auxButton, 'unapplySoft', estilo[auxName](undefined));
+            } else if (auxName === 'updateInternal_') {
+              if (estilo.layer_) {
+                showResult(auxButton, 'updateInternal_', estilo[auxName](estilo.layer_));
+              } else {
+                auxButton.className = 'warningButton';
+                console.error('NO_LAYER_PRESENT_FOR UPDATE:');
+              }
+            } else if (auxName === 'updateRange') {
+              showResult(auxButton, 'updateRange', estilo[auxName](1, 3, new Generic({
+                point: {
+                  stroke: { color: '#5789aa' },
+                  fill: { color: '#99ccff' },
+                  radius: 20,
+                },
+              })));
+            } else {
+              console.error('NOT_PREPARED_FUNCTION_TEST_FOR_OTHER:', auxName);
+            }
+          };
+          appendTo = otherParam;
         }
-  
+
         // Asignado del botón con el evento apropiado
         auxButton.addEventListener('click', () => {
           auxButton.className = '';
@@ -720,11 +699,31 @@ const addTestFunctions = () => {
       }
     }
   }
-  
+
   window.listOfAllFunctions = listOfAllFunctions; // Para tener acceso a toda la lista de funciones.
   window.listOnlyShown = listOnlyShown; // Solo las funciones mostradas en las pruebas.
 };
 
+const refreshFuntions = () => {
+  deleteChilds(setParam);
+  deleteChilds(getWithParam);
+  deleteChilds(noParam);
+  deleteChilds(otherParam);
+  addTestFunctions();
+};
+
+const styleTypeEvent = (evt) => {
+  const idTarget = evt.target.id;
+  if (idTarget) {
+    styleType = idTarget;
+    activateStyleTypeBtn(idTarget);
+    refreshStyleOptions(idTarget);
+    setStyle(idTarget);
+    refreshFuntions();
+    showTestSections();
+  }
+};
+styleTypeDiv.addEventListener('click', (evt) => styleTypeEvent(evt));
 
 //////////////////////////
 // ERRORES develop y ol //

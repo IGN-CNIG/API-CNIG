@@ -22,7 +22,7 @@ const PRECHARGED = {
     type: 'WMS', name: 'Planimetrías',
     url: 'https://www.ign.es/wms/minutas-cartograficas',
   }, {
-    name: 'Mapa Libre', legend: 'Mapa Libre',
+    type: 'MapLibre', name: 'Mapa Libre', legend: 'Mapa Libre',
     url: 'https://vt-mapabase.idee.es/files/styles/mapaBase_scn_color1_CNIG.json',
   }],
   groups: [{
@@ -255,6 +255,7 @@ const feature = new M.Feature('localizacion', {
   type: 'Feature',
   properties: { text: 'prueba' },
   geometry: { type: 'Point', coordinates: [-458757.1288, 4795217.2530] },
+  // geometry: { type: 'LineString', coordinates: [[-458757, 4795217], [-458758, 4795218]] },
 });
 capaVector.addFeatures(feature);
 map.addLayers(capaVector); window.capaVector = capaVector; // */

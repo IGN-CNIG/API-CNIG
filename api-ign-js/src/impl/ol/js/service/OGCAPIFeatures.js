@@ -2,7 +2,7 @@
  * @module M/impl/service/OGCAPIFeatures
  */
 import { get as getRemote } from 'M/util/Remote';
-import { addParameters, isNullOrEmpty } from 'M/util/Utils';
+import { isNullOrEmpty, addParameters } from 'M/util/Utils';
 import Featuretype from '../format/wfs/DescribeFeatureType';
 
 /**
@@ -216,7 +216,7 @@ class OGCAPIFeatures {
       getFeatureParams.f = this.format_;
     }
     if (!isNullOrEmpty(this.id_)) {
-      this.url_ = `${this.url_}${this.id_}?`;
+      this.url_ = `${this.url_}/${this.id_}?`;
       fUrl = addParameters(addParameters(this.url_, getFeatureParams), this.getFeatureVendor_);
     } else {
       this.url_ = `${this.url_}?`;

@@ -234,13 +234,17 @@ class MBTiles extends Layer {
    * @param {M.Map} map Mapa.
    * @api
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
     const { code } = this.map.getProjection();
     const projection = getProj(code);
     const extent = projection.getExtent();
-
-    if (!this.tileLoadFunction) {
+    this.ol3Layer = new OLLayerTile(extend({
+      visible: this.visibility,
+      opacity: this.opacity_,
+      zIndex: this.zIndex_,
+    }, this.vendorOptions_, true));
+    if (!this.tileLoadFunction && !this.vendorOptions_.source) {
       this.fetchSource().then((tileProvider) => {
         tileProvider.getMaxZoomLevel().then((maxZoomLevel) => {
           if (!this.maxZoomLevel_) {
@@ -249,7 +253,7 @@ class MBTiles extends Layer {
           const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_);
           this.getExtentFromProvider().then((reprojectedExtent) => {
             this.maxExtent_ = this.maxExtent_ || reprojectedExtent || extent;
-            this.ol3Layer = this.createLayer({
+            this.createLayer({
               tileProvider,
               resolutions,
               extent: this.maxExtent_,
@@ -258,14 +262,16 @@ class MBTiles extends Layer {
             });
             this.ol3Layer.setMaxZoom(this.maxZoom);
             this.ol3Layer.setMinZoom(this.minZoom);
-            this.map.getMapImpl().addLayer(this.ol3Layer);
+            if (addLayer) {
+              this.map.getMapImpl().addLayer(this.ol3Layer);
+            }
           });
         });
       });
     } else {
       const resolutions = generateResolutions(extent, DEFAULT_TILE_SIZE, this.maxZoomLevel_ || 28);
       this.maxExtent_ = this.maxExtent_ || extent;
-      this.ol3Layer = this.createLayer({
+      this.createLayer({
         resolutions,
         extent: this.maxExtent_ || extent,
         sourceExtent: extent,
@@ -273,7 +279,9 @@ class MBTiles extends Layer {
       });
       this.ol3Layer.setMaxZoom(this.maxZoom);
       this.ol3Layer.setMinZoom(this.minZoom);
-      this.map.getMapImpl().addLayer(this.ol3Layer);
+      if (addLayer) {
+        this.map.getMapImpl().addLayer(this.ol3Layer);
+      }
     }
   }
 
@@ -291,12 +299,9 @@ class MBTiles extends Layer {
     if (this.tileLoadFunction) {
       tileLoadFn = this.loadTile;
     }
-    const layer = new OLLayerTile(extend({
-      visible: this.visibility,
-      opacity: this.opacity_,
-      zIndex: this.zIndex_,
-      extent: this.maxExtent_ || opts.sourceExtent,
-      source: new XYZ({
+    let source = this.vendorOptions_.source;
+    if (isNullOrEmpty(source)) {
+      source = new XYZ({
         url: '{z},{x},{y}',
         projection: opts.projection,
         crossOrigin: this.crossOrigin,
@@ -306,9 +311,11 @@ class MBTiles extends Layer {
           origin: getBottomLeft(opts.sourceExtent),
           resolutions: opts.resolutions,
         }),
-      }),
-    }, this.vendorOptions_, true));
-    return layer;
+      });
+    }
+    this.ol3Layer.setSource(source);
+    this.ol3Layer.setExtent(this.maxExtent_ || opts.sourceExtent);
+    return this.ol3Layer;
   }
 
   /**

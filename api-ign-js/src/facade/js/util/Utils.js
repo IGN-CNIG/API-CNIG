@@ -8,7 +8,7 @@ import chroma from 'chroma-js';
 import Draggabilly from 'draggabilly';
 import * as dynamicImage from 'assets/img/dynamic_legend';
 import { getValue } from '../i18n/language';
-import { INCHES_PER_UNIT, DOTS_PER_INCH } from '../units';
+import { DOTS_PER_INCH, INCHES_PER_UNIT } from '../units';
 import * as WKT from '../geom/WKT';
 
 /**
@@ -20,7 +20,7 @@ import * as WKT from '../geom/WKT';
  * @api
  */
 export const isUndefined = (obj) => {
-  return (typeof obj === 'undefined');
+  return typeof obj === 'undefined';
 };
 
 /**
@@ -32,11 +32,7 @@ export const isUndefined = (obj) => {
  * @api
  */
 export const isBoolean = (obj) => {
-  let isBooleanParam = false;
-  if (obj !== null && !isUndefined(obj)) {
-    isBooleanParam = (typeof obj === 'boolean');
-  }
-  return isBooleanParam;
+  return typeof obj === 'boolean';
 };
 
 /**
@@ -48,21 +44,10 @@ export const isBoolean = (obj) => {
  * @api
  */
 export const isNull = (obj) => {
-  let isNullParam = false;
-
-  if (!isBoolean(obj) && typeof obj !== 'number') {
-    if (isUndefined(obj)) {
-      isNullParam = true;
-    } else if (!obj) {
-      isNullParam = true;
-    } else if (obj === null) {
-      isNullParam = true;
-    }
-  }
-
-  return isNullParam;
+  return typeof obj !== 'boolean' && typeof obj !== 'number' && !obj;
 };
 
+const arrayToString = Object.prototype.toString.call([]);
 /**
  * Devuelve verdadero si es valor que se le pasa por
  * parámetros es "Array".
@@ -72,11 +57,7 @@ export const isNull = (obj) => {
  * @api
  */
 export const isArray = (obj) => {
-  let isArrayParam = false;
-  if (!isNull(obj)) {
-    isArrayParam = (Object.prototype.toString.call(obj) === Object.prototype.toString.call([]));
-  }
-  return isArrayParam;
+  return !isNull(obj) && Object.prototype.toString.call(obj) === arrayToString;
 };
 
 /**
@@ -93,13 +74,9 @@ export const isNullOrEmpty = (obj) => {
   if (isNull(obj)) {
     nullOrEmpty = true;
   } else if (isArray(obj)) {
-    nullOrEmpty = true;
-    if (obj.length > 0) {
-      nullOrEmpty = !obj.some((objElem) => !isNullOrEmpty(objElem));
-    }
-  } else if (typeof obj === 'string' && obj.trim()
-    .length === 0) {
-    nullOrEmpty = true;
+    nullOrEmpty = (!(obj.length > 0) || !obj.some((objElem) => !isNullOrEmpty(objElem)));
+  } else {
+    nullOrEmpty = typeof obj === 'string' && obj.trim().length === 0;
   }
 
   return nullOrEmpty;
@@ -114,11 +91,7 @@ export const isNullOrEmpty = (obj) => {
  * @api
  */
 export const isFunction = (obj) => {
-  let isFunctionParam = false;
-  if (!isNull(obj)) {
-    isFunctionParam = (typeof obj === 'function' && !isUndefined(obj.call));
-  }
-  return isFunctionParam;
+  return typeof obj === 'function' && typeof obj.call !== 'undefined';
 };
 
 /**
@@ -130,11 +103,7 @@ export const isFunction = (obj) => {
  * @api
  */
 export const isObject = (obj) => {
-  let isObjectParam = false;
-  if (!isNull(obj)) {
-    isObjectParam = (typeof obj === 'object' && !isUndefined(obj.toString));
-  }
-  return isObjectParam;
+  return typeof obj === 'object' && !isNull(obj) && typeof obj.toString !== 'undefined';
 };
 
 /**
@@ -146,11 +115,7 @@ export const isObject = (obj) => {
  * @api
  */
 export const isString = (obj) => {
-  let isStringParam = false;
-  if (!isNull(obj)) {
-    isStringParam = (typeof obj === 'string');
-  }
-  return isStringParam;
+  return typeof obj === 'string' && obj.length !== 0;
 };
 
 /**
@@ -162,11 +127,7 @@ export const isString = (obj) => {
  * @api
  */
 export const isUrl = (obj) => {
-  let isUrlParam = false;
-  if (!isNull(obj) && isString(obj)) {
-    isUrlParam = /(https?:\/\/[^*]+)/.test(obj);
-  }
-  return isUrlParam;
+  return isString(obj) && /(https?:\/\/[^*]+)/.test(obj);
 };
 
 /**
@@ -811,6 +772,37 @@ export const sameUrl = (url1, url2) => {
   return url1Var.toLowerCase() === url2Var.toLowerCase();
 };
 
+const geometricTypes = [
+  WKT.GEOMETRY.toLowerCase(),
+  'GeometryPropertyType'.toLowerCase(),
+  WKT.POINT.toLowerCase(),
+  WKT.LINE_STRING.toLowerCase(),
+  WKT.LINEAR_RING.toLowerCase(),
+  WKT.POLYGON.toLowerCase(),
+  WKT.MULTI_POINT.toLowerCase(),
+  WKT.MULTI_LINE_STRING.toLowerCase(),
+  WKT.MULTI_POLYGON.toLowerCase(),
+  WKT.GEOMETRY_COLLECTION.toLowerCase(),
+  WKT.CIRCLE.toLowerCase(),
+  'pointpropertytype',
+  'polygonpropertytype',
+  'linestringpropertytype',
+  'geometrypropertytype',
+  'multisurfacepropertytype',
+  'multilinestringpropertytype',
+  'surfacepropertytype',
+  'geometrypropertytype',
+  'geometryarraypropertytype',
+  'multigeometrypropertytype',
+  'multipolygonpropertytype',
+  'multipointpropertytype',
+  'abstractgeometricaggregatetype',
+  'pointarraypropertytype',
+  'curvearraypropertytype',
+  'solidpropertytype',
+  'solidarraypropertytype',
+];
+
 /**
  * Esta función devuelve verdadero
  * si existe el tipo de geometría.
@@ -821,36 +813,6 @@ export const sameUrl = (url1, url2) => {
  * @api
  */
 export const isGeometryType = (type) => {
-  const geometricTypes = [
-    WKT.GEOMETRY.toLowerCase(),
-    'GeometryPropertyType'.toLowerCase(),
-    WKT.POINT.toLowerCase(),
-    WKT.LINE_STRING.toLowerCase(),
-    WKT.LINEAR_RING.toLowerCase(),
-    WKT.POLYGON.toLowerCase(),
-    WKT.MULTI_POINT.toLowerCase(),
-    WKT.MULTI_LINE_STRING.toLowerCase(),
-    WKT.MULTI_POLYGON.toLowerCase(),
-    WKT.GEOMETRY_COLLECTION.toLowerCase(),
-    WKT.CIRCLE.toLowerCase(),
-    'pointpropertytype',
-    'polygonpropertytype',
-    'linestringpropertytype',
-    'geometrypropertytype',
-    'multisurfacepropertytype',
-    'multilinestringpropertytype',
-    'surfacepropertytype',
-    'geometrypropertytype',
-    'geometryarraypropertytype',
-    'multigeometrypropertytype',
-    'multipolygonpropertytype',
-    'multipointpropertytype',
-    'abstractgeometricaggregatetype',
-    'pointarraypropertytype',
-    'curvearraypropertytype',
-    'solidpropertytype',
-    'solidarraypropertytype',
-  ];
   const typeVar = type.toLowerCase();
   return (geometricTypes.indexOf(typeVar) !== -1);
 };
@@ -901,11 +863,8 @@ export const getTextFromHtml = (html) => {
 export const inverseColor = (color) => {
   let inverseColorParam;
   if (isString(color)) {
-    let hexColor = chroma(color)
-      .hex();
-    hexColor = hexColor.replace(/^#/, '0x');
-    inverseColorParam = chroma(0xFFFFFF - hexColor)
-      .hex();
+    const hexColor = chroma(color).hex().replace(/^#/, '0x');
+    inverseColorParam = chroma(0xFFFFFF - hexColor).hex();
   }
 
   return inverseColorParam;
@@ -1076,7 +1035,7 @@ export const defineFunctionFromString = (objParam) => {
  */
 export const isDynamic = (obj) => {
   let flag = false;
-  if (!Array.isArray(obj) && typeof obj === 'object' && !isNullOrEmpty(obj)) {
+  if (typeof obj === 'object' && !Array.isArray(obj) && !isNullOrEmpty(obj)) {
     flag = Object.values(obj).some((val) => isDynamic(val));
   } else if (typeof obj === 'function' || (typeof obj === 'string' && /\{\{.*\}\}/.test(obj))) {
     flag = true;
@@ -1260,13 +1219,15 @@ export const modifySVG = (url, options) => {
   return remoteGet(url).then((response) => {
     let result = '';
     try {
-      const tags = (options.icon.tag)
-        ? options.icon.tag
+      const opIcon = options.icon;
+      const xml = response.xml;
+      const tags = opIcon.tag
+        ? opIcon.tag
         : ['path', 'circle', 'ellipse', 'line', 'polygon', 'polyline', 'rect', 'foreignObject'];
 
-      const svg = Array.from(response.xml.getElementsByTagName('svg'))[0];
-      const strokeMiddle = options.icon.stroke && options.icon.stroke.width
-        ? options.icon.stroke.width
+      const svg = xml.getElementsByTagName('svg')[0];
+      const strokeMiddle = opIcon.stroke && opIcon.stroke.width
+        ? opIcon.stroke.width
         : 1;
       let width = svg.getAttribute('width') ? svg.getAttribute('width').replace(/[^0-9.]/g, '') : null;
       let height = svg.getAttribute('height') ? svg.getAttribute('height').replace(/[^0-9.]/g, '') : null;
@@ -1280,35 +1241,35 @@ export const modifySVG = (url, options) => {
           svg.setAttribute('height', viewSplit[3]);
           height = viewSplit[3];
         }
-      }
-      if (options.icon.stroke && strokeMiddle && width && height) {
-        if (!svg.getAttribute('viewBox')) {
-          svg.setAttribute('viewBox', `${-strokeMiddle} ${-strokeMiddle} ${Math.ceil(Number(width)) + (2 * strokeMiddle)} ${Number(height) + (2 * strokeMiddle)}`);
-        } else {
-          const viewSplit = svg.getAttribute('viewBox').split(' ');
+        if (opIcon.stroke && width && height) {
           svg.setAttribute('viewBox', `${-strokeMiddle} ${-strokeMiddle} ${Math.ceil(Number(viewSplit[2])) + (2 * strokeMiddle)} ${Number(viewSplit[3]) + (2 * strokeMiddle)}`);
         }
+      } else if (opIcon.stroke && width && height) {
+        svg.setAttribute('viewBox', `${-strokeMiddle} ${-strokeMiddle} ${Math.ceil(Number(width)) + (2 * strokeMiddle)} ${Number(height) + (2 * strokeMiddle)}`);
+      }
+
+      if (opIcon.stroke) {
+        Array.prototype.forEach.call(xml.getElementsByTagName('g'), (element) => {
+          element.removeAttribute('clip-path');
+        });
       }
 
       tags.forEach((tag) => {
-        Array.from(response.xml.getElementsByTagName(tag)).forEach((element) => {
-          element.classList.remove(...element.classList);
-          if (options.icon.fill && options.icon.fill.color) element.setAttribute('fill', options.icon.fill.color);
-          if (options.icon.fill && options.icon.fill.opacity) element.setAttribute('fill-opacity', options.icon.fill.opacity);
-          if (options.icon.stroke && options.icon.stroke.color) element.setAttribute('stroke', options.icon.stroke.color);
-          if (options.icon.stroke && strokeMiddle) element.setAttribute('stroke-width', strokeMiddle);
+        Array.prototype.forEach.call(xml.getElementsByTagName(tag), (element) => {
+          element.removeAttribute('class');
+          if (opIcon.fill) {
+            if (opIcon.fill.color) element.setAttribute('fill', opIcon.fill.color);
+            if (opIcon.fill.opacity) element.setAttribute('fill-opacity', opIcon.fill.opacity);
+          }
+          if (opIcon.stroke) {
+            if (opIcon.stroke.color) element.setAttribute('stroke', opIcon.stroke.color);
+            element.setAttribute('stroke-width', strokeMiddle);
+          }
         });
       });
 
-      Array.from(response.xml.getElementsByTagName('g')).forEach((element) => {
-        if (options.icon.stroke && strokeMiddle) {
-          element.removeAttribute('clip-path');
-        }
-      });
-      // eslint-disable-next-line
-      result = 'data:image/svg+xml,'.concat(encodeURIComponent(new XMLSerializer().serializeToString(response.xml, 'text/xml')));
-      /* eslint-disable no-empty */
-    } catch (err) {}
+      result = 'data:image/svg+xml,'.concat(encodeURIComponent(new XMLSerializer().serializeToString(xml, 'text/xml')));
+    } catch (err) { /* Continue */ }
     return result;
   });
 };
@@ -1653,14 +1614,26 @@ export const copyImageClipBoard = (map, canva) => {
 
 /**
  * Esta función detecta en un texto los enlaces.
+ * @param {String} text Texto donde se detectará los enlaces.
  * @returns {Array<String>} Matriz de enlaces.
  * @function
  * @api
  */
-export const findUrls = (content) => {
-  const regexURL = /(^|\s)(https?:\/\/[^\s<>"']+)/g;
-  const urls = content.match(regexURL);
-  return urls || [];
+export const findUrls = (text) => {
+  const regex = /https?:\/\/[^\s<]+(?![^<>]*>)/g;
+  const matches = text.match(regex);
+
+  if (!matches) return [];
+
+  // Filtrar las URLs que están dentro de etiquetas HTML
+  const outsideURLs = matches.filter((url) => {
+    const startIndex = text.indexOf(url);
+    const beforeChar = text[startIndex - 1];
+    const afterChar = text[startIndex + url.length];
+
+    return beforeChar !== '"' && beforeChar !== "'" && afterChar !== '"' && afterChar !== "'";
+  });
+  return outsideURLs;
 };
 
 /**
@@ -1707,7 +1680,7 @@ export const transfomContent = (text, pSizes = {}) => {
     } else if (regexAudio.test(url)) {
       content = content.replace(`${url}${aux}`, `</br><audio style='max-width: ${sizes.audios[0]}; max-height: ${sizes.audios[1]}'controls><source src='${url}'>${getValue('exception').browser_audio}</audio></br>${aux}`);
     } else {
-      content = content.replace(`${url}${aux}`, `<a href=${url}>${url}</a>${aux}`);
+      content = content.replace(`${url}${aux}`, `<a target='blank' href=${url}>${url}</a>${aux}`);
     }
   });
   return content;
@@ -1723,7 +1696,7 @@ export const transfomContent = (text, pSizes = {}) => {
  */
 export const ObjectToArrayExtent = (bbox, epsg) => {
   const { def } = M.impl.ol.js.projections.getSupportedProjs()
-    .filter((proj) => proj.codes.includes(epsg))[0];
+    .find((proj) => proj.codes.includes(epsg));
 
   const typeCoordinates = def.includes('+proj=longlat');
 

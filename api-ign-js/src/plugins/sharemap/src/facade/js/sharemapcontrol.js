@@ -436,8 +436,8 @@ export default class ShareMapControl extends M.Control {
 
           shareURL = shareURL.concat(`&controls=${newControls}`).concat('&plugins=toc,zoompanel,measurebar,mousesrs');
         }
-
-        shareURL = this.getLayers().length > 0 ? shareURL.concat(`&layers=${this.getLayers()}`) : shareURL.concat('');
+        const layerParam = this.getLayers();
+        shareURL = layerParam.length > 0 ? shareURL.concat(`&layers=${layerParam}`) : shareURL.concat('');
         shareURL = shareURL.concat(`&projection=${code}*${units}`);
       } else {
         const { x, y } = this.map_.getCenter();
@@ -500,7 +500,7 @@ export default class ShareMapControl extends M.Control {
           const index = resolvedControls.indexOf('scale');
           resolvedControls[index] = exactScale === true ? 'scale*true' : 'scale';
         }
-        const backgroundlayers = this.map_.getControls().filter((c) => c.name === 'backgroundlayers')[0];
+        const backgroundlayers = this.map_.getControls().find((c) => c.name === 'backgroundlayers');
         let backgroundlayersAPI;
         if (!M.utils.isNullOrEmpty(backgroundlayers)) {
           const { visible, activeLayer } = backgroundlayers;
@@ -523,6 +523,9 @@ export default class ShareMapControl extends M.Control {
    * @function
    */
   getLayers() {
+    if (this.shareLayer === false) {
+      return this.getLayersInfilterLayers();
+    }
     const layers = this.map_.getLayers().filter((layer) => {
       let res = layer.name !== '__draw__' && layer.name !== 'selectionLayer';
       if (layer.name === 'attributions' && layer.type === 'KML') {
@@ -568,7 +571,7 @@ export default class ShareMapControl extends M.Control {
    * @public
    * @function
    */
-  layerToParam(layer) {
+  layerToParam(layer, parent = true) {
     let param;
     if (layer.name === 'osm') {
       param = layer.name;
@@ -594,6 +597,8 @@ export default class ShareMapControl extends M.Control {
       param = this.getGeoTIFF(layer);
     } else if (layer.type === 'MapLibre') {
       param = this.getMapLibre(layer);
+    } else if (layer.type === 'LayerGroup') {
+      param = this.getLayerGroup(layer, parent);
     }
     return param;
   }
@@ -718,6 +723,18 @@ export default class ShareMapControl extends M.Control {
       legend = layer.legend;
     }
     return `WMTS*${layer.url}*${layer.name}*${layer.matrixSet || code}*${this.normalizeString(legend)}*${layer.transparent}*${layer.options.format || 'image/png'}*${layer.displayInLayerSwitcher}*${layer.isQueryable()}*${layer.isVisible()}`;
+  }
+
+  getLayerGroup(group, parent) {
+    let layers = group.getLayers();
+    layers = layers.map((layer) => {
+      if (this.layerToParam(layer, false) === undefined) {
+        return null;
+      }
+      return `${this.layerToParam(layer, false)}`;
+    })
+      .filter((param) => param != null);
+    return `LayerGroup*${group.name}*${this.normalizeString(group.legend)}*${group.isVisible()}*${group.transparent}*[${layers}]${parent ? '!' : ''}`;
   }
 
   // TO-DO

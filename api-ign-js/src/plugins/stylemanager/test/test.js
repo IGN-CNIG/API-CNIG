@@ -77,7 +77,7 @@ const lines = new M.layer.GeoJSON({
 // }, { style: new M.style.FlowLine({ color: '#ff0000', color2: '#F8FF25', arrow: 1, width: 20, width2: 25, lineCap: 'round', arrowColor: '#ff0000', offset0: 0, offset1: 0 }) // Estilo en generado de capa.
 });
 
-/* / Conjunto de todos los layers a probar
+// Conjunto de todos los layers a probar
 const points = new M.layer.GeoJSON({
   name: 'points',
   source: {
@@ -476,7 +476,7 @@ const estiloflow = new M.style.FlowLine({
   offset1: 0,
 });
 lines.setStyle(estiloflow); // */
-map.addLayers([lines]); window.lines = lines;
+// map.addLayers([lines]); window.lines = lines;
 
 /* / Layer WFS1
 const wfs1 = new M.layer.WFS({
@@ -488,7 +488,7 @@ const wfs1 = new M.layer.WFS({
 });
 map.addWFS(wfs1); window.wfs1 = wfs1; // */
 
-// Layer WFS2 **** Comentar más tarde
+/* / Layer WFS2
 const wfs2 = new M.layer.WFS({
   url: 'http://geostematicos-sigc.juntadeandalucia.es/geoserver/sepim/ows?',
   namespace: 'sepim',
@@ -496,20 +496,20 @@ const wfs2 = new M.layer.WFS({
   legend: 'Campamentos',
   geometry: 'Point',
 });
-map.addWFS(wfs2); window.wfs2 = wfs2; // */
+map.addWFS(wfs2); window.wfs2 = wfs2;
 
-let estilo2 = new M.style.Point({
-    radius: 5, 
-    fill: {  
-      color: 'green',
-      opacity: 0.5
-    },
-    stroke: {
-      color: '#FF0000'
-    }
+const estilo2 = new M.style.Point({
+  radius: 5,
+  fill: {
+    color: 'green',
+    opacity: 0.5,
+  },
+  stroke: {
+    color: '#FF0000',
+  },
 });
 
-wfs2.setStyle(estilo2);
+wfs2.setStyle(estilo2); // */
 
 /* / Estilado de WF2
 const estilo = new M.style.Point({

@@ -501,6 +501,13 @@ div.m-area.m-bottom.m-left>div.m-plugin-printviewmanagement.m-panel.opened>butto
     font-family: 'Muli', 'sans-serif' !important;
   }
 
+  #m-printermap-layout{
+    max-width: 65%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }  
+
   .m-georefimage-download-button {
     width: 100%;
     margin: 0 auto;

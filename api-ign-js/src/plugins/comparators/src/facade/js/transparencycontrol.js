@@ -212,7 +212,7 @@ export default class TransparencyControl extends M.Control {
           .querySelector('select')
           .addEventListener('change', (evt) => {
             const optionsSelect = evt.target.options;
-            Array.from(optionsSelect).forEach((option) => option.removeAttribute('selected'));
+            Array.prototype.forEach.call(optionsSelect, (option) => option.removeAttribute('selected'));
             evt.target.selectedOptions[0].setAttribute('selected', '');
 
             this.layerSelected.setVisible(false);
@@ -231,13 +231,7 @@ export default class TransparencyControl extends M.Control {
             });
 
             this.layerSelected = layer[0];
-            setTimeout(() => {
-              this.getImpl().effectSelected(
-                this.layerSelected,
-                this.radius,
-                this.freeze,
-              );
-            }, 1000);
+            this.effectSelectedImpl_();
           });
       }
 
@@ -411,20 +405,17 @@ export default class TransparencyControl extends M.Control {
         if (layer.indexOf('*') >= 0) {
           const urlLayer = layer.split('*');
           const name = urlLayer[3];
-          const layerByUrl = this.map_
-            .getLayers()
-            .filter((l) => name.includes(l.name))[0];
+          const layerByUrl = this.map_.getLayers()
+            .find((l) => name.includes(l.name));
           this.map_.removeLayers(layerByUrl);
         } else {
-          const layerByName = this.map_
-            .getLayers()
-            .filter((l) => layer.includes(l.name))[0];
+          const layerByName = this.map_.getLayers()
+            .find((l) => layer.includes(l.name));
           this.map_.removeLayers(layerByName);
         }
       } else if (layer instanceof Object) {
-        const layerByObject = this.map_
-          .getLayers()
-          .filter((l) => layer.name.includes(l.name))[0];
+        const layerByObject = this.map_.getLayers()
+          .find((l) => layer.name.includes(l.name));
         this.map_.removeLayers(layerByObject);
       }
     });
@@ -458,5 +449,11 @@ export default class TransparencyControl extends M.Control {
 
   getLayersNames() {
     return this.layers.map((l) => l.name);
+  }
+
+  effectSelectedImpl_() {
+    setTimeout(() => {
+      this.getImpl().effectSelected(this.layerSelected, this.radius, this.freeze);
+    }, 1000);
   }
 }

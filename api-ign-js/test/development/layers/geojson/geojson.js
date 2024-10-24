@@ -3,6 +3,7 @@ import GeoJSON from 'M/layer/GeoJSON';
 import Generic from 'M/style/Generic';// eslint-disable-line no-unused-vars
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';// eslint-disable-line no-unused-vars
 import VectorSource from 'ol/source/Vector';// eslint-disable-line no-unused-vars
+import OLGeoJSONFormat from 'ol/format/GeoJSON';
 
 export const geojson_001 = new GeoJSON({
   name: 'Municipios',
@@ -170,4 +171,16 @@ export const geojson_004 = new GeoJSON({
 export const geojson_005 = new GeoJSON({
   url: 'https://visores-cnig-gestion-publico.desarrollo.guadaltel.es/fototeca/static/media/mtn50.eb820be5.geojson',
   extract: false,
+});
+
+export const geojson_006 = new GeoJSON({
+  name: 'Municipios',
+  extract: true,
+}, {
+}, {
+  source: new VectorSource({
+    format: new OLGeoJSONFormat(),
+    url: 'https://geostematicos-sigc.juntadeandalucia.es/geoserver/tematicos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tematicos:Provincias&maxFeatures=50&outputFormat=application%2Fjson',
+    strategy: bboxStrategy,
+  }),
 });

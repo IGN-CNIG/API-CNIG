@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import stylemanager from 'templates/stylemanager';
 import StyleManagerImplControl from 'impl/stylemanagerControl';
 import selectlayer from 'templates/selectlayer';
@@ -40,9 +38,11 @@ export default class StyleManagerControl extends M.Control {
    */
   createView(map) {
     this.facadeMap_ = map;
-    const layers = map.getWFS().concat(map.getMVT().concat(map.getKML().concat(map.getLayers().filter((layer) => layer.type === 'GeoJSON' || layer.type === 'Vector')))).filter((layer) => {
-      return layer.name !== 'selectLayer' && layer.name !== '__draw__';
-    });
+
+    const filterLayersTyle = ['WFS', 'MVT', 'KML', 'GeoJSON', 'Vector'];
+    const allLayers = map.getLayers().concat(map.getImpl().getAllLayerInGroup());
+    const layers = allLayers.filter((layer) => filterLayersTyle.includes(layer.type) && layer.name !== 'selectLayer' && layer.name !== '__draw__');
+
     return new Promise((success, fail) => {
       const html = M.template.compileSync(stylemanager, {
         jsonp: true,
@@ -96,6 +96,7 @@ export default class StyleManagerControl extends M.Control {
             }),
           },
         });
+        // eslint-disable-next-line no-param-reassign
         htmlSelect.innerHTML = htmlRes.innerHTML;
       });
     }
@@ -239,6 +240,7 @@ export default class StyleManagerControl extends M.Control {
       const features = this.layer_.getFeatures();
       if (features.length === 0) {
         M.dialog.error(getValue('exception.layerNoFeaturesLoad'), 'Error');
+        // eslint-disable-next-line no-param-reassign
         htmlSelect.selectedIndex = 0;
       } else {
         this.bindinController_.change(this.layer_);
@@ -255,9 +257,11 @@ export default class StyleManagerControl extends M.Control {
    * @api stable
    */
   getLayerByName(layerName) {
-    const layers = this.facadeMap_.getWFS().concat(this.facadeMap_.getMVT().concat(this.facadeMap_.getKML().concat(this.facadeMap_.getLayers().filter((layer) => layer.type === 'GeoJSON' || layer.type === 'Vector')))).filter((layer) => {
-      return layer.name !== 'selectLayer' && layer.name !== '__draw__';
-    });
+    const map = this.facadeMap_;
+    const filterLayersTyle = ['WFS', 'MVT', 'KML', 'GeoJSON', 'Vector'];
+    const allLayers = map.getLayers().concat(map.getImpl().getAllLayerInGroup());
+    const layers = allLayers.filter((layer) => filterLayersTyle.includes(layer.type) && layer.name !== 'selectLayer' && layer.name !== '__draw__');
+
     return layers.find((layer) => layer.name === layerName);
   }
 

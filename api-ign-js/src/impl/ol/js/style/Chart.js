@@ -10,7 +10,7 @@ import OLGeomPoint from 'ol/geom/Point';
 import OLStyleText from 'ol/style/Text';
 import OLStyleFill from 'ol/style/Fill';
 import OLStyle from 'ol/style/Style';
-import OLStyleIcon from 'ol/style/Icon';
+// import OLStyleIcon from 'ol/style/Icon';
 import * as Baseline from 'M/style/Baseline';
 import OLChart from '../olchart/OLChart';
 import StyleCentroid from './Centroid';
@@ -81,48 +81,55 @@ export const getTextData = (label, feature, styleOptions, dataValue) => {
  * @api
  */
 export const generateTextBarChart = (stylesParam, styleOptions, feature) => {
-  let height = 0;
+  // let height = 0;
   let acumSum = null;
   const variables = styleOptions.variables;
-  const data = styleOptions.data;
+  const auxCondition = variables.length === styleOptions.data.length;
+  const textSpacing = 6;
   const styles = stylesParam.concat(styleOptions.data.map((dataValue, i) => {
-    const variable = variables.length === data.length ? variables[i] : variables[0];
-    const label = variable.label || {};
+    const variable = auxCondition ? variables[i] : variables[0];
     if (!variable.label) {
       return null;
     }
+    const label = variable.label || {};
     const text = getTextData(label, feature, styleOptions, dataValue);
     const font = Simple.getValue(label.font, feature);
-    const sizeFont = 9;
+    const fontCondition = /^([1-9])[0-9]*px ./.test(font);
+    const sizeFont = fontCondition ? Number.parseInt(font, 10) : 12;
+    const fontAndSpace = sizeFont + textSpacing;
     if (isNullOrEmpty(acumSum)) {
-      acumSum = (stylesParam[0].getImage().getImage().height / 2) - 6;
+      acumSum = styleOptions.radius - textSpacing;
     } else {
-      acumSum -= sizeFont + 6;
+      acumSum -= fontAndSpace;
     }
-    height = height + sizeFont + 6;
-    const styleImage = stylesParam[0].getImage().getImage();
-    const offsetX = -(styleImage.width / 2) - (1 + styleOptions.offsetX) || 0;
+    // height += fontAndSpace;
+    const offsetX = styleOptions.offsetX - (styleOptions.radius + textSpacing) || 0;
     return new StyleCentroid({
       text: new OLStyleText({
         text: typeof text === 'string' ? `${text}` : '',
-        offsetY: acumSum + styleOptions.offsetY || 0,
         offsetX,
+        offsetY: acumSum - styleOptions.offsetY || 0,
+        textAlign: 'end',
         textBaseline: 'middle',
         rotateWithView: false,
-        textAlign: 'center',
-        stroke: label.stroke ? new OLStyleStroke({}) : undefined,
-        font: `9px ${font}`,
+        stroke: label.stroke ? new OLStyleStroke({
+          color: Simple.getValue(label.stroke.color, feature) || '#000',
+          width: Simple.getValue(label.stroke.width, feature) || 1,
+        }) : undefined,
+        font: fontCondition ? font : `${sizeFont}px ${font}`,
         scale: typeof label.scale === 'number' ? Simple.getValue(label.scale, feature) : undefined,
         fill: new OLStyleFill({
-          color: styleOptions.scheme[i % styleOptions.scheme.length],
+          color: Simple.getValue(label.fill, feature) || '#000',
         }),
       }),
     });
   }));
   const filteredStyles = styles.filter((style) => style != null);
+  /* / Old transparent white background for text area
   height = Math.max(height, 1);
-  const anchorX = -(stylesParam[0].getImage().getImage().width / 2) + 10 + styleOptions.offsetX;
-  const anchorY = (stylesParam[0].getImage().getImage().height / 2) + styleOptions.offsetY;
+  const anchorX = styleOptions.offsetX - styleOptions.radius;
+  const anchorY = -styleOptions.offsetY + styleOptions.radius;
+  const style0Width = styles[0].getImage().getImage().width / 2;
   const backgroundText = new OLStyleIcon(({
     anchor: [anchorX, anchorY],
     anchorOrigin: 'bottom-right',
@@ -131,13 +138,13 @@ export const generateTextBarChart = (stylesParam, styleOptions, feature) => {
     anchorYUnits: 'pixels',
     rotateWithView: false,
     src: `data:image/svg+xml;base64,${window.btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="${stylesParam[0].getImage()
-      .getImage().width / 2}" height="${height}"><rect width="${styles[0].getImage()
-      .getImage().width / 2}" height="${height}" fill="rgba(255, 255, 255, 0.75)" stroke-width="0" stroke="rgba(0, 0, 0, 0.34)"/></svg>`)}`,
-    size: [styles[0].getImage().getImage().width / 2, height],
+      .getImage().width / 2}" height="${height}"><rect width="${style0Width}" height="${height
+    }" fill="rgba(255, 255, 255, 0.75)" stroke-width="0" stroke="rgba(0, 0, 0, 0.34)"/></svg>`)}`,
+    size: [style0Width, height],
   }));
   filteredStyles.push(new OLStyle({
     image: backgroundText,
-  }));
+  })); // */
   return filteredStyles;
 };
 
@@ -154,18 +161,19 @@ export const generateTextBarChart = (stylesParam, styleOptions, feature) => {
  */
 export const generateTextCircleChart = (stylesParam, styleOptions, feature) => {
   let acumSum = 0;
-  const sum = styleOptions.data.reduce((tot, curr) => tot + curr);
-  const variables = styleOptions.variables;
   const data = styleOptions.data;
-  const styles = stylesParam.concat(styleOptions.data.map((dataValue, i) => {
-    const variable = variables.length === data.length ? variables[i] : variables[0];
-    const label = variable.label || {};
-    const radius = label.radius ? label.radius : styleOptions.radius;
-    const angle = (((((2 * acumSum) + dataValue) / sum) * Math.PI) - (Math.PI / 2));
-    acumSum += dataValue;
+  const sum = data.reduce((tot, curr) => tot + curr);
+  const variables = styleOptions.variables;
+  const auxCondition = variables.length === data.length;
+  const styles = stylesParam.concat(data.map((dataValue, i) => {
+    const variable = auxCondition ? variables[i] : variables[0];
     if (!variable.label) {
       return null;
     }
+    const label = variable.label || {};
+    const radius = label.radius ? label.radius : styleOptions.radius;
+    const angle = (((((2 * acumSum) + dataValue) / sum)) - 0.5) * Math.PI; // 0.5 is 90º offset
+    acumSum += dataValue;
     const radiusIncrement = typeof label.radiusIncrement === 'number' ? label.radiusIncrement : 3;
     let textAlign = typeof label.textAlign === 'function' ? label.textAlign(angle) : null;
     if (isNullOrEmpty(textAlign)) {
@@ -176,19 +184,22 @@ export const generateTextCircleChart = (stylesParam, styleOptions, feature) => {
     const olFill = new OLStyleFill({
       color: Simple.getValue(label.fill, feature) || '#000',
     });
-    const olStroke = new OLStyleStroke({
-      color: Simple.getValue(label.stroke.color, feature) || '#000',
-      width: Simple.getValue(label.stroke.width, feature) || 1,
-    });
-    const arcPositionX = Math.cos(angle) * ((radius + radiusIncrement) + styleOptions.offsetX) || 0;
-    const arcPositionY = Math.sin(angle) * ((radius + radiusIncrement) + styleOptions.offsetY) || 0;
+    const arcPositionX = typeof label.offsetX === 'number'
+      ? Simple.getValue(label.offsetX, feature)
+      : Math.cos(angle) * (radius + radiusIncrement) + styleOptions.offsetX || 0;
+    const arcPositionY = typeof label.offsetY === 'number'
+      ? Simple.getValue(label.offsetY, feature)
+      : Math.sin(angle) * (radius + radiusIncrement) - styleOptions.offsetY || 0;
     const olText = new OLStyleText({
       text: typeof text === 'string' ? `${text}` : '',
-      offsetX: typeof label.offsetX === 'number' ? Simple.getValue(label.offsetX, feature) : arcPositionX,
-      offsetY: typeof label.offsetY === 'number' ? Simple.getValue(label.offsetY, feature) : arcPositionY,
+      offsetX: arcPositionX,
+      offsetY: arcPositionY,
       textAlign: Simple.getValue(textAlign, feature),
       textBaseline: Simple.getValue(label.textBaseline, feature) || 'middle',
-      stroke: label.stroke ? olStroke : undefined,
+      stroke: label.stroke ? new OLStyleStroke({
+        color: Simple.getValue(label.stroke.color, feature) || '#000',
+        width: Simple.getValue(label.stroke.width, feature) || 1,
+      }) : undefined,
       font: /^([1-9])[0-9]*px ./.test(font) ? font : `12px ${font}`,
       scale: typeof label.scale === 'number' ? Simple.getValue(label.scale, feature) : undefined,
       fill: olFill,

@@ -12,7 +12,8 @@
     "select_layer": "You must select at least one layer",
     "no_results": "No layers found in this service",
     "codsi": "An error occurred while consulting the CODSI catalog",
-    "codsi_no_results": "There are no results for your search"
+    "codsi_no_results": "There are no results for your search",
+    "not_layerGroup": "The layer could not be added to the group"
   },
   "textHelp": {
     "help1": "The layer selector extension allows you to manage the layers displayed in a cartographic viewer.",
@@ -48,11 +49,14 @@
   "zoom": "Zoom to the layer",
   "info_metadata": "View information",
   "change_style": "Change style",
+  "defaultOptionGroup": "Add to map",
   "remove_layer": "Remove layer from map",
   "select_style": "Select a style",
   "change": "Change",
+  "change_name": "Change name",
   "url_service": "Include URL of the service to load",
   "query": "Consult",
+  "group": "Add layer group",
   "loaded_services": "Preloaded geographic information layers",
   "codsi_services": "Services Catalog",
   "clean": "Clean search",
@@ -77,6 +81,8 @@
   "hide_service_info": "Hide service information",
   "hide_service": "Hide service",
   "show_service": "Show service",
+  "show_group": "Show group",
+  "hide_group": "Hide group",
   "show_all_services": "Show all services",
   "hide_all_services": "Hide all services",
   "type_service": "Tipo de servicio",

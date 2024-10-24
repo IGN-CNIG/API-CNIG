@@ -4,12 +4,8 @@
 import * as LayerType from 'M/layer/Type';
 import { getValue } from 'M/i18n/language';
 import {
-  isNullOrEmpty,
-  isNull,
+  isUndefined, isNull, isNullOrEmpty, getWMSGetCapabilitiesUrl, getWMTSGetCapabilitiesUrl,
   getResolutionFromScale,
-  isUndefined,
-  getWMSGetCapabilitiesUrl,
-  getWMTSGetCapabilitiesUrl,
 } from 'M/util/Utils';
 import TileWMS from 'ol/source/TileWMS';
 import ImageWMS from 'ol/source/ImageWMS';
@@ -39,6 +35,8 @@ class GenericRaster extends LayerBase {
    * @constructor
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán a
    * la implementación de la capa.
+   * - version: Versión GenericRaster.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - visibility: Indica la visibilidad de la capa.
    * - opacity: Opacidad de capa, por defecto 1.
    * - format: Formato de la capa, por defecto image/png.
@@ -51,7 +49,7 @@ class GenericRaster extends LayerBase {
    * - maxScale: Escala máxima.
    * - minResolution: Resolución mínima.
    * - maxResolution: Resolución máxima.
-   * - maxExtent: La medida en que restringe la visualización a una región específica.
+   * crossOrigin: Atributo crossOrigin para las imágenes cargadas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceTileWMS from 'ol/source/TileWMS';
@@ -111,7 +109,7 @@ class GenericRaster extends LayerBase {
    * @param {M.impl.Map} map Mapa de la implementación.
    * @api stable
    */
-  addTo(map) {
+  addTo(map, addLayer = true) {
     this.map = map;
 
     if (!isNullOrEmpty(this.visibility)) {
@@ -220,8 +218,9 @@ class GenericRaster extends LayerBase {
       this.ol3Layer.setMaxResolution(this.options.maxResolution);
       this.ol3Layer.setMinResolution(this.options.minResolution);
     }
-
-    map.getMapImpl().addLayer(this.ol3Layer);
+    if (addLayer) {
+      map.getMapImpl().addLayer(this.ol3Layer);
+    }
   }
 
   /**
@@ -300,13 +299,12 @@ class GenericRaster extends LayerBase {
           parsedCapabilities.Contents.Layer.forEach((l) => {
             const name = l.Identifier;
             l.Style.forEach((s) => {
-              const layerText = response.text.split('Layer>').filter((text) => text.indexOf(`Identifier>${name}<`) > -1)[0];
-              /* eslint-disable no-param-reassign */
+              const layerText = response.text.split('Layer>').find((text) => text.indexOf(`Identifier>${name}<`) > -1);
+              // eslint-disable-next-line no-param-reassign
               s.LegendURL = layerText.split('LegendURL')[1].split('xlink:href="')[1].split('"')[0];
             });
           });
-          /* eslint-disable no-empty */
-        } catch (err) {}
+        } catch (err) { /* Continue */ }
         success.call(this, parsedCapabilities);
       });
     });

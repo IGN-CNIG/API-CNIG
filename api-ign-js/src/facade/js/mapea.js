@@ -12,7 +12,7 @@ import TMS from 'M/layer/TMS';
 import WMTS from 'M/layer/WMTS';
 import Point from 'M/style/Point';
 import 'assets/css/ign';
-import { isNullOrEmpty, isUndefined } from './util/Utils';
+import { isUndefined, isNullOrEmpty } from './util/Utils';
 import Exception from './exception/exception';
 import './util/Window';
 import './util/polyfills';

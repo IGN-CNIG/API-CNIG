@@ -84,6 +84,8 @@ export default class HelpControl extends M.Control {
       }
     }
 
+    this.initialIndex = options.initialIndex;
+
     this.helpsContent = [];
   }
 
@@ -106,7 +108,7 @@ export default class HelpControl extends M.Control {
           order: this.order || 0,
         },
       });
-      html.querySelector('#m-help-button').addEventListener('click', this.showHelp.bind(this));
+      html.querySelector('#m-help-button').addEventListener('click', this.showHelp.bind(this, this.initialIndex));
       success(html);
     });
   }
@@ -118,7 +120,8 @@ export default class HelpControl extends M.Control {
    * @function
    * @api
    */
-  showHelp() {
+  showHelp(initialIndex = 0) {
+    this.initialIndex = initialIndex;
     let allContents = [...this.initialExtraContents];
     allContents.push({
       title: getValue('tools'),
@@ -190,10 +193,22 @@ export default class HelpControl extends M.Control {
             }
           });
         });
+        this.showDefaultContent(windowHelp, this.initialIndex);
       });
 
       this.helpsContent = [];
     });
+  }
+
+  showDefaultContent(windowHelp, contentIndex) {
+    const links = windowHelp.document.querySelectorAll('.indexLink');
+    for (let i = 0; i < links.length; i += 1) {
+      const a = links.item(i);
+      if (a.tabIndex === contentIndex) {
+        a.click();
+        break;
+      }
+    }
   }
 
   /**

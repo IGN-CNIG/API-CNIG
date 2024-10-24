@@ -5,10 +5,7 @@ import 'assets/css/panel';
 import panelTemplate from 'templates/panel';
 import * as Position from './position';
 import {
-  isNullOrEmpty,
-  isArray,
-  isString,
-  includes,
+  isArray, isNullOrEmpty, isString, includes,
 } from '../util/Utils';
 import MObject from '../Object';
 import * as EventType from '../event/eventtype';
@@ -444,7 +441,7 @@ class Panel extends MObject {
     let hasControl = false;
     if (!isNullOrEmpty(controlParam)) {
       if (isString(controlParam)) {
-        hasControl = this._controls.filter((control) => control.name === controlParam)[0] != null;
+        hasControl = this._controls.some((control) => control.name === controlParam);
       } else if (controlParam instanceof ControlBase) {
         hasControl = includes(this._controls, controlParam);
       }

@@ -1,7 +1,4 @@
-/* eslint-disable  dot-notation */
-/* eslint-disable no-return-assign */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable dot-notation,no-return-assign,no-underscore-dangle */
 import { Binding } from './binding';
 import { getValue } from '../i18n/language';
 
@@ -68,6 +65,7 @@ export class FlowLineBinding extends Binding {
 
     if (this.layer_ != null) {
       options['arrowlist'] = [{ name: 0 }, { name: -1 }, { name: 1 }, { name: 2 }];
+      // eslint-disable-next-line no-param-reassign
       options['arrowlist'].forEach((ar) => ar['selected'] = options.arrow);
       options['linecap'] = FlowLineBinding.arrayDataToTemplate(options.lineCap, ['round', 'butt'], [getValue('rounded'), getValue('extreme')]);
     }

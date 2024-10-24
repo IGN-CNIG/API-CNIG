@@ -205,6 +205,38 @@ function fun(M_) {
    * @type {object}
    */
   M_.config('MOVE_MAP_EXTRACT', false);
+
+  /**
+   * Hace el popup inteligente
+   *
+   * @private
+   * @type {object}
+   */
+  M_.config('POPUP_INTELLIGENCE', {
+      activate: true,
+      sizes: {
+        images: ['120px', '75px'],
+        videos: ['500px', '300px'],
+        documents: ['500px', '300px'],
+        audios: ['250px', '40px'],
+      }
+  });
+
+      /**
+   * Hace el dialog inteligente
+   *
+   * @private
+   * @type {object}
+   */
+  M.config('DIALOG_INTELLIGENCE', {
+    activate: true,
+    sizes: {
+      images: ['120px', '75px'],
+      videos: ['500px', '300px'],
+      documents: ['500px', '300px'],
+      audios: ['250px', '40px'],
+    }
+  });
 }
 
 fun(window.M);

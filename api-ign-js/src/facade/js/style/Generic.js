@@ -4,7 +4,9 @@
 
 import GenericStyleImpl from 'impl/style/Generic';
 import Simple from './Simple';
-import { isNullOrEmpty, extendsObj } from '../util/Utils';
+import {
+  isNull, extendsObj, isArray, isNullOrEmpty,
+} from '../util/Utils';
 
 /**
  * @classdesc
@@ -20,18 +22,25 @@ class Generic extends Simple {
    * - Point. Punto.
    * - Polygon. Polígono.
    * - Line. Linea.
+   * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base.
    * @api
    */
-  constructor(optionsVar) {
+  constructor(optionsVar, vendorOptions) {
     let options = optionsVar;
-    if (isNullOrEmpty(options)) {
-      options = Generic.DEFAULT_NULL;
+    let vendorOpts = vendorOptions;
+    if (!isNull(vendorOpts) && Object.keys(vendorOpts).length > 0) {
+      options = extendsObj({}, Generic.DEFAULT);
     } else {
-      options = extendsObj(options, Generic.DEFAULT);
+      vendorOpts = null;
+      if (isNull(options) || Object.keys(options).length === 0) {
+        options = Generic.DEFAULT_NULL;
+      } else {
+        options = extendsObj(options, Generic.DEFAULT);
+      }
+      options = extendsObj({}, options);
     }
-    options = extendsObj({}, options);
 
-    const impl = new GenericStyleImpl(options);
+    const impl = new GenericStyleImpl(options, vendorOpts);
     super(options, impl);
   }
 
@@ -57,6 +66,29 @@ class Generic extends Simple {
    */
   getDeserializedMethod_() {
     return "((serializedParameters) => M.style.Simple.deserialize(serializedParameters, 'M.style.Generic'))";
+  }
+
+  /**
+   * Este método clona el estilo.
+   *
+   * @public
+   * @return {M.style.Generic} Devuelve un "new Generic".
+   * @function
+   * @api
+   */
+  clone() {
+    const optsClone = {};
+    let vendorOptsClone = {};
+    const vendorOpts = this.getImpl().vendorOptions;
+    extendsObj(optsClone, this.options_);
+    if (!isNullOrEmpty(vendorOpts) && Object.keys(vendorOpts).length > 0) {
+      if (isArray(vendorOpts)) {
+        vendorOptsClone = vendorOpts.map((vo) => vo.clone());
+      } else {
+        vendorOptsClone = vendorOpts.clone();
+      }
+    }
+    return new this.constructor(optsClone, vendorOptsClone);
   }
 }
 

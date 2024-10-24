@@ -3,7 +3,7 @@
  */
 import OSMImpl from 'impl/layer/OSM';
 import LayerBase from './Layer';
-import { isNullOrEmpty, isUndefined } from '../util/Utils';
+import { isUndefined, isNullOrEmpty } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from './Type';
 import * as parameter from '../parameter/parameter';
@@ -27,7 +27,12 @@ class OSM extends LayerBase {
    * Constructor principal de la clase.
    *
    * @constructor
-   * @param {string|Mx.parameters.WMS} userParameters Parámetros para la construcción de la capa.
+   * @param {string|Mx.parameters.OSM} userParameters Parámetros para la construcción de la capa.
+   * - attribution: Atribución de la capa.
+   * - isBase: Indica si la capa es base.
+   * - transparent (deprecated): Falso si es una capa base, verdadero en caso contrario.
+   * - visibility: Indica si la capa estará por defecto visible o no.
+   * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - name: Nombre de la capa en la leyenda.
    * - legend: Indica el nombre que queremos que aparezca en el árbol de contenidos, si lo hay.
    * - transparent: Falso si es una capa base, verdadero en caso contrario.
@@ -36,13 +41,10 @@ class OSM extends LayerBase {
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - maxExtent: La medida en que restringe la visualización a una región específica.
-   * - isBase: Indica si la capa es base.
    * - opacity: Opacidad de capa, por defecto 1.
    * @param {Mx.parameters.LayerOptions} options Estas opciones se mandarán
    * a la implementación de la capa.
-   * - visibility: Define si la capa es visible o no.
    * - animated: Activa la animación para capas base o parámetros animados.
-   * - displayInLayerSwitcher: Define si la capa se mostrará en el selector de capas.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import SourceOSM from 'ol/source/OSM';

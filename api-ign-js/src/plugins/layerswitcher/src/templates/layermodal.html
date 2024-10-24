@@ -1,4 +1,5 @@
 <div id="m-layerswitcher-layerContainer">
+    <section id="m-layerswitcher-groups-fields" class="m-layerswitcher-groups-fields-container"></section>
     {{#eq type 'geojson'}}
         <p>{{translations.data_layer}} GeoJSON</p>
     {{/eq}}
@@ -71,28 +72,13 @@
                 <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-name">{{translations.name}}</label>
                 <input tabindex="0" type="text" id="m-layerswitcher-layer-name" placeholder="{{translations.separatedby}}" />
             {{/eq}}
-        {{else}}
-            <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-name">{{translations.name}}</label>
-            <input tabindex="0" type="text" id="m-layerswitcher-layer-name" />
-        {{/if}}
+        {{/if}}    
     </div>
     <div class="m-layerswitcher-layer-fields">
         <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-legend">{{translations.legend}}</label>
         <input tabindex="0" type="text" id="m-layerswitcher-layer-legend" placeholder="{{translations.placeHolderLegend}}"/>
     </div>
     {{#eq type 'osm'}}
-        <div class="m-layerswitcher-layer-fields">
-            <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
-            <input tabindex="0" type="text" id="m-layerswitcher-layer-matrixset" />
-        </div>
-    {{/eq}}
-    {{#eq type 'tms'}}
-        <div class="m-layerswitcher-layer-fields">
-            <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
-            <input tabindex="0" type="text" id="m-layerswitcher-layer-matrixset" />
-        </div>
-    {{/eq}}
-    {{#eq type 'xyz'}}
         <div class="m-layerswitcher-layer-fields">
             <label tabindex="0" class="m-layerswitcher-layer-label" for="m-layerswitcher-layer-matrixset">MatrixSet</label>
             <input tabindex="0" type="text" id="m-layerswitcher-layer-matrixset" />

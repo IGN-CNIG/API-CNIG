@@ -113,8 +113,8 @@ class WFS extends Vector {
    * @param {M.Map} map Implementación del mapa.
    * @api stable
    */
-  addTo(map) {
-    super.addTo(map);
+  addTo(map, addLayer = true) {
+    super.addTo(map, addLayer);
     // Se sobrescribe el método updateSource_ capa vector
     // Cuidado primera vez que entra es _draw_
     // this.updateSource_();
@@ -147,8 +147,8 @@ class WFS extends Vector {
    * @expose
    */
   selectFeatures(features, coord, evt) {
-    const feature = features[0];
     if (this.extract === true) {
+      const feature = features[0];
       // unselects previous features
       this.unselectFeatures();
 

@@ -85,7 +85,7 @@
     "name": "Mirrorpanel",
     "description": "Plugin que permite comparar varias capas dividiendo la pantalla en varias partes.",
     "text": "Plugin que permite comparar varias capas dividiendo la pantalla en varias partes. Los mapas tienen sus vistas sincronizadas, y podemos ver la representación de una misma zona por distintas capas.",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "date": "Julio, 2020",
     "author": "",
     "org": "",

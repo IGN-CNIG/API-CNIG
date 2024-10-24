@@ -1,7 +1,6 @@
 /**
  * @module M/control/ComparatorsControl
  */
-
 import template from '../../templates/comparators';
 import ComparatorsImpl from '../../impl/ol/js/comparators';
 import { getValue } from './i18n/language';
@@ -9,12 +8,8 @@ import MirrorpanelControl from './mirrorpanelcontrol';
 import LyrCompareControl from './lyrcomparecontrol';
 import TransparencyControl from './transparencycontrol';
 import WindowSyncControl from './windowsynccontrol';
-
 import {
-  transformToStringLayers,
-  checkLayers,
-  getNameString,
-  formatearID,
+  getNameString, checkLayers, transformToStringLayers, formatearID,
 } from './utils';
 
 export default class ComparatorsControl extends M.Control {
@@ -485,14 +480,40 @@ export default class ComparatorsControl extends M.Control {
     this.map_.on(M.evt.REMOVED_LAYER, (layer) => {
       if (!(layer instanceof Array)) { return; }
       layer.forEach((l) => {
-        const idName = formatearID(l.name).replaceAll('.', '');
-        if (document.getElementById(`l_${idName}_external`)) {
-          document.querySelectorAll('.externalLayers').forEach((el) => {
-            if (el.id.includes(idName)) {
-              el.remove();
+        this.layersPlugin.forEach((lp) => {
+          if (lp.includes(l.url) && lp.includes(l.name)) {
+            if (this.controls[0].active) {
+              const selectes = ['mapLASelect', 'mapLBSelect', 'mapLCSelect', 'mapLDSelect'];
+              selectes.forEach((id) => {
+                const select = document.querySelector(`#${id}`);
+                [...select.children].forEach((child) => {
+                  if (child.value.includes(l.name)
+                     && child.value.includes(l.url)
+                     && child.disabled) {
+                    child.removeAttribute('disabled');
+                    select.selectedIndex = 0;
+                  }
+                });
+              });
             }
-          });
-        }
+            /*
+            if (this.controls[1].active) {
+              const selects = ['m-lyrcompare-lyrA',
+              'm-lyrcompare-lyrB', 'm-lyrcompare-lyrC', 'm-lyrcompare-lyrD'];
+              selects.forEach((id) => {
+                const select = document.querySelector(`#${id}`);
+                [...select.children].forEach((child) => {
+                  if (child.value === l.name && select.value === l.name) {
+                    child.remove();
+                    // child.removeAttribute('disabled');
+                    select.selectedIndex = select.children.length - 1;
+                  }
+                });
+              });
+            }
+            */
+          }
+        });
       });
     });
   }
@@ -520,14 +541,18 @@ export default class ComparatorsControl extends M.Control {
    * @api
    */
   deactive(html, control) {
-    const active = html.querySelectorAll('#m-comparators-previews .activated')[0];
+    // eventActive_ con if (c.control) c.control.deactivate(); parece haberlo sustituido.
+    // activatedComparators podría ser necesario en vez de activated.
+    const active = html.querySelector('#m-comparators-previews .activated');
     if (active && !active.id.includes(control)) {
       if (active.id === 'm-comparators-zoomextent') {
+        // zoomextentControl no parece existir ahora en este plugin.
         this.zoomextentControl.deactive();
       }
       active.classList.remove('activated');
       const container = document.querySelector('#div-contenedor-comparators');
       if (container && container.children.length > 2) {
+        // Borra el div de id="m-comparators-contents" que luego causará problemas.
         container.removeChild(container.children[2]);
       }
     }
