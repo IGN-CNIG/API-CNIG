@@ -394,6 +394,8 @@ class Map extends MObject {
         zIndex += layer.getImpl().getTotalLayers();
       }
       layer.setZIndex(zIndex);
+    } else {
+      layer.setZIndex(layer.getZIndex());
     }
 
     return existsBaseLayer;
