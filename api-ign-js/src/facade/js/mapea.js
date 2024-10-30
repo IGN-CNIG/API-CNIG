@@ -199,11 +199,11 @@ let quickLayers = () => {
       extract: true,
       attribution: {
         name: 'BTN Completa',
-        description: '<p><b>IDEE</b>: <a style="color: #0000FF" href="https://www.scne.es" target="_blank">SCNE</a></p>'
+        description: '<p><b>IDEE</b>: <a style="color: #0000FF" href="https://www.scne.es" target="_blank">SCNE</a></p>',
       },
-    },{
+    }, {
       disableBackgroundColor: false,
-    })
+    }),
   };
 };
 

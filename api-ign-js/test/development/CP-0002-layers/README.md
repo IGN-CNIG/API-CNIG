@@ -63,3 +63,6 @@ Mapa básico con capas LayerGroup.
 
 CP-022
 Mapa básico con capa GeoJSON y WFS, para probar select/unselect de features múltiples.
+
+CP-023
+Mapa básico con Capas rápidas.
