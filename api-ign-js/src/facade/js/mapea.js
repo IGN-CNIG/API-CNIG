@@ -10,6 +10,7 @@ import Map from 'M/Map';
 import WFS from 'M/layer/WFS';
 import TMS from 'M/layer/TMS';
 import WMTS from 'M/layer/WMTS';
+import MapLibre from 'M/layer/MapLibre';
 import Point from 'M/style/Point';
 import 'assets/css/ign';
 import { isUndefined, isNullOrEmpty } from './util/Utils';
@@ -190,6 +191,18 @@ let quickLayers = () => {
           opacity: 0.5,
         },
       }),
+    }),
+    BTN_Completa_MapLibre: new MapLibre({
+      url: 'https://vt-btn.idee.es/files/styles/BTN_Completa.json',
+      name: 'BTN_Completa',
+      legend: 'BTN Completa',
+      extract: true,
+      attribution: {
+        name: 'BTN Completa',
+        description: '<p><b>IDEE</b>: <a style="color: #0000FF" href="https://www.scne.es" target="_blank">SCNE</a></p>',
+      },
+    }, {
+      disableBackgroundColor: false,
     }),
   };
 };

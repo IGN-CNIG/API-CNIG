@@ -179,7 +179,7 @@ class GenericVector extends Vector {
     } else {
       // ? Features todavía no han sido cargados
       this.fnAddFeatures_ = this.addFeaturesToFacade.bind(this);
-      source.on('change', this.fnAddFeatures_);
+      source.on('featuresloadend', this.fnAddFeatures_);
     }
   }
 
@@ -187,8 +187,9 @@ class GenericVector extends Vector {
     const source = this.ol3Layer.getSource();
     if (source.getState() === 'ready' && !this.loaded_) {
       if (source.getFeatures) {
-        const features = source.getFeatures().map((f) => {
-          return Feature.olFeature2Facade(f);
+        const features = [];
+        source.getFeatures().forEach((f, i) => {
+          features.push(Feature.olFeature2Facade(f));
         });
         if (features.length > 0) {
           this.loaded_ = true;
