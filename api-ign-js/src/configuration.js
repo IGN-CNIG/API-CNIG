@@ -22,8 +22,7 @@ const backgroundlayersOpts = [{
   id: 'hibrido',
   title: 'H&iacute;brido',
   layers: [
-    'QUICK*BASE_PNOA_MA_TMS',
-    'QUICK*BASE_IGNBaseOrto_TMS',
+    'QUICK*HIBRIDO',
   ],
 },
 ];

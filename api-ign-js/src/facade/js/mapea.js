@@ -9,6 +9,7 @@ import MapImpl from 'impl/Map';
 import Map from 'M/Map';
 import WFS from 'M/layer/WFS';
 import TMS from 'M/layer/TMS';
+import LayerGroup from 'M/layer/LayerGroup';
 import WMTS from 'M/layer/WMTS';
 import MapLibre from 'M/layer/MapLibre';
 import Point from 'M/style/Point';
@@ -203,6 +204,41 @@ let quickLayers = () => {
       },
     }, {
       disableBackgroundColor: false,
+    }),
+    HIBRIDO: new LayerGroup({
+      name: 'Híbrido',
+      layers: [
+        new TMS({
+          url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
+          legend: 'PNOA_MA',
+          name: 'PNOA_MA',
+          visible: true,
+          transparent: false,
+          tileGridMaxZoom: 19,
+          attribution: {
+            name: 'PNOA-MA',
+            description: 'IGN',
+            url: 'https://www.ign.es',
+            contentAttributions: 'https://componentes.cnig.es/api-core/files/attributions/WMTS_PNOA_20170220/atribucionPNOA_Url.kml',
+            contentType: 'kml',
+          },
+        }, {
+          crossOrigin: 'anonymous',
+          displayInLayerSwitcher: false,
+        }),
+        new TMS({
+          url: 'https://tms-ign-base.idee.es/1.0.0/IGNBaseOrto/{z}/{x}/{-y}.png',
+          legend: 'IGNBaseOrto',
+          name: 'IGNBaseOrto',
+          visible: true,
+          transparent: false,
+          tileGridMaxZoom: 17,
+          attribution: '<p><b>IDEE</b>: <a style="color: #0000FF" href="https://www.scne.es" target="_blank">SCNE</a></p>',
+        }, {
+          crossOrigin: 'anonymous',
+          displayInLayerSwitcher: false,
+        }),
+      ],
     }),
   };
 };
