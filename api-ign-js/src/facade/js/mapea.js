@@ -205,15 +205,15 @@ let quickLayers = () => {
     }, {
       disableBackgroundColor: false,
     }),
-    HIBRIDO: new LayerGroup({
+    BASE_HIBRIDO_LayerGroup: new LayerGroup({
       name: 'Híbrido',
+      isBase: true,
       layers: [
         new TMS({
           url: 'https://tms-pnoa-ma.idee.es/1.0.0/pnoa-ma/{z}/{x}/{-y}.jpeg',
           legend: 'PNOA_MA',
           name: 'PNOA_MA',
           visible: true,
-          transparent: false,
           tileGridMaxZoom: 19,
           attribution: {
             name: 'PNOA-MA',
@@ -231,7 +231,6 @@ let quickLayers = () => {
           legend: 'IGNBaseOrto',
           name: 'IGNBaseOrto',
           visible: true,
-          transparent: false,
           tileGridMaxZoom: 17,
           attribution: '<p><b>IDEE</b>: <a style="color: #0000FF" href="https://www.scne.es" target="_blank">SCNE</a></p>',
         }, {
