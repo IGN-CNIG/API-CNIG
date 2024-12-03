@@ -12,14 +12,10 @@ import * as LayerType from './Type';
  * @classdesc
  * Representa un grupo de capas.
  *
- * @property {Array<M.LayerBase|M.LayerGroup>} layers
- * @property {boolean} display
+ * @property {Array<M.LayerBase|M.LayerGroup>} layers Capas del grupo.
+ * @property {boolean} display Indica si el grupo se muestra en el árbol de contenidos.
  *
- *
- * @constructor
  * @extends {M.facade.Base}
- * @param {string|Mx.parameters.Layer} userParameters parameters
- * provided by the user
  * @api
  */
 class LayerGroup extends LayerBase {
@@ -28,7 +24,7 @@ class LayerGroup extends LayerBase {
    * con parámetros especificados por el usuario.
    *
    * @constructor
-   * @param {String|Mx.parameters.GeoJSON} parameters Parámetros para la construcción de la capa,
+   * @param {String|Mx.parameters.LayerGroup} parameters Parámetros para la construcción de la capa,
    * estos parámetros los proporciona el usuario.
    * - name: Nombre de la capa en la leyenda.
    * - layers: Capas que forman el grupo.

@@ -1,6 +1,6 @@
 const backgroundlayersIds = 'mapa,imagen,hibrido'.split(',');
 const backgroundlayersTitles = 'Mapa,Imagen,Hibrido'.split(',');
-const backgroundlayersLayers = 'QUICK*Base_IGNBaseTodo_TMS,QUICK*BASE_PNOA_MA_TMS,QUICK*BASE_PNOA_MA_TMS+QUICK*BASE_IGNBaseOrto_TMS'.split(',');
+const backgroundlayersLayers = 'QUICK*Base_IGNBaseTodo_TMS,QUICK*BASE_PNOA_MA_TMS,QUICK*BASE_HIBRIDO_LayerGroup'.split(',');
 const backgroundlayersOpts = backgroundlayersIds.map((id, index) => {
   return {
     id,
