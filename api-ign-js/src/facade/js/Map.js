@@ -829,13 +829,25 @@ class Map extends Base {
           layerParam.setMap(this);
           collectionLayerGroups.push(layerParam);
         } else if (!(layerParam instanceof Layer)) {
-          const tmsLayer = new LayerGroup(layerParam, layerParam.options);
-          tmsLayer.setMap(this);
-          collectionLayerGroups.push(tmsLayer);
+          const groupLayer = new LayerGroup(layerParam, layerParam.options);
+          groupLayer.setMap(this);
+          collectionLayerGroups.push(groupLayer);
         }
       });
 
       this.getImpl().addLayerGroups(collectionLayerGroups);
+
+      // Add this.featuresHandler_.addLayer(layer);
+      collectionLayerGroups.forEach((group) => {
+        group.getLayers().forEach((layer) => {
+          if ((layer instanceof Vector)
+              /* && !(layer instanceof KML) */
+              && !(layer instanceof WFS)
+              && !(layer instanceof OGCAPIFeatures)) {
+            this.featuresHandler_.addLayer(layer);
+          }
+        });
+      });
 
       this.fire(EventType.ADDED_LAYER, [collectionLayerGroups]);
       this.fire(EventType.ADDED_LAYERGROUP, [collectionLayerGroups]);
