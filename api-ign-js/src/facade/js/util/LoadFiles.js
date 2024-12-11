@@ -10,6 +10,17 @@ import * as Dialog from '../dialog';
 import { getValue } from '../i18n/language';
 import Vector from '../layer/Vector';
 
+const loadFeaturesLoadFilesImpl = (map, layerName, features) => {
+  if (features.length === 0) {
+    Dialog.info(getValue('exception').no_geoms);
+  } else {
+    const layer = new Vector({ name: layerName, legend: layerName, extract: true });
+    layer.addFeatures(features);
+    map.addLayers(layer);
+    LoadFilesImpl.centerFeatures(features, map);
+  }
+};
+
 /**
  * Esta función añade al mapa una capa vector con los features
  * de un fichero
@@ -22,31 +33,28 @@ import Vector from '../layer/Vector';
  */
 export const loadFeaturesFromSource = (map, source, layerName, fileExt) => {
   try {
-    let features = [];
     const projection = map.getProjection().code;
+
     if (fileExt === 'zip') {
-      // In case of shp group, this unites features
-      const geojsonArray = [].concat(shp.parseZip(source));
-      features = LoadFilesImpl.loadAllInGeoJSONLayer(geojsonArray, projection);
-    } else if (fileExt === 'kml') {
-      features = LoadFilesImpl.loadKMLLayer(source, projection, false);
-    } else if (fileExt === 'gpx') {
-      features = LoadFilesImpl.loadGPXLayer(source, projection);
-    } else if (fileExt === 'geojson' || fileExt === 'json') {
-      features = LoadFilesImpl.loadGeoJSONLayer(source, projection);
-    } else if (fileExt === 'gml') {
-      features = LoadFilesImpl.loadGMLLayer(source, projection);
+      shp.parseZip(source).then((data) => {
+        const geojsonArray = [].concat(data);
+        const features = LoadFilesImpl.loadAllInGeoJSONLayer(geojsonArray, projection);
+        loadFeaturesLoadFilesImpl(map, layerName, features);
+      });
     } else {
-      Dialog.error(getValue('exception').file_load);
-      return;
-    }
-    if (features.length === 0) {
-      Dialog.info(getValue('exception').no_geoms);
-    } else {
-      const layer = new Vector({ name: layerName, legend: layerName, extract: true });
-      layer.addFeatures(features);
-      map.addLayers(layer);
-      LoadFilesImpl.centerFeatures(features, map);
+      let features = [];
+      if (fileExt === 'kml') {
+        features = LoadFilesImpl.loadKMLLayer(source, projection, false);
+      } else if (fileExt === 'gpx') {
+        features = LoadFilesImpl.loadGPXLayer(source, projection);
+      } else if (fileExt === 'geojson' || fileExt === 'json') {
+        features = LoadFilesImpl.loadGeoJSONLayer(source, projection);
+      } else if (fileExt === 'gml') {
+        features = LoadFilesImpl.loadGMLLayer(source, projection);
+      } else {
+        Dialog.error(getValue('exception').file_load);
+      }
+      loadFeaturesLoadFilesImpl(map, layerName, features);
     }
   } catch (e) {
     Dialog.error(getValue('exception').file_load_correct);
