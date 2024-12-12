@@ -1102,7 +1102,7 @@ export default class LayerswitcherControl extends M.Control {
 
             if (url.indexOf('{z}/{x}/{-y}') >= 0) {
               this.printLayerModal(url, 'tms');
-            } else if (url.indexOf('{z}/{x}/{y}') >= 0) {
+            } else if (url.indexOf('{z}/{x}/{y}' && !url.indexOf('.pbf')) >= 0) {
               this.printLayerModal(url, 'xyz');
             } else {
               M.proxy(this.useProxy);
