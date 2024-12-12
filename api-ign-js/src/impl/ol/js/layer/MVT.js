@@ -192,7 +192,8 @@ class MVT extends Vector {
     });
 
     setTimeout(() => {
-      const filtered = this.map.getLayers().filter((l) => {
+      const allLayers = [...this.map.getImpl().getAllLayerInGroup(), ...this.map.getLayers()];
+      const filtered = allLayers.filter((l) => {
         const checkLayers = l.getImpl().layers_ !== undefined
           ? l.getImpl().layers_ === this.layers_
           : true;
