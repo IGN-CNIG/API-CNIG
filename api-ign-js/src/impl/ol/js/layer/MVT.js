@@ -197,7 +197,7 @@ class MVT extends Vector {
         const checkLayers = l.getImpl().layers_ !== undefined
           ? l.getImpl().layers_ === this.layers_
           : true;
-        return l.url === this.url && checkLayers;
+        return l.url === this.url && checkLayers && l.idLayer === this.facadeVector_.idLayer;
       });
 
       if (filtered.length > 0) {
