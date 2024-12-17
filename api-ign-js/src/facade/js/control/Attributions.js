@@ -13,6 +13,7 @@ import { isNullOrEmpty } from '../util/Utils';
 import Feature from '../feature/Feature';
 import GeoJSON from '../layer/GeoJSON';
 import KML from '../layer/KML';
+import { LAYER_VISIBILITY_CHANGE, ADDED_LAYER } from '../event/eventtype';
 
 /**
  * @classdesc
@@ -107,6 +108,16 @@ class Attributions extends ControlBase {
   createView(map) {
     this.map_ = map;
 
+    this.map_.on(ADDED_LAYER, (layers) => {
+      layers.forEach((layer) => {
+        if (layer.attribution) {
+          layer.on(LAYER_VISIBILITY_CHANGE, ({ visibility, layer: l }) => {
+            this.changeVisibility(l.idLayer, visibility);
+          });
+        }
+      });
+    });
+
     return new Promise((success, fail) => {
       const html = compileTemplate(attributionsTemplate, {
         vars: {
@@ -125,17 +136,24 @@ class Attributions extends ControlBase {
       });
 
       this.accessibilityTab(html);
-      this.map_.getLayers().forEach(({ attribution }) => {
+      this.map_.getLayers().forEach(({ attribution, idLayer, isVisible }) => {
         if (attribution) {
           if (typeof attribution === 'string') {
-            this.addHTMLContent(attribution);
+            this.addHTMLContent(attribution, idLayer);
           } else {
             this.addAttributions(attribution);
           }
+
+          this.changeVisibility(idLayer, isVisible());
         }
       });
       success(html);
     });
+  }
+
+  changeVisibility(idLayer, isVisible) {
+    this.html_.querySelector(`#${idLayer}`)
+      .style.display = isVisible ? 'block' : 'none';
   }
 
   /**
@@ -206,7 +224,7 @@ class Attributions extends ControlBase {
       }
 
       if (/<[a-z][\s\S]*>/i.test(layer.attribuccion)) {
-        this.addHTMLContent(layer.attribuccion);
+        this.addHTMLContent(layer.attribuccion, layer.id);
         return;
       }
 
@@ -250,6 +268,12 @@ class Attributions extends ControlBase {
       // ---
 
       this.addContent(mapAttributions);
+
+      this.map_.getLayers().forEach((mapLayer) => {
+        if (mapLayer.idLayer === layer.id) {
+          this.changeVisibility(mapLayer.idLayer, mapLayer.isVisible());
+        }
+      });
     });
   }
 
@@ -321,6 +345,7 @@ class Attributions extends ControlBase {
     });
     const div = document.createElement('div');
     div.classList.add('attributionElements');
+    div.id = attributions[0].id;
 
     links[0].innerHTML = `<span>${id}</span> ${links[0].innerHTML}`;
 
@@ -338,8 +363,8 @@ class Attributions extends ControlBase {
    * @param {String} html HTML.
    * @api
    */
-  addHTMLContent(html) {
-    this.html_.innerHTML += `<section class="attributionElements">${html}</section>`;
+  addHTMLContent(html, id) {
+    this.html_.innerHTML += `<section id="${id}" class="attributionElements">${html}</section>`;
   }
 
   /**
@@ -400,12 +425,12 @@ class Attributions extends ControlBase {
     }
 
     if (/<[a-z][\s\S]*>/i.test(attribuccionParams.attribuccion)) {
-      this.addHTMLContent(attribuccionParams.attribuccion);
+      this.addHTMLContent(attribuccionParams.attribuccion, attribuccionParams.id);
       this.collectionsAttributions_.push(attribuccionParams);
     } else if (attribuccionParams.collectionsAttributions) {
       attribuccionParams.collectionsAttributions.forEach((collectionAttribution) => {
         this.collectionsAttributions_.push(attribuccionParams);
-        this.addHTMLContent(collectionAttribution);
+        this.addHTMLContent(collectionAttribution, attribuccionParams.id);
       });
     } else {
       this.collectionsAttributions_.push(attribuccionParams);

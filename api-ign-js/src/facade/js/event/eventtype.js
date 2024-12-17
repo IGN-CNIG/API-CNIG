@@ -18,6 +18,13 @@ export const ADDED_TO_MAP = 'added:map';
  */
 export const ADDED_TO_PANEL = 'added:panel';
 /**
+ * Evento que se produce al cambiar la visibilidad de la capa.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const LAYER_VISIBILITY_CHANGE = 'changed:layer-visibility';
+/**
  * Evento que se produce al añadir a la capa.
  * @public
  * @type {string}

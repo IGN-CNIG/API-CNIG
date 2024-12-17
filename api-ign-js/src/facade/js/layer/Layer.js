@@ -9,6 +9,7 @@ import {
   normalize, generateRandom, concatUrlPaths,
 } from '../util/Utils';
 import { getValue } from '../i18n/language';
+import * as EventType from '../event/eventtype';
 
 /**
  * @classdesc
@@ -128,7 +129,7 @@ class LayerBase extends Base {
      */
     this.maxZoom = parameter.maxZoom || Number.POSITIVE_INFINITY;
 
-    this.idLayer = generateRandom(parameter.type, parameter.name);
+    this.idLayer = generateRandom(parameter.type, parameter.name).replace(/[^a-zA-Z0-9\-_]/g, '');
   }
 
   /**
@@ -515,6 +516,8 @@ class LayerBase extends Base {
     visibility = /^1|(true)$/i.test(visibility);
 
     this.getImpl().setVisible(visibility);
+
+    this.fire(EventType.LAYER_VISIBILITY_CHANGE, [{ visibility, layer: this }, this]);
   }
 
   /**

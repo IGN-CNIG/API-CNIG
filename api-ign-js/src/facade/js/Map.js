@@ -395,8 +395,7 @@ class Map extends Base {
       collectionsAttributions: collectionsAttributions.map((l) => {
         if (typeof l !== 'string') {
           const attr = l;
-          attr.id = window.crypto.randomUUID
-            ? window.crypto.randomUUID() : new Date().getTime();
+          attr.id = l.idLayer;
           return attr;
         }
         return l;
@@ -428,7 +427,7 @@ class Map extends Base {
    * @param {attribuccion} attribuccion Atribución.
    * @api
    */
-  addAttribution(attribuccion, _addMapAttribution = true) {
+  addAttribution(attribuccion, _addMapAttribution = true, idLayer = null) {
     try {
       if (Object.keys(attribuccion).length === 0) {
         return;
@@ -450,8 +449,12 @@ class Map extends Base {
       addAttribution = attribuccion;
     }
 
-    addAttribution.id = window.crypto.randomUUID
-      ? window.crypto.randomUUID() : new Date().getTime();
+    if (!idLayer) {
+      addAttribution.id = window.crypto.randomUUID
+        ? window.crypto.randomUUID() : new Date().getTime();
+    } else {
+      addAttribution.id = idLayer;
+    }
 
     controlAttributions.addAttributions(addAttribution);
 
@@ -3656,7 +3659,7 @@ class Map extends Base {
             attribuccion.name = layer.name;
           }
 
-          this.addAttribution(attribuccion, false);
+          this.addAttribution(attribuccion, false, layer.idLayer);
         }
       });
     });
