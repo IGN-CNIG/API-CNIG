@@ -171,8 +171,15 @@ export default class InformationControl extends M.impl.Control {
     this.evt = evt;
     const olMap = this.facadeMap_.getMapImpl();
     const [urlsWMTS, urlsWMS] = this.buildGenericInfoURL();
-    const wmsInfoURLS = this.buildWMSInfoURL([...this.facadeMap_.getWMS(), ...urlsWMS]);
-    const wmtsInfoURLS = this.buildWMTSInfoURL([...this.facadeMap_.getWMTS(), ...urlsWMTS]);
+
+    const allLayers = [...this.facadeMap_.getImpl().getAllLayerInGroup(),
+      ...this.facadeMap_.getLayers()];
+
+    const wms = allLayers.filter((layer) => layer.type === 'WMS');
+    const wmts = allLayers.filter((layer) => layer.type === 'WMTS');
+
+    const wmsInfoURLS = this.buildWMSInfoURL([...wms, ...urlsWMS]);
+    const wmtsInfoURLS = this.buildWMTSInfoURL([...wmts, ...urlsWMTS]);
 
     const layerNamesUrls = [...wmtsInfoURLS, ...wmsInfoURLS]
       .filter((layer) => !M.utils.isNullOrEmpty(layer));
@@ -235,7 +242,9 @@ export default class InformationControl extends M.impl.Control {
   }
 
   buildGenericInfoURL() {
-    const layersGeneric = this.facadeMap_.getLayers().filter((layer) => layer.type === 'GenericRaster');
+    const allLayers = [...this.facadeMap_.getImpl().getAllLayerInGroup(),
+      ...this.facadeMap_.getLayers()];
+    const layersGeneric = allLayers.filter((layer) => layer.type === 'GenericRaster');
     const urlsWMTS = [];
     const urlsWMS = [];
     layersGeneric.forEach((layer) => {

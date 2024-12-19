@@ -84,12 +84,6 @@ class MapLibre extends LayerBase {
       console.warn('La propiedad maxExtent no está soportada');
     }
 
-    // ! Evitar que sea capa base
-    if (opts.isBase || (!opts.transparent && opts.transparent !== undefined)) {
-      opts.isBase = false;
-      opts.transparent = true;
-    }
-
     opts.type = MapLibreType;
 
     const impl = new MapLibreImpl(opts, optionsVar, vendorOptions);

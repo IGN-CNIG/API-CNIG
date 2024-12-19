@@ -674,7 +674,7 @@ export default class IncicartoControl extends M.Control {
       return false;
     }
     if (this.errProducts.mandatory === true
-        && productMetadataContainer.selectedIndex === 0) {
+      && productMetadataContainer.selectedIndex === 0) {
       this.showMessageInModalAdvanced('Clasifique el error con un producto', 'nakmessage');
       return false;
     }
@@ -1816,6 +1816,14 @@ export default class IncicartoControl extends M.Control {
     }
   }
 
+  loadLayerCenterFeature(features, fileExt) {
+    if (features.length === 0) {
+      M.dialog.info(getValue('exception.no_geoms'));
+    } else {
+      this.getImpl().centerFeatures(features, fileExt === 'gpx');
+    }
+  }
+
   /**
    * Loads vector layer on map.
    * @public
@@ -1829,28 +1837,29 @@ export default class IncicartoControl extends M.Control {
     const fileReader = new window.FileReader();
     fileReader.addEventListener('load', (e) => {
       try {
-        let features = [];
         if (fileExt === 'zip') {
-          // In case of shp group, this unites features
-          const geojsonArray = [].concat(shp.parseZip(fileReader.result));
-          features = this.getImpl().loadAllInGeoJSONLayer(geojsonArray, fileName);
-        } else if (fileExt === 'kml') {
-          features = this.getImpl().loadKMLLayer(fileReader.result, fileName, false);
-        } else if (fileExt === 'gpx') {
-          features = this.getImpl().loadGPXLayer(fileReader.result, fileName);
-        } else if (fileExt === 'geojson') {
-          features = this.getImpl().loadGeoJSONLayer(fileReader.result, fileName);
-        } else if (fileExt === 'gml') {
-          features = this.getImpl().loadGMLLayer(fileReader.result, fileName);
+          shp.parseZip(fileReader.result).then((data) => {
+            // In case of shp group, this unites features
+            const geojsonArray = [].concat(data);
+            const featuresZip = this.getImpl().loadAllInGeoJSONLayer(geojsonArray, fileName);
+            this.loadLayerCenterFeature(featuresZip, fileExt);
+          });
         } else {
-          M.dialog.error(getValue('exception.load'));
-          return;
-        }
+          let features = [];
+          if (fileExt === 'kml') {
+            features = this.getImpl().loadKMLLayer(fileReader.result, fileName, false);
+          } else if (fileExt === 'gpx') {
+            features = this.getImpl().loadGPXLayer(fileReader.result, fileName);
+          } else if (fileExt === 'geojson') {
+            features = this.getImpl().loadGeoJSONLayer(fileReader.result, fileName);
+          } else if (fileExt === 'gml') {
+            features = this.getImpl().loadGMLLayer(fileReader.result, fileName);
+          } else {
+            M.dialog.error(getValue('exception.load'));
+            return;
+          }
 
-        if (features.length === 0) {
-          M.dialog.info(getValue('exception.no_geoms'));
-        } else {
-          this.getImpl().centerFeatures(features, fileExt === 'gpx');
+          this.loadLayerCenterFeature(features, fileExt);
         }
       } catch (error) {
         M.dialog.error(getValue('exception.load_correct'));

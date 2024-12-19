@@ -192,11 +192,12 @@ class MVT extends Vector {
     });
 
     setTimeout(() => {
-      const filtered = this.map.getLayers().filter((l) => {
+      const allLayers = [...this.map.getImpl().getAllLayerInGroup(), ...this.map.getLayers()];
+      const filtered = allLayers.filter((l) => {
         const checkLayers = l.getImpl().layers_ !== undefined
           ? l.getImpl().layers_ === this.layers_
           : true;
-        return l.url === this.url && checkLayers;
+        return l.url === this.url && checkLayers && l.idLayer === this.facadeVector_.idLayer;
       });
 
       if (filtered.length > 0) {
