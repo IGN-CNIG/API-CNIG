@@ -38,6 +38,7 @@ class OGCAPIFeatures extends Vector {
    * - bbox: Filtro para mostrar los resultados en un bbox específico.
    * - opacity: Opacidad de capa, por defecto 1.
    * - height: Define la altura del objeto geográfico. Puede ser un número o una propiedad.
+   *   Disponible para gemetrías poligonales.
    *   Si se define la altura será constante para todos los puntos del objeto geográfico.
    * - clampToGround: Define si el objeto geográfico se debe ajustar al suelo, por defecto falso.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
