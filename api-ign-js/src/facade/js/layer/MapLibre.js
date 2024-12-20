@@ -4,7 +4,7 @@
 import MapLibreImpl from 'impl/layer/MapLibre';
 import LayerBase from './Layer';
 import {
-  isUndefined, isNullOrEmpty, isString, normalize,
+  isUndefined, isNullOrEmpty, isString, normalize, isObject,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { MapLibre as MapLibreType } from './Type';
@@ -86,16 +86,17 @@ class MapLibre extends LayerBase {
 
     opts.type = MapLibreType;
 
+    if (isUndefined(MapLibreImpl) || (isObject(MapLibreImpl)
+      && isNullOrEmpty(Object.keys(MapLibreImpl)))) {
+      Exception('La implementación usada no puede crear capas MapLibre');
+    }
+
     const impl = new MapLibreImpl(opts, optionsVar, vendorOptions);
 
     // calls the super constructor
     super(opts, impl);
 
     impl.facade = this;
-
-    if (isUndefined(MapLibreImpl)) {
-      Exception('La implementación usada no puede crear capas MapLibre');
-    }
 
     /**
      * extract: Optional Activa la consulta al hacer clic sobre un objeto geográfico,

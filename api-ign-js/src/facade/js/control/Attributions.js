@@ -9,11 +9,12 @@ import ControlBase from './Control';
 import { compileSync as compileTemplate } from '../util/Template';
 import { getValue } from '../i18n/language';
 import { INTERSECT } from '../filter/Module';
-import { isNullOrEmpty } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, isObject } from '../util/Utils';
 import Feature from '../feature/Feature';
 import GeoJSON from '../layer/GeoJSON';
 import KML from '../layer/KML';
 import { LAYER_VISIBILITY_CHANGE, ADDED_LAYER } from '../event/eventtype';
+import Exception from '../exception/exception';
 
 /**
  * @classdesc
@@ -54,6 +55,11 @@ class Attributions extends ControlBase {
    * @api
    */
   constructor(options = {}) {
+    if (isUndefined(AttributionsImpl) || (isObject(AttributionsImpl)
+      && isNullOrEmpty(Object.keys(AttributionsImpl)))) {
+      Exception(getValue('exception').attributions_method);
+    }
+
     const impl = new AttributionsImpl();
     super(impl, Attributions.NAME);
 

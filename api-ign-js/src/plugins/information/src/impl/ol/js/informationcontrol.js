@@ -200,7 +200,7 @@ export default class InformationControl extends M.impl.Control {
     const viewResolution = olMap.getView().getResolution();
     const srs = this.facadeMap_.getProjection().code;
     return wmsLayers.map((layer) => {
-      const olLayer = layer.getImpl().getOL3Layer();
+      const olLayer = layer.getImpl().getLayer();
       let param;
       if (layer.isVisible() && layer.isQueryable() && !M.utils.isNullOrEmpty(olLayer)) {
         param = {};
@@ -248,10 +248,10 @@ export default class InformationControl extends M.impl.Control {
     const urlsWMTS = [];
     const urlsWMS = [];
     layersGeneric.forEach((layer) => {
-      if (layer.getImpl().getOL3Layer().getSource() instanceof ol.source.WMTS) {
+      if (layer.getImpl().getLayer().getSource() instanceof ol.source.WMTS) {
         urlsWMTS.push(layer);
-      } else if (layer.getImpl().getOL3Layer().getSource() instanceof ol.source.TileWMS
-      || layer.getImpl().getOL3Layer().getSource() instanceof ol.source.ImageWMS) {
+      } else if (layer.getImpl().getLayer().getSource() instanceof ol.source.TileWMS
+      || layer.getImpl().getLayer().getSource() instanceof ol.source.ImageWMS) {
         urlsWMS.push(layer);
       }
     });

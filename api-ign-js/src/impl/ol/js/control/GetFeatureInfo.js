@@ -144,10 +144,10 @@ class GetFeatureInfo extends Control {
     const urlsWMTS = [];
     const urlsWMS = [];
     layersGeneric.forEach((layer) => {
-      if (layer.getImpl().getOL3Layer().getSource() instanceof WMTS) {
+      if (layer.getImpl().getLayer().getSource() instanceof WMTS) {
         urlsWMTS.push(layer);
-      } else if (layer.getImpl().getOL3Layer().getSource() instanceof TileWMS
-      || layer.getImpl().getOL3Layer().getSource() instanceof ImageWMS) {
+      } else if (layer.getImpl().getLayer().getSource() instanceof TileWMS
+      || layer.getImpl().getLayer().getSource() instanceof ImageWMS) {
         urlsWMS.push(layer);
       }
     });
@@ -167,7 +167,7 @@ class GetFeatureInfo extends Control {
     const srs = this.facadeMap_.getProjection().code;
 
     return wmsLayers.map((layer) => {
-      const olLayer = layer.getImpl().getOL3Layer();
+      const olLayer = layer.getImpl().getLayer();
       let param;
       if (layer.isVisible() && layer.isQueryable() && !isNullOrEmpty(olLayer)) {
         param = {};

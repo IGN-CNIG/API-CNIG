@@ -145,6 +145,22 @@ export const ADDED_QUICK_LAYERS = 'added:quicklayers';
 export const ADDED_OGCAPIFEATURES = 'added:ogcapifeatures';
 
 /**
+ * Evento que se produce al añadir Tiles3D.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const ADDED_TILES3D = 'added:tiles3d';
+
+/**
+ * Evento que se produce al añadir Terrain.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const ADDED_TERRAIN = 'added:terrain';
+
+/**
  * Evento que se produce al eliminar layer.
  * @public
  * @type {string}
@@ -311,3 +327,27 @@ export const MOVE = 'move';
  * @api
  */
 export const MOVE_MOUSE = 'movemouse';
+
+/**
+ * Evento que se produce cuando se completa la asignación de estilos a un objeto geográfico.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const COMPLETED_CHANGE_STYLE_FEATURE = 'changestylefeature';
+
+/**
+ * Evento que se produce cuando se completa la carga de una capa terreno.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const LOAD_TERRAIN = 'LOAD_TERRAIN';
+
+/**
+ * Evento que se produce cuando se completa la carga de una capa GenericVector.
+ * @public
+ * @type {string}
+ * @api
+ */
+export const LOAD_GENERIC_VECTOR = 'LOAD_GENERIC_VECTOR';

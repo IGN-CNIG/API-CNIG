@@ -65,7 +65,8 @@ const SHOW_BUTTON = [1, 2, 3]; // Añadir más numeros para mostrar más botones
 
 export default class LayerswitcherControl extends M.Control {
   constructor(options = {}) {
-    if (M.utils.isUndefined(LayerswitcherImplControl)) {
+    if (M.utils.isUndefined(LayerswitcherImplControl) || (M.utils.isObject(LayerswitcherImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(LayerswitcherImplControl)))) {
       M.exception(getValue('exception.impl'));
     }
 

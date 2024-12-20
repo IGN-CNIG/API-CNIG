@@ -130,6 +130,12 @@ class LayerBase extends Base {
     this.maxZoom = parameter.maxZoom || Number.POSITIVE_INFINITY;
 
     this.idLayer = generateRandom(parameter.type, parameter.name).replace(/[^a-zA-Z0-9\-_]/g, '');
+
+    /**
+     * Indica si la extensión máxima se ha restablecido.
+     * @private
+     */
+    this.isReset_ = false;
   }
 
   /**
@@ -434,10 +440,12 @@ class LayerBase extends Base {
    */
   resetMaxExtent() {
     this.userMaxExtent = null;
+    this.isReset_ = true;
     this.calculateMaxExtent().then((maxExtent) => {
       if (isFunction(this.getImpl().setMaxExtent)) {
         this.getImpl().setMaxExtent(maxExtent);
       }
+      this.isReset_ = false;
     });
   }
 

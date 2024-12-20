@@ -51,6 +51,8 @@ import XYZ from './layer/XYZ';
 import TMS from './layer/TMS';
 import OSM from './layer/OSM';
 import LayerGroup from './layer/LayerGroup';
+import Tiles3D from './layer/Tiles3D';
+import Terrain from './layer/Terrain';
 import Attributions from './control/Attributions';
 
 /**
@@ -88,6 +90,10 @@ class Map extends Base {
    * - zoomConstrains: Restricciones de zoom.
    * @param { Mx.parameters.MapOptions } options Opciones personalizadas para la implementación
    * proporcionado por el usuario.
+   * - verticalExaggeration: Exageración vertical de la escena. Si se establece a 1 no se aplica
+   * exageración. Por defecto, 1. Sólo disponible para Cesium.
+   * - LOD: Nivel de precisión para la resolución de renderizado. Si no se indica se utiliza la
+   * resolución recomendada del navegador. Sólo disponible para Cesium.
    * @property {object} viewVendorOptions Parámetros para la vista del mapa de la librería base.
    * @api
    */
@@ -112,6 +118,41 @@ class Map extends Base {
     if (isUndefined(MapImpl)) {
       Exception(getValue('exception').constructor_impl);
     }
+
+    /**
+     * Map: JSON para mapear los niveles de zoom a metros.
+     */
+    this.zoom_meters = {
+      0: 251229000,
+      1: 125614900,
+      2: 62807900,
+      3: 31404300,
+      4: 15702500,
+      5: 9470100,
+      6: 5029700,
+      7: 2573100,
+      8: 1299200,
+      9: 652600,
+      10: 327150,
+      11: 164400,
+      12: 82450,
+      13: 41350,
+      14: 20750,
+      15: 10400,
+      16: 5200,
+      17: 2600,
+      18: 1300,
+      19: 650,
+      20: 325,
+      21: 160,
+      22: 80,
+      23: 40,
+      24: 20,
+      25: 10,
+      26: 5,
+      27: 2,
+      28: 1,
+    };
 
     /**
      * Map: Panel del mapa.
@@ -228,7 +269,9 @@ class Map extends Base {
 
     this.drawLayer_.setStyle(new StylePoint(Map.DRAWLAYER_STYLE));
 
-    this.drawLayer_.setZIndex(MapImpl.Z_INDEX[LayerType.WFS] + 999);
+    if (!isNullOrEmpty(MapImpl.Z_INDEX)) {
+      this.drawLayer_.setZIndex(MapImpl.Z_INDEX[LayerType.WFS] + 999);
+    }
     this.addLayers(this.drawLayer_);
 
     // projection
@@ -253,6 +296,8 @@ class Map extends Base {
       const zoomToMaxExtent = isNullOrEmpty(params.zoom) && isNullOrEmpty(params.bbox);
       this.setMaxExtent(params.maxExtent, zoomToMaxExtent);
     }
+
+    this.addQuickLayers(M.config.terrain.default);
 
     // layers
     if (!isNullOrEmpty(params.layers)) {
@@ -291,9 +336,16 @@ class Map extends Base {
 
     // zoom
     if (!isNullOrEmpty(params.zoom)) {
-      this.setZoom(params.zoom);
+      let zoom = params.zoom;
+      let inmeters = false;
+      if (isString(params.zoom)) {
+        zoom = params.zoom.split('*');
+        if (zoom.length > 1) { inmeters = true; }
+        zoom = zoom[0];
+      }
+      this.setZoom(zoom, inmeters);
     } else if (isNullOrEmpty(params.bbox)) {
-      this.setZoom(0);
+      this.setZoom(3);
     }
 
     // zoomConstrains
@@ -389,34 +441,39 @@ class Map extends Base {
       collectionsAttributions = [],
       order,
     } = options;
-    const atribucionControl = new Attributions({
-      map: this,
-      scale,
-      collectionsAttributions: collectionsAttributions.map((l) => {
-        if (typeof l !== 'string') {
-          const attr = l;
-          attr.id = l.idLayer;
-          return attr;
-        }
-        return l;
-      }),
-      order,
-    });
-    const panel = new Panel(Attributions.NAME, {
-      collapsible: true,
-      position: Position[position] || Position.BR,
-      className: 'm-attributions',
-      collapsedButtonClass: 'g-cartografia-comentarios',
-      tooltip: tooltip || getValue('attributions').tooltip,
-      order,
-    });
-    this.addPanels(panel);
-    panel.addControls(atribucionControl);
-    this.getImpl().addControls([atribucionControl]);
-    this.controlAttributions = atribucionControl;
+    try {
+      const atribucionControl = new Attributions({
+        map: this,
+        scale,
+        collectionsAttributions: collectionsAttributions.map((l) => {
+          if (typeof l !== 'string') {
+            const attr = l;
+            attr.id = l.idLayer;
+            return attr;
+          }
+          return l;
+        }),
+        order,
+      });
+      const panel = new Panel(Attributions.NAME, {
+        collapsible: true,
+        position: Position[position] || Position.BR,
+        className: 'm-attributions',
+        collapsedButtonClass: 'g-cartografia-comentarios',
+        tooltip: tooltip || getValue('attributions').tooltip,
+        order,
+      });
+      this.addPanels(panel);
+      panel.addControls(atribucionControl);
+      this.getImpl().addControls([atribucionControl]);
+      this.controlAttributions = atribucionControl;
 
-    if (collectionsAttributions) {
-      this._attributionsMap = [...this._attributionsMap, ...collectionsAttributions];
+      if (collectionsAttributions) {
+        this._attributionsMap = [...this._attributionsMap, ...collectionsAttributions];
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn(e);
     }
   }
 
@@ -521,8 +578,7 @@ class Map extends Base {
     }
 
     // gets the layers
-    const layers = this.getImpl().getLayers(filters)
-      .sort((layer1, layer2) => Map.LAYER_SORT(layer1, layer2, this));
+    const layers = this.getImpl().getLayers(filters);
 
     return layers;
   }
@@ -607,37 +663,43 @@ class Map extends Base {
             }
           }
         }
-
-        if (layerParam instanceof Layer) {
-          layer = layerParam;
-        } else {
-          // try {
-          layer = this.getLayerByString(layerParam);
-          // }
-          // catch (err) {
-          //   Dialog.error('El formato de la capa (' + layerParam + ') no se reconoce');
-          //   throw err;
-          // }
+        try {
+          if (layerParam instanceof Layer) {
+            layer = layerParam;
+          } else {
+            // try {
+            layer = this.getLayerByString(layerParam);
+            // }
+            // catch (err) {
+            //   Dialog.error('El formato de la capa (' + layerParam + ') no se reconoce');
+            //   throw err;
+            // }
+          }
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.warn(err);
         }
 
-        // gets the capabilities of the layers
-        this.collectorCapabilities_(layer);
+        if (!isNullOrEmpty(layer)) {
+          // gets the capabilities of the layers
+          this.collectorCapabilities_(layer);
 
-        // KML and WFS layers handler its features
-        if ((layer instanceof Vector)
-          /* && !(layer instanceof KML) */
-          && !(layer instanceof WFS)
-          && !(layer instanceof OGCAPIFeatures)) {
-          this.featuresHandler_.addLayer(layer);
+          // KML and WFS layers handler its features
+          if ((layer instanceof Vector)
+            /* && !(layer instanceof KML) */
+            && !(layer instanceof WFS)
+            && !(layer instanceof OGCAPIFeatures)) {
+            this.featuresHandler_.addLayer(layer);
+          }
+
+          layer.setMap(this);
         }
-
-        layer.setMap(this);
 
         return layer;
       });
 
       // adds the layers
-      this.getImpl().addLayers(layers.filter((element) => element !== null));
+      this.getImpl().addLayers(layers.filter((element) => !isNullOrEmpty(element)));
     }
     return this;
   }
@@ -701,6 +763,12 @@ class Map extends Base {
         case 'LayerGroup':
           layer = new LayerGroup(layerParam);
           break;
+        case 'Tiles3D':
+          layer = new Tiles3D(parameterVariable);
+          break;
+        case 'Terrain':
+          layer = new Terrain(parameterVariable);
+          break;  
         default:
           Dialog.error(getValue('dialog').invalid_type_layer);
       }
@@ -1729,7 +1797,7 @@ class Map extends Base {
   getMVT(layersParamVar) {
     let layersParam = layersParamVar;
     if (isUndefined(MapImpl.prototype.getMVT)) {
-      Exception('La implementación usada no posee el método getWFS');
+      Exception('La implementación usada no posee el método getMVT');
     }
 
     if (isNull(layersParam)) {
@@ -1763,7 +1831,7 @@ class Map extends Base {
   removeMVT(layersParam) {
     if (!isNullOrEmpty(layersParam)) {
       if (isUndefined(MapImpl.prototype.removeMVT)) {
-        Exception('La implementación usada no posee el método removeWFS');
+        Exception('La implementación usada no posee el método removeMVT');
       }
       const mvtLayers = this.getMVT(layersParam);
       if (mvtLayers.length > 0) {
@@ -1790,7 +1858,7 @@ class Map extends Base {
     let layersParam = layersParamVar;
     if (!isNullOrEmpty(layersParam)) {
       if (isUndefined(MapImpl.prototype.addMVT)) {
-        Exception('La implementación usada no posee el método addWFS');
+        Exception('La implementación usada no posee el método addMVT');
       }
 
       if (!isArray(layersParam)) {
@@ -2180,6 +2248,209 @@ class Map extends Base {
   }
 
   /**
+   * Este método devuelve las capas Tiles3D del mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParamVar Opcional.
+   * - Matriz de capas de nombres, tipo Tiles3D.
+   * @returns {Array<M.layer.Tiles3D>} Capas del mapa.
+   * @api
+   */
+  getTiles3D(layersParamVar) {
+    let layersParam = layersParamVar;
+    if (isUndefined(MapImpl.prototype.getTiles3D)) {
+      Exception(getValue('exception').gettiles3d_method);
+    }
+
+    if (isNull(layersParam)) {
+      layersParam = [];
+    } else if (!isArray(layersParam)) {
+      layersParam = [layersParam];
+    }
+
+    let filters = [];
+    if (layersParam.length > 0) {
+      filters = layersParam.map((layerParam) => {
+        return parameter.layer(layerParam, LayerType.Tiles3D);
+      });
+    }
+
+    const layers = this.getImpl().getTiles3D(filters).sort(Map.LAYER_SORT);
+
+    return layers;
+  }
+
+  /**
+     * Este método agrega las capas Tiles3D al mapa.
+     *
+     * @function
+     * @param {Array<string>|Array<Mx.parameters.Tiles3D>} layersParam Colección u objeto
+     * de capa.
+     * @returns {Map} Devuelve el estado del mapa.
+     * @api
+     */
+  addTiles3D(layersParamVar) {
+    let layersParam = layersParamVar;
+    if (!isNullOrEmpty(layersParam)) {
+      // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.addTiles3D)) {
+        Exception(getValue('exception').addtiles3d_method);
+      }
+
+      // parses parameters to Array
+      if (!isArray(layersParam)) {
+        layersParam = [layersParam];
+      }
+
+      // gets the parameters as Tiles3D objects to add
+      const tiles3DLayers = [];
+      layersParam.forEach((layerParam) => {
+        let tiles3DLayer;
+        if (layerParam instanceof Tiles3D) {
+          tiles3DLayer = layerParam;
+          layerParam.setMap(this);
+          tiles3DLayers.push(layerParam);
+        } else if (!(layerParam instanceof Layer)) {
+          tiles3DLayer = new Tiles3D(layerParam, layerParam.options);
+          tiles3DLayer.setMap(this);
+          tiles3DLayers.push(tiles3DLayer);
+        }
+        this.featuresHandler_.addLayer(tiles3DLayer);
+      });
+
+      // adds the layers
+      this.getImpl().addTiles3D(tiles3DLayers);
+      this.fire(EventType.ADDED_LAYER, [tiles3DLayers]);
+      this.fire(EventType.ADDED_TILES3D, [tiles3DLayers]);
+    }
+    return this;
+  }
+
+  /**
+     * Este método elimina las capas Tiles3D del mapa.
+     *
+     * @function
+     * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Matriz de capas de nombres que
+     * desea eliminar.
+     * @returns {Map} Devuelve el estado del mapa.
+     * @api
+     */
+  removeTiles3D(layersParam) {
+    if (!isNullOrEmpty(layersParam)) {
+      if (isUndefined(MapImpl.prototype.removeTiles3D)) {
+        Exception(getValue('exception').removetiles3d_method);
+      }
+
+      const tiles3DLayers = this.getTiles3D(layersParam);
+      if (tiles3DLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [tiles3DLayers]);
+        this.getImpl().removeTiles3D(tiles3DLayers);
+      }
+    }
+    return this;
+  }
+
+  /**
+     * Este método devuelve las capas Terrain del mapa.
+     *
+     * @function
+     * @param {Array<string>|Array<Mx.parameters.Layer>} layersParamVar Opcional.
+     * - Matriz de capas de nombres, tipo Terrain.
+     * @returns {Array<M.layer.Terrain>} Capas del mapa.
+     * @api
+     */
+  getTerrain(layersParamVar) {
+    let layersParam = layersParamVar;
+    if (isUndefined(MapImpl.prototype.getTerrain)) {
+      Exception(getValue('exception').getterrain_method);
+    }
+
+    if (isNull(layersParam)) {
+      layersParam = [];
+    } else if (!isArray(layersParam)) {
+      layersParam = [layersParam];
+    }
+
+    let filters = [];
+    if (layersParam.length > 0) {
+      filters = layersParam.map((layerParam) => {
+        return parameter.layer(layerParam, LayerType.Terrain);
+      });
+    }
+
+    const layers = this.getImpl().getTerrain(filters).sort(Map.LAYER_SORT);
+
+    return layers;
+  }
+
+  /**
+     * Este método agrega las capas Terrain al mapa.
+     *
+     * @function
+     * @param {Array<string>|Array<Mx.parameters.Terrain>} layersParam Colección u objeto
+     * de capa.
+     * @returns {Map} Devuelve el estado del mapa.
+     * @api
+     */
+  addTerrain(layersParamVar) {
+    let layersParam = layersParamVar;
+    if (!isNullOrEmpty(layersParam)) {
+      // checks if the implementation can manage layers
+      if (isUndefined(MapImpl.prototype.addTerrain)) {
+        Exception(getValue('exception').addterrain_method);
+      }
+
+      // parses parameters to Array
+      if (!isArray(layersParam)) {
+        layersParam = [layersParam];
+      }
+
+      // gets the parameters as Terrain objects to add
+      const terrainLayers = [];
+      layersParam.forEach((layerParam) => {
+        if (layerParam instanceof Terrain) {
+          layerParam.setMap(this);
+          terrainLayers.push(layerParam);
+        } else if (!(layerParam instanceof Layer)) {
+          const terrainLayer = new Terrain(layerParam, layerParam.options);
+          terrainLayer.setMap(this);
+          terrainLayers.push(terrainLayer);
+        }
+      });
+
+      // adds the layers
+      this.getImpl().addTerrain(terrainLayers);
+      this.fire(EventType.ADDED_LAYER, [terrainLayers]);
+      this.fire(EventType.ADDED_TERRAIN, [terrainLayers]);
+    }
+    return this;
+  }
+
+  /**
+   * Este método elimina las capas Terrain del mapa.
+   *
+   * @function
+   * @param {Array<string>|Array<Mx.parameters.Layer>} layersParam Matriz de capas de nombres que
+   * desea eliminar.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @api
+   */
+  removeTerrain(layersParam) {
+    if (!isNullOrEmpty(layersParam)) {
+      if (isUndefined(MapImpl.prototype.removeTerrain)) {
+        Exception(getValue('exception').removeterrain_method);
+      }
+
+      const terrainLayers = this.getTerrain(layersParam);
+      if (terrainLayers.length > 0) {
+        this.fire(EventType.REMOVED_LAYER, [terrainLayers]);
+        this.getImpl().removeTerrain(terrainLayers);
+      }
+    }
+    return this;
+  }
+
+  /**
    * Este método agrega las capas rápidas al mapa.
    *
    * @function
@@ -2277,113 +2548,118 @@ class Map extends Base {
         let panel;
         if (isString(controlParam)) {
           controlParam = normalize(controlParam).split('*');
-
-          switch (controlParam[0]) {
-            case Scale.NAME:
-              const paramsScale = {};
-              controlParam.forEach((p) => {
-                if (p === 'true') paramsScale.exactScale = Boolean(p);
-                // eslint-disable-next-line no-restricted-globals
-                if (!isNaN(p)) paramsScale.order = Number(p);
-              });
-              control = new Scale(paramsScale);
-              panel = this.getPanels('map-info')[0];
-              if (isNullOrEmpty(panel)) {
-                panel = new Panel('map-info', {
+          try {
+            switch (controlParam[0]) {
+              case Scale.NAME:
+                const paramsScale = {};
+                controlParam.forEach((p) => {
+                  if (p === 'true') paramsScale.exactScale = Boolean(p);
+                  // eslint-disable-next-line no-restricted-globals
+                  if (!isNaN(p)) paramsScale.order = Number(p);
+                });
+                control = new Scale(paramsScale);
+                panel = this.getPanels('map-info')[0];
+                if (isNullOrEmpty(panel)) {
+                  panel = new Panel('map-info', {
+                    collapsible: false,
+                    className: 'm-map-info',
+                    position: Position.BR,
+                    order: (paramsScale.order) ? paramsScale.order : null,
+                  });
+                  panel.on(EventType.ADDED_TO_MAP, (html) => {
+                    if (this.getControls(['wmcselector', 'scale', 'scaleline']).length === 3) {
+                      this.getControls(['scaleline'])[0].getImpl().getElement().classList.add('ol-scale-line-up');
+                    }
+                  });
+                }
+                panel.addClassName('m-with-scale');
+                break;
+              case ScaleLine.NAME:
+                control = new ScaleLine();
+                panel = new Panel(ScaleLine.NAME, {
                   collapsible: false,
-                  className: 'm-map-info',
-                  position: Position.BR,
-                  order: (paramsScale.order) ? paramsScale.order : null,
+                  className: 'm-scaleline',
+                  position: Position.BL,
+                  tooltip: 'Línea de escala',
                 });
                 panel.on(EventType.ADDED_TO_MAP, (html) => {
                   if (this.getControls(['wmcselector', 'scale', 'scaleline']).length === 3) {
                     this.getControls(['scaleline'])[0].getImpl().getElement().classList.add('ol-scale-line-up');
                   }
                 });
-              }
-              panel.addClassName('m-with-scale');
-              break;
-            case ScaleLine.NAME:
-              control = new ScaleLine();
-              panel = new Panel(ScaleLine.NAME, {
-                collapsible: false,
-                className: 'm-scaleline',
-                position: Position.BL,
-                tooltip: 'Línea de escala',
-              });
-              panel.on(EventType.ADDED_TO_MAP, (html) => {
-                if (this.getControls(['wmcselector', 'scale', 'scaleline']).length === 3) {
-                  this.getControls(['scaleline'])[0].getImpl().getElement().classList.add('ol-scale-line-up');
+                break;
+              case Panzoombar.NAME:
+                control = new Panzoombar();
+                panel = new Panel(Panzoombar.NAME, {
+                  collapsible: false,
+                  className: 'm-panzoombar',
+                  position: Position.TL,
+                  tooltip: 'Nivel de zoom',
+                });
+                break;
+              case Panzoom.NAME:
+                control = new Panzoom();
+                panel = new Panel(Panzoom.NAME, {
+                  collapsible: false,
+                  className: 'm-panzoom',
+                  position: Position.TL,
+                });
+                break;
+              case Location.NAME:
+                control = new Location();
+                panel = new Panel(Location.NAME, {
+                  collapsible: false,
+                  className: 'm-location',
+                  position: Position.BR,
+                });
+                break;
+              case GetFeatureInfo.NAME:
+                control = new GetFeatureInfo(true);
+                break;
+              case Attributions.NAME:
+                if (controlParam.length === 2) {
+                  this.createAttribution({ collectionsAttributions: [controlParam[1]] });
+                } else {
+                  this.createAttribution();
                 }
-              });
-              break;
-            case Panzoombar.NAME:
-              control = new Panzoombar();
-              panel = new Panel(Panzoombar.NAME, {
-                collapsible: false,
-                className: 'm-panzoombar',
-                position: Position.TL,
-                tooltip: 'Nivel de zoom',
-              });
-              break;
-            case Panzoom.NAME:
-              control = new Panzoom();
-              panel = new Panel(Panzoom.NAME, {
-                collapsible: false,
-                className: 'm-panzoom',
-                position: Position.TL,
-              });
-              break;
-            case Location.NAME:
-              control = new Location();
-              panel = new Panel(Location.NAME, {
-                collapsible: false,
-                className: 'm-location',
-                position: Position.BR,
-              });
-              break;
-            case GetFeatureInfo.NAME:
-              control = new GetFeatureInfo(true);
-              break;
-            case Attributions.NAME:
-              if (controlParam.length === 2) {
-                this.createAttribution({ collectionsAttributions: [controlParam[1]] });
-              } else {
-                this.createAttribution();
-              }
 
-              return;
-            case Rotate.NAME:
-              control = new Rotate();
-              panel = new Panel(Rotate.name, {
-                collapsible: false,
-                className: 'm-rotate',
-                position: Position.TR,
-              });
-              break;
-            case BackgroundLayers.NAME:
-              control = new BackgroundLayers(this);
-              panel = new Panel(BackgroundLayers.NAME, {
-                collapsible: false,
-                position: Position.TR,
-                className: 'm-plugin-baselayer',
-              });
-              break;
-            default:
-              if (/backgroundlayers\*([0-9])+\*(true|false)/.test(controlParam)) {
-                const idLayer = controlParam.match(/backgroundlayers\*([0-9])+\*(true|false)/)[1];
-                const visible = controlParam.match(/backgroundlayers\*([0-9])+\*(true|false)/)[2] === 'true';
-                control = new BackgroundLayers(this, Number.parseInt(idLayer, 10), visible);
-
+                return;
+              case Rotate.NAME:
+                control = new Rotate();
+                panel = new Panel(Rotate.name, {
+                  collapsible: false,
+                  className: 'm-rotate',
+                  position: Position.TR,
+                });
+                break;
+              case BackgroundLayers.NAME:
+                control = new BackgroundLayers(this);
                 panel = new Panel(BackgroundLayers.NAME, {
                   collapsible: false,
                   position: Position.TR,
                   className: 'm-plugin-baselayer',
                 });
-              } else {
-                const getControlsAvailable = concatUrlPaths([M.config.MAPEA_URL, '/api/actions/controls']);
-                Dialog.error(`El control ${controlParam} no está definido. Consulte los controles disponibles <a href='${getControlsAvailable}' target="_blank">aquí</a>`);
-              }
+                break;
+              default:
+                if (/backgroundlayers\*([0-9])+\*(true|false)/.test(controlParam)) {
+                  const idLayer = controlParam.match(/backgroundlayers\*([0-9])+\*(true|false)/)[1];
+                  const visible = controlParam.match(/backgroundlayers\*([0-9])+\*(true|false)/)[2] === 'true';
+                  control = new BackgroundLayers(this, Number.parseInt(idLayer, 10), visible);
+
+                  panel = new Panel(BackgroundLayers.NAME, {
+                    collapsible: false,
+                    position: Position.TR,
+                    className: 'm-plugin-baselayer',
+                  });
+                } else {
+                  const getControlsAvailable = concatUrlPaths([M.config.MAPEA_URL, '/api/actions/controls']);
+                  Dialog.error(`El control ${controlParam} no está definido. Consulte los controles disponibles <a href='${getControlsAvailable}' target="_blank">aquí</a>`);
+                }
+            }
+          } catch (e) {
+            // eslint-disable-next-line no-console
+            console.warn(e);
+            control = null;
           }
         } else if (controlParam instanceof Control) {
           control = controlParam;
@@ -2394,7 +2670,7 @@ class Map extends Base {
         if (!isNullOrEmpty(panel) && !panel.hasControl(control)) {
           panel.addControls(control);
           this.addPanels(panel);
-        } else {
+        } else if (!isNullOrEmpty(control)) {
           control.addTo(this);
           controls.push(control);
         }
@@ -2606,23 +2882,25 @@ class Map extends Base {
   }
 
   /**
-   * Este método proporciona el zoom actual de esta
-   * instancia del mapa.
-   *
-   * @public
-   * @function
-   * @param {Boolean} exact Permite devolver el zoom exacto del mapa en caso de que se permita
-   * niveles de zoom intermedios, Por defecto es false.
-   * @returns {Number} Devuelve el zoom actual.
-   * @api
-   */
-  getZoom(exact = false) {
+     * Este método proporciona el zoom actual de esta
+     * instancia del mapa.
+     *
+     * @public
+     * @function
+     * @param {Boolean} exact Permite devolver el zoom exacto del mapa en caso de que se permita
+     * niveles de zoom intermedios, Por defecto es false.
+     * @param {Boolean} inmeters Si es verdadero el zoom obtenido está en metros, en caso contrario
+     * como nivel de zoom. Por defecto, es falso.
+     * @returns {Number} Devuelve el zoom actual.
+     * @api
+     */
+  getZoom(exact = false, inmeters = false) {
     // checks if the implementation can get the zoom
     if (isUndefined(MapImpl.prototype.getZoom)) {
       Exception(getValue('exception').getzoom_method);
     }
 
-    let zoom = this.getImpl().getZoom();
+    let zoom = this.getImpl().getZoom(inmeters);
     if (!exact) {
       zoom = Math.floor(zoom);
     }
@@ -2636,16 +2914,18 @@ class Map extends Base {
    *
    * @public
    * @function
+   * @param {Boolean} inmeters Si es verdadero el zoom obtenido está en metros,
+   * en caso contrario como nivel de zoom. Por defecto, es falso.
    * @returns {Number} Devuelve el zoom mínimo actual.
    * @api
    */
-  getMinZoom() {
+  getMinZoom(inmeters = false) {
     // checks if the implementation can get the zoom
     if (isUndefined(MapImpl.prototype.getMinZoom)) {
       Exception(getValue('exception').getzoom_method);
     }
 
-    const zoom = this.getImpl().getMinZoom();
+    const zoom = this.getImpl().getMinZoom(inmeters);
 
     return zoom;
   }
@@ -2656,16 +2936,18 @@ class Map extends Base {
    *
    * @public
    * @function
+   * @param {Boolean} inmeters Si es verdadero el zoom obtenido está en metros,
+   * en caso contrario como nivel de zoom. Por defecto, es falso.
    * @returns {Number} Devuelve el zoom máximo actual.
    * @api
    */
-  getMaxZoom() {
+  getMaxZoom(inmeters = false) {
     // checks if the implementation can get the zoom
     if (isUndefined(MapImpl.prototype.getMaxZoom)) {
       Exception(getValue('exception').getzoom_method);
     }
 
-    const zoom = this.getImpl().getMaxZoom();
+    const zoom = this.getImpl().getMaxZoom(inmeters);
 
     return zoom;
   }
@@ -2677,10 +2959,13 @@ class Map extends Base {
    * @public
    * @function
    * @param {String|Number} zoomParam El zoom.
+   * @param {Boolean} inmeters Si es verdadero se indica que el zoom dado por parámetro
+   * está en metros, en caso contrario como nivel de zoom. En el caso de
+   * ser metros a mayor cantidad menor nivel de zoom. Por defecto, es falso.
    * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
-  setZoom(zoomParam) {
+  setZoom(zoomParam, inmeters = false) {
     // checks if the param is null or empty
     if (isNullOrEmpty(zoomParam)) {
       Exception(getValue('exception').no_zoom);
@@ -2695,7 +2980,7 @@ class Map extends Base {
       // parses the parameter
       const zoom = parameter.zoom(zoomParam);
       this._userZoom = zoom;
-      this.getImpl().setZoom(zoom);
+      this.getImpl().setZoom(zoom, inmeters);
     } catch (err) {
       Dialog.error(err.toString());
       throw err;
@@ -2711,10 +2996,13 @@ class Map extends Base {
    * @public
    * @function
    * @param {String|Number} zoomParam El zoom.
+   * @param {Boolean} inmeters Si es verdadero se indica que el zoom dado por parámetro
+   * está en metros, en caso contrario como nivel de zoom. En el caso de
+   * ser metros a mayor cantidad menor nivel de zoom. Por defecto, es falso.
    * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
-  setMinZoom(zoomParam) {
+  setMinZoom(zoomParam, inmeters = false) {
     if (isNullOrEmpty(zoomParam)) {
       Exception(getValue('exception').no_zoom);
     }
@@ -2725,7 +3013,7 @@ class Map extends Base {
 
     const minZoom = parameter.minZoom(zoomParam);
     this.minZoom = minZoom;
-    this.getImpl().setMinZoom(minZoom);
+    this.getImpl().setMinZoom(minZoom, inmeters);
     return this;
   }
 
@@ -2736,10 +3024,13 @@ class Map extends Base {
    * @public
    * @function
    * @param {String|Number} zoomParam El zoom.
+   * @param {Boolean} inmeters Si es verdadero se indica que el zoom dado por parámetro
+   * está en metros, en caso contrario como nivel de zoom. En el caso de
+   * ser metros a mayor cantidad menor nivel de zoom. Por defecto, es falso.
    * @returns {Map} Devuelve el estado del mapa.
    * @api
    */
-  setMaxZoom(zoomParam) {
+  setMaxZoom(zoomParam, inmeters = false) {
     if (isNullOrEmpty(zoomParam)) {
       Exception(getValue('exception').no_zoom);
     }
@@ -2750,7 +3041,7 @@ class Map extends Base {
 
     const maxZoom = parameter.maxZoom(zoomParam);
     this.userMaxZoom_ = maxZoom;
-    this.getImpl().setMaxZoom(maxZoom);
+    this.getImpl().setMaxZoom(maxZoom, inmeters);
     return this;
   }
 
@@ -2920,6 +3211,49 @@ class Map extends Base {
     const resolutions = this.getImpl().getResolutions();
 
     return resolutions;
+  }
+
+  /**
+   * Este obtiene el factor de escala para la resolución de
+   * renderizado de esta instancia del mapa. Por defecto, 1.
+   *
+   * @public
+   * @function
+   * @returns {Number} LOD
+   * @api
+   */
+  getLOD() {
+    if (isUndefined(MapImpl.prototype.getLOD)) {
+      Exception(getValue('exception').getlod_method);
+    }
+
+    const lod = this.getImpl().getLOD();
+
+    return lod;
+  }
+
+  /**
+   * Este método establece el factor de escala para la resolución
+   * de renderizado para esta instancia del mapa. El valor debe
+   * encontrarse entre 0 y 2. Si es menor o igual a 0 se establecerá
+   * en 0.1 y si es mayor a 2 en 2. En caso de no indicarle
+   * ningún valor se esablecerá a 1.
+   *
+   * @public
+   * @function
+   * @param {Number} lod LOD.
+   * @returns {Map} Devuelve el estado del mapa.
+   * @api
+   */
+  setLOD(lod) {
+    // checks if the implementation can set the setLOD
+    if (isUndefined(MapImpl.prototype.setLOD)) {
+      Exception(getValue('exception').setlod_method);
+    }
+
+    this.getImpl().setLOD(lod);
+
+    return this;
   }
 
   /**
@@ -3105,8 +3439,13 @@ class Map extends Base {
       Exception(getValue('exception').no_add_plugin_to_map);
     }
 
-    this._plugins.push(plugin);
-    plugin.addTo(this);
+    try {
+      plugin.addTo(this);
+      this._plugins.push(plugin);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn(e);
+    }
 
     return this;
   }

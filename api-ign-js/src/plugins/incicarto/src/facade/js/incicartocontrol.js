@@ -53,7 +53,8 @@ export default class IncicartoControl extends M.Control {
    * @api stable
    */
   constructor(options) {
-    if (M.utils.isUndefined(IncicartoImplControl)) {
+    if (M.utils.isUndefined(IncicartoImplControl) || (M.utils.isObject(IncicartoImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(IncicartoImplControl)))) {
       M.exception(getValue('exception.impl'));
     }
 
@@ -1992,7 +1993,7 @@ export default class IncicartoControl extends M.Control {
     this.style = undefined;
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
-    this.feature = MFeatures.find((f) => f.getImpl().getOLFeature() === olFeature);
+    this.feature = MFeatures.find((f) => f.getImpl().getFeature() === olFeature);
     this.geometry = this.feature.getGeometry().type;
     const selector = `#m-incicarto-list li[name="${this.drawLayer.name}"] div.m-incicarto-layer-actions-container`;
     document.querySelector(selector).appendChild(this.drawingTools);
@@ -2256,7 +2257,7 @@ export default class IncicartoControl extends M.Control {
   onDraw(event) {
     this.feature = event.feature;
     this.feature.setId(`${this.drawLayer.name}.${new Date().getTime()}`);
-    this.feature = M.impl.Feature.olFeature2Facade(this.feature);
+    this.feature = M.impl.Feature.feature2Facade(this.feature);
     this.geometry = this.feature.getGeometry().type;
     this.setFeatureStyle(this.feature, this.geometry);
     document.querySelector('.m-incicarto #drawingtools button').style.display = 'block';
@@ -2292,7 +2293,7 @@ export default class IncicartoControl extends M.Control {
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.getImpl().getFeatureExtent();
-        this.emphasis = M.impl.Feature.olFeature2Facade(this.getImpl().newPolygonFeature(extent));
+        this.emphasis = M.impl.Feature.feature2Facade(this.getImpl().newPolygonFeature(extent));
         this.emphasis.setStyle(new M.style.Line({
           stroke: {
             color: '#FF0000',
