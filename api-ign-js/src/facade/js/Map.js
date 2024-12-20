@@ -768,7 +768,7 @@ class Map extends Base {
           break;
         case 'Terrain':
           layer = new Terrain(parameterVariable);
-          break;  
+          break;
         default:
           Dialog.error(getValue('dialog').invalid_type_layer);
       }
