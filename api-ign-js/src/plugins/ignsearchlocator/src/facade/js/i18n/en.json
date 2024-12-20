@@ -1,6 +1,6 @@
 {
   "exception": {
-    "impl": "The implementation used cannot create XYLocatorControl.",
+    "impl": "The implementation used cannot create IGNSearchLocator.",
     "wrong_coords": "The coordinates entered are not correct.",
     "transforming": "Error performing the transformation.",
     "mapeaerror": "It is not possible to establish a connection with the Cadastre server.",

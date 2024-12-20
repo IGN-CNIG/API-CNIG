@@ -1,6 +1,6 @@
 {
   "exception": {
-    "impl": "La implementación usada no puede crear controles InformationControl.",
+    "impl": "La implementación usada no puede crear controles IGNSearchLocator.",
     "wrong_coords": "Las coordenadas introducidas no son correctas.",
     "transforming": "Error realizando la transformación.",
     "mapeaerror": "No es posible establecer la conexión con el servidor de Catastro.",

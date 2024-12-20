@@ -8,7 +8,7 @@ export default class MeasureArea extends Measure {
     // checks if the implementation can create WMC layers
     if (M.utils.isUndefined(MeasureAreaImpl) || (M.utils.isObject(MeasureAreaImpl)
       && M.utils.isNullOrEmpty(Object.keys(MeasureAreaImpl)))) {
-      M.Exception(getValue('exception.impl_area'));
+      M.exception(getValue('exception.impl_area'));
     }
     // implementation of this control
     const impl = new MeasureAreaImpl();

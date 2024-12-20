@@ -18,7 +18,7 @@ export default class MeasureLength extends Measure {
     // checks if the implementation can create WMC layers
     if (M.utils.isUndefined(MeasureLengthImpl) || (M.utils.isObject(MeasureLengthImpl)
       && M.utils.isNullOrEmpty(Object.keys(MeasureLengthImpl)))) {
-      M.Exception(getValue('exception.impl_length'));
+      M.exception(getValue('exception.impl_length'));
     }
 
     // implementation of this control

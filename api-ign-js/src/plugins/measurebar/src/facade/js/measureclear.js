@@ -19,7 +19,7 @@ export default class MeasureClear extends M.Control {
     // checks if the implementation can create MeasureClear
     if (M.utils.isUndefined(MeasureClearImpl) || (M.utils.isObject(MeasureClearImpl)
       && M.utils.isNullOrEmpty(Object.keys(MeasureClearImpl)))) {
-      M.Exception(getValue('exception.impl_clear'));
+      M.exception(getValue('exception.impl_clear'));
     }
 
     // implementation of this control
