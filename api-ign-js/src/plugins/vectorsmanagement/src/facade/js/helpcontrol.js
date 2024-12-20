@@ -1,7 +1,7 @@
 /**
  * @module M/control/Help
  */
-import HelpImplControl from '../../impl/ol/js/helpcontrol';
+import HelpImplControl from 'impl/helpcontrol';
 import template from '../../templates/help';
 import { getValue } from './i18n/language';
 
@@ -17,8 +17,9 @@ export default class HelpControl extends M.Control {
    */
   constructor(map, managementControl) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(HelpImplControl)) {
-      M.exception(getValue('exception'));
+    if (M.utils.isUndefined(HelpImplControl) || (M.utils.isObject(HelpImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(HelpImplControl)))) {
+      M.exception(getValue('exception.impl_helpcontrol'));
     }
 
     // 2. implementation of this control

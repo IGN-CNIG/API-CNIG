@@ -1,5 +1,13 @@
 {
   "exception": {
+    "impl_addlayercontrol": "The implementation used cannot create AddLayer controls.",
+    "impl_creationcontrol": "The implementation used cannot create Creation controls.",
+    "impl_downloadcontrol": "The implementation used cannot create Download controls.",
+    "impl_editioncontrol": "The implementation used cannot create Edition controls.",
+    "impl_helpcontrol": "The implementation used cannot create Help controls.",
+    "impl_selectioncontrol": "The implementation used cannot create Selectioncontrols.",
+    "impl_analysiscontrol": "The implementation used cannot create Analysis controls.",
+    "impl_stylecontrol": "The implementation used cannot create Style controls.",
     "emptylayer": "The drawing layer is empty.",
     "geometrianoencontrar": "Unrecognized geometry.",
     "formatocoord": "The entered coordinates are not in the correct format.",

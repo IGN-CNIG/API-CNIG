@@ -87,7 +87,7 @@ export default class ViewShedControl extends M.impl.Control {
    */
   featuresToFacade(implFeatures) {
     return implFeatures.map((feature) => {
-      return M.impl.Feature.olFeature2Facade(feature);
+      return M.impl.Feature.feature2Facade(feature);
     });
   }
 

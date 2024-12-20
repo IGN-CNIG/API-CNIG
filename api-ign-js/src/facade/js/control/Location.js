@@ -7,7 +7,7 @@ import myhelp from 'templates/locationhelp';
 import 'assets/css/controls/location';
 import { getValue } from '../i18n/language';
 import ControlBase from './Control';
-import { isUndefined } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, isObject } from '../util/Utils';
 import Exception from '../exception/exception';
 import { compileSync as compileTemplate } from '../util/Template';
 
@@ -32,7 +32,8 @@ class Location extends ControlBase {
    * @api
    */
   constructor(tracking = true, highAccuracy = false, vendorOptions = {}) {
-    if (isUndefined(LocationImpl)) {
+    if (isUndefined(LocationImpl) || (isObject(LocationImpl)
+      && isNullOrEmpty(Object.keys(LocationImpl)))) {
       Exception(getValue('exception').location_method);
     }
 

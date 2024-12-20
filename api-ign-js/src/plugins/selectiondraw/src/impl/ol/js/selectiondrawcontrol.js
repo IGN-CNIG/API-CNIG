@@ -69,7 +69,7 @@ export default class SelectionDrawControl extends M.impl.Control {
     const src = this.map.getProjection().code;
     const drawLayer = this.map.getLayers().find((l) => l.name === '__draw__');
     if (drawLayer != null) {
-      const ol3Layer = drawLayer.getImpl().getOL3Layer();
+      const ol3Layer = drawLayer.getImpl().getLayer();
       ol3Layer.setStyle(POINT_STYLE);
       if (ol3Layer != null) {
         const source = ol3Layer.getSource();

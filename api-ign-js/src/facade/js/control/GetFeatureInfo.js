@@ -5,7 +5,7 @@ import 'assets/css/controls/getfeatureinfo';
 import GetFeatureInfoImpl from 'impl/control/GetFeatureInfo';
 import myhelp from 'templates/getfeatureinfohelp';
 import ControlBase from './Control';
-import { isUndefined } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, isObject } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 import { compileSync as compileTemplate } from '../util/Template';
@@ -30,14 +30,15 @@ class GetFeatureInfo extends ControlBase {
    * @api
    */
   constructor(activated, options = {}) {
+    if (isUndefined(GetFeatureInfoImpl) || (isObject(GetFeatureInfoImpl)
+      && isNullOrEmpty(Object.keys(GetFeatureInfoImpl)))) {
+      Exception(getValue('exception').getfeatureinfo_method);
+    }
+
     // implementation of this control
     const impl = new GetFeatureInfoImpl(activated, options);
     // calls the super constructor
     super(impl, GetFeatureInfo.NAME);
-
-    if (isUndefined(GetFeatureInfoImpl)) {
-      Exception(getValue('exception').getfeatureinfo_method);
-    }
   }
 
   /**

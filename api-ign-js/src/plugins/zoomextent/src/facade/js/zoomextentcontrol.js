@@ -2,7 +2,7 @@
  * @module M/control/ZoomExtentControl
  */
 
-import ZoomExtentImplControl from '../../impl/ol/js/zoomextentcontrol';
+import ZoomExtentImplControl from 'impl/zoomextentcontrol';
 import template from '../../templates/zoomextent';
 import { getValue } from './i18n/language';
 
@@ -17,7 +17,8 @@ export default class ZoomExtentControl extends M.Control {
    * @api
    */
   constructor() {
-    if (M.utils.isUndefined(ZoomExtentImplControl)) {
+    if (M.utils.isUndefined(ZoomExtentImplControl) || (M.utils.isObject(ZoomExtentImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(ZoomExtentImplControl)))) {
       M.exception(getValue('exception.impl'));
     }
     const impl = new ZoomExtentImplControl();

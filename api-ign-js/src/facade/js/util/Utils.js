@@ -1537,9 +1537,9 @@ const getImageMapReplacementWithJoin = (map, type = 'image/jpeg') => { // getIma
         const auxCanvas = canvasList[ind];
         if (auxCanvas.className === 'maplibregl-canvas') { // MapLibre
           let auxMapLibre = allMapLibre.find((l) => l.type === 'MapLibre' && l.getImpl()
-            .getOL3Layer().mapLibreMap.getCanvas() === auxCanvas);
+            .getLayer().mapLibreMap.getCanvas() === auxCanvas);
           if (auxMapLibre) {
-            auxMapLibre = auxMapLibre.getImpl().getOL3Layer().mapLibreMap;
+            auxMapLibre = auxMapLibre.getImpl().getLayer().mapLibreMap;
             auxMapLibre.once('render', () => { // MapLibre render
               canvasCombine(auxCanvas, auxCanvas.style.opacity); // MapLibre opacity
               checkIfKeepGoing(1);

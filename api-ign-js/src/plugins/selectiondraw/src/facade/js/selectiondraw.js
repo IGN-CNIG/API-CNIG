@@ -67,19 +67,14 @@ export default class SelectionDraw extends M.Plugin {
     this.position = options.position || 'TL';
 
     /**
-     * SelectionDraw control
-     * @public
-     * @type {M.control.SelectionDraw}
-     */
-    this.control_ = new SelectionDrawControl(options);
-
-    /**
      * Name of this control
      * @public
      * @type {string}
      * @api stable
      */
     this.name = SelectionDraw.NAME;
+
+    this.options = options;
   }
 
   /**
@@ -106,6 +101,7 @@ export default class SelectionDraw extends M.Plugin {
    * @api stable
    */
   addTo(map) {
+    this.control_ = new SelectionDrawControl(this.options);
     this.map_ = map;
     this.panel_ = new M.ui.Panel('panel_selection_raw', {
       collapsible: this.collapsible,

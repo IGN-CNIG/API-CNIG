@@ -29,6 +29,10 @@
     "ol": {
       "scripts": ["measurebar.ol.min.js"],
       "styles": ["measurebar.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["measurebar.cesium.min.js"],
+      "styles": ["measurebar.cesium.min.css"]
     }
   },
   "metadata": {

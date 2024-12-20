@@ -56,7 +56,7 @@ export default class Selectioncontrol extends M.impl.Control {
    */
   activateSelection() {
     const olMap = this.facadeMap_.getMapImpl();
-    const drawingLayer = this.facadeControl.getLayer().getImpl().getOL3Layer();
+    const drawingLayer = this.facadeControl.getLayer().getImpl().getLayer();
 
     // this.facadeControl.hideTextPoint();
 
@@ -101,7 +101,7 @@ export default class Selectioncontrol extends M.impl.Control {
   getMapeaFeatureClone() {
     // eslint-disable-next-line no-underscore-dangle
     const implFeatureClone = this.facadeControl.feature.getImpl().olFeature_.clone();
-    const emphasis = M.impl.Feature.olFeature2Facade(implFeatureClone);
+    const emphasis = M.impl.Feature.feature2Facade(implFeatureClone);
     return emphasis;
   }
 
@@ -113,7 +113,7 @@ export default class Selectioncontrol extends M.impl.Control {
    * @param {M.Featuer} mapeaFeature
    */
   getFeatureExtent() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getExtent();
+    return this.facadeControl.feature.getImpl().getFeature().getGeometry().getExtent();
   }
 
   /**

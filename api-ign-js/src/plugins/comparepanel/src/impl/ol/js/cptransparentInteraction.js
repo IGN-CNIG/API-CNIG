@@ -27,7 +27,7 @@ export default class TransparentInteraction extends ol.interaction.Pointer {
     this.radius = (optionsE.radius || 100);
     this.OLVersion = 'OL6';
 
-    const layer = [optionsE.layers].map((layer2) => layer2.getImpl().getOL3Layer())
+    const layer = [optionsE.layers].map((layer2) => layer2.getImpl().getLayer())
       .filter((layer3) => layer3 != null);
     this.addLayer(layer);
   }

@@ -33,6 +33,10 @@
     "ol": {
       "scripts": ["zoompanel.ol.min.js"],
       "styles": ["zoompanel.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["zoompanel.cesium.min.js"],
+      "styles": ["zoompanel.cesium.min.css"]
     }
   },
   "metadata": {

@@ -61,6 +61,14 @@
       "styles": [
         "vectorsmanagement.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "vectorsmanagement.cesium.min.js"
+      ],
+      "styles": [
+        "vectorsmanagement.cesium.min.css"
+      ]
     }
   },
   "metadata": {

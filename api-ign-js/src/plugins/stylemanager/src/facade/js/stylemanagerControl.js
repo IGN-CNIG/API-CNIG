@@ -18,8 +18,9 @@ export default class StyleManagerControl extends M.Control {
    */
   constructor(layer) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(StyleManagerImplControl)) {
-      M.exception(getValue('impl'));
+    if (M.utils.isUndefined(StyleManagerImplControl) || (M.utils.isObject(StyleManagerImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(StyleManagerImplControl)))) {
+      M.exception(getValue('exception.impl'));
     }
 
     // 2. implementation of this control

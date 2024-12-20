@@ -74,6 +74,10 @@
     "ol": {
       "scripts": ["ignsearch.ol.min.js"],
       "styles": ["ignsearch.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["ignsearch.cesium.min.js"],
+      "styles": ["ignsearch.cesium.min.css"]
     }
   },
   "metadata": {

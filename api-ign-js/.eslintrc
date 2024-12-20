@@ -3,6 +3,7 @@
   "globals": {
     "M": true,
     "ol": "true",
+    "cesium": "true",
     "Handlebars": true,
     "proj4": true,
     "ActiveXObject": true,

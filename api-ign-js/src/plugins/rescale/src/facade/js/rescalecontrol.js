@@ -19,7 +19,8 @@ export default class RescaleControl extends M.Control {
    * @api stable
    */
   constructor() {
-    if (M.utils.isUndefined(RescaleImplControl)) {
+    if (M.utils.isUndefined(RescaleImplControl) || (M.utils.isObject(RescaleImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(RescaleImplControl)))) {
       M.exception('La implementación usada no puede crear controles RescaleControl');
     }
     const impl = new RescaleImplControl();

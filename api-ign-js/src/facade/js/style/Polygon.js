@@ -33,6 +33,7 @@ class Polygon extends Simple {
    * - renderer: Renderizado.
    *     - property: Propiedades.
    *     - stoke (color y width).
+   * - extrudedHeight: Extrusión del polígono. Solo disponible para Cesium.
    * @param {Object} vendorOptions Opciones de proveedor para la biblioteca base.
    * @api
    */

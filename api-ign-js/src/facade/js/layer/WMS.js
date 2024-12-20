@@ -4,7 +4,7 @@
  */
 import WMSImpl from 'impl/layer/WMS';
 import {
-  isUndefined, isNullOrEmpty, isFunction, isString, normalize, sameUrl,
+  isUndefined, isNullOrEmpty, isFunction, isString, normalize, sameUrl, isObject,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
@@ -87,7 +87,7 @@ class WMS extends LayerBase {
    */
   constructor(userParameters, options = {}, vendorOptions = {}) {
     // checks if the implementation can create WMC layers
-    if (isUndefined(WMSImpl)) {
+    if (isUndefined(WMSImpl) || (isObject(WMSImpl) && isNullOrEmpty(Object.keys(WMSImpl)))) {
       Exception(getValue('exception').wms_method);
     }
     // checks if the param is null or empty
@@ -262,21 +262,26 @@ class WMS extends LayerBase {
     if (isNullOrEmpty(this.userMaxExtent)) {
       if (isNullOrEmpty(this.options.wmcMaxExtent)) {
         if (isNullOrEmpty(this.map_.userMaxExtent)) {
-          // maxExtent provided by the service
-          this.getCapabilities().then((capabilities) => {
-            const capabilitiesMaxExtent = this.getImpl()
-              .getExtentFromCapabilities(capabilities);
-            if (isNullOrEmpty(capabilitiesMaxExtent)) {
-              const projMaxExtent = this.map_.getProjection().getExtent();
-              this.maxExtent_ = projMaxExtent;
-            } else {
-              this.maxExtent_ = capabilitiesMaxExtent;
-            }
-            // this allows get the async extent by the capabilites
-            if (isFunction(callbackFn)) {
-              callbackFn(this.maxExtent_);
-            }
-          });
+          if (this.useCapabilities && !this.isReset_) {
+            // maxExtent provided by the service
+            this.getCapabilities().then((capabilities) => {
+              const capabilitiesMaxExtent = this.getImpl()
+                .getExtentFromCapabilities(capabilities);
+              if (isNullOrEmpty(capabilitiesMaxExtent)) {
+                const projMaxExtent = this.map_.getProjection().getExtent();
+                this.maxExtent_ = projMaxExtent;
+              } else {
+                this.maxExtent_ = capabilitiesMaxExtent;
+              }
+              // this allows get the async extent by the capabilites
+              if (isFunction(callbackFn)) {
+                callbackFn(this.maxExtent_);
+              }
+            });
+          } else {
+            const projMaxExtent = this.map_.getProjection().getExtent();
+            this.maxExtent_ = projMaxExtent;
+          }
         } else {
           this.maxExtent_ = this.map_.userMaxExtent;
         }

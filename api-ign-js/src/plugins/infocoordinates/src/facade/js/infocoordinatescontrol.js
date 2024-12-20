@@ -23,8 +23,10 @@ export default class InfocoordinatesControl extends M.Control {
    */
   constructor(decimalGEOcoord, decimalUTMcoord, helpUrl, order, outputDownloadFormat) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(InfocoordinatesImplControl)) {
-      M.exception(getValue('expection.impl'));
+    if (M.utils.isUndefined(InfocoordinatesImplControl)
+      || (M.utils.isObject(InfocoordinatesImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(InfocoordinatesImplControl)))) {
+      M.exception(getValue('exception.impl'));
     }
     // 2. implementation of this control
     const impl = new InfocoordinatesImplControl();
@@ -258,7 +260,7 @@ export default class InfocoordinatesControl extends M.Control {
   activateSelection() {
     const olMap = this.facadeMap_.getMapImpl();
     const facadeControl = this.facadeControl;
-    const drawingLayer = facadeControl.drawLayer.getImpl().getOL3Layer();
+    const drawingLayer = facadeControl.drawLayer.getImpl().getLayer();
 
     this.facadeControl.hideTextPoint();
 
@@ -354,7 +356,7 @@ export default class InfocoordinatesControl extends M.Control {
 
   displayPoint(numPoint) {
     const pos = this.layerFeatures.getImpl()
-      .getFeatures(true)[numPoint - 1].getImpl().getOLFeature().getProperties().coordinates;
+      .getFeatures(true)[numPoint - 1].getImpl().getFeature().getProperties().coordinates;
 
     // Modificamos el color del estilo de los puntos anteriores.
     if (numPoint > 1) {
@@ -659,9 +661,9 @@ export default class InfocoordinatesControl extends M.Control {
       // Creamos las etiquetas de los puntos
       for (let i = 0; i < this.layerFeatures.getImpl().getFeatures(true).length; i += 1) {
         const pos = this.layerFeatures.getImpl()
-          .getFeatures(true)[i].getImpl().getOLFeature().getProperties().coordinates;
+          .getFeatures(true)[i].getImpl().getFeature().getProperties().coordinates;
         const varUTM = this.calculateUTMcoordinates(i + 1);
-        const altitude = `${parseFloat(this.layerFeatures.getImpl().getFeatures(true)[i].getImpl().getOLFeature().getProperties().Altitude).toFixed(2)}`.replace('.', ',');
+        const altitude = `${parseFloat(this.layerFeatures.getImpl().getFeatures(true)[i].getImpl().getFeature().getProperties().Altitude).toFixed(2)}`.replace('.', ',');
         const textHTML = `<div class="m-popup m-collapsed" style="padding: 5px 5px 5px 5px !important;background-color: rgba(255, 255, 255, 0.7) !important;">
               <div class="contenedorCoordPunto">
                 <table>

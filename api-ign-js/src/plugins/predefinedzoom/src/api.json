@@ -27,6 +27,10 @@
     "ol": {
       "scripts": ["predefinedzoom.ol.min.js"],
       "styles": ["predefinedzoom.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["predefinedzoom.cesium.min.js"],
+      "styles": ["predefinedzoom.cesium.min.css"]
     }
   },
   "metadata": {

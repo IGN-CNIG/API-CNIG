@@ -15,17 +15,16 @@ export default class BufferControl extends M.Control {
    * @api stable
    */
   constructor(editLayer, featuresEdit) {
+    if (M.utils.isUndefined(BufferControlImpl) || (M.utils.isObject(BufferControlImpl)
+      && M.utils.isNullOrEmpty(Object.keys(BufferControlImpl)))) {
+      M.exception(getValue('exception_control'));
+    }
     const impl = new BufferControlImpl();
     super(impl, 'buffer');
     this.impl = impl;
     this.editLayer = editLayer;
 
     this.featuresEdit = featuresEdit;
-
-    // 1. checks if the implementation can create influenceareaControl
-    if (M.utils.isUndefined(BufferControlImpl)) {
-      M.exception(getValue('exception_control'));
-    }
   }
 
   /**

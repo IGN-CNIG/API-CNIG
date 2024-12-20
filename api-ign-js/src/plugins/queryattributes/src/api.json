@@ -37,6 +37,10 @@
     "ol": {
       "scripts": ["queryattributes.ol.min.js"],
       "styles": ["queryattributes.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["queryattributes.cesium.min.js"],
+      "styles": ["queryattributes.cesium.min.css"]
     }
   },
   "metadata": {

@@ -204,7 +204,7 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @api
    */
   setImplSource() {
-    this.facadeControl.drawLayer.getImpl().getOL3Layer().setSource(this.vectorSource);
+    this.facadeControl.drawLayer.getImpl().getLayer().setSource(this.vectorSource);
   }
 
   /**
@@ -216,7 +216,7 @@ export default class GeometryDrawControl extends M.impl.Control {
   getMapeaFeatureClone() {
     // eslint-disable-next-line no-underscore-dangle
     const implFeatureClone = this.facadeControl.feature.getImpl().olFeature_.clone();
-    const emphasis = M.impl.Feature.olFeature2Facade(implFeatureClone);
+    const emphasis = M.impl.Feature.feature2Facade(implFeatureClone);
     return emphasis;
   }
 
@@ -228,10 +228,10 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @param {M.Feature} feature
    */
   unsetAttributes(feature) {
-    const properties = feature.getImpl().getOLFeature().getProperties();
+    const properties = feature.getImpl().getFeature().getProperties();
     const keys = Object.keys(properties);
     keys.forEach((key) => {
-      if (key !== 'geometry') feature.getImpl().getOLFeature().unset(key);
+      if (key !== 'geometry') feature.getImpl().getFeature().unset(key);
     });
   }
 
@@ -244,7 +244,7 @@ export default class GeometryDrawControl extends M.impl.Control {
   activateSelection() {
     const olMap = this.facadeMap_.getMapImpl();
     const facadeControl = this.facadeControl;
-    const drawingLayer = facadeControl.drawLayer.getImpl().getOL3Layer();
+    const drawingLayer = facadeControl.drawLayer.getImpl().getLayer();
 
     this.facadeControl.hideTextPoint();
 
@@ -333,7 +333,7 @@ export default class GeometryDrawControl extends M.impl.Control {
    */
   featuresToFacade(implFeatures) {
     return implFeatures.map((feature) => {
-      return M.impl.Feature.olFeature2Facade(feature);
+      return M.impl.Feature.feature2Facade(feature);
     });
   }
 
@@ -370,7 +370,7 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @param {M.Featuer} mapeaFeature
    */
   getFeatureExtent() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getExtent();
+    return this.facadeControl.feature.getImpl().getFeature().getGeometry().getExtent();
   }
 
   /**
@@ -380,7 +380,7 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @api
    */
   getFeatureCoordinates() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getCoordinates();
+    return this.facadeControl.feature.getImpl().getFeature().getGeometry().getCoordinates();
   }
 
   /**
@@ -390,7 +390,7 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @api
    */
   getFeatureLength() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getLength();
+    return this.facadeControl.feature.getImpl().getFeature().getGeometry().getLength();
   }
 
   /**
@@ -400,7 +400,7 @@ export default class GeometryDrawControl extends M.impl.Control {
    * @api
    */
   getFeatureArea() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getArea();
+    return this.facadeControl.feature.getImpl().getFeature().getGeometry().getArea();
   }
 
   /**

@@ -21,6 +21,10 @@
     "ol": {
       "scripts": ["beautytoc.ol.min.js"],
       "styles": ["beautytoc.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["beautytoc.cesium.min.js"],
+      "styles": ["beautytoc.cesium.min.css"]
     }
   },
   "metadata": {

@@ -78,6 +78,14 @@
       "styles": [
         "locator.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "locator.cesium.min.js"
+      ],
+      "styles": [
+        "locator.cesium.min.css"
+      ]
     }
   },
   "metadata": {

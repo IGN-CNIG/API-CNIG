@@ -2,7 +2,7 @@
  * @module M/plugin/Attributions
  */
 import '../assets/css/attributions';
-import AttributionsImpl from '../../impl/ol/js/attributions';
+import AttributionsImpl from 'impl/attributions';
 import AttributionsControl from './attributionscontrol';
 import { intersect } from './filter';
 import { getValue } from './i18n/language';
@@ -232,6 +232,10 @@ export default class Attributions extends M.Plugin {
    */
   addTo(map) {
     this.map_ = map;
+    if (M.utils.isUndefined(AttributionsImpl) || (M.utils.isObject(AttributionsImpl)
+      && M.utils.isNullOrEmpty(Object.keys(AttributionsImpl)))) {
+      M.exception(getValue('exception.impl'));
+    }
     this.impl_ = new AttributionsImpl(map);
     this.control_ = new AttributionsControl(this.position_, this.closePanel);
     this.controls_.push(this.control_);

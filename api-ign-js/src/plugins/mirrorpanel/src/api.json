@@ -76,6 +76,10 @@
     "ol": {
       "scripts": ["mirrorpanel.ol.min.js"],
       "styles": ["mirrorpanel.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["mirrorpanel.cesium.min.js"],
+      "styles": ["mirrorpanel.cesium.min.css"]
     }
   },
   "metadata": {

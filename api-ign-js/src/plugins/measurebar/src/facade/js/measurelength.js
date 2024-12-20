@@ -1,5 +1,5 @@
+import MeasureLengthImpl from 'impl/measurelength';
 import Measure from './measurebase';
-import MeasureLengthImpl from '../../impl/ol/js/measurelength';
 import measurelengthHTML from '../../templates/measurelength';
 import { getValue } from './i18n/language';
 
@@ -15,16 +15,17 @@ import { getValue } from './i18n/language';
 
 export default class MeasureLength extends Measure {
   constructor(order) {
+    // checks if the implementation can create WMC layers
+    if (M.utils.isUndefined(MeasureLengthImpl) || (M.utils.isObject(MeasureLengthImpl)
+      && M.utils.isNullOrEmpty(Object.keys(MeasureLengthImpl)))) {
+      M.Exception(getValue('exception.impl_length'));
+    }
+
     // implementation of this control
     const impl = new MeasureLengthImpl();
 
     // calls the super constructor
     super(impl, measurelengthHTML, MeasureLength.NAME, order);
-
-    // checks if the implementation can create WMC layers
-    if (M.utils.isUndefined(MeasureLengthImpl)) {
-      M.Exception(getValue('exception.impl_length'));
-    }
   }
 
   /**

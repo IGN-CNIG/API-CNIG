@@ -247,7 +247,7 @@ class LayerGroup extends Layer {
         this.setZIndexChildren();
       } */
 
-      this.layersCollection.push(impl.getOL3Layer());
+      this.layersCollection.push(impl.getLayer());
     }
 
     return layer;
@@ -262,7 +262,7 @@ class LayerGroup extends Layer {
    */
   removeLayer(layer) {
     this.removeLayers_(layer);
-    this.layersCollection.remove(layer.getImpl().getOL3Layer());
+    this.layersCollection.remove(layer.getImpl().getLayer());
   }
 
   /**

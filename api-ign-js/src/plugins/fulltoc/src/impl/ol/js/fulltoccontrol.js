@@ -122,7 +122,7 @@ export default class FullTOCControl extends M.impl.Control {
    *
    */
   getGeoJSONExtent(layer) {
-    return layer.getImpl().getOL3Layer().getSource().getExtent();
+    return layer.getImpl().getLayer().getSource().getExtent();
   }
 
   /**

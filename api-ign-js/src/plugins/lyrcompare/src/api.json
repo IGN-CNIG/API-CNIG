@@ -63,6 +63,10 @@
     "ol": {
       "scripts": ["lyrcompare.ol.min.js"],
       "styles": ["lyrcompare.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["lyrcompare.cesium.min.js"],
+      "styles": ["lyrcompare.cesium.min.css"]
     }
   },
   "metadata": {

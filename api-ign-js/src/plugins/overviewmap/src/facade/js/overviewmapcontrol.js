@@ -17,7 +17,8 @@ export default class OverviewMapControl extends M.Control {
    * @api stable
    */
   constructor(options = {}, vendorOptions = {}) {
-    if (M.utils.isUndefined(OverviewMapImplControl)) {
+    if (M.utils.isUndefined(OverviewMapImplControl) || (M.utils.isObject(OverviewMapImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(OverviewMapImplControl)))) {
       M.exception(getValue('exception.impl'));
     }
     const impl = new OverviewMapImplControl(options, vendorOptions);

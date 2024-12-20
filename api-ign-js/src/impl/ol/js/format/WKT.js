@@ -91,7 +91,7 @@ class WKT extends MObject {
     const opts = getOptsProjection(options);
     const { id } = options;
     const olFeature = this.formatter_.readFeatureFromText(wkt, opts);
-    const mFeature = FeatureImpl.olFeature2Facade(olFeature);
+    const mFeature = FeatureImpl.feature2Facade(olFeature);
     if (id != null) {
       mFeature.setId(id);
     }
@@ -117,7 +117,7 @@ class WKT extends MObject {
     const opts = getOptsProjection(options);
     const { ids } = options;
     const olFeatures = this.formatter_.readFeaturesFromText(wktCollection, opts);
-    const mFeatures = olFeatures.map((f) => FeatureImpl.olFeature2Facade(f));
+    const mFeatures = olFeatures.map((f) => FeatureImpl.feature2Facade(f));
     if (ids != null && ids.length === mFeatures.length) {
       mFeatures.forEach((mFeature, index) => mFeature.setId(ids[index]));
     }
@@ -141,7 +141,7 @@ class WKT extends MObject {
     */
   write(feature, options = {}) {
     const opts = getOptsProjection(options);
-    const olFeature = FeatureImpl.facade2OLFeature(feature);
+    const olFeature = FeatureImpl.facade2Feature(feature);
     const wkt = this.formatter_.writeFeatureText(olFeature, opts);
     return wkt;
   }
@@ -183,7 +183,7 @@ class WKT extends MObject {
     */
   writeCollection(features, options = {}) {
     const opts = getOptsProjection(options);
-    const olFeatures = features.map((f) => FeatureImpl.facade2OLFeature(f));
+    const olFeatures = features.map((f) => FeatureImpl.facade2Feature(f));
     const wkt = this.formatter_.writeFeaturesText(olFeatures, opts);
     return wkt;
   }

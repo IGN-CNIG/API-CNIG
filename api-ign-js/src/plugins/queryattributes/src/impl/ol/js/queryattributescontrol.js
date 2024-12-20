@@ -46,7 +46,7 @@ export default class QueryAttributesControl extends M.impl.Control {
     const drawLayer = this.facadeMap.getLayers().find((layer) => layer.name === '__draw__');
     drawLayer.clear();
     const draw = new ol.interaction.Draw({
-      source: drawLayer.getImpl().getOL3Layer().getSource(),
+      source: drawLayer.getImpl().getLayer().getSource(),
       type: 'Polygon',
       stopClick: true,
       style: new ol.style.Style({
@@ -97,7 +97,7 @@ export default class QueryAttributesControl extends M.impl.Control {
 
   getPolygonFromDrawnFeature() {
     const drawLayer = this.facadeMap.getLayers().find((layer) => layer.name === '__draw__');
-    const olFeature = drawLayer.getImpl().getOL3Layer().getSource().getFeatures()[0];
+    const olFeature = drawLayer.getImpl().getLayer().getSource().getFeatures()[0];
     const feature = new M.Feature('featuredraw.1', {
       geometry: {
         coordinates: olFeature.getGeometry().getCoordinates(),
@@ -110,7 +110,7 @@ export default class QueryAttributesControl extends M.impl.Control {
   }
 
   getLayerExtent(layer) {
-    return layer.getImpl().getOL3Layer().getSource().getExtent();
+    return layer.getImpl().getLayer().getSource().getExtent();
   }
 
   getGeomExtent(geom, coordinates) {
@@ -195,8 +195,22 @@ export default class QueryAttributesControl extends M.impl.Control {
    * @api
    * @param {M.layer} layer Layer
    * @returns {ol.layer} OL layer
+   * @deprecated
    */
   getOL3Layer(layer) {
     return layer.getImpl().getOL3Layer();
+  }
+
+  /**
+   * Get OL layer
+   *
+   * @public
+   * @function
+   * @api
+   * @param {M.layer} layer Layer
+   * @returns {ol.layer} OL layer
+   */
+  getLayer(layer) {
+    return layer.getImpl().getLayer();
   }
 }

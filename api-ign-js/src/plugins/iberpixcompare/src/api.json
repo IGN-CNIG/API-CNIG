@@ -23,6 +23,10 @@
     "ol": {
       "scripts": ["iberpixcompare.ol.min.js"],
       "styles": ["iberpixcompare.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["iberpixcompare.cesium.min.js"],
+      "styles": ["iberpixcompare.cesium.min.css"]
     }
   },
   "metadata": {

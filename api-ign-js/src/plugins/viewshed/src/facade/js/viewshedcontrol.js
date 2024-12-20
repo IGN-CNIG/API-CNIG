@@ -17,6 +17,10 @@ export default class ViewShedControl extends M.Control {
    * @api stable
    */
   constructor(parameters) {
+    if (M.utils.isUndefined(ViewShedImplControl) || (M.utils.isObject(ViewShedImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(ViewShedImplControl)))) {
+      M.exception(getValue('exception.impl'));
+    }
     const impl = new ViewShedImplControl();
     super(impl, 'ViewShed');
 

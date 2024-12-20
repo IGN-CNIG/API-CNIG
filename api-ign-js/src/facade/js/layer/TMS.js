@@ -3,7 +3,7 @@
  */
 import TMSImpl from 'impl/layer/TMS';
 import LayerBase from './Layer';
-import { isUndefined, isNullOrEmpty } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, isObject } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
@@ -80,7 +80,7 @@ class TMS extends LayerBase {
    */
   constructor(userParameters, options = {}, vendorOptions = {}) {
     // checks if the implementation can create TMS
-    if (isUndefined(TMSImpl)) {
+    if (isUndefined(TMSImpl) || (isObject(TMSImpl) && isNullOrEmpty(Object.keys(TMSImpl)))) {
       Exception(getValue('exception').tms_method);
     }
 

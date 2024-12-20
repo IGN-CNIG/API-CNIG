@@ -18,6 +18,7 @@ class RenderFeature extends Base {
    * @api
    */
   constructor() {
+    /* CONTROLAR UNDEFINED */
     /**
      * Implementación de la clase.
      * @public

@@ -16,6 +16,10 @@
     "ol": {
       "scripts": ["zoomextent.ol.min.js"],
       "styles": ["zoomextent.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["zoomextent.cesium.min.js"],
+      "styles": ["zoomextent.cesium.min.css"]
     }
   },
   "metadata": {

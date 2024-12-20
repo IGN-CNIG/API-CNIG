@@ -197,7 +197,7 @@ class KML extends MObject {
               },
               properties: olFeature.getProperties(),
             });
-            feature.getImpl().getOLFeature().setStyle(olFeature.getStyle());
+            feature.getImpl().getFeature().setStyle(olFeature.getStyle());
             return feature;
           });
 

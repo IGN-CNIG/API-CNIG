@@ -168,7 +168,7 @@ class GenericVector extends Vector {
     // ? Capas con features ya cargados
     if (source.getFeatures().length > 0 && source.getState() === 'ready') {
       const features = source.getFeatures().map((f) => {
-        return Feature.olFeature2Facade(f);
+        return Feature.feature2Facade(f);
       });
       this.loaded_ = true;
       this.facadeLayer_.addFeatures(features);
@@ -189,7 +189,7 @@ class GenericVector extends Vector {
       if (source.getFeatures) {
         const features = [];
         source.getFeatures().forEach((f, i) => {
-          features.push(Feature.olFeature2Facade(f));
+          features.push(Feature.feature2Facade(f));
         });
         if (features.length > 0) {
           this.loaded_ = true;
@@ -213,7 +213,7 @@ class GenericVector extends Vector {
    * @api stable
    */
   redraw() {
-    const olLayer = this.getOL3Layer();
+    const olLayer = this.getLayer();
     if (!isNullOrEmpty(olLayer)) {
       const olSource = olLayer.getSource();
       /**  if (olSource instanceof OLSourceCluster) {
@@ -224,7 +224,7 @@ class GenericVector extends Vector {
       olFeatures.forEach(olSource.removeFeature, olSource);
 
       const features = this.facadeLayer_.getFeatures();
-      olSource.addFeatures(features.map(Feature.facade2OLFeature));
+      olSource.addFeatures(features.map(Feature.facade2Feature));
     }
   }
 

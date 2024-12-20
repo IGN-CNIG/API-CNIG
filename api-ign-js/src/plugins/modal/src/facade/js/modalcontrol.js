@@ -18,7 +18,8 @@ export default class ModalControl extends M.Control {
    * @api stable
    */
   constructor(url) {
-    if (M.utils.isUndefined(ModalImplControl)) {
+    if (M.utils.isUndefined(ModalImplControl) || (M.utils.isObject(ModalImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(ModalImplControl)))) {
       M.exception(getValue('exception_modalcontrol'));
     }
     const impl = new ModalImplControl();

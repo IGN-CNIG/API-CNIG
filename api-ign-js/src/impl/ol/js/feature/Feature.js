@@ -57,8 +57,20 @@ class Feature {
    * @function
    * @return {OLFeature} Devuelve el objeto openlayers del objeto geográfico.
    * @api stable
+   * @deprecated
    */
   getOLFeature() {
+    return this.olFeature_;
+  }
+
+  /**
+   * Este método devuelve el objeto openlayers del objeto geográfico.
+   * @public
+   * @function
+   * @return {OLFeature} Devuelve el objeto openlayers del objeto geográfico.
+   * @api stable
+   */
+  getFeature() {
     return this.olFeature_;
   }
 
@@ -69,8 +81,26 @@ class Feature {
    * @param {Boolean} canBeModified Define si puede ser modificable, genera un nuevo id.
    * @function
    * @api stable
+   * @deprecated
    */
   setOLFeature(olFeature, canBeModified) {
+    if (!isNullOrEmpty(olFeature)) {
+      this.olFeature_ = olFeature;
+      if (canBeModified !== false && isNullOrEmpty(this.olFeature_.getId())) {
+        this.olFeature_.setId(generateRandom('mapea_feature_'));
+      }
+    }
+  }
+
+  /**
+   * Este método sobrescribe el objeto geográfico de Openlayers.
+   * @public
+   * @param {OLFeature} olFeature Nuevo objeto geográfico.
+   * @param {Boolean} canBeModified Define si puede ser modificable, genera un nuevo id.
+   * @function
+   * @api stable
+   */
+  setFeature(olFeature, canBeModified) {
     if (!isNullOrEmpty(olFeature)) {
       this.olFeature_ = olFeature;
       if (canBeModified !== false && isNullOrEmpty(this.olFeature_.getId())) {
@@ -141,12 +171,33 @@ class Feature {
    * @param {boolean} canBeModified Define si puede ser modificado.
    * @return {M.Feature} Retorna "M.Feature" modificado.
    * @api stable
+   * @deprecated
    */
   static olFeature2Facade(olFeature, canBeModified) {
     let facadeFeature = null;
     if (!isNullOrEmpty(olFeature)) {
       facadeFeature = new FacadeFeature();
       facadeFeature.getImpl().setOLFeature(olFeature, canBeModified);
+    }
+    return facadeFeature;
+  }
+
+  /**
+   * Este método de la clase transforma "OLFeature" (Objeto geográfico de Openlayer)
+   * a "M.Feature" (Objeto geográfico de API-CNIG).
+   *
+   * @public
+   * @function
+   * @param {OLFeature} olFeature  "OLFeature".
+   * @param {boolean} canBeModified Define si puede ser modificado.
+   * @return {M.Feature} Retorna "M.Feature" modificado.
+   * @api stable
+   */
+  static feature2Facade(olFeature, canBeModified) {
+    let facadeFeature = null;
+    if (!isNullOrEmpty(olFeature)) {
+      facadeFeature = new FacadeFeature();
+      facadeFeature.getImpl().setFeature(olFeature, canBeModified);
     }
     return facadeFeature;
   }
@@ -162,11 +213,30 @@ class Feature {
    * @param {ol.Projection} mapProjection Proyección del mapa.
    * @return {M.Feature} Retorna "M.Feature" modificado.
    * @api stable
+   * @deprecated
    */
   static olRenderFeature2Facade(olRenderFeature, tileProjection, mapProjection) {
     const olFeature = ImplUtils
       .olRenderFeature2olFeature(olRenderFeature, tileProjection, mapProjection);
     return Feature.olFeature2Facade(olFeature);
+  }
+
+  /**
+   * Este método de la clase transforma "OLRenderFeature" (Objeto geográfico de Openlayer)
+   * a "M.Feature" (Objeto geográfico de API-CNIG).
+   *
+   * @public
+   * @function
+   * @param { RenderFeature } olRenderFeature "OLFeature".
+   * @param {ol.Projection} tileProjection Proyección de la tesela.
+   * @param {ol.Projection} mapProjection Proyección del mapa.
+   * @return {M.Feature} Retorna "M.Feature" modificado.
+   * @api stable
+   */
+  static RenderFeature2Facade(olRenderFeature, tileProjection, mapProjection) {
+    const olFeature = ImplUtils
+      .olRenderFeature2olFeature(olRenderFeature, tileProjection, mapProjection);
+    return Feature.feature2Facade(olFeature);
   }
 
   /**
@@ -178,6 +248,21 @@ class Feature {
    * @param {M.Feature} feature "M.Feature".
    * @return {OLFeature} Retorna "OLFeature".
    * @api stable
+   */
+  static facade2Feature(feature) {
+    return feature.getImpl().getFeature();
+  }
+
+  /**
+   * Este método de la clase transforma "M.Feature" (Objeto geográfico de API-CNIG)
+   * a "OLFeature" (Objeto geográfico de Openlayer).
+   *
+   * @public
+   * @function
+   * @param {M.Feature} feature "M.Feature".
+   * @return {OLFeature} Retorna "OLFeature".
+   * @api stable
+   * @deprecated
    */
   static facade2OLFeature(feature) {
     return feature.getImpl().getOLFeature();
@@ -291,19 +376,21 @@ class Feature {
    */
   getCentroid() {
     let olCentroid;
-    const olFeature = this.getOLFeature();
+    let centroid;
+    const olFeature = this.getFeature();
     const geometry = olFeature.getGeometry();
     const center = ImplUtils.getCentroid(geometry);
     if (!isNullOrEmpty(center)) {
-      const geom = new OLGeomPoint();
-      geom.setCoordinates(center);
+      const geom = new OLGeomPoint([center[0], center[1]]);
       olCentroid = new OLFeature({
         geometry: geom,
         name: 'centroid',
       });
     }
-    olCentroid = olCentroid || Feature.olFeature2Facade(olCentroid);
-    return olCentroid;
+    if (!isNullOrEmpty(olCentroid)) {
+      centroid = Feature.feature2Facade(olCentroid);
+    }
+    return centroid;
   }
 
   /**

@@ -17,7 +17,9 @@ export default class PredefinedZoomControl extends M.Control {
    * @api stable
    */
   constructor(savedZooms) {
-    if (M.utils.isUndefined(PredefinedZoomImplControl)) {
+    if (M.utils.isUndefined(PredefinedZoomImplControl)
+      || (M.utils.isObject(PredefinedZoomImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(PredefinedZoomImplControl)))) {
       M.exception(getValue('exception_predefinedzoomcontrol'));
     }
     const impl = new PredefinedZoomImplControl();

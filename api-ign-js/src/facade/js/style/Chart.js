@@ -6,8 +6,16 @@ import StyleFeature from './Feature';
 import ChartVariable from '../chart/Variable';
 import * as ChartTypes from '../chart/types';
 import {
-  isArray, isNullOrEmpty, extendsObj, stringifyFunctions, defineFunctionFromString,
+  isArray,
+  isNullOrEmpty,
+  extendsObj,
+  stringifyFunctions,
+  defineFunctionFromString,
+  isObject,
+  isUndefined,
 } from '../util/Utils';
+import Exception from '../exception/exception';
+import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
@@ -74,6 +82,10 @@ class Chart extends StyleFeature {
       options.scheme = Chart.DEFAULT.scheme;
     }
 
+    if (isUndefined(ChartImpl) || (isObject(ChartImpl)
+      && isNullOrEmpty(Object.keys(ChartImpl)))) {
+      Exception(getValue('exception').chart_method);
+    }
     const impl = new ChartImpl(options);
     // calls the super constructor
     super(options, impl);

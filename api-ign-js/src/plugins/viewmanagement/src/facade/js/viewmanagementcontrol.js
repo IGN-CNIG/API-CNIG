@@ -1,9 +1,8 @@
 /**
  * @module M/control/ViewManagementControl
  */
-
+import ViewManagementImpl from 'impl/viewmanagement';
 import template from '../../templates/viewmanagement';
-import ViewManagementImpl from '../../impl/ol/js/viewmanagement';
 import { getValue } from './i18n/language';
 import ViewHistoryControl from './viewhistorycontrol';
 import ZoomPanelControl from './zoompanelcontrol';
@@ -20,7 +19,8 @@ export default class ViewManagementControl extends M.Control {
    * @api
    */
   constructor(isDraggable, predefinedzoom, zoomextent, viewhistory, zoompanel, order) {
-    if (M.utils.isUndefined(ViewManagementImpl)) {
+    if (M.utils.isUndefined(ViewManagementImpl) || (M.utils.isObject(ViewManagementImpl)
+      && M.utils.isNullOrEmpty(Object.keys(ViewManagementImpl)))) {
       M.exception(getValue('exception.impl'));
     }
 

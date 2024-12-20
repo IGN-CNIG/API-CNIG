@@ -18,8 +18,9 @@ export default class ContactLinkControl extends M.Control {
    */
   constructor(values) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(ContactLinkImplControl)) {
-      M.exception(getValue('exceptions.impl'));
+    if (M.utils.isUndefined(ContactLinkImplControl) || (M.utils.isObject(ContactLinkImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(ContactLinkImplControl)))) {
+      M.exception(getValue('exception.impl'));
     }
     // 2. implementation of this control
     const impl = new ContactLinkImplControl();

@@ -2,7 +2,7 @@
  * @module M/control/XYLocatorControl
  */
 
-import XYLocatorImplControl from '../../impl/ol/js/xylocatorcontrol';
+import XYLocatorImplControl from 'impl/xylocatorcontrol';
 import template from '../../templates/xylocator';
 import projections from '../../templates/options';
 import { getValue } from './i18n/language';
@@ -19,7 +19,8 @@ export default class XYLocatorControl extends M.Control {
    * @api
    */
   constructor(options) {
-    if (M.utils.isUndefined(XYLocatorImplControl)) {
+    if (M.utils.isUndefined(XYLocatorImplControl) || (M.utils.isObject(XYLocatorImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(XYLocatorImplControl)))) {
       M.exception(getValue('exception.impl'));
     }
     const impl = new XYLocatorImplControl();

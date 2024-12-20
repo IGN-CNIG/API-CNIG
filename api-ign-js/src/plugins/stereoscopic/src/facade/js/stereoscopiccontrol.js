@@ -25,7 +25,8 @@ export default class StereoscopicControl extends M.Control {
     maxMaginification,
   ) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(StereoscopicImplControl)) {
+    if (M.utils.isUndefined(StereoscopicImplControl) || (M.utils.isObject(StereoscopicImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(StereoscopicImplControl)))) {
       M.exception(getValue('exception.impl'));
     }
     // 2. implementation of this control
@@ -275,7 +276,7 @@ export default class StereoscopicControl extends M.Control {
     };
 
     const progress = new Progress(document.getElementById('progress'));
-    const auxThreeEvtSource = map.getLayers()[0].getImpl().getOL3Layer().getSource();
+    const auxThreeEvtSource = map.getLayers()[0].getImpl().getLayer().getSource();
     auxThreeEvtSource.on('tileloadstart', function () {
       progress.addLoading();
     });

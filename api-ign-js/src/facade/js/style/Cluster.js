@@ -5,8 +5,10 @@ import ClusterImpl from 'impl/style/Cluster';
 import Style from './Style';
 import Composite from './Composite';
 import {
-  isNullOrEmpty, extendsObj, stringifyFunctions, defineFunctionFromString,
+  isNullOrEmpty, extendsObj, stringifyFunctions, defineFunctionFromString, isUndefined, isObject,
 } from '../util/Utils';
+import Exception from '../exception/exception';
+import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
@@ -43,6 +45,10 @@ class Cluster extends Composite {
    * @api
    */
   constructor(options = {}, optsVendor = {}) {
+    if (isUndefined(ClusterImpl) || (isObject(ClusterImpl)
+      && isNullOrEmpty(Object.keys(ClusterImpl)))) {
+      Exception(getValue('exception').cluster_method);
+    }
     const impl = new ClusterImpl(options, optsVendor);
 
     // calls the super constructor

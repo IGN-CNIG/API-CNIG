@@ -16,7 +16,8 @@ export default class CalendarControl extends M.Control {
    * @api stable
    */
   constructor() {
-    if (M.utils.isUndefined(CalendarImplControl)) {
+    if (M.utils.isUndefined(CalendarImplControl) || (M.utils.isObject(CalendarImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(CalendarImplControl)))) {
       M.exception(getValue('exception_calendarcontrol'));
     }
     const impl = new CalendarImplControl();

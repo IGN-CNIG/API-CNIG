@@ -164,7 +164,7 @@ class Cluster extends Style {
    * @export
    */
   clusterize_(features) {
-    const olFeatures = features.map((f) => f.getImpl().getOLFeature());
+    const olFeatures = features.map((f) => f.getImpl().getFeature());
     this.clusterLayer_ = new AnimatedCluster({
       name: 'Cluster',
       source: new OLSourceCluster({
@@ -184,13 +184,13 @@ class Cluster extends Style {
       this.clusterLayer_.set('animationDuration', undefined);
     }
     this.clusterLayer_.setZIndex(99999);
-    const ol3Layer = this.layer_.getImpl().getOL3Layer();
+    const ol3Layer = this.layer_.getImpl().getLayer();
     if (!(ol3Layer instanceof AnimatedCluster)) {
       this.oldOL3Layer_ = ol3Layer;
     }
     this.clusterLayer_.setMaxResolution(this.oldOL3Layer_.getMaxResolution());
     this.clusterLayer_.setMinResolution(this.oldOL3Layer_.getMinResolution());
-    this.layer_.getImpl().setOL3Layer(this.clusterLayer_);
+    this.layer_.getImpl().setLayer(this.clusterLayer_);
 
     if (isNullOrEmpty(this.options_.ranges)) {
       this.options_.ranges = this.getDefaultRanges_();
@@ -373,11 +373,11 @@ class Cluster extends Style {
       });
 
       const coordinates = hoveredFeatures
-        .map((f) => f.getImpl().getOLFeature().getGeometry().getCoordinates());
+        .map((f) => f.getImpl().getFeature().getGeometry().getCoordinates());
       const convexHull = coordinatesConvexHull(coordinates);
       if (convexHull.length > 2) {
         const convexOlFeature = new OLFeature(new OLGeomPolygon([convexHull]));
-        const convexFeature = Feature.olFeature2Facade(convexOlFeature);
+        const convexFeature = Feature.feature2Facade(convexOlFeature);
         if (isNullOrEmpty(this.convexHullLayer_)) {
           this.convexHullLayer_ = new LayerVector({
             name: `cluster_cover_${this.layer_.name}`,
@@ -540,7 +540,7 @@ class Cluster extends Style {
     this.clearConvexHull();
     // if (!isNullOrEmpty(evt.selected)) {
     //   let olFeatures = evt.selected[0].get('features');
-    //   let features = olFeatures.map(M.impl.Feature.olFeature2Facade);
+    //   let features = olFeatures.map(M.impl.Feature.feature2Facade);
     //   this.layer_.fire(M.evt.SELECT_FEATURES, [features, evt]);
     // }
   }
@@ -553,7 +553,7 @@ class Cluster extends Style {
    */
   unapply() {
     if (!isNullOrEmpty(this.clusterLayer_)) {
-      this.layer_.getImpl().setOL3Layer(this.oldOL3Layer_);
+      this.layer_.getImpl().setLayer(this.oldOL3Layer_);
       this.oldOL3Layer_.setMaxResolution(this.clusterLayer_.getMaxResolution());
       this.oldOL3Layer_.setMinResolution(this.clusterLayer_.getMinResolution());
       this.removeCoverInteraction_();

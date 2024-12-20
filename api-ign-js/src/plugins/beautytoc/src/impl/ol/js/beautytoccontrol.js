@@ -88,12 +88,12 @@ export default class BeautyTOCControl extends M.impl.Control {
   }
 
   isLayerLoaded(layer) {
-    return layer.getImpl().getOL3Layer() !== null
-      && layer.getImpl().getOL3Layer().getSource() !== null;
+    return layer.getImpl().getLayer() !== null
+      && layer.getImpl().getLayer().getSource() !== null;
   }
 
   isLayerAvailable(layer) {
-    const extent = layer.getImpl().getOL3Layer().getExtent();
+    const extent = layer.getImpl().getLayer().getExtent();
     const bbox = this.facadeMap_.getBbox();
     return ol.extent.intersects([bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max], extent);
   }

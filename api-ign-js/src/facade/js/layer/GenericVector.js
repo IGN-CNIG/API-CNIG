@@ -55,6 +55,9 @@ class GenericVector extends Vector {
    * - maxScale: Escala máxima.
    * - minResolution: Resolución mínima.
    * - maxResolution: Resolución máxima.
+   * - height: Define la altura del objeto geográfico. Puede ser un número o una propiedad.
+   *   Si se define la altura será constante para todos los puntos del objeto geográfico.
+   *   Solo disponible para Cesium.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import Vector from 'ol/source/Vector';
@@ -98,7 +101,8 @@ class GenericVector extends Vector {
     opts.userMaxExtent = params.maxExtent || opts.userMaxExtent;
 
     // checks if the implementation can create Generic layers
-    if (isUndefined(GenericVectorImpl)) {
+    if (isUndefined(GenericVectorImpl) || (isObject(GenericVectorImpl)
+      && isNullOrEmpty(Object.keys(GenericVectorImpl)))) {
       Exception(getValue('exception').generic_method);
     }
 

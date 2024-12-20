@@ -57,6 +57,10 @@
     "ol": {
       "scripts": ["sharemap.ol.min.js"],
       "styles": ["sharemap.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["sharemap.cesium.min.js"],
+      "styles": ["sharemap.cesium.min.css"]
     }
   },
   "metadata": {

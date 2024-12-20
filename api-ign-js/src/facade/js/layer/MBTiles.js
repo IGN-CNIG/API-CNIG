@@ -4,7 +4,7 @@
 import MBTilesImpl from 'impl/layer/MBTiles';
 import LayerBase from './Layer';
 import * as LayerType from './Type';
-import { isUndefined } from '../util/Utils';
+import { isUndefined, isObject, isNullOrEmpty } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 import * as parameter from '../parameter/parameter';
@@ -70,7 +70,8 @@ class MBTiles extends LayerBase {
    */
   constructor(userParameters, options = {}, vendorOptions = {}) {
     // checks if the implementation can create MBTiles
-    if (isUndefined(MBTilesImpl)) {
+    if (isUndefined(MBTilesImpl) || (isObject(MBTilesImpl)
+      && isNullOrEmpty(Object.keys(MBTilesImpl)))) {
       Exception(getValue('exception').mbtiles_method);
     }
 

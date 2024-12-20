@@ -3,7 +3,7 @@
  */
 import XYZImpl from 'impl/layer/XYZ';
 import LayerBase from './Layer';
-import { isUndefined } from '../util/Utils';
+import { isUndefined, isObject, isNullOrEmpty } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as parameter from '../parameter/parameter';
 import * as LayerType from './Type';
@@ -70,7 +70,7 @@ class XYZ extends LayerBase {
    */
   constructor(userParameters, options = {}, vendorOptions = {}) {
     // checks if the implementation can create XYZ
-    if (isUndefined(XYZImpl)) {
+    if (isUndefined(XYZImpl) || (isObject(XYZImpl) && isNullOrEmpty(Object.keys(XYZImpl)))) {
       Exception(getValue('exception').xyz_method);
     }
 

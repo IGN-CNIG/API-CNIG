@@ -20,7 +20,8 @@ export default class HelpControl extends M.Control {
    * @api
    */
   constructor(options) {
-    if (M.utils.isUndefined(HelpImplControl)) {
+    if (M.utils.isUndefined(HelpImplControl) || (M.utils.isObject(HelpImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(HelpImplControl)))) {
       M.exception(getValue('exception.impl'));
     }
     const impl = new HelpImplControl();

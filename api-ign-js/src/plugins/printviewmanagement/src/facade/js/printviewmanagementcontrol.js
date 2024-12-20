@@ -1,9 +1,8 @@
 /**
  * @module M/control/PrintViewManagementControl
  */
-
+import PrintViewManagementImpl from 'impl/printviewmanagement';
 import template from '../../templates/printviewmanagement';
-import PrintViewManagementImpl from '../../impl/ol/js/printviewmanagement';
 import { getValue } from './i18n/language';
 import PrinterMapControl from './printermapcontrol';
 import GeorefImageEpsgControl from './georefimageepsgcontrol';
@@ -24,7 +23,8 @@ export default class PrintViewManagementControl extends M.Control {
     isDraggable, georefImageEpsg, georefImage, printermap, order, map,
     serverUrl, printStatusUrl, defaultOpenControl, useProxy, statusProxy,
   }) {
-    if (M.utils.isUndefined(PrintViewManagementImpl)) {
+    if (M.utils.isUndefined(PrintViewManagementImpl) || (M.utils.isObject(PrintViewManagementImpl)
+      && M.utils.isNullOrEmpty(Object.keys(PrintViewManagementImpl)))) {
       M.exception(getValue('exception.impl'));
     }
 

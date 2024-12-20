@@ -52,7 +52,7 @@ class Simple extends Style {
   applyToLayer(layer) {
     this.layer_ = layer;
     // we will apply the style on the ol3 layer
-    const olLayer = layer.getImpl().getOL3Layer();
+    const olLayer = layer.getImpl().getLayer();
     if (!isNullOrEmpty(olLayer)) {
       olLayer.setStyle(this.olStyleFn_);
       // layer.getFeatures().forEach(this.applyToFeature, this);
@@ -68,7 +68,7 @@ class Simple extends Style {
    * @api stable
    */
   applyToFeature(feature) {
-    feature.getImpl().getOLFeature().setStyle(this.olStyleFn_);
+    feature.getImpl().getFeature().setStyle(this.olStyleFn_);
   }
 
   /**
@@ -86,7 +86,7 @@ class Simple extends Style {
     let attrFeature = attr;
     if (isFunction(attr)) {
       if (olFeature instanceof OLFeature || olFeature instanceof RenderFeature) {
-        const feature = Feature.olFeature2Facade(olFeature, false);
+        const feature = Feature.feature2Facade(olFeature, false);
         attrFeature = attr(feature, isNullOrEmpty(layer) ? undefined : layer.getImpl().getMap());
         if (isNullOrEmpty(attrFeature)) return undefined;
       } else {
@@ -94,7 +94,7 @@ class Simple extends Style {
       }
     } else if (templateRegexp.test(attr)) {
       if (olFeature instanceof OLFeature || olFeature instanceof RenderFeature) {
-        const feature = Feature.olFeature2Facade(olFeature, false);
+        const feature = Feature.feature2Facade(olFeature, false);
         const keyFeature = attr.replace(templateRegexp, '$1');
         attrFeature = feature.getAttribute(keyFeature);
         if (isNullOrEmpty(attrFeature)) return undefined;

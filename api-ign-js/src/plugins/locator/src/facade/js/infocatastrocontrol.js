@@ -3,7 +3,7 @@
  */
 /* eslint-disable no-restricted-syntax */
 import template from 'templates/infocatastro';
-import InfoCatastroImpl from '../../impl/ol/js/infocatastrocontrol';
+import InfoCatastroImpl from 'impl/infocatastrocontrol';
 import { getValue } from './i18n/language';
 
 export default class InfoCatastroControl extends M.Control {
@@ -16,7 +16,8 @@ export default class InfoCatastroControl extends M.Control {
    * @api
    */
   constructor(map, zoom, pointStyle, options, positionPlugin) {
-    if (M.utils.isUndefined(InfoCatastroImpl)) {
+    if (M.utils.isUndefined(InfoCatastroImpl) || (M.utils.isObject(InfoCatastroImpl)
+      && M.utils.isNullOrEmpty(Object.keys(InfoCatastroImpl)))) {
       M.exception(getValue('exception.impl_infocatastro'));
     }
     const impl = new InfoCatastroImpl();

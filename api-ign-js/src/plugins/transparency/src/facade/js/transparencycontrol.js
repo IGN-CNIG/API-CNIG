@@ -18,8 +18,9 @@ export default class TransparencyControl extends M.Control {
    */
   constructor(values) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(TransparencyImplControl)) {
-      M.exception(getValue('exception'));
+    if (M.utils.isUndefined(TransparencyImplControl) || (M.utils.isObject(TransparencyImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(TransparencyImplControl)))) {
+      M.exception(getValue('excepcion'));
     }
     // 2. implementation of this control
     const impl = new TransparencyImplControl();

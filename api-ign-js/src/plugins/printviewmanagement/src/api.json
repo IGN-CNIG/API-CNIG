@@ -79,6 +79,14 @@
       "styles": [
         "printviewmanagement.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "printviewmanagement.cesium.min.js"
+      ],
+      "styles": [
+        "printviewmanagement.cesium.min.css"
+      ]
     }
   },
   "metadata": {

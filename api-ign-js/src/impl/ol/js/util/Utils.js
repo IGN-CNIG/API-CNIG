@@ -427,7 +427,7 @@ class Utils {
     * @api
     */
   static getFeaturesExtent(features, projectionCode) {
-    const olFeatures = features.map((f) => (f instanceof Feature ? f.getImpl().getOLFeature() : f));
+    const olFeatures = features.map((f) => (f instanceof Feature ? f.getImpl().getFeature() : f));
     let extents = [];
     olFeatures.forEach((feature) => {
       if (feature.getGeometry()) {

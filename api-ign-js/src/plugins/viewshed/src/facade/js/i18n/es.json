@@ -1,4 +1,7 @@
 {
+  "exception": {
+    "impl": "La implementación no puede crear controles de ViewShed."
+  },
   "tooltip": "Calcular área de visibilidad",
   "calculating": "Realizando geoproceso de análisis",
   "warning": "Advertencia",

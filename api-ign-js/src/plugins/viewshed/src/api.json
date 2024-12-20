@@ -29,6 +29,10 @@
     "ol": {
       "scripts": ["viewshed.ol.min.js"],
       "styles": ["viewshed.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["viewshed.cesium.min.js"],
+      "styles": ["viewshed.cesium.min.css"]
     }
   },
   "metadata": {

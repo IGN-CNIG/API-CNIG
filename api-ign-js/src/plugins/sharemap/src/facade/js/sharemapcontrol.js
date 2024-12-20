@@ -739,7 +739,7 @@ export default class ShareMapControl extends M.Control {
 
   // TO-DO
   // getGeneric(layer) {
-  //   const ol3 = layer.getImpl().getOL3Layer();
+  //   const ol3 = layer.getImpl().getLayer();
   //   const ol3Source = ol3.getSource();
   //   const typeSource = layer.getImpl().getSourceType();
   //   const typeLayer = layer.getImpl().getLayerType();

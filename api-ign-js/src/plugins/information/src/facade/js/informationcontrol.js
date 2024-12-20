@@ -2,7 +2,7 @@
  * @module M/control/InformationControl
  */
 
-import InformationImplControl from '../../impl/ol/js/informationcontrol';
+import InformationImplControl from 'impl/informationcontrol';
 import template from '../../templates/information';
 import { getValue } from './i18n/language';
 
@@ -17,8 +17,9 @@ export default class InformationControl extends M.Control {
    * @api
    */
   constructor(format, featureCount, buffer, tooltip, opened, order) {
-    if (M.utils.isUndefined(InformationImplControl)) {
-      M.exception('');
+    if (M.utils.isUndefined(InformationImplControl) || (M.utils.isObject(InformationImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(InformationImplControl)))) {
+      M.exception(getValue('exception.impl'));
     }
     const impl = new InformationImplControl(format, featureCount, buffer, opened);
     super(impl, 'Information');

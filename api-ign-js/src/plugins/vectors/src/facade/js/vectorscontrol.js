@@ -49,7 +49,8 @@ export default class VectorsControl extends M.Control {
    * @api stable
    */
   constructor(options) {
-    if (M.utils.isUndefined(VectorsImplControl)) {
+    if (M.utils.isUndefined(VectorsImplControl) || (M.utils.isObject(VectorsImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(VectorsImplControl)))) {
       M.exception(getValue('exception.impl'));
     }
 
@@ -1333,7 +1334,7 @@ export default class VectorsControl extends M.Control {
     this.style = undefined;
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
-    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+    this.feature = MFeatures.filter((f) => f.getImpl().getFeature() === olFeature)[0]
       || undefined;
     this.geometry = this.feature.getGeometry().type;
     const selector = `#m-vector-list li[name="${this.drawLayer.name}"] div.m-vector-layer-actions-container`;
@@ -1608,7 +1609,7 @@ export default class VectorsControl extends M.Control {
   onDraw(event) {
     this.feature = event.feature;
     this.feature.setId(`${this.drawLayer.name}.${new Date().getTime()}`);
-    this.feature = M.impl.Feature.olFeature2Facade(this.feature);
+    this.feature = M.impl.Feature.feature2Facade(this.feature);
     this.geometry = this.feature.getGeometry().type;
     this.setFeatureStyle(this.feature, this.geometry);
     document.querySelector('.m-vectors #drawingtools button').style.display = 'block';
@@ -1644,7 +1645,7 @@ export default class VectorsControl extends M.Control {
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.getImpl().getFeatureExtent();
-        this.emphasis = M.impl.Feature.olFeature2Facade(this.getImpl().newPolygonFeature(extent));
+        this.emphasis = M.impl.Feature.feature2Facade(this.getImpl().newPolygonFeature(extent));
         this.emphasis.setStyle(new M.style.Line({
           stroke: {
             color: '#FF0000',

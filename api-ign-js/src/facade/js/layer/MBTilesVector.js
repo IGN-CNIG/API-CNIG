@@ -6,7 +6,7 @@ import RenderFeatureImpl from 'impl/feature/RenderFeature';
 import Vector from './Vector';
 import * as LayerType from './Type';
 import {
-  isUndefined, isNullOrEmpty, isString, normalize,
+  isUndefined, isNullOrEmpty, isString, normalize, isObject,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
@@ -89,11 +89,12 @@ class MBTilesVector extends Vector {
      * @implements {M.impl.layer.MBTilesVector}
      * @type {M.impl.layer.MBTilesVector}
      */
-    const impl = new MBTilesVectorImpl(parameters, optionsVar, vendorOptions);
-    super(parameters, options, undefined, impl);
-    if (isUndefined(MBTilesVectorImpl)) {
+    if (isUndefined(MBTilesVectorImpl) || (isObject(MBTilesVectorImpl)
+      && isNullOrEmpty(Object.keys(MBTilesVectorImpl)))) {
       Exception(getValue('exception').mbtilesvector_method);
     }
+    const impl = new MBTilesVectorImpl(parameters, optionsVar, vendorOptions);
+    super(parameters, options, undefined, impl);
 
     /**
      * MBTilesVector minZoom: Límite del zoom mínimo.
@@ -173,7 +174,7 @@ class MBTilesVector extends Vector {
    */
   getFeatures() {
     const features = this.getImpl().getFeatures();
-    return features.map((olFeature) => RenderFeatureImpl.olFeature2Facade(olFeature));
+    return features.map((olFeature) => RenderFeatureImpl.feature2Facade(olFeature));
   }
 
   /**

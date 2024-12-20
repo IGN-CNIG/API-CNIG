@@ -354,8 +354,26 @@ class OSM extends Layer {
    * @function
    * @return {ol/layer/Tile}
    * @api stable
+   * @deprecated
    */
   cloneOLLayer() {
+    let olLayer = null;
+    if (this.ol3Layer != null) {
+      const properties = this.ol3Layer.getProperties();
+      olLayer = new OLLayerTile(properties);
+    }
+    return olLayer;
+  }
+
+  /**
+   * Este método devuelve un clon de capa de esta instancia.
+   * @public
+   * @function
+   * @return {ol/layer/Tile}
+   * @api stable
+   * @deprecated
+   */
+  cloneLayer() {
     let olLayer = null;
     if (this.ol3Layer != null) {
       const properties = this.ol3Layer.getProperties();

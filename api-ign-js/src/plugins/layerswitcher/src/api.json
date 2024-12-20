@@ -69,6 +69,10 @@
     "ol": {
       "scripts": ["layerswitcher.ol.min.js"],
       "styles": ["layerswitcher.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["layerswitcher.cesium.min.js"],
+      "styles": ["layerswitcher.cesium.min.css"]
     }
   },
   "metadata": {

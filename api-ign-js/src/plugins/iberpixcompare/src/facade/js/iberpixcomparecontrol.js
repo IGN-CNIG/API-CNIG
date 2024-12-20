@@ -20,7 +20,9 @@ export default class IberpixCompareControl extends M.Control {
    */
   constructor(options) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(IberpixCompareImplControl)) {
+    if (M.utils.isUndefined(IberpixCompareImplControl)
+      || (M.utils.isObject(IberpixCompareImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(IberpixCompareImplControl)))) {
       M.exception(getValue('exception'));
     }
     // 2. implementation of this control

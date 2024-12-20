@@ -381,7 +381,7 @@ class GeoTIFF extends LayerBase {
   getMaxExtent() {
     const olProjection = getProj(this.map.getProjection().code);
 
-    const olProperties = this.getOL3Layer().getProperties();
+    const olProperties = this.getLayer().getProperties();
     if (olProperties.source.tileGrid) {
       this.extent_ = olProperties.source.getTileGrid().getExtent();
       this.extentProj_ = olProperties.source.projection.getCode();
@@ -401,7 +401,7 @@ class GeoTIFF extends LayerBase {
    * @api stable
    */
   setMaxExtent(maxExtent) {
-    this.getOL3Layer().setExtent(maxExtent);
+    this.getLayer().setExtent(maxExtent);
     if (this.tiled === true) {
       let resolutions = this.map.getResolutions();
       if (isNullOrEmpty(resolutions) && !isNullOrEmpty(this.resolutions_)) {
@@ -449,7 +449,7 @@ class GeoTIFF extends LayerBase {
    * @export
    */
   refresh() {
-    const ol3Layer = this.getOL3Layer();
+    const ol3Layer = this.getLayer();
     if (!isNullOrEmpty(ol3Layer)) {
       ol3Layer.getSource().refresh();
     }

@@ -25,6 +25,7 @@ import es.cnig.mapea.builder.JSBuilder;
 import es.cnig.mapea.exception.InvalidAPIException;
 import es.cnig.mapea.parameter.PluginAPI;
 import es.cnig.mapea.parameter.PluginAPIParam;
+import es.cnig.mapea.parameter.adapter.ParametersAdapterV3ToV4;
 
 public abstract class PluginsManager {
 
@@ -95,11 +96,12 @@ public abstract class PluginsManager {
 
 	public static String[] getJSFiles(Map<String, String[]> queryParams) {
 		List<String> jsfiles = new LinkedList<String>();
+		String impl = ParametersAdapterV3ToV4.getImplementation(queryParams);
 		// searchs plugins by name
 		for (String paramName : queryParams.keySet()) {
 			PluginAPI plugin = availablePlugins.get(paramName);
 			if (plugin != null) {
-				jsfiles.addAll(plugin.getJSFiles(DEFAULT_IMPL));
+				jsfiles.addAll(plugin.getJSFiles(impl));
 			}
 		}
 		// search plugins in "plugins" parameter
@@ -110,7 +112,7 @@ public abstract class PluginsManager {
 			for (String pluginName : pluginNames) {
 				PluginAPI plugin = availablePlugins.get(pluginName);
 				if (plugin != null) {
-					jsfiles.addAll(plugin.getJSFiles(DEFAULT_IMPL));
+					jsfiles.addAll(plugin.getJSFiles(impl));
 				}
 			}
 		}
@@ -119,12 +121,12 @@ public abstract class PluginsManager {
 
 	public static String[] getCSSFiles(Map<String, String[]> queryParams) {
 		List<String> cssfiles = new LinkedList<String>();
-
+		String impl = ParametersAdapterV3ToV4.getImplementation(queryParams);
 		// searchs plugins by name
 		for (String paramName : queryParams.keySet()) {
 			PluginAPI plugin = availablePlugins.get(paramName);
 			if (plugin != null) {
-				cssfiles.addAll(plugin.getCSSFiles(DEFAULT_IMPL));
+				cssfiles.addAll(plugin.getCSSFiles(impl));
 			}
 		}
 		// search plugins in "plugins" parameter
@@ -135,7 +137,7 @@ public abstract class PluginsManager {
 			for (String pluginName : pluginNames) {
 				PluginAPI plugin = availablePlugins.get(pluginName);
 				if (plugin != null) {
-					cssfiles.addAll(plugin.getCSSFiles(DEFAULT_IMPL));
+					cssfiles.addAll(plugin.getCSSFiles(impl));
 				}
 			}
 		}

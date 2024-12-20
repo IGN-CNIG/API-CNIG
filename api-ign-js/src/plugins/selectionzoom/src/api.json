@@ -61,6 +61,14 @@
       "styles": [
         "selectionzoom.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "selectionzoom.cesium.min.js"
+      ],
+      "styles": [
+        "selectionzoom.cesium.min.css"
+      ]
     }
   },
   "metadata": {

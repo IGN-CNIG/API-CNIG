@@ -5,7 +5,7 @@ import panzoomTemplate from 'templates/panzoom';
 import myhelp from 'templates/panzoomhelp';
 import PanzoomImpl from 'impl/control/Panzoom';
 import ControlBase from './Control';
-import { isUndefined } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, isObject } from '../util/Utils';
 import Exception from '../exception/exception';
 import { compileSync as compileTemplate } from '../util/Template';
 import { getValue } from '../i18n/language';
@@ -38,15 +38,16 @@ class Panzoom extends ControlBase {
    * @api
    */
   constructor(vendorOptions = {}) {
+    if (isUndefined(PanzoomImpl) || (isObject(PanzoomImpl)
+      && isNullOrEmpty(Object.keys(PanzoomImpl)))) {
+      Exception(getValue('exception').panzoom_method);
+    }
+
     // implementation of this control
     const impl = new PanzoomImpl(vendorOptions);
 
     // calls the super constructor
     super(impl, Panzoom.NAME);
-
-    if (isUndefined(PanzoomImpl)) {
-      Exception(getValue('exception').panzoom_method);
-    }
   }
 
   /**

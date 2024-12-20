@@ -4,7 +4,7 @@
 
 import JsZip from 'jszip';
 import { saveAs } from 'file-saver';
-import PrinterMapControlImpl from '../../impl/ol/js/printermapcontrol';
+import PrinterMapControlImpl from 'impl/printermapcontrol';
 import printermapHTML from '../../templates/printermap';
 import { getValue } from './i18n/language';
 
@@ -30,13 +30,13 @@ export default class PrinterMapControl extends M.Control {
     filterTemplates,
     order,
   ) {
+    if (M.utils.isUndefined(PrinterMapControlImpl) || (M.utils.isObject(PrinterMapControlImpl)
+      && M.utils.isNullOrEmpty(Object.keys(PrinterMapControlImpl)))) {
+      M.exception(getValue('exception.impl'));
+    }
     const impl = new PrinterMapControlImpl();
 
     super(impl, PrinterMapControl.NAME);
-
-    if (M.utils.isUndefined(PrinterMapControlImpl)) {
-      M.exception(getValue('exception.impl'));
-    }
 
     if (M.utils.isUndefined(PrinterMapControlImpl.prototype.encodeLayer)) {
       M.exception(getValue('exception.encode'));

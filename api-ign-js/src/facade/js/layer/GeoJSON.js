@@ -5,7 +5,7 @@ import GeoJSONImpl from 'impl/layer/GeoJSON';
 import LayerVector from './Vector';
 import { GeoJSON as GeoJSONType } from './Type';
 import {
-  isUndefined, isArray, isNullOrEmpty, isString, normalize,
+  isUndefined, isArray, isNullOrEmpty, isString, normalize, isObject,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
@@ -61,9 +61,25 @@ class GeoJSON extends LayerVector {
    * - opacity: Opacidad de capa, por defecto 1.
    * - style: Define el estilo de la capa.
    * - predefinedStyles: Estilos predefinidos para la capa.
+   * - height: Define la altura del objeto geográfico. Puede ser un número o una propiedad.
+   *   Si se define la altura será constante para todos los puntos del objeto geográfico.
+   *   Solo disponible para Cesium.
+   * - clampToGround: Define si el objeto geográfico se debe ajustar al suelo, por defecto falso.
+   *   Solo disponible para Cesium.
    * @api
    */
   constructor(parameters = {}, options = {}, vendorOptions = {}) {
+    // Comprueba si la implementación puede crear capas GeoJSON
+    if (isUndefined(GeoJSONImpl) || (isObject(GeoJSONImpl)
+      && isNullOrEmpty(Object.keys(GeoJSONImpl)))) {
+      Exception(getValue('exception').geojsonlayer_method);
+    }
+
+    // Comprueba si los parámetros son null or empty
+    if (isNullOrEmpty(parameters)) {
+      Exception(getValue('exception').no_param);
+    }
+
     const optionsVar = options;
 
     if (typeof parameters !== 'string') {
@@ -83,16 +99,6 @@ class GeoJSON extends LayerVector {
 
     // Llama al contructor del que se extiende la clase
     super(opts, optionsVar, undefined, impl);
-
-    // Comprueba si la implementación puede crear capas GeoJSON
-    if (isUndefined(GeoJSONImpl)) {
-      Exception(getValue('exception').geojsonlayer_method);
-    }
-
-    // Comprueba si los parámetros son null or empty
-    if (isNullOrEmpty(parameters)) {
-      Exception(getValue('exception').no_param);
-    }
 
     if (isString(parameters)) {
       this.url = parameters;
@@ -252,6 +258,8 @@ class GeoJSON extends LayerVector {
    * @api
    */
   setSource(source) {
+    // eslint-disable-next-line no-underscore-dangle
+    this.getImpl().loadFeaturesPromise_ = null;
     this.source = source;
     this.getImpl().refresh(source);
   }

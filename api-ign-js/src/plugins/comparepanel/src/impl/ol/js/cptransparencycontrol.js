@@ -113,6 +113,6 @@ export default class TransparencyControl extends M.impl.Control {
    * @api stable
    */
   removeLayer(layer) {
-    this.transparentInteraction_.removeLayer(layer.getImpl().getOL3Layer());
+    this.transparentInteraction_.removeLayer(layer.getImpl().getLayer());
   }
 }

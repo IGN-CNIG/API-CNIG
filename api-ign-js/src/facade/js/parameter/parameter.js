@@ -4339,6 +4339,402 @@ const osm = (userParameters) => {
 };
 
 /**
+ * Analiza el parámetro para obtener la leyenda de la capa Tiles3D.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Tiles3D} parameter Parámetro para obtener
+ * la leyenda de la capa Tiles3D.
+ * @returns {string} Leyenda de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getLegendTiles3D = (parameter) => {
+  let legend;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 1) {
+      const value = params[1];
+      legend = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.legend)) {
+    legend = parameter.legend.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return legend;
+};
+
+/**
+ * Analiza el parámetro para obtener la URL del servicio de la capa Tiles3D.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Tiles3D} parameter Parámetro para obtener la
+ * URL del servicio de la capa Tiles3D.
+ * @returns {string} URL del servicio.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getURLTiles3D = (parameter) => {
+  let url;
+  if (isString(parameter)) {
+    const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)([^*]*\*?)*$/i);
+    if (urlMatches && (urlMatches.length > 2)) {
+      url = urlMatches[2];
+    }
+  } else if (isObject(parameter)) {
+    url = parameter.url;
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return url;
+};
+
+/**
+ * Analiza el parámetro para obtener el nombre de la capa Tiles3D.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Tiles3D} parameter Parámetro para obtener
+ * el nombre de la capa Tiles3D.
+ * @returns {string} Nombre de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getNameTiles3D = (parameter) => {
+  let name;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 3) {
+      const value = params[3];
+      name = isNullOrEmpty(value) ? undefined : value;
+    } else {
+      name = params[0].trim();
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.name)) {
+    name = parameter.name.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return name;
+};
+
+/**
+ * Analiza el parámetro para obtener la visibilidad de la capa Tiles3D.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Tiles3D} parameter Parámetro para obtener
+ * la visibilidad de la capa Tiles3D.
+ * @returns {boolean} Visibilidad de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getVisibilityTiles3D = (parameter) => {
+  let visibility;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 4) {
+      const value = params[4];
+      visibility = value !== 'false';
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.visibility)) {
+    visibility = parameter.visibility;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return visibility;
+};
+
+/**
+ * Analiza los parámetros para obtener el conjunto de capas Tiles3D.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Tiles3D} parameter Parámetro para obtener
+ * el conjunto de capas Tiles3D.
+ * @returns {string} Conjunto de capas.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getDisplayInLayerSwitcherTiles3D = (parameter) => {
+  let displayInLayerSwitcher;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 5) {
+      const value = params[5];
+      displayInLayerSwitcher = value !== 'false';
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.displayInLayerSwitcher)) {
+    displayInLayerSwitcher = parameter.displayInLayerSwitcher;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return displayInLayerSwitcher;
+};
+
+/**
+ * Analiza los parámetros especificados por el usuario para la capa Tiles3D.
+ *
+ * @param {string|Mx.parameters.Tiles3D} userParameters Parámetros para la capa Tiles3D.
+ * @returns {Mx.parameters.Tiles3D|Array<Mx.parameters.Tiles3D>} Parámetros de la
+ * capa Tiles3D.
+ * @public
+ * @function
+ * @api
+ */
+export const tiles3d = (userParameters) => {
+  let layers = [];
+
+  // checks if the param is null or empty
+  if (isNullOrEmpty(userParameters)) {
+    Exception(getValue('exception').no_param);
+  }
+
+  // checks if the parameter is an array
+  let userParametersArray = userParameters;
+  if (!isArray(userParametersArray)) {
+    userParametersArray = [userParametersArray];
+  }
+
+  layers = userParametersArray.map((userParam) => {
+    const type = LayerType.Tiles3D;
+    const legend = getLegendTiles3D(userParam);
+    const url = getURLTiles3D(userParam);
+    const name = getNameTiles3D(userParam);
+    const visibility = getVisibilityTiles3D(userParam);
+    const displayInLayerSwitcher = getDisplayInLayerSwitcherTiles3D(userParam);
+
+    return {
+      type,
+      legend,
+      url,
+      name,
+      visibility,
+      displayInLayerSwitcher,
+    };
+  });
+
+  if (!isArray(userParameters)) {
+    layers = layers[0];
+  }
+
+  return layers;
+};
+
+/**
+ * Analiza el parámetro para obtener la leyenda de la capa Terrain.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Terrain} parameter Parámetro para obtener
+ * la leyenda de la capa Terrain.
+ * @returns {string} Leyenda de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getLegendTerrain = (parameter) => {
+  let legend;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 1) {
+      const value = params[1];
+      legend = isNullOrEmpty(value) ? undefined : value;
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.legend)) {
+    legend = parameter.legend.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return legend;
+};
+
+/**
+ * Analiza el parámetro para obtener la URL del servicio de la capa Terrain.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Terrain} parameter Parámetro para obtener la
+ * URL del servicio de la capa Terrain.
+ * @returns {string} URL del servicio.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getURLTerrain = (parameter) => {
+  let url;
+  if (isString(parameter)) {
+    const urlMatches = parameter.match(/^([^*]*\*)*(https?:\/\/[^*]+)([^*]*\*?)*$/i);
+    if (urlMatches && (urlMatches.length > 2)) {
+      url = urlMatches[2];
+    }
+  } else if (isObject(parameter)) {
+    url = parameter.url;
+  } else {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+  return url;
+};
+
+/**
+ * Analiza el parámetro para obtener el nombre de la capa Terrain.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Terrain} parameter Parámetro para obtener
+ * el nombre de la capa Terrain.
+ * @returns {string} Nombre de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getNameTerrain = (parameter) => {
+  let name;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 3) {
+      const value = params[3];
+      name = isNullOrEmpty(value) ? undefined : value;
+    } else {
+      name = params[0].trim();
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.name)) {
+    name = parameter.name.trim();
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return name;
+};
+
+/**
+ * Analiza el parámetro para obtener la visibilidad de la capa Terrain.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Terrain} parameter Parámetro para obtener
+ * la visibilidad de la capa Terrain.
+ * @returns {boolean} Visibilidad de la capa.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getVisibilityTerrain = (parameter) => {
+  let visibility;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 4) {
+      const value = params[4];
+      visibility = value !== 'false';
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.visibility)) {
+    visibility = parameter.visibility;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return visibility;
+};
+
+/**
+ * Analiza los parámetros para obtener el conjunto de capas Terrain.
+ * - ⚠️ Advertencia: Este método no debe ser llamado por el usuario.
+ *
+ * @public
+ * @function
+ * @param {string|Mx.parameters.Terrain} parameter Parámetro para obtener
+ * el conjunto de capas Terrain.
+ * @returns {string} Conjunto de capas.
+ * @throws {M.exception} Si el parámetro no es de un tipo soportado.
+ * @api
+ */
+export const getDisplayInLayerSwitcherTerrain = (parameter) => {
+  let displayInLayerSwitcher;
+  let params;
+  if (isString(parameter)) {
+    params = parameter.split('*');
+    if (params.length >= 5) {
+      const value = params[5];
+      displayInLayerSwitcher = value !== 'false';
+    }
+  } else if (isObject(parameter) && !isNullOrEmpty(parameter.displayInLayerSwitcher)) {
+    displayInLayerSwitcher = parameter.displayInLayerSwitcher;
+  } else if (!isObject(parameter)) {
+    Exception(`El parámetro no es de un tipo soportado: ${typeof parameter}`);
+  }
+
+  return displayInLayerSwitcher;
+};
+
+/**
+ * Analiza los parámetros especificados por el usuario para la capa Terrain.
+ *
+ * @param {string|Mx.parameters.Terrain} userParameters Parámetros para la capa Terrain.
+ * @returns {Mx.parameters.Terrain|Array<Mx.parameters.Terrain>} Parámetros de la
+ * capa Terrain.
+ * @public
+ * @function
+ * @api
+ */
+export const terrain = (userParameters) => {
+  let layers = [];
+
+  // checks if the param is null or empty
+  if (isNullOrEmpty(userParameters)) {
+    Exception(getValue('exception').no_param);
+  }
+
+  // checks if the parameter is an array
+  let userParametersArray = userParameters;
+  if (!isArray(userParametersArray)) {
+    userParametersArray = [userParametersArray];
+  }
+
+  layers = userParametersArray.map((userParam) => {
+    const type = LayerType.Terrain;
+    const legend = getLegendTerrain(userParam);
+    const url = getURLTerrain(userParam);
+    const name = getNameTerrain(userParam);
+    const visibility = getVisibilityTerrain(userParam);
+    const displayInLayerSwitcher = getDisplayInLayerSwitcherTerrain(userParam);
+
+    return {
+      type,
+      legend,
+      url,
+      name,
+      visibility,
+      displayInLayerSwitcher,
+    };
+  });
+
+  if (!isArray(userParameters)) {
+    layers = layers[0];
+  }
+
+  return layers;
+};
+
+/**
  * Parámetros con los tipos de capa soportados.
  * @const
  * @type {object}
@@ -4363,6 +4759,8 @@ const parameterFunction = {
   ogcapifeatures,
   genericvector,
   genericraster,
+  tiles3d,
+  terrain,
 };
 
 /**

@@ -2,7 +2,7 @@
  * @module M/control/ZoomPanelControl
  */
 import template from 'templates/zoompanel';
-import ZoomPanelImpl from '../../impl/ol/js/zoompanelcontrol';
+import ZoomPanelImpl from 'impl/zoompanelcontrol';
 import { getValue } from './i18n/language';
 
 export default class ZoomPanelControl extends M.Control {
@@ -15,7 +15,8 @@ export default class ZoomPanelControl extends M.Control {
    * @api
    */
   constructor(map) {
-    if (M.utils.isUndefined(ZoomPanelImpl)) {
+    if (M.utils.isUndefined(ZoomPanelImpl) || (M.utils.isObject(ZoomPanelImpl)
+      && M.utils.isNullOrEmpty(Object.keys(ZoomPanelImpl)))) {
       M.exception(getValue('exception.impl_zoompanel'));
     }
     const impl = new ZoomPanelImpl();

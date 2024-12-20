@@ -17,8 +17,9 @@ export default class BasicControl extends M.Control {
    */
   constructor(isDraggable) {
     // 1. Comprueba si la implementación puede crear el control
-    if (M.utils.isUndefined(BasicImplControl)) {
-      M.exception(getValue('exceptions.impl'));
+    if (M.utils.isUndefined(BasicImplControl) || (M.utils.isObject(BasicImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(BasicImplControl)))) {
+      M.exception(getValue('exception.impl'));
     }
     // 2. Crea la implementación del control
     const impl = new BasicImplControl();

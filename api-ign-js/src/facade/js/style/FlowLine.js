@@ -3,7 +3,11 @@
  */
 import StyleFlowLineImpl from 'impl/style/FlowLine';
 import Simple from './Simple';
-import { isNullOrEmpty, extendsObj } from '../util/Utils';
+import {
+  isNullOrEmpty, extendsObj, isObject, isUndefined,
+} from '../util/Utils';
+import Exception from '../exception/exception';
+import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
@@ -32,6 +36,10 @@ class FlowLine extends Simple {
     }
     options = extendsObj({}, options);
 
+    if (isUndefined(StyleFlowLineImpl) || (isObject(StyleFlowLineImpl)
+      && isNullOrEmpty(Object.keys(StyleFlowLineImpl)))) {
+      Exception(getValue('exception').flowline_method);
+    }
     const impl = new StyleFlowLineImpl(options);
     super(options, impl);
   }

@@ -56,6 +56,14 @@
       "styles": [
         "mousesrs.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "mousesrs.cesium.min.js"
+      ],
+      "styles": [
+        "mousesrs.cesium.min.css"
+      ]
     }
   },
   "metadata": {

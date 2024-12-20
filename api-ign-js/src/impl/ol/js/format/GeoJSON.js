@@ -191,7 +191,7 @@ class GeoJSON extends OLFormatGeoJSON {
     * @api
     */
   write(features) {
-    return features.map((feature) => this.writeFeatureObject(feature.getImpl().getOLFeature()));
+    return features.map((feature) => this.writeFeatureObject(feature.getImpl().getFeature()));
   }
 
   /**
@@ -219,7 +219,7 @@ class GeoJSON extends OLFormatGeoJSON {
     features = geojsonFeatures.map((geojsonFeature) => {
       const id = geojsonFeature.id;
       const feature = new Feature(id, geojsonFeature);
-      const olFeature = feature.getImpl().getOLFeature();
+      const olFeature = feature.getImpl().getFeature();
       if (olFeature.getGeometry() !== null) {
         const newGeometry = olFeature.getGeometry().transform(srcProj, dstProj);
         olFeature.setGeometry(newGeometry);

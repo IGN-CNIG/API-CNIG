@@ -1,20 +1,20 @@
+import MeasureAreaImpl from 'impl/measurearea';
 import Measure from './measurebase';
-import MeasureAreaImpl from '../../impl/ol/js/measurearea';
 import measureareaHTML from '../../templates/measurearea';
 import { getValue } from './i18n/language';
 
 export default class MeasureArea extends Measure {
   constructor(order) {
+    // checks if the implementation can create WMC layers
+    if (M.utils.isUndefined(MeasureAreaImpl) || (M.utils.isObject(MeasureAreaImpl)
+      && M.utils.isNullOrEmpty(Object.keys(MeasureAreaImpl)))) {
+      M.Exception(getValue('exception.impl_area'));
+    }
     // implementation of this control
     const impl = new MeasureAreaImpl();
 
     // const calls the super constructor
     super(impl, measureareaHTML, MeasureArea.NAME, order);
-
-    // checks if the implementation can create WMC layers
-    if (M.utils.isUndefined(MeasureAreaImpl)) {
-      M.Exception(getValue('exception.impl_area'));
-    }
   }
 
   /**

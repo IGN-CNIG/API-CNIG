@@ -8,4 +8,6 @@ externs
 libraries
 doc
 src/index.js
+src/index-ol.js
+src/index-cesium.js
 *~

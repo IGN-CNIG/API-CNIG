@@ -1,4 +1,7 @@
 {
+  "exception": {
+    "impl": "The implementation used cannot create Zoompanel controls."
+  },
   "tooltip": "Zoom tools",
   "zoomin": "Zoom In",
   "zoomout": "Zoom Out",

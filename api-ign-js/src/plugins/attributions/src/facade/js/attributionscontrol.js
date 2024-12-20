@@ -17,7 +17,8 @@ export default class AttributionsControl extends M.Control {
    * @api
    */
   constructor(position, closePanel) {
-    if (M.utils.isUndefined(AttributionsImplControl)) {
+    if (M.utils.isUndefined(AttributionsImplControl) || (M.utils.isObject(AttributionsImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(AttributionsImplControl)))) {
       M.exception(getValue('exception.impl'));
     }
     const impl = new AttributionsImplControl();

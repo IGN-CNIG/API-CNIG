@@ -68,6 +68,14 @@
       "styles": [
         "viewmanagement.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "viewmanagement.cesium.min.js"
+      ],
+      "styles": [
+        "viewmanagement.cesium.min.css"
+      ]
     }
   },
   "metadata": {

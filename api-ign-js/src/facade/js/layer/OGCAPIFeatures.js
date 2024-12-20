@@ -3,7 +3,7 @@
  */
 import OGCAPIFeaturesImpl from 'impl/layer/OGCAPIFeatures';
 import {
-  isUndefined, isNullOrEmpty, isString, normalize,
+  isUndefined, isNullOrEmpty, isString, normalize, isObject,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';
@@ -76,6 +76,11 @@ class OGCAPIFeatures extends Vector {
    * - minZoom: Zoom mínimo aplicable a la capa.
    * - maxZoom: Zoom máximo aplicable a la capa.
    * - opacity: Opacidad de capa, por defecto 1.
+   * - height: Define la altura del objeto geográfico. Puede ser un número o una propiedad.
+   *   Si se define la altura será constante para todos los puntos del objeto geográfico.
+   *   Solo disponible para Cesium.
+   * - clampToGround: Define si el objeto geográfico se debe ajustar al suelo, por defecto falso.
+   *   Solo disponible para Cesium.
    * @param {Object} vendorOpts Opciones para la biblioteca base.
    * -cql: Declaración CQL para filtrar las características
    * (Sólo disponible para servicios en PostgreSQL).
@@ -89,6 +94,11 @@ class OGCAPIFeatures extends Vector {
    * @api
    */
   constructor(userParams, opt = {}, vendorOpts = {}) {
+    // Comprueba si los parámetros son null or empty
+    if (isNullOrEmpty(userParams)) {
+      Exception(getValue('exception').no_param);
+    }
+
     // This layer is of parameters.
     const parameters = parameter.layer(userParams, LayerType.OGCAPIFeatures);
 
@@ -97,6 +107,13 @@ class OGCAPIFeatures extends Vector {
     if (typeof userParams !== 'string') {
       optionsVar.maxExtent = userParams.maxExtent;
     }
+
+    // Comprueba si la implementación puede crear capas OGCAPIFeatures
+    if (isUndefined(OGCAPIFeaturesImpl) || (isObject(OGCAPIFeaturesImpl)
+      && isNullOrEmpty(Object.keys(OGCAPIFeaturesImpl)))) {
+      Exception(getValue('exception').OGCAPIFeatureslayer_method);
+    }
+
     /**
      * Implementación
      * @public
@@ -107,16 +124,6 @@ class OGCAPIFeatures extends Vector {
 
     // Llama al contructor del que se extiende la clase
     super(parameters, optionsVar, undefined, impl);
-
-    // Comprueba si la implementación puede crear capas OGCAPIFeatures
-    if (isUndefined(OGCAPIFeaturesImpl)) {
-      Exception(getValue('exception').OGCAPIFeatureslayer_method);
-    }
-
-    // Comprueba si los parámetros son null or empty
-    if (isNullOrEmpty(userParams)) {
-      Exception(getValue('exception').no_param);
-    }
 
     /**
      * OGCAPIFeatures legend: Indica el nombre que queremos

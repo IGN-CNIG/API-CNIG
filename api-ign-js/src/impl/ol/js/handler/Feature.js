@@ -29,9 +29,9 @@ export const getFacadeFeature = (feature, layer) => {
   }
   if (isNullOrEmpty(mFeature)) {
     if (feature instanceof RenderFeature) {
-      mFeature = RenderFeatureImpl.olFeature2Facade(feature);
+      mFeature = RenderFeatureImpl.feature2Facade(feature);
     } else if (feature instanceof olFeature) {
-      mFeature = FeatureImpl.olFeature2Facade(feature);
+      mFeature = FeatureImpl.feature2Facade(feature);
     }
   }
   return mFeature;
@@ -91,7 +91,7 @@ class Feature {
   getFeaturesByLayer(evt, layer) {
     const features = [];
     const olLayer = !isNullOrEmpty(layer) && layer.isVisible()
-      ? layer.getImpl().getOL3Layer() : null;
+      ? layer.getImpl().getLayer() : null;
 
     if (!isNullOrEmpty(olLayer)) {
       const userMaxExtent = layer.userMaxExtent;

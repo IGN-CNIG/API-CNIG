@@ -3,7 +3,7 @@
  */
 import WFSImpl from 'impl/layer/WFS';
 import {
-  isUndefined, isNullOrEmpty, isString, normalize,
+  isUndefined, isNullOrEmpty, isString, normalize, isObject,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import Vector from './Vector';
@@ -66,6 +66,11 @@ class WFS extends Vector {
    * - displayInLayerSwitcher: Indica si la capa se muestra en el selector de capas.
    * - opacity: Opacidad de capa, por defecto 1.
    * - predefinedStyles: Estilos predefinidos para la capa.
+   * - height: Define la altura del objeto geográfico. Puede ser un número o una propiedad.
+   *   Si se define la altura será constante para todos los puntos del objeto geográfico.
+   *   Solo disponible para Cesium.
+   * - clampToGround: Define si el objeto geográfico se debe ajustar al suelo, por defecto falso.
+   *   Solo disponible para Cesium.
    * @param {M.WFSImpl} impl Implementación por defecto.
    * @param {Object} vendorOpts Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
@@ -81,6 +86,11 @@ class WFS extends Vector {
    * @api
    */
   constructor(userParams = {}, options = {}, vendorOpts = {}, implParam = undefined) {
+    // checks if the param is null or empty.
+    if (isNullOrEmpty(userParams)) {
+      Exception(getValue('exception').no_param);
+    }
+
     // This layer is of parameters.
     const parameters = parameter.layer(userParams, LayerType.WFS);
 
@@ -90,20 +100,15 @@ class WFS extends Vector {
       optionsVar.maxExtent = userParams.maxExtent;
     }
 
+    // checks if the implementation can create WFS layers.
+    if (isUndefined(WFSImpl) || (isObject(WFSImpl)
+      && isNullOrEmpty(Object.keys(WFSImpl)))) {
+      Exception(getValue('exception').wfslayer_method);
+    }
     const impl = implParam || new WFSImpl(optionsVar, vendorOpts);
 
     // calls the super constructor
     super(parameters, optionsVar, undefined, impl);
-
-    // checks if the implementation can create WFS layers.
-    if (isUndefined(WFSImpl)) {
-      Exception(getValue('exception').wfslayer_method);
-    }
-
-    // checks if the param is null or empty.
-    if (isNullOrEmpty(userParams)) {
-      Exception(getValue('exception').no_param);
-    }
 
     /**
      * WFS namespace: Espacio de trabajo asociado con la capa.

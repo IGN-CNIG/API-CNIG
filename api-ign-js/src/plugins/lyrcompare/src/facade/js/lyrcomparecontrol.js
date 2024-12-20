@@ -30,7 +30,8 @@ export default class LyrCompareControl extends M.Control {
    */
   constructor(values) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(LyrcompareImplControl)) {
+    if (M.utils.isUndefined(LyrcompareImplControl) || (M.utils.isObject(LyrcompareImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(LyrcompareImplControl)))) {
       M.exception('La implementación usada no puede crear controles LyrCompareControl');
     }
     // 2. implementation of this control
@@ -684,7 +685,7 @@ export default class LyrCompareControl extends M.Control {
       }
 
       if (newLayer !== null) {
-        if (newLayer.getImpl().getOL3Layer() === null) {
+        if (newLayer.getImpl().getLayer() === null) {
           setTimeout(() => {
             if (newLayer.type === 'WMS') {
               newLayer.load = true;

@@ -49,7 +49,7 @@ const inflateCoordinatesArray = (
 export const encodeKML = (layer, facadeMap) => {
   let encodedLayer = null;
 
-  const olLayer = layer.getImpl().getOL3Layer();
+  const olLayer = layer.getImpl().getLayer();
   const features = olLayer.getSource().getFeatures();
   const layerName = layer.name;
   const layerOpacity = olLayer.getOpacity();
@@ -223,7 +223,7 @@ export const encodeKML = (layer, facadeMap) => {
 
 export const encodeWMS = (layer) => {
   let encodedLayer = null;
-  const olLayer = layer.getImpl().getOL3Layer();
+  const olLayer = layer.getImpl().getLayer();
   const layerUrl = layer.url;
   const layerOpacity = olLayer.getOpacity();
   const params = olLayer.getSource().getParams();
@@ -307,7 +307,7 @@ export const encodeImage = (layer) => {
 
 export const encodeGeoTIFF = (layer) => {
   let encodedLayer = null;
-  const olLayer = layer.getImpl().getOL3Layer();
+  const olLayer = layer.getImpl().getLayer();
   encodedLayer = {
     type: 'geotiff',
     name: layer.name,
@@ -320,7 +320,7 @@ export const encodeGeoTIFF = (layer) => {
 
 export const encodeXYZ = (layer) => {
   const layerImpl = layer.getImpl();
-  const olLayer = layerImpl.getOL3Layer();
+  const olLayer = layerImpl.getLayer();
   const layerSource = olLayer.getSource();
   const tileGrid = layerSource.getTileGrid();
   let layerUrl = layer.url;
@@ -345,7 +345,7 @@ export const encodeXYZ = (layer) => {
 
 export const encodeWMTS = (layer) => {
   const layerImpl = layer.getImpl();
-  const olLayer = layerImpl.getOL3Layer();
+  const olLayer = layerImpl.getLayer();
   const layerSource = olLayer.getSource();
 
   const layerUrl = layer.url;
@@ -379,7 +379,7 @@ export const encodeWMTS = (layer) => {
         matrixSet,
         opacity: layerOpacity,
         requestEncoding: layerReqEncoding,
-        style: layer.getImpl().getOL3Layer().getSource().getStyle() || 'default',
+        style: layer.getImpl().getLayer().getSource().getStyle() || 'default',
         type: 'WMTS',
         version: '1.3.0',
       };
@@ -396,7 +396,7 @@ export const encodeMVT = (layer, facadeMap) => {
   const features = layer.getFeatures();
   const layerName = layer.name;
   const layerOpacity = layer.getOpacity();
-  const layerStyle = layer.getImpl().getOL3Layer().getStyle();
+  const layerStyle = layer.getImpl().getLayer().getStyle();
   let bbox = facadeMap.getBbox();
   bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
   const resolution = facadeMap.getMapImpl().getView().getResolution();
@@ -410,9 +410,9 @@ export const encodeMVT = (layer, facadeMap) => {
   const stylesNames = {};
   const stylesNamesText = {};
   features.forEach((feature) => {
-    const geometry = feature.getImpl().getOLFeature().getGeometry();
+    const geometry = feature.getImpl().getFeature().getGeometry();
     let featureStyle;
-    const fStyle = feature.getImpl().getOLFeature().getStyleFunction();
+    const fStyle = feature.getImpl().getFeature().getStyleFunction();
     if (!M.utils.isNullOrEmpty(fStyle)) {
       featureStyle = fStyle;
     } else if (!M.utils.isNullOrEmpty(layerStyle)) {
@@ -421,7 +421,7 @@ export const encodeMVT = (layer, facadeMap) => {
 
     if (featureStyle instanceof Function) {
       featureStyle = featureStyle
-        .call(featureStyle, feature.getImpl().getOLFeature(), resolution);
+        .call(featureStyle, feature.getImpl().getFeature(), resolution);
     }
 
     if (featureStyle instanceof Array) {
@@ -676,12 +676,12 @@ export const encodeMVT = (layer, facadeMap) => {
             if (projection.code !== 'EPSG:3857' && this.facadeMap_.getLayers()
               .some((layerParam) => (layerParam.type === M.layer.type.OSM
                 || layerParam.type === M.layer.type.Mapbox))) {
-              geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getOLFeature(), {
+              geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getFeature(), {
                 featureProjection: projection.code,
                 dataProjection: 'EPSG:3857',
               });
             } else {
-              geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getOLFeature());
+              geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getFeature());
             }
             */
       }

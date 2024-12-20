@@ -12,7 +12,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="mapea" content="yes">
     <title>API CNIG</title>
-    <link type="text/css" rel="stylesheet" href="assets/css/apiign.ol.min.css">
+    <%
+      Map<String, String[]> parameterMap = request.getParameterMap();
+      PluginsManager.init (getServletContext());
+      Map<String, String[]> adaptedParams = ParametersAdapterV3ToV4.adapt(parameterMap);
+      String library = ParametersAdapterV3ToV4.getImplementation(adaptedParams);
+    %>
+    <link type="text/css" rel="stylesheet" href="assets/css/apiign.<%=library%>.min.css">
     </link>
     <style type="text/css">
         html,
@@ -24,13 +30,10 @@
         }
     </style>
     <%
-      Map<String, String[]> parameterMap = request.getParameterMap();
-      PluginsManager.init (getServletContext());
-      Map<String, String[]> adaptedParams = ParametersAdapterV3ToV4.adapt(parameterMap);
       String[] cssfiles = PluginsManager.getCSSFiles(adaptedParams);
       for (int i = 0; i < cssfiles.length; i++) {
          String cssfile = cssfiles[i];
-   %>
+    %>
     <link type="text/css" rel="stylesheet" href="plugins/<%=cssfile%>">
     </link>
     <%
@@ -40,7 +43,7 @@
 <body>
     <div id="map" class="m-container"></div>
     <script type="text/javascript" src="vendor/browser-polyfill.js"></script>
-    <script type="text/javascript" src="js/apiign.ol.min.js"></script>
+    <script type="text/javascript" src="js/apiign.<%=library%>.min.js"></script>
     <script type="text/javascript" src="js/configuration.js"></script>
     <%
       String[] jsfiles = PluginsManager.getJSFiles(adaptedParams);
@@ -59,6 +62,7 @@
       if ((queryString != null) && (queryString.trim().length() > 0)) {
          params += "&";
          params += request.getQueryString();
+         params = params.replaceAll("([&?])implementation=[^&]*", "");
       }
 
    %>

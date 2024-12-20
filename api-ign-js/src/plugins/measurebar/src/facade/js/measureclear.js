@@ -1,4 +1,4 @@
-import MeasureClearImpl from '../../impl/ol/js/measureclear';
+import MeasureClearImpl from 'impl/measureclear';
 import measureclearHTML from '../../templates/measureclear';
 import { getValue } from './i18n/language';
 
@@ -16,16 +16,18 @@ import { getValue } from './i18n/language';
 
 export default class MeasureClear extends M.Control {
   constructor(measureLengthControl, measureAreaControl, order) {
+    // checks if the implementation can create MeasureClear
+    if (M.utils.isUndefined(MeasureClearImpl) || (M.utils.isObject(MeasureClearImpl)
+      && M.utils.isNullOrEmpty(Object.keys(MeasureClearImpl)))) {
+      M.Exception(getValue('exception.impl_clear'));
+    }
+
     // implementation of this control
     const impl = new MeasureClearImpl(measureLengthControl.getImpl(), measureAreaControl.getImpl());
 
     // calls the super constructor
     super(impl, MeasureClear.NAME);
 
-    // checks if the implementation can create MeasureClear
-    if (M.utils.isUndefined(MeasureClearImpl)) {
-      M.Exception(getValue('exception.impl_clear'));
-    }
     this.order = order;
   }
 

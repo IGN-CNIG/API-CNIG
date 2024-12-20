@@ -4,7 +4,7 @@
  */
 import GeoTIFFImpl from 'impl/layer/GeoTIFF';
 import {
-  isUndefined, isNullOrEmpty,
+  isUndefined, isNullOrEmpty, isObject,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
@@ -74,7 +74,8 @@ class GeoTIFF extends LayerBase {
    * @api
    */
   constructor(userParameters, options = {}, vendorOptions = {}) {
-    if (isUndefined(GeoTIFFImpl)) {
+    if (isUndefined(GeoTIFFImpl) || (isObject(GeoTIFFImpl)
+      && isNullOrEmpty(Object.keys(GeoTIFFImpl)))) {
       Exception(getValue('exception').geotiff_method);
     }
     // checks if the param is null or empty

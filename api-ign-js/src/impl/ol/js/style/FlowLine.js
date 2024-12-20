@@ -84,7 +84,7 @@ class FlowLine extends Simple {
   applyToLayer(layer) {
     super.applyToLayer(layer);
 
-    const olLayer = layer.getImpl().getOL3Layer();
+    const olLayer = layer.getImpl().getLayer();
     if (!isNullOrEmpty(olLayer)) {
       this.postComposeEvtKey_ = olLayer.on('postcompose', postRender, olLayer);
     }

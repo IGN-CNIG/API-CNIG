@@ -67,15 +67,15 @@ class Heatmap extends Style {
   applyToLayer(layer) {
     this.layer_ = layer;
     if (!isNullOrEmpty(layer)) {
-      const ol3Layer = this.layer_.getImpl().getOL3Layer();
+      const ol3Layer = this.layer_.getImpl().getLayer();
       if (!(ol3Layer instanceof OLLayerHeatmap)) {
         this.oldOLLayer_ = ol3Layer;
       }
       const features = this.layer_.getFeatures();
-      const olFeatures = features.map((f) => f.getImpl().getOLFeature());
+      const olFeatures = features.map((f) => f.getImpl().getFeature());
       olFeatures.forEach((f) => f.setStyle(null));
       this.createHeatmapLayer_(olFeatures);
-      this.layer_.getImpl().setOL3Layer(this.heatmapLayer_);
+      this.layer_.getImpl().setLayer(this.heatmapLayer_);
     }
   }
 
@@ -88,7 +88,7 @@ class Heatmap extends Style {
    */
   unapply(layer) {
     if (!isNullOrEmpty(this.oldOLLayer_)) {
-      this.layer_.getImpl().setOL3Layer(this.oldOLLayer_);
+      this.layer_.getImpl().setLayer(this.oldOLLayer_);
       this.layer_.redraw();
       this.layer_ = null;
       this.oldOLLayer_ = null;

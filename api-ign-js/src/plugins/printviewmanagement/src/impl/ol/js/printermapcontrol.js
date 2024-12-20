@@ -129,7 +129,7 @@ export default class PrinterMapControl extends M.impl.Control {
    */
   encodeWFS(layer) {
     let encodedLayer = null;
-    const olLayer = layer.getImpl().getOL3Layer();
+    const olLayer = layer.getImpl().getLayer();
     const features = olLayer.getSource().getFeatures();
     const layerName = layer.name;
     const layerOpacity = olLayer.getOpacity();
@@ -199,7 +199,7 @@ export default class PrinterMapControl extends M.impl.Control {
   encodeFeature_(layer, feature, style, index, indexText, indexGeom, stylesNames, stylesNamesText) {
     let res = null;
     const projection = this.facadeMap_.getProjection();
-    const olLayer = layer.getImpl().getOL3Layer();
+    const olLayer = layer.getImpl().getLayer();
     const layerStyle = olLayer.getStyle();
     const geoJSONFormat = new ol.format.GeoJSON();
     let bbox = this.facadeMap_.getBbox();

@@ -31,6 +31,7 @@ export const RIGHT = 'right';
 
 /**
  * Justificar la alineación del estilo.
+ * Solo disponible para OpenLayers.
  * @const
  * @type {string}
  * @public

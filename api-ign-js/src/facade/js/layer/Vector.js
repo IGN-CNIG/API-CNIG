@@ -5,7 +5,7 @@ import VectorImpl from 'impl/layer/Vector';
 import { geojsonTo4326 } from 'impl/util/Utils';
 import projAPI from 'impl/projections';
 import {
-  isUndefined, isArray, isNullOrEmpty, isString, normalize, modifySVG,
+  isUndefined, isArray, isNullOrEmpty, isString, normalize, modifySVG, isObject,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
@@ -51,6 +51,9 @@ class Vector extends LayerBase {
    * - displayInLayerSwitcher. Indica si la capa se muestra en el selector de capas.
    * - opacity. Opacidad de capa, por defecto 1.
    * - predefinedStyles: Estilos predefinidos para la capa.
+   * - height: Define la altura del objeto geográfico. Puede ser un número o una propiedad.
+   *   Si se define la altura será constante para todos los puntos del objeto geográfico.
+   *   Solo disponible para Cesium.
    * @param {Object} implParam Valores de la implementación por defecto.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
@@ -82,7 +85,8 @@ class Vector extends LayerBase {
       impl = implParam;
     } else {
       // checks if the implementation can create Vector
-      if (isUndefined(VectorImpl)) {
+      if (isUndefined(VectorImpl) || (isObject(VectorImpl)
+        && isNullOrEmpty(Object.keys(VectorImpl)))) {
         Exception(getValue('exception').vectorlayer_method);
       }
       impl = new VectorImpl(optionsVars, vendorOptions);

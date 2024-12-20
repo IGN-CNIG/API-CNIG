@@ -65,6 +65,14 @@
       "styles": [
         "backimglayer.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "backimglayer.cesium.min.js"
+      ],
+      "styles": [
+        "backimglayer.cesium.min.css"
+      ]
     }
   },
   "metadata": {

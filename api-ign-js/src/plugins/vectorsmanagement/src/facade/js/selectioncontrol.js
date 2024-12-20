@@ -1,7 +1,7 @@
 /**
  * @module M/control/SelectionControl
  */
-import SelectionImplControl from '../../impl/ol/js/selectioncontrol';
+import SelectionImplControl from 'impl/selectioncontrol';
 // import template from '../../templates/selection';
 import { getValue } from './i18n/language';
 
@@ -20,8 +20,9 @@ export default class SelectionControl extends M.Control {
    */
   constructor(map, managementControl) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(SelectionImplControl)) {
-      M.exception(getValue('exception'));
+    if (M.utils.isUndefined(SelectionImplControl) || (M.utils.isObject(SelectionImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(SelectionImplControl)))) {
+      M.exception(getValue('exception.impl_selectioncontrol'));
     }
 
     // 2. implementation of this control
@@ -83,7 +84,7 @@ export default class SelectionControl extends M.Control {
       this.selectionLayer = new M.layer.Vector({
         extract: false,
         name: 'selectLayer',
-        source: this.layer_.getImpl().getOL3Layer().getSource(),
+        source: this.layer_.getImpl().getLayer().getSource(),
       }, { displayInLayerSwitcher: false });
       this.layer_.getImpl().extract = false;
       this.map_.addLayers(this.selectionLayer);
@@ -144,7 +145,7 @@ export default class SelectionControl extends M.Control {
    */
   getSelectedOLFeatures() {
     const olFeatures = [];
-    this.selectedFeatures_.forEach((f) => olFeatures.push(f.getImpl().getOLFeature()));
+    this.selectedFeatures_.forEach((f) => olFeatures.push(f.getImpl().getFeature()));
     return olFeatures;
   }
 
@@ -185,7 +186,7 @@ export default class SelectionControl extends M.Control {
     this.selectionLayer.removeFeatures(this.selectionLayer.getFeatures());
     this.removeSelectedFeatures();
     olFeatures.forEach((olFeature) => {
-      this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+      this.feature = MFeatures.filter((f) => f.getImpl().getFeature() === olFeature)[0]
         || undefined;
       if (this.feature) {
         this.addFeatureToSelection(this.feature);
@@ -270,7 +271,7 @@ export default class SelectionControl extends M.Control {
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.getImpl().getFeatureExtent();
-        this.emphasis = M.impl.Feature.olFeature2Facade(this.getImpl().newPolygonFeature(extent));
+        this.emphasis = M.impl.Feature.feature2Facade(this.getImpl().newPolygonFeature(extent));
         this.emphasis.setStyle(new M.style.Line({
           stroke: {
             color: '#FF0000',

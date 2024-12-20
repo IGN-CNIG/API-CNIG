@@ -17,7 +17,8 @@ export default class ViewHistoryControl extends M.Control {
    * @api stable
    */
   constructor() {
-    if (M.utils.isUndefined(ViewHistoryImplControl)) {
+    if (M.utils.isUndefined(ViewHistoryImplControl) || (M.utils.isObject(ViewHistoryImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(ViewHistoryImplControl)))) {
       M.exception('La implementación usada no puede crear controles ViewHistoryControl');
     }
     const impl = new ViewHistoryImplControl();

@@ -106,7 +106,7 @@ export default class Analysiscontrol extends M.impl.Control {
   getMapeaFeatureClone(mFeature) {
     // eslint-disable-next-line no-underscore-dangle
     const implFeatureClone = mFeature.getImpl().olFeature_.clone();
-    const emphasis = M.impl.Feature.olFeature2Facade(implFeatureClone);
+    const emphasis = M.impl.Feature.feature2Facade(implFeatureClone);
     return emphasis;
   }
 
@@ -460,7 +460,7 @@ export default class Analysiscontrol extends M.impl.Control {
    * @api
    */
   getFeatureCoordinates(feature) {
-    return feature.getImpl().getOLFeature().getGeometry().getCoordinates();
+    return feature.getImpl().getFeature().getGeometry().getCoordinates();
   }
 
   /**
@@ -470,7 +470,7 @@ export default class Analysiscontrol extends M.impl.Control {
      * @api
      */
   getFeatureLength(feature) {
-    return feature.getImpl().getOLFeature().getGeometry().getLength();
+    return feature.getImpl().getFeature().getGeometry().getLength();
   }
 
   /**
@@ -480,7 +480,7 @@ export default class Analysiscontrol extends M.impl.Control {
      * @api
      */
   getFeatureArea(feature) {
-    return feature.getImpl().getOLFeature().getGeometry().getArea();
+    return feature.getImpl().getFeature().getGeometry().getArea();
   }
 
   getGeometryLength(geometry) {
@@ -541,7 +541,7 @@ export default class Analysiscontrol extends M.impl.Control {
     const geoFormat = new M.impl.format.GeoJSON();
     const src = this.facadeMap_.getProjection().code;
     return features.map((featureFacade) => {
-      const feature = featureFacade.getImpl().getOLFeature();
+      const feature = featureFacade.getImpl().getFeature();
 
       const area = ol.sphere.getArea(feature.getGeometry());
       feature.getGeometry().transform(src, 'EPSG:3857');

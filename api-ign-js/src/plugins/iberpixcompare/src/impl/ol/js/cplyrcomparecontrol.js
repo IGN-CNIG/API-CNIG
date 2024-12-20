@@ -113,7 +113,7 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    * @api stable
    */
   addLayer(layer) {
-    this.transparentInteraction_.addLayer(layer.getImpl().getOL3Layer());
+    this.transparentInteraction_.addLayer(layer.getImpl().getLayer());
   }
 
   /**
@@ -136,6 +136,6 @@ export default class Lyrcomparecontrol extends M.impl.Control {
    * @api stable
    */
   removeLayer(layer) {
-    this.transparentInteraction_.removeLayer(layer.getImpl().getOL3Layer());
+    this.transparentInteraction_.removeLayer(layer.getImpl().getLayer());
   }
 }

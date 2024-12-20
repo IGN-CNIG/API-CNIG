@@ -3,8 +3,8 @@
  */
 
 // import template from 'templates/selectionzoom';
+import SelectionZoomImpl from 'impl/selectionzoomcontrol';
 import template from '../../templates/selectionzoom';
-import SelectionZoomImpl from '../../impl/ol/js/selectionzoomcontrol';
 import { getValue } from './i18n/language';
 
 // /**
@@ -54,6 +54,10 @@ export default class SelectionZoomControl extends M.Control {
     order,
     newparam,
   ) {
+    if (M.utils.isUndefined(SelectionZoomImpl) || (M.utils.isObject(SelectionZoomImpl)
+      && M.utils.isNullOrEmpty(Object.keys(SelectionZoomImpl)))) {
+      M.exception(getValue('exception.impl'));
+    }
     const impl = new SelectionZoomImpl();
     super(impl, 'SelectionZoom');
 

@@ -449,7 +449,7 @@ class LoadFiles {
    */
   static featuresToFacade(implFeatures) {
     return implFeatures.map((feature) => {
-      const newFeature = Feature.olFeature2Facade(feature);
+      const newFeature = Feature.feature2Facade(feature);
       return newFeature;
     });
   }

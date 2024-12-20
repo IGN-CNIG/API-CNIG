@@ -1,5 +1,6 @@
 {
   "exception": {
+    "impl": "The implementation used cannot create BeatuyTOC controls.",
     "cobertura": "Checking coverage in the area...",
     "nocobertura": "This layer has no coverage in this area"
   },

@@ -162,24 +162,6 @@ export default class ContactLink extends M.Plugin {
     this.collapsible = options.collapsible !== false;
 
     /**
-     * ContactLink control
-     * @public
-     * @type {M.control.ContactLink}
-     */
-    this.control_ = new ContactLinkControl({
-      descargascnig: this.linksDescargasCnig,
-      pnoa: this.linksPnoa,
-      visualizador3d: this.linksVisualizador3d,
-      facebook: this.linksFacebook,
-      fototeca: this.linksFototeca,
-      twitter: this.linksTwitter,
-      instagram: this.linksInstagram,
-      youtube: this.linksYoutube,
-      mail: this.linksMail,
-      pinterest: this.linksPinterest,
-    });
-
-    /**
      *@private
      *@type { Number }
      */
@@ -217,6 +199,18 @@ export default class ContactLink extends M.Plugin {
    * @api stable
    */
   addTo(map) {
+    this.control_ = new ContactLinkControl({
+      descargascnig: this.linksDescargasCnig,
+      pnoa: this.linksPnoa,
+      visualizador3d: this.linksVisualizador3d,
+      facebook: this.linksFacebook,
+      fototeca: this.linksFototeca,
+      twitter: this.linksTwitter,
+      instagram: this.linksInstagram,
+      youtube: this.linksYoutube,
+      mail: this.linksMail,
+      pinterest: this.linksPinterest,
+    });
     // this.controls_.push(new ContactLinkControl(values));
     this.map_ = map;
     this.panel_ = new M.ui.Panel('ContactLink', {

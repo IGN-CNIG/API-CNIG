@@ -31,9 +31,9 @@ mapjs.addKML(kml);
 // });
 
 // LayerKml.on(LOAD, () => {
-//   // e = LayerKml.getFeatures()[0].getImpl().getOLFeature().getStyle()(LayerKml.getFeatures()[0].getImpl().getOLFeature());
+//   // e = LayerKml.getFeatures()[0].getImpl().getFeature().getStyle()(LayerKml.getFeatures()[0].getImpl().getFeature());
 //   // console.log(e)
-//   const f = LayerKml.getFeatures()[0].getImpl().getOLFeature();
+//   const f = LayerKml.getFeatures()[0].getImpl().getFeature();
 //   console.log(f.getStyle()(f).getText().getOffsetX());
 // });
 

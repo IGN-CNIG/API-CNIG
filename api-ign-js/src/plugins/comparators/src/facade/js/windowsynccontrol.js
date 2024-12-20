@@ -263,7 +263,8 @@ export default class WindowSyncControl extends M.Control {
      */
   constructor({ controls, plugins = [], layersPlugin }, controlsLayers, map) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(WindowSyncImplControl)) {
+    if (M.utils.isUndefined(WindowSyncImplControl) || (M.utils.isObject(WindowSyncImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(WindowSyncImplControl)))) {
       M.exception(getValue('exception'));
     }
 

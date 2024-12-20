@@ -41,6 +41,14 @@
       "styles": [
         "information.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "information.cesium.min.js"
+      ],
+      "styles": [
+        "information.cesium.min.css"
+      ]
     }
   },
   "metadata": {

@@ -25,6 +25,10 @@
     "ol": {
       "scripts": ["infocatastro.ol.min.js"],
       "styles": ["infocatastro.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["infocatastro.cesium.min.js"],
+      "styles": ["infocatastro.cesium.min.css"]
     }
   },
   "metadata": {

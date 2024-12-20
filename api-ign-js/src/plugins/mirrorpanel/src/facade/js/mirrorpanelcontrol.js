@@ -18,7 +18,8 @@ export default class MirrorpanelControl extends M.Control {
    */
   constructor(values) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(MirrorpanelImplControl)) {
+    if (M.utils.isUndefined(MirrorpanelImplControl) || (M.utils.isObject(MirrorpanelImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(MirrorpanelImplControl)))) {
       M.exception('La implementación usada no puede crear controles MirrorpanelControl');
     }
     // 2. implementation of this control

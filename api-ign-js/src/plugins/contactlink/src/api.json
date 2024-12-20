@@ -69,6 +69,10 @@
     "ol": {
       "scripts": ["contactlink.ol.min.js"],
       "styles": ["contactlink.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["contactlink.cesium.min.js"],
+      "styles": ["contactlink.cesium.min.css"]
     }
   },
   "metadata": {

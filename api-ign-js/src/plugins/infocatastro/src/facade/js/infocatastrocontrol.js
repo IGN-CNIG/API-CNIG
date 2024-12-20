@@ -17,6 +17,10 @@ export default class InfoCatastroControl extends M.Control {
    * @api stable
    */
   constructor(parameters) {
+    if (M.utils.isUndefined(InfoCatastroImplControl) || (M.utils.isObject(InfoCatastroImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(InfoCatastroImplControl)))) {
+      M.exception(getValue('exception.impl'));
+    }
     const impl = new InfoCatastroImplControl();
     super(impl, 'InfoCatastro');
 

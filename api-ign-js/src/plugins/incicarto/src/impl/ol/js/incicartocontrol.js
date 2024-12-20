@@ -177,7 +177,7 @@ export default class IncicartoControl extends M.impl.Control {
   */
   addDrawInteraction(layer, geom) {
     const olMap = this.facadeMap_.getMapImpl();
-    const vectorSource = layer.getImpl().getOL3Layer().getSource();
+    const vectorSource = layer.getImpl().getLayer().getSource();
     const geometry = layer.getGeometryType() !== null ? layer.getGeometryType() : layer.geometry;
     this.draw = this.newDrawInteraction(vectorSource, geometry);
     this.addDrawEvent();
@@ -283,7 +283,7 @@ export default class IncicartoControl extends M.impl.Control {
   getMapeaFeatureClone() {
     // eslint-disable-next-line no-underscore-dangle
     const implFeatureClone = this.facadeControl.feature.getImpl().olFeature_.clone();
-    const emphasis = M.impl.Feature.olFeature2Facade(implFeatureClone);
+    const emphasis = M.impl.Feature.feature2Facade(implFeatureClone);
     return emphasis;
   }
 
@@ -295,10 +295,10 @@ export default class IncicartoControl extends M.impl.Control {
   * @param {M.Feature} feature
   */
   unsetAttributes(feature) {
-    const properties = feature.getImpl().getOLFeature().getProperties();
+    const properties = feature.getImpl().getFeature().getProperties();
     const keys = Object.keys(properties);
     keys.forEach((key) => {
-      if (key !== 'geometry') feature.getImpl().getOLFeature().unset(key);
+      if (key !== 'geometry') feature.getImpl().getFeature().unset(key);
     });
   }
 
@@ -311,7 +311,7 @@ export default class IncicartoControl extends M.impl.Control {
   activateSelection(layer) {
     const olMap = this.facadeMap_.getMapImpl();
     const facadeControl = this.facadeControl;
-    const drawingLayer = layer.getImpl().getOL3Layer();
+    const drawingLayer = layer.getImpl().getLayer();
 
     if (drawingLayer) {
       this.select = new ol.interaction.Select({
@@ -908,7 +908,7 @@ export default class IncicartoControl extends M.impl.Control {
   */
   featuresToFacade(implFeatures) {
     return implFeatures.map((feature) => {
-      return M.impl.Feature.olFeature2Facade(feature);
+      return M.impl.Feature.feature2Facade(feature);
     });
   }
 
@@ -1016,7 +1016,7 @@ export default class IncicartoControl extends M.impl.Control {
   * @param {M.Featuer} mapeaFeature
   */
   getFeatureExtent() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getExtent();
+    return this.facadeControl.feature.getImpl().getFeature().getGeometry().getExtent();
   }
 
   /**
@@ -1026,7 +1026,7 @@ export default class IncicartoControl extends M.impl.Control {
   * @api
   */
   getFeatureCoordinates() {
-    return this.facadeControl.feature.getImpl().getOLFeature().getGeometry().getCoordinates();
+    return this.facadeControl.feature.getImpl().getFeature().getGeometry().getCoordinates();
   }
 
   /**
@@ -1037,7 +1037,7 @@ export default class IncicartoControl extends M.impl.Control {
   */
   getFeatureLength() {
     let res = 0;
-    const geom = this.facadeControl.feature.getImpl().getOLFeature().getGeometry();
+    const geom = this.facadeControl.feature.getImpl().getFeature().getGeometry();
     if (typeof geom.getLength !== 'function') {
       geom.getLineStrings().forEach((line) => {
         res += this.getGeometryLength(line);
@@ -1102,7 +1102,7 @@ export default class IncicartoControl extends M.impl.Control {
   */
   getFeatureArea() {
     const projection = this.facadeMap_.getProjection();
-    const geom = this.facadeControl.feature.getImpl().getOLFeature().getGeometry();
+    const geom = this.facadeControl.feature.getImpl().getFeature().getGeometry();
     return ol.sphere.getArea(geom, { projection: projection.code });
   }
 

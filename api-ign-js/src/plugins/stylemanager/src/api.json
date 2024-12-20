@@ -29,6 +29,10 @@
     "ol": {
       "scripts": ["stylemanager.ol.min.js"],
       "styles": ["stylemanager.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["stylemanager.cesium.min.js"],
+      "styles": ["stylemanager.ol.min.css"]
     }
   },
   "metadata": {

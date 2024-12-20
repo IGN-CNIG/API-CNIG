@@ -44,6 +44,10 @@
     "ol": {
       "scripts": ["infocoordinates.ol.min.js"],
       "styles": ["infocoordinates.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["infocoordinates.cesium.min.js"],
+      "styles": ["infocoordinates.cesium.min.css"]
     }
   },
   "metadata": {

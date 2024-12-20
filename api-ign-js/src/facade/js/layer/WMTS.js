@@ -3,7 +3,7 @@
  * @module M/layer/WMTS
  */
 import WMTSImpl from 'impl/layer/WMTS';
-import { isUndefined, isNullOrEmpty } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, isObject } from '../util/Utils';
 import Exception from '../exception/exception';
 import LayerBase from './Layer';
 import * as parameter from '../parameter/parameter';
@@ -73,6 +73,11 @@ class WMTS extends LayerBase {
    * @api
    */
   constructor(userParameters, options = {}, vendorOptions = {}) {
+    // checks if the param is null or empty.
+    if (isNullOrEmpty(userParameters)) {
+      Exception(getValue('exception').no_param);
+    }
+
     const parameters = parameter.layer(userParameters, LayerType.WMTS);
 
     const optionsVar = {
@@ -102,6 +107,11 @@ class WMTS extends LayerBase {
       optionsVar.maxZoom = userParameters.maxZoom;
     }
 
+    // checks if the implementation can create WMTS layers.
+    if (isUndefined(WMTSImpl) || (isObject(WMTSImpl) && isNullOrEmpty(Object.keys(WMTSImpl)))) {
+      Exception(getValue('exception').wmts_method);
+    }
+
     /**
      * Implementación de esta capa.
      * @public
@@ -112,16 +122,6 @@ class WMTS extends LayerBase {
 
     // calls the super constructor.
     super(parameters, impl);
-
-    // checks if the implementation can create WMTS layers.
-    if (isUndefined(WMTSImpl)) {
-      Exception(getValue('exception').wmts_method);
-    }
-
-    // checks if the param is null or empty.
-    if (isNullOrEmpty(userParameters)) {
-      Exception(getValue('exception').no_param);
-    }
 
     /**
      * WMTS matrixSet: "MatrixSet" definido por los metadatos del servicio.
@@ -260,12 +260,16 @@ class WMTS extends LayerBase {
    * @function
    * @public
    * @param {Array} coordinate Coordenadas.
+   * Para 3D La coordenada X Y del mosaico.
    * @param {Number} zoom Nivel de zoom del mapa.
+   * Para 3D El nivel del mosaico.
    * @param {String} formatInfo Formato.
+   * @param {Array} longlat Sólo disponible para Cesium.
+   * Longitud y latitud en la que se seleccionarán las características.
    * @api
    */
-  getFeatureInfoUrl(coordinate, zoom, formatInfo) {
-    return this.getImpl().getFeatureInfoUrl(coordinate, zoom, formatInfo);
+  getFeatureInfoUrl(coordinate, zoom, formatInfo, longlat) {
+    return this.getImpl().getFeatureInfoUrl(coordinate, zoom, formatInfo, longlat);
   }
 
   /**

@@ -63,7 +63,7 @@ class Style {
    * @api stable
    */
   applyToFeature(feature) {
-    feature.getImpl().getOLFeature().setStyle(this.olStyleFn_);
+    feature.getImpl().getFeature().setStyle(this.olStyleFn_);
   }
 
   /**

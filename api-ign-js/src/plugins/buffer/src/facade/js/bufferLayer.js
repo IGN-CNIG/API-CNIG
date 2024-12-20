@@ -16,14 +16,15 @@ export default class BufferLayer extends M.Layer {
    * @api stable
    */
   constructor(layer) {
+    // checks if the implementation can create KML layers
+    if (M.utils.isUndefined(BufferLayerImpl) || (M.utils.isObject(BufferLayerImpl)
+      && M.utils.isNullOrEmpty(Object.keys(BufferLayerImpl)))) {
+      M.exception(getValue('exception_layer'));
+    }
+
     const impl = new BufferLayerImpl(layer);
 
     super({ type: M.layer.type.GeoJSON }, impl);
-
-    // checks if the implementation can create KML layers
-    if (M.utils.isUndefined(BufferLayerImpl)) {
-      M.exception(getValue('exception_layer'));
-    }
 
     this.layer = layer;
   }

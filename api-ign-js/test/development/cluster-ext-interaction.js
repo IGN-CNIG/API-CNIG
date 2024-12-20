@@ -109,7 +109,7 @@ function drawCluster() {
     poiLayer.on( SELECT_FEATURES, ( features, e ) => {
       if ( !( features[ 0 ] instanceof ClusteredFeature ) ) {
         const tab = {
-          content: features[0].getImpl().getOLFeature().ol_uid,
+          content: features[0].getImpl().getFeature().ol_uid,
         };
         const popup = new Popup();
         popup.addTab( tab );
@@ -121,7 +121,7 @@ function drawCluster() {
 }
 
 window.abcd = (evt) => {
-  const _feature = map.getLayers().find(l => l.name === 'poilayer').getImpl().getOL3Layer().getSource().getFeatures()[0];
+  const _feature = map.getLayers().find(l => l.name === 'poilayer').getImpl().getLayer().getSource().getFeatures()[0];
   if(_feature.getProperties('features').features.length > 1) {
     map.getMapImpl().getInteractions().forEach((interaction) => {
       if (interaction.selectCluster_) {
@@ -132,7 +132,7 @@ window.abcd = (evt) => {
       }
     })
   } else {
-    const mapeaFeature = poiLayer.getFeatures().find(f => f.getImpl().getOLFeature().ol_uid === _feature.getProperties('features').features[0].ol_uid);
+    const mapeaFeature = poiLayer.getFeatures().find(f => f.getImpl().getFeature().ol_uid === _feature.getProperties('features').features[0].ol_uid);
     evt.coord = _feature.getGeometry().flatCoordinates;
     map.getFeatureHandler().selectFeatures([mapeaFeature], poiLayer, evt);
   }

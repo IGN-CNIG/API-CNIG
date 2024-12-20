@@ -2,7 +2,9 @@
  * @module M/impl/Popup
  */
 import OLOverlay from 'ol/Overlay';
-import { isNullOrEmpty, isFunction, enableTouchScroll } from 'M/util/Utils';
+import {
+  isNullOrEmpty, isFunction, enableTouchScroll, returnPositionHtmlElement,
+} from 'M/util/Utils';
 import FacadePopup from 'M/Popup';
 import FacadeWindow from 'M/util/Window';
 
@@ -323,6 +325,23 @@ class Popup extends OLOverlay {
    */
   getContent() {
     return this.content;
+  }
+
+  /**
+   * Este método establece el centro del mapa en el popup.
+   *
+   * @function
+   * @public
+   * @api
+   */
+  setAnimationView() {
+    this.facadeMap_.getMapImpl()
+      .getView()
+      .animate({
+        zoom: this.facadeMap_.getZoom(),
+        center: returnPositionHtmlElement('m-popup', this.facadeMap_),
+        duration: 1000,
+      });
   }
 }
 export default Popup;

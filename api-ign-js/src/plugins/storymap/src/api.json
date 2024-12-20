@@ -49,6 +49,10 @@
     "ol": {
       "scripts": ["storymap.ol.min.js"],
       "styles": ["storymap.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["storymap.cesium.min.js"],
+      "styles": ["storymap.cesium.min.css"]
     }
   },
   "metadata": {

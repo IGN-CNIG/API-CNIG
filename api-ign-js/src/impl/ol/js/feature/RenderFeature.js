@@ -31,8 +31,20 @@ class RenderFeature {
    * @function
    * @return {OLFeature} Retorna el objeto geográfico de Openlayer.
    * @api
+   * @deprecated
    */
   getOLFeature() {
+    return this.olFeature_;
+  }
+
+  /**
+   * Este método retorna el objeto geográfico de Openlayer.
+   * @public
+   * @function
+   * @return {OLFeature} Retorna el objeto geográfico de Openlayer.
+   * @api
+   */
+  getFeature() {
     return this.olFeature_;
   }
 
@@ -44,7 +56,21 @@ class RenderFeature {
    * @api
    */
   getType() {
-    return this.getOLFeature().getType();
+    return this.getFeature().getType();
+  }
+
+  /**
+   * Este método sobrescribe el objeto geográfico de openlayers.
+   * @public
+   * @param {OLFeature} olFeature Nuevo objeto geográfico.
+   * @function
+   * @api
+   * @deprecated
+   */
+  setOLFeature(olFeature) {
+    if (!isNullOrEmpty(olFeature)) {
+      this.olFeature_ = olFeature;
+    }
   }
 
   /**
@@ -54,7 +80,7 @@ class RenderFeature {
    * @function
    * @api
    */
-  setOLFeature(olFeature) {
+  setFeature(olFeature) {
     if (!isNullOrEmpty(olFeature)) {
       this.olFeature_ = olFeature;
     }
@@ -81,12 +107,32 @@ class RenderFeature {
    * @param {boolean} canBeModified Define si se puede modificar.
    * @return {M.Feature} Retorna el objeto "M.Feature" (Objeto geográfico de API-CNIG).
    * @api
+   * @deprecated
    */
   static olFeature2Facade(olFeature, canBeModified) {
     let facadeFeature = null;
     if (!isNullOrEmpty(olFeature)) {
       facadeFeature = new FacadeRenderFeature();
       facadeFeature.getImpl().setOLFeature(olFeature);
+    }
+    return facadeFeature;
+  }
+
+  /**
+   * Este método de la clase transforma "OLFeature" (Objeto geográfico de Openlayers)
+   * a "M.Feature" (Objeto geográfico de API-CNIG).
+   * @public
+   * @function
+   * @param {OLFeature} olFeature Objeto "OLFeature" (Objeto geográfico de Openlayers).
+   * @param {boolean} canBeModified Define si se puede modificar.
+   * @return {M.Feature} Retorna el objeto "M.Feature" (Objeto geográfico de API-CNIG).
+   * @api
+   */
+  static feature2Facade(olFeature, canBeModified) {
+    let facadeFeature = null;
+    if (!isNullOrEmpty(olFeature)) {
+      facadeFeature = new FacadeRenderFeature();
+      facadeFeature.getImpl().setFeature(olFeature);
     }
     return facadeFeature;
   }
@@ -99,9 +145,23 @@ class RenderFeature {
    * @param {M.Feature} facadeFeature Objeto "M.Feature" (Objeto geográfico de API-CNIG).
    * @return {OLFeature} Retorna el objeto "OLFeature" (Objeto geográfico de Openlayers).
    * @api
+   * @deprecated
    */
   static facade2OLFeature(feature) {
     return feature.getImpl().getOLFeature();
+  }
+
+  /**
+   * Método de la clase transforma "M.Feature" (Objeto geográfico de API-CNIG)
+   * a "OLFeature" (Objeto geográfico de Openlayers).
+   * @public
+   * @function
+   * @param {M.Feature} facadeFeature Objeto "M.Feature" (Objeto geográfico de API-CNIG).
+   * @return {OLFeature} Retorna el objeto "OLFeature" (Objeto geográfico de Openlayers).
+   * @api
+   */
+  static facade2Feature(feature) {
+    return feature.getImpl().getFeature();
   }
 
   /**

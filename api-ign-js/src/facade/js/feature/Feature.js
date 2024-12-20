@@ -3,7 +3,7 @@
  */
 import FeatureImpl from 'impl/feature/Feature';
 import Base from '../Base';
-import { isNullOrEmpty } from '../util/Utils';
+import { isNullOrEmpty, isUndefined } from '../util/Utils';
 import GeoJSON from '../format/GeoJSON';
 import * as dialog from '../dialog';
 import StyleFeature from '../style/Feature';
@@ -55,7 +55,9 @@ class Feature extends Base {
      * Añade estilo al objeto geográfico.
      * @private
      */
-    this.setStyle(style);
+    if (!isUndefined(style) && !isNullOrEmpty(style)) {
+      this.setStyle(style);
+    }
   }
 
   /**
@@ -274,9 +276,9 @@ class Feature extends Base {
     });
     const centroid = this.getImpl().getCentroid();
     if (!isNullOrEmpty(centroid)) {
-      centroid.id(`${id} centroid}`);
-      centroid.attributes(attributes);
-      centroid.style = style;
+      centroid.setId(`${id} centroid}`);
+      centroid.setAttributes(attributes);
+      centroid.setStyle(style);
     }
     return centroid;
   }

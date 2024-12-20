@@ -184,6 +184,16 @@ params.forEach((param) => {
   });
 
   /**
+   * Terrain configuration
+   *
+   * @private
+   * @type {String}
+   */
+  M.config('terrain', {
+    default: '${terrain.default}',
+  });
+
+  /**
    * Controls configuration
    *
    * @private

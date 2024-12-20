@@ -1,4 +1,7 @@
 {
+  "exception": {
+    "impl": "The implementation used cannot create Viewshed controls."
+  },
   "tooltip": "Calculate visibility area",
   "calculating": "Performing geoprocessing analysis",
   "warning": "Warning",

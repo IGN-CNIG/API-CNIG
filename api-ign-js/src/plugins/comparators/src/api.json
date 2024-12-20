@@ -83,6 +83,14 @@
       "styles": [
         "comparators.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "comparators.cesium.min.js"
+      ],
+      "styles": [
+        "comparators.cesium.min.css"
+      ]
     }
   },
   "metadata": {

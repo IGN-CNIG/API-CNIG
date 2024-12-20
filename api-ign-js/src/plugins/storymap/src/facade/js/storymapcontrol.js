@@ -2,8 +2,9 @@
  * @module M/control/StoryMapControl
  */
 
-import StoryMapControlImplControl from '../../impl/ol/js/storymapcontrol';
+import StoryMapControlImplControl from 'impl/storymapcontrol';
 import template from '../../templates/storymap';
+import { getValue } from './i18n/language';
 
 // import { getValue } from './i18n/language';
 
@@ -14,6 +15,11 @@ export default class StoryMapControl extends M.Control {
    * @api
    */
   constructor(content = {}, delay = 2000, indexInContent = false, isDraggable_ = false) {
+    if (M.utils.isUndefined(StoryMapControlImplControl)
+      || (M.utils.isObject(StoryMapControlImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(StoryMapControlImplControl)))) {
+      M.exception(getValue('exception.impl'));
+    }
     const impl = new StoryMapControlImplControl();
     super(impl, 'StoryMapControl');
     this.content_ = content;

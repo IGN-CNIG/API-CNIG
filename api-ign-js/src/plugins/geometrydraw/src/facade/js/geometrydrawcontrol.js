@@ -30,7 +30,8 @@ export default class GeometryDrawControl extends M.Control {
    * @api stable
    */
   constructor() {
-    if (M.utils.isUndefined(GeometryDrawImplControl)) {
+    if (M.utils.isUndefined(GeometryDrawImplControl) || (M.utils.isObject(GeometryDrawImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(GeometryDrawImplControl)))) {
       M.exception('La implementación usada no puede crear controles GeometryDrawControl');
     }
 
@@ -965,7 +966,7 @@ export default class GeometryDrawControl extends M.Control {
     const lastFeature = this.feature;
     this.hideTextPoint();
     this.feature = event.feature;
-    this.feature = M.impl.Feature.olFeature2Facade(this.feature);
+    this.feature = M.impl.Feature.feature2Facade(this.feature);
     if (this.geometry === undefined) this.geometry = this.feature.getGeometry().type;
 
     if (this.geometry === 'Point' && this.isTextActive) {
@@ -1095,7 +1096,7 @@ export default class GeometryDrawControl extends M.Control {
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.getImpl().getFeatureExtent();
-        this.emphasis = M.impl.Feature.olFeature2Facade(this.getImpl().newPolygonFeature(extent));
+        this.emphasis = M.impl.Feature.feature2Facade(this.getImpl().newPolygonFeature(extent));
         this.emphasis.setStyle(new M.style.Line({
           stroke: {
             color: '#FF0000',
@@ -1698,7 +1699,7 @@ export default class GeometryDrawControl extends M.Control {
     const MFeatures = this.drawLayer.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+    this.feature = MFeatures.filter((f) => f.getImpl().getFeature() === olFeature)[0]
       || undefined;
 
     this.geometry = this.feature.getGeometry().type;

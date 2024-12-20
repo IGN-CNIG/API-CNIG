@@ -7,7 +7,7 @@ import template from 'templates/rotate';
 import myhelp from 'templates/rotatehelp';
 import ControlBase from './Control';
 import { compileSync as compileTemplate } from '../util/Template';
-import { isUndefined } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, isObject } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
 
@@ -27,8 +27,9 @@ class Rotate extends ControlBase {
    * @api
    */
   constructor() {
-    if (isUndefined(RotateImpl)) {
-      Exception('La implementación usada no puede crear controles Rotate');
+    if (isUndefined(RotateImpl) || (isObject(RotateImpl)
+      && isNullOrEmpty(Object.keys(RotateImpl)))) {
+      Exception(getValue('exception').rotate_method);
     }
 
     // implementation of this control

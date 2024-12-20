@@ -2,7 +2,7 @@
  * @module M/control/MouseSRSControl
  */
 
-import MouseSRSImplControl from '../../impl/ol/js/mousesrscontrol';
+import MouseSRSImplControl from 'impl/mousesrscontrol';
 import template from '../../templates/mousesrs';
 import { getValue } from './i18n/language';
 
@@ -31,7 +31,8 @@ export default class MouseSRSControl extends M.Control {
     draggableDialog = true,
     epsgFormat = false,
   ) {
-    if (M.utils.isUndefined(MouseSRSImplControl)) {
+    if (M.utils.isUndefined(MouseSRSImplControl) || (M.utils.isObject(MouseSRSImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(MouseSRSImplControl)))) {
       M.exception(getValue('exception.impl'));
     }
     // eslint-disable-next-line max-len

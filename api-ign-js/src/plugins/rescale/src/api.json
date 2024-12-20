@@ -32,6 +32,10 @@
     "ol": {
       "scripts": ["rescale.ol.min.js"],
       "styles": ["rescale.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["rescale.cesium.min.js"],
+      "styles": ["rescale.cesium.min.css"]
     }
   },
   "metadata": {

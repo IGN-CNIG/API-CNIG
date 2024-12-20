@@ -24,7 +24,9 @@ export default class QueryAttributesControl extends M.Control {
    */
 
   constructor(configuration, filters, collapsed_, position_, refreshBBOXFilterOnPanning_) {
-    if (M.utils.isUndefined(QueryAttributesImplControl)) {
+    if (M.utils.isUndefined(QueryAttributesImplControl)
+      || (M.utils.isObject(QueryAttributesImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(QueryAttributesImplControl)))) {
       M.exception(getValue('exception.impl'));
     }
 
@@ -542,7 +544,7 @@ export default class QueryAttributesControl extends M.Control {
     const mapaOL = this.map.getMapImpl();
 
     mapaOL.forEachFeatureAtPixel(evt.pixel, (feature) => {
-      const featureFacade = M.impl.Feature.olFeature2Facade(feature);
+      const featureFacade = M.impl.Feature.feature2Facade(feature);
       const fields = [];
 
       /**
@@ -623,7 +625,7 @@ export default class QueryAttributesControl extends M.Control {
       }
     }, {
       layerFilter: (l) => {
-        return l === this.getImpl().getOL3Layer(layer);
+        return l === this.getImpl().getLayer(layer);
       },
     });
 

@@ -126,7 +126,7 @@ export default class PrinterMapControl extends M.impl.Control {
   encodeKML(layer) {
     let encodedLayer = null;
 
-    const olLayer = layer.getImpl().getOL3Layer();
+    const olLayer = layer.getImpl().getLayer();
     const features = olLayer.getSource().getFeatures();
     const layerName = layer.name;
     const layerOpacity = olLayer.getOpacity();
@@ -308,7 +308,7 @@ export default class PrinterMapControl extends M.impl.Control {
    */
   encodeWMS(layer) {
     let encodedLayer = null;
-    const olLayer = layer.getImpl().getOL3Layer();
+    const olLayer = layer.getImpl().getLayer();
     const layerUrl = layer.url;
     const layerOpacity = olLayer.getOpacity();
     const params = olLayer.getSource().getParams();
@@ -400,7 +400,7 @@ export default class PrinterMapControl extends M.impl.Control {
 
   encodeXYZ(layer) {
     const layerImpl = layer.getImpl();
-    const olLayer = layerImpl.getOL3Layer();
+    const olLayer = layerImpl.getLayer();
     const layerSource = olLayer.getSource();
     const tileGrid = layerSource.getTileGrid();
     let layerUrl = layer.url;
@@ -429,7 +429,7 @@ export default class PrinterMapControl extends M.impl.Control {
     const features = layer.getFeatures();
     const layerName = layer.name;
     const layerOpacity = layer.getOpacity();
-    const layerStyle = layer.getImpl().getOL3Layer().getStyle();
+    const layerStyle = layer.getImpl().getLayer().getStyle();
     let bbox = this.facadeMap_.getBbox();
     bbox = [bbox.x.min, bbox.y.min, bbox.x.max, bbox.y.max];
     const resolution = this.facadeMap_.getMapImpl().getView().getResolution();
@@ -443,9 +443,9 @@ export default class PrinterMapControl extends M.impl.Control {
     const stylesNames = {};
     const stylesNamesText = {};
     features.forEach((feature) => {
-      const geometry = feature.getImpl().getOLFeature().getGeometry();
+      const geometry = feature.getImpl().getFeature().getGeometry();
       let featureStyle;
-      const fStyle = feature.getImpl().getOLFeature().getStyleFunction();
+      const fStyle = feature.getImpl().getFeature().getStyleFunction();
       if (!M.utils.isNullOrEmpty(fStyle)) {
         featureStyle = fStyle;
       } else if (!M.utils.isNullOrEmpty(layerStyle)) {
@@ -695,12 +695,12 @@ export default class PrinterMapControl extends M.impl.Control {
           if (projection.code !== 'EPSG:3857' && this.facadeMap_.getLayers()
             .some((layerParam) => (layerParam.type === M.layer.type.OSM
               || layerParam.type === M.layer.type.Mapbox))) {
-            geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getOLFeature(), {
+            geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getFeature(), {
               featureProjection: projection.code,
               dataProjection: 'EPSG:3857',
             });
           } else {
-            geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getOLFeature());
+            geoJSONFeature = geoJSONFormat.writeFeatureObject(feature.getImpl().getFeature());
           }
           */
 
@@ -750,7 +750,7 @@ export default class PrinterMapControl extends M.impl.Control {
    */
   encodeWFS(layer) {
     let encodedLayer = null;
-    const olLayer = layer.getImpl().getOL3Layer();
+    const olLayer = layer.getImpl().getLayer();
     const features = olLayer.getSource().getFeatures();
     const layerName = layer.name;
     const layerOpacity = olLayer.getOpacity();
@@ -820,7 +820,7 @@ export default class PrinterMapControl extends M.impl.Control {
   encodeFeature_(layer, feature, style, index, indexText, indexGeom, stylesNames, stylesNamesText) {
     let res = null;
     const projection = this.facadeMap_.getProjection();
-    const olLayer = layer.getImpl().getOL3Layer();
+    const olLayer = layer.getImpl().getLayer();
     const layerStyle = olLayer.getStyle();
     const geoJSONFormat = new ol.format.GeoJSON();
     let bbox = this.facadeMap_.getBbox();
@@ -1221,7 +1221,7 @@ export default class PrinterMapControl extends M.impl.Control {
    */
   encodeWMTS(layer) {
     const layerImpl = layer.getImpl();
-    const olLayer = layerImpl.getOL3Layer();
+    const olLayer = layerImpl.getLayer();
     const layerSource = olLayer.getSource();
 
     const layerUrl = layer.url;
@@ -1255,7 +1255,7 @@ export default class PrinterMapControl extends M.impl.Control {
           matrixSet,
           opacity: layerOpacity,
           requestEncoding: layerReqEncoding,
-          style: layer.getImpl().getOL3Layer().getSource().getStyle() || 'default',
+          style: layer.getImpl().getLayer().getSource().getStyle() || 'default',
           type: 'WMTS',
           version: '1.3.0',
         };

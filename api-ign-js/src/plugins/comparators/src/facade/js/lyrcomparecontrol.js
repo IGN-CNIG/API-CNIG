@@ -31,7 +31,8 @@ export default class LyrCompareControl extends M.Control {
     */
   constructor(values, controlsLayers, map, fatherControl) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(LyrcompareImplControl)) {
+    if (M.utils.isUndefined(LyrcompareImplControl) || (M.utils.isObject(LyrcompareImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(LyrcompareImplControl)))) {
       M.exception(getValue('exception'));
     }
 
@@ -278,7 +279,7 @@ export default class LyrCompareControl extends M.Control {
   addDefaultLayers_() {
     if (!this.isDefaultLyr_()) {
       this.layers.forEach((layer, i) => {
-        if (layer.getImpl().getOL3Layer() === null
+        if (layer.getImpl().getLayer() === null
            && (i === this.defaultLyrA
             || i === this.defaultLyrB
             || i === this.defaultLyrC
@@ -300,7 +301,7 @@ export default class LyrCompareControl extends M.Control {
         || this.comparisonMode !== 0) ? 2 : 4;
 
       this.layers.forEach((layer, i) => {
-        if (layer.getImpl().getOL3Layer() === null && i < nLayers) {
+        if (layer.getImpl().getLayer() === null && i < nLayers) {
           this.map_.addLayers(layer);
           layer.setVisible(false);
         }

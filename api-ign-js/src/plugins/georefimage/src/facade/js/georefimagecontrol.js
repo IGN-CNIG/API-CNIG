@@ -4,7 +4,7 @@
 
 import JsZip from 'jszip';
 import { saveAs } from 'file-saver';
-import GeorefimageControlImpl from '../../impl/ol/js/georefimagecontrol';
+import GeorefimageControlImpl from 'impl/georefimagecontrol';
 import georefimageHTML from '../../templates/georefimage';
 import { getValue } from './i18n/language';
 
@@ -18,11 +18,13 @@ export default class GeorefimageControl extends M.Control {
    * @api stable
    */
   constructor(serverUrl, printTemplateUrl, printStatusUrl) {
-    const impl = new GeorefimageControlImpl();
-    super(impl, GeorefimageControl.NAME);
-    if (M.utils.isUndefined(GeorefimageControlImpl)) {
+    if (M.utils.isUndefined(GeorefimageControlImpl) || (M.utils.isObject(GeorefimageControlImpl)
+      && M.utils.isNullOrEmpty(Object.keys(GeorefimageControlImpl)))) {
       M.exception('La implementación usada no puede crear controles Georefimage');
     }
+
+    const impl = new GeorefimageControlImpl();
+    super(impl, GeorefimageControl.NAME);
 
     if (M.utils.isUndefined(GeorefimageControlImpl.prototype.encodeLayer)) {
       M.exception('La implementación usada no posee el método encodeLayer');

@@ -3,7 +3,7 @@
  */
 import template from 'templates/ignsearchlocator';
 import results from 'templates/ignsearchlocator-results';
-import IGNSearchLocatorImpl from '../../impl/ol/js/ignsearchlocatorcontrol';
+import IGNSearchLocatorImpl from 'impl/ignsearchlocatorcontrol';
 import { getValue } from './i18n/language';
 
 let typingTimer;
@@ -26,7 +26,8 @@ export default class IGNSearchLocatorControl extends M.Control {
     statusProxy,
     positionPlugin,
   ) {
-    if (M.utils.isUndefined(IGNSearchLocatorImpl)) {
+    if (M.utils.isUndefined(IGNSearchLocatorImpl) || (M.utils.isObject(IGNSearchLocatorImpl)
+      && M.utils.isNullOrEmpty(Object.keys(IGNSearchLocatorImpl)))) {
       M.exception(getValue('exception.impl_ignsearchlocator'));
     }
     const impl = new IGNSearchLocatorImpl(map);
@@ -691,7 +692,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           this.fire('ignsearchlocator:entityFound', [extent]);
         });
       } else {
-        const extent = this.clickedElementLayer.getImpl().getOL3Layer().getSource().getExtent();
+        const extent = this.clickedElementLayer.getImpl().getLayer().getSource().getExtent();
         this.map.setBbox(extent);
         this.map.setZoom(zoom);
         const isFeatureInView = this.getImpl().containsExtentView(extent);
@@ -765,7 +766,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     const urlSinJSON = geoJsonData;
     const json = JSON.parse(urlSinJSON);
     const olFeature = this.getImpl().readFromWKT(json.geom, urlSinJSON);
-    const mFeature = M.impl.Feature.olFeature2Facade(olFeature);
+    const mFeature = M.impl.Feature.feature2Facade(olFeature);
     const properties = JSON.parse(urlSinJSON);
     // Center coordinates
     this.coordinates = `${properties.lat}, ${properties.lng}`;

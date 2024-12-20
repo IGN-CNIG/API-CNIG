@@ -40,6 +40,14 @@
       "styles": [
         "georefimage.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "georefimage.cesium.min.js"
+      ],
+      "styles": [
+        "georefimage.cesium.min.css"
+      ]
     }
   },
   "metadata": {

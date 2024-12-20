@@ -56,12 +56,12 @@ class GML {
     const olFeature = this.olFormatVersionGML_.readFeatures(gmlFeatures);
     features = olFeature.map((geojsonFeature) => {
       const id = geojsonFeature.getId();
-      const feature = FeatureImpl.olFeature2Facade(geojsonFeature);
+      const feature = FeatureImpl.feature2Facade(geojsonFeature);
       feature.setId(id);
       if (feature.getGeometry() !== null) {
-        const newGeometry = feature.getImpl().getOLFeature().getGeometry()
+        const newGeometry = feature.getImpl().getFeature().getGeometry()
           .transform(this.projection.code, dstProj);
-        feature.getImpl().getOLFeature().setGeometry(newGeometry);
+        feature.getImpl().getFeature().setGeometry(newGeometry);
       }
       return feature;
     });

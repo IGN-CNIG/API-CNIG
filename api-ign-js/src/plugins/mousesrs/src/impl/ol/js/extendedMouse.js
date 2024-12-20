@@ -270,7 +270,7 @@ class Mouse extends ol.control.MousePosition {
 
   getZByTiff(pixel) {
     const coverage = this.facadeMap_.getLayers()
-      .find((l) => l.name === COVERAGE_NAME).getImpl().getOL3Layer();
+      .find((l) => l.name === COVERAGE_NAME).getImpl().getLayer();
     const value = coverage ? coverage.getData(pixel) : 0;
     return value ? Math.round(value[0]) : 0;
   }

@@ -1,7 +1,7 @@
 /**
  * @module M/control/CreationControl
  */
-import CreationImplControl from '../../impl/ol/js/creationcontrol';
+import CreationImplControl from 'impl/creationcontrol';
 import template from '../../templates/creation';
 import { getValue } from './i18n/language';
 
@@ -23,8 +23,9 @@ export default class CreationControl extends M.Control {
    */
   constructor(map, managementControl) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(CreationImplControl)) {
-      M.exception(getValue('exception'));
+    if (M.utils.isUndefined(CreationImplControl) || (M.utils.isObject(CreationImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(CreationImplControl)))) {
+      M.exception(getValue('exception.impl_creationcontrol'));
     }
 
     // 2. implementation of this control
@@ -448,7 +449,7 @@ export default class CreationControl extends M.Control {
    */
   setLayer(layer) {
     this.layer_ = layer;
-    this.getImpl().setVectorSource(this.layer_.getImpl().getOL3Layer().getSource());
+    this.getImpl().setVectorSource(this.layer_.getImpl().getLayer().getSource());
   }
 
   /**
@@ -474,7 +475,7 @@ export default class CreationControl extends M.Control {
   onDraw(event) {
     // const lastFeature = this.feature;
     this.hideTextPoint();
-    this.feature = M.impl.Feature.olFeature2Facade(event.feature);
+    this.feature = M.impl.Feature.feature2Facade(event.feature);
     this.geometry = this.feature.getGeometry().type;
 
     if (this.geometry === 'Point' && this.isTextActive) {
@@ -674,7 +675,7 @@ export default class CreationControl extends M.Control {
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.getImpl().getFeatureExtent(this.feature);
-        this.emphasis = M.impl.Feature.olFeature2Facade(this.getImpl().newPolygonFeature(extent));
+        this.emphasis = M.impl.Feature.feature2Facade(this.getImpl().newPolygonFeature(extent));
         this.emphasis.setStyle(new M.style.Line({
           stroke: {
             color: '#FF0000',

@@ -39,6 +39,10 @@
     "ol": {
       "scripts": ["timeline.ol.min.js"],
       "styles": ["timeline.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["timeline.cesium.min.js"],
+      "styles": ["timeline.cesium.min.css"]
     }
   },
   "metadata": {

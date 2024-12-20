@@ -4,7 +4,7 @@
 import KMLImpl from 'impl/layer/KML';
 import LayerVector from './Vector';
 import {
-  isUndefined, isNullOrEmpty, isString, normalize,
+  isUndefined, isNullOrEmpty, isString, normalize, isObject,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from './Type';
@@ -50,6 +50,11 @@ class KML extends LayerVector {
    * - scaleLabel. Escala de la etiqueta.
    * - extractStyles: Extraer estilos del KML.Por defecto es verdadero.
    * - predefinedStyles: Estilos predefinidos para la capa.
+   * - height: Define la altura del objeto geográfico. Puede ser un número o una propiedad.
+   *   Si se define la altura será constante para todos los puntos del objeto geográfico.
+   *   Solo disponible para Cesium.
+   * - clampToGround: Define si el objeto geográfico se debe ajustar al suelo, por defecto falso.
+   *   Solo disponible para Cesium.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import OLSourceVector from 'ol/source/Vector';
@@ -64,6 +69,17 @@ class KML extends LayerVector {
    * @api
    */
   constructor(userParameters = {}, options = {}, vendorOptions = {}) {
+    // checks if the implementation can create KML layers
+    if (isUndefined(KMLImpl) || (isObject(KMLImpl)
+      && isNullOrEmpty(Object.keys(KMLImpl)))) {
+      Exception(getValue('exception').kmllayer_method);
+    }
+
+    // checks if the param is null or empty
+    if (isNullOrEmpty(userParameters)) {
+      Exception(getValue('exception').no_param);
+    }
+
     const parameters = parameter.layer(userParameters, LayerType.KML);
     const optionsVar = options;
 
@@ -88,16 +104,6 @@ class KML extends LayerVector {
 
     // calls the super constructor
     super(parameters, options, undefined, impl);
-
-    // checks if the implementation can create KML layers
-    if (isUndefined(KMLImpl)) {
-      Exception(getValue('exception').kmllayer_method);
-    }
-
-    // checks if the param is null or empty
-    if (isNullOrEmpty(userParameters)) {
-      Exception(getValue('exception').no_param);
-    }
 
     /**
      * KML extract: Activa la consulta al hacer clic sobre un objeto geográfico,

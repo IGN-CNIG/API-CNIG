@@ -1,9 +1,8 @@
 /**
  * @module M/control/LocatorControl
  */
-
+import LocatorImpl from 'impl/locator';
 import template from '../../templates/locator';
-import LocatorImpl from '../../impl/ol/js/locator';
 import { getValue } from './i18n/language';
 import XYLocatorControl from './xylocatorcontrol';
 import IGNSearchLocatorControl from './ignsearchlocatorcontrol';
@@ -30,7 +29,8 @@ export default class LocatorControl extends M.Control {
     statusProxy,
     position,
   ) {
-    if (M.utils.isUndefined(LocatorImpl)) {
+    if (M.utils.isUndefined(LocatorImpl) || (M.utils.isObject(LocatorImpl)
+      && M.utils.isNullOrEmpty(Object.keys(LocatorImpl)))) {
       M.exception(getValue('exception.impl'));
     }
 

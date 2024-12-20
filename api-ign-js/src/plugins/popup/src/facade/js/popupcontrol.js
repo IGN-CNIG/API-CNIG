@@ -18,7 +18,8 @@ export default class PopupControl extends M.Control {
    * @api stable
    */
   constructor(url) {
-    if (M.utils.isUndefined(PopupImplControl)) {
+    if (M.utils.isUndefined(PopupImplControl) || (M.utils.isObject(PopupImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(PopupImplControl)))) {
       M.exception(getValue('exception_popupcontrol'));
     }
     const impl = new PopupImplControl();

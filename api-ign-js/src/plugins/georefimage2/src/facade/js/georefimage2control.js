@@ -4,7 +4,7 @@
 
 import JsZip from 'jszip';
 import { saveAs } from 'file-saver';
-import Georefimage2ControlImpl from '../../impl/ol/js/georefimage2control';
+import Georefimage2ControlImpl from 'impl/georefimage2control';
 import georefimage2HTML from '../../templates/georefimage2';
 import { getValue } from './i18n/language';
 
@@ -20,6 +20,10 @@ export default class Georefimage2Control extends M.Control {
    * @api stable
    */
   constructor(serverUrl, printTemplateUrl, printStatusUrl, order) {
+    if (M.utils.isUndefined(Georefimage2ControlImpl) || (M.utils.isObject(Georefimage2ControlImpl)
+      && M.utils.isNullOrEmpty(Object.keys(Georefimage2ControlImpl)))) {
+      M.exception(getValue('exception.impl'));
+    }
     const impl = new Georefimage2ControlImpl();
     super(impl, 'georefimage2control');
     if (M.utils.isUndefined(Georefimage2ControlImpl)) {

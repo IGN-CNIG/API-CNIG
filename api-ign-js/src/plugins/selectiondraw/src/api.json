@@ -24,6 +24,10 @@
     "ol": {
       "scripts": ["selectiondraw.ol.min.js"],
       "styles": ["selectiondraw.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["selectiondraw.cesium.min.js"],
+      "styles": ["selectiondraw.cesium.min.css"]
     }
   },
   "metadata": {

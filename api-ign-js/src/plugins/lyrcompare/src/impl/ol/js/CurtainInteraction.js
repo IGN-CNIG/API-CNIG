@@ -29,20 +29,20 @@ export default class CurtainInteraction extends ol.interaction.Pointer {
     this.pos = false;
     this.opacityVal = (optionsE.opacityVal || 100);
 
-    const layerA = [optionsE.lyrA].map((layer) => layer.getImpl().getOL3Layer())
+    const layerA = [optionsE.lyrA].map((layer) => layer.getImpl().getLayer())
       .filter((layer) => layer != null);
     this.addLayerA(layerA);
 
-    const layerB = [optionsE.lyrB].map((layer) => layer.getImpl().getOL3Layer())
+    const layerB = [optionsE.lyrB].map((layer) => layer.getImpl().getLayer())
       .filter((layer) => layer != null);
     this.addLayerB(layerB);
 
     if (optionsE.lyrC !== undefined && optionsE.lyrD !== undefined) {
-      const layerC = [optionsE.lyrC].map((layer) => layer.getImpl().getOL3Layer())
+      const layerC = [optionsE.lyrC].map((layer) => layer.getImpl().getLayer())
         .filter((layer) => layer != null);
       this.addLayerC(layerC);
 
-      const layerD = [optionsE.lyrD].map((layer) => layer.getImpl().getOL3Layer())
+      const layerD = [optionsE.lyrD].map((layer) => layer.getImpl().getLayer())
         .filter((layer) => layer != null);
       this.addLayerD(layerD);
     }

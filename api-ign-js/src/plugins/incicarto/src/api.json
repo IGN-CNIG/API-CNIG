@@ -45,6 +45,10 @@
     "ol": {
       "scripts": ["incicarto.ol.min.js"],
       "styles": ["incicarto.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["incicarto.cesium.min.js"],
+      "styles": ["incicarto.cesium.min.css"]
     }
   },
   "metadata": {

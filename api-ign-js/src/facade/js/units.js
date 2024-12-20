@@ -113,6 +113,8 @@ export const INCHES_PER_UNIT = {
   'ind-ch': 20.11669506 / METERS_PER_INCH, // Indian Chain,
 };
 
+export const FOCAL = 0.5674221146;
+
 /**
  * Este comentario no se verá, es necesario incluir
  * una exportación por defecto para que el compilador

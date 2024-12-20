@@ -30,7 +30,8 @@ export default class LyrCompareControl extends M.Control {
    */
   constructor(values) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(LyrcompareImplControl)) {
+    if (M.utils.isUndefined(LyrcompareImplControl) || (M.utils.isObject(LyrcompareImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(LyrcompareImplControl)))) {
       M.exception(getValue('exception'));
     }
 

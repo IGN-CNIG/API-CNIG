@@ -23,7 +23,8 @@ export default class ComparepanelControl extends M.Control {
    */
   constructor(options) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(ComparepanelImplControl)) {
+    if (M.utils.isUndefined(ComparepanelImplControl) || (M.utils.isObject(ComparepanelImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(ComparepanelImplControl)))) {
       M.exception(getValue('exception'));
     }
     // 2. implementation of this control
@@ -338,7 +339,7 @@ export default class ComparepanelControl extends M.Control {
       }
 
       if (newLayer !== null) {
-        if (newLayer.getImpl().getOL3Layer() === null) {
+        if (newLayer.getImpl().getLayer() === null) {
           setTimeout(() => {
             if (newLayer.type === 'WMS' || newLayer.type === 'WMTS') {
               newLayer.load = true;

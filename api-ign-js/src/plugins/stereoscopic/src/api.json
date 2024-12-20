@@ -25,6 +25,10 @@
     "ol": {
       "scripts": ["stereoscopic.ol.min.js"],
       "styles": ["stereoscopic.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["stereoscopic.cesium.min.js"],
+      "styles": ["stereoscopic.cesium.min.css"]
     }
   },
   "metadata": {

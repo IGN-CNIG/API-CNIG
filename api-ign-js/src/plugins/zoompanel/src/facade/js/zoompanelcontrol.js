@@ -16,6 +16,11 @@ export default class ZoomPanelControl extends M.Control {
    * @api
    */
   constructor(options) {
+    if (M.utils.isUndefined(ZoomPanelImplControl) || (M.utils.isObject(ZoomPanelImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(ZoomPanelImplControl)))) {
+      M.exception(getValue('exception.impl'));
+    }
+
     const impl = new ZoomPanelImplControl(options.projection);
     super(impl, 'ZoomPanel');
 

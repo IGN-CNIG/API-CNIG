@@ -95,7 +95,7 @@ export const createSelectGroup = (map) => {
 export const getLayerSelectGroup = (map) => {
   const select = document.querySelector(CLASS_MODAL_LAYERGROUP);
   const groups = map.getLayerGroup();
-  return groups.find((group) => group.getImpl().getOL3Layer().ol_uid === select.value);
+  return groups.find((group) => group.getImpl().getLayer().ol_uid === select.value);
 };
 
 export const filterGroups = (layers, inLayerGroup = true) => {

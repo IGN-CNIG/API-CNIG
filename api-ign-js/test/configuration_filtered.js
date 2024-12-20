@@ -158,6 +158,16 @@ function fun(M_) {
   });
 
   /**
+   * Terrain configuration
+   *
+   * @private
+   * @type {object}
+   */
+  M_.config('terrain', {
+    default: 'QUICK*MDT_TERRAIN',
+  });
+
+  /**
    * BackgroundLayers Control
    *
    * @private

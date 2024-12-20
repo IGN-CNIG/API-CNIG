@@ -18,7 +18,9 @@ export default class TopographicprofileControl extends M.Control {
    */
   constructor(opts) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(TopographicprofileImplControl)) {
+    if (M.utils.isUndefined(TopographicprofileImplControl)
+      || (M.utils.isObject(TopographicprofileImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(TopographicprofileImplControl)))) {
       M.exception('La implementación usada no puede crear controles TopographicprofileControl');
     }
     // 2. implementation of this control

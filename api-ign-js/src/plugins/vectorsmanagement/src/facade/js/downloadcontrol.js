@@ -4,7 +4,7 @@
 import shpWrite from 'shp-write';
 import tokml from 'tokml';
 import togpx from 'togpx';
-import DownloadImplControl from '../../impl/ol/js/downloadcontrol';
+import DownloadImplControl from 'impl/downloadcontrol';
 import template from '../../templates/download';
 import { getValue } from './i18n/language';
 
@@ -20,8 +20,9 @@ export default class DownloadControl extends M.Control {
    */
   constructor(map, managementControl) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(DownloadImplControl)) {
-      M.exception(getValue('exception'));
+    if (M.utils.isUndefined(DownloadImplControl) || (M.utils.isObject(DownloadImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(DownloadImplControl)))) {
+      M.exception(getValue('exception.impl_downloadcontrol'));
     }
 
     // 2. implementation of this control

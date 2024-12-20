@@ -2,8 +2,8 @@
  * @module M/control/PrinterMapControl
  */
 
-import PrinterMapControlImpl from '../../impl/ol/js/printermapcontrol';
-import { reproject, transformExt } from '../../impl/ol/js/utils';
+import PrinterMapControlImpl from 'impl/printermapcontrol';
+import { reproject, transformExt } from 'impl/utils';
 import printermapHTML from '../../templates/printermap';
 import { getValue } from './i18n/language';
 import {
@@ -42,15 +42,15 @@ export default class PrinterMapControl extends M.Control {
     statusProxy,
     useProxy,
   ) {
+    if (M.utils.isUndefined(PrinterMapControlImpl) || (M.utils.isObject(PrinterMapControlImpl)
+      && M.utils.isNullOrEmpty(Object.keys(PrinterMapControlImpl)))) {
+      M.exception(getValue('exception.impl'));
+    }
     const impl = new PrinterMapControlImpl(map);
 
     super(impl, PrinterMapControl.NAME);
 
     this.map_ = map;
-
-    if (M.utils.isUndefined(PrinterMapControlImpl)) {
-      M.exception(getValue('exception.impl'));
-    }
 
     if (M.utils.isUndefined(PrinterMapControlImpl.prototype.encodeLayer)) {
       M.exception(getValue('exception.encode'));

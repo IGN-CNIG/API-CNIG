@@ -60,7 +60,7 @@ export default class Editioncontrol extends M.impl.Control {
    */
   activateSelection(snap) {
     const olMap = this.facadeMap_.getMapImpl();
-    const drawingLayer = this.facadeControl.getLayer().getImpl().getOL3Layer();
+    const drawingLayer = this.facadeControl.getLayer().getImpl().getLayer();
 
     // this.facadeControl.hideTextPoint();
 
@@ -101,7 +101,7 @@ export default class Editioncontrol extends M.impl.Control {
   addHoleDrawInteraction() {
     const olMap = this.facadeMap_.getMapImpl();
     this.drawHole = new DrawHole({
-      layers: [this.facadeControl.getLayer().getImpl().getOL3Layer()],
+      layers: [this.facadeControl.getLayer().getImpl().getLayer()],
     });
     olMap.addInteraction(this.drawHole);
   }
@@ -297,7 +297,7 @@ export default class Editioncontrol extends M.impl.Control {
    * @param {M.Featuer} mapeaFeature
    */
   getFeatureExtent(feature) {
-    return feature.getImpl().getOLFeature().getGeometry().getExtent();
+    return feature.getImpl().getFeature().getGeometry().getExtent();
   }
 
   /**
@@ -320,7 +320,7 @@ export default class Editioncontrol extends M.impl.Control {
   getMapeaFeatureClone(feature) {
     // eslint-disable-next-line no-underscore-dangle
     const implFeatureClone = feature.getImpl().olFeature_.clone();
-    const emphasis = M.impl.Feature.olFeature2Facade(implFeatureClone);
+    const emphasis = M.impl.Feature.feature2Facade(implFeatureClone);
     return emphasis;
   }
 }

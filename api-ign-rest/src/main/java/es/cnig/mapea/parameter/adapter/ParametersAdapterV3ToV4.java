@@ -133,4 +133,13 @@ public abstract class ParametersAdapterV3ToV4 {
       }
       return map;
    }
+
+   public static String getImplementation (Map<String, String[]> query) {
+	   String[] implParam = query.get("implementation");
+	   String library = "ol";
+      if (implParam != null) {
+         library = implParam[0].trim().replace("\"", "").replace("'", "");
+      }
+      return library;
+   }
 }

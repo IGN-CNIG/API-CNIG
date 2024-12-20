@@ -1,7 +1,7 @@
 /**
  * @module M/control/StyleControl
  */
-import StyleImplControl from '../../impl/ol/js/stylecontrol';
+import StyleImplControl from 'impl/stylecontrol';
 import template from '../../templates/style';
 import { getValue } from './i18n/language';
 
@@ -17,8 +17,9 @@ export default class StyleControl extends M.Control {
    */
   constructor(map, managementControl) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(StyleImplControl)) {
-      M.exception(getValue('exception'));
+    if (M.utils.isUndefined(StyleImplControl) || (M.utils.isObject(StyleImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(StyleImplControl)))) {
+      M.exception(getValue('exception.impl_stylecontrol'));
     }
 
     // 2. implementation of this control

@@ -3,7 +3,7 @@
  */
 import OSMImpl from 'impl/layer/OSM';
 import LayerBase from './Layer';
-import { isUndefined, isNullOrEmpty } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, isObject } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as LayerType from './Type';
 import * as parameter from '../parameter/parameter';
@@ -62,7 +62,7 @@ class OSM extends LayerBase {
     let userParameters = userParametersVar;
 
     // Checks if the implementation can create OSM.
-    if (isUndefined(OSMImpl)) {
+    if (isUndefined(OSMImpl) || (isObject(OSMImpl) && isNullOrEmpty(Object.keys(OSMImpl)))) {
       Exception(getValue('exception').osm_method);
     }
 

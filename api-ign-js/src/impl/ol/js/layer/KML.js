@@ -190,7 +190,7 @@ class KML extends Vector {
       if (!isNullOrEmpty(feature)) {
         const featureName = feature.getAttribute('name');
         const featureDesc = feature.getAttribute('description');
-        const featureCoord = feature.getImpl().getOLFeature().getGeometry().getFirstCoordinate();
+        const featureCoord = feature.getImpl().getFeature().getGeometry().getFirstCoordinate();
         const htmlAsText = compileTemplate(popupKMLTemplate, {
           vars: {
             name: featureName,

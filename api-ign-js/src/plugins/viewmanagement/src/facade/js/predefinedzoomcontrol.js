@@ -2,7 +2,7 @@
  * @module M/control/PredefinedZoomControl
  */
 import template from 'templates/predefinedzoom';
-import PredefinedZoomImpl from '../../impl/ol/js/predefinedzoomcontrol';
+import PredefinedZoomImpl from 'impl/predefinedzoomcontrol';
 import { getValue } from './i18n/language';
 
 export default class PredefinedZoomControl extends M.Control {
@@ -15,7 +15,8 @@ export default class PredefinedZoomControl extends M.Control {
    * @api
    */
   constructor(map, predefinedzoom) {
-    if (M.utils.isUndefined(PredefinedZoomImpl)) {
+    if (M.utils.isUndefined(PredefinedZoomImpl) || (M.utils.isObject(PredefinedZoomImpl)
+      && M.utils.isNullOrEmpty(Object.keys(PredefinedZoomImpl)))) {
       M.exception(getValue('exception.impl_predefinedzoom'));
     }
     const impl = new PredefinedZoomImpl();

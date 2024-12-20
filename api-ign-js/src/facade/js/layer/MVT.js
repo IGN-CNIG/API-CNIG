@@ -6,7 +6,7 @@ import RenderFeatureImpl from 'impl/feature/RenderFeature';
 import FeatureImpl from 'impl/feature/Feature';
 import Vector from './Vector';
 import {
-  isUndefined, isNullOrEmpty, isString, normalize,
+  isUndefined, isNullOrEmpty, isString, normalize, isObject,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import * as dialog from '../dialog';
@@ -87,12 +87,12 @@ class MVT extends Vector {
       optionsVar.maxExtent = parameters.maxExtent;
     }
 
-    const impl = implParam || new MVTTileImpl(opts, optionsVar, vendorOptions);
-    super(opts, optionsVar, undefined, impl);
-
-    if (isUndefined(MVTTileImpl)) {
+    if (isUndefined(MVTTileImpl) || (isObject(MVTTileImpl)
+      && isNullOrEmpty(Object.keys(MVTTileImpl)))) {
       Exception('La implementación usada no puede crear capas MVT');
     }
+    const impl = implParam || new MVTTileImpl(opts, optionsVar, vendorOptions);
+    super(opts, optionsVar, undefined, impl);
 
     /**
      * MVT minZoom: Límite del zoom mínimo.
@@ -207,10 +207,10 @@ class MVT extends Vector {
     const features = this.getImpl().getFeatures();
     return features.map((olFeature) => {
       if (this.mode === mode.RENDER) {
-        return RenderFeatureImpl.olFeature2Facade(olFeature);
+        return RenderFeatureImpl.feature2Facade(olFeature);
       }
       if (this.mode === mode.FEATURE) {
-        return FeatureImpl.olFeature2Facade(olFeature, undefined, this.getProjection());
+        return FeatureImpl.feature2Facade(olFeature, undefined, this.getProjection());
       }
       return null;
     });
@@ -235,11 +235,11 @@ class MVT extends Vector {
     const features = this.getImpl().getFeatureById(id);
     features.map((olFeature) => {
       if (this.mode === mode.RENDER) {
-        return RenderFeatureImpl.olFeature2Facade(olFeature);
+        return RenderFeatureImpl.feature2Facade(olFeature);
       }
       if (this.mode === mode.FEATURE) {
         return FeatureImpl
-          .olFeature2Facade(olFeature, undefined, this.getProjection());
+          .feature2Facade(olFeature, undefined, this.getProjection());
       }
       return null;
     });

@@ -7,6 +7,9 @@ import LayerBase from './Layer';
 import * as parameter from '../parameter/parameter';
 import * as EventType from '../event/eventtype';
 import * as LayerType from './Type';
+import { isUndefined, isNullOrEmpty, isObject } from '../util/Utils';
+import Exception from '../exception/exception';
+import { getValue } from '../i18n/language';
 
 /**
  * @classdesc
@@ -59,6 +62,11 @@ class LayerGroup extends LayerBase {
     opt.visibility = userParameters.visibility;
     opt.maxExtent = userParameters.maxExtent;
     opt.displayInLayerSwitcher = parameters.displayInLayerSwitcher;
+
+    if (isUndefined(LayerGroupImpl) || (isObject(LayerGroupImpl)
+      && isNullOrEmpty(Object.keys(LayerGroupImpl)))) {
+      Exception(getValue('exception').layergroup_method);
+    }
 
     /**
      * Implementation of this layer
@@ -162,7 +170,7 @@ class LayerGroup extends LayerBase {
       let idLayer = this.idLayer;
       if (topRootGroup) {
         topRootGroup = map.getLayers()
-          .find((l) => l.getImpl().getOL3Layer().ol_uid === topRootGroup.getOL3Layer().ol_uid);
+          .find((l) => l.getImpl().getLayer().ol_uid === topRootGroup.getLayer().ol_uid);
         oldZIndex = topRootGroup.getZIndex();
         base = topRootGroup.isBase;
         idLayer = topRootGroup.idLayer;

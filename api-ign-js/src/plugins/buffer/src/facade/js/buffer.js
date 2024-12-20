@@ -157,8 +157,8 @@ export default class Buffer extends M.Plugin {
    */
   destroy() {
     this.map_.removeControls(this.control_);
-    if (this.bufferLayer.getImpl().getOL3Layer()) {
-      this.bufferLayer.getImpl().getOL3Layer().getSource().clear(true);
+    if (this.bufferLayer.getImpl().getLayer()) {
+      this.bufferLayer.getImpl().getLayer().getSource().clear(true);
     }
     this.control_.removeFeatures();
     this.map_ = null;

@@ -2,7 +2,7 @@
  * @module M/control/AnalysisControl
  */
 import buffer from '@turf/buffer';
-import AnalysisImplControl from '../../impl/ol/js/analysiscontrol';
+import AnalysisImplControl from 'impl/analysiscontrol';
 import template from '../../templates/analysis';
 import infoanalysis from '../../templates/infoanalysis';
 import pointProfileTemplate from '../../templates/pointprofile';
@@ -21,8 +21,9 @@ export default class AnalysisControl extends M.Control {
   */
   constructor(map, managementControl) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(AnalysisImplControl)) {
-      M.exception(getValue('exception'));
+    if (M.utils.isUndefined(AnalysisImplControl) || (M.utils.isObject(AnalysisImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(AnalysisImplControl)))) {
+      M.exception(getValue('exception.impl_analysiscontrol'));
     }
 
     // 2. implementation of this control
@@ -200,7 +201,7 @@ export default class AnalysisControl extends M.Control {
    */
   setLayer(layer) {
     this.layer_ = layer;
-    this.getImpl().setOLLayer(this.layer_.getImpl().getOL3Layer());
+    this.getImpl().setOLLayer(this.layer_.getImpl().getLayer());
   }
 
   /**
@@ -214,7 +215,7 @@ export default class AnalysisControl extends M.Control {
     const MFeatures = this.layer_.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+    this.feature = MFeatures.filter((f) => f.getImpl().getFeature() === olFeature)[0]
       || undefined;
 
     this.calculateAnalysis();
@@ -333,7 +334,7 @@ export default class AnalysisControl extends M.Control {
     const bufferFeatures = [];
     let features = [];
     const layerID = this.managementControl_.selectionControl
-      .getLayer().getImpl().getOL3Layer().ol_uid;
+      .getLayer().getImpl().getLayer().ol_uid;
     if (selection === 'feature') { // buffer de los features seleccionados
       features = this.managementControl_.getSelectedFeatures();
     } else { // buffer de toda la capa
@@ -355,7 +356,7 @@ export default class AnalysisControl extends M.Control {
    * @api
    */
   createFeatureBuffer(feature, distance, layerID) {
-    const olFeature = this.getImpl().getMapeaFeatureClone(feature).getImpl().getOLFeature();
+    const olFeature = this.getImpl().getMapeaFeatureClone(feature).getImpl().getFeature();
     this.getImpl().setStyle('rgba(113, 167, 211)', olFeature);
     const format = new ol.format.GeoJSON();
     olFeature.getGeometry().transform(this.map_.getProjection().code, 'EPSG:4326');
@@ -363,7 +364,7 @@ export default class AnalysisControl extends M.Control {
     const buffered = buffer(turfGeom, parseInt(distance, 10), { units: 'meters' });
     olFeature.setGeometry(format.readFeature(buffered).getGeometry().transform('EPSG:4326', this.map_.getProjection().code));
     olFeature.set('parentID', layerID);
-    const MFeature = M.impl.Feature.olFeature2Facade(olFeature);
+    const MFeature = M.impl.Feature.feature2Facade(olFeature);
     return MFeature;
   }
 
@@ -586,8 +587,8 @@ export default class AnalysisControl extends M.Control {
     }
 
     const selectLayer = this.managementControl_.selectionControl.getLayer();
-    const layerID = selectLayer.getImpl().getOL3Layer().ol_uid;
-    const features = this.bufferLayer.getFeatures().filter((f) => f.getImpl().getOLFeature().get('parentID') === layerID);
+    const layerID = selectLayer.getImpl().getLayer().ol_uid;
+    const features = this.bufferLayer.getFeatures().filter((f) => f.getImpl().getFeature().get('parentID') === layerID);
     this.bufferLayer.removeFeatures(features);
   }
 

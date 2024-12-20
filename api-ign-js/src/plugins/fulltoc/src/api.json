@@ -33,6 +33,10 @@
     "ol": {
       "scripts": ["fulltoc.ol.min.js"],
       "styles": ["fulltoc.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["fulltoc.cesium.min.js"],
+      "styles": ["fulltoc.cesium.min.css"]
     }
   },
   "metadata": {

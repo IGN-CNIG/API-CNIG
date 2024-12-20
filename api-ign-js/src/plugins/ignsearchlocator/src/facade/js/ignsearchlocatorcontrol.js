@@ -1,7 +1,7 @@
 /**
  * @module M/control/IGNSearchLocatorControl
  */
-import IGNSearchLocatorImplControl from '../../impl/ol/js/ignsearchlocatorcontrol';
+import IGNSearchLocatorImplControl from 'impl/ignsearchlocatorcontrol';
 import template from '../../templates/ignsearchlocator';
 import results from '../../templates/results';
 import xylocator from '../../templates/xylocator';
@@ -54,8 +54,10 @@ export default class IGNSearchLocatorControl extends M.Control {
     searchCoordinatesXYZ,
     order,
   ) {
-    if (M.utils.isUndefined(IGNSearchLocatorImplControl)) {
-      M.exception(getValue('impl'));
+    if (M.utils.isUndefined(IGNSearchLocatorImplControl)
+      || (M.utils.isObject(IGNSearchLocatorImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(IGNSearchLocatorImplControl)))) {
+      M.exception(getValue('exception.impl'));
     }
     const impl = new IGNSearchLocatorImplControl();
     super(impl, 'IGNSearchLocator');
@@ -575,7 +577,7 @@ export default class IGNSearchLocatorControl extends M.Control {
             }
 
             setTimeout(() => {
-              this.clickedElementLayer.getImpl().getOL3Layer().getSource().addFeature(olFeature);
+              this.clickedElementLayer.getImpl().getLayer().getSource().addFeature(olFeature);
               this.zoomInLocation('g', type, this.zoom);
             }, 200);
             // show popup for streets
@@ -922,7 +924,7 @@ export default class IGNSearchLocatorControl extends M.Control {
     }
 
     setTimeout(() => {
-      this.clickedElementLayer.getImpl().getOL3Layer().getSource().addFeature(olFeature);
+      this.clickedElementLayer.getImpl().getLayer().getSource().addFeature(olFeature);
       this.zoomInLocation('g', type, this.zoom);
     }, 200);
     // show popup for streets
@@ -1182,7 +1184,7 @@ export default class IGNSearchLocatorControl extends M.Control {
           this.fire('ignsearchlocator:entityFound', [extent]);
         });
       } else {
-        const extent = this.clickedElementLayer.getImpl().getOL3Layer().getSource().getExtent();
+        const extent = this.clickedElementLayer.getImpl().getLayer().getSource().getExtent();
         this.map.setBbox(extent);
         this.fire('ignsearchlocator:entityFound', [extent]);
       }

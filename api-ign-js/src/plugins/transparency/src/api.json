@@ -36,6 +36,10 @@
     "ol": {
       "scripts": ["transparency.ol.min.js"],
       "styles": ["transparency.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["transparency.cesium.min.js"],
+      "styles": ["transparency.cesium.min.css"]
     }
   },
   "metadata": {

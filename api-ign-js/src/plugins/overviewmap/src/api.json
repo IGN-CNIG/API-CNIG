@@ -40,6 +40,10 @@
     "ol": {
       "scripts": ["overviewmap.ol.min.js"],
       "styles": ["overviewmap.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["overviewmap.cesium.min.js"],
+      "styles": ["overviewmap.cesium.min.css"]
     }
   },
   "metadata": {

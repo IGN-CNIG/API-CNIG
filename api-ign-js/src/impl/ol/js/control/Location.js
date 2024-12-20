@@ -61,7 +61,7 @@ class Location extends Control {
      * @private
      * @type {OLFeature}
      */
-    this.accuracyFeature_ = Feature.olFeature2Facade(new OLFeature());
+    this.accuracyFeature_ = Feature.feature2Facade(new OLFeature());
 
     /**
      * Seguimiento de localización, por defecto verdadero.
@@ -96,7 +96,7 @@ class Location extends Control {
      * @private
      * @type {OLFeature}
      */
-    this.positionFeature_ = Feature.olFeature2Facade(new OLFeature({
+    this.positionFeature_ = Feature.feature2Facade(new OLFeature({
       style: Location.POSITION_STYLE,
     }));
   }
@@ -123,14 +123,14 @@ class Location extends Control {
       }, this.vendorOptions_, true));
       this.geolocation_.on('change:accuracyGeometry', (evt) => {
         const accuracyGeom = evt.target.get(evt.key);
-        this.accuracyFeature_.getImpl().getOLFeature().setGeometry(accuracyGeom);
+        this.accuracyFeature_.getImpl().getFeature().setGeometry(accuracyGeom);
       });
       this.geolocation_.once('change:position', (evt) => {
         const newCoord = evt.target.get(evt.key);
         const newPosition = isNullOrEmpty(newCoord)
           ? null
           : new OLGeomPoint(newCoord);
-        this.positionFeature_.getImpl().getOLFeature().setGeometry(newPosition);
+        this.positionFeature_.getImpl().getFeature().setGeometry(newPosition);
         this.facadeMap_.setCenter(newCoord);
         if (this.element.classList.contains('m-locating')) {
           this.facadeMap_.setZoom(Location.ZOOM); // solo 1a vez

@@ -1,8 +1,8 @@
 /**
  * @module M/control/ComparatorsControl
  */
+import ComparatorsImpl from 'impl/comparators';
 import template from '../../templates/comparators';
-import ComparatorsImpl from '../../impl/ol/js/comparators';
 import { getValue } from './i18n/language';
 import MirrorpanelControl from './mirrorpanelcontrol';
 import LyrCompareControl from './lyrcomparecontrol';
@@ -22,7 +22,8 @@ export default class ComparatorsControl extends M.Control {
    * @api
    */
   constructor(isDraggable, order, options) {
-    if (M.utils.isUndefined(ComparatorsImpl)) {
+    if (M.utils.isUndefined(ComparatorsImpl) || (M.utils.isObject(ComparatorsImpl)
+      && M.utils.isNullOrEmpty(Object.keys(ComparatorsImpl)))) {
       M.exception(getValue('exception.impl'));
     }
 
@@ -460,9 +461,9 @@ export default class ComparatorsControl extends M.Control {
     const ol3Load = new Promise((resolve, reject) => {
       let keyInterval = null;
       const handlerValue = () => {
-        if (layer.getImpl().getOL3Layer()) {
+        if (layer.getImpl().getLayer()) {
           clearInterval(keyInterval);
-          resolve(layer.getImpl().getOL3Layer());
+          resolve(layer.getImpl().getLayer());
         }
       };
 

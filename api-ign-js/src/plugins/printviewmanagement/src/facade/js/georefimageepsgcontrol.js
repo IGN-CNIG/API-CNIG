@@ -1,8 +1,8 @@
 /**
  * @module M/control/GeorefImageEpsgControl
  */
-import Georefimage2ControlImpl from '../../impl/ol/js/georefimageepsgcontrol';
-import { adjustExtentForSquarePixels, reproject } from '../../impl/ol/js/utils';
+import Georefimage2ControlImpl from 'impl/georefimageepsgcontrol';
+import { adjustExtentForSquarePixels, reproject } from 'impl/utils';
 import georefimage2HTML from '../../templates/georefimageepsg';
 import { getValue } from './i18n/language';
 import {
@@ -25,12 +25,13 @@ export default class GeorefImageEpsgControl extends M.Control {
     * @api stable
     */
   constructor({ order, layers }, map) {
+    if (M.utils.isUndefined(Georefimage2ControlImpl) || (M.utils.isObject(Georefimage2ControlImpl)
+      && M.utils.isNullOrEmpty(Object.keys(Georefimage2ControlImpl)))) {
+      M.exception(getValue('exception.impl'));
+    }
     const impl = new Georefimage2ControlImpl(map);
     super(impl, 'georefimage2control');
     this.map_ = map;
-    if (M.utils.isUndefined(Georefimage2ControlImpl)) {
-      M.exception(getValue('exception.impl'));
-    }
 
     this.layers_ = layers || [
       {

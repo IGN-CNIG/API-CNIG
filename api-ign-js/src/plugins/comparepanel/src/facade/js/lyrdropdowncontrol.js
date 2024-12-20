@@ -18,7 +18,8 @@ export default class LyrdropdownControl extends M.Control {
    */
   constructor(values) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(LyrdropdownImplControl)) {
+    if (M.utils.isUndefined(LyrdropdownImplControl) || (M.utils.isObject(LyrdropdownImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(LyrdropdownImplControl)))) {
       M.exception(getValue('exception'));
     }
 
@@ -149,7 +150,7 @@ export default class LyrdropdownControl extends M.Control {
           /**
            * Se ha seleccionado la opción de eliminar capa
            */
-          // this.getImpl().removeLayer(layer.getImpl().getOL3Layer());
+          // this.getImpl().removeLayer(layer.getImpl().getLayer());
           return; // No layer option is selected
         }
 
@@ -309,7 +310,7 @@ export default class LyrdropdownControl extends M.Control {
       }
 
       if (newLayer !== null) {
-        if (newLayer.getImpl().getOL3Layer() === null) {
+        if (newLayer.getImpl().getLayer() === null) {
           setTimeout(() => {
             if (newLayer.type === 'WMS' || newLayer.type === 'WMTS') {
               newLayer.load = true;

@@ -227,7 +227,7 @@ export default class Creationcontrol extends M.impl.Control {
   getMapeaFeatureClone() {
     // eslint-disable-next-line no-underscore-dangle
     const implFeatureClone = this.facadeControl.feature.getImpl().olFeature_.clone();
-    const emphasis = M.impl.Feature.olFeature2Facade(implFeatureClone);
+    const emphasis = M.impl.Feature.feature2Facade(implFeatureClone);
     return emphasis;
   }
 
@@ -239,7 +239,7 @@ export default class Creationcontrol extends M.impl.Control {
    * @param {M.Featuer} mapeaFeature
    */
   getFeatureExtent(feature) {
-    return feature.getImpl().getOLFeature().getGeometry().getExtent();
+    return feature.getImpl().getFeature().getGeometry().getExtent();
   }
 
   /**

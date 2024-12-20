@@ -511,7 +511,7 @@ class Chart extends Feature {
    * @api stable
    */
   applyToFeature(feature) {
-    const featureCtx = feature.getImpl().getOLFeature();
+    const featureCtx = feature.getImpl().getFeature();
     featureCtx.setStyle(this.olStyleFn_);
   }
 

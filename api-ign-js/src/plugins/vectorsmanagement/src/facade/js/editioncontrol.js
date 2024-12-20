@@ -1,7 +1,7 @@
 /**
  * @module M/control/EditionControl
  */
-import EditionImplControl from '../../impl/ol/js/editioncontrol';
+import EditionImplControl from 'impl/editioncontrol';
 import template from '../../templates/edition';
 import removeLayerTemplate from '../../templates/clearlayer';
 import editiontableTemplate from '../../templates/editiontable';
@@ -21,8 +21,9 @@ export default class EditionControl extends M.Control {
    */
   constructor(map, managementControl) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(EditionImplControl)) {
-      M.exception(getValue('exception'));
+    if (M.utils.isUndefined(EditionImplControl) || (M.utils.isObject(EditionImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(EditionImplControl)))) {
+      M.exception(getValue('exception.impl_editioncontrol'));
     }
 
     // 2. implementation of this control
@@ -149,7 +150,7 @@ export default class EditionControl extends M.Control {
       this.selectionLayer = new M.layer.Vector({
         extract: false,
         name: 'selectLayer',
-        source: this.layer_.getImpl().getOL3Layer().getSource(),
+        source: this.layer_.getImpl().getLayer().getSource(),
       }, { displayInLayerSwitcher: false });
       this.layer_.getImpl().extract = false;
       this.map_.addLayers(this.selectionLayer);
@@ -551,7 +552,7 @@ export default class EditionControl extends M.Control {
     const MFeatures = this.layer_.getFeatures();
     const olFeature = e.target.getFeatures().getArray()[0];
 
-    this.feature = MFeatures.filter((f) => f.getImpl().getOLFeature() === olFeature)[0]
+    this.feature = MFeatures.filter((f) => f.getImpl().getFeature() === olFeature)[0]
       || undefined;
 
     this.geometry = this.feature.getGeometry().type;
@@ -651,7 +652,7 @@ export default class EditionControl extends M.Control {
       } else {
         // eslint-disable-next-line no-underscore-dangle
         const extent = this.getImpl().getFeatureExtent(feature);
-        emphasis = M.impl.Feature.olFeature2Facade(this.getImpl().newPolygonFeature(extent));
+        emphasis = M.impl.Feature.feature2Facade(this.getImpl().newPolygonFeature(extent));
         emphasis.setStyle(new M.style.Line({
           stroke: {
             color: '#FF0000',
@@ -859,7 +860,7 @@ export default class EditionControl extends M.Control {
       this.feature = this.getLayer().getFeatureById(featId);
       this.geometry = this.feature.getGeometry().type;
       // this.emphasizeSelectedFeature();
-      const extent = this.feature.getImpl().getOLFeature().getGeometry().getExtent();
+      const extent = this.feature.getImpl().getFeature().getGeometry().getExtent();
       this.map_.setBbox(extent);
       if (this.map_.getZoom() > 17) {
         this.map_.setZoom(17);
@@ -909,7 +910,7 @@ export default class EditionControl extends M.Control {
     const attributeName = evt.target.name;
     const features = this.layer_.getFeatures();
     features.forEach((f) => {
-      f.getImpl().getOLFeature().unset(attributeName);
+      f.getImpl().getFeature().unset(attributeName);
     });
     const table = document.querySelector('#attribute-table');
     table.parentNode.removeChild(table);
@@ -1019,7 +1020,7 @@ export default class EditionControl extends M.Control {
       } else {
         nuevoObjeto[k] = attributes[k];
       }
-      feature.getImpl().getOLFeature().unset(k);
+      feature.getImpl().getFeature().unset(k);
     });
     feature.setAttributes(nuevoObjeto);
   }

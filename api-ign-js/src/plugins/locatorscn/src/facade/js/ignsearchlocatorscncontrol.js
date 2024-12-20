@@ -4,7 +4,7 @@
 import template from 'templates/ignsearchlocatorscn';
 import results from 'templates/ignsearchlocatorscn-results';
 import ignsearchlocatorscnReverse from 'templates/ignsearchlocatorscn-reverse';
-import IGNSearchLocatorscnImpl from '../../impl/ol/js/ignsearchlocatorscncontrol';
+import IGNSearchLocatorscnImpl from 'impl/ignsearchlocatorscncontrol';
 import { getValue } from './i18n/language';
 
 let typingTimer;
@@ -27,7 +27,8 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     statusProxy,
     positionPlugin,
   ) {
-    if (M.utils.isUndefined(IGNSearchLocatorscnImpl)) {
+    if (M.utils.isUndefined(IGNSearchLocatorscnImpl) || (M.utils.isObject(IGNSearchLocatorscnImpl)
+      && M.utils.isNullOrEmpty(Object.keys(IGNSearchLocatorscnImpl)))) {
       M.exception(getValue('exception.impl_ignsearchlocatorscn'));
     }
     const impl = new IGNSearchLocatorscnImpl(map);
@@ -750,7 +751,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
           this.fire('ignsearchlocatorscn:entityFound', [extent]);
         });
       } else {
-        const extent = this.clickedElementLayer.getImpl().getOL3Layer().getSource().getExtent();
+        const extent = this.clickedElementLayer.getImpl().getLayer().getSource().getExtent();
         this.map.setBbox(extent);
         this.fire('ignsearchlocatorscn:entityFound', [extent]);
       }
@@ -779,7 +780,7 @@ export default class IGNSearchLocatorscnControl extends M.Control {
     this.map.removeLayers(this.clickedElementLayer);
 
     const olFeature = this.getImpl().readFromWKT(geoJsonData);
-    const mFeature = M.impl.Feature.olFeature2Facade(olFeature);
+    const mFeature = M.impl.Feature.feature2Facade(olFeature);
     const properties = geoJsonData;
     // Center coordinates
     this.coordinates = `${properties.lat}, ${properties.lng}`;

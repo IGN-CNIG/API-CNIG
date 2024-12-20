@@ -3,7 +3,7 @@
  */
 
 import template from 'templates/viewhistory';
-import ViewHistoryImpl from '../../impl/ol/js/viewhistorycontrol';
+import ViewHistoryImpl from 'impl/viewhistorycontrol';
 import { getValue } from './i18n/language';
 
 export default class ViewHistoryControl extends M.Control {
@@ -16,7 +16,8 @@ export default class ViewHistoryControl extends M.Control {
    * @api
    */
   constructor(map) {
-    if (M.utils.isUndefined(ViewHistoryImpl)) {
+    if (M.utils.isUndefined(ViewHistoryImpl) || (M.utils.isObject(ViewHistoryImpl)
+      && M.utils.isNullOrEmpty(Object.keys(ViewHistoryImpl)))) {
       M.exception(getValue('exception.impl_viewhistory'));
     }
     const impl = new ViewHistoryImpl(map);

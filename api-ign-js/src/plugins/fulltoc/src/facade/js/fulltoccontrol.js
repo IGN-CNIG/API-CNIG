@@ -28,7 +28,8 @@ export default class FullTOCControl extends M.Control {
    * @api
    */
   constructor(http, https, precharged, codsi, order) {
-    if (M.utils.isUndefined(FullTOCImplControl)) {
+    if (M.utils.isUndefined(FullTOCImplControl) || (M.utils.isObject(FullTOCImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(FullTOCImplControl)))) {
       M.exception(getValue('exception.impl'));
     }
 
@@ -116,7 +117,7 @@ export default class FullTOCControl extends M.Control {
     if (layers !== undefined && layers.length > 0) {
       layers.forEach((l) => {
         l.getImpl().on(M.evt.ADDED_TO_MAP, (layer) => {
-          if (layer.getOL3Layer() != null) {
+          if (layer.getLayer() != null) {
             this.template_.querySelector('.m-fulltoc-container .m-title .span-title').click();
           }
         });
@@ -716,7 +717,7 @@ export default class FullTOCControl extends M.Control {
           }
         }
       } else {
-        layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
+        layer.getImpl().getLayer().getSource().updateParams({ STYLES: styleSelected });
         document.querySelector('div.m-mapea-container div.m-dialog').remove();
         const cm = layer.capabilitiesMetadata;
         if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
@@ -840,8 +841,8 @@ export default class FullTOCControl extends M.Control {
         }
         /*
         else if (layerURL.indexOf('/mirame.chduero.es/') > -1
-          && layer.getImpl().getOL3Layer() !== null) {
-          const styleName = layer.getImpl().getOL3Layer().getSource().getStyle();
+          && layer.getImpl().getLayer() !== null) {
+          const styleName = layer.getImpl().getLayer().getSource().getStyle();
           const urlLegend = layer.getLegendURL().split('&amp;').join('&').split('default')
             .join(styleName);
           layer.setLegendURL(urlLegend);

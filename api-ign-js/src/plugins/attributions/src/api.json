@@ -76,6 +76,14 @@
       "styles": [
         "attributions.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "attributions.cesium.min.js"
+      ],
+      "styles": [
+        "attributions.cesium.min.css"
+      ]
     }
   },
   "metadata": {

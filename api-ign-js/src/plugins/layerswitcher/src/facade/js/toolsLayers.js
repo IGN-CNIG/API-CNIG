@@ -131,7 +131,7 @@ const errorLegendLayer = (layer, useProxy, statusProxy) => {
     } else if (layer.type === 'XYZ') {
       legend = layer.url.replace('{z}/{x}/{y}', '0/0/0');
     } else if (layer.type === 'OSM') {
-      let url = layer.getImpl().getOL3Layer().getSource().getUrls();
+      let url = layer.getImpl().getLayer().getSource().getUrls();
       if (url.length > 0) {
         url = url[0];
       }
@@ -355,7 +355,7 @@ const changeLayerConfig = (layer, otherStyles) => {
         }
       }
     } else {
-      layer.getImpl().getOL3Layer().getSource().updateParams({ STYLES: styleSelected });
+      layer.getImpl().getLayer().getSource().updateParams({ STYLES: styleSelected });
       const cm = layer.capabilitiesMetadata;
       if (!M.utils.isNullOrEmpty(cm) && !M.utils.isNullOrEmpty(cm.style)) {
         const filtered = layer.capabilitiesMetadata.style.filter((style) => {

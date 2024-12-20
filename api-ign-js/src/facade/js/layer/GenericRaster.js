@@ -94,12 +94,13 @@ class GenericRaster extends LayerBase {
       params.legend = params.legend || opts.legend;
     }
 
+    opts.userMaxExtent = params.maxExtent || opts.userMaxExtent;
+
     // checks if the implementation can create Generic layers
-    if (isUndefined(GenericRasterImpl)) {
+    if (isUndefined(GenericRasterImpl) || (isObject(GenericRasterImpl)
+      && isNullOrEmpty(Object.keys(GenericRasterImpl)))) {
       Exception(getValue('exception').generic_method);
     }
-
-    opts.userMaxExtent = params.maxExtent || opts.userMaxExtent;
 
     const impl = new GenericRasterImpl(opts, vOptions, 'raster');
 

@@ -88,7 +88,7 @@ class Label extends Base {
    * @api
    */
   setCoordinate(coord) {
-    this.getImpl().coordinate = coord;
+    this.getImpl().setCoordinate(coord);
   }
 }
 

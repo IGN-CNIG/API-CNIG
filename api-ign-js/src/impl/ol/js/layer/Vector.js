@@ -297,7 +297,7 @@ class Vector extends Layer {
    * @api stable
    */
   redraw() {
-    const olLayer = this.getOL3Layer();
+    const olLayer = this.getLayer();
     if (!isNullOrEmpty(olLayer)) {
       const olSource = olLayer.getSource();
       /**  if (olSource instanceof OLSourceCluster) {
@@ -308,7 +308,7 @@ class Vector extends Layer {
       olFeatures.forEach(olSource.removeFeature, olSource);
 
       const features = this.facadeVector_.getFeatures();
-      olSource.addFeatures(features.map(Feature.facade2OLFeature));
+      olSource.addFeatures(features.map(Feature.facade2Feature));
     }
   }
 
@@ -409,7 +409,7 @@ class Vector extends Layer {
       const srcProj = getProj(oldProj.code);
       const dstProj = getProj(newProj.code);
       this.facadeVector_.getFeatures().forEach((feature) => feature.getImpl()
-        .getOLFeature().getGeometry().transform(srcProj, dstProj));
+        .getFeature().getGeometry().transform(srcProj, dstProj));
     }
   }
 
@@ -462,7 +462,7 @@ class Vector extends Layer {
    * @api stable
    */
   refresh() {
-    this.getOL3Layer().getSource().clear();
+    this.getLayer().getSource().clear();
   }
 
   /**

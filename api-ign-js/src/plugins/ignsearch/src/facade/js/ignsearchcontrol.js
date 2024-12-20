@@ -1,7 +1,7 @@
 /**
  * @module M/control/IGNSearchControl
  */
-import IGNSearchImplControl from '../../impl/ol/js/ignsearchcontrol';
+import IGNSearchImplControl from 'impl/ignsearchcontrol';
 import template from '../../templates/ignsearch';
 import results from '../../templates/results';
 import { getValue } from './i18n/language';
@@ -40,7 +40,8 @@ export default class IGNSearchControl extends M.Control {
     pointStyle,
     nomenclatorSearchType,
   ) {
-    if (M.utils.isUndefined(IGNSearchImplControl)) {
+    if (M.utils.isUndefined(IGNSearchImplControl) || (M.utils.isObject(IGNSearchImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(IGNSearchImplControl)))) {
       M.exception('La implementación usada no puede crear controles IGNSearchControl');
     }
     const impl = new IGNSearchImplControl();

@@ -68,6 +68,14 @@
       "styles": [
         "printermap.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "printermap.cesium.min.js"
+      ],
+      "styles": [
+        "printermap.cesium.min.css"
+      ]
     }
   },
   "metadata": {

@@ -3,7 +3,7 @@
  */
 
 import template from 'templates/xylocator';
-import XYLocatorImpl from '../../impl/ol/js/xylocatorcontrol';
+import XYLocatorImpl from 'impl/xylocatorcontrol';
 import { getValue } from './i18n/language';
 
 export default class XYLocatorControl extends M.Control {
@@ -16,7 +16,8 @@ export default class XYLocatorControl extends M.Control {
    * @api
    */
   constructor(map, zoom, pointStyle, options, positionPlugin) {
-    if (M.utils.isUndefined(XYLocatorImpl)) {
+    if (M.utils.isUndefined(XYLocatorImpl) || (M.utils.isObject(XYLocatorImpl)
+      && M.utils.isNullOrEmpty(Object.keys(XYLocatorImpl)))) {
       M.exception(getValue('exception.impl_xylocator'));
     }
     const impl = new XYLocatorImpl(map);

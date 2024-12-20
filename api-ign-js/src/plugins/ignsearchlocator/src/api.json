@@ -131,6 +131,10 @@
     "ol": {
       "scripts": ["ignsearchlocator.ol.min.js"],
       "styles": ["ignsearchlocator.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["ignsearchlocator.cesium.min.js"],
+      "styles": ["ignsearchlocator.cesium.min.css"]
     }
   },
   "metadata": {

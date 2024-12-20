@@ -1,7 +1,7 @@
 /**
  * @module M/control/AddLayer
  */
-import AddLayerImplControl from '../../impl/ol/js/addlayercontrol';
+import AddLayerImplControl from 'impl/addlayercontrol';
 import { getValue } from './i18n/language';
 
 /**
@@ -21,8 +21,9 @@ export default class AddLayerControl extends M.Control {
    */
   constructor(map) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(AddLayerImplControl)) {
-      M.exception(getValue('exception'));
+    if (M.utils.isUndefined(AddLayerImplControl) || (M.utils.isObject(AddLayerImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(AddLayerImplControl)))) {
+      M.exception(getValue('exception.impl_addlayercontrol'));
     }
 
     // 2. implementation of this control

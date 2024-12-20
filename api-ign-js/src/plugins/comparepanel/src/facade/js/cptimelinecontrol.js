@@ -18,7 +18,8 @@ export default class TimelineControl extends M.Control {
    */
   constructor(options) {
     // 1. checks if the implementation can create PluginControl
-    if (M.utils.isUndefined(TimelineImplControl)) {
+    if (M.utils.isUndefined(TimelineImplControl) || (M.utils.isObject(TimelineImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(TimelineImplControl)))) {
       M.exception(getValue('exception'));
     }
 

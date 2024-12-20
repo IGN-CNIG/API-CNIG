@@ -6,7 +6,7 @@ import ScaleLineImpl from 'impl/control/ScaleLine';
 import scalelineTemplate from 'templates/scaleline';
 import myhelp from 'templates/scalelinehelp';
 import ControlBase from './Control';
-import { isUndefined } from '../util/Utils';
+import { isUndefined, isNullOrEmpty, isObject } from '../util/Utils';
 import Exception from '../exception/exception';
 import { compileSync as compileTemplate } from '../util/Template';
 import { getValue } from '../i18n/language';
@@ -49,15 +49,16 @@ class ScaleLine extends ControlBase {
    * @api
    */
   constructor(vendorOptions = {}) {
+    if (isUndefined(ScaleLineImpl) || (isObject(ScaleLineImpl)
+      && isNullOrEmpty(Object.keys(ScaleLineImpl)))) {
+      Exception(getValue('exception').scaleline_method);
+    }
+
     // implementation of this control
     const impl = new ScaleLineImpl(vendorOptions);
 
     // calls the super constructor
     super(impl, ScaleLine.NAME);
-
-    if (isUndefined(ScaleLineImpl)) {
-      Exception(getValue('exception').scaleline_method);
-    }
   }
 
   /**

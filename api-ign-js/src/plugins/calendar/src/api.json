@@ -25,6 +25,14 @@
       "styles": [
         "calendar.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "calendar.cesium.min.js"
+      ],
+      "styles": [
+        "calendar.cesium.min.css"
+      ]
     }
   },
   "metadata": {

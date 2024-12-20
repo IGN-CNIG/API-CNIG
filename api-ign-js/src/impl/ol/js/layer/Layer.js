@@ -168,8 +168,8 @@ class LayerBase extends MObject {
    * @expose
    */
   getMinZoom() {
-    if (!isNullOrEmpty(this.getOL3Layer())) {
-      this.minZoom = this.getOL3Layer().getMinZoom();
+    if (!isNullOrEmpty(this.getLayer())) {
+      this.minZoom = this.getLayer().getMinZoom();
     }
     return this.minZoom;
   }
@@ -184,8 +184,8 @@ class LayerBase extends MObject {
    */
   setMinZoom(zoom) {
     this.minZoom = zoom;
-    if (!isNullOrEmpty(this.getOL3Layer())) {
-      this.getOL3Layer().setMinZoom(zoom);
+    if (!isNullOrEmpty(this.getLayer())) {
+      this.getLayer().setMinZoom(zoom);
     }
   }
 
@@ -198,8 +198,8 @@ class LayerBase extends MObject {
    * @expose
    */
   getMaxZoom() {
-    if (!isNullOrEmpty(this.getOL3Layer())) {
-      this.maxZoom = this.getOL3Layer().getMaxZoom();
+    if (!isNullOrEmpty(this.getLayer())) {
+      this.maxZoom = this.getLayer().getMaxZoom();
     }
     return this.maxZoom;
   }
@@ -215,8 +215,8 @@ class LayerBase extends MObject {
    */
   setMaxZoom(zoom) {
     this.maxZoom = zoom;
-    if (!isNullOrEmpty(this.getOL3Layer())) {
-      this.getOL3Layer().setMaxZoom(zoom);
+    if (!isNullOrEmpty(this.getLayer())) {
+      this.getLayer().setMaxZoom(zoom);
     }
   }
 
@@ -229,8 +229,8 @@ class LayerBase extends MObject {
    * @expose
    */
   getZIndex() {
-    if (!isNullOrEmpty(this.getOL3Layer())) {
-      this.zIndex_ = this.getOL3Layer().getZIndex();
+    if (!isNullOrEmpty(this.getLayer())) {
+      this.zIndex_ = this.getLayer().getZIndex();
     }
     return this.zIndex_;
   }
@@ -245,8 +245,8 @@ class LayerBase extends MObject {
    */
   setZIndex(zIndex) {
     this.zIndex_ = zIndex;
-    if (!isNullOrEmpty(this.getOL3Layer())) {
-      this.getOL3Layer().setZIndex(zIndex);
+    if (!isNullOrEmpty(this.getLayer())) {
+      this.getLayer().setZIndex(zIndex);
     }
     if (this.rootGroup) {
       this.rootGroup.reorderLayers();
@@ -262,8 +262,8 @@ class LayerBase extends MObject {
    * @expose
    */
   getOpacity() {
-    if (!isNullOrEmpty(this.getOL3Layer())) {
-      this.opacity_ = this.getOL3Layer().getOpacity();
+    if (!isNullOrEmpty(this.getLayer())) {
+      this.opacity_ = this.getLayer().getOpacity();
     }
     return this.opacity_;
   }
@@ -282,8 +282,8 @@ class LayerBase extends MObject {
       opacityParsed = Number(opacity);
     }
     this.opacity_ = opacityParsed;
-    if (!isNullOrEmpty(this.getOL3Layer())) {
-      this.getOL3Layer().setOpacity(opacityParsed);
+    if (!isNullOrEmpty(this.getLayer())) {
+      this.getLayer().setOpacity(opacityParsed);
     }
   }
 
@@ -294,8 +294,21 @@ class LayerBase extends MObject {
    * @return {ol3Layer} Devuelve la capa Openlayers.
    * @api stable
    * @expose
+   * @deprecated
    */
   getOL3Layer() {
+    return this.ol3Layer;
+  }
+
+  /**
+   * Este método obtiene la capa Openlayers creada.
+   *
+   * @function
+   * @return {ol3Layer} Devuelve la capa Openlayers.
+   * @api stable
+   * @expose
+   */
+  getLayer() {
     return this.ol3Layer;
   }
 
@@ -306,8 +319,25 @@ class LayerBase extends MObject {
    * @param {ol.layer} layer Capa de Openlayers.
    * @api stable
    * @expose
+   * @deprecated
    */
   setOL3Layer(layer) {
+    const olMap = this.map.getMapImpl();
+    olMap.removeLayer(this.ol3Layer);
+    this.ol3Layer = layer;
+    olMap.addLayer(layer);
+    return this;
+  }
+
+  /**
+   * Este método establece la capa Openlayers.
+   *
+   * @function
+   * @param {ol.layer} layer Capa de Openlayers.
+   * @api stable
+   * @expose
+   */
+  setLayer(layer) {
     const olMap = this.map.getMapImpl();
     olMap.removeLayer(this.ol3Layer);
     this.ol3Layer = layer;

@@ -1,9 +1,8 @@
 /**
  * @module M/control/LocatorscnControl
  */
-
+import LocatorscnImpl from 'impl/locatorscn';
 import template from '../../templates/locatorscn';
-import LocatorscnImpl from '../../impl/ol/js/locatorscn';
 import { getValue } from './i18n/language';
 import IGNSearchLocatorscnControl from './ignsearchlocatorscncontrol';
 
@@ -26,7 +25,8 @@ export default class LocatorscnControl extends M.Control {
     statusProxy,
     position,
   ) {
-    if (M.utils.isUndefined(LocatorscnImpl)) {
+    if (M.utils.isUndefined(LocatorscnImpl) || (M.utils.isObject(LocatorscnImpl)
+      && M.utils.isNullOrEmpty(Object.keys(LocatorscnImpl)))) {
       M.exception(getValue('exception.impl'));
     }
 

@@ -25,6 +25,10 @@
     "ol": {
       "scripts": ["toc.ol.min.js"],
       "styles": ["toc.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["toc.cesium.min.js"],
+      "styles": ["toc.cesium.min.css"]
     }
   },
   "metadata": {

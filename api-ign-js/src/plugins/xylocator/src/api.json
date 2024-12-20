@@ -20,6 +20,10 @@
     "ol": {
       "scripts": ["xylocator.ol.min.js"],
       "styles": ["xylocator.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["xylocator.cesium.min.js"],
+      "styles": ["xylocator.cesium.min.css"]
     }
   },
   "metadata": {

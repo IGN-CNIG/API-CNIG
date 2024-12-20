@@ -69,7 +69,7 @@ export default class LyrdropdownControl extends M.impl.Control {
    * @api stable
    */
   addLayer(layer) {
-    // this.layerdropInteraction_.addLayer(layer.getImpl().getOL3Layer());
+    // this.layerdropInteraction_.addLayer(layer.getImpl().getLayer());
   }
 
   /**
@@ -92,6 +92,6 @@ export default class LyrdropdownControl extends M.impl.Control {
    * @api stable
    */
   removeLayer(layer) {
-    // this.layerdropInteraction_.removeLayer(layer.getImpl().getOL3Layer());
+    // this.layerdropInteraction_.removeLayer(layer.getImpl(());
   }
 }

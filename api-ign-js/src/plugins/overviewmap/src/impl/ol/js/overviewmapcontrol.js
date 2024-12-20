@@ -187,7 +187,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
   //  */
   // addLayer_(layer) {
   //   layer.un(M.evt.ADDED_TO_MAP, this.addLayer_, this);
-  //   this.getOverviewMap().addLayer(layer.getOL3Layer());
+  //   this.getOverviewMap().addLayer(layer.getLayer());
   // }
 
   /**
@@ -200,7 +200,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
     const olLayers = [];
     this.facadeMap_.getLayers().forEach((layer) => {
       if (layer.transparent === false && layer.isVisible()) {
-        const olLayer = layer.getImpl().getOL3Layer();
+        const olLayer = layer.getImpl().getLayer();
         if (M.utils.isNullOrEmpty(olLayer)) {
           // layer.getImpl().on(M.evt.ADDED_TO_MAP, this.addLayer_.bind(this));
         } else {
@@ -249,7 +249,7 @@ export default class OverviewMapControl extends ol.control.OverviewMap {
         } else if (parameters[0] === 'LayerGroup') {
           const layer = new M.layer.LayerGroup(this.baseLayer_);
           layer.getImpl().addTo(this.facadeMap_, false);
-          const olLayer = layer.getImpl().getOL3Layer();
+          const olLayer = layer.getImpl().getLayer();
           this.ovmap_.addLayer(olLayer);
         } else {
           const projection = ol.proj.get(this.facadeMap_.getProjection().code);

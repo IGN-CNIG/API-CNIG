@@ -41,6 +41,14 @@
       "styles": [
         "popup.ol.min.css"
       ]
+    },
+    "cesium": {
+      "scripts": [
+        "popup.cesium.min.js"
+      ],
+      "styles": [
+        "popup.cesium.min.css"
+      ]
     }
   },
   "metadata": {

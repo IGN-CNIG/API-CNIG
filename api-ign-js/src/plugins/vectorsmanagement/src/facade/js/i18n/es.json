@@ -1,5 +1,13 @@
 {
   "exception": {
+    "impl_addlayercontrol": "La implementación no puede crear controles de AddLayer.",
+    "impl_creationcontrol": "La implementación no puede crear controles de Creation.",
+    "impl_downloadcontrol": "La implementación no puede crear controles de Download.",
+    "impl_editioncontrol": "La implementación no puede crear controles de Edition.",
+    "impl_helpcontrol": "La implementación no puede crear controles de Help.",
+    "impl_selectioncontrol": "La implementación no puede crear controles de Selection.",
+    "impl_analysiscontrol": "La implementación no puede crear controles de Analysis.",
+    "impl_stylecontrol": "La implementación no puede crear controles de Style.",
     "emptylayer": "La capa de dibujo está vacía.",
     "geometrianoencontrar": "Geometría no reconocida.",
     "formatocoord": "Las coordenadas introducidas no tienen el formato correcto.",

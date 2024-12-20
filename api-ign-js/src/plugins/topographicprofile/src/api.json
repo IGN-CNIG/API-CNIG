@@ -17,6 +17,10 @@
     "ol": {
       "scripts": ["topographicprofile.ol.min.js"],
       "styles": ["topographicprofile.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["topographicprofile.cesium.min.js"],
+      "styles": ["topographicprofile.cesium.min.css"]
     }
   },
   "metadata": {

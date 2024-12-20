@@ -77,13 +77,6 @@ export default class ZoomPanel extends M.Plugin {
     this.metadata_ = api.metadata;
 
     /**
-     * ZoomPanel control
-     * @public
-     * @type {M.control.ZoomPanel}
-     */
-    this.control_ = new ZoomPanelControl(options);
-
-    /**
      * @classdesc
      * @private
      * @type {string}
@@ -95,6 +88,8 @@ export default class ZoomPanel extends M.Plugin {
      *@type { Number }
      */
     this.order = options.order >= -1 ? options.order : null;
+
+    this.options = options;
   }
 
   /**
@@ -121,6 +116,7 @@ export default class ZoomPanel extends M.Plugin {
    * @api stable
    */
   addTo(map) {
+    this.control_ = new ZoomPanelControl(this.options);
     this.facadeMap_ = map;
     this.panel_ = new M.ui.Panel('zoompanel', {
       collapsible: this.collapsible,

@@ -18,7 +18,8 @@ export default class SelectionDrawControl extends M.Control {
    * @api
    */
   constructor(options) {
-    if (M.utils.isUndefined(SelectionDrawImplControl)) {
+    if (M.utils.isUndefined(SelectionDrawImplControl) || (M.utils.isObject(SelectionDrawImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(SelectionDrawImplControl)))) {
       M.exception(getValue('exception_selectiondrawcontrol'));
     }
     const impl = new SelectionDrawImplControl(options.projection);
@@ -72,9 +73,9 @@ export default class SelectionDrawControl extends M.Control {
         // eslint-disable-next-line no-undef
         const evtobj = window.event ? event : e;
         if (evtobj.keyCode === 90 && evtobj.ctrlKey) {
-          const numeroFeatures = drawLayer.getImpl().getOL3Layer().getSource().getFeatures().length;
+          const numeroFeatures = drawLayer.getImpl().getLayer().getSource().getFeatures().length;
           // eslint-disable-next-line max-len
-          drawLayer.getImpl().getOL3Layer().getSource().removeFeature(drawLayer.getImpl().getOL3Layer().getSource().getFeatures()[numeroFeatures - 1]);
+          drawLayer.getImpl().getLayer().getSource().removeFeature(drawLayer.getImpl().getLayer().getSource().getFeatures()[numeroFeatures - 1]);
         }
       }
       document.onkeydown = retroceso;

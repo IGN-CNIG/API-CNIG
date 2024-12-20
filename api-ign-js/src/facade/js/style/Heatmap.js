@@ -5,7 +5,7 @@ import HeatmapImpl from 'impl/style/Heatmap';
 import Style from './Style';
 import {
   isArray, isNullOrEmpty, isFunction, isString, inverseColor, generateIntervals,
-  defineFunctionFromString,
+  defineFunctionFromString, isObject, isUndefined,
 } from '../util/Utils';
 import Exception from '../exception/exception';
 import { getValue } from '../i18n/language';
@@ -66,6 +66,10 @@ class Heatmap extends Style {
       ? 1
       : parseFloat(vendorOptions.opacity);
 
+    if (isUndefined(HeatmapImpl) || (isObject(HeatmapImpl)
+      && isNullOrEmpty(Object.keys(HeatmapImpl)))) {
+      Exception(getValue('exception').heatmap_method);
+    }
     const impl = new HeatmapImpl(attribute, options, vendorOptions);
 
     // calls the super constructor

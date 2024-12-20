@@ -137,7 +137,7 @@ mapa.addLayers(layer);
 // const layerWFS = new Generic({ name: 'Provincias', namespace: 'tematicos', legend: 'leyenda de la capa' /*, ids: '1,2', cql: "nombre LIKE '%ada%'"*/ }, {}, wfsLayer);
 
 // window.generic = layerWFS;
-// // window.o = generic.getImpl().getOL3Layer();
+// // window.o = generic.getImpl().getLayer();
 // mapa.addLayers(layerWFS);
 
 // const filtro = EQUAL("nombre", "Sevilla");

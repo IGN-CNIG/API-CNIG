@@ -11,9 +11,13 @@
   ],
   "license": "ISC",
   "scripts": {
-    "start": "webpack serve --config=webpack-config/webpack.development.config.js",
-    "prebuild": "node task/create-entrypoint.js",
-    "build": "webpack --config=webpack-config/webpack.production.config.js",
+    "start": "webpack serve --config=webpack-config/webpack.development-ol.config.js",
+    "start:ol": "webpack serve --config=webpack-config/webpack.development-ol.config.js",
+    "start:cesium": "webpack serve --config=webpack-config/webpack.development-cesium.config.js",
+    "prebuild": "npm run prebuild:ol && npm run prebuild:cesium",
+    "prebuild:ol": "node task/create-entrypoint-ol.js",
+    "prebuild:cesium": "node task/create-entrypoint-cesium.js",
+    "build": "webpack --config=webpack-config/webpack.production-ol.config.js && webpack --config=webpack-config/webpack.production-cesium.config.js",
     "test-build": "npm run build && live-server --open=test/prod.html",
     "check": "eslint ./src",
     "fix": "eslint --fix ./src"

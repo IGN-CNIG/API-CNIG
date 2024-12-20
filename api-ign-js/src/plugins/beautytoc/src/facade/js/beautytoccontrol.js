@@ -23,6 +23,10 @@ export default class BeautyTOCControl extends M.Control {
    * @api
    */
   constructor() {
+    if (M.utils.isUndefined(BeautyTOCImplControl) || (M.utils.isObject(BeautyTOCImplControl)
+      && M.utils.isNullOrEmpty(Object.keys(BeautyTOCImplControl)))) {
+      M.exception(getValue('exception.impl'));
+    }
     const impl = new BeautyTOCImplControl();
     super(impl, 'BeautyTOC');
   }

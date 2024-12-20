@@ -7,5 +7,8 @@
   "description": "Descripción",
   "reference": "Referencia catastral",
   "noReference": "No hay referencia",
-  "noInfo": "PARA ESAS COORDENADAS NO HAY REFERENCIA DISPONIBLE"
+  "noInfo": "PARA ESAS COORDENADAS NO HAY REFERENCIA DISPONIBLE",
+  "exception": {
+    "impl": "La implementación no puede crear controles de InfoCatastro."
+  }
 }

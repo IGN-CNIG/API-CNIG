@@ -33,6 +33,10 @@
     "ol": {
       "scripts": ["basic.ol.min.js"],
       "styles": ["basic.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["basic.cesium.min.js"],
+      "styles": ["basic.cesium.min.css"]
     }
   },
   "metadata": {

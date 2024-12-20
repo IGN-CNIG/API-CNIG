@@ -14,6 +14,7 @@ import 'impl-assets/css/custom';
 import Control from 'M/control/Control';
 import FacadeWMS from 'M/layer/WMS';
 import * as EventType from 'M/event/eventtype';
+import FacadeMap from 'M/Map';
 import LayerBase from 'M/layer/Layer';
 import Exception from 'M/exception/exception';
 import { getValue } from 'M/i18n/language';
@@ -250,7 +251,7 @@ class Map extends MObject {
     const layersGroup = this.getLayerGroups(filters);
     const unknowLayers = this.getUnknowLayers_(filters);
 
-    return kmlLayers.concat(wmsLayers)
+    const layers = kmlLayers.concat(wmsLayers)
       .concat(geotiffLayers)
       .concat(mapLibreLayers)
       .concat(wfsLayers)
@@ -263,6 +264,8 @@ class Map extends MObject {
       .concat(tmsLayers)
       .concat(layersGroup)
       .concat(unknowLayers);
+
+    return layers.sort((layer1, layer2) => FacadeMap.LAYER_SORT(layer1, layer2, this.facadeMap_));
   }
 
   /**

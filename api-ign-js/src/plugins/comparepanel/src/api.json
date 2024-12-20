@@ -28,6 +28,10 @@
     "ol": {
       "scripts": ["comparepanel.ol.min.js"],
       "styles": ["comparepanel.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["comparepanel.cesium.min.js"],
+      "styles": ["comparepanel.cesium.min.css"]
     }
   },
   "metadata": {

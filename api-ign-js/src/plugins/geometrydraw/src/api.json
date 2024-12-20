@@ -25,6 +25,10 @@
     "ol": {
       "scripts": ["geometrydraw.ol.min.js"],
       "styles": ["geometrydraw.ol.min.css"]
+    },
+    "cesium": {
+      "scripts": ["geometrydraw.cesium.min.js"],
+      "styles": ["geometrydraw.cesium.min.css"]
     }
   },
   "metadata": {

@@ -179,6 +179,22 @@ export const GenericVector = 'GenericVector';
 export const GenericRaster = 'GenericRaster';
 
 /**
+ * Tipo Tiles3D. Es un tipo de capa que utiliza conjuntos de mosaicos organizados
+ * en un árbol (estructura de datos espaciales). Solo disponible para Cesium.
+ * @const
+ * @type {string}
+ * @public
+ * @api
+ */
+export const Tiles3D = 'Tiles3D';
+
+/**
+ * Tipo Terrain. Es un tipo de capa compuesta por datos que proporcionan información
+ * sobre las elevaciones y características del terreno. Solo disponible para Cesium.
+ */
+export const Terrain = 'Terrain';
+
+/**
  * Tipo LayerGroup. Es un tipo de capa que permite agrupas capas.
  * @const
  * @type {string}
@@ -212,6 +228,8 @@ const layertypes = {
   GenericRaster,
   GenericVector,
   LayerGroup,
+  Tiles3D,
+  Terrain,
 };
 
 /**
@@ -260,6 +278,8 @@ export const know = (type) => {
     MBTilesVector,
     OGCAPIFeatures,
     LayerGroup,
+    Tiles3D,
+    Terrain,
   ];
   return (knowTypes.indexOf(parse(type)) !== -1);
 };
