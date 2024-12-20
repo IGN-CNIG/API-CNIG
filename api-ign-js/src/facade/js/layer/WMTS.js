@@ -60,7 +60,7 @@ class WMTS extends LayerBase {
    * - opacity: Opacidad de capa, por defecto 1.
    * - crossOrigin: Atributo crossOrigin para las imágenes cargadas
    * - tileMatrixLabels: Lista de identificadores en TileMatrix para usar en solicitudes WMTS,
-   *   uno por nivel de TileMatrix. Solo disponible para Cesium. 
+   *   uno por nivel de TileMatrix. Solo disponible para Cesium.
    * @param {Object} vendorOptions Opciones para la biblioteca base. Ejemplo vendorOptions:
    * <pre><code>
    * import { default as OLSourceWMTS } from 'ol/source/WMTS';
