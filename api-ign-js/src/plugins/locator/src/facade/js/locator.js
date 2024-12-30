@@ -262,7 +262,7 @@ export default class Locator extends M.Plugin {
    */
   getIGNSearchLocator() {
     return {
-      maxResults: 20,
+      maxResults: 99,
       noProcess: '',
       countryCode: '',
       reverse: true,

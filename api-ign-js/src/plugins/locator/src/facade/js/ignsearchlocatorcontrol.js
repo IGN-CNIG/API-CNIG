@@ -46,7 +46,7 @@ export default class IGNSearchLocatorControl extends M.Control {
      * @private
      * @type {number}
      */
-    this.maxResults = options.maxResults || 20;
+    this.maxResults = options.maxResults || 99;
 
     /**
      * This variable indicate which entities shouldn't be searched
