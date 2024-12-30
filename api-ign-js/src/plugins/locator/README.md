@@ -13,8 +13,8 @@ Plugin que permite utilizar diferentes herramientas para la localización:
 - Buscar por catastro.
 - Consultar referencia catastral.
 
-Esta extensión es una fachada del servicio geocoder y del comunicationpullserver. En la siguiente dirección se puede encontrar toda la información sobre el servicio geocoder:
-https://www.idee.es/resources/documentos/Cartociudad/CartoCiudad_ServiciosWeb.pdf#page=7&zoom=100,109,585
+Esta extensión es una fachada del servicio geocoder. En la siguiente dirección se puede encontrar toda la información sobre el servicio geocoder:
+https://www.idee.es/resources/documentos/Cartociudad/CartoCiudad_ServiciosWeb.pdf#page=6&zoom=100,109,585
 
 # Dependencias
 
@@ -102,7 +102,7 @@ El constructor se inicializa con un JSON con los siguientes atributos:
   ```
   (Válido sólo para la creación del plugin por JS y API-REST en base64).
 - **byPlaceAddressPostal**: Indica si el control IGNSearchLocator se añade al plugin (true/false/Object). Por defecto: true. Para modificar los valores por defecto de este control se seguirá el siguiente formato:
-  - **maxResults**: Número de resultados en la consulta. Por defecto: 20 (para cada servicio).
+  - **maxResults**: Número de resultados en la consulta. Por defecto: 99. Para ajustar este valor a las necesidades de cada visualizador, se recomienda revisar la documentación del servicio Geocoder: https://www.idee.es/resources/documentos/Cartociudad/CartoCiudad_ServiciosWeb.pdf#page=6&zoom=100,109,585 
   - **noProcess**: En geocoder, indica las entidades que no se incluirán en los resultados. Admite combinación de 'municipio, poblacion, toponimo, callejero, carretera, portal, provincia, ngbe, expendeduria, comunidad autónoma'. Por defecto: ''.
   - **countryCode**: Código por defecto del país en la petición a geocoder. Por defecto: 'es'.
   - **reverse**: Valor booleano que indica si la funcionalidad obtener dirección en un punto del mapa está activada (true/false). Por defecto: true.
