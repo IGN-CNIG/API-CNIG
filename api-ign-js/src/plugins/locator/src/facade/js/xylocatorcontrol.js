@@ -262,6 +262,7 @@ export default class XYLocatorControl extends M.Control {
     if (!Number.isNaN(x) && !Number.isNaN(y)) {
       this.map.setCenter(`${x},${y}*false`);
       this.map.setZoom(this.zoom);
+
       this.fire('xylocator:locationCentered', [{
         zoom: this.zoom,
         center: [x, y],
