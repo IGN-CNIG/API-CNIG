@@ -205,6 +205,18 @@ export default class Locator extends M.Plugin {
 
     this.panel_.addControls(this.controls_);
     map.addPanels(this.panel_);
+
+    var locatorControl = this.controls_.find(obj => obj.name === "Locator");
+    locatorControl.on('xylocator:locationCentered', (data) => {
+      this.fire('xylocator:locationCentered', data);
+    });
+    locatorControl.on('ignsearchlocator:entityFound', (extent) => {
+      this.fire('ignsearchlocator:entityFound', [extent]);
+    });
+    locatorControl.on('infocatastro:locationCentered', (data) => {
+      this.fire('infocatastro:locationCentered', data);
+    });
+
   }
 
   /**
@@ -359,4 +371,6 @@ export default class Locator extends M.Plugin {
       }),
     };
   }
+
+
 }
