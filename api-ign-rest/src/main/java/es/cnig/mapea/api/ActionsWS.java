@@ -59,7 +59,8 @@ public class ActionsWS {
 		actions.put("/plugins");
 		actions.put("/resources/svg");
 
-		actions.put("/../../doc");
+		actions.put("/../../doc/ol");
+		actions.put("/../../doc/cesium");
 
 //      actions.put("/apk");
 
