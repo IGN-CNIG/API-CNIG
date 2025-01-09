@@ -118,9 +118,13 @@ class Feature {
     const properties = this.cesiumFeature_.properties;
     if (properties) {
       // eslint-disable-next-line no-return-assign
-      const res = properties.propertyNames.reduce((acc, curr) =>
-        // eslint-disable-next-line
-        (acc[curr] = properties[curr].getValue(), acc), {});
+      const res = properties.propertyNames.reduce((acc, curr) => {
+        if (properties[curr]) {
+          const value = properties[curr].getValue();
+          acc[curr] = value;
+        }
+        return acc;
+      }, {});
       return res;
     }
 
