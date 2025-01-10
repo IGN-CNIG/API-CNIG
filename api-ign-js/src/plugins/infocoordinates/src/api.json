@@ -54,7 +54,7 @@
     "name": "Infocoordinates",
     "description": "Show coordinates points when clicked on map",
     "text": "Show coordinates points when clicked on map. Change its SRC and format decimal or DMS",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "date": "May, 2020",
     "author": "",
     "org": "",

@@ -37,7 +37,7 @@
     "name": "predefinedzoom",
     "description": "Zooms to predefined map views",
     "text": "Zooms to predefined map views (given Bbox)",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "date": "",
     "author": "",
     "org": "",

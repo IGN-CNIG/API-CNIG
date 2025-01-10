@@ -27,7 +27,7 @@
     "name": "Perfil Topográfico",
     "description": "Genera un perfil longitudinal",
     "text": "A partir de un eje dibujado, el plugin muestra un perfil longitudinal del terreno",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "date": "Enero, 2020",
     "author": "",
     "org": "CNIG",
