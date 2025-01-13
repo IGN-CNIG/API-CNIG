@@ -189,7 +189,7 @@ export default class StoryMapControl extends M.Control {
     for (const key in divElement) {
       if (divElement[key].style.display === 'block' && !Number.isNaN(key)) {
         const id = divElement[key].id;
-        return Number.parseInt(id[id.length - 1], 10);
+        return Number.parseInt(id.match(/\d+/)[0], 10);
       }
     }
     return false;
