@@ -114,7 +114,7 @@ class Vector extends Layer {
      * clampToGround. Define si el objeto geográfico se debe ajustar
      * al suelo, por defecto falso.
      */
-    this.clampToGround = options.clampToGround || false;
+    this.clampToGround = options.clampToGround;
   }
 
   /**

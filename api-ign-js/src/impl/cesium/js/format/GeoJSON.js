@@ -56,6 +56,7 @@ class GeoJSON {
     */
   readFeatureFromObject(object, options) {
     let geoJSONFeature = object;
+    const opts = options;
     if (typeof object === 'string') {
       const obj = JSON.parse(object);
       geoJSONFeature = obj;
@@ -65,7 +66,15 @@ class GeoJSON {
     if (isNullOrEmpty(geoJSONFeature.id)) {
       geoJSONFeature.id = generateRandom('geojson_');
     }
-    const promise = new GeoJsonDataSource().process(geoJSONFeature, options);
+
+    const array = this.getDeepestArray(geoJSONFeature.geometry.coordinates);
+    if (isUndefined(options.clampToGround) && array.length === 2) {
+      opts.clampToGround = true;
+    } else if (isUndefined(options.clampToGround) && array.length === 3) {
+      opts.clampToGround = false;
+    }
+
+    const promise = new GeoJsonDataSource().process(geoJSONFeature, opts);
     return promise.then((dataSource) => {
       const features = dataSource.entities.values;
       const featuresResult = [];
@@ -78,7 +87,7 @@ class GeoJSON {
             outlineColor: Color.BLACK,
             pixelSize: 5,
           };
-          if (options.clampToGround) {
+          if (opts.clampToGround) {
             obj.heightReference = HeightReference.CLAMP_TO_GROUND;
           }
           feature.point = new PointGraphics(obj);
@@ -101,6 +110,22 @@ class GeoJSON {
       });
       return featuresResult;
     });
+  }
+
+  getDeepestArray(arr) {
+    let deepest = null;
+    const findDeepest = (current) => {
+      if (Array.isArray(current)) {
+        current.forEach((element) => findDeepest(element));
+      } else {
+        return;
+      }
+      if (current.every((element) => !Array.isArray(element))) {
+        deepest = current;
+      }
+    };
+    findDeepest(arr);
+    return deepest;
   }
 
   /**
