@@ -16,6 +16,7 @@ import {
   HorizontalOrigin,
   VerticalOrigin,
   Cartesian2,
+  HeightReference,
 } from 'cesium';
 import proj4 from 'proj4';
 import ImplUtils from '../util/Utils';
@@ -72,11 +73,15 @@ class GeoJSON {
         const feature = f;
         if (!isUndefined(feature.billboard) && !object.isKMLBillboard) {
           feature.billboard = undefined;
-          feature.point = new PointGraphics({
+          const obj = {
             color: Color.WHITE,
             outlineColor: Color.BLACK,
             pixelSize: 5,
-          });
+          };
+          if (options.clampToGround) {
+            obj.heightReference = HeightReference.CLAMP_TO_GROUND;
+          }
+          feature.point = new PointGraphics(obj);
         }
 
         // click function
